@@ -339,3 +339,112 @@ describe('BreadcrumbGroup Component', () => {
     });
   });
 });
+
+// ---------------------------------------------------------------------------
+// maxItems — static overflow collapse (AWSUI-54917)
+// ---------------------------------------------------------------------------
+describe('maxItems prop', () => {
+  const fiveItems: BreadcrumbGroupProps.Item[] = [
+    { text: 'Home', href: '/home' },
+    { text: 'Service', href: '/service' },
+    { text: 'Region', href: '/region' },
+    { text: 'Resource type', href: '/resource-type' },
+    { text: 'Resource name', href: '/resource-name' },
+  ];
+
+  test('collapses middle items when maxItems < total items', () => {
+    // maxItems=3 → first + last always visible; 2 middle items hidden
+    const wrapper = renderBreadcrumbGroup({ items: fiveItems, maxItems: 3 });
+    // The ellipsis dropdown must be present and visible
+    expect(wrapper.findDropdown()).not.toBeNull();
+    // Collapsed items appear in the dropdown menu
+    const dropdown = wrapper.findDropdown()!;
+    dropdown.openDropdown();
+    // 2 items collapsed (Service, Region)
+    expect(dropdown.findItems()).toHaveLength(2);
+    expect(dropdown.findItems()[0].getElement()).toHaveTextContent('Service');
+    expect(dropdown.findItems()[1].getElement()).toHaveTextContent('Region');
+  });
+
+  test('first and last items are always visible when maxItems collapses middle', () => {
+    const wrapper = renderBreadcrumbGroup({ items: fiveItems, maxItems: 3 });
+    const links = wrapper.findBreadcrumbLinks();
+    // findBreadcrumbLinks returns all .breadcrumb .anchor elements — first and last must be there
+    expect(links[0].getElement()).toHaveTextContent('Home');
+    expect(links[links.length - 1].getElement()).toHaveTextContent('Resource name');
+  });
+
+  test('does not collapse when maxItems equals total items', () => {
+    const wrapper = renderBreadcrumbGroup({ items: fiveItems, maxItems: 5 });
+    const dropdown = wrapper.findDropdown()!;
+    dropdown.openDropdown();
+    // no items in the dropdown (ellipsis is hidden / no collapsed items)
+    expect(dropdown.findItems()).toHaveLength(0);
+  });
+
+  test('does not collapse when maxItems is greater than total items', () => {
+    const wrapper = renderBreadcrumbGroup({ items: fiveItems, maxItems: 10 });
+    const dropdown = wrapper.findDropdown()!;
+    dropdown.openDropdown();
+    expect(dropdown.findItems()).toHaveLength(0);
+  });
+
+  test('does not collapse when maxItems is undefined (default behaviour)', () => {
+    // With mock width=9999 nothing should collapse
+    const wrapper = renderBreadcrumbGroup({ items: fiveItems });
+    const dropdown = wrapper.findDropdown()!;
+    dropdown.openDropdown();
+    expect(dropdown.findItems()).toHaveLength(0);
+  });
+
+  test('collapses all middle items when maxItems=2', () => {
+    // 5 items, maxItems=2 → collapsed = 3 (all middles); collapsed === items.length - 1 → AllItemsDropdown
+    const wrapper = renderBreadcrumbGroup({ items: fiveItems, maxItems: 2 });
+    // AllItemsDropdown is rendered instead of the normal list — verify the collapsed-button trigger
+    expect(wrapper.getElement().querySelector('button')).not.toBeNull();
+  });
+
+  test('ellipsis button has the expandAriaLabel when maxItems collapses items', () => {
+    const wrapper = renderBreadcrumbGroup({
+      items: fiveItems,
+      maxItems: 3,
+      expandAriaLabel: 'Expand breadcrumbs',
+    });
+    const nativeButton = wrapper.findDropdown()?.findNativeButton();
+    expect(nativeButton?.getElement()).toHaveAttribute('aria-label', 'Expand breadcrumbs');
+  });
+
+  test('clicking a collapsed item fires onClick with the correct item', () => {
+    const handleClick = jest.fn();
+    const wrapper = renderBreadcrumbGroup({
+      items: fiveItems,
+      maxItems: 3,
+      onClick: event => {
+        event.preventDefault();
+        handleClick(event.detail.item);
+      },
+    });
+    const dropdown = wrapper.findDropdown()!;
+    dropdown.openDropdown();
+    // Click "Service" (first collapsed item)
+    dropdown.findItems()[0].click();
+    expect(handleClick).toHaveBeenCalledWith(fiveItems[1]);
+  });
+
+  test('works correctly with exactly 2 items (no collapse possible)', () => {
+    const twoItems = fiveItems.slice(0, 2);
+    const wrapper = renderBreadcrumbGroup({ items: twoItems, maxItems: 2 });
+    // With only 2 items and maxItems=2 there is nothing to collapse
+    const dropdown = wrapper.findDropdown()!;
+    dropdown.openDropdown();
+    expect(dropdown.findItems()).toHaveLength(0);
+  });
+
+  test('maxItems=4 with 5 items collapses exactly 1 middle item', () => {
+    const wrapper = renderBreadcrumbGroup({ items: fiveItems, maxItems: 4 });
+    const dropdown = wrapper.findDropdown()!;
+    dropdown.openDropdown();
+    expect(dropdown.findItems()).toHaveLength(1);
+    expect(dropdown.findItems()[0].getElement()).toHaveTextContent('Service');
+  });
+});
