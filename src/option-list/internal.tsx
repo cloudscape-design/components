@@ -8,62 +8,34 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import { DropdownOption } from '../internal/components/option/interfaces';
+import { isGroup } from '../internal/components/option/utils/filter-options';
+import { flattenOptions } from '../internal/components/option/utils/flatten-options';
 import { fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
 import { isDevelopment } from '../internal/is-development';
 import PlainList, { SelectListProps } from '../select/parts/plain-list';
+import { checkOptionValueField } from '../select/utils/check-option-value-field.js';
+import { findOptionIndex } from '../select/utils/connect-options';
 import { useAnnouncement } from '../select/utils/use-announcement';
 import { useNativeSearch } from '../select/utils/use-native-search';
 import { useSelect } from '../select/utils/use-select';
-import { OptionDefinition } from '../types/option';
+import { OptionDefinition, OptionGroup } from '../types/option';
 import { OptionListProps } from './interfaces';
 
-import optionStyles from '../internal/components/option/styles.css.js';
 import styles from './styles.css.js';
 import testClasses from './test-classes/styles.css.js';
 
-type InternalOptionListProps<T = any> = OptionListProps<T> & InternalBaseComponentProps;
+type InternalOptionListProps = OptionListProps & InternalBaseComponentProps;
 
-const EMPTY_SELECTION: ReadonlyArray<string> = [];
+const EMPTY_SELECTION: ReadonlyArray<OptionDefinition> = [];
 
-// Converts the List-style item result into the option shape the internal options list renders.
-// A string `content` becomes the option label (used for the title tooltip, type-ahead and the live announcement);
-// any other node is rendered as `labelContent`.
-function toDropdownOption({
-  id,
-  content,
-  secondaryContent,
-  icon,
-  labelTag,
-  tags,
-  disabled,
-  disabledReason,
-}: OptionListProps.RenderItemResult): DropdownOption {
-  const isStringContent = typeof content === 'string';
-  const option: OptionDefinition & { __customIcon?: React.ReactNode } = {
-    value: id,
-    label: isStringContent ? content : '',
-    labelContent: isStringContent ? undefined : content,
-    description: secondaryContent,
-    labelTag,
-    tags,
-    // Wrapped in the option icon slot so a custom icon gets the same spacing as `iconName` in Select options.
-    __customIcon: icon ? <span className={optionStyles.icon}>{icon}</span> : undefined,
-    disabled,
-    disabledReason,
-  };
-  // The engine reads `disabled` from the wrapper to block selection, and from the option for styling.
-  return { option, disabled };
-}
-
-function InternalOptionList<T>(
+function InternalOptionList(
   {
-    items,
-    renderItem,
+    options,
     selectionType,
-    selectedIds: controlledSelectedIds,
+    selectedOptions: controlledSelectedOptions,
     onChange,
     onFocus,
     onBlur,
@@ -73,52 +45,61 @@ function InternalOptionList<T>(
     i18nStrings,
     __internalRootRef,
     ...restProps
-  }: InternalOptionListProps<T>,
+  }: InternalOptionListProps,
   ref: React.Ref<OptionListProps.Ref>
 ) {
+  checkOptionValueField('OptionList', 'options', options);
+
   const baseProps = getBaseProps(restProps);
   const i18n = useInternalI18n('select');
   const selectedAriaLabel = i18n('selectedAriaLabel', i18nStrings?.selectedAriaLabel);
   const isMulti = selectionType === 'multi';
+  // Same as the dropdowns: group headers are interactive (select all of the group) only in multi selection.
+  const useInteractiveGroups = isMulti;
 
-  const [selectedIds = EMPTY_SELECTION, setSelectedIds] = useControllable(
-    controlledSelectedIds,
+  const [rawSelectedOptions = EMPTY_SELECTION, setSelectedOptions] = useControllable(
+    controlledSelectedOptions,
     onChange,
     EMPTY_SELECTION,
-    { componentName: 'OptionList', controlledProp: 'selectedIds', changeHandler: 'onChange' }
+    { componentName: 'OptionList', controlledProp: 'selectedOptions', changeHandler: 'onChange' }
+  );
+  const selectedOptions = useMemo(
+    () => (isMulti ? rawSelectedOptions : rawSelectedOptions.slice(0, 1)),
+    [isMulti, rawSelectedOptions]
   );
 
-  const options = useMemo(() => items.map(item => toDropdownOption(renderItem(item))), [items, renderItem]);
+  const { flatOptions, parentMap } = useMemo(() => flattenOptions(options), [options]);
+  const optionIndexes = useMemo(() => {
+    const indexes = new Map<DropdownOption, number>();
+    flatOptions.filter(option => option.type !== 'parent').forEach((option, index) => indexes.set(option, index + 1));
+    return indexes;
+  }, [flatOptions]);
 
   if (isDevelopment) {
-    const ids = options.map(({ option }) => option.value);
-    if (new Set(ids).size !== ids.length) {
-      warnOnce('OptionList', 'Every item must have a unique `id`. The component may work incorrectly.');
+    const values = flatOptions.filter(option => option.type !== 'parent').map(({ option }) => option.value);
+    if (new Set(values).size !== values.length) {
+      warnOnce('OptionList', 'Every option must have a unique `value`. The component may work incorrectly.');
     }
   }
 
-  const selectedIdsSet = useMemo(() => new Set(selectedIds), [selectedIds]);
-  const selectedOptions = useMemo(
-    () => options.map(({ option }) => option as OptionDefinition).filter(option => selectedIdsSet.has(option.value!)),
-    [options, selectedIdsSet]
-  );
-
   const updateSelectedOption = useCallback(
-    (option: OptionDefinition) => {
-      const id = option.value!;
-      let nextSelectedIds: ReadonlyArray<string>;
+    (option: OptionDefinition | OptionGroup) => {
+      let nextSelectedOptions: ReadonlyArray<OptionDefinition>;
       if (!isMulti) {
         // Same as Select: choosing the selected option again keeps it selected.
-        nextSelectedIds = [id];
-      } else if (selectedIdsSet.has(id)) {
-        nextSelectedIds = selectedIds.filter(selectedId => selectedId !== id);
+        nextSelectedOptions = [option];
       } else {
-        nextSelectedIds = [...selectedIds, id];
+        // Same as Multiselect: a group toggles all of its enabled options; disabled options keep their state.
+        const targets = (isGroup(option) ? option.options : [option]).filter(item => !item.disabled);
+        const isSelected = (item: OptionDefinition) => findOptionIndex(selectedOptions, item) > -1;
+        nextSelectedOptions = targets.every(isSelected)
+          ? selectedOptions.filter(item => findOptionIndex(targets, item) === -1)
+          : [...selectedOptions, ...targets.filter(item => !isSelected(item))];
       }
-      setSelectedIds(nextSelectedIds);
-      fireNonCancelableEvent(onChange, { selectedIds: nextSelectedIds });
+      setSelectedOptions(nextSelectedOptions);
+      fireNonCancelableEvent(onChange, { selectedOptions: nextSelectedOptions });
     },
-    [isMulti, onChange, selectedIds, selectedIdsSet, setSelectedIds]
+    [isMulti, onChange, selectedOptions, setSelectedOptions]
   );
 
   const {
@@ -132,13 +113,14 @@ function InternalOptionList<T>(
   } = useSelect({
     selectedOptions,
     updateSelectedOption,
-    options,
+    options: flatOptions,
     filteringType: 'none',
     keepOpen: true,
     embedded: true,
     externalRef: null,
     fireLoadItems: () => {},
     statusType: 'finished',
+    useInteractiveGroups,
   });
 
   const [isFocused, setIsFocused] = useState(false);
@@ -167,16 +149,16 @@ function InternalOptionList<T>(
 
   const onTypeAhead = useNativeSearch({
     isEnabled: true,
-    options,
+    options: flatOptions,
     highlightOption,
     highlightedOption: highlightedOption?.option,
-    useInteractiveGroups: false,
+    useInteractiveGroups,
   });
 
   const announcement = useAnnouncement({
     announceSelected,
     highlightedOption,
-    getParent: () => undefined,
+    getParent: option => parentMap.get(option)?.option as undefined | OptionGroup,
     selectedAriaLabel,
   });
 
@@ -204,17 +186,21 @@ function InternalOptionList<T>(
         menuProps={{ ...menuProps, embedded: true, ariaLabel, ariaLabelledby, ariaDescribedby }}
         getOptionProps={(option, index) => {
           const optionProps = getOptionProps(option, index);
+          const isParent = option.type === 'parent';
           return {
             ...optionProps,
             highlighted: showHighlight && optionProps.highlighted,
-            className: testClasses.option,
-            'data-testid': option.option.value,
+            className: isParent ? testClasses['group-header'] : testClasses.option,
+            // 1-based position among selectable options (group headers excluded), used by test-utils.
+            'data-option-index': isParent ? undefined : optionIndexes.get(option),
+            'data-value': option.option.value,
           };
         }}
-        filteredOptions={options}
+        filteredOptions={flatOptions}
         filteringValue=""
         highlightType={highlightType}
         checkboxes={isMulti}
+        useInteractiveGroups={useInteractiveGroups}
         screenReaderContent={showHighlight ? announcement : undefined}
         isMultiSelect={isMulti}
       />
@@ -222,6 +208,4 @@ function InternalOptionList<T>(
   );
 }
 
-export default React.forwardRef(InternalOptionList) as <T>(
-  props: InternalOptionListProps<T> & { ref?: React.Ref<OptionListProps.Ref> }
-) => JSX.Element;
+export default React.forwardRef(InternalOptionList);

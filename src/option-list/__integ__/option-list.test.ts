@@ -23,7 +23,7 @@ describe('OptionList', () => {
   test(
     'selects an option with a click anywhere on the row',
     setupTest(async page => {
-      await page.click(singleList.findOptionById('performance').findSecondaryContent().toSelector());
+      await page.click(singleList.findOptionByValue('performance').findDescription().toSelector());
       await expect(page.getText(singleValue)).resolves.toBe('Selected: performance');
       await expect(page.getElementsCount(singleList.findSelectedOptions().toSelector())).resolves.toBe(1);
     })
@@ -43,10 +43,10 @@ describe('OptionList', () => {
   test(
     'toggles several options in multi selection',
     setupTest(async page => {
-      await page.click(multiList.findOptionById('cost').toSelector());
-      await page.click(multiList.findOptionById('security').toSelector());
+      await page.click(multiList.findOptionByValue('cost').toSelector());
+      await page.click(multiList.findOptionByValue('security').toSelector());
       await expect(page.getText(multiValue)).resolves.toBe('Selected: cost, security');
-      await page.click(multiList.findOptionById('cost').toSelector());
+      await page.click(multiList.findOptionByValue('cost').toSelector());
       await expect(page.getText(multiValue)).resolves.toBe('Selected: security');
     })
   );
@@ -58,6 +58,15 @@ describe('OptionList', () => {
       await page.keys(['Tab', 'Tab']);
       await expect(page.isFocused(singleList.findListbox().toSelector())).resolves.toBe(false);
       await expect(page.isFocused(multiList.findListbox().toSelector())).resolves.toBe(true);
+    })
+  );
+
+  test(
+    'selects a whole group in multi selection',
+    setupTest(async page => {
+      const groupedList = wrapper.findOptionList('[data-testid="grouped-multi"]');
+      await page.click(groupedList.findGroupHeaderByValue('compute').toSelector());
+      await expect(page.getText('[data-testid="grouped-multi-value"]')).resolves.toBe('Selected: ec2, lambda');
     })
   );
 });

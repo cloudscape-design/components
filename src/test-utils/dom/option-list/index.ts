@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
+import { escapeSelector } from '@cloudscape-design/test-utils-core/utils';
 
 import OptionWrapper from '../internal/option.js';
 
@@ -23,9 +24,9 @@ export class OptionListOptionWrapper extends ComponentWrapper {
   }
 
   /**
-   * Returns the option secondary content.
+   * Returns the option description.
    */
-  findSecondaryContent(): ElementWrapper | null {
+  findDescription(): ElementWrapper | null {
     return this.findOption()?.findDescription() ?? null;
   }
 
@@ -70,30 +71,52 @@ export default class OptionListWrapper extends ComponentWrapper {
   }
 
   /**
-   * Returns all options.
+   * Returns all options. Group headers are not included.
    */
   findOptions(): Array<OptionListOptionWrapper> {
     return this.findAllByClassName(styles.option).map(wrapper => new OptionListOptionWrapper(wrapper.getElement()));
   }
 
   /**
-   * Returns an option for a given index.
+   * Returns an option for a given index. Group headers are not counted.
    *
    * @param index 1-based index of the option to return.
    */
   findOptionByIndex(index: number): OptionListOptionWrapper | null {
-    return this.findComponent(`.${styles.option}:nth-child(${index})`, OptionListOptionWrapper);
+    return this.findComponent(`.${styles.option}[data-option-index="${index}"]`, OptionListOptionWrapper);
   }
 
   /**
-   * Returns an option for a given item id.
+   * Returns an option for a given value.
+   *
+   * @param value The `value` of the option.
    */
-  findOptionById(id: string): OptionListOptionWrapper | null {
-    return this.findComponent(`.${styles.option}[data-testid="${id}"]`, OptionListOptionWrapper);
+  findOptionByValue(value: string): OptionListOptionWrapper | null {
+    const escapedValue = escapeSelector(value);
+    return this.findComponent(`.${styles.option}[data-value="${escapedValue}"]`, OptionListOptionWrapper);
   }
 
   /**
-   * Returns all selected options.
+   * Returns all group headers.
+   */
+  findGroupHeaders(): Array<OptionListOptionWrapper> {
+    return this.findAllByClassName(styles['group-header']).map(
+      wrapper => new OptionListOptionWrapper(wrapper.getElement())
+    );
+  }
+
+  /**
+   * Returns a group header for a given group value.
+   *
+   * @param value The `value` of the option group.
+   */
+  findGroupHeaderByValue(value: string): OptionListOptionWrapper | null {
+    const escapedValue = escapeSelector(value);
+    return this.findComponent(`.${styles['group-header']}[data-value="${escapedValue}"]`, OptionListOptionWrapper);
+  }
+
+  /**
+   * Returns all selected options. Group headers are not included.
    */
   findSelectedOptions(): Array<OptionListOptionWrapper> {
     return this.findAll(`.${styles.option}.${selectableItemsStyles.selected}`).map(
@@ -102,7 +125,7 @@ export default class OptionListWrapper extends ComponentWrapper {
   }
 
   /**
-   * Returns the highlighted option.
+   * Returns the highlighted option. Group headers are not included.
    */
   findHighlightedOption(): OptionListOptionWrapper | null {
     return this.findComponent(`.${styles.option}.${selectableItemsStyles.highlighted}`, OptionListOptionWrapper);

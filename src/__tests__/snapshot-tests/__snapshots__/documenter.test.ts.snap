@@ -20658,14 +20658,14 @@ exports[`Components definition for option-list matches the snapshot: option-list
     {
       "cancelable": false,
       "description": "Called when the user selects or deselects an option.
-The event \`detail\` contains the new \`selectedIds\`.",
+The event \`detail\` contains the new \`selectedOptions\`.",
       "detailInlineType": {
         "name": "OptionListProps.ChangeDetail",
         "properties": [
           {
-            "name": "selectedIds",
+            "name": "selectedOptions",
             "optional": false,
-            "type": "ReadonlyArray<string>",
+            "type": "ReadonlyArray<OptionDefinition>",
           },
         ],
         "type": "object",
@@ -20743,47 +20743,47 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
-      "description": "The items to display. Each item is converted into an option with \`renderItem\`.",
-      "name": "items",
-      "optional": false,
-      "type": "ReadonlyArray<T>",
-    },
-    {
-      "description": "Converts an item into an option. Return an object with the following properties:
-* \`id\` (string) - A unique identifier for the item. It is used for \`selectedIds\`.
-* \`content\` (string | React.ReactNode) - The main content of the option. Use a string when possible:
-   it is also used for the option tooltip and for type-ahead search.
-* \`secondaryContent\` (string) - (Optional) Secondary text, for example a description.
-* \`icon\` (React.ReactNode) - (Optional) An icon, displayed at the start of the option.
-* \`labelTag\` (string) - (Optional) A short text displayed at the end of the first line, same as \`labelTag\` in Select options.
-* \`tags\` (ReadonlyArray<string>) - (Optional) Tags displayed under the content, same as \`tags\` in Select options.
-* \`disabled\` (boolean) - (Optional) Determines whether the option is disabled. Users can't select or deselect a disabled option.
-* \`disabledReason\` (string) - (Optional) Displays a tooltip next to the option when it is disabled and highlighted. Use it to explain why the option isn't available.
+      "description": "Specifies an array of options that are displayed inline as a list. Uses the same option objects as Select and Multiselect,
+so the same array can be passed to any of them.
+The options can be grouped using \`OptionGroup\` objects. Only one level of grouping is supported.
+
+#### Option
+- \`value\` (string) - The returned value of the option when selected. Must be unique.
+
+#### OptionGroup
+- \`value\` (string) - Used to locate the option group in test utils.
+- \`options\` (Option[]) - The options under this group.
+
+#### Shared Option and OptionGroup properties
+- \`label\` (string) - (Optional) Option or group text displayed to the user.
+- \`lang\` (string) - (Optional) The language of the option or group, provided as a BCP 47 language tag.
+- \`description\` (string) - (Optional) Further information about the option or group that appears below the label.
+- \`disabled\` (boolean) - (Optional) Determines whether the option or group is disabled. Users can't select or deselect a disabled option.
+- \`disabledReason\` (string) - (Optional) Displays a tooltip near the item when disabled. Use to provide additional context.
+- \`labelTag\` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
+- \`tags\` [string[]] - (Optional) A list of tags giving further guidance about the option or group.
+- \`iconName\` (string) - (Optional) Specifies the name of an [icon](/components/icon/) to display in the option or group.
+- \`iconAriaLabel\` (string) - (Optional) Specifies alternate text for the icon. We recommend that you provide this for accessibility.
+- \`iconUrl\` (string) - (Optional) URL of a custom icon.
+- \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
+
+In single selection, group headers can't be selected. In multi selection, selecting a group header selects or
+deselects all the options in the group that aren't disabled.
 
 Options are the selection target. Do not render interactive elements such as buttons or links inside them.",
-      "inlineType": {
-        "name": "(item: T) => OptionListProps.RenderItemResult",
-        "parameters": [
-          {
-            "name": "item",
-            "type": "T",
-          },
-        ],
-        "returnType": "OptionListProps.RenderItemResult",
-        "type": "function",
-      },
-      "name": "renderItem",
+      "name": "options",
       "optional": false,
-      "type": "(item: T) => OptionListProps.RenderItemResult",
+      "type": "OptionListProps.Options",
     },
     {
-      "description": "The ids of the selected items.
+      "description": "The selected options. Options are matched by \`value\`.
+In single selection, only the first option of the array is used.
 
 If you provide this property, you must also provide an \`onChange\` handler that updates it.
 If you don't, the component manages its selection internally.",
-      "name": "selectedIds",
+      "name": "selectedOptions",
       "optional": true,
-      "type": "ReadonlyArray<string>",
+      "type": "ReadonlyArray<OptionDefinition>",
     },
     {
       "description": "Specifies whether the user can select one option (\`single\`) or several (\`multi\`).
@@ -44295,7 +44295,39 @@ wrapper.selectOptionByValue('option_1');
     {
       "methods": [
         {
-          "description": "Returns the highlighted option.",
+          "description": "Returns a group header for a given group value.",
+          "name": "findGroupHeaderByValue",
+          "parameters": [
+            {
+              "description": "The \`value\` of the option group.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "value",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "OptionListOptionWrapper",
+          },
+        },
+        {
+          "description": "Returns all group headers.",
+          "name": "findGroupHeaders",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "OptionListOptionWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the highlighted option. Group headers are not included.",
           "name": "findHighlightedOption",
           "parameters": [],
           "returnType": {
@@ -44318,24 +44350,7 @@ wrapper.selectOptionByValue('option_1');
           },
         },
         {
-          "description": "Returns an option for a given item id.",
-          "name": "findOptionById",
-          "parameters": [
-            {
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "id",
-              "typeName": "string",
-            },
-          ],
-          "returnType": {
-            "isNullable": true,
-            "name": "OptionListOptionWrapper",
-          },
-        },
-        {
-          "description": "Returns an option for a given index.",
+          "description": "Returns an option for a given index. Group headers are not counted.",
           "name": "findOptionByIndex",
           "parameters": [
             {
@@ -44353,7 +44368,25 @@ wrapper.selectOptionByValue('option_1');
           },
         },
         {
-          "description": "Returns all options.",
+          "description": "Returns an option for a given value.",
+          "name": "findOptionByValue",
+          "parameters": [
+            {
+              "description": "The \`value\` of the option.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "value",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "OptionListOptionWrapper",
+          },
+        },
+        {
+          "description": "Returns all options. Group headers are not included.",
           "name": "findOptions",
           "parameters": [],
           "returnType": {
@@ -44367,7 +44400,7 @@ wrapper.selectOptionByValue('option_1');
           },
         },
         {
-          "description": "Returns all selected options.",
+          "description": "Returns all selected options. Group headers are not included.",
           "name": "findSelectedOptions",
           "parameters": [],
           "returnType": {
@@ -44385,6 +44418,20 @@ wrapper.selectOptionByValue('option_1');
     },
     {
       "methods": [
+        {
+          "description": "Returns the option description.",
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
         {
           "description": "Returns the option label.",
           "name": "findLabel",
@@ -44420,20 +44467,6 @@ wrapper.selectOptionByValue('option_1');
           "returnType": {
             "isNullable": true,
             "name": "OptionWrapper",
-          },
-        },
-        {
-          "description": "Returns the option secondary content.",
-          "name": "findSecondaryContent",
-          "parameters": [],
-          "returnType": {
-            "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
           },
         },
         {
@@ -55141,7 +55174,39 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
     {
       "methods": [
         {
-          "description": "Returns the highlighted option.",
+          "description": "Returns a group header for a given group value.",
+          "name": "findGroupHeaderByValue",
+          "parameters": [
+            {
+              "description": "The \`value\` of the option group.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "value",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "OptionListOptionWrapper",
+          },
+        },
+        {
+          "description": "Returns all group headers.",
+          "name": "findGroupHeaders",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "OptionListOptionWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the highlighted option. Group headers are not included.",
           "name": "findHighlightedOption",
           "parameters": [],
           "returnType": {
@@ -55159,24 +55224,7 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
           },
         },
         {
-          "description": "Returns an option for a given item id.",
-          "name": "findOptionById",
-          "parameters": [
-            {
-              "flags": {
-                "isOptional": false,
-              },
-              "name": "id",
-              "typeName": "string",
-            },
-          ],
-          "returnType": {
-            "isNullable": false,
-            "name": "OptionListOptionWrapper",
-          },
-        },
-        {
-          "description": "Returns an option for a given index.",
+          "description": "Returns an option for a given index. Group headers are not counted.",
           "name": "findOptionByIndex",
           "parameters": [
             {
@@ -55194,7 +55242,25 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
           },
         },
         {
-          "description": "Returns all options.",
+          "description": "Returns an option for a given value.",
+          "name": "findOptionByValue",
+          "parameters": [
+            {
+              "description": "The \`value\` of the option.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "value",
+              "typeName": "string",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "OptionListOptionWrapper",
+          },
+        },
+        {
+          "description": "Returns all options. Group headers are not included.",
           "name": "findOptions",
           "parameters": [],
           "returnType": {
@@ -55208,7 +55274,7 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
           },
         },
         {
-          "description": "Returns all selected options.",
+          "description": "Returns all selected options. Group headers are not included.",
           "name": "findSelectedOptions",
           "parameters": [],
           "returnType": {
@@ -55226,6 +55292,15 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
     },
     {
       "methods": [
+        {
+          "description": "Returns the option description.",
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
         {
           "description": "Returns the option label.",
           "name": "findLabel",
@@ -55251,15 +55326,6 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
           "returnType": {
             "isNullable": false,
             "name": "OptionWrapper",
-          },
-        },
-        {
-          "description": "Returns the option secondary content.",
-          "name": "findSecondaryContent",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
           },
         },
         {

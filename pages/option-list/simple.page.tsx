@@ -6,48 +6,58 @@ import Box from '~components/box';
 import Button from '~components/button';
 import Dialog from '~components/dialog';
 import Header from '~components/header';
-import Icon from '~components/icon';
+import Multiselect from '~components/multiselect';
 import OptionList, { OptionListProps } from '~components/option-list';
 import SpaceBetween from '~components/space-between';
 
 import { SimplePage } from '../app/templates';
 
-interface Goal {
-  id: string;
-  label: string;
-  description: string;
-}
-
-const goals: Goal[] = [
-  { id: 'cost', label: 'Reduce cost', description: 'Prioritize cheaper instance types and storage tiers.' },
-  { id: 'performance', label: 'Improve performance', description: 'Prioritize latency and throughput.' },
-  { id: 'reliability', label: 'Increase reliability', description: 'Add redundancy across Availability Zones.' },
-  { id: 'security', label: 'Strengthen security', description: 'Tighten IAM policies and encryption settings.' },
+const goals: OptionListProps.Option[] = [
+  { value: 'cost', label: 'Reduce cost', description: 'Prioritize cheaper instance types and storage tiers.' },
+  { value: 'performance', label: 'Improve performance', description: 'Prioritize latency and throughput.' },
+  { value: 'reliability', label: 'Increase reliability', description: 'Add redundancy across Availability Zones.' },
+  { value: 'security', label: 'Strengthen security', description: 'Tighten IAM policies and encryption settings.' },
 ];
 
-const renderGoal = (goal: Goal): OptionListProps.RenderItemResult => ({
-  id: goal.id,
-  content: goal.label,
-  secondaryContent: goal.description,
-});
+const goalLabels: OptionListProps.Option[] = goals.map(({ value, label }) => ({ value, label }));
 
-const renderGoalLabelOnly = (goal: Goal): OptionListProps.RenderItemResult => ({ id: goal.id, content: goal.label });
+const goalsWithIcons: OptionListProps.Option[] = goals.map(goal => ({
+  ...goal,
+  iconName: 'settings',
+  labelTag: goal.value === 'cost' ? 'Recommended' : undefined,
+  tags: ['Quick win'],
+}));
 
-const renderGoalWithDisabled = (goal: Goal): OptionListProps.RenderItemResult => ({
-  ...renderGoal(goal),
-  disabled: goal.id === 'reliability',
-  disabledReason: goal.id === 'reliability' ? 'The workload already runs in three Availability Zones.' : undefined,
-});
+const goalsWithDisabled: OptionListProps.Option[] = goals.map(goal =>
+  goal.value === 'reliability'
+    ? { ...goal, disabled: true, disabledReason: 'The workload already runs in three Availability Zones.' }
+    : goal
+);
 
-const renderGoalWithIcon = (goal: Goal): OptionListProps.RenderItemResult => ({
-  ...renderGoal(goal),
-  icon: <Icon name="settings" />,
-  labelTag: 'Recommended',
-  tags: ['Cost', 'Quick win'],
-});
+const services: OptionListProps.Options = [
+  { value: 'all-regions', label: 'All Regions' },
+  {
+    label: 'Compute',
+    value: 'compute',
+    options: [
+      { value: 'ec2', label: 'EC2', description: 'Virtual servers' },
+      { value: 'lambda', label: 'Lambda', description: 'Serverless functions' },
+    ],
+  },
+  {
+    label: 'Storage',
+    value: 'storage',
+    options: [
+      { value: 's3', label: 'S3', description: 'Object storage' },
+      { value: 'ebs', label: 'EBS', description: 'Block storage', disabled: true, disabledReason: 'Not enabled' },
+    ],
+  },
+];
+
+const values = (options: ReadonlyArray<OptionListProps.Option>) => options.map(option => option.value).join(', ');
 
 function FollowUpQuestion() {
-  const [selectedIds, setSelectedIds] = useState<ReadonlyArray<string>>([]);
+  const [selectedOptions, setSelectedOptions] = useState<ReadonlyArray<OptionListProps.Option>>([]);
   const [submitted, setSubmitted] = useState<string | null>(null);
   return (
     <SpaceBetween size="xs">
@@ -61,8 +71,8 @@ function FollowUpQuestion() {
               <Button onClick={() => setSubmitted('Skipped')}>Skip</Button>
               <Button
                 variant="primary"
-                disabled={selectedIds.length === 0}
-                onClick={() => setSubmitted(`Submitted: ${selectedIds.join(', ')}`)}
+                disabled={selectedOptions.length === 0}
+                onClick={() => setSubmitted(`Submitted: ${values(selectedOptions)}`)}
               >
                 Continue
               </Button>
@@ -72,11 +82,10 @@ function FollowUpQuestion() {
       >
         <OptionList
           ariaLabelledby="follow-up-question"
-          items={goals}
-          renderItem={renderGoalLabelOnly}
+          options={goalLabels}
           selectionType="single"
-          selectedIds={selectedIds}
-          onChange={({ detail }) => setSelectedIds(detail.selectedIds)}
+          selectedOptions={selectedOptions}
+          onChange={({ detail }) => setSelectedOptions(detail.selectedOptions)}
         />
       </Dialog>
       <Box variant="small" data-testid="follow-up-result">
@@ -86,91 +95,89 @@ function FollowUpQuestion() {
   );
 }
 
-export default function OptionListSimplePage() {
-  const [singleSelectedIds, setSingleSelectedIds] = useState<ReadonlyArray<string>>([]);
-  const [multiSelectedIds, setMultiSelectedIds] = useState<ReadonlyArray<string>>([]);
-  const [iconSelectedIds, setIconSelectedIds] = useState<ReadonlyArray<string>>(['performance']);
-  const [disabledSelectedIds, setDisabledSelectedIds] = useState<ReadonlyArray<string>>([]);
+function Section({
+  id,
+  title,
+  options,
+  selectionType,
+  initial = [],
+}: {
+  id: string;
+  title: string;
+  options: OptionListProps.Options;
+  selectionType: OptionListProps.SelectionType;
+  initial?: ReadonlyArray<OptionListProps.Option>;
+}) {
+  const [selectedOptions, setSelectedOptions] = useState(initial);
+  return (
+    <SpaceBetween size="xs">
+      <Header variant="h2" id={`${id}-heading`}>
+        {title}
+      </Header>
+      <OptionList
+        data-testid={id}
+        ariaLabelledby={`${id}-heading`}
+        options={options}
+        selectionType={selectionType}
+        selectedOptions={selectedOptions}
+        onChange={({ detail }) => setSelectedOptions(detail.selectedOptions)}
+      />
+      <Box variant="small" data-testid={`${id}-value`}>
+        Selected: {values(selectedOptions) || 'none'}
+      </Box>
+    </SpaceBetween>
+  );
+}
 
+function SharedWithMultiselect() {
+  const [selectedOptions, setSelectedOptions] = useState<ReadonlyArray<OptionListProps.Option>>([]);
+  return (
+    <SpaceBetween size="xs">
+      <Header variant="h2" id="shared-heading">
+        Same options and selection shared with Multiselect
+      </Header>
+      <Multiselect
+        options={services}
+        selectedOptions={selectedOptions}
+        onChange={({ detail }) => setSelectedOptions(detail.selectedOptions)}
+        placeholder="Choose services"
+        ariaLabel="Services"
+      />
+      <OptionList
+        ariaLabelledby="shared-heading"
+        options={services}
+        selectionType="multi"
+        selectedOptions={selectedOptions}
+        onChange={({ detail }) => setSelectedOptions(detail.selectedOptions)}
+      />
+    </SpaceBetween>
+  );
+}
+
+export default function OptionListSimplePage() {
   return (
     <SimplePage title="Option list">
       <div style={{ maxInlineSize: 520 }}>
         <SpaceBetween size="xl">
-          <SpaceBetween size="xs">
-            <Header variant="h2" id="single-heading">
-              Single selection
-            </Header>
-            <OptionList
-              data-testid="single"
-              ariaLabelledby="single-heading"
-              items={goals}
-              renderItem={renderGoal}
-              selectionType="single"
-              selectedIds={singleSelectedIds}
-              onChange={({ detail }) => setSingleSelectedIds(detail.selectedIds)}
-            />
-            <Box variant="small" data-testid="single-value">
-              Selected: {singleSelectedIds.join(', ') || 'none'}
-            </Box>
-          </SpaceBetween>
-
-          <SpaceBetween size="xs">
-            <Header variant="h2" id="multi-heading">
-              Multi selection
-            </Header>
-            <OptionList
-              data-testid="multi"
-              ariaLabelledby="multi-heading"
-              items={goals}
-              renderItem={renderGoal}
-              selectionType="multi"
-              selectedIds={multiSelectedIds}
-              onChange={({ detail }) => setMultiSelectedIds(detail.selectedIds)}
-            />
-            <Box variant="small" data-testid="multi-value">
-              Selected: {multiSelectedIds.join(', ') || 'none'}
-            </Box>
-          </SpaceBetween>
-
-          <SpaceBetween size="xs">
-            <Header variant="h2" id="icon-heading">
-              With icons, label tag, tags and a preselected option
-            </Header>
-            <OptionList
-              ariaLabelledby="icon-heading"
-              items={goals}
-              renderItem={renderGoalWithIcon}
-              selectionType="single"
-              selectedIds={iconSelectedIds}
-              onChange={({ detail }) => setIconSelectedIds(detail.selectedIds)}
-            />
-          </SpaceBetween>
-
-          <SpaceBetween size="xs">
-            <Header variant="h2" id="disabled-heading">
-              With a disabled option
-            </Header>
-            <OptionList
-              data-testid="disabled"
-              ariaLabelledby="disabled-heading"
-              items={goals}
-              renderItem={renderGoalWithDisabled}
-              selectionType="multi"
-              selectedIds={disabledSelectedIds}
-              onChange={({ detail }) => setDisabledSelectedIds(detail.selectedIds)}
-            />
-          </SpaceBetween>
+          <Section id="single" title="Single selection" options={goals} selectionType="single" />
+          <Section id="multi" title="Multi selection" options={goals} selectionType="multi" />
+          <Section
+            id="icons"
+            title="With icons, label tag, tags and a preselected option"
+            options={goalsWithIcons}
+            selectionType="single"
+            initial={[goalsWithIcons[1]]}
+          />
+          <Section id="disabled" title="With a disabled option" options={goalsWithDisabled} selectionType="multi" />
+          <Section id="grouped-single" title="Groups, single selection" options={services} selectionType="single" />
+          <Section id="grouped-multi" title="Groups, multi selection" options={services} selectionType="multi" />
+          <SharedWithMultiselect />
 
           <SpaceBetween size="xs">
             <Header variant="h2" id="uncontrolled-heading">
               Uncontrolled
             </Header>
-            <OptionList
-              ariaLabelledby="uncontrolled-heading"
-              items={goals}
-              renderItem={renderGoalLabelOnly}
-              selectionType="multi"
-            />
+            <OptionList ariaLabelledby="uncontrolled-heading" options={goalLabels} selectionType="multi" />
           </SpaceBetween>
 
           <SpaceBetween size="xs">

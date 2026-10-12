@@ -1,41 +1,41 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
-
 import { BaseComponentProps } from '../types/base-component';
 import { NonCancelableEventHandler } from '../types/events';
+import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../types/option';
 
-/*
- * HACK: Cast the component to a named parametrized interface.
- * This lets us use React.forwardRef and still let the component have type
- * parameters, and the naming convention lets the documenter know that this is
- * a forwardRef-wrapped component.
- */
-export interface OptionListForwardRefType {
-  <T>(props: OptionListProps<T> & { ref?: React.Ref<OptionListProps.Ref> }): JSX.Element;
-}
-
-export interface OptionListProps<T = any> extends BaseComponentProps {
+export interface OptionListProps extends BaseComponentProps {
   /**
-   * The items to display. Each item is converted into an option with `renderItem`.
-   */
-  items: ReadonlyArray<T>;
-
-  /**
-   * Converts an item into an option. Return an object with the following properties:
-   * * `id` (string) - A unique identifier for the item. It is used for `selectedIds`.
-   * * `content` (string | React.ReactNode) - The main content of the option. Use a string when possible:
-   *    it is also used for the option tooltip and for type-ahead search.
-   * * `secondaryContent` (string) - (Optional) Secondary text, for example a description.
-   * * `icon` (React.ReactNode) - (Optional) An icon, displayed at the start of the option.
-   * * `labelTag` (string) - (Optional) A short text displayed at the end of the first line, same as `labelTag` in Select options.
-   * * `tags` (ReadonlyArray<string>) - (Optional) Tags displayed under the content, same as `tags` in Select options.
-   * * `disabled` (boolean) - (Optional) Determines whether the option is disabled. Users can't select or deselect a disabled option.
-   * * `disabledReason` (string) - (Optional) Displays a tooltip next to the option when it is disabled and highlighted. Use it to explain why the option isn't available.
+   * Specifies an array of options that are displayed inline as a list. Uses the same option objects as Select and Multiselect,
+   * so the same array can be passed to any of them.
+   * The options can be grouped using `OptionGroup` objects. Only one level of grouping is supported.
+   *
+   * #### Option
+   * - `value` (string) - The returned value of the option when selected. Must be unique.
+   *
+   * #### OptionGroup
+   * - `value` (string) - Used to locate the option group in test utils.
+   * - `options` (Option[]) - The options under this group.
+   *
+   * #### Shared Option and OptionGroup properties
+   * - `label` (string) - (Optional) Option or group text displayed to the user.
+   * - `lang` (string) - (Optional) The language of the option or group, provided as a BCP 47 language tag.
+   * - `description` (string) - (Optional) Further information about the option or group that appears below the label.
+   * - `disabled` (boolean) - (Optional) Determines whether the option or group is disabled. Users can't select or deselect a disabled option.
+   * - `disabledReason` (string) - (Optional) Displays a tooltip near the item when disabled. Use to provide additional context.
+   * - `labelTag` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
+   * - `tags` [string[]] - (Optional) A list of tags giving further guidance about the option or group.
+   * - `iconName` (string) - (Optional) Specifies the name of an [icon](/components/icon/) to display in the option or group.
+   * - `iconAriaLabel` (string) - (Optional) Specifies alternate text for the icon. We recommend that you provide this for accessibility.
+   * - `iconUrl` (string) - (Optional) URL of a custom icon.
+   * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
+   *
+   * In single selection, group headers can't be selected. In multi selection, selecting a group header selects or
+   * deselects all the options in the group that aren't disabled.
    *
    * Options are the selection target. Do not render interactive elements such as buttons or links inside them.
    */
-  renderItem: (item: T) => OptionListProps.RenderItemResult;
+  options: OptionListProps.Options;
 
   /**
    * Specifies whether the user can select one option (`single`) or several (`multi`).
@@ -44,16 +44,17 @@ export interface OptionListProps<T = any> extends BaseComponentProps {
   selectionType: OptionListProps.SelectionType;
 
   /**
-   * The ids of the selected items.
+   * The selected options. Options are matched by `value`.
+   * In single selection, only the first option of the array is used.
    *
    * If you provide this property, you must also provide an `onChange` handler that updates it.
    * If you don't, the component manages its selection internally.
    */
-  selectedIds?: ReadonlyArray<string>;
+  selectedOptions?: ReadonlyArray<OptionListProps.Option>;
 
   /**
    * Called when the user selects or deselects an option.
-   * The event `detail` contains the new `selectedIds`.
+   * The event `detail` contains the new `selectedOptions`.
    */
   onChange?: NonCancelableEventHandler<OptionListProps.ChangeDetail>;
 
@@ -92,20 +93,12 @@ export interface OptionListProps<T = any> extends BaseComponentProps {
 
 export namespace OptionListProps {
   export type SelectionType = 'single' | 'multi';
-
-  export interface RenderItemResult {
-    id: string;
-    content: React.ReactNode;
-    secondaryContent?: string;
-    icon?: React.ReactNode;
-    labelTag?: string;
-    tags?: ReadonlyArray<string>;
-    disabled?: boolean;
-    disabledReason?: string;
-  }
+  export type Option = OptionDefinition;
+  export type OptionGroup = OptionGroupDefinition;
+  export type Options = ReadonlyArray<Option | OptionGroup>;
 
   export interface ChangeDetail {
-    selectedIds: ReadonlyArray<string>;
+    selectedOptions: ReadonlyArray<Option>;
   }
 
   export interface I18nStrings {
