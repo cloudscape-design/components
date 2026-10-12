@@ -34,6 +34,7 @@ export default function InternalList<T = any>({
   renderItem,
   sortable = false,
   sortDisabled = false,
+  lockedItemsCount,
   tagOverride: Tag = sortable ? 'ol' : 'ul',
   ariaLabel,
   ariaLabelledby,
@@ -54,6 +55,7 @@ export default function InternalList<T = any>({
       <SortableArea
         items={items}
         disableReorder={sortDisabled}
+        lockedItemsCount={lockedItemsCount}
         itemDefinition={{
           id: item => renderItem(item).id,
           label: item => {

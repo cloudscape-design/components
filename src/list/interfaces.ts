@@ -57,6 +57,11 @@ export interface ListProps<T = any> {
    */
   sortDisabled?: boolean;
   /**
+   * Number of leading items that are locked and cannot be reordered.
+   * Their drag handles are disabled and other items cannot be dropped above them.
+   */
+  lockedItemsCount?: number;
+  /**
    * Removes padding around and inside list items.
    */
   disableItemPaddings?: boolean;
