@@ -120,6 +120,10 @@ export namespace DatePickerProps {
     (date: Date): boolean;
   }
 
+  export interface DateDisabledReasonFunction {
+    (date: Date): string;
+  }
+
   export interface OpenCalendarAriaLabel {
     (selectedDate: string | null): string;
   }
