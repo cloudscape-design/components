@@ -38,7 +38,7 @@ export namespace ControlGroupProps {
      * Adds `aria-label` to the button element.
      * The text will also be added to the `title` attribute of the button.
      */
-    ariaLabel?: string;
+    ariaLabel: string;
 
     /**
      * Adds `aria-describedby` to the button.
@@ -46,6 +46,6 @@ export namespace ControlGroupProps {
     ariaDescribedby?: string;
 
     /** Specifies the icon to display (for example `remove` or `close`). */
-    iconName?: IconProps.Name;
+    iconName: IconProps.Name;
   }
 }

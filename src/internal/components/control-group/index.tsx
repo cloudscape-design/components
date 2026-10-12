@@ -29,7 +29,7 @@ export default function ControlGroup({
   const flattenedChildren = flattenChildren(children, 'ControlGroup');
   const controlCount = flattenedChildren.length;
 
-  const rootClassnames = [baseProps.className, testUtilStyles.root];
+  const rootClassnames = [styles.root, baseProps.className, testUtilStyles.root];
 
   const controls = (
     <div
@@ -69,6 +69,7 @@ export default function ControlGroup({
         <InternalButton
           className={testUtilStyles['action-button']}
           variant="control-group-action"
+          formAction="none"
           iconName={actionButton.iconName}
           ariaLabel={actionButton.ariaLabel}
           disabled={actionButton.disabled}
