@@ -266,6 +266,53 @@ describe('Flashbar component', () => {
       expect(wrapper.findItems()[0].findAction()!.findButton()!.getElement()).toHaveTextContent('Click me');
     });
 
+    describe('secondaryAction', () => {
+      test('renders secondary action content', () => {
+        const wrapper = createFlashbarWrapper(
+          <Flashbar
+            items={[
+              {
+                content: 'The content',
+                action: <Button>Primary</Button>,
+                secondaryAction: <Button>Secondary</Button>,
+              },
+            ]}
+          />
+        );
+        expect(wrapper.findItems()[0].findSecondaryAction()!.findButton()!.getElement()).toHaveTextContent('Secondary');
+      });
+
+      test('does not render secondary action slot when secondaryAction is not provided', () => {
+        const wrapper = createFlashbarWrapper(<Flashbar items={[{ content: 'The content' }]} />);
+        expect(wrapper.findItems()[0].findSecondaryAction()).toBeNull();
+      });
+
+      test('renders secondary action without a primary action', () => {
+        const wrapper = createFlashbarWrapper(
+          <Flashbar items={[{ content: 'The content', secondaryAction: <Button>Secondary only</Button> }]} />
+        );
+        expect(wrapper.findItems()[0].findSecondaryAction()!.findButton()!.getElement()).toHaveTextContent(
+          'Secondary only'
+        );
+      });
+
+      test('renders both primary and secondary actions independently', () => {
+        const wrapper = createFlashbarWrapper(
+          <Flashbar
+            items={[
+              {
+                content: 'The content',
+                action: <Button>Primary</Button>,
+                secondaryAction: <Button>Secondary</Button>,
+              },
+            ]}
+          />
+        );
+        expect(wrapper.findItems()[0].findAction()!.findButton()!.getElement()).toHaveTextContent('Primary');
+        expect(wrapper.findItems()[0].findSecondaryAction()!.findButton()!.getElement()).toHaveTextContent('Secondary');
+      });
+    });
+
     test('when both `buttonText` and `action` provided, prefers the latter', () => {
       const wrapper = createFlashbarWrapper(
         <Flashbar

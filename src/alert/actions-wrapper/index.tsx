@@ -35,8 +35,9 @@ function createActionButton(
 
 interface ActionsWrapperProps {
   className: string;
-  testUtilClasses: { actionSlot: string; actionButton: string };
+  testUtilClasses: { actionSlot: string; actionButton: string; secondaryActionSlot: string };
   action: React.ReactNode;
+  secondaryAction?: React.ReactNode;
   discoveredActions: Array<React.ReactNode>;
   buttonText: React.ReactNode;
   wrappedClass?: string;
@@ -48,6 +49,7 @@ export const ActionsWrapper = ({
   className,
   testUtilClasses,
   action,
+  secondaryAction,
   discoveredActions,
   buttonText,
   wrappedClass,
@@ -76,13 +78,18 @@ export const ActionsWrapper = ({
     return () => observer.disconnect();
   });
   const actionButton = createActionButton(testUtilClasses, action, buttonText, onButtonClick);
-  if (!actionButton && discoveredActions.length === 0) {
+  const secondaryActionNode = secondaryAction ? (
+    <div className={testUtilClasses.secondaryActionSlot}>{secondaryAction}</div>
+  ) : null;
+
+  if (!actionButton && !secondaryActionNode && discoveredActions.length === 0) {
     return null;
   }
 
   return (
     <div ref={ref} className={clsx(styles.root, className, wrapped && wrappedClass)}>
       {actionButton}
+      {secondaryActionNode}
       {discoveredActions}
     </div>
   );
