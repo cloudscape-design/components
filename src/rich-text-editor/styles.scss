@@ -1,0 +1,162 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+.root {
+  /* used for test-utils */
+  @include styles.styles-reset;
+  display: block;
+  inline-size: 100%;
+}
+
+.editor {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
+  background-color: awsui.$color-background-input-default;
+  border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
+  border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
+  border-start-start-radius: styles.$control-border-radius;
+  border-start-end-radius: styles.$control-border-radius;
+  border-end-start-radius: styles.$control-border-radius;
+  border-end-end-radius: styles.$control-border-radius;
+  overflow: hidden;
+
+  &:focus-within {
+    border-color: awsui.$color-border-item-focused;
+    box-shadow: 0 0 0 1px awsui.$color-border-item-focused;
+  }
+}
+
+.editor-invalid {
+  border-color: awsui.$color-text-status-error;
+  border-inline-start-width: awsui.$border-invalid-width;
+}
+
+.editor-warning {
+  border-color: awsui.$color-text-status-warning;
+  border-inline-start-width: awsui.$border-invalid-width;
+}
+
+.editor-readonly {
+  background-color: awsui.$color-background-input-disabled;
+}
+
+.editor-disabled {
+  background-color: awsui.$color-background-input-disabled;
+  border-color: awsui.$color-border-input-disabled;
+}
+
+.toolbar {
+  /* used for test-utils */
+  display: flex;
+  flex-wrap: wrap;
+  gap: awsui.$space-xxs;
+  padding-block: awsui.$space-xxs;
+  padding-inline: awsui.$space-xxs;
+  border-block-end: awsui.$border-width-field solid awsui.$color-border-divider-default;
+  background-color: awsui.$color-background-container-content;
+}
+
+.toolbar-button {
+  /* used for test-utils */
+  @include styles.styles-reset;
+  @include styles.font-body-m;
+  box-sizing: border-box;
+  cursor: pointer;
+  min-inline-size: 28px;
+  block-size: 28px;
+  padding-block: 0;
+  padding-inline: awsui.$space-xxs;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: awsui.$color-text-body-default;
+  background-color: transparent;
+  border-block: awsui.$border-width-field solid transparent;
+  border-inline: awsui.$border-width-field solid transparent;
+  border-start-start-radius: styles.$control-border-radius;
+  border-start-end-radius: styles.$control-border-radius;
+  border-end-start-radius: styles.$control-border-radius;
+  border-end-end-radius: styles.$control-border-radius;
+
+  &:hover {
+    background-color: awsui.$color-background-dropdown-item-hover;
+  }
+
+  &:focus-visible {
+    @include styles.focus-highlight(2px);
+  }
+
+  &-pressed {
+    background-color: awsui.$color-background-control-checked;
+    color: awsui.$color-text-interactive-active;
+  }
+
+  &-disabled {
+    cursor: default;
+    color: awsui.$color-text-interactive-disabled;
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+}
+
+.toolbar-button-glyph-italic {
+  font-style: italic;
+}
+
+.toolbar-button-glyph-bold {
+  font-weight: styles.$font-weight-bold;
+}
+
+.toolbar-button-glyph-underline {
+  text-decoration: underline;
+}
+
+.toolbar-button-glyph-strikethrough {
+  text-decoration: line-through;
+}
+
+.content-wrapper {
+  position: relative;
+}
+
+.content {
+  /* used for test-utils - the contenteditable region */
+  @include styles.font-body-m;
+  box-sizing: border-box;
+  inline-size: 100%;
+  min-block-size: 96px;
+  padding-block: styles.$control-padding-vertical;
+  padding-inline: styles.$control-padding-horizontal;
+  color: awsui.$color-text-body-default;
+  overflow-wrap: break-word;
+  overflow-y: auto;
+
+  &:focus {
+    outline: none;
+  }
+
+  &-disabled {
+    color: awsui.$color-text-interactive-disabled;
+  }
+}
+
+.placeholder {
+  /* used for test-utils */
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  padding-block: styles.$control-padding-vertical;
+  padding-inline: styles.$control-padding-horizontal;
+  color: awsui.$color-text-input-placeholder;
+  pointer-events: none;
+  user-select: none;
+}
