@@ -27,4 +27,22 @@ describe('Autosuggest in control group', () => {
 
     expect(getByTestId('probe')).toHaveTextContent('none');
   });
+
+  test('renders the dropdown in a portal even if `expandToViewport` is not set', () => {
+    const { container } = render(
+      <ControlGroup>
+        <Autosuggest
+          value=""
+          onChange={noop}
+          options={[{ value: '1', label: 'One' }]}
+          enteredTextLabel={value => `Use: ${value}`}
+        />
+      </ControlGroup>
+    );
+    const autosuggest = createWrapper(container).findAutosuggest()!;
+    autosuggest.focus();
+
+    expect(autosuggest.findDropdown({ expandToViewport: true }).findOpenDropdown()).not.toBeNull();
+    expect(autosuggest.findDropdown().findOpenDropdown()).toBeNull();
+  });
 });

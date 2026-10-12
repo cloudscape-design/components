@@ -85,6 +85,11 @@ const InternalSelect = React.forwardRef(
     const formFieldContext = useFormFieldContext(restProps);
     const groupedControlProps = useGroupedControlContext();
 
+    // When grouped, the dropdown is portaled regardless of the public
+    // `expandToViewport` prop so it escapes the control slot's stacking context
+    // and paints over the group's inline label (which the focus ring stays under).
+    const effectiveExpandToViewport = expandToViewport || !!groupedControlProps.position;
+
     const i18n = useInternalI18n('select');
     const errorIconAriaLabel = i18n('errorIconAriaLabel', restProps.errorIconAriaLabel);
     const selectedAriaLabel = i18n('selectedAriaLabel', restProps.selectedAriaLabel);
@@ -292,13 +297,13 @@ const InternalSelect = React.forwardRef(
             }
             open={isOpen}
             stretchTriggerHeight={!!__inFilteringToken}
-            minWidth={getDropdownMinWidth({ expandToViewport, triggerWidth })}
+            minWidth={getDropdownMinWidth({ expandToViewport: effectiveExpandToViewport, triggerWidth })}
             maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
             trigger={trigger}
             header={dropdownHeader}
             onMouseDown={handleMouseDown}
             footer={dropdownFooter}
-            expandToViewport={expandToViewport}
+            expandToViewport={effectiveExpandToViewport}
             // Forces dropdown position recalculation when new options are loaded
             contentKey={hasOptions.current.toString()}
             content={

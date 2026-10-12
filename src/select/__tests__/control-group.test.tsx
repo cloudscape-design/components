@@ -19,4 +19,16 @@ describe('Select control in control group', () => {
 
     expect(getByTestId('probe')).toHaveTextContent('none');
   });
+
+  test('renders the dropdown in a portal even if `expandToViewport` is not set', () => {
+    const { container } = render(
+      <InternalControlGroup>
+        <Select selectedOption={null} options={[{ value: '1', label: 'One' }]} onChange={() => {}} />
+      </InternalControlGroup>
+    );
+    const select = createWrapper(container).findSelect()!;
+    select.openDropdown();
+    expect(select.findDropdown({ expandToViewport: true }).findOpenDropdown()).not.toBeNull();
+    expect(select.findDropdown().findOpenDropdown()).toBeNull();
+  });
 });

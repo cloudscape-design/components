@@ -119,10 +119,14 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorItemSelected: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
 
   // ── Segmented control ─────────────────────────────────────────────────────
-  colorBackgroundSegmentActive: { light: '{colorNeutral800}', dark: '{colorNeutral300}' },
+  colorBackgroundSegmentActive: '{colorBackgroundToggleButtonNormalPressed}',
   colorBackgroundSegmentDefault: { light: 'transparent', dark: 'transparent' },
-  colorTextSegmentActive: { light: '{colorNeutral200}', dark: '{colorNeutral950}' },
-  colorTextSegmentDefault: { light: '{colorNeutral600}', dark: '{colorNeutral300}' },
+  colorBackgroundSegmentHover: { light: '{colorWhite}', dark: '{colorNeutral850}' },
+  colorBackgroundSegmentDisabled: { light: 'transparent', dark: 'transparent' },
+  colorBackgroundSegmentWrapper: { light: '{colorNeutral100}', dark: '{colorNeutral1000}' },
+  colorBorderSegmentActive: '{colorBorderToggleButtonNormalPressed}',
+  colorTextSegmentActive: '{colorTextToggleButtonNormalPressed}',
+  colorTextSegmentDefault: '{colorTextButtonNormalDefault}',
   colorTextSegmentHover: '{colorTextButtonNormalHover}',
 
   // ── Slider / progress ─────────────────────────────────────────────────────
@@ -138,9 +142,9 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundBadgeRed: { light: '{colorError100}', dark: 'rgba(255, 61, 61, 0.2)' },
   colorBackgroundBadgeYellow: { light: '{colorWarning100}', dark: 'rgba(251, 211, 50, 0.2)' },
   colorBackgroundBadgeGrey: { light: '{colorNeutral250}', dark: '{colorNeutral700}' },
-  colorTextNotificationDefault: { light: '{colorNeutral800}', dark: '{colorNeutral100}' },
+  colorTextNotificationDefault: { light: '{colorNeutral800}', dark: '{colorNeutral250}' },
   colorTextNotificationYellow: { light: '{colorNeutral800}', dark: '{colorNeutral100}' },
-  colorTextNotificationLinkDefault: { light: '{colorNeutral900}', dark: '{colorNeutral50}' },
+  colorTextNotificationLinkDefault: { light: '{colorNeutral800}', dark: '{colorNeutral250}' },
   colorTextNotificationLinkHover: { light: '{colorNeutral950}', dark: '{colorWhite}' },
   colorBorderDividerNotification: { light: '{colorNeutral350}', dark: '{colorNeutral600}' },
   colorTextLinkInvertedDefault: '{colorNeutral100}',
