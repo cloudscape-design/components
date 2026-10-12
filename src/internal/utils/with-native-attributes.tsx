@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 import clsx from 'clsx';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { NativeAttributes } from '../../types/native-attributes';
+import type { NativeAttributes } from '../../types/native-attributes';
 
 export type SkipWarnings = boolean | string[];
 
@@ -13,9 +13,9 @@ type NativeAttributesProps<AT extends React.HTMLAttributes<HTMLElement>> = {
   tag: string;
   children?: ReactNode;
   skipWarnings?: SkipWarnings;
-  nativeAttributes: NativeAttributes<AT>;
+  nativeAttributes?: NativeAttributes<AT>;
   componentName: string;
-} & NativeAttributes<AT>;
+} & Omit<NativeAttributes<AT>, 'ref'>;
 interface ForwardRefType {
   <ET extends HTMLElement, AT extends React.HTMLAttributes<ET>>(
     props: NativeAttributesProps<AT> & { ref?: React.Ref<ET> }
@@ -24,8 +24,8 @@ interface ForwardRefType {
 
 export function processAttributes<ET extends HTMLElement, AT extends React.HTMLAttributes<ET>>(
   rest: Omit<NativeAttributesProps<AT>, 'children' | 'tag' | 'skipWarnings' | 'componentName' | 'nativeAttributes'>,
-  nativeAttributes: NativeAttributes<AT>,
   componentName: string,
+  nativeAttributes?: NativeAttributes<AT>,
   skipWarnings?: SkipWarnings
 ) {
   return Object.entries(nativeAttributes || {}).reduce(
@@ -63,14 +63,17 @@ export function processAttributes<ET extends HTMLElement, AT extends React.HTMLA
 export default React.forwardRef(
   <ET extends HTMLElement, AT extends React.HTMLAttributes<ET>>(
     { tag, nativeAttributes, children, skipWarnings, componentName, ...rest }: NativeAttributesProps<AT>,
-    ref: React.Ref<ET>
+    ref: React.ForwardedRef<ET>
   ) => {
     const Tag = tag;
 
-    const processedAttributes = processAttributes<ET, AT>(rest, nativeAttributes, componentName, skipWarnings);
+    // Merge the internal forwarded ref with the consumer-provided ref from nativeAttributes.
+    const mergedRef = useMergeRefs(ref, nativeAttributes?.ref);
+
+    const processedAttributes = processAttributes<ET, AT>(rest, componentName, nativeAttributes, skipWarnings);
 
     return (
-      <Tag {...processedAttributes} ref={ref}>
+      <Tag {...processedAttributes} ref={mergedRef}>
         {children}
       </Tag>
     );
