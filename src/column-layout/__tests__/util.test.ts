@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import {
-  calculateBreakpointColumnCount,
   calculcateCssColumnCount,
+  DEFAULT_MIN_COLUMN_WIDTH,
 } from '../../../lib/components/column-layout/flexible-column-layout';
 
 describe('ColumnLayout calculcateCssColumnCount', () => {
@@ -40,48 +40,35 @@ describe('ColumnLayout calculcateCssColumnCount', () => {
   });
 });
 
-describe('ColumnLayout calculateBreakpointColumnCount', () => {
-  // The narrow breakpoints ignore the width, so any value does for them.
-  const anyWidth = 1000;
+describe('ColumnLayout column count with the assumed default width', () => {
+  // Mirrors what the renderer does when `minColumnWidth` is not set: the same calculation runs with
+  // DEFAULT_MIN_COLUMN_WIDTH supplied in its place, so there is one reduction rule, not two.
+  const withDefault = (columns: number, containerWidth: number | null) =>
+    calculcateCssColumnCount(columns, DEFAULT_MIN_COLUMN_WIDTH, containerWidth);
 
-  it('returns the desired number of columns before the container has been measured', () => {
-    expect(calculateBreakpointColumnCount(5, null, null)).toBe(5);
-    expect(calculateBreakpointColumnCount(1, null, null)).toBe(1);
+  it('renders the requested count before the container has been measured', () => {
+    expect(withDefault(12, null)).toBe(12);
+    expect(withDefault(5, null)).toBe(5);
   });
 
-  it('matches the 12-column renderer for counts it supports', () => {
-    // COLUMN_DEFS resolves to these items per row: 12 / colspan at each breakpoint. The `xs`
-    // expectations hold because 4 columns need 600px at the assumed width and `xs` starts at 688px,
-    // so the width cap never bites in the range the 12-column renderer covers.
-    const gridRendererItemsPerRow = [
-      { columns: 1, default: 1, xxs: 1, xs: 1 },
-      { columns: 2, default: 1, xxs: 2, xs: 2 },
-      { columns: 3, default: 1, xxs: 2, xs: 3 },
-      { columns: 4, default: 1, xxs: 2, xs: 4 },
-    ];
-
-    for (const { columns, ...expected } of gridRendererItemsPerRow) {
-      expect(calculateBreakpointColumnCount(columns, 'default', anyWidth)).toBe(expected.default);
-      expect(calculateBreakpointColumnCount(columns, 'xxs', anyWidth)).toBe(expected.xxs);
-      expect(calculateBreakpointColumnCount(columns, 'xs', 688)).toBe(expected.xs);
-    }
+  it('steps the count down as the container narrows', () => {
+    expect(withDefault(12, 1840)).toBe(12);
+    expect(withDefault(12, 1200)).toBe(8);
+    expect(withDefault(12, 1000)).toBe(6);
+    expect(withDefault(12, 700)).toBe(4);
+    expect(withDefault(12, 450)).toBe(2);
+    expect(withDefault(12, 300)).toBe(2);
+    expect(withDefault(12, 140)).toBe(1);
   });
 
-  it('keeps the narrow-breakpoint rules beyond 4 columns', () => {
-    expect(calculateBreakpointColumnCount(6, 'default', anyWidth)).toBe(1);
-    expect(calculateBreakpointColumnCount(6, 'xxs', anyWidth)).toBe(2);
+  it('skips odd counts while reducing, so 13 items wrap as 12-1, 8-5, 6-6-1, then 4-4-4-1', () => {
+    // floor(750/150) is 5 and floor(1100/150) is 7, both rounded down to the next even count.
+    expect(withDefault(12, 750)).toBe(4);
+    expect(withDefault(12, 1100)).toBe(6);
   });
 
-  it('caps the count by available width once past the breakpoint ladder', () => {
-    // 150px is assumed per column, so the count steps down as the container shrinks rather than
-    // staying at the requested value for every width above xs.
-    expect(calculateBreakpointColumnCount(6, 'xs', 1000)).toBe(6);
-    expect(calculateBreakpointColumnCount(6, 'xs', 900)).toBe(6);
-    expect(calculateBreakpointColumnCount(6, 'xs', 700)).toBe(4);
-
-    // The same even-count rule as the minColumnWidth path: 5 fitting columns rounds down to 4.
-    expect(calculateBreakpointColumnCount(12, 'xs', 1840)).toBe(12);
-    expect(calculateBreakpointColumnCount(12, 'xs', 1200)).toBe(8);
-    expect(calculateBreakpointColumnCount(12, 'xs', 800)).toBe(4);
+  it('leaves an odd requested count alone when it fits', () => {
+    expect(withDefault(5, 800)).toBe(5);
+    expect(withDefault(7, 1100)).toBe(7);
   });
 });

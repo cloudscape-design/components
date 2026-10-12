@@ -3,11 +3,22 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import ColumnLayout, { ColumnLayoutProps } from '../../../lib/components/column-layout';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import cssGridStyles from '../../../lib/components/column-layout/flexible-column-layout/styles.css.js';
 import styles from '../../../lib/components/column-layout/styles.css.js';
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  warnOnce: jest.fn(),
+}));
+
+afterEach(() => {
+  (warnOnce as jest.Mock).mockReset();
+});
 
 function renderColumnLayout(props: ColumnLayoutProps = {}) {
   const renderResult = render(<ColumnLayout {...props} />);
@@ -35,6 +46,25 @@ describe('ColumnLayout component', () => {
         // The 12-column renderer cannot express these counts, so it must not be used.
         expect(createWrapper(container).findGrid()).toBeNull();
         expect(container.querySelector(`.${cssGridStyles['css-grid']}`)).not.toBeNull();
+      });
+    });
+
+    [13, 20].forEach(columnCount => {
+      it(`clamps ${columnCount} columns to 12 and warns`, () => {
+        const { container } = render(<ColumnLayout columns={columnCount} />);
+        const grid = container.querySelector<HTMLElement>(`.${cssGridStyles['css-grid']}`)!;
+        expect(grid.style.gridTemplateColumns).toBe('repeat(12, minmax(0, 1fr))');
+        expect(warnOnce).toHaveBeenCalledWith(
+          'ColumnLayout',
+          `\`columns\` (${columnCount}) exceeds the maximum of 12. Rendering 12 columns instead.`
+        );
+      });
+    });
+
+    [1, 4, 5, 12].forEach(columnCount => {
+      it(`does not warn for ${columnCount} columns`, () => {
+        render(<ColumnLayout columns={columnCount} />);
+        expect(warnOnce).not.toHaveBeenCalled();
       });
     });
   });

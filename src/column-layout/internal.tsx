@@ -3,6 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import { getBaseProps } from '../internal/base-component';
 import FlexibleColumnLayout from './flexible-column-layout';
 import GridColumnLayout from './grid-column-layout';
@@ -18,6 +20,13 @@ export type ColumnLayoutBreakpoint = (typeof COLUMN_TRIGGERS)[number] | null;
  * divider styles are generated per count. Anything above this uses the CSS grid renderer instead.
  */
 export const MAX_GRID_COLUMNS = 4;
+
+/**
+ * Upper bound on `columns`, matching the twelve units the grid renderer is built around. Counts
+ * above this are clamped rather than rejected, so an out-of-range value degrades to the widest
+ * supported layout instead of producing unreadably narrow columns.
+ */
+export const MAX_COLUMNS = 12;
 
 /**
  * A responsive grid layout.
@@ -36,14 +45,21 @@ export default function ColumnLayout({
 }: InternalColumnLayoutProps) {
   const baseProps = getBaseProps(restProps);
 
-  const useCssGrid = Boolean(minColumnWidth) || columns > MAX_GRID_COLUMNS;
+  if (columns > MAX_COLUMNS) {
+    warnOnce(
+      'ColumnLayout',
+      `\`columns\` (${columns}) exceeds the maximum of ${MAX_COLUMNS}. Rendering ${MAX_COLUMNS} columns instead.`
+    );
+  }
+
+  const columnCount = Math.min(columns, MAX_COLUMNS);
+  const useCssGrid = Boolean(minColumnWidth) || columnCount > MAX_GRID_COLUMNS;
 
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles['column-layout'])} ref={__internalRootRef}>
       {useCssGrid ? (
         <FlexibleColumnLayout
-          columns={columns}
-          borders={borders}
+          columns={columnCount}
           variant={variant}
           minColumnWidth={minColumnWidth}
           disableGutters={disableGutters}
@@ -53,7 +69,7 @@ export default function ColumnLayout({
         </FlexibleColumnLayout>
       ) : (
         <GridColumnLayout
-          columns={columns}
+          columns={columnCount}
           variant={variant}
           borders={borders}
           disableGutters={disableGutters}
