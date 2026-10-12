@@ -98,11 +98,11 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     filteringType,
     enteredTextLabel: i18nStrings?.enteredTextLabel ?? enteredTextLabel,
     hideEnteredTextLabel: hideEnteredTextOption,
-    isTokenMode: isTokenMode,
+    isTokenMode,
     onSelectItem: (option: AutosuggestItem) => {
       const selectedValue = option.value || '';
       if (isTokenMode) {
-        autosuggestInputRef.current?.addToken(selectedValue);
+        autosuggestInputRef.current?.addToken(option.type === 'use-entered' ? selectedValue.trim() : selectedValue);
       } else {
         fireNonCancelableEvent(onChange, { value: selectedValue });
       }
@@ -120,7 +120,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     onLoadItems: (detail: OptionsLoadItemsDetail) => fireNonCancelableEvent(onLoadItems, detail),
   });
 
-  const handleChange = (event: NonCancelableCustomEvent<BaseChangeDetail>) => {
+  const handleChange = (event: NonCancelableCustomEvent<AutosuggestProps.ChangeDetail>) => {
     autosuggestItemsHandlers.setShowAll(false);
     autosuggestItemsHandlers.resetHighlightWithKeyboard();
     fireNonCancelableEvent(onChange, event.detail);

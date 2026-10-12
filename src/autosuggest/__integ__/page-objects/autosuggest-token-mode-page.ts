@@ -3,7 +3,7 @@
 import createWrapper from '../../../../lib/components/test-utils/selectors';
 import AutosuggestPage from './autosuggest-page';
 
-export default class AutosuggestTokensPage extends AutosuggestPage {
+export default class AutosuggestTokenModePage extends AutosuggestPage {
   get scope() {
     return '[data-testid="interactive-demo"]';
   }

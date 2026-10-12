@@ -223,8 +223,8 @@ describe('useAutosuggestItems', () => {
     });
   });
 
-  describe('tokens mode enteredTextLabel', () => {
-    test('uses enteredTextLabel (shows "Add" text in tokens mode)', () => {
+  describe('token mode enteredTextLabel', () => {
+    test('uses enteredTextLabel (shows "Add" text in token mode)', () => {
       const { result } = renderHook(useAutosuggestItems, {
         initialProps: {
           ...defaultProps,

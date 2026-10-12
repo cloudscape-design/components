@@ -2,11 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import { Autosuggest, AutosuggestProps, Box, Button, FormField, Icon, IconProvider, SpaceBetween } from '~components';
-import I18nProvider from '~components/i18n';
-import messages from '~components/i18n/messages/all.en';
+import { Autosuggest, AutosuggestProps, FormField, Icon, IconProvider } from '~components';
 
-import ScreenshotArea from '../utils/screenshot-area';
+import { SimplePage } from '../app/templates';
 
 const ALL_OPTIONS: AutosuggestProps.Options = [
   { value: 'us-east-1' },
@@ -106,58 +104,6 @@ function IconScenario() {
   );
 }
 
-function InteractiveDemo() {
-  const [value, setValue] = useState('');
-  const [tokens, setTokens] = useState<AutosuggestProps.Token[]>([]);
-
-  const selected = new Set(tokens.map(t => t.value));
-  const filteredOptions = ALL_OPTIONS.filter(o => !selected.has(o.value!) && (!value || o.value!.includes(value)));
-
-  return (
-    <SpaceBetween size="s">
-      <Box variant="h2">Interactive demo</Box>
-      <FormField
-        label="Filter logs"
-        description="Type to search, press Enter or select from dropdown to add a token. Backspace on empty input focuses last token."
-      >
-        <div data-testid="interactive-demo">
-          <Autosuggest
-            value={value}
-            onChange={({ detail }) => {
-              setValue(detail.value);
-              if (detail.tokens !== undefined) {
-                setTokens([...detail.tokens]);
-              }
-            }}
-            tokens={tokens}
-            i18nStrings={{
-              enteredTextLabel: v => `Add "${v}"`,
-              tokenOverflowAriaLabel: count => `${count} more regions`,
-              tokenDismissLabel: v => `Remove ${v}`,
-            }}
-            options={filteredOptions}
-            placeholder="Search or add a region"
-            empty="No options"
-          />
-        </div>
-      </FormField>
-      <SpaceBetween direction="horizontal" size="xs">
-        <Button onClick={() => setTokens([])}>Clear all tokens</Button>
-        <Button
-          onClick={() => {
-            const next = ALL_OPTIONS.find(o => !selected.has(o.value!));
-            if (next) {
-              setTokens(prev => [...prev, makeToken(next.value!)]);
-            }
-          }}
-        >
-          Add token
-        </Button>
-      </SpaceBetween>
-    </SpaceBetween>
-  );
-}
-
 function Scenario({
   label,
   initTokens,
@@ -197,48 +143,35 @@ function Scenario({
   );
 }
 
-export default function AutosuggestTokensModePage() {
+export default function AutosuggestTokenModePermutationsPage() {
   return (
-    <Box margin="m">
-      <SpaceBetween size="xxl">
-        <Box variant="h1">Autosuggest — mode=&quot;tokens&quot;</Box>
-        <InteractiveDemo />
-        <SpaceBetween size="l">
-          <Box variant="h2">Scenarios</Box>
-          <ScreenshotArea disableAnimations={true}>
-            <I18nProvider messages={[messages]} locale="en">
-              <SpaceBetween size="l">
-                <Scenario label="No tokens" initTokens={[]} />
-                <Scenario label="No options (empty dropdown)" initTokens={[]} options={[]} />
-                <Scenario
-                  label="Email recipients (long token labels)"
-                  options={EMAIL_OPTIONS}
-                  initTokens={[makeToken('alice@example.com')]}
-                />
-                <Scenario label="Few tokens (2)" initTokens={[makeToken('us-east-1'), makeToken('eu-west-1')]} />
-                <IconScenario />
-                <IconProvider
-                  icons={{
-                    search: <Icon name="settings" variant="subtle" size="inherit" />,
-                  }}
-                >
-                  <Scenario
-                    label="Custom search icon via IconProvider (settings icon replaces magnifying glass)"
-                    initTokens={[makeToken('us-east-1'), makeToken('eu-west-1')]}
-                  />
-                </IconProvider>
-                <Scenario
-                  label="Many tokens — overflow trigger with custom aria-label"
-                  initTokens={ALL_OPTIONS.slice(0, 6).map(o => makeToken(o.value!))}
-                />
-                <Scenario label="Disabled" initTokens={[makeToken('us-east-1')]} disabled={true} />
-                <Scenario label="Read-only" initTokens={[makeToken('us-east-1')]} readOnly={true} />
-                <Scenario label="Invalid (error state)" initTokens={[makeToken('us-east-1')]} invalid={true} />
-              </SpaceBetween>
-            </I18nProvider>
-          </ScreenshotArea>
-        </SpaceBetween>
-      </SpaceBetween>
-    </Box>
+    <SimplePage title="Autosuggest token mode permutations" screenshotArea={{ disableAnimations: true }} i18n={{}}>
+      <Scenario label="No tokens" initTokens={[]} />
+      <Scenario label="No options (empty dropdown)" initTokens={[]} options={[]} />
+      <Scenario
+        label="Email recipients (long token labels)"
+        options={EMAIL_OPTIONS}
+        initTokens={[makeToken('alice@example.com')]}
+      />
+      <Scenario label="Few tokens (2)" initTokens={[makeToken('us-east-1'), makeToken('eu-west-1')]} />
+      <IconScenario />
+      <IconProvider
+        icons={{
+          search: <Icon name="settings" variant="subtle" size="inherit" />,
+        }}
+      >
+        <Scenario
+          label="Custom search icon via IconProvider (settings icon replaces magnifying glass)"
+          initTokens={[makeToken('us-east-1'), makeToken('eu-west-1')]}
+        />
+      </IconProvider>
+      <Scenario
+        label="Many tokens — overflow trigger"
+        initTokens={ALL_OPTIONS.slice(0, 6).map(o => makeToken(o.value!))}
+      />
+      <Scenario label="Disabled" initTokens={[makeToken('us-east-1')]} disabled={true} />
+      <Scenario label="Read-only" initTokens={[makeToken('us-east-1')]} readOnly={true} />
+      <Scenario label="Invalid (error state)" initTokens={[makeToken('us-east-1')]} invalid={true} />
+    </SimplePage>
   );
 }

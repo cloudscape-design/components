@@ -19,7 +19,6 @@ import InternalIcon from '../../../icon/internal';
 import InternalToken from '../../../token/internal';
 import { getBreakpointValue } from '../../breakpoints';
 import { useListFocusController } from '../../hooks/use-list-focus-controller';
-import { KeyCode } from '../../keycode';
 import { circleIndex } from '../../utils/circle-index';
 import handleKey from '../../utils/handle-key';
 
@@ -83,29 +82,43 @@ export function OverflowDropdown({
     buttons[circleIndex(index, [0, buttons.length - 1])]?.focus();
   };
 
+  const openAndFocus = (index: number) => {
+    setNextFocusIndex(index);
+    onOpenChange(true);
+  };
+
   const onTriggerKeyDown = (event: React.KeyboardEvent) => {
-    if (!open) {
-      return;
-    }
     handleKey(event as React.KeyboardEvent<HTMLElement>, {
       onBlockEnd: () => {
         event.preventDefault();
-        focusItem(0);
+        openAndFocus(0);
       },
       onBlockStart: () => {
         event.preventDefault();
-        focusItem(-1);
+        openAndFocus(tokens.length - 1);
       },
     });
   };
 
-  const onListKeyDown = (event: React.KeyboardEvent) => {
-    if (event.keyCode === KeyCode.tab) {
-      close(false);
-      return;
+  const dismiss = (index: number) => {
+    if (tokens.length > 1) {
+      setNextFocusIndex(index);
     }
+    onDismiss(index);
+  };
+
+  const onListKeyDown = (event: React.KeyboardEvent) => {
     const focusedIndex = getItemButtons().indexOf(document.activeElement as HTMLButtonElement);
+    const dismissFocused = () => {
+      event.preventDefault();
+      if (focusedIndex !== -1 && !readOnly && !disabled) {
+        dismiss(focusedIndex);
+      }
+    };
     handleKey(event as React.KeyboardEvent<HTMLElement>, {
+      onTab: () => close(false),
+      onBackspace: dismissFocused,
+      onDelete: dismissFocused,
       onBlockEnd: () => {
         event.preventDefault();
         focusItem(focusedIndex + 1);
@@ -142,32 +155,25 @@ export function OverflowDropdown({
           </button>
         }
         content={
-          open ? (
-            <SingleTabStopNavigationReset>
-              <div ref={listRef} onKeyDown={onListKeyDown}>
-                <ul id={dropdownId} className={clsx(styles['overflow-dropdown'], testUtilStyles['overflow-dropdown'])}>
-                  {tokens.map((token, index) => (
-                    <li key={index} className={styles['overflow-dropdown-item']}>
-                      <InternalToken
-                        label={token.value}
-                        dismissLabel={tokenDismissLabel?.(token.value)}
-                        icon={token.icon}
-                        variant="inline"
-                        disabled={disabled}
-                        readOnly={readOnly}
-                        onDismiss={() => {
-                          if (tokens.length > 1) {
-                            setNextFocusIndex(index);
-                          }
-                          onDismiss(index);
-                        }}
-                      />
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </SingleTabStopNavigationReset>
-          ) : null
+          <SingleTabStopNavigationReset>
+            <div ref={listRef} onKeyDown={onListKeyDown}>
+              <ul id={dropdownId} className={clsx(styles['overflow-dropdown'], testUtilStyles['overflow-dropdown'])}>
+                {tokens.map((token, index) => (
+                  <li key={index} className={styles['overflow-dropdown-item']}>
+                    <InternalToken
+                      label={token.value}
+                      dismissLabel={tokenDismissLabel?.(token.value)}
+                      icon={token.icon}
+                      variant="inline"
+                      disabled={disabled}
+                      readOnly={readOnly}
+                      onDismiss={() => dismiss(index)}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </SingleTabStopNavigationReset>
         }
       />
     </div>

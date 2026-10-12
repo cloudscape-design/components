@@ -11,7 +11,6 @@ import {
 
 import { AutosuggestProps } from '../../../autosuggest/interfaces';
 import InternalToken from '../../../token/internal';
-import { KeyCode, KeyCodeDelete } from '../../keycode';
 import handleKey from '../../utils/handle-key';
 import { nodeBelongs } from '../../utils/node-belongs';
 import { getAllFocusables } from '../focus-lock/utils';
@@ -95,13 +94,6 @@ export const InlineTokens = forwardRef(
       navigationAPI.current?.updateFocusTarget();
     };
 
-    const onBlur = (event: React.FocusEvent) => {
-      if (!nodeBelongs(rootRef.current, event.relatedTarget)) {
-        lastFocusedRef.current = null;
-      }
-      navigationAPI.current?.updateFocusTarget();
-    };
-
     const onKeyDown = (event: React.KeyboardEvent) => {
       const focusables = getFocusables();
       const activeIndex = focusables.indexOf(event.target as HTMLElement);
@@ -133,7 +125,7 @@ export const InlineTokens = forwardRef(
     };
 
     return (
-      <div ref={rootRef} className={styles['inline-tokens']} onFocus={onFocus} onBlur={onBlur} onKeyDown={onKeyDown}>
+      <div ref={rootRef} className={styles['inline-tokens']} onFocus={onFocus} onKeyDown={onKeyDown}>
         <SingleTabStopNavigationProvider
           ref={navigationAPI}
           navigationActive={true}
@@ -163,12 +155,13 @@ export const InlineTokens = forwardRef(
                     aria-setsize={tokens.length}
                     aria-posinset={index + 1}
                     onKeyDown={event => {
-                      if (event.keyCode === KeyCode.backspace || event.keyCode === KeyCodeDelete) {
+                      const dismissToken = () => {
                         event.preventDefault();
                         if (!readOnly && !disabled) {
                           onDismiss(index, 'inline');
                         }
-                      }
+                      };
+                      handleKey(event, { onBackspace: dismissToken, onDelete: dismissToken });
                     }}
                   >
                     <InternalToken

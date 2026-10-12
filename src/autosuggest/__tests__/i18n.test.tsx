@@ -137,7 +137,7 @@ describe('i18n provider', () => {
     expect(wrapper.findEnteredTextOption()?.getElement()).toHaveTextContent('Use');
   });
 
-  test('supports providing enteredTextLabel via i18n provider in tokens mode', () => {
+  test('supports providing enteredTextLabel via i18n provider in token mode', () => {
     const { wrapper } = renderElement(
       <TestI18nProvider messages={{ autosuggest: { enteredTextLabel: 'Custom add value' } }}>
         <Autosuggest {...defaultProps} value="1" tokens={[]} />
@@ -147,7 +147,7 @@ describe('i18n provider', () => {
     expect(wrapper.findEnteredTextOption()!.getElement()).toHaveTextContent('Custom add value');
   });
 
-  test('should not warn when tokens mode and enteredTextLabel is provided via i18n provider', () => {
+  test('should not warn when token mode and enteredTextLabel is provided via i18n provider', () => {
     renderElement(
       <TestI18nProvider messages={{ autosuggest: { enteredTextLabel: 'Add' } }}>
         <Autosuggest {...defaultProps} value="1" tokens={[]} />
@@ -187,7 +187,7 @@ describe('i18n provider', () => {
     expect(warnOnce).not.toHaveBeenCalled();
   });
 
-  test('i18nStrings.enteredTextLabel direct prop is used in tokens mode', () => {
+  test('i18nStrings.enteredTextLabel direct prop is used in token mode', () => {
     function TokensAutosuggest(props: Partial<AutosuggestProps>) {
       const [value, setValue] = React.useState('1');
       return (
@@ -225,7 +225,7 @@ describe('i18n provider', () => {
     expect(wrapper.findEnteredTextOption()!.getElement()).toHaveTextContent('Search for "S"');
   });
 
-  test('i18nStrings.enteredTextLabel takes priority over deprecated enteredTextLabel prop in tokens mode', () => {
+  test('i18nStrings.enteredTextLabel takes priority over deprecated enteredTextLabel prop in token mode', () => {
     function OverrideAutosuggest() {
       const [value, setValue] = React.useState('1');
       return (
@@ -284,7 +284,7 @@ describe('i18n provider', () => {
     expect(liveRegion?.textContent).toContain('my-region was inserted');
   });
 
-  test('i18nStrings.tokenInsertedAriaLabel direct prop takes effect in tokens mode', () => {
+  test('i18nStrings.tokenInsertedAriaLabel direct prop takes effect in token mode', () => {
     jest.useFakeTimers();
     function TokensAutosuggest() {
       const [value, setValue] = React.useState('');

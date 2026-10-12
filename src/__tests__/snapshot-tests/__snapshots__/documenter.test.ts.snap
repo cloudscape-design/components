@@ -3104,9 +3104,7 @@ In default mode, fires on every keystroke with \`{ value }\`.
 When \`tokens\` is provided, fires in three situations:
 * Keystroke — \`value\` is the new text; \`tokens\` is unchanged.
 * Token added — \`value\` is \`""\`; \`tokens\` contains the updated list.
-* Token dismissed — \`value\` is unchanged; \`tokens\` contains the updated list.
-
-\`tokens\` is \`undefined\` when not in tokens mode.",
+* Token dismissed — \`value\` is unchanged; \`tokens\` contains the updated list.",
       "detailInlineType": {
         "name": "AutosuggestProps.ChangeDetail",
         "properties": [
@@ -3752,10 +3750,10 @@ Note: Manual filtering doesn't disable match highlighting.",
     {
       "description": "An object containing all the localized strings required by the component.
 
-- \`enteredTextLabel\` ((value: string) => string) - Label for the "Use/Add" item shown at the top of the dropdown when the user types a value. Applies in both default and tokens mode.
-- \`tokenOverflowAriaLabel\` ((hiddenCount: number) => string) - Aria label for the \`+N\` overflow pill button. Applies only when \`tokens\` is provided.
+- \`enteredTextLabel\` ((value: string) => string) - Label for the "Use/Add" item shown at the top of the dropdown when the user types a value. Applies in both default and token mode.
+- \`tokenOverflowAriaLabel\` ((hiddenCount: number) => string) - Aria label for the \`+N\` overflow button. Applies only when \`tokens\` is provided.
 - \`tokenInsertedAriaLabel\` ((value: string) => string) - Announced via \`aria-live\` when a token is added. Applies only when \`tokens\` is provided.
-- \`tokenDismissLabel\` ((value: string) => string) - Aria label for the dismiss button on each token pill. Applies only when \`tokens\` is provided.",
+- \`tokenDismissLabel\` ((value: string) => string) - Aria label for the dismiss button on each token. Applies only when \`tokens\` is provided.",
       "i18nTag": true,
       "inlineType": {
         "name": "AutosuggestProps.I18nStrings",
@@ -4287,10 +4285,10 @@ Refer to the [style](/components/autosuggest/?tabId=style) tab for more details.
       "type": "AutosuggestProps.Style",
     },
     {
-      "description": "Specifies the list of tokens to display as inline pills.
-When this prop is provided (including an empty array), the component enters tokens mode:
-accepted values accumulate as inline dismissible token pills before the text input.
-Tokens that overflow the available width collapse into a \`+N\` pill.
+      "description": "Specifies the list of tokens to display inline before the text input.
+When this prop is provided (including an empty array), the component enters token mode:
+accepted values accumulate as dismissible inline tokens before the text input.
+Tokens that don't fit the available width collapse into a \`+N\` overflow button.
 This is a controlled prop — update it in response to \`onChange\`.",
       "name": "tokens",
       "optional": true,

@@ -213,8 +213,7 @@ const AutosuggestInput = React.forwardRef(
 
     const { isComposing } = useIMEComposition(inputRef);
 
-    const addToken = (label: string) => {
-      const tokenValue = label.trim();
+    const addToken = (tokenValue: string) => {
       if (!tokenValue || readOnly || disabled) {
         return;
       }
@@ -304,7 +303,7 @@ const AutosuggestInput = React.forwardRef(
             }
             event.preventDefault();
           } else if (isTokenMode && value) {
-            addToken(value);
+            addToken(value.trim());
             event.preventDefault();
           }
           fireKeydown(event);
@@ -371,6 +370,7 @@ const AutosuggestInput = React.forwardRef(
       'aria-owns': open ? ariaControls : undefined,
       'aria-label': ariaLabel,
       'aria-activedescendant': ariaActivedescendant,
+      ...(isTokenMode && formFieldContext.invalid ? { 'aria-invalid': 'true' as const } : {}),
     };
 
     // Closes dropdown when outside click is detected.

@@ -2,22 +2,20 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import AutosuggestTokensPage from './page-objects/autosuggest-tokens-page';
+import AutosuggestTokenModePage from './page-objects/autosuggest-token-mode-page';
 
-jest.setTimeout(120_000);
+const URL = '/#/light/autosuggest/token-mode';
 
-const URL = '/#/light/autosuggest/tokens-mode';
-
-function setupTest(testFn: (page: AutosuggestTokensPage) => Promise<void>) {
+function setupTest(testFn: (page: AutosuggestTokenModePage) => Promise<void>) {
   return useBrowser(async browser => {
-    const page = new AutosuggestTokensPage(browser);
+    const page = new AutosuggestTokenModePage(browser);
     await browser.url(URL);
     await page.waitForPageReady();
     await testFn(page);
   });
 }
 
-describe('Autosuggest tokens mode — adding tokens', () => {
+describe('Autosuggest token mode — adding tokens', () => {
   test(
     'adds a token by pressing Enter after typing a value',
     setupTest(async page => {
@@ -55,7 +53,7 @@ describe('Autosuggest tokens mode — adding tokens', () => {
   );
 });
 
-describe('Autosuggest tokens mode — dismissing tokens', () => {
+describe('Autosuggest token mode — dismissing tokens', () => {
   test(
     'dismisses a token when clicking its dismiss button',
     setupTest(async page => {
@@ -89,7 +87,7 @@ describe('Autosuggest tokens mode — dismissing tokens', () => {
   );
 });
 
-describe('Autosuggest tokens mode — overflow trigger', () => {
+describe('Autosuggest token mode — overflow trigger', () => {
   const overflowTokens = ['us-east-1', 'eu-west-1', 'ap-southeast-1', 'ca-central-1', 'sa-east-1', 'eu-central-1'];
 
   test(
@@ -129,7 +127,7 @@ describe('Autosuggest tokens mode — overflow trigger', () => {
   );
 });
 
-describe('Autosuggest tokens mode — clear button', () => {
+describe('Autosuggest token mode — clear button', () => {
   test(
     'shows clear button when input has text',
     setupTest(async page => {
@@ -158,7 +156,7 @@ describe('Autosuggest tokens mode — clear button', () => {
   );
 });
 
-describe('Autosuggest tokens mode — Backspace focus idempotency', () => {
+describe('Autosuggest token mode — Backspace focus idempotency', () => {
   test(
     'Backspace still focuses last token after delete → Tab back → Backspace cycle',
     setupTest(async page => {
@@ -176,7 +174,7 @@ describe('Autosuggest tokens mode — Backspace focus idempotency', () => {
   );
 });
 
-describe('Autosuggest tokens mode — keyboard navigation', () => {
+describe('Autosuggest token mode — keyboard navigation', () => {
   test(
     'ArrowLeft from input focuses the last visible token',
     setupTest(async page => {

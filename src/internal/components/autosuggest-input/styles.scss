@@ -126,8 +126,6 @@
 
 .token-overflow {
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
 }
 
 .token-overflow-trigger {
@@ -149,7 +147,7 @@
   white-space: nowrap;
 
   @include focus-visible.when-visible {
-    @include styles.focus-element-without-border(awsui.$border-radius-control-default-focus-ring);
+    @include styles.focus-highlight(0px);
   }
 
   &:disabled {
@@ -174,8 +172,6 @@
 
 .overflow-dropdown {
   @include styles.styles-reset-ul;
-  display: flex;
-  flex-direction: column;
   padding-block: awsui.$space-xxs;
 }
 

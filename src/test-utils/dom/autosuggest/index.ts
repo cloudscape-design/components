@@ -219,13 +219,15 @@ export default class AutosuggestWrapper extends InputWrapper {
   findOverflowDropdown(options = { expandToViewport: false }): AutosuggestOverflowDropdownWrapper | null {
     const root = options.expandToViewport ? createWrapper() : this;
     return root.findComponent(
-      `.${autosuggestInputTestUtilStyles['overflow-dropdown']}`,
+      `.${dropdownStyles.dropdown}[data-open=true] .${AutosuggestOverflowDropdownWrapper.rootSelector}`,
       AutosuggestOverflowDropdownWrapper
     );
   }
 }
 
 export class AutosuggestOverflowDropdownWrapper extends ComponentWrapper {
+  static rootSelector: string = autosuggestInputTestUtilStyles['overflow-dropdown'];
+
   /**
    * Returns the tokens listed in the overflow dropdown.
    */

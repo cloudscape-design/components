@@ -168,10 +168,10 @@ export interface AutosuggestProps
   style?: AutosuggestProps.Style;
 
   /**
-   * Specifies the list of tokens to display as inline pills.
-   * When this prop is provided (including an empty array), the component enters tokens mode:
-   * accepted values accumulate as inline dismissible token pills before the text input.
-   * Tokens that overflow the available width collapse into a `+N` pill.
+   * Specifies the list of tokens to display inline before the text input.
+   * When this prop is provided (including an empty array), the component enters token mode:
+   * accepted values accumulate as dismissible inline tokens before the text input.
+   * Tokens that don't fit the available width collapse into a `+N` overflow button.
    * This is a controlled prop — update it in response to `onChange`.
    */
   tokens?: ReadonlyArray<AutosuggestProps.Token>;
@@ -184,18 +184,16 @@ export interface AutosuggestProps
    * * Keystroke — `value` is the new text; `tokens` is unchanged.
    * * Token added — `value` is `""`; `tokens` contains the updated list.
    * * Token dismissed — `value` is unchanged; `tokens` contains the updated list.
-   *
-   * `tokens` is `undefined` when not in tokens mode.
    */
   onChange?: NonCancelableEventHandler<AutosuggestProps.ChangeDetail>;
 
   /**
    * An object containing all the localized strings required by the component.
    *
-   * - `enteredTextLabel` ((value: string) => string) - Label for the "Use/Add" item shown at the top of the dropdown when the user types a value. Applies in both default and tokens mode.
-   * - `tokenOverflowAriaLabel` ((hiddenCount: number) => string) - Aria label for the `+N` overflow pill button. Applies only when `tokens` is provided.
+   * - `enteredTextLabel` ((value: string) => string) - Label for the "Use/Add" item shown at the top of the dropdown when the user types a value. Applies in both default and token mode.
+   * - `tokenOverflowAriaLabel` ((hiddenCount: number) => string) - Aria label for the `+N` overflow button. Applies only when `tokens` is provided.
    * - `tokenInsertedAriaLabel` ((value: string) => string) - Announced via `aria-live` when a token is added. Applies only when `tokens` is provided.
-   * - `tokenDismissLabel` ((value: string) => string) - Aria label for the dismiss button on each token pill. Applies only when `tokens` is provided.
+   * - `tokenDismissLabel` ((value: string) => string) - Aria label for the dismiss button on each token. Applies only when `tokens` is provided.
    * @i18n
    */
   i18nStrings?: AutosuggestProps.I18nStrings;
@@ -270,7 +268,7 @@ export namespace AutosuggestProps {
   }
 
   export interface Token {
-    /** Specifies the text value displayed in the token pill. */
+    /** Specifies the text value displayed in the token. */
     value: string;
     /**
      * An icon displayed at the start of the token.
@@ -284,7 +282,7 @@ export namespace AutosuggestProps {
     /**
      * Label for the "entered text" dropdown item shown when the user types a value.
      * In default mode the item reads `Use: "{value}"` by default.
-     * In tokens mode it reads `Add: "{value}"` by default.
+     * In token mode it reads `Add "{value}"` by default.
      *
      * Since you control whether `tokens` is provided, you can branch on your
      * own state to return different text per mode:
@@ -298,7 +296,7 @@ export namespace AutosuggestProps {
     enteredTextLabel?: (value: string) => string;
 
     /**
-     * Provides an aria-label for the `+N` overflow pill button shown when tokens overflow.
+     * Provides an aria-label for the `+N` overflow trigger shown when tokens overflow.
      * The function receives the count of hidden items.
      *
      * Use to provide context-specific vocabulary:
@@ -306,7 +304,7 @@ export namespace AutosuggestProps {
      *
      * Applies only when `tokens` is provided.
      * @param hiddenCount The number of tokens hidden in the overflow
-     * @returns The aria-label string for the overflow pill
+     * @returns The aria-label string for the overflow trigger
      * @i18n
      */
     tokenOverflowAriaLabel?: (hiddenCount: number) => string;
@@ -322,12 +320,11 @@ export namespace AutosuggestProps {
     tokenInsertedAriaLabel?: (value: string) => string;
 
     /**
-     * Provides an `aria-label` for the dismiss button on each token pill,
+     * Provides an `aria-label` for the dismiss button on each token,
      * describing the action to screen reader users (e.g. `value => \`Remove ${value}\``).
      * Applies only when `tokens` is provided.
      * @param value The value of the token being dismissed
      * @returns The aria-label string for the dismiss button
-     * @default `${value}`
      * @i18n
      */
     tokenDismissLabel?: (value: string) => string;

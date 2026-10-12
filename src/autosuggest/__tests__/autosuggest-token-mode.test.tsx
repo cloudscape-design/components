@@ -127,6 +127,26 @@ describe('rendering', () => {
     expect(document.getElementById(group.getAttribute('aria-labelledby')!)).toHaveTextContent('Regions');
   });
 
+  test('marks the input as invalid when the field is invalid', () => {
+    const { wrapper } = renderTokens({ invalid: true });
+    expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-invalid', 'true');
+  });
+
+  test('marks the input as invalid from the form field context', () => {
+    const { container } = render(
+      <FormField label="Regions" errorText="Required">
+        <StatefulAutosuggest />
+      </FormField>
+    );
+    const input = createWrapper(container).findAutosuggest()!.findNativeInput().getElement();
+    expect(input).toHaveAttribute('aria-invalid', 'true');
+  });
+
+  test('does not mark a valid input as invalid', () => {
+    const { wrapper } = renderTokens();
+    expect(wrapper.findNativeInput().getElement()).not.toHaveAttribute('aria-invalid');
+  });
+
   test('exposes the position of visible tokens in the whole set', () => {
     mockVisibleCount = 2;
     const { wrapper } = renderTokens({ initialTokens: toTokens('a', 'b', 'c') });
@@ -163,6 +183,21 @@ describe('adding tokens', () => {
     wrapper.selectSuggestionByValue('us-east-1');
     expect(lastTokens(onChange)).toEqual(toTokens('eu-west-1', 'us-east-1'));
     expect(wrapper.findNativeInput().getElement()).toHaveValue('');
+  });
+
+  test('selecting a suggestion keeps its value exactly as declared', () => {
+    const { wrapper, onChange } = renderTokens({ options: [{ value: ' code ' }] });
+    wrapper.setInputValue('code');
+    wrapper.selectSuggestionByValue(' code ');
+    expect(lastTokens(onChange)).toEqual(toTokens(' code '));
+  });
+
+  test('the entered-text option adds the trimmed input value', () => {
+    const { wrapper, onChange } = renderTokens();
+    wrapper.setInputValue('  ap-south-1  ');
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    wrapper.findNativeInput().keydown(KeyCode.enter);
+    expect(lastTokens(onChange)).toEqual(toTokens('ap-south-1'));
   });
 
   test('allows duplicate tokens', () => {
@@ -313,7 +348,7 @@ describe('keyboard navigation', () => {
     expect([1, 2].map(i => dismissButton(wrapper, i).tabIndex)).toEqual([-1, 0]);
   });
 
-  test('re-entering the tokens starts again from the overflow trigger', () => {
+  test('re-entering the tokens returns to the last focused token', () => {
     mockVisibleCount = 2;
     const { wrapper } = renderTokens({ initialTokens: toTokens('a', 'b', 'c') });
     const trigger = wrapper.findOverflowTrigger()!.getElement();
@@ -321,14 +356,7 @@ describe('keyboard navigation', () => {
     pressKey(trigger, KeyCode.right);
     expect(document.activeElement).toBe(dismissButton(wrapper, 1));
     focus(wrapper.findNativeInput().getElement());
-    expect(trigger.tabIndex).toBe(0);
-    expect([1, 2].map(i => dismissButton(wrapper, i).tabIndex)).toEqual([-1, -1]);
-  });
-
-  test('re-entering the tokens starts again from the first token', () => {
-    const { wrapper } = renderTokens({ initialTokens: toTokens('a', 'b') });
-    focus(dismissButton(wrapper, 2));
-    focus(wrapper.findNativeInput().getElement());
+    expect(trigger.tabIndex).toBe(-1);
     expect([1, 2].map(i => dismissButton(wrapper, i).tabIndex)).toEqual([0, -1]);
   });
 
@@ -459,6 +487,23 @@ describe('overflow dropdown', () => {
     expect(document.activeElement).toBe(dropdownDismiss(3));
   });
 
+  test('ArrowDown on the closed trigger opens the dropdown and focuses the first token', () => {
+    const { trigger, dropdown, dropdownDismiss } = renderOverflow();
+    focus(trigger());
+    pressKey(trigger(), KeyCode.down);
+    expect(dropdown()).not.toBeNull();
+    expect(trigger()).toHaveAttribute('aria-expanded', 'true');
+    expect(document.activeElement).toBe(dropdownDismiss(1));
+  });
+
+  test('ArrowUp on the closed trigger opens the dropdown and focuses the last token', () => {
+    const { trigger, dropdown, dropdownDismiss } = renderOverflow();
+    focus(trigger());
+    pressKey(trigger(), KeyCode.up);
+    expect(dropdown()).not.toBeNull();
+    expect(document.activeElement).toBe(dropdownDismiss(3));
+  });
+
   test('ArrowDown and ArrowUp cycle through dropdown tokens', () => {
     const { trigger, dropdownDismiss } = renderOverflow();
     act(() => trigger().click());
@@ -502,6 +547,25 @@ describe('overflow dropdown', () => {
     expect(lastTokens(onChange)).toEqual(toTokens('a', 'c', 'd'));
     expect(document.activeElement).toBe(dropdownDismiss(2));
     expect(dropdown()!.findToken(2)!.getElement()).toHaveTextContent('c');
+  });
+
+  test.each([
+    ['Backspace', KeyCode.backspace],
+    ['Delete', 46],
+  ])('%s on a dropdown token removes it and focuses the next one', (_, keyCode) => {
+    const { trigger, dropdownDismiss, onChange } = renderOverflow();
+    act(() => trigger().click());
+    focus(dropdownDismiss(2));
+    pressKey(dropdownDismiss(2), keyCode);
+    expect(lastTokens(onChange)).toEqual(toTokens('a', 'c', 'd'));
+    expect(document.activeElement).toBe(dropdownDismiss(2));
+  });
+
+  test('Backspace on a dropdown token does not remove it when read-only', () => {
+    const { trigger, dropdownDismiss, onChange } = renderOverflow({ readOnly: true });
+    act(() => trigger().click());
+    pressKey(dropdownDismiss(1), KeyCode.backspace);
+    expect(onChange).not.toHaveBeenCalled();
   });
 
   test.each([

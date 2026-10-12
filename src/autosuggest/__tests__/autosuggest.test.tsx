@@ -693,7 +693,7 @@ describe('native attributes', () => {
   });
 });
 
-describe('tokens mode', () => {
+describe('token mode', () => {
   const tokenProps: Partial<AutosuggestProps> = {
     tokens: [],
   };
@@ -705,7 +705,7 @@ describe('tokens mode', () => {
     expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: 'x' } }));
   });
 
-  it('fires onChange with tokens when a dropdown option is selected in tokens mode', () => {
+  it('fires onChange with tokens when a dropdown option is selected in token mode', () => {
     const onChange = jest.fn();
     const { container } = render(
       <Autosuggest
