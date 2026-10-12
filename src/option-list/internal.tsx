@@ -190,6 +190,8 @@ function InternalOptionList(
           return {
             ...optionProps,
             highlighted: showHighlight && optionProps.highlighted,
+            // Inline, there is no dropdown border above the list, so the first item has no top divider.
+            hideTopDivider: index === 0,
             className: isParent ? testClasses['group-header'] : testClasses.option,
             // 1-based position among selectable options (group headers excluded), used by test-utils.
             'data-option-index': isParent ? undefined : optionIndexes.get(option),

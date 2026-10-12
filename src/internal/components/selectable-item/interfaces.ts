@@ -28,6 +28,7 @@ export type SelectableItemProps = BaseComponentProps & {
   sticky?: boolean;
   afterHeader?: boolean;
   withScrollbar?: boolean;
+  hideTopDivider?: boolean;
   ariaSelected?: boolean | never;
   ariaChecked?: boolean | 'mixed' | never;
 };

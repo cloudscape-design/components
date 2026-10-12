@@ -41,6 +41,7 @@ const SelectableItem = (
     sticky,
     afterHeader,
     withScrollbar,
+    hideTopDivider,
     ...restProps
   }: SelectableItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -65,6 +66,7 @@ const SelectableItem = (
     [styles.sticky]: sticky,
     [styles['after-header']]: !!afterHeader,
     [styles['with-scrollbar']]: withScrollbar,
+    [styles['hide-top-divider']]: hideTopDivider,
     [styles['visual-refresh']]: isVisualRefresh,
   });
 

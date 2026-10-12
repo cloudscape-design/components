@@ -10,6 +10,8 @@ import { isGroup } from '../../../lib/components/internal/components/option/util
 import OptionList, { OptionListProps } from '../../../lib/components/option-list';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
+import selectableItemStyles from '../../../lib/components/internal/components/selectable-item/styles.css.js';
+
 const options: OptionListProps.Option[] = [
   { value: 'a', label: 'First', description: 'First description' },
   { value: 'b', label: 'Second' },
@@ -582,6 +584,14 @@ describe('OptionList', () => {
     );
     fireEvent.focus(wrapper.findListbox().getElement());
     expect(wrapper.findOptionByValue('a')!.getElement()).toHaveTextContent('Picked');
+  });
+
+  test('hides the top divider of the first option only', () => {
+    const { wrapper } = renderOptionList(<Stateful />);
+    const optionElements = wrapper.findOptions().map(option => option.getElement());
+    expect(optionElements[0]).toHaveClass(selectableItemStyles['hide-top-divider']);
+    expect(optionElements[1]).not.toHaveClass(selectableItemStyles['hide-top-divider']);
+    expect(optionElements[2]).not.toHaveClass(selectableItemStyles['hide-top-divider']);
   });
 
   test('passes id, className and data attributes to the root', () => {
