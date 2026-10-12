@@ -79,4 +79,22 @@ export interface ContentLayoutProps extends BaseComponentProps {
    * Note that the secondary header will not have a high-contrast treatement, even if you set `headerVariant` to `high-contrast`.
    */
   secondaryHeader?: React.ReactNode;
+
+  /**
+   * Determines the [breakpoint](/foundation/visual-foundation/responsive-design/) at and above which the `secondaryHeader`
+   * slot is displayed side-by-side with the `header` slot. Below this breakpoint, the secondary header stacks underneath
+   * the header and occupies the full available width.
+   *
+   * One of `xxs`, `xs`, `s`, `m`, `l`, or `xl`. Defaults to `xs`.
+   *
+   * Lower this value (for example, to `xxs`) to keep the header and secondary header side-by-side on narrow viewports,
+   * or raise it (for example, to `s` or `m`) to make them stack on wider viewports.
+   *
+   * This property has no effect unless both the `header` and `secondaryHeader` slots are set.
+   */
+  secondaryHeaderBreakpoint?: ContentLayoutProps.SecondaryHeaderBreakpoint;
+}
+
+export namespace ContentLayoutProps {
+  export type SecondaryHeaderBreakpoint = 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl';
 }
