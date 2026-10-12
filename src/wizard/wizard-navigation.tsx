@@ -19,6 +19,7 @@ interface NavigationProps {
   activeStepIndex: number;
   farthestStepIndex: number;
   allowSkipTo: boolean;
+  allowNonLinearNavigation: boolean;
   hidden: boolean;
   i18nStrings: WizardProps.I18nStrings;
   isLoadingNextStep: boolean;
@@ -40,6 +41,7 @@ export default function Navigation({
   activeStepIndex,
   farthestStepIndex,
   allowSkipTo,
+  allowNonLinearNavigation,
   hidden,
   i18nStrings,
   isLoadingNextStep,
@@ -59,6 +61,7 @@ export default function Navigation({
           activeStepIndex={activeStepIndex}
           farthestStepIndex={farthestStepIndex}
           allowSkipTo={allowSkipTo}
+          allowNonLinearNavigation={allowNonLinearNavigation}
           i18nStrings={i18nStrings}
           isLoadingNextStep={isLoadingNextStep}
           onStepClick={onStepClick}
@@ -74,7 +77,8 @@ export default function Navigation({
               farthestStepIndex,
               isLoadingNextStep,
               allowSkipTo,
-              steps
+              steps,
+              allowNonLinearNavigation
             );
             return (
               <NavigationStepClassic

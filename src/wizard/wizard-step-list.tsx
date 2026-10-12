@@ -24,6 +24,7 @@ export interface WizardStepListProps {
   activeStepIndex: number;
   farthestStepIndex: number;
   allowSkipTo: boolean;
+  allowNonLinearNavigation: boolean;
   i18nStrings: WizardProps.I18nStrings;
   isLoadingNextStep: boolean;
   onStepClick: (stepIndex: number) => void;
@@ -37,7 +38,8 @@ export function getStepStatus(
   farthestStepIndex: number,
   isLoadingNextStep: boolean,
   allowSkipTo: boolean,
-  steps: ReadonlyArray<{ isOptional?: boolean }>
+  steps: ReadonlyArray<{ isOptional?: boolean }>,
+  allowNonLinearNavigation = false
 ): StepStatus {
   if (activeStepIndex === index) {
     return StepStatusValues.Active;
@@ -47,6 +49,10 @@ export function getStepStatus(
   }
   if (farthestStepIndex >= index) {
     return StepStatusValues.Visited;
+  }
+  if (allowNonLinearNavigation && index > activeStepIndex) {
+    // Non-linear navigation: every step ahead of the current one is directly reachable.
+    return StepStatusValues.Next;
   }
   if (allowSkipTo && index > activeStepIndex) {
     // All steps between current and target are optional — can skip over them
@@ -91,6 +97,7 @@ export default function WizardStepList({
   activeStepIndex,
   farthestStepIndex,
   allowSkipTo,
+  allowNonLinearNavigation,
   i18nStrings,
   isLoadingNextStep,
   onStepClick,
@@ -107,6 +114,7 @@ export default function WizardStepList({
           activeStepIndex={activeStepIndex}
           farthestStepIndex={farthestStepIndex}
           allowSkipTo={allowSkipTo}
+          allowNonLinearNavigation={allowNonLinearNavigation}
           i18nStrings={i18nStrings}
           isLoadingNextStep={isLoadingNextStep}
           onStepClick={onStepClick}
@@ -124,6 +132,7 @@ interface WizardStepListItemProps {
   activeStepIndex: number;
   farthestStepIndex: number;
   allowSkipTo: boolean;
+  allowNonLinearNavigation: boolean;
   i18nStrings: WizardProps.I18nStrings;
   isLoadingNextStep: boolean;
   onStepClick: (stepIndex: number) => void;
@@ -137,13 +146,22 @@ function WizardStepListItem({
   activeStepIndex,
   farthestStepIndex,
   allowSkipTo,
+  allowNonLinearNavigation,
   i18nStrings,
   isLoadingNextStep,
   onStepClick,
   onSkipToClick,
   steps,
 }: WizardStepListItemProps) {
-  const status = getStepStatus(index, activeStepIndex, farthestStepIndex, isLoadingNextStep, allowSkipTo, steps);
+  const status = getStepStatus(
+    index,
+    activeStepIndex,
+    farthestStepIndex,
+    isLoadingNextStep,
+    allowSkipTo,
+    steps,
+    allowNonLinearNavigation
+  );
   const isClickable = status === StepStatusValues.Visited || status === StepStatusValues.Next;
   const stepLabel = i18nStrings.stepNumberLabel?.(index + 1);
   const fullStepLabel = `${stepLabel}: ${step.title}`;
