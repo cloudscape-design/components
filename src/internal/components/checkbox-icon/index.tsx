@@ -14,6 +14,7 @@ interface CheckboxIconProps extends BaseComponentProps {
   indeterminate?: boolean;
   disabled?: boolean;
   readOnly?: boolean;
+  invalid?: boolean;
   style?: {
     box?: {
       fill?: string;
@@ -66,6 +67,7 @@ const CheckboxIcon = ({
   indeterminate,
   disabled = false,
   readOnly = false,
+  invalid = false,
   style,
   ...restProps
 }: CheckboxIconProps) => {
@@ -89,6 +91,7 @@ const CheckboxIcon = ({
           [styles['styled-box-indeterminate']]: indeterminate,
           [styles['styled-box-disabled']]: disabled,
           [styles['styled-box-readonly']]: readOnly,
+          [styles['styled-box-invalid']]: invalid,
         })}
         x={dimensions.xy}
         y={dimensions.xy}

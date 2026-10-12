@@ -65,7 +65,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
     },
     ref
   ) => {
-    const { ariaDescribedby, ariaLabelledby } = useFormFieldContext(rest);
+    const { ariaDescribedby, ariaLabelledby, invalid } = useFormFieldContext(rest);
     const baseProps = getBaseProps(rest);
     const checkboxRef = useRef<HTMLInputElement>(null);
     useForwardFocus(ref, checkboxRef);
@@ -122,6 +122,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
             checked={checked}
             name={name}
             aria-required={ariaRequired ? 'true' : undefined}
+            aria-invalid={invalid ? 'true' : undefined}
             aria-disabled={readOnly && !disabled ? 'true' : undefined}
             tabIndex={tabIndex}
             onFocus={() => fireNonCancelableEvent(onFocus)}
@@ -144,6 +145,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
             indeterminate={indeterminate}
             disabled={disabled}
             readOnly={readOnly}
+            invalid={invalid}
             style={getCheckboxIconStyles(style, checked, disabled, readOnly, indeterminate)}
           />
         }

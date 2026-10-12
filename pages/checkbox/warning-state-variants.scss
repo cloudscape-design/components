@@ -1,0 +1,69 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '~design-tokens' as awsui;
+
+/*
+ Prototype styles only. The checkbox has no warning support in the component at all, so every
+ warning visual here is page CSS. The error columns are included for side-by-side comparison.
+
+ !important is required: the component's compiled rules carry a `:not(#\9)` specificity hack that
+ counts as an ID selector, so an ordinary page rule loses to them.
+*/
+
+/*
+ 2px validation border drawn on the INSIDE of the box. SVG strokes are centred on the path, so a
+ plain 2px stroke would straddle the edge and grow the control. The stroke is doubled to 4px and
+ clipped to the box geometry, which removes the outer half and leaves 2px fully inside the edge.
+*/
+.warning-border {
+  /* stylelint-disable-next-line selector-max-type, @cloudscape-design/no-implicit-descendant */
+  [class*='awsui_styled-box'] {
+    stroke: awsui.$color-text-status-warning !important;
+    stroke-width: 4px !important;
+    clip-path: inset(0 round 2px) !important;
+  }
+}
+
+.error-border {
+  /* stylelint-disable-next-line selector-max-type, @cloudscape-design/no-implicit-descendant */
+  [class*='awsui_styled-box'] {
+    stroke: awsui.$color-text-status-error !important;
+    stroke-width: 4px !important;
+    clip-path: inset(0 round 2px) !important;
+  }
+}
+
+/* Warning selected state: checked and indeterminate fills take the warning colour. */
+.warning-fill {
+  /* stylelint-disable-next-line selector-max-type, @cloudscape-design/no-implicit-descendant */
+  [class*='awsui_styled-box-checked'],
+  /* stylelint-disable-next-line selector-max-type, @cloudscape-design/no-implicit-descendant */
+  [class*='awsui_styled-box-indeterminate'] {
+    fill: awsui.$color-text-status-warning !important;
+  }
+
+  /* stylelint-disable-next-line selector-max-type, @cloudscape-design/no-implicit-descendant */
+  [class*='awsui_styled-line'] {
+    stroke: awsui.$color-background-control-default !important;
+  }
+}
+
+.error-fill {
+  /* stylelint-disable-next-line selector-max-type, @cloudscape-design/no-implicit-descendant */
+  [class*='awsui_styled-box-checked'],
+  /* stylelint-disable-next-line selector-max-type, @cloudscape-design/no-implicit-descendant */
+  [class*='awsui_styled-box-indeterminate'] {
+    fill: awsui.$color-text-status-error !important;
+  }
+
+  /* stylelint-disable-next-line selector-max-type, @cloudscape-design/no-implicit-descendant */
+  [class*='awsui_styled-line'] {
+    stroke: awsui.$color-background-control-default !important;
+  }
+}
+
+.matrix-cell {
+  min-inline-size: 200px;
+}

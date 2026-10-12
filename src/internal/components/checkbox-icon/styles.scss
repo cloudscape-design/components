@@ -36,6 +36,12 @@ $_control-tokens: style-api.resolve((color, background-color, border-color), car
       fill: style-api.value($_control-tokens, background-color, awsui.$color-background-control-disabled);
       stroke: style-api.value($_control-tokens, border-color, awsui.$color-border-control-disabled);
     }
+    // Keep the validation modifier last so the invalid stroke color wins when combined with any other
+    // modifier, matching how input keeps its border color on error. Only the stroke changes: like input,
+    // the control keeps its regular background and communicates the error through its border alone.
+    &-invalid {
+      stroke: style-api.value($_control-tokens, border-color, awsui.$color-text-status-error);
+    }
   }
 
   > .styled-line {
