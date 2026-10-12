@@ -130,6 +130,20 @@ describe('Submenu', () => {
     expect(element.getAttribute('role')).toEqual('button');
     expect(element.tabIndex).toEqual(0);
   });
+
+  test('passes lang attribute to submenu items', () => {
+    const wrapper = createWrapper(
+      render(
+        <SubmenuView
+          definition={{
+            type: 'menu-dropdown',
+            items: [{ id: 'de', text: 'Deutsch', lang: 'de', href: '#' }],
+          }}
+        />
+      ).container
+    ).find('a')!;
+    expect(wrapper.getElement()).toHaveAttribute('lang', 'de');
+  });
 });
 
 describe('UtilityMenuItem', () => {
