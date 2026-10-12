@@ -53,6 +53,7 @@ interface AutosuggestInputProps
   dropdownFooter?: React.ReactNode;
   dropdownWidth?: number;
   loopFocus?: boolean;
+  openOnFocus?: boolean;
   onCloseDropdown?: NonCancelableEventHandler<null>;
   onDelayedInput?: NonCancelableEventHandler<BaseChangeDetail>;
   onPressArrowDown?: () => void;
@@ -99,6 +100,7 @@ const AutosuggestInput = React.forwardRef(
       dropdownFooter = null,
       dropdownWidth,
       loopFocus,
+      openOnFocus = true,
       nativeInputAttributes,
       onCloseDropdown,
       onDelayedInput,
@@ -158,8 +160,11 @@ const AutosuggestInput = React.forwardRef(
     };
 
     const handleFocus = () => {
-      if (!preventOpenOnFocusRef.current) {
+      if (!preventOpenOnFocusRef.current && openOnFocus) {
         openDropdown();
+        fireNonCancelableEvent(onFocus, null);
+      } else if (!preventOpenOnFocusRef.current) {
+        // openOnFocus=false: fire onFocus but don't open dropdown
         fireNonCancelableEvent(onFocus, null);
       }
       preventOpenOnFocusRef.current = false;

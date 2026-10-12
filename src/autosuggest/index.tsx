@@ -21,6 +21,7 @@ const Autosuggest = React.forwardRef(
       statusType = 'finished',
       disableBrowserAutocorrect = false,
       hideEnteredTextOption = false,
+      openOnFocus = true,
       renderOption,
       ...props
     }: AutosuggestProps,
@@ -32,6 +33,7 @@ const Autosuggest = React.forwardRef(
         disableBrowserAutocorrect,
         expandToViewport: props.expandToViewport,
         filteringType,
+        openOnFocus,
         readOnly: props.readOnly,
         virtualScroll: props.virtualScroll,
         hideEnteredTextOption,
@@ -55,6 +57,7 @@ const Autosuggest = React.forwardRef(
         statusType={statusType}
         disableBrowserAutocorrect={disableBrowserAutocorrect}
         hideEnteredTextOption={hideEnteredTextOption}
+        openOnFocus={openOnFocus}
         {...externalProps}
         {...baseComponentProps}
         ref={ref}

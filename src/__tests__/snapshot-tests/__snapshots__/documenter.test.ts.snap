@@ -3795,6 +3795,16 @@ operations performed directly on the native element may bypass the built-in comp
       "type": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
     },
     {
+      "defaultValue": "true",
+      "description": "Determines whether the dropdown opens when the input receives focus.
+Set to \`false\` to allow the input to be focused (for example, via \`autoFocus\`) without
+immediately opening the dropdown. The dropdown will still open on user input or when
+the user presses the arrow keys.",
+      "name": "openOnFocus",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "description": "Specifies an array of options that are displayed to the user as a dropdown list.
 The options can be grouped using \`OptionGroup\` objects.
 
