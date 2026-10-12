@@ -31,6 +31,7 @@ import {
   DateInput,
   DatePicker,
   DateRangePicker,
+  Dialog,
   Divider,
   Drawer,
   ExpandableSection,
@@ -380,6 +381,21 @@ export default function HeroshotOverviewPage() {
               onChange={noop}
             />
           </FormField>
+        </Heroshot>
+
+        <Heroshot id="dialog" label="Dialog" stretch={true}>
+          <Dialog
+            header="Delete instance"
+            onDismiss={noop}
+            footer={
+              <SpaceBetween size="xs" direction="horizontal">
+                <Button>Cancel</Button>
+                <Button variant="primary">Delete</Button>
+              </SpaceBetween>
+            }
+          >
+            This action cannot be undone.
+          </Dialog>
         </Heroshot>
 
         <Heroshot id="divider" label="Divider" stretch={true}>
