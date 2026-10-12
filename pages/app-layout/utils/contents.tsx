@@ -69,7 +69,7 @@ export const longHeader = <h2>Header: Lorem nesciunt praesentium voluptatem, mol
 export const shortHeader = <h2>Header: Lorem nesciunt!</h2>;
 
 export const longFooter = (
-  <span>
+  <span data-testid="footer">
     <SpaceBetween size="xs">
       <PromptInput
         value="Hey there, can you help me write some integration tests."
@@ -110,4 +110,4 @@ export const longFooter = (
   </span>
 );
 
-export const shortFooter = <span>Footer: Lorem nesciuntnatur!</span>;
+export const shortFooter = <span data-testid="footer"> Footer: Lorem nesciuntnatur!</span>;
