@@ -39,6 +39,7 @@ const Button = React.forwardRef(
       ariaExpanded,
       ariaHaspopup,
       ariaControls,
+      tooltipText,
       fullWidth,
       form,
       i18nStrings,
@@ -83,6 +84,7 @@ const Button = React.forwardRef(
         ariaExpanded={ariaExpanded}
         ariaHaspopup={ariaHaspopup}
         ariaControls={ariaControls}
+        tooltipText={tooltipText}
         fullWidth={fullWidth}
         form={form}
         i18nStrings={i18nStrings}
