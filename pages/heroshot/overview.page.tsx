@@ -315,13 +315,16 @@ export default function HeroshotOverviewPage() {
           <CodeEditorHeroshot />
         </Heroshot>
 
-        <Heroshot id="collection-preferences" label="CollectionPreferences">
-          <CollectionPreferences
-            title="Preferences"
-            confirmLabel="Confirm"
-            cancelLabel="Cancel"
-            preferences={{ pageSize: 20 }}
-            pageSizePreference={{ title: 'Page size', options: [{ value: 20, label: '20 resources' }] }}
+        <Heroshot
+          id="collection-preferences"
+          label="CollectionPreferences"
+          padding={0}
+          contentSize={OVERLAY_CONTENT_SIZE}
+        >
+          <IframeWrapper
+            id="heroshot-collection-preferences"
+            size={OVERLAY_CONTENT_SIZE}
+            AppComponent={CollectionPreferencesHeroshot}
           />
         </Heroshot>
 
@@ -1338,9 +1341,12 @@ function CodeEditorHeroshot() {
   );
 }
 
-function ModalHeroshot() {
+/**
+ * IframeWrapper isolates the modal's portal target, but Modal's scroll-lock hook still uses the
+ * parent document, which would stop the gallery below from scrolling.
+ */
+function useUnlockedGalleryScroll() {
   React.useEffect(() => {
-    // IframeWrapper isolates the modal's portal target, but Modal's scroll-lock hook still uses the parent document.
     const unlockGallery = () => {
       const modalOpenClass = Array.from(document.body.classList).find(className => className.includes('modal-open'));
       if (modalOpenClass) {
@@ -1352,6 +1358,10 @@ function ModalHeroshot() {
     unlockGallery();
     return () => observer.disconnect();
   }, []);
+}
+
+function ModalHeroshot() {
+  useUnlockedGalleryScroll();
 
   return (
     <Modal
@@ -1362,6 +1372,45 @@ function ModalHeroshot() {
     >
       This action cannot be undone.
     </Modal>
+  );
+}
+
+/**
+ * The preferences modal can only be opened from the trigger, so the heroshot clicks it on mount to
+ * capture the preferences themselves instead of the icon alone.
+ */
+function CollectionPreferencesHeroshot() {
+  const triggerWrapperRef = React.useRef<HTMLDivElement>(null);
+  const [triggerHidden, setTriggerHidden] = React.useState(false);
+  useUnlockedGalleryScroll();
+
+  React.useEffect(() => {
+    triggerWrapperRef.current?.querySelector('button')?.click();
+    setTriggerHidden(true);
+  }, []);
+
+  return (
+    // The modal is rendered in a portal, so taking the trigger out of the layout leaves the
+    // preferences as the only content in the frame instead of a stray icon in its corner. The
+    // trigger is hidden only after it has been clicked, because `display: none` suppresses the
+    // click event itself.
+    <div ref={triggerWrapperRef} style={{ display: triggerHidden ? 'none' : undefined }}>
+      <CollectionPreferences
+        title="Preferences"
+        confirmLabel="Confirm"
+        cancelLabel="Cancel"
+        preferences={{ pageSize: 20, wrapLines: true }}
+        pageSizePreference={{
+          title: 'Page size',
+          options: [
+            { value: 10, label: '10 resources' },
+            { value: 20, label: '20 resources' },
+            { value: 50, label: '50 resources' },
+          ],
+        }}
+        wrapLinesPreference={{ label: 'Wrap lines', description: 'Wrap lines to see all of the text.' }}
+      />
+    </div>
   );
 }
 
