@@ -52,21 +52,33 @@ export function InlineEditor<ItemType>({
     onEditEnd({ cancelled, refocusCell: refocusCell });
   }
 
-  async function handleSubmit() {
-    if (currentEditValue === undefined) {
+  async function submitEditValue(valueToSubmit: Optional<any>) {
+    if (valueToSubmit === undefined) {
       finishEdit();
       return;
     }
 
     setCurrentEditLoading(true);
     try {
-      await submitEdit(item, column, currentEditValue);
+      await submitEdit(item, column, valueToSubmit);
       setCurrentEditLoading(false);
       finishEdit();
     } catch {
       setCurrentEditLoading(false);
       focusLockRef.current?.focusFirst();
     }
+  }
+
+  // Submits the value currently tracked in state. Used by the native form submit and the submit button.
+  function handleSubmit() {
+    submitEditValue(currentEditValue);
+  }
+
+  // Exposed to `editingCell` via `cellContext.submitValue`. When called with an explicit value, that value
+  // is submitted directly, bypassing the asynchronous `setValue` state update. This lets discrete-choice
+  // editors (Select, Autosuggest, Multiselect) submit the chosen value immediately from their change handler.
+  function submitValue(...args: [Optional<any>?]) {
+    submitEditValue(args.length === 0 ? currentEditValue : args[0]);
   }
 
   function onFormSubmit(evt: React.FormEvent) {
@@ -110,7 +122,7 @@ export function InlineEditor<ItemType>({
   const cellContext = {
     currentValue: currentEditValue,
     setValue: setCurrentEditValue,
-    submitValue: handleSubmit,
+    submitValue,
   };
 
   const FormElement = disableNativeForm ? 'div' : 'form';

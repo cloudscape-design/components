@@ -135,6 +135,43 @@ describe('InlineEditor', () => {
     });
   });
 
+  it('should submit an explicitly provided value without waiting for setValue (submit on selection)', async () => {
+    // Models a Select/dropdown editor that submits the chosen value straight from its change handler,
+    // before the asynchronous setValue update is applied. setValue is intentionally never called here,
+    // so currentEditValue stays undefined - yet the explicit value must still be submitted.
+    thereBeErrors = false;
+    const submitValueRef = React.createRef<TableProps.CellContext<string>['submitValue'] | null>();
+    renderComponent(<TestComponent submitValueRef={submitValueRef} />);
+
+    act(() => {
+      submitValueRef.current!('explicit value');
+    });
+
+    await waitFor(() => {
+      expect(handleSubmitEdit).toHaveBeenCalled();
+      expect(handleSubmitEdit.mock.lastCall!.length).toBe(3);
+      expect(handleSubmitEdit.mock.lastCall![2]).toBe('explicit value');
+      expect(handleEditEnd).toHaveBeenCalled();
+    });
+  });
+
+  it('should not submit when submitValue is called with an explicit undefined value', async () => {
+    // Calling submitValue(undefined) explicitly is treated the same as "no change" and ends the edit
+    // without invoking the submit callback.
+    thereBeErrors = false;
+    const submitValueRef = React.createRef<TableProps.CellContext<string>['submitValue'] | null>();
+    renderComponent(<TestComponent submitValueRef={submitValueRef} />);
+
+    act(() => {
+      submitValueRef.current!(undefined);
+    });
+
+    await waitFor(() => {
+      expect(handleEditEnd).toHaveBeenCalled();
+    });
+    expect(handleSubmitEdit).not.toHaveBeenCalled();
+  });
+
   it('should not render a form element if disableNativeForm is set', () => {
     const { wrapper } = renderComponent(<TestComponent disableNativeForm={true} />);
     expect(wrapper.find('form')).toBe(null);
