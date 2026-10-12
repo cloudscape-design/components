@@ -253,6 +253,11 @@ export namespace CollectionPreferencesProps {
     type?: 'column';
     id: string;
     visible: boolean;
+    /**
+     * Persisted column width in pixels. Populated from the table's `onColumnWidthsChange` event
+     * and fed back via `preferences.contentDisplay` to restore resized widths after page reload.
+     */
+    width?: number;
   }
 
   export interface ContentDisplayGroup {
