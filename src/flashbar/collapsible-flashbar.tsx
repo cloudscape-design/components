@@ -15,6 +15,7 @@ import InternalIcon from '../icon/internal';
 import { animate, getDOMRects } from '../internal/animate';
 import { Transition } from '../internal/components/transition';
 import { getVisualContextClassname } from '../internal/components/visual-context';
+import { fireNonCancelableEvent } from '../internal/events';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
@@ -50,11 +51,17 @@ const maxNonCollapsibleItems = 1;
 
 const resizeListenerThrottleDelay = 100;
 
-export default function CollapsibleFlashbar({ items, style, ...restProps }: InternalFlashbarProps) {
+export default function CollapsibleFlashbar({
+  items,
+  style,
+  defaultExpanded,
+  onToggle,
+  ...restProps
+}: InternalFlashbarProps) {
   const visibleItems = useFlashbarVisibility(items);
   const [enteringItems, setEnteringItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [exitingItems, setExitingItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
-  const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
+  const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(defaultExpanded ?? false);
 
   const getElementsToAnimate = useCallback(() => {
     const flashElements = isFlashbarStackExpanded ? expandedItemRefs.current : collapsedItemRefs.current;
@@ -104,7 +111,9 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
     if (!isReducedMotion) {
       prepareAnimations();
     }
-    setIsFlashbarStackExpanded(prev => !prev);
+    const nextExpanded = !isFlashbarStackExpanded;
+    setIsFlashbarStackExpanded(nextExpanded);
+    fireNonCancelableEvent(onToggle, { expanded: nextExpanded });
   }
 
   const debouncedFocus = useDebounceCallback(focusFlashById, FOCUS_DEBOUNCE_DELAY);
