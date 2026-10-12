@@ -33,6 +33,11 @@ export interface FileInputProps extends BaseComponentProps, FormFieldCommonValid
   ariaRequired?: boolean;
 
   /**
+   * Specifies whether the file input control is disabled, which prevents the user from modifying the value.
+   */
+  disabled?: boolean;
+
+  /**
    * Specifies the native file input `multiple` attribute to allow users entering more than one file.
    */
   multiple?: boolean;

@@ -15,6 +15,11 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldCommonVali
    */
   ariaRequired?: boolean;
   /**
+   * Specifies whether the file upload control is disabled, which prevents the user from
+   * modifying the value and hides the remove buttons on file tokens.
+   */
+  disabled?: boolean;
+  /**
    * Show file size in the token. Use `i18nStrings.formatFileSize` to customize it.
    */
   showFileSize?: boolean;

@@ -269,6 +269,60 @@ describe('Focusing behavior', () => {
   );
 });
 
+describe('disabled', () => {
+  test('native input is disabled when `disabled=true`', () => {
+    expect(render({ disabled: false }).findNativeInput().getElement()).not.toBeDisabled();
+    expect(render({ disabled: true }).findNativeInput().getElement()).toBeDisabled();
+  });
+
+  test('native input has aria-disabled when `disabled=true`', () => {
+    expect(render({ disabled: false }).findNativeInput().getElement()).not.toHaveAttribute('aria-disabled');
+    expect(render({ disabled: true }).findNativeInput().getElement()).toHaveAttribute('aria-disabled', 'true');
+  });
+
+  test('upload button is disabled when `disabled=true`', () => {
+    expect(render({ disabled: false }).findUploadButton().getElement()).not.toBeDisabled();
+    expect(render({ disabled: true }).findUploadButton().getElement()).toBeDisabled();
+  });
+
+  test('onChange is not fired when disabled and a file is selected', () => {
+    const wrapper = render({ disabled: true, multiple: true });
+    const input = wrapper.findNativeInput().getElement();
+    Object.defineProperty(input, 'files', { value: [file1] });
+    fireEvent(input, new CustomEvent('change', { bubbles: true }));
+
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  test('file token remove buttons are hidden when `disabled=true`', () => {
+    const wrapper = render({ disabled: true, multiple: true, value: [file1, file2] });
+    expect(wrapper.findFileToken(1)!.findRemoveButton()).toBeNull();
+    expect(wrapper.findFileToken(2)!.findRemoveButton()).toBeNull();
+  });
+
+  test('file token remove buttons are visible when `disabled=false`', () => {
+    const wrapper = render({ disabled: false, multiple: true, value: [file1, file2] });
+    expect(wrapper.findFileToken(1)!.findRemoveButton()).not.toBeNull();
+    expect(wrapper.findFileToken(2)!.findRemoveButton()).not.toBeNull();
+  });
+
+  test('dropzone is not shown when dragging files and `disabled=true`', () => {
+    const wrapper = render({ disabled: true, multiple: true });
+    fireEvent(document, createDragEvent('dragover'));
+    expect(wrapper.findByClassName(FileDropzoneWrapper.rootSelector)).toBeNull();
+  });
+
+  test('a11y: disabled empty', async () => {
+    const wrapper = render({ disabled: true, value: [] });
+    await expect(wrapper.getElement()).toValidateA11y();
+  });
+
+  test('a11y: disabled with files', async () => {
+    const wrapper = render({ disabled: true, multiple: true, value: [file1, file2] });
+    await expect(wrapper.getElement()).toValidateA11y();
+  });
+});
+
 describe('i18n', () => {
   test('supports providing custom i18n strings', () => {
     const { container } = testingLibraryRender(
