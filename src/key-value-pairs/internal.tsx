@@ -3,7 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import Box from '../box/internal';
 import ColumnLayout from '../column-layout/internal';
@@ -12,6 +12,12 @@ import { LinkDefaultVariantContext } from '../internal/context/link-default-vari
 import { KeyValuePairsProps } from './interfaces';
 
 import styles from './styles.css.js';
+
+/**
+ * Upper bound on `columns`. The underlying ColumnLayout is built around twelve units, so this
+ * matches its own maximum rather than introducing a separate limit.
+ */
+const MAX_COLUMNS = 12;
 
 const InternalKeyValuePair = ({ label, info, value, id }: KeyValuePairsProps.Pair) => {
   const kvPairId = useUniqueId('kv-pair-');
@@ -51,6 +57,16 @@ const InternalKeyValuePairs = React.forwardRef(
     }: KeyValuePairsProps & Required<Pick<KeyValuePairsProps, 'columns'>>,
     ref: React.Ref<HTMLDivElement>
   ) => {
+    // Mirrors the limit ColumnLayout imposes, so the warning names this component rather than the
+    // one it delegates to. Clamping here also means ColumnLayout never sees an out-of-range value
+    // and so cannot warn a second time about the same prop.
+    if (columns > MAX_COLUMNS) {
+      warnOnce(
+        'Key-value pairs',
+        `\`columns\` (${columns}) exceeds the maximum of ${MAX_COLUMNS}. Rendering ${MAX_COLUMNS} columns instead.`
+      );
+    }
+
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
         <div
@@ -65,7 +81,12 @@ const InternalKeyValuePairs = React.forwardRef(
           picks FlexibleColumnLayout, which wraps each column item in a single div. GridColumnLayout
           wraps in two, which breaks the dl -> dt/dd relationship a11y relies on.
         */}
-          <ColumnLayout __tagOverride="dl" columns={columns} variant="text-grid" minColumnWidth={minColumnWidth}>
+          <ColumnLayout
+            __tagOverride="dl"
+            columns={Math.min(columns, MAX_COLUMNS)}
+            variant="text-grid"
+            minColumnWidth={minColumnWidth}
+          >
             {items.map((pair, index) => {
               if (pair.type === 'group') {
                 return (

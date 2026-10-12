@@ -112,6 +112,23 @@ describe('KeyValuePairs', () => {
       expect(warnOnce).not.toHaveBeenCalled();
     });
 
+    test.each([13, 20])('clamps %i columns to 12 and warns', columns => {
+      const { wrapper } = renderKeyValuePairs(
+        <KeyValuePairs
+          columns={columns}
+          items={Array.from({ length: 12 }, (_, index) => ({ label: `Label ${index}`, value: `Value ${index}` }))}
+        />
+      );
+
+      expect(wrapper.find('dl')!.getElement().style.gridTemplateColumns).toBe('repeat(12, minmax(0, 1fr))');
+      expect(warnOnce).toHaveBeenCalledWith(
+        'Key-value pairs',
+        `\`columns\` (${columns}) exceeds the maximum of 12. Rendering 12 columns instead.`
+      );
+      // Clamped before ColumnLayout sees it, so only this component warns.
+      expect(warnOnce).toHaveBeenCalledTimes(1);
+    });
+
     // Asserts the resolved grid rather than the number of items, because every item renders either
     // way
     test.each([3, 6, 12])('lays out %i columns', columns => {
