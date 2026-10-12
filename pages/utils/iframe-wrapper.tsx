@@ -43,6 +43,7 @@ export function IframeWrapper({
   id,
   AppComponent,
   size,
+  transparentBackground = false,
 }: {
   id: string;
   AppComponent: React.ComponentType;
@@ -51,6 +52,8 @@ export function IframeWrapper({
    * viewport, so this is how a page-level layout can be given a viewport that differs from the browser's.
    */
   size?: { width: number; height: number };
+  /** Removes the iframe document surface so the containing frame supplies its background. */
+  transparentBackground?: boolean;
 }) {
   const cleanupRef = useRef<(() => void) | null>(null);
 
@@ -95,6 +98,12 @@ export function IframeWrapper({
         iframeDocument.body.style.margin = '0';
         innerAppRoot.style.blockSize = '100%';
       }
+      if (transparentBackground) {
+        iframeEl.style.background = 'transparent';
+        iframeDocument.documentElement.style.background = 'transparent';
+        iframeDocument.body.style.background = 'transparent';
+        innerAppRoot.style.background = 'transparent';
+      }
       const syncClassesCleanup = syncClasses(document.body, iframeDocument.body);
 
       // Wait for the copied stylesheets to load before mounting the app. Mounting synchronously
@@ -115,7 +124,7 @@ export function IframeWrapper({
         container.removeChild(iframeEl);
       };
     },
-    [AppComponent, id, size]
+    [AppComponent, id, size, transparentBackground]
   );
 
   return <div ref={mountIframe}></div>;
