@@ -23,6 +23,7 @@ const pluralizationMap = {
   CollectionPreferences: 'CollectionPreferences',
   ColumnLayout: 'ColumnLayouts',
   Container: 'Containers',
+  ContentDisplayPreference: 'ContentDisplayPreferences',
   ContentLayout: 'ContentLayouts',
   CopyToClipboard: 'CopyToClipboards',
   DateInput: 'DateInputs',
