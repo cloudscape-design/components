@@ -57,6 +57,29 @@ export interface ListProps<T = any> {
    */
   sortDisabled?: boolean;
   /**
+   * Enables item selection and defines the selection behavior:
+   * * `single` - Only one item can be selected at a time (renders as a radio control).
+   * * `multi` - Multiple items can be selected at a time (renders as a checkbox control).
+   *
+   * When set, the list is rendered as an ARIA `listbox` and each item as an `option`.
+   * Selection is not supported together with `sortable`; when both are provided, sorting takes precedence.
+   */
+  selectionType?: ListProps.SelectionType;
+  /**
+   * The currently selected items. Use together with `selectionType` and `onSelectionChange`
+   * to control the selection state. Items are matched using the `id` returned by `renderItem`.
+   */
+  selectedItems?: ReadonlyArray<T>;
+  /**
+   * A function that determines whether a given item can be selected. Return `true` to
+   * prevent an item from being selected.
+   */
+  isItemDisabled?: (item: T) => boolean;
+  /**
+   * Called when the selection changes. The event `detail` contains the updated `selectedItems`.
+   */
+  onSelectionChange?: NonCancelableEventHandler<ListProps.SelectionChangeDetail<T>>;
+  /**
    * Removes padding around and inside list items.
    */
   disableItemPaddings?: boolean;
@@ -86,6 +109,12 @@ export interface ListProps<T = any> {
 export namespace ListProps {
   export interface SortingState<T> {
     items: ReadonlyArray<T>;
+  }
+
+  export type SelectionType = 'single' | 'multi';
+
+  export interface SelectionChangeDetail<T> {
+    selectedItems: ReadonlyArray<T>;
   }
 
   export type I18nStrings = DndAreaI18nStrings;
