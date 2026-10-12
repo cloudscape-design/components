@@ -932,12 +932,13 @@ export default function HeroshotOverviewPage() {
         </Heroshot>
 
         <Heroshot id="token" label="Token">
-          <Token
-            label="us-east-1"
-            description="US East (N. Virginia)"
-            dismissLabel="Remove us-east-1"
-            onDismiss={noop}
-          />
+          {/*
+            Token sets `block-size: 100%` so that tokens in a group match the tallest one. The wrapper
+            gives it an auto-height parent, so it renders at its own height instead of filling the frame.
+          */}
+          <div>
+            <Token label="us-east-1" dismissLabel="Remove us-east-1" onDismiss={noop} />
+          </div>
         </Heroshot>
 
         <Heroshot id="token-group" label="TokenGroup">
