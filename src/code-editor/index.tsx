@@ -115,7 +115,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
   useSyncEditorWrapLines(editor, preferences?.wrapLines);
 
   const defaultTheme = getDefaultTheme(mode, themes);
-  useSyncEditorTheme(editor, preferences?.theme ?? defaultTheme);
+  useSyncEditorTheme(ace, editor, preferences?.theme ?? defaultTheme);
 
   // Change listeners
   useChangeEffect(editor, props.onChange, props.onDelayedChange);

@@ -101,6 +101,11 @@ describe('Code editor component', () => {
     expect(editorMock.setTheme).toHaveBeenLastCalledWith('ace/theme/cloud_editor_dark');
   });
 
+  it('applies the opt-in Cloudscape theme when selected via preferences', () => {
+    renderCodeEditor({ preferences: { theme: 'cloudscape', wrapLines: true } });
+    expect(editorMock.setTheme).toHaveBeenLastCalledWith('ace/theme/cloudscape');
+  });
+
   it('detects alternative dark mode class', () => {
     render(
       <div className="awsui-dark-mode">
