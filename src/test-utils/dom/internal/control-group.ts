@@ -4,20 +4,16 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 
 import ButtonWrapper from '../button';
 
-import componentStyles from '../../../internal/components/control-group/styles.selectors.js';
 import testUtilStyles from '../../../internal/components/control-group/test-classes/styles.selectors.js';
 
 export default class ControlGroupWrapper extends ComponentWrapper {
   static rootSelector: string = testUtilStyles.root;
 
   /**
-   * Returns the individual fused controls. The wrapper root may be either the group element or
-   * the outer inline-label wrapper (when an inline label is set), so controls are matched
-   * anywhere beneath the root. The hidden measurement ghost duplicates the controls, so the
-   * ghost's copies (nested under the ghost element from the component stylesheet) are excluded.
+   * Returns an array of the individual grouped controls.
    */
   findControls(): Array<ElementWrapper> {
-    return this.findAll(`.${testUtilStyles.control}:not(.${componentStyles.ghost} .${testUtilStyles.control})`);
+    return this.findAll(`.${testUtilStyles.control}`);
   }
 
   /**
