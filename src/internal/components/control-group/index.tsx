@@ -29,16 +29,10 @@ export default function ControlGroup({
   const baseProps = getBaseProps(props);
   const labelId = useUniqueId('control-group-label');
 
-  // The group owns the validation state read from the surrounding form field.
-  // Error wins over warning, matching the precedence every individual control uses.
   const formFieldContext = useFormFieldContext({});
   const isInvalid = !!formFieldContext.invalid;
   const isWarning = !!formFieldContext.warning && !isInvalid;
 
-  // Publish the validation color to every grouped control via an inherited custom
-  // property on the `.controls` box. Each control reads it on its outward-facing
-  // border edges (shared `grouped-control` mixin), so inner seams stay neutral.
-  // The leading control also draws the thick seam on the group's inline-start edge.
   const groupedControlBorderColor = isInvalid ? colorTextStatusError : isWarning ? colorTextStatusWarning : undefined;
   const controlsStyle = groupedControlBorderColor
     ? ({ [customCssProps.groupedControlBorderColor]: groupedControlBorderColor } as React.CSSProperties)
@@ -89,6 +83,7 @@ export default function ControlGroup({
   const controlsWithAction = actionButton ? (
     <div
       {...(inlineLabelText ? {} : baseProps)}
+      style={controlsStyle}
       className={clsx(styles['group-layout'], styles[`group-layout-${direction}`], !inlineLabelText && rootClassnames)}
     >
       {controls}
