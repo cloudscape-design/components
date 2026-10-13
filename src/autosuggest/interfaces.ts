@@ -201,11 +201,9 @@ export interface AutosuggestProps
 
 export namespace AutosuggestProps {
   export interface ChangeDetail {
-    /** Current text value in the input field. */
     value: string;
     /**
      * Current token list. Only present when `tokens` prop is provided.
-     * `undefined` in default mode — existing consumers are unaffected.
      */
     tokens?: ReadonlyArray<AutosuggestProps.Token>;
   }

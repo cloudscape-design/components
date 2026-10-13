@@ -403,6 +403,16 @@ describe('keyboard navigation', () => {
     expect(onChange).not.toHaveBeenCalled();
   });
 
+  test('Backspace in an empty input focuses the last token again after a token was removed', () => {
+    const { wrapper } = renderTokens({ initialTokens: toTokens('a', 'b') });
+    wrapper.findNativeInput().keydown(KeyCode.backspace);
+    pressKey(dismissButton(wrapper, 2), 46);
+    focus(wrapper.findNativeInput().getElement());
+    wrapper.findNativeInput().keydown(KeyCode.backspace);
+    expect(visibleLabels(wrapper)).toEqual(['a']);
+    expect(document.activeElement).toBe(dismissButton(wrapper, 1));
+  });
+
   test('Backspace in an empty input focuses the overflow trigger when all tokens are hidden', () => {
     mockVisibleCount = 0;
     const { wrapper } = renderTokens({ initialTokens: toTokens('a', 'b') });
@@ -677,6 +687,11 @@ describe('input value', () => {
   test.each([{ readOnly: true }, { disabled: true }, {}])('clear button visibility when %o', props => {
     const { wrapper } = renderTokens({ initialTokens: toTokens('a'), initialValue: 'x', ...props });
     expect(!!wrapper.findClearButton()).toBe(!props.readOnly && !props.disabled);
+  });
+
+  test('has no clear button when the input is empty', () => {
+    const { wrapper } = renderTokens({ initialTokens: toTokens('a') });
+    expect(wrapper.findClearButton()).toBeNull();
   });
 
   test('typing keeps tokens in the change detail', () => {

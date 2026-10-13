@@ -162,10 +162,7 @@ $icon-offset: awsui.$space-xxxs;
 
   &.compact {
     @include styles.font-body-s;
-    inline-size: auto;
-    justify-content: center;
     column-gap: awsui.$space-xxs;
-    box-sizing: border-box;
     block-size: token.$token-max-height-inline;
     min-block-size: unset;
     padding-block: 0;
@@ -175,7 +172,6 @@ $icon-offset: awsui.$space-xxxs;
 
     > .arrow {
       position: static;
-      display: flex;
     }
 
     @include focus-visible.when-visible {

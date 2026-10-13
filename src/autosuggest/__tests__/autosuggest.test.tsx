@@ -702,7 +702,10 @@ describe('token mode', () => {
     const onChange = jest.fn();
     const { container } = render(<Autosuggest {...defaultProps} onChange={onChange} />);
     createWrapper(container).findAutosuggest()!.setInputValue('x');
-    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: 'x' } }));
+    expect(onChange).toHaveBeenCalledTimes(1);
+    const { detail } = onChange.mock.calls[0][0];
+    expect(detail.value).toBe('x');
+    expect(detail).not.toHaveProperty('tokens');
   });
 
   it('fires onChange with tokens when a dropdown option is selected in token mode', () => {
