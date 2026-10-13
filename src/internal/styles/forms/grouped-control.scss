@@ -45,8 +45,13 @@ $grouped-control-validation-marker: '.grouped-in-validation';
 // controls. `&` is the position class; the control also carries the base
 // `-validation` marker.
 @mixin grouped-control-validation-focus($edges, $neutral-border-color) {
+  // Re-assert the outward color on hover and focus so the control's own neutral
+  // hover/focus border-color does not win. Ring stays focus-only.
+  &#{$grouped-control-validation-marker}:hover,
   &#{$grouped-control-validation-marker}:focus {
     @include grouped-control-outer-border-color($edges, $neutral-border-color);
+  }
+  &#{$grouped-control-validation-marker}:focus {
     box-shadow: foundation.$box-shadow-focused-light-invalid;
   }
 }
