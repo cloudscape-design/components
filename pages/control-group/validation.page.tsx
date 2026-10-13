@@ -2,95 +2,52 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { SpaceBetween } from '~components';
 import FormField from '~components/form-field';
-import Input from '~components/input';
-import ControlGroup from '~components/internal/components/control-group';
-import Select from '~components/select';
+import ControlGroup, { ControlGroupProps } from '~components/internal/components/control-group';
 
-import { SimplePage } from '../app/templates';
-import { input, noop, operators, select, useControlGroupDirection } from './common';
-import { DirectionSettings } from './common';
+import { PermutationsPage } from '../app/templates';
+import createPermutations from '../utils/permutations';
+import PermutationsView from '../utils/permutations-view';
+import { input, select } from './common';
 
-// A three-control group makes the middle control's neutral seam edges visible:
-// only its first and last siblings paint an outward-facing group edge.
-const threeControls = [
-  <Select key="op" ariaLabel="Operator" selectedOption={operators[0]} options={operators} onChange={noop} />,
-  <Input key="value" ariaLabel="Value" value="service" onChange={noop} />,
-  <Select key="unit" ariaLabel="Unit" selectedOption={operators[0]} options={operators} onChange={noop} />,
+// Validation propagates through FormField context, so errorText/warningText are
+// carried on the permutation and applied by render, not passed to ControlGroup.
+type ValidationPermutation = ControlGroupProps & { errorText?: string; warningText?: string };
+
+const children = (
+  <>
+    {input}
+    {select}
+  </>
+);
+const directions: ReadonlyArray<ControlGroupProps['direction']> = ['horizontal', 'vertical'];
+const actionButtons: ReadonlyArray<ControlGroupProps['actionButton']> = [
+  undefined,
+  { iconName: 'remove', ariaLabel: 'Remove' },
 ];
 
+// Error and warning are mutually exclusive, so each lives in its own set.
+const permutations = createPermutations<ValidationPermutation>([
+  { children: [children], errorText: ['This value is required'], direction: directions, actionButton: actionButtons },
+  {
+    children: [children],
+    warningText: ['Double-check this value'],
+    direction: directions,
+    actionButton: actionButtons,
+  },
+]);
+
 export default function ControlGroupValidation() {
-  const { direction, setDirection } = useControlGroupDirection();
-
   return (
-    <SimplePage
-      title="Control group validation"
-      subtitle="Each control paints the error/warning color on its own outward-facing border edges only — the edges that do not touch an adjacent control. The seams between controls stay neutral. The group's leading (inline-start) edge is rendered by the first control with the same extra-thick border width the inner controls use for validation, independent of whether a group has an action button; the action button's edges stay neutral. The styling persists on hover. Toggle the direction to see horizontal and vertical (stacked) groups."
-      settings={<DirectionSettings direction={direction} setDirection={setDirection} />}
-      i18n={{}}
-      screenshotArea={{}}
-    >
-      <SpaceBetween size="l">
-        <FormField label="Error state" errorText="This value is required">
-          <ControlGroup direction={direction}>
-            {input}
-            {select}
-          </ControlGroup>
-        </FormField>
-
-        <FormField label="Warning state" warningText="Double-check this value">
-          <ControlGroup direction={direction}>
-            {input}
-            {select}
-          </ControlGroup>
-        </FormField>
-
-        <FormField label="Error state with action button" errorText="This value is required">
-          <ControlGroup direction={direction} actionButton={{ iconName: 'remove', ariaLabel: 'Remove' }}>
-            {input}
-            {select}
-          </ControlGroup>
-        </FormField>
-
-        <FormField label="Warning state with action button" warningText="Double-check this value">
-          <ControlGroup direction={direction} actionButton={{ iconName: 'remove', ariaLabel: 'Remove' }}>
-            {input}
-            {select}
-          </ControlGroup>
-        </FormField>
-
-        <FormField label="Error state (three controls)" errorText="This value is required">
-          <ControlGroup direction={direction}>{threeControls}</ControlGroup>
-        </FormField>
-
-        <FormField label="Warning state (three controls)" warningText="Double-check this value">
-          <ControlGroup direction={direction}>{threeControls}</ControlGroup>
-        </FormField>
-
-        <FormField label="Error state with action button (three controls)" errorText="This value is required">
-          <ControlGroup direction={direction} actionButton={{ iconName: 'remove', ariaLabel: 'Remove' }}>
-            {threeControls}
-          </ControlGroup>
-        </FormField>
-
-        <FormField label="Warning state with action button (three controls)" warningText="Double-check this value">
-          <ControlGroup direction={direction} actionButton={{ iconName: 'remove', ariaLabel: 'Remove' }}>
-            {threeControls}
-          </ControlGroup>
-        </FormField>
-
-        <FormField
-          label="Error wins over warning"
-          errorText="This value is required"
-          warningText="Ignored while invalid"
-        >
-          <ControlGroup direction={direction}>
-            {input}
-            {select}
-          </ControlGroup>
-        </FormField>
-      </SpaceBetween>
-    </SimplePage>
+    <PermutationsPage title="Control group validation" i18n={{}}>
+      <PermutationsView
+        permutations={permutations}
+        render={({ errorText, warningText, ...controlGroupProps }) => (
+          <FormField errorText={errorText} warningText={warningText}>
+            <ControlGroup {...controlGroupProps} />
+          </FormField>
+        )}
+      />
+    </PermutationsPage>
   );
 }
