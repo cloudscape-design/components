@@ -6,8 +6,7 @@ import { BaseComponentProps } from '../types/base-component';
 
 export interface ColumnLayoutProps extends BaseComponentProps {
   /**
-   * Specifies the number of columns in each grid row. Up to 12 columns are supported, and higher
-   * values are treated as 12.
+   * Specifies the number of columns in each grid row.
    *
    * The number of columns is reduced as the available space narrows. One of two layout systems is
    * used, and which one applies determines how that reduction works:

@@ -49,19 +49,7 @@ describe('ColumnLayout component', () => {
       });
     });
 
-    [13, 20].forEach(columnCount => {
-      it(`clamps ${columnCount} columns to 12 and warns`, () => {
-        const { container } = render(<ColumnLayout columns={columnCount} />);
-        const grid = container.querySelector<HTMLElement>(`.${cssGridStyles['css-grid']}`)!;
-        expect(grid.style.gridTemplateColumns).toBe('repeat(12, minmax(0, 1fr))');
-        expect(warnOnce).toHaveBeenCalledWith(
-          'ColumnLayout',
-          `\`columns\` (${columnCount}) exceeds the maximum of 12. Rendering 12 columns instead.`
-        );
-      });
-    });
-
-    [1, 4, 5, 12].forEach(columnCount => {
+    [1, 4, 5, 12, 20].forEach(columnCount => {
       it(`does not warn for ${columnCount} columns`, () => {
         render(<ColumnLayout columns={columnCount} />);
         expect(warnOnce).not.toHaveBeenCalled();
