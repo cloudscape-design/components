@@ -60,13 +60,4 @@ describe('OptionList', () => {
       await expect(page.isFocused(multiList.findOptionsContainer().toSelector())).resolves.toBe(true);
     })
   );
-
-  test(
-    'selects a whole group in multi selection',
-    setupTest(async page => {
-      const groupedList = wrapper.findOptionList('[data-testid="grouped-multi"]');
-      await page.click(groupedList.findGroupHeaderByValue('compute').toSelector());
-      await expect(page.getText('[data-testid="grouped-multi-value"]')).resolves.toBe('Selected: ec2, lambda');
-    })
-  );
 });

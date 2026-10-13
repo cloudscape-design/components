@@ -3,7 +3,6 @@
 'use client';
 import React from 'react';
 
-import { isGroup } from '../internal/components/option/utils/filter-options';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { getExternalProps } from '../internal/utils/external-props';
@@ -17,7 +16,6 @@ const OptionList = React.forwardRef((props: OptionListProps, ref: React.Ref<Opti
     props: { selectionType: props.selectionType },
     metadata: {
       optionsCount: props.options.length,
-      hasGroups: props.options.some(isGroup),
     },
   });
   const externalProps = getExternalProps(props);

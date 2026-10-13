@@ -8,8 +8,6 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import { DropdownOption } from '../internal/components/option/interfaces';
-import { isGroup } from '../internal/components/option/utils/filter-options';
-import { flattenOptions } from '../internal/components/option/utils/flatten-options';
 import { fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -21,7 +19,7 @@ import { findOptionIndex } from '../select/utils/connect-options';
 import { useAnnouncement } from '../select/utils/use-announcement';
 import { useNativeSearch } from '../select/utils/use-native-search';
 import { useSelect } from '../select/utils/use-select';
-import { OptionDefinition, OptionGroup } from '../types/option';
+import { OptionDefinition } from '../types/option';
 import { OptionListProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -52,7 +50,7 @@ function InternalOptionList(
   const i18n = useInternalI18n('select');
   const selectedAriaLabel = i18n('selectedAriaLabel', i18nStrings?.selectedAriaLabel);
   const isMulti = selectionType === 'multi';
-  // Same as the dropdowns: group headers are interactive (select all of the group) only in multi selection.
+  // There are no groups. The shared engine uses this flag to render Multiselect-style rows, so it follows multi selection.
   const useInteractiveGroups = isMulti;
 
   const [rawSelectedOptions = EMPTY_SELECTION, setSelectedOptions] = useControllable(
@@ -66,33 +64,28 @@ function InternalOptionList(
     [isMulti, rawSelectedOptions]
   );
 
-  const { flatOptions, parentMap } = useMemo(() => flattenOptions(options), [options]);
-  const optionIndexes = useMemo(() => {
-    const indexes = new Map<DropdownOption, number>();
-    flatOptions.filter(option => option.type !== 'parent').forEach((option, index) => indexes.set(option, index + 1));
-    return indexes;
-  }, [flatOptions]);
+  const dropdownOptions = useMemo(
+    () => options.map<DropdownOption>(option => ({ option, disabled: option.disabled })),
+    [options]
+  );
 
   if (isDevelopment) {
-    const values = flatOptions.filter(option => option.type !== 'parent').map(({ option }) => option.value);
+    const values = options.map(option => option.value);
     if (new Set(values).size !== values.length) {
       warnOnce('OptionList', 'Every option must have a unique `value`. The component may work incorrectly.');
     }
   }
 
   const updateSelectedOption = useCallback(
-    (option: OptionDefinition | OptionGroup) => {
+    (option: OptionDefinition) => {
       let nextSelectedOptions: ReadonlyArray<OptionDefinition>;
       if (!isMulti) {
         // Same as Select: choosing the selected option again keeps it selected.
         nextSelectedOptions = [option];
       } else {
-        // Same as Multiselect: a group toggles all of its enabled options; disabled options keep their state.
-        const targets = (isGroup(option) ? option.options : [option]).filter(item => !item.disabled);
-        const isSelected = (item: OptionDefinition) => findOptionIndex(selectedOptions, item) > -1;
-        nextSelectedOptions = targets.every(isSelected)
-          ? selectedOptions.filter(item => findOptionIndex(targets, item) === -1)
-          : [...selectedOptions, ...targets.filter(item => !isSelected(item))];
+        // Same as Multiselect: toggle the option.
+        const index = findOptionIndex(selectedOptions, option);
+        nextSelectedOptions = index > -1 ? selectedOptions.filter((_, i) => i !== index) : [...selectedOptions, option];
       }
       setSelectedOptions(nextSelectedOptions);
       fireNonCancelableEvent(onChange, { selectedOptions: nextSelectedOptions });
@@ -111,7 +104,7 @@ function InternalOptionList(
   } = useSelect({
     selectedOptions,
     updateSelectedOption,
-    options: flatOptions,
+    options: dropdownOptions,
     filteringType: 'none',
     keepOpen: true,
     embedded: true,
@@ -145,7 +138,7 @@ function InternalOptionList(
 
   const onTypeAhead = useNativeSearch({
     isEnabled: true,
-    options: flatOptions,
+    options: dropdownOptions,
     highlightOption,
     highlightedOption: highlightedOption?.option,
     useInteractiveGroups,
@@ -154,7 +147,7 @@ function InternalOptionList(
   const announcement = useAnnouncement({
     announceSelected,
     highlightedOption,
-    getParent: option => parentMap.get(option)?.option as undefined | OptionGroup,
+    getParent: () => undefined,
     selectedAriaLabel,
   });
 
@@ -182,19 +175,18 @@ function InternalOptionList(
         menuProps={{ ...menuProps, embedded: true, ariaLabel, ariaLabelledby, ariaDescribedby }}
         getOptionProps={(option, index) => {
           const optionProps = getOptionProps(option, index);
-          const isParent = option.type === 'parent';
           return {
             ...optionProps,
             highlighted: showHighlight && optionProps.highlighted,
             // Inline, there is no dropdown border above the list, so the first item has no top divider.
             hideTopDivider: index === 0,
-            className: isParent ? testClasses['group-header'] : testClasses.option,
-            // 1-based position among selectable options (group headers excluded), used by test-utils.
-            'data-option-index': isParent ? undefined : optionIndexes.get(option),
+            className: testClasses.option,
+            // 1-based option position, used by test-utils.
+            'data-option-index': index + 1,
             'data-value': option.option.value,
           };
         }}
-        filteredOptions={flatOptions}
+        filteredOptions={dropdownOptions}
         filteringValue=""
         highlightType={highlightType}
         checkboxes={isMulti}

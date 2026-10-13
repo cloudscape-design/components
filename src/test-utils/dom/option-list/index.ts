@@ -72,14 +72,14 @@ export default class OptionListWrapper extends ComponentWrapper {
   }
 
   /**
-   * Returns all options. Group headers are not included.
+   * Returns all options.
    */
   findOptions(): Array<OptionListOptionWrapper> {
     return this.findAllByClassName(styles.option).map(wrapper => new OptionListOptionWrapper(wrapper.getElement()));
   }
 
   /**
-   * Returns an option for a given index. Group headers are not counted.
+   * Returns an option for a given index.
    *
    * @param index 1-based index of the option to return.
    */
@@ -98,26 +98,7 @@ export default class OptionListWrapper extends ComponentWrapper {
   }
 
   /**
-   * Returns all group headers.
-   */
-  findGroupHeaders(): Array<OptionListOptionWrapper> {
-    return this.findAllByClassName(styles['group-header']).map(
-      wrapper => new OptionListOptionWrapper(wrapper.getElement())
-    );
-  }
-
-  /**
-   * Returns a group header for a given group value.
-   *
-   * @param value The `value` of the option group.
-   */
-  findGroupHeaderByValue(value: string): OptionListOptionWrapper | null {
-    const escapedValue = escapeSelector(value);
-    return this.findComponent(`.${styles['group-header']}[data-value="${escapedValue}"]`, OptionListOptionWrapper);
-  }
-
-  /**
-   * Returns all selected options. Group headers are not included.
+   * Returns all selected options.
    */
   findSelectedOptions(): Array<OptionListOptionWrapper> {
     return this.findAll(`.${styles.option}.${selectableItemsStyles.selected}`).map(
@@ -126,7 +107,7 @@ export default class OptionListWrapper extends ComponentWrapper {
   }
 
   /**
-   * Returns the highlighted option. Group headers are not included.
+   * Returns the highlighted option.
    */
   findHighlightedOption(): OptionListOptionWrapper | null {
     return this.findComponent(`.${styles.option}.${selectableItemsStyles.highlighted}`, OptionListOptionWrapper);

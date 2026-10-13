@@ -2,36 +2,26 @@
 // SPDX-License-Identifier: Apache-2.0
 import { BaseComponentProps } from '../types/base-component';
 import { NonCancelableEventHandler } from '../types/events';
-import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../types/option';
+import { OptionDefinition } from '../types/option';
 
 export interface OptionListProps extends BaseComponentProps {
   /**
-   * Specifies an array of options that are displayed inline as a list. Uses the same option objects as Select and Multiselect,
-   * so the same array can be passed to any of them.
-   * The options can be grouped using `OptionGroup` objects. Only one level of grouping is supported.
+   * Specifies an array of options that are displayed inline as a list. Uses the same option objects as Select and Multiselect.
+   * Option groups are not supported.
    *
    * #### Option
    * - `value` (string) - The returned value of the option when selected. Must be unique.
-   *
-   * #### OptionGroup
-   * - `value` (string) - Used to locate the option group in test utils.
-   * - `options` (Option[]) - The options under this group.
-   *
-   * #### Shared Option and OptionGroup properties
-   * - `label` (string) - (Optional) Option or group text displayed to the user.
-   * - `lang` (string) - (Optional) The language of the option or group, provided as a BCP 47 language tag.
-   * - `description` (string) - (Optional) Further information about the option or group that appears below the label.
-   * - `disabled` (boolean) - (Optional) Determines whether the option or group is disabled. Users can't select or deselect a disabled option.
+   * - `label` (string) - (Optional) Option text displayed to the user.
+   * - `lang` (string) - (Optional) The language of the option, provided as a BCP 47 language tag.
+   * - `description` (string) - (Optional) Further information about the option that appears below the label.
+   * - `disabled` (boolean) - (Optional) Determines whether the option is disabled. Users can't select or deselect a disabled option.
    * - `disabledReason` (string) - (Optional) Displays a tooltip near the item when disabled. Use to provide additional context.
    * - `labelTag` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
-   * - `tags` [string[]] - (Optional) A list of tags giving further guidance about the option or group.
-   * - `iconName` (string) - (Optional) Specifies the name of an [icon](/components/icon/) to display in the option or group.
+   * - `tags` [string[]] - (Optional) A list of tags giving further guidance about the option.
+   * - `iconName` (string) - (Optional) Specifies the name of an [icon](/components/icon/) to display in the option.
    * - `iconAriaLabel` (string) - (Optional) Specifies alternate text for the icon. We recommend that you provide this for accessibility.
    * - `iconUrl` (string) - (Optional) URL of a custom icon.
    * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
-   *
-   * In single selection, group headers can't be selected. In multi selection, selecting a group header selects or
-   * deselects all the options in the group that aren't disabled.
    *
    * Options are the selection target. Do not render interactive elements such as buttons or links inside them.
    */
@@ -84,8 +74,7 @@ export interface OptionListProps extends BaseComponentProps {
 export namespace OptionListProps {
   export type SelectionType = 'single' | 'multi';
   export type Option = OptionDefinition;
-  export type OptionGroup = OptionGroupDefinition;
-  export type Options = ReadonlyArray<Option | OptionGroup>;
+  export type Options = ReadonlyArray<Option>;
 
   export interface ChangeDetail {
     selectedOptions: ReadonlyArray<Option>;

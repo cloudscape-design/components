@@ -29,15 +29,10 @@ const withDisabled = plain.map(option =>
     : option
 );
 
-const grouped: OptionListProps.Options = [
-  { label: 'Goals', value: 'goals', options: plain.slice(0, 2) },
-  { label: 'Constraints', value: 'constraints', options: plain.slice(2) },
-];
-
 const permutations = createPermutations<OptionListProps & { width: number }>([
   {
     width: [240, 480],
-    options: [plain, withIcons, withTags, withDisabled, grouped],
+    options: [plain, withIcons, withTags, withDisabled],
     selectionType: ['single', 'multi'],
     selectedOptions: [[], [plain[1]], [plain[1], plain[2]]],
   },

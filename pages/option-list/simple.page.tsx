@@ -31,26 +31,6 @@ const goalsWithDisabled: OptionListProps.Option[] = goals.map(goal =>
     : goal
 );
 
-const services: OptionListProps.Options = [
-  { value: 'all-regions', label: 'All Regions' },
-  {
-    label: 'Compute',
-    value: 'compute',
-    options: [
-      { value: 'ec2', label: 'EC2', description: 'Virtual servers' },
-      { value: 'lambda', label: 'Lambda', description: 'Serverless functions' },
-    ],
-  },
-  {
-    label: 'Storage',
-    value: 'storage',
-    options: [
-      { value: 's3', label: 'S3', description: 'Object storage' },
-      { value: 'ebs', label: 'EBS', description: 'Block storage', disabled: true, disabledReason: 'Not enabled' },
-    ],
-  },
-];
-
 const values = (options: ReadonlyArray<OptionListProps.Option>) => options.map(option => option.value).join(', ');
 
 function Section({
@@ -102,8 +82,6 @@ export default function OptionListSimplePage() {
             initial={[goalsWithIcons[1]]}
           />
           <Section id="disabled" title="With a disabled option" options={goalsWithDisabled} selectionType="multi" />
-          <Section id="grouped-single" title="Groups, single selection" options={services} selectionType="single" />
-          <Section id="grouped-multi" title="Groups, multi selection" options={services} selectionType="multi" />
 
           <SpaceBetween size="xs">
             <Header variant="h2" id="uncontrolled-heading">

@@ -6,7 +6,6 @@ import { act, fireEvent, render } from '@testing-library/react';
 import { KeyCode } from '@cloudscape-design/component-toolkit/internal';
 
 import '../../__a11y__/to-validate-a11y';
-import { isGroup } from '../../../lib/components/internal/components/option/utils/filter-options';
 import OptionList, { OptionListProps } from '../../../lib/components/option-list';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
@@ -18,30 +17,8 @@ const options: OptionListProps.Option[] = [
   { value: 'c', label: 'Third' },
 ];
 
-const groupedOptions: OptionListProps.Options = [
-  { value: 'standalone', label: 'Standalone' },
-  {
-    label: 'Compute',
-    value: 'compute',
-    options: [
-      { value: 'ec2', label: 'EC2' },
-      { value: 'lambda', label: 'Lambda' },
-    ],
-  },
-  {
-    label: 'Storage',
-    value: 'storage',
-    options: [
-      { value: 's3', label: 'S3' },
-      { value: 'ebs', label: 'EBS', disabled: true },
-    ],
-  },
-];
-
-const byValue = (values: string[], source: OptionListProps.Options = options) => {
-  const flat = source.flatMap(option => (isGroup(option) ? option.options : [option]));
-  return values.map(value => flat.find(option => option.value === value)!);
-};
+const byValue = (values: string[], source: OptionListProps.Options = options) =>
+  values.map(value => source.find(option => option.value === value)!);
 
 function Stateful({
   initialSelected = [],
@@ -219,113 +196,6 @@ describe('OptionList', () => {
 
     test('is valid for a11y with disabled options', async () => {
       const { container } = renderOptionList(<Stateful selectionType="multi" options={withDisabled} />);
-      await expect(container).toValidateA11y();
-    });
-  });
-
-  describe('groups', () => {
-    test('renders group headers inside role=group, and options are counted without headers', () => {
-      const { wrapper } = renderOptionList(<Stateful options={groupedOptions} />);
-      expect(wrapper.findGroupHeaders().map(header => header.findLabel()!.getElement().textContent)).toEqual([
-        'Compute',
-        'Storage',
-      ]);
-      expect(wrapper.findOptions()).toHaveLength(5);
-      expect(wrapper.findOptionByIndex(2)!.findLabel()!.getElement()).toHaveTextContent('EC2');
-      const group = wrapper.findGroupHeaderByValue('compute')!.getElement().closest('[role="group"]')!;
-      expect(group).not.toBeNull();
-      expect(group.textContent).toContain('Lambda');
-    });
-
-    describe('single selection', () => {
-      test('clicking a group header does not select anything', () => {
-        const onChange = jest.fn();
-        const { wrapper } = renderOptionList(<Stateful options={groupedOptions} onChange={onChange} />);
-        fireEvent.mouseUp(wrapper.findGroupHeaderByValue('compute')!.getElement());
-        expect(onChange).not.toHaveBeenCalled();
-      });
-
-      test('keyboard skips group headers', () => {
-        const { wrapper } = renderOptionList(<Stateful options={groupedOptions} />);
-        fireEvent.focus(wrapper.findOptionsContainer().getElement());
-        pressKey(wrapper, KeyCode.down);
-        expect(wrapper.findHighlightedOption()!.findLabel()!.getElement()).toHaveTextContent('EC2');
-      });
-
-      test('selects a child option', () => {
-        const onChange = jest.fn();
-        const { wrapper } = renderOptionList(<Stateful options={groupedOptions} onChange={onChange} />);
-        clickOption(wrapper, 3);
-        expect(onChange).toHaveBeenLastCalledWith(['lambda']);
-        expect(wrapper.findGroupHeaderByValue('compute')!.isSelected()).toBe(false);
-      });
-    });
-
-    describe('multi selection', () => {
-      test('clicking a group header selects all its enabled options, then deselects them', () => {
-        const onChange = jest.fn();
-        const { wrapper } = renderOptionList(
-          <Stateful selectionType="multi" options={groupedOptions} onChange={onChange} />
-        );
-        const header = () => wrapper.findGroupHeaderByValue('compute')!;
-
-        fireEvent.mouseUp(header().getElement());
-        expect(onChange).toHaveBeenLastCalledWith(['ec2', 'lambda']);
-        expect(header().isSelected()).toBe(true);
-
-        fireEvent.mouseUp(header().getElement());
-        expect(onChange).toHaveBeenLastCalledWith([]);
-        expect(header().isSelected()).toBe(false);
-      });
-
-      test('group header shows a partial state when only some options are selected', () => {
-        const { wrapper } = renderOptionList(
-          <Stateful selectionType="multi" options={groupedOptions} initialSelected={['ec2']} />
-        );
-        const header = wrapper.findGroupHeaderByValue('compute')!;
-        expect(header.isSelected()).toBe(false);
-        expect(header.find('rect[class*="styled-box-indeterminate"]')).not.toBeNull();
-        expect(wrapper.findGroupHeaderByValue('storage')!.find('rect[class*="styled-box-indeterminate"]')).toBeNull();
-      });
-
-      test('selecting all children marks the group as selected', () => {
-        const { wrapper } = renderOptionList(
-          <Stateful selectionType="multi" options={groupedOptions} initialSelected={['ec2']} />
-        );
-        clickOption(wrapper, 3);
-        expect(wrapper.findGroupHeaderByValue('compute')!.isSelected()).toBe(true);
-      });
-
-      test('a group header ignores disabled children', () => {
-        const onChange = jest.fn();
-        const { wrapper } = renderOptionList(
-          <Stateful selectionType="multi" options={groupedOptions} onChange={onChange} />
-        );
-        fireEvent.mouseUp(wrapper.findGroupHeaderByValue('storage')!.getElement());
-        expect(onChange).toHaveBeenLastCalledWith(['s3']);
-      });
-
-      test('keyboard reaches group headers and Space toggles the group', () => {
-        const onChange = jest.fn();
-        const { wrapper } = renderOptionList(
-          <Stateful selectionType="multi" options={groupedOptions} onChange={onChange} />
-        );
-        const listbox = wrapper.findOptionsContainer().getElement();
-        fireEvent.focus(listbox);
-        pressKey(wrapper, KeyCode.down);
-        expect(listbox).toHaveAttribute(
-          'aria-activedescendant',
-          wrapper.findGroupHeaderByValue('compute')!.getElement().id
-        );
-        pressKey(wrapper, KeyCode.space);
-        expect(onChange).toHaveBeenLastCalledWith(['ec2', 'lambda']);
-      });
-    });
-
-    test.each<OptionListProps.SelectionType>(['single', 'multi'])('is accessible with groups (%s)', async type => {
-      const { container } = render(
-        <Stateful selectionType={type} options={groupedOptions} initialSelected={['ec2']} />
-      );
       await expect(container).toValidateA11y();
     });
   });
