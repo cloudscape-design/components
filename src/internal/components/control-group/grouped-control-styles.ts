@@ -11,11 +11,21 @@ import { GroupedControlContextProps } from '../../context/control-group-context'
  */
 export function getGroupedControlClassNames(
   styles: Record<string, string>,
-  { position, direction, hasAction }: GroupedControlContextProps
+  { position, direction, hasAction, invalid, warning }: GroupedControlContextProps
 ): string[] {
   if (!position) {
     return [];
   }
-  const baseClassNames = [styles.grouped, styles[`grouped-${direction}-${position}`]];
-  return hasAction ? [...baseClassNames, styles['grouped-with-action']] : baseClassNames;
+  const classNames = [styles.grouped, styles[`grouped-${direction}-${position}`]];
+  if (hasAction) {
+    classNames.push(styles['grouped-with-action']);
+    // Mark the controls whose inline-end faces the action button so they draw
+    // the validation seam: the last/only control horizontally, every control
+    // vertically (the action spans the whole column).
+    const facesAction = direction === 'vertical' || position === 'last' || position === 'only';
+    if ((invalid || warning) && facesAction) {
+      classNames.push(styles['grouped-validation']);
+    }
+  }
+  return classNames;
 }

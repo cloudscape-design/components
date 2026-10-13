@@ -117,4 +117,17 @@ $grouped-control-border-radius: constants.$control-border-radius;
     border-start-end-radius: 0;
     border-end-end-radius: 0;
   }
+
+  // Thick validation seam on the button-facing (inline-end) edge, reusing the
+  // same width the standalone invalid/warning controls use. Only the controls
+  // marked `grouped-validation` (last/only horizontally, all vertically) get it.
+  // box-sizing: border-box grows the border inward, so the row does not shift;
+  // the padding reduction re-centers content, mirroring the standalone control.
+  &#{&}-validation {
+    border-inline-end-width: constants.$invalid-control-left-border;
+    padding-inline-end: calc(
+      #{constants.$control-padding-horizontal} -
+        (#{constants.$invalid-control-left-border} - #{awsui.$border-width-field})
+    );
+  }
 }

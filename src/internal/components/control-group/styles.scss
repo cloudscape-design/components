@@ -15,19 +15,9 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
 
 .action-slot {
   display: flex;
+  // Overlap the last control's inline-end border by one width so the control's
+  // seam and the button's edge coincide into a single boundary line.
   margin-inline-start: $margin-overlap;
-
-  // The action button sits at the inline-end of the group and overlaps the last
-  // control's inline-end border by one border width (`margin-inline-start`
-  // above), so the button's inline-start border is the single boundary line
-  // between the controls and the action button. When the group is in a
-  // validation state the component publishes the validation color to this slot
-  // via the inherited `--awsui-grouped-control-border-color` custom property; the
-  // action button's `variant-control-group-action` style reads it on exactly its
-  // inline-start (controls-facing) edge, coloring that single boundary line. The
-  // button's block-start, block-end, and far inline-end edges stay on their
-  // neutral variant border color. The property is only set when the group is in
-  // a validation state, so a neutral group has no stray colored seam.
 }
 
 .group-layout {
@@ -60,21 +50,13 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
     flex-direction: column;
   }
 
-  // The group owns the validation state. Rather than drawing a single
-  // row-spanning rectangle, it publishes the validation color to every grouped
-  // control through an inherited custom property (set inline in the component on
-  // this `.controls` box). Each control reads that property on exactly its
-  // outward-facing border edges (see the shared `grouped-control` mixin), so the
-  // inner seams between adjacent controls stay neutral and nothing paints across
-  // a gap or wrap. The sibling `.action-slot` never inherits the property, so the
-  // action button is excluded. Error wins over warning.
-  //
-  // The `-invalid` / `-warning` marker classes carry no styling here; they exist
-  // only so test-utils and unit tests can detect the group's validation state.
+  // The group publishes the validation color via an inherited custom property
+  // set inline on this box; each control reads it on its outward-facing edges.
+  // These marker classes carry no styling — they only let test-utils detect the
+  // validation state.
   &-invalid,
   &-warning {
-    /* Marker classes: validation color is published via the inherited custom
-       property set inline on this element, not through these selectors. */
+    /* Marker only. */
   }
 }
 

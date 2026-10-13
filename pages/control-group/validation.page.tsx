@@ -26,7 +26,7 @@ export default function ControlGroupValidation() {
   return (
     <SimplePage
       title="Control group validation"
-      subtitle="Each control paints the error/warning color on its own outward-facing border edges only — the edges that do not touch an adjacent control. The seams between controls stay neutral. When a group has an action button, the single boundary line between the controls and the button also takes the validation color AND the same extra-thick inline-start border width the inner controls use for validation; the button's other edges (top, bottom, and the far outer edge) stay neutral. The seam styling persists while the action button is hovered. Toggle the direction to see horizontal and vertical (stacked) groups."
+      subtitle="Each control paints the error/warning color on its own outward-facing border edges only — the edges that do not touch an adjacent control. The seams between controls stay neutral. When a group has an action button, the control facing the button paints the single boundary line between the controls and the button, with the validation color AND the same extra-thick border width the inner controls use for validation; the button's edges stay neutral. The seam styling persists while the action button is hovered. Toggle the direction to see horizontal and vertical (stacked) groups."
       settings={<DirectionSettings direction={direction} setDirection={setDirection} />}
       i18n={{}}
       screenshotArea={{}}

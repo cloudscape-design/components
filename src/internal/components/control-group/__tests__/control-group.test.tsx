@@ -4,6 +4,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import FormField from '../../../../../lib/components/form-field';
+import Input from '../../../../../lib/components/input';
 import ControlGroup from '../../../../../lib/components/internal/components/control-group';
 import { ResetGroupedControlContext } from '../../../../../lib/components/internal/context/control-group-context';
 import customCssProps from '../../../../../lib/components/internal/generated/custom-css-properties';
@@ -14,7 +15,7 @@ import {
 import ControlGroupWrapper from '../../../../../lib/components/test-utils/dom/internal/control-group';
 import { DirectionProbe, FormFieldValidationProbe, GroupedValidationProbe, PositionProbe } from './common';
 
-import buttonStyles from '../../../../../lib/components/button/styles.selectors.js';
+import inputStyles from '../../../../../lib/components/input/styles.selectors.js';
 import controlGroupStyles from '../../../../../lib/components/internal/components/control-group/styles.selectors.js';
 import controlGroupTestStyles from '../../../../../lib/components/internal/components/control-group/test-classes/styles.selectors.js';
 
@@ -310,8 +311,7 @@ describe('Control group', () => {
       );
 
       // The group (`.controls`) carries the state and the custom property. The
-      // `-invalid` / `-warning` marker classes stay on `.controls` only; the
-      // action button never carries them.
+      // button carries neither validation markers nor the border custom property.
       const group = getByRole('group');
       expect(group).toHaveClass(invalidClass);
       expect(group.style.getPropertyValue(borderColorProp)).toBe(colorTextStatusError);
@@ -321,145 +321,58 @@ describe('Control group', () => {
       expect(actionButton).not.toHaveClass(warningClass);
       expect(actionButton).not.toHaveClass(controlGroupTestStyles['controls-invalid']);
       expect(actionButton).not.toHaveClass(controlGroupTestStyles['controls-warning']);
-      // The validation color reaches the button through the inherited custom
-      // property on its parent action slot, not as an inline style on the button
-      // element itself.
       expect(actionButton.style.getPropertyValue(borderColorProp)).toBe('');
     });
 
-    test('publishes the error color to the action slot so the controls↔button seam is colored', () => {
-      // The seam between the controls and the action button is the button's
-      // inline-start border. The group publishes the validation color to the
-      // action slot (the button's parent); the button's SCSS reads it on exactly
-      // that controls-facing edge. jsdom can't compute SCSS, so assert the
-      // published custom property on the slot (the testable surface).
-      const { container } = render(
-        <FormField errorText="Required">
-          <ControlGroup inlineLabelText="Threshold" actionButton={{ iconName: 'remove', ariaLabel: 'Remove' }}>
-            <input data-testid="alpha" />
+    // The last/only control facing the action button draws the seam: it carries
+    // the `grouped-validation` class, which the shared mixin uses to apply the
+    // thick inline-end border. jsdom cannot compute the SCSS pixel width or the
+    // `:hover` persistence, so the testable surface is this gating class; the
+    // actual width and hover persistence are covered by the visual test.
+    const seamClass = inputStyles['grouped-validation'];
+
+    function renderGroupedInput(validation: 'error' | 'warning' | 'neutral', withAction: boolean) {
+      const field =
+        validation === 'error'
+          ? { errorText: 'Required' }
+          : validation === 'warning'
+            ? { warningText: 'Careful' }
+            : { label: 'Field' };
+      return render(
+        <FormField {...field}>
+          <ControlGroup
+            inlineLabelText="Threshold"
+            actionButton={withAction ? { iconName: 'remove', ariaLabel: 'Remove' } : undefined}
+          >
+            <Input value="" readOnly={true} onChange={() => {}} />
           </ControlGroup>
         </FormField>
       );
+    }
 
-      const actionSlot = findControlGroup(container)!.findActionButton()!.getElement().parentElement!;
-      expect(actionSlot.style.getPropertyValue(borderColorProp)).toBe(colorTextStatusError);
+    test('draws the seam on the control facing the action button in an error state', () => {
+      const { getByRole } = renderGroupedInput('error', true);
+      expect(getByRole('textbox')).toHaveClass(seamClass);
     });
 
-    test('publishes the warning color to the action slot so the controls↔button seam is colored', () => {
-      const { container } = render(
-        <FormField warningText="Careful">
-          <ControlGroup inlineLabelText="Threshold" actionButton={{ iconName: 'remove', ariaLabel: 'Remove' }}>
-            <input data-testid="alpha" />
-          </ControlGroup>
-        </FormField>
-      );
-
-      const actionSlot = findControlGroup(container)!.findActionButton()!.getElement().parentElement!;
-      expect(actionSlot.style.getPropertyValue(borderColorProp)).toBe(colorTextStatusWarning);
+    test('draws the seam on the control facing the action button in a warning state', () => {
+      const { getByRole } = renderGroupedInput('warning', true);
+      expect(getByRole('textbox')).toHaveClass(seamClass);
     });
 
-    test('error takes precedence over warning for the controls↔button seam', () => {
-      const { container } = render(
-        <FormField errorText="Required" warningText="Careful">
-          <ControlGroup inlineLabelText="Threshold" actionButton={{ iconName: 'remove', ariaLabel: 'Remove' }}>
-            <input data-testid="alpha" />
-          </ControlGroup>
-        </FormField>
-      );
-
-      const actionSlot = findControlGroup(container)!.findActionButton()!.getElement().parentElement!;
-      expect(actionSlot.style.getPropertyValue(borderColorProp)).toBe(colorTextStatusError);
+    test('does not draw the seam on the control when the form field is neutral', () => {
+      const { getByRole } = renderGroupedInput('neutral', true);
+      expect(getByRole('textbox')).not.toHaveClass(seamClass);
     });
 
-    test('does not color the action slot when the surrounding form field is neutral (no stray seam)', () => {
-      // With the property unset on the slot, the button's inline-start border
-      // `var()` falls back to its neutral variant color, so no stray colored seam
-      // appears when there is no validation state.
-      const { container } = render(
-        <FormField label="Field">
-          <ControlGroup inlineLabelText="Threshold" actionButton={{ iconName: 'remove', ariaLabel: 'Remove' }}>
-            <input data-testid="alpha" />
-          </ControlGroup>
-        </FormField>
-      );
-
-      const actionSlot = findControlGroup(container)!.findActionButton()!.getElement().parentElement!;
-      expect(actionSlot.style.getPropertyValue(borderColorProp)).toBe('');
+    test('does not draw the seam on the control when a validation state has no action button', () => {
+      const { getByRole } = renderGroupedInput('error', false);
+      expect(getByRole('textbox')).not.toHaveClass(seamClass);
     });
 
-    // The seam gets BOTH the validation color (published via the custom property,
-    // asserted above) AND the extra-thick inline-start border width that the
-    // standalone invalid/warning controls render. The thickness is applied in the
-    // button's SCSS off the `action-button-validation` marker class, reusing the
-    // same `$invalid-control-left-border` token the standalone controls use.
-    // jsdom cannot compute the SCSS pixel width (nor the `:hover` persistence), so
-    // the testable surface is the marker class the width and hover rules gate on;
-    // the actual pixel width and hover persistence are covered by the visual test.
-    const actionValidationClass = buttonStyles['action-button-validation'];
-
-    test('marks the action button for the thick validation seam in an error state', () => {
-      const { container } = render(
-        <FormField errorText="Required">
-          <ControlGroup inlineLabelText="Threshold" actionButton={{ iconName: 'remove', ariaLabel: 'Remove' }}>
-            <input data-testid="alpha" />
-          </ControlGroup>
-        </FormField>
-      );
-
-      const actionButton = findControlGroup(container)!.findActionButton()!.getElement();
-      expect(actionButton).toHaveClass(actionValidationClass);
-    });
-
-    test('marks the action button for the thick validation seam in a warning state', () => {
-      const { container } = render(
-        <FormField warningText="Careful">
-          <ControlGroup inlineLabelText="Threshold" actionButton={{ iconName: 'remove', ariaLabel: 'Remove' }}>
-            <input data-testid="alpha" />
-          </ControlGroup>
-        </FormField>
-      );
-
-      const actionButton = findControlGroup(container)!.findActionButton()!.getElement();
-      expect(actionButton).toHaveClass(actionValidationClass);
-    });
-
-    test('does not mark the action button for the thick seam when the form field is neutral', () => {
-      const { container } = render(
-        <FormField label="Field">
-          <ControlGroup inlineLabelText="Threshold" actionButton={{ iconName: 'remove', ariaLabel: 'Remove' }}>
-            <input data-testid="alpha" />
-          </ControlGroup>
-        </FormField>
-      );
-
-      const actionButton = findControlGroup(container)!.findActionButton()!.getElement();
-      expect(actionButton).not.toHaveClass(actionValidationClass);
-    });
-
-    test('does not emit the thick-seam marker when a validation state has no action button', () => {
-      // The thickness, like the color, is strictly gated to the validation +
-      // action case: with no action button there is no element to mark.
-      const { container } = render(
-        <FormField errorText="Required">
-          <ControlGroup>
-            <input data-testid="alpha" />
-          </ControlGroup>
-        </FormField>
-      );
-
-      expect(container.querySelector(`.${actionValidationClass}`)).toBeNull();
-    });
-
-    test('keeps the thick-seam marker off the controls so inner controls are unaffected', () => {
-      const { getByRole } = render(
-        <FormField errorText="Required">
-          <ControlGroup inlineLabelText="Threshold" actionButton={{ iconName: 'remove', ariaLabel: 'Remove' }}>
-            <input data-testid="alpha" />
-          </ControlGroup>
-        </FormField>
-      );
-
-      expect(getByRole('group')).not.toHaveClass(actionValidationClass);
+    test('keeps the seam class off the group element so only the control carries it', () => {
+      const { getByRole } = renderGroupedInput('error', true);
+      expect(getByRole('group')).not.toHaveClass(seamClass);
     });
 
     test('masks the validation state for inner controls so seams stay neutral (error)', () => {

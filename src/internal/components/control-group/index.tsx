@@ -14,7 +14,6 @@ import { colorTextStatusError, colorTextStatusWarning } from '../../generated/st
 import { flattenChildren } from '../../utils/flatten-children';
 import { ControlGroupProps } from './interfaces';
 
-import buttonStyles from '../../../button/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
@@ -37,11 +36,9 @@ export default function ControlGroup({
   const isWarning = !!formFieldContext.warning && !isInvalid;
 
   // Publish the validation color to every grouped control via an inherited custom
-  // property set on the `.controls` box. Each control reads it on exactly its
-  // outward-facing border edges (see the shared `grouped-control` mixin), so the
-  // inner seams between controls stay neutral. The action button lives in a
-  // sibling `.action-slot`, so it never inherits this property and is excluded.
-  // Error wins over warning; when neutral the property is omitted entirely.
+  // property on the `.controls` box. Each control reads it on its outward-facing
+  // border edges (shared `grouped-control` mixin), so inner seams stay neutral.
+  // The control(s) facing the action button also draw the thick seam against it.
   const groupedControlBorderColor = isInvalid ? colorTextStatusError : isWarning ? colorTextStatusWarning : undefined;
   const controlsStyle = groupedControlBorderColor
     ? ({ [customCssProps.groupedControlBorderColor]: groupedControlBorderColor } as React.CSSProperties)
@@ -78,14 +75,7 @@ export default function ControlGroup({
             <GroupedControlContext.Provider
               value={{ position, direction, hasAction: !!actionButton, invalid: isInvalid, warning: isWarning }}
             >
-              {/*
-                Each grouped control paints the validation color on its own
-                outward-facing border edges (driven by the inherited custom
-                property above). Mask the form-field validation flags so inner
-                controls do not ALSO react to the form field directly (which
-                would color their inner seams); everything else (controlId, aria
-                wiring) passes through unchanged.
-              */}
+              {/* Mask the form-field flags so inner controls do not color their own seams. */}
               <FormFieldContext.Provider value={{ ...formFieldContext, invalid: false, warning: false }}>
                 {child}
               </FormFieldContext.Provider>
@@ -102,31 +92,9 @@ export default function ControlGroup({
       className={clsx(styles['group-layout'], styles[`group-layout-${direction}`], !inlineLabelText && rootClassnames)}
     >
       {controls}
-      {/*
-        Publish the validation color to the action slot so the action button
-        inherits `--awsui-grouped-control-border-color`. The action button's
-        `variant-control-group-action` style reads that property on exactly its
-        inline-start (controls-facing) edge, coloring the single boundary line
-        between the controls and the button. The property is only set here when
-        the group is in a validation state (`controlsStyle` is otherwise
-        undefined), so a neutral group falls back to the button's neutral variant
-        border and no stray colored seam appears. The button's other edges stay
-        neutral because the variant only reads the property on inline-start.
-      */}
-      <div style={controlsStyle} className={styles['action-slot']}>
+      <div className={styles['action-slot']}>
         <InternalButton
-          className={clsx(
-            testUtilStyles['action-button'],
-            // In a validation state, mark the action button so its SCSS applies
-            // the extra-thick validation width on the controls-facing (inline-
-            // start) seam — matching the standalone invalid/warning controls'
-            // inline-start border width and keeping it through hover. The marker
-            // is added only when the group is in a validation state (reusing the
-            // `groupedControlBorderColor` signal, which is set for error/warning
-            // and `undefined` when neutral), so neutral groups and non-action
-            // buttons are untouched.
-            groupedControlBorderColor && buttonStyles['action-button-validation']
-          )}
+          className={testUtilStyles['action-button']}
           variant="control-group-action"
           formAction="none"
           iconName={actionButton.iconName}
