@@ -324,11 +324,9 @@ describe('Control group', () => {
       expect(actionButton.style.getPropertyValue(borderColorProp)).toBe('');
     });
 
-    // The last/only control facing the action button draws the seam: it carries
-    // the `grouped-validation` class, which the shared mixin uses to apply the
-    // thick inline-end border. jsdom cannot compute the SCSS pixel width or the
-    // `:hover` persistence, so the testable surface is this gating class; the
-    // actual width and hover persistence are covered by the visual test.
+    // The first/only control on the group's leading edge draws the seam via the
+    // `grouped-validation` class. jsdom cannot compute pixel width or `:hover`;
+    // those are covered by the visual test.
     const seamClass = inputStyles['grouped-validation'];
 
     function renderGroupedInput(validation: 'error' | 'warning' | 'neutral', withAction: boolean) {
@@ -350,12 +348,24 @@ describe('Control group', () => {
       );
     }
 
-    test('draws the seam on the control facing the action button in an error state', () => {
+    function renderGroupedInputs(validation: 'error' | 'warning' | 'neutral') {
+      const field = validation === 'error' ? { errorText: 'Required' } : { warningText: 'Careful' };
+      return render(
+        <FormField {...field}>
+          <ControlGroup inlineLabelText="Threshold" actionButton={{ iconName: 'remove', ariaLabel: 'Remove' }}>
+            <Input value="" readOnly={true} onChange={() => {}} />
+            <Input value="" readOnly={true} onChange={() => {}} />
+          </ControlGroup>
+        </FormField>
+      );
+    }
+
+    test('draws the seam on the leading control in an error state', () => {
       const { getByRole } = renderGroupedInput('error', true);
       expect(getByRole('textbox')).toHaveClass(seamClass);
     });
 
-    test('draws the seam on the control facing the action button in a warning state', () => {
+    test('draws the seam on the leading control in a warning state', () => {
       const { getByRole } = renderGroupedInput('warning', true);
       expect(getByRole('textbox')).toHaveClass(seamClass);
     });
@@ -365,9 +375,16 @@ describe('Control group', () => {
       expect(getByRole('textbox')).not.toHaveClass(seamClass);
     });
 
-    test('does not draw the seam on the control when a validation state has no action button', () => {
+    test('draws the seam on the leading control even without an action button', () => {
       const { getByRole } = renderGroupedInput('error', false);
-      expect(getByRole('textbox')).not.toHaveClass(seamClass);
+      expect(getByRole('textbox')).toHaveClass(seamClass);
+    });
+
+    test('draws the seam only on the first control, not the last, in a horizontal group', () => {
+      const { getAllByRole } = renderGroupedInputs('error');
+      const [first, last] = getAllByRole('textbox');
+      expect(first).toHaveClass(seamClass);
+      expect(last).not.toHaveClass(seamClass);
     });
 
     test('keeps the seam class off the group element so only the control carries it', () => {

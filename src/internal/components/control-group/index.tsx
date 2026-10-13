@@ -38,7 +38,7 @@ export default function ControlGroup({
   // Publish the validation color to every grouped control via an inherited custom
   // property on the `.controls` box. Each control reads it on its outward-facing
   // border edges (shared `grouped-control` mixin), so inner seams stay neutral.
-  // The control(s) facing the action button also draw the thick seam against it.
+  // The leading control also draws the thick seam on the group's inline-start edge.
   const groupedControlBorderColor = isInvalid ? colorTextStatusError : isWarning ? colorTextStatusWarning : undefined;
   const controlsStyle = groupedControlBorderColor
     ? ({ [customCssProps.groupedControlBorderColor]: groupedControlBorderColor } as React.CSSProperties)

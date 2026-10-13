@@ -19,13 +19,13 @@ export function getGroupedControlClassNames(
   const classNames = [styles.grouped, styles[`grouped-${direction}-${position}`]];
   if (hasAction) {
     classNames.push(styles['grouped-with-action']);
-    // Mark the controls whose inline-end faces the action button so they draw
-    // the validation seam: the last/only control horizontally, every control
-    // vertically (the action spans the whole column).
-    const facesAction = direction === 'vertical' || position === 'last' || position === 'only';
-    if ((invalid || warning) && facesAction) {
-      classNames.push(styles['grouped-validation']);
-    }
+  }
+  // Mark the controls on the group's leading (inline-start) edge so they draw
+  // the thick validation seam: the first/only control horizontally, every
+  // control vertically (the leading edge spans the whole column).
+  const isLeading = direction === 'vertical' || position === 'first' || position === 'only';
+  if ((invalid || warning) && isLeading) {
+    classNames.push(styles['grouped-validation']);
   }
   return classNames;
 }
