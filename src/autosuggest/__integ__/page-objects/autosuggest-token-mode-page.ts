@@ -61,6 +61,10 @@ export default class AutosuggestTokenModePage extends AutosuggestPage {
     return this.getBoundingBox(this.scopedWrapper.toSelector());
   }
 
+  getInputBox() {
+    return this.getBoundingBox(this.scopedInputSelector);
+  }
+
   async clickTokenDismiss(index: number) {
     await this.click(this.scopedWrapper.findVisibleToken(index)!.findDismiss().toSelector());
   }

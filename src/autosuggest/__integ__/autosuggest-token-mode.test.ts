@@ -32,17 +32,19 @@ describe('Autosuggest token mode overflow', () => {
   );
 
   test(
-    'keeps every visible token fully before the overflow trigger and inside the field',
+    'keeps every visible token fully between the overflow trigger and the input',
     setupTest(600, async page => {
       const visibleCount = await page.getTokenCount();
-      const trigger = await page.getOverflowTriggerBox();
       const field = await page.getFieldBox();
+      const trigger = await page.getOverflowTriggerBox();
+      const input = await page.getInputBox();
+      expect(trigger.left).toBeGreaterThanOrEqual(field.left);
       for (let index = 1; index <= visibleCount; index++) {
         const token = await page.getVisibleTokenBox(index);
-        expect(token.left).toBeGreaterThanOrEqual(field.left);
-        expect(token.right).toBeLessThanOrEqual(trigger.left);
+        expect(token.left).toBeGreaterThanOrEqual(trigger.right);
+        expect(token.right).toBeLessThanOrEqual(input.left + 1);
       }
-      expect(trigger.right).toBeLessThanOrEqual(field.right);
+      expect(input.right).toBeLessThanOrEqual(field.right);
     })
   );
 
