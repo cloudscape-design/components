@@ -52,8 +52,10 @@ export function useTokenOverflow({
 
     const fieldStyle = getComputedStyle(field);
     const paddingInline = parseFloat(fieldStyle.paddingInlineStart) + parseFloat(fieldStyle.paddingInlineEnd);
+    const borderInline =
+      (parseFloat(fieldStyle.borderInlineStartWidth) || 0) + (parseFloat(fieldStyle.borderInlineEndWidth) || 0);
     const gap = parseFloat(fieldStyle.columnGap) || 0;
-    const contentWidth = containerWidth - paddingInline;
+    const contentWidth = containerWidth - paddingInline - borderInline;
     const inputMinWidth = resolveLength(
       inputWrapperRef.current ? getComputedStyle(inputWrapperRef.current).minInlineSize : '',
       contentWidth

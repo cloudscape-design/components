@@ -44,13 +44,13 @@ const CUSTOM_SVG_ICON = (
 );
 
 const REGION_ICON_MAP: Record<string, React.ReactNode> = {
-  'us-east-1': <Icon name="settings" size="small" />,
-  'us-west-2': <Icon name="globe" size="small" />,
-  'eu-west-1': <Icon name="calendar" size="small" />,
-  'ap-southeast-1': <Icon name="contact" size="small" />,
-  'ca-central-1': <Icon name="flag" size="small" />,
-  'sa-east-1': <Icon name="star" size="small" />,
-  'custom-region': <Icon svg={CUSTOM_SVG_ICON} size="small" />,
+  'us-east-1': <Icon name="settings" size="x-small" />,
+  'us-west-2': <Icon name="globe" size="x-small" />,
+  'eu-west-1': <Icon name="calendar" size="x-small" />,
+  'ap-southeast-1': <Icon name="contact" size="x-small" />,
+  'ca-central-1': <Icon name="flag" size="x-small" />,
+  'sa-east-1': <Icon name="star" size="x-small" />,
+  'custom-region': <Icon svg={CUSTOM_SVG_ICON} size="x-small" />,
 };
 
 const ICON_OPTIONS: AutosuggestProps.Options = [

@@ -273,7 +273,7 @@ export namespace AutosuggestProps {
     /**
      * An icon displayed at the start of the token.
      *
-     * Use an `<Icon>` element. Icon size should be `small` when `variant="inline"`.
+     * Use an `<Icon>` element with `size="x-small"`.
      */
     icon?: React.ReactNode;
   }

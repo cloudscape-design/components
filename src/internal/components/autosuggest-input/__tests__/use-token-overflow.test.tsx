@@ -19,11 +19,21 @@ interface Geometry {
   trigger: number;
   icon: number;
   padding?: number;
+  border?: number;
   gap?: number;
   inputMinWidth?: string;
 }
 
-function setGeometry({ container, token, trigger, icon, padding = 0, gap = 0, inputMinWidth = '0px' }: Geometry) {
+function setGeometry({
+  container,
+  token,
+  trigger,
+  icon,
+  padding = 0,
+  border = 0,
+  gap = 0,
+  inputMinWidth = '0px',
+}: Geometry) {
   mockContainerWidth = container;
   jest.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockImplementation(function (this: HTMLElement) {
     if (this.classList.contains(styles['measurement-token'])) {
@@ -37,6 +47,8 @@ function setGeometry({ container, token, trigger, icon, padding = 0, gap = 0, in
     const overrides: Record<string, string> = {
       paddingInlineStart: `${padding}px`,
       paddingInlineEnd: `${padding}px`,
+      borderInlineStartWidth: `${border}px`,
+      borderInlineEndWidth: `${border}px`,
       columnGap: `${gap}px`,
       minInlineSize: (element as HTMLElement).dataset.part === 'input' ? inputMinWidth : style.minInlineSize,
     };
@@ -127,6 +139,11 @@ describe('useTokenOverflow', () => {
 
   test('accounts for padding and gaps', () => {
     setGeometry({ container: 320, token: 100, trigger: 30, icon: 20, padding: 10, gap: 4 });
+    expect(visibleCountFor({ tokenCount: 3 })).toBe(2);
+  });
+
+  test('accounts for the field borders', () => {
+    setGeometry({ container: 320, token: 100, trigger: 30, icon: 20, border: 1 });
     expect(visibleCountFor({ tokenCount: 3 })).toBe(2);
   });
 
