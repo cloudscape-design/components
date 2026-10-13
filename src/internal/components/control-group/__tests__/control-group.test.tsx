@@ -20,7 +20,7 @@ describe('Control group', () => {
 
     const { getAllByTestId, rerender } = render(<ControlGroup>{[alpha, beta]}</ControlGroup>);
 
-    // The measurement ghost matches the test id too; the first match is the real control.
+    // The measurement ghost duplicates each control's test id, so `[0]` is always the real control (applies throughout).
     const alphaInput = getAllByTestId('alpha')[0];
     alphaInput.focus();
     expect(document.activeElement).toBe(alphaInput);
@@ -41,7 +41,6 @@ describe('Control group', () => {
         </ControlGroup>
       );
 
-      // The measurement ghost matches the test id too; the first match is the real control.
       expect(getAllByTestId('probe')[0]).toHaveTextContent('only');
     });
 
@@ -54,7 +53,6 @@ describe('Control group', () => {
         </ControlGroup>
       );
 
-      // The measurement ghost matches the test id too; the first match is the real control.
       expect(getAllByTestId('a')[0]).toHaveTextContent('first');
       expect(getAllByTestId('b')[0]).toHaveTextContent('middle');
       expect(getAllByTestId('c')[0]).toHaveTextContent('last');
@@ -71,7 +69,6 @@ describe('Control group', () => {
         </ControlGroup>
       );
 
-      // The measurement ghost matches the test id too; the first match is the real control.
       expect(getAllByTestId('probe')[0]).toHaveTextContent('none');
     });
   });
@@ -123,7 +120,6 @@ describe('Control group', () => {
         </ControlGroup>
       );
 
-      // The measurement ghost matches the test id too; the first match is the real control.
       expect(getAllByTestId('a')[0]).toHaveTextContent('horizontal');
       expect(getAllByTestId('b')[0]).toHaveTextContent('horizontal');
     });
@@ -137,7 +133,6 @@ describe('Control group', () => {
         </ControlGroup>
       );
 
-      // The measurement ghost matches the test id too; the first match is the real control.
       expect(getAllByTestId('a')[0]).toHaveTextContent('vertical');
       expect(getAllByTestId('b')[0]).toHaveTextContent('vertical');
       expect(getAllByTestId('c')[0]).toHaveTextContent('vertical');
@@ -152,7 +147,6 @@ describe('Control group', () => {
         </ControlGroup>
       );
 
-      // The measurement ghost matches the test id too; the first match is the real control.
       expect(getAllByTestId('direction')[0]).toHaveTextContent('vertical');
     });
   });

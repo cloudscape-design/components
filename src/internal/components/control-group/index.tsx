@@ -49,7 +49,7 @@ export default function ControlGroup({
         <div
           key={key ? String(key) : index}
           className={clsx(
-            // Conditionally add the `control` class so that elements in the measurement ghost are excluded from test utils
+            // Only on real controls, not the ghost's copies, so test utils exclude the ghost.
             !isGhost && testUtilStyles.control,
             styles.control,
             styles[`control-${position}-${resolvedDirection}`]

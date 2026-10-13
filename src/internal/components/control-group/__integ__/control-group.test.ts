@@ -92,12 +92,11 @@ describe('Control Group responsiveness', () => {
       await page.keys(['Tab']);
       await expect(page.isFocused(thirdControl)).resolves.toBe(true);
 
-      // Tab through the remaining controls
       for (let i = 3; i < expectedControlCount; i++) {
         await page.keys(['Tab']);
       }
       await page.keys(['Tab']);
-      // After the last tab, the focus should exit the group and not be intercepted by elements inside the measurement ghost.
+      // Focus exits the group, not intercepted by the measurement ghost.
       await expect(page.isFocused('[data-testid="focus-after"]')).resolves.toBe(true);
     })
   );
