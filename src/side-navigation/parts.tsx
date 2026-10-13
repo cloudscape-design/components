@@ -681,20 +681,33 @@ function SectionGroup({
     }
   }, [collapsed]);
 
+  const showInfo = !collapsed && definition.info;
+
+  const title = (
+    <InternalBox
+      className={clsx(styles['section-group-title'], collapsed && styles['section-group-title--collapsed'])}
+      variant="h3"
+      fontSize={isOneTheme ? 'heading-s' : undefined}
+    >
+      <span
+        className={clsx(styles['label-text'], collapsed && styles['label-text--collapsed'])}
+        aria-hidden={collapsed ? true : undefined}
+      >
+        {definition.title}
+      </span>
+    </InternalBox>
+  );
+
   return (
     <div ref={sectionGroupRef} className={styles['section-group']}>
-      <InternalBox
-        className={clsx(styles['section-group-title'], collapsed && styles['section-group-title--collapsed'])}
-        variant="h3"
-        fontSize={isOneTheme ? 'heading-s' : undefined}
-      >
-        <span
-          className={clsx(styles['label-text'], collapsed && styles['label-text--collapsed'])}
-          aria-hidden={collapsed ? true : undefined}
-        >
-          {definition.title}
-        </span>
-      </InternalBox>
+      {showInfo ? (
+        <div className={styles['section-group-title-with-info']}>
+          {title}
+          <span className={clsx(styles.info, testUtilStyles.info)}>{definition.info}</span>
+        </div>
+      ) : (
+        title
+      )}
       <NavigationItemsList
         variant="section-group"
         items={definition.items}
@@ -876,7 +889,13 @@ function ExpandableLinkGroup({
       __hideExpandIcon={!!collapsed}
       headerText={
         <Link
-          definition={{ type: 'link', href: definition.href, text: definition.text, icon: definition.icon }}
+          definition={{
+            type: 'link',
+            href: definition.href,
+            text: definition.text,
+            info: definition.info,
+            icon: definition.icon,
+          }}
           fireFollow={onHeaderFollow}
           fireChange={fireChange}
           activeHref={activeHref}

@@ -72,6 +72,7 @@ export interface SideNavigationProps extends BaseComponentProps {
    * You can nest sections, links, link groups and expandable link groups within a section group depending on your information architecture needs.
    * - `type`: `'section-group'`.
    * - `title` (string) - Specifies the text to display as a title of the section group.
+   * - `info` (ReactNode) - Enables you to display content next to the section group title.
    * - `items` (array) - Specifies the content of the section header group. You can use `Section`, `Link`, `LinkGroup`, `ExpandableLinkGroup`.
    *
    * #### LinkGroup
@@ -94,6 +95,7 @@ export interface SideNavigationProps extends BaseComponentProps {
    * - `href` (string) - Specifies the `href` of the group link.
    * - `defaultExpanded` (boolean) - Specifies whether the group should be expanded by default.
    *    If not explicitly set, the group is collapsed by default, unless one of the nested links is active.
+   * - `info` (ReactNode) - Enables you to display content next to the group link.
    * - `items` (array) - Specifies the content of the section. You can use any valid item from this list.
    *     Although there is no technical limitation to the nesting level,
    *     our UX recommendation is to use only one level.
@@ -178,6 +180,7 @@ export namespace SideNavigationProps {
   export interface SectionGroup {
     type: 'section-group';
     title: string;
+    info?: React.ReactNode;
     items: ReadonlyArray<Section | Link | LinkGroup | ExpandableLinkGroup>;
   }
   export interface LinkGroup {
@@ -193,6 +196,7 @@ export namespace SideNavigationProps {
     type: 'expandable-link-group';
     text: string;
     href: string;
+    info?: React.ReactNode;
     items: ReadonlyArray<Item>;
     defaultExpanded?: boolean;
     icon?: React.ReactNode;
