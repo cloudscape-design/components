@@ -166,7 +166,7 @@ describe('Control group', () => {
   });
 
   test('omits the inline label and aria-labelledby when inlineLabelText is not set', () => {
-    const { getByRole } = render(
+    const { container, getByRole } = render(
       <ControlGroup>
         <input data-testid="alpha" />
         <input data-testid="beta" />
@@ -174,5 +174,6 @@ describe('Control group', () => {
     );
 
     expect(getByRole('group').getAttribute('aria-labelledby')).toBeNull();
+    expect(findControlGroup(container)?.findInlineLabel()).toBeNull();
   });
 });
