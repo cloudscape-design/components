@@ -6,6 +6,7 @@ import {
   ActionCard,
   Alert,
   AnchorNavigation,
+  AnnotationContext,
   AppLayout,
   AppLayoutToolbar,
   AreaChart,
@@ -21,6 +22,8 @@ import {
   Calendar,
   Cards,
   Checkbox,
+  CodeEditor,
+  CollectionPreferences,
   ColumnLayout,
   Container,
   ContentLayout,
@@ -30,6 +33,7 @@ import {
   DateRangePicker,
   Dialog,
   Divider,
+  Drawer,
   ExpandableSection,
   FileDropzone,
   FileInput,
@@ -41,22 +45,30 @@ import {
   Grid,
   Header,
   HelpPanel,
+  Hotspot,
   Icon,
+  IconProvider,
   Input,
   ItemCard,
   KeyValuePairs,
   LineChart,
   Link,
   List,
+  LiveRegion,
   MixedLineBarChart,
+  Modal,
   Multiselect,
+  NavigableGroup,
   Pagination,
+  PanelLayout,
   PieChart,
+  Popover,
   ProgressBar,
   PromptInput,
   PropertyFilter,
   RadioButton,
   RadioGroup,
+  S3ResourceSelector,
   SegmentedControl,
   Select,
   SideNavigation,
@@ -64,6 +76,7 @@ import {
   Slider,
   SpaceBetween,
   Spinner,
+  SplitPanel,
   StatusIndicator,
   Steps,
   Table,
@@ -80,15 +93,26 @@ import {
   TokenGroup,
   TopNavigation,
   TreeView,
+  TruncatedText,
+  TutorialPanel,
+  Wizard,
 } from '~components';
 import Dropdown from '~components/dropdown/internal';
 import Option from '~components/internal/components/option';
 import OptionsList from '~components/internal/components/options-list';
 import SelectableItem from '~components/internal/components/selectable-item';
+import PopoverArrow from '~components/popover/arrow';
+import PopoverBody from '~components/popover/body';
 
 import { SimplePage } from '../app/templates';
+import { i18nStrings as codeEditorI18nStrings, themes as codeEditorThemes } from '../code-editor/base-props';
 import { Heroshot } from '../common/heroshot';
+import { annotationContextStrings, tutorialPanelStrings } from '../onboarding/i18n';
+import tutorialData from '../onboarding/tutorials';
 import { IframeWrapper } from '../utils/iframe-wrapper';
+
+// @ts-expect-error The generated style map does not publish a TypeScript declaration.
+import popoverStyles from '~components/popover/styles.css.js';
 
 export default function HeroshotOverviewPage() {
   return (
@@ -112,6 +136,22 @@ export default function HeroshotOverviewPage() {
 
         <Heroshot id="anchor-navigation" label="AnchorNavigation" stretch={true}>
           <AnchorNavigation activeHref="#overview" anchors={anchors} />
+        </Heroshot>
+
+        <Heroshot id="annotation-context" label="AnnotationContext" padding={0} contentSize={ANNOTATION_CONTENT_SIZE}>
+          <IframeWrapper
+            id="heroshot-annotation-context"
+            size={ANNOTATION_CONTENT_SIZE}
+            AppComponent={AnnotationContextHeroshot}
+          />
+        </Heroshot>
+
+        <Heroshot id="hands-on-tutorials" label="Tutorial components" padding={0} contentSize={ANNOTATION_CONTENT_SIZE}>
+          <IframeWrapper
+            id="heroshot-hands-on-tutorials"
+            size={ANNOTATION_CONTENT_SIZE}
+            AppComponent={AnnotationContextHeroshot}
+          />
         </Heroshot>
 
         <Heroshot id="app-layout" label="AppLayout" padding={0} contentSize={LAYOUT_CONTENT_SIZE}>
@@ -162,6 +202,26 @@ export default function HeroshotOverviewPage() {
         </Heroshot>
 
         <Heroshot id="bar-chart" label="BarChart" stretch={true}>
+          <BarChart
+            height={110}
+            hideFilter={true}
+            hideLegend={true}
+            xScaleType="categorical"
+            series={[{ title: 'Requests', type: 'bar', data: timeSeries }]}
+          />
+        </Heroshot>
+
+        <Heroshot id="charts" label="Charts" stretch={true}>
+          <BarChart
+            height={110}
+            hideFilter={true}
+            hideLegend={true}
+            xScaleType="categorical"
+            series={[{ title: 'Requests', type: 'bar', data: timeSeries }]}
+          />
+        </Heroshot>
+
+        <Heroshot id="charts-legacy" label="Charts (Legacy)" stretch={true}>
           <BarChart
             height={110}
             hideFilter={true}
@@ -222,7 +282,7 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot id="calendar" label="Calendar" stretch={true}>
+        <Heroshot id="calendar" label="Calendar">
           <Calendar value="2026-10-06" onChange={noop} />
         </Heroshot>
 
@@ -249,6 +309,23 @@ export default function HeroshotOverviewPage() {
               Enable termination protection
             </Checkbox>
           </SpaceBetween>
+        </Heroshot>
+
+        <Heroshot id="code-editor" label="CodeEditor" stretch={true} padding={8}>
+          <CodeEditorHeroshot />
+        </Heroshot>
+
+        <Heroshot
+          id="collection-preferences"
+          label="CollectionPreferences"
+          padding={0}
+          contentSize={OVERLAY_CONTENT_SIZE}
+        >
+          <IframeWrapper
+            id="heroshot-collection-preferences"
+            size={OVERLAY_CONTENT_SIZE}
+            AppComponent={CollectionPreferencesHeroshot}
+          />
         </Heroshot>
 
         <Heroshot id="column-layout" label="ColumnLayout" stretch={true}>
@@ -332,6 +409,33 @@ export default function HeroshotOverviewPage() {
           </SpaceBetween>
         </Heroshot>
 
+        <Heroshot id="drawer" label="Drawer" align="start" stretch={true} padding={0}>
+          <Drawer open={true} header="Instance details" closeAction={{ ariaLabel: 'Close drawer' }}>
+            <KeyValuePairs items={[{ label: 'Instance type', value: 't3.medium' }]} />
+          </Drawer>
+        </Heroshot>
+
+        <Heroshot id="dropdown" label="Dropdown" align="start">
+          <Dropdown
+            open={true}
+            minWidth="trigger"
+            // The frame clips its overflow, so without this the dropdown would shrink to the
+            // remaining space inside the frame and the list would become scrollable.
+            stretchHeight={true}
+            onOutsideClick={noop}
+            onMouseDown={noop}
+            trigger={<Button>Actions</Button>}
+            content={
+              // SelectableItem renders `role="option"`, so the list has to be a listbox: inside a
+              // `role="menu"` the rows would be invalid children without a required parent.
+              <OptionsList open={true} statusType="finished" role="listbox" ariaLabel="Actions">
+                <SelectableItem>View details</SelectableItem>
+                <SelectableItem>Delete</SelectableItem>
+              </OptionsList>
+            }
+          />
+        </Heroshot>
+
         <Heroshot id="expandable-section" label="ExpandableSection" stretch={true}>
           <ExpandableSection headerText="Advanced settings" defaultExpanded={true}>
             <KeyValuePairs items={[{ label: 'Termination protection', value: 'Enabled' }]} />
@@ -339,6 +443,10 @@ export default function HeroshotOverviewPage() {
         </Heroshot>
 
         <Heroshot id="file-dropzone" label="FileDropzone" stretch={true}>
+          <FileDropzone onChange={noop}>Drop files to upload</FileDropzone>
+        </Heroshot>
+
+        <Heroshot id="file-uploading-components" label="File uploading components" stretch={true}>
           <FileDropzone onChange={noop}>Drop files to upload</FileDropzone>
         </Heroshot>
 
@@ -427,6 +535,17 @@ export default function HeroshotOverviewPage() {
           </HelpPanel>
         </Heroshot>
 
+        <Heroshot id="hotspot" label="Hotspot" padding={0} contentSize={HOTSPOT_CONTENT_SIZE}>
+          <div style={{ transform: 'translateY(-66px)' }}>
+            <IframeWrapper
+              id="heroshot-hotspot"
+              size={HOTSPOT_CONTENT_SIZE}
+              AppComponent={HotspotHeroshot}
+              transparentBackground={true}
+            />
+          </div>
+        </Heroshot>
+
         <Heroshot id="icon" label="Icon">
           <SpaceBetween size="s" direction="horizontal">
             <Icon name="settings" size="big" />
@@ -434,6 +553,12 @@ export default function HeroshotOverviewPage() {
             <Icon name="status-warning" size="big" variant="warning" />
             <Icon name="folder" size="big" />
           </SpaceBetween>
+        </Heroshot>
+
+        <Heroshot id="icon-provider" label="IconProvider">
+          <IconProvider icons={{ settings: customSettingsIcon }}>
+            <Button iconName="settings">Settings</Button>
+          </IconProvider>
         </Heroshot>
 
         <Heroshot id="input" label="Input" stretch={true}>
@@ -482,12 +607,28 @@ export default function HeroshotOverviewPage() {
           </SpaceBetween>
         </Heroshot>
 
-        <Heroshot id="list" label="List" align="start" stretch={true}>
+        <Heroshot id="list" label="List" stretch={true}>
           <List
-            ariaLabel="Instances"
-            items={instances}
-            renderItem={item => ({ id: item.id, content: item.id, secondaryContent: item.type })}
+            ariaLabel="Resources"
+            items={
+              [
+                { id: 'instances', content: 'Instances', iconName: 'multiscreen' },
+                { id: 'volumes', content: 'Volumes', iconName: 'view-horizontal' },
+                { id: 'security-groups', content: 'Security groups', iconName: 'security' },
+              ] as const
+            }
+            renderItem={item => ({
+              id: item.id,
+              content: item.content,
+              icon: <Icon name={item.iconName} ariaLabel={`${item.content} icon`} />,
+            })}
           />
+        </Heroshot>
+
+        <Heroshot id="live-region" label="LiveRegion">
+          <LiveRegion>
+            <StatusIndicator type="success">Deployment completed</StatusIndicator>
+          </LiveRegion>
         </Heroshot>
 
         <Heroshot id="mixed-line-bar-chart" label="MixedLineBarChart" stretch={true}>
@@ -503,6 +644,10 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
+        <Heroshot id="modal" label="Modal" padding={0} contentSize={OVERLAY_CONTENT_SIZE}>
+          <IframeWrapper id="heroshot-modal" size={OVERLAY_CONTENT_SIZE} AppComponent={ModalHeroshot} />
+        </Heroshot>
+
         <Heroshot id="multiselect" label="Multiselect" stretch={true}>
           <FormField label="Security groups">
             <Multiselect
@@ -514,6 +659,53 @@ export default function HeroshotOverviewPage() {
               onChange={noop}
             />
           </FormField>
+        </Heroshot>
+
+        <Heroshot id="navigable-group" label="NavigableGroup">
+          <div role="toolbar" aria-label="Resource actions">
+            <NavigableGroup navigationDirection="horizontal" getItemKey={element => element.id}>
+              <SpaceBetween direction="horizontal" size="xs">
+                <Button id="add" iconName="add-plus">
+                  Add
+                </Button>
+                <Button id="edit" iconName="edit">
+                  Edit
+                </Button>
+                <Button id="remove" iconName="remove">
+                  Delete
+                </Button>
+              </SpaceBetween>
+            </NavigableGroup>
+          </div>
+        </Heroshot>
+
+        <Heroshot id="panel-layout" label="PanelLayout" stretch={true} padding={8}>
+          <PanelLayout
+            display="all"
+            panelPosition="side-end"
+            resizable={true}
+            defaultPanelSize={140}
+            minPanelSize={110}
+            maxPanelSize={180}
+            i18nStrings={{
+              resizeHandleAriaLabel: 'Resize panels',
+              resizeHandleTooltipText: 'Resize panels',
+            }}
+            panelContent={
+              <div style={{ padding: 12 }}>
+                <div>Panel content</div>
+                <div>Selected resource</div>
+                <div>Details appear in this panel.</div>
+              </div>
+            }
+            mainContent={
+              <div style={{ padding: 12 }}>
+                <div>Main content</div>
+                <div>Resource list</div>
+                <div>Choose an item to view its details.</div>
+              </div>
+            }
+          />
         </Heroshot>
 
         <Heroshot id="pagination" label="Pagination">
@@ -532,6 +724,24 @@ export default function HeroshotOverviewPage() {
             innerMetricDescription="instances"
             data={pieData}
           />
+        </Heroshot>
+
+        <Heroshot id="pie-chart-legacy" label="Pie and donut charts (Legacy)" stretch={true}>
+          <PieChart
+            variant="donut"
+            size="small"
+            hideFilter={true}
+            hideLegend={true}
+            hideTitles={true}
+            hideDescriptions={true}
+            innerMetricValue="128"
+            innerMetricDescription="instances"
+            data={pieData}
+          />
+        </Heroshot>
+
+        <Heroshot id="popover" label="Popover" stretch={true} padding={0}>
+          <StaticPopoverHeroshot />
         </Heroshot>
 
         <Heroshot id="progress-bar" label="ProgressBar" stretch={true}>
@@ -573,6 +783,16 @@ export default function HeroshotOverviewPage() {
               { value: 'on-demand', label: 'On-demand' },
               { value: 'spot', label: 'Spot' },
             ]}
+          />
+        </Heroshot>
+
+        <Heroshot id="s3-resource-selector" label="S3ResourceSelector" stretch={true}>
+          <S3ResourceSelector
+            resource={{ uri: 's3://example-bucket/logs/' }}
+            fetchBuckets={() => Promise.resolve([])}
+            fetchObjects={() => Promise.resolve([])}
+            fetchVersions={() => Promise.resolve([])}
+            selectableItemsTypes={['buckets', 'objects']}
           />
         </Heroshot>
 
@@ -629,6 +849,10 @@ export default function HeroshotOverviewPage() {
 
         <Heroshot id="spinner" label="Spinner">
           <Spinner size="large" />
+        </Heroshot>
+
+        <Heroshot id="split-panel" label="SplitPanel" padding={0} contentSize={LAYOUT_CONTENT_SIZE}>
+          <IframeWrapper id="heroshot-split-panel" size={LAYOUT_CONTENT_SIZE} AppComponent={SplitPanelHeroshot} />
         </Heroshot>
 
         <Heroshot id="status-indicator" label="StatusIndicator">
@@ -732,12 +956,13 @@ export default function HeroshotOverviewPage() {
         </Heroshot>
 
         <Heroshot id="token" label="Token">
-          <Token
-            label="us-east-1"
-            description="US East (N. Virginia)"
-            dismissLabel="Remove us-east-1"
-            onDismiss={noop}
-          />
+          {/*
+            Token sets `block-size: 100%` so that tokens in a group match the tallest one. The wrapper
+            gives it an auto-height parent, so it renders at its own height instead of filling the frame.
+          */}
+          <div>
+            <Token label="us-east-1" dismissLabel="Remove us-east-1" onDismiss={noop} />
+          </div>
         </Heroshot>
 
         <Heroshot id="token-group" label="TokenGroup">
@@ -749,6 +974,10 @@ export default function HeroshotOverviewPage() {
               { label: 'eu-west-1', dismissLabel: 'Remove eu-west-1' },
             ]}
           />
+        </Heroshot>
+
+        <Heroshot id="tooltip" label="Tooltip" stretch={true} padding={0}>
+          <StaticTooltipHeroshot />
         </Heroshot>
 
         <Heroshot id="top-navigation" label="TopNavigation" stretch={true} padding={0}>
@@ -770,6 +999,52 @@ export default function HeroshotOverviewPage() {
             getItemId={item => item.id}
             getItemChildren={item => item.children}
             renderItem={item => ({ content: item.label })}
+          />
+        </Heroshot>
+
+        <Heroshot id="truncated-text" label="TruncatedText" stretch={true}>
+          <div style={{ maxInlineSize: 220 }}>
+            <TruncatedText>arn:aws:lambda:us-east-1:123456789012:function:production-handler</TruncatedText>
+          </div>
+        </Heroshot>
+
+        <Heroshot id="tutorial-panel" label="TutorialPanel" align="start" stretch={true}>
+          <TutorialPanel tutorials={previewTutorials} i18nStrings={previewTutorialPanelStrings} />
+        </Heroshot>
+
+        <Heroshot
+          id="wizard"
+          label="Wizard"
+          align="start"
+          stretch={true}
+          padding={8}
+          contentSize={OVERLAY_CONTENT_SIZE}
+        >
+          <Wizard
+            activeStepIndex={0}
+            steps={[
+              {
+                title: 'Instance details',
+                content: (
+                  <SpaceBetween size="s">
+                    <FormField label="Name">
+                      <Input value="my-instance" onChange={noop} />
+                    </FormField>
+                    <FormField label="Instance type">
+                      <Select
+                        selectedOption={{ label: 't3.medium', value: 't3.medium' }}
+                        options={[]}
+                        onChange={noop}
+                      />
+                    </FormField>
+                  </SpaceBetween>
+                ),
+              },
+              { title: 'Network settings', content: 'Choose a VPC and subnet.' },
+              { title: 'Storage', content: 'Configure the root volume.' },
+              { title: 'Review and create', content: 'Review the configuration.' },
+            ]}
+            i18nStrings={{ cancelButton: 'Cancel', nextButton: 'Next', previousButton: 'Previous' }}
           />
         </Heroshot>
       </div>
@@ -949,5 +1224,281 @@ function OpenAutosuggest() {
         </OptionsList>
       }
     />
+  );
+}
+
+const sourceTutorial = tutorialData(noop)[0];
+const previewTutorial = {
+  ...sourceTutorial,
+  title: 'Create a bucket',
+  description: 'Create and configure an Amazon S3 bucket.',
+  tasks: [
+    {
+      ...sourceTutorial.tasks[0],
+      title: 'Bucket settings',
+      steps: [
+        {
+          ...sourceTutorial.tasks[0].steps[0],
+          title: 'Name the bucket',
+          content: 'Enter a unique bucket name.',
+          hotspotId: 'preview-annotation',
+        },
+        {
+          ...sourceTutorial.tasks[0].steps[2],
+          title: 'Choose a Region',
+          content: 'Select a Region for the bucket.',
+          hotspotId: 'preview-hotspot',
+        },
+      ],
+    },
+  ],
+};
+const previewTutorials = [previewTutorial];
+const previewTutorialPanelStrings = {
+  ...tutorialPanelStrings,
+  tutorialListDescription: 'Follow a short guided tutorial.',
+};
+const ANNOTATION_CONTENT_SIZE = { width: 350, height: 172 };
+const HOTSPOT_CONTENT_SIZE = { width: 300, height: 147 };
+const OVERLAY_CONTENT_SIZE = { width: 800, height: 393 };
+
+const customSettingsIcon = (
+  <svg viewBox="0 0 16 16" focusable={false}>
+    <circle cx="8" cy="8" r="5" fill="none" stroke="currentColor" strokeWidth="2" />
+    <circle cx="8" cy="8" r="1.5" fill="currentColor" />
+  </svg>
+);
+
+function AnnotationContextHeroshot() {
+  return (
+    <AnnotationContext
+      currentTutorial={previewTutorial}
+      i18nStrings={annotationContextStrings}
+      onStartTutorial={noop}
+      onExitTutorial={noop}
+    >
+      <div style={{ inlineSize: 150, padding: '130px 10px 0' }}>
+        <Hotspot hotspotId={previewTutorial.tasks[0].steps[0].hotspotId} direction="top">
+          <Input value="" placeholder="Bucket name" onChange={noop} />
+        </Hotspot>
+      </div>
+    </AnnotationContext>
+  );
+}
+
+function HotspotHeroshot() {
+  return (
+    <AnnotationContext
+      currentTutorial={previewTutorial}
+      i18nStrings={annotationContextStrings}
+      onStartTutorial={noop}
+      onExitTutorial={noop}
+    >
+      <div style={{ inlineSize: 150, padding: '110px 5px 0' }}>
+        <Hotspot hotspotId={previewTutorial.tasks[0].steps[0].hotspotId} direction="top">
+          <Input value="" placeholder="Bucket name" onChange={noop} />
+        </Hotspot>
+      </div>
+    </AnnotationContext>
+  );
+}
+
+function CodeEditorHeroshot() {
+  const [ace, setAce] = React.useState<any>();
+
+  React.useEffect(() => {
+    let active = true;
+    import('ace-builds').then(aceModule => {
+      if (!active) {
+        return;
+      }
+      aceModule.config.set('basePath', './ace/');
+      aceModule.config.set('themePath', './ace/');
+      aceModule.config.set('modePath', './ace/');
+      aceModule.config.set('workerPath', './ace/');
+      aceModule.config.set('loadWorkerFromBlob', false);
+      aceModule.config.set('useStrictCSP', true);
+      setAce(aceModule);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  return (
+    <CodeEditor
+      ace={ace}
+      value="const region = 'us-east-1';"
+      language="javascript"
+      editorContentHeight={80}
+      loading={!ace}
+      i18nStrings={codeEditorI18nStrings}
+      themes={codeEditorThemes}
+      preferences={{ theme: 'dawn', wrapLines: true }}
+      onDelayedChange={noop}
+      onPreferencesChange={noop}
+    />
+  );
+}
+
+/**
+ * IframeWrapper isolates the modal's portal target, but Modal's scroll-lock hook still uses the
+ * parent document, which would stop the gallery below from scrolling.
+ */
+function useUnlockedGalleryScroll() {
+  React.useEffect(() => {
+    const unlockGallery = () => {
+      const modalOpenClass = Array.from(document.body.classList).find(className => className.includes('modal-open'));
+      if (modalOpenClass) {
+        document.body.classList.remove(modalOpenClass);
+      }
+    };
+    const observer = new MutationObserver(unlockGallery);
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    unlockGallery();
+    return () => observer.disconnect();
+  }, []);
+}
+
+function ModalHeroshot() {
+  useUnlockedGalleryScroll();
+
+  return (
+    <Modal
+      visible={true}
+      header="Delete instance"
+      closeAriaLabel="Close modal"
+      footer={<Button variant="primary">Delete</Button>}
+    >
+      This action cannot be undone.
+    </Modal>
+  );
+}
+
+/**
+ * The preferences modal can only be opened from the trigger, so the heroshot clicks it on mount to
+ * capture the preferences themselves instead of the icon alone.
+ */
+function CollectionPreferencesHeroshot() {
+  const triggerWrapperRef = React.useRef<HTMLDivElement>(null);
+  const [triggerHidden, setTriggerHidden] = React.useState(false);
+  useUnlockedGalleryScroll();
+
+  React.useEffect(() => {
+    triggerWrapperRef.current?.querySelector('button')?.click();
+    setTriggerHidden(true);
+  }, []);
+
+  return (
+    // The modal is rendered in a portal, so taking the trigger out of the layout leaves the
+    // preferences as the only content in the frame instead of a stray icon in its corner. The
+    // trigger is hidden only after it has been clicked, because `display: none` suppresses the
+    // click event itself.
+    <div ref={triggerWrapperRef} style={{ display: triggerHidden ? 'none' : undefined }}>
+      <CollectionPreferences
+        title="Preferences"
+        confirmLabel="Confirm"
+        cancelLabel="Cancel"
+        preferences={{ pageSize: 20, wrapLines: true }}
+        pageSizePreference={{
+          title: 'Page size',
+          options: [
+            { value: 10, label: '10 resources' },
+            { value: 20, label: '20 resources' },
+            { value: 50, label: '50 resources' },
+          ],
+        }}
+        wrapLinesPreference={{ label: 'Wrap lines', description: 'Wrap lines to see all of the text.' }}
+      />
+    </div>
+  );
+}
+
+function StaticPopoverHeroshot() {
+  return (
+    <div style={{ position: 'relative', blockSize: '100%', textAlign: 'center', paddingBlockStart: 8 }}>
+      <Popover content={null} dismissButton={false}>
+        View status
+      </Popover>
+      <div
+        style={{
+          position: 'absolute',
+          insetBlockStart: 44,
+          insetInlineStart: 18,
+          inlineSize: 310,
+          textAlign: 'start',
+        }}
+      >
+        <div style={{ position: 'relative' }}>
+          <div
+            className={`${popoverStyles['container-arrow']} ${popoverStyles['container-arrow-position-bottom-center']}`}
+            aria-hidden={true}
+          >
+            <PopoverArrow position="bottom-center" />
+          </div>
+          <div className={`${popoverStyles['container-body']} ${popoverStyles['container-body-size-medium']}`}>
+            <PopoverBody
+              dismissButton={false}
+              dismissAriaLabel={undefined}
+              onDismiss={undefined}
+              header="Instance status"
+            >
+              <span data-testid="popover-preview-content">The instance is running normally.</span>
+            </PopoverBody>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SplitPanelHeroshot() {
+  return (
+    <AppLayout
+      navigationHide={true}
+      toolsHide={true}
+      splitPanelOpen={true}
+      onSplitPanelToggle={noop}
+      splitPanelPreferences={{ position: 'side' }}
+      splitPanel={
+        <SplitPanel header="Instance details" hidePreferencesButton={true}>
+          <KeyValuePairs items={[{ label: 'Instance type', value: 't3.medium' }]} />
+        </SplitPanel>
+      }
+      content={
+        <Container header={<Header variant="h1">Instances</Header>}>Select an instance to view details.</Container>
+      }
+    />
+  );
+}
+
+function StaticTooltipHeroshot() {
+  return (
+    <div style={{ position: 'relative', blockSize: '100%', textAlign: 'center', paddingBlockStart: 20 }}>
+      <Button>Instance type</Button>
+      <div
+        style={{
+          position: 'absolute',
+          insetBlockStart: 66,
+          insetInlineStart: 53,
+          inlineSize: 240,
+          textAlign: 'start',
+        }}
+      >
+        <div style={{ position: 'relative' }}>
+          <div
+            className={`${popoverStyles['container-arrow']} ${popoverStyles['container-arrow-position-bottom-center']}`}
+            aria-hidden={true}
+          >
+            <PopoverArrow position="bottom-center" />
+          </div>
+          <div className={`${popoverStyles['container-body']} ${popoverStyles['container-body-size-medium']}`}>
+            <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={undefined} header={undefined}>
+              Choose the compute capacity for this instance.
+            </PopoverBody>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
