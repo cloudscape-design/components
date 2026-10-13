@@ -13,10 +13,9 @@ export type ControlGroupDirection = GroupedControlDirection | 'auto';
 export interface ControlGroupProps extends BaseComponentProps {
   children?: React.ReactNode;
   /**
-   * The axis along which the controls are laid out.
-   * - `'auto'` (default): measures the available width and lays the controls out as a single
-   *   row when they fit, stacking them vertically when they do not.
-   * - `'horizontal'` / `'vertical'`: forces that axis and skips measurement.
+   * The axis along which the controls are laid out (`horizontal`, `vertical` or `auto`).
+   * When set to `auto` (default), the component decides the direction based on whether it
+   * fits in its container's width.
    */
   direction?: ControlGroupDirection;
   inlineLabelText?: string;
