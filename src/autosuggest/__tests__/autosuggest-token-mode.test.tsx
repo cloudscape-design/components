@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { act, render } from '@testing-library/react';
 
 import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
+import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import Autosuggest, { AutosuggestProps } from '../../../lib/components/autosuggest';
@@ -434,6 +436,21 @@ describe('overflow dropdown', () => {
     const dropdownDismiss = (index: number) => dropdown()!.findToken(index)!.findDismiss()!.getElement();
     return { ...result, trigger, dropdown, dropdownDismiss };
   }
+
+  test('labels the trigger without announcing a listbox popup', () => {
+    const { trigger } = renderOverflow({ i18nStrings: { tokenOverflowAriaLabel: count => `${count} more` } });
+    expect(trigger()).toHaveAttribute('aria-label', '3 more');
+    expect(trigger()).not.toHaveAttribute('aria-haspopup');
+  });
+
+  test('reports expand and collapse analytics on the trigger', () => {
+    activateAnalyticsMetadata(true);
+    const { trigger } = renderOverflow();
+    expect(getGeneratedAnalyticsMetadata(trigger())).toEqual(expect.objectContaining({ action: 'expand' }));
+    act(() => trigger().click());
+    expect(getGeneratedAnalyticsMetadata(trigger())).toEqual(expect.objectContaining({ action: 'collapse' }));
+    activateAnalyticsMetadata(false);
+  });
 
   test('shows the number of hidden tokens on the trigger', () => {
     const { trigger, wrapper } = renderOverflow();

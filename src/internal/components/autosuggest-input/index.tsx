@@ -37,9 +37,9 @@ import { getDropdownMinWidth } from '../../utils/get-dropdown-min-width';
 import { getInputStylesCss } from '../../utils/input-styles';
 import { nodeBelongs } from '../../utils/node-belongs';
 import { processAttributes } from '../../utils/with-native-attributes';
+import ButtonTrigger from '../button-trigger';
 import { getGroupedControlClassNames } from '../control-group/grouped-control-styles';
 import { InlineTokens, InlineTokensRef } from './inline-tokens';
-import { OverflowTriggerContent } from './overflow-dropdown';
 import { useTokenOverflow } from './use-token-overflow';
 
 import styles from './styles.css.js';
@@ -146,7 +146,7 @@ const AutosuggestInput = React.forwardRef(
     const leadingIconRef = useRef<HTMLSpanElement>(null);
     const inputWrapperRef = useRef<HTMLDivElement>(null);
     const measureRef = useRef<HTMLDivElement>(null);
-    const measureTriggerRef = useRef<HTMLSpanElement>(null);
+    const measureTriggerRef = useRef<HTMLButtonElement>(null);
     const inlineTokensRef = useRef<InlineTokensRef>(null);
 
     const [triggerWidth, setTriggerWidth] = useState<number | null>(null);
@@ -535,7 +535,7 @@ const AutosuggestInput = React.forwardRef(
           'aria-labelledby': formFieldContext.ariaLabelledby,
         })}
       >
-        {isTokenMode && (
+        {isTokenMode ? (
           <>
             <InternalLiveRegion tagName="span" hidden={true} assertive={true} delay={1}>
               {announcement}
@@ -546,16 +546,14 @@ const AutosuggestInput = React.forwardRef(
                   <InternalToken label={token.value} icon={token.icon} variant="inline" onDismiss={() => {}} />
                 </span>
               ))}
-              <span ref={measureTriggerRef} className={styles['token-overflow-trigger']}>
-                <OverflowTriggerContent hiddenCount={tokenList.length} open={false} />
-              </span>
+              <ButtonTrigger ref={measureTriggerRef} compact={true} tabIndex={-1} ariaHasPopup={false}>
+                {`+${tokenList.length}`}
+              </ButtonTrigger>
+            </div>
+            <div ref={containerRef} className={styles['token-field-container']}>
+              {dropdown}
             </div>
           </>
-        )}
-        {isTokenMode ? (
-          <div ref={containerRef} className={styles['token-field-container']}>
-            {dropdown}
-          </div>
         ) : (
           dropdown
         )}

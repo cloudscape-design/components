@@ -71,8 +71,18 @@ export function useTokenOverflow({
     setVisibleCount(
       totalWidth <= budget ? tokenWidths.length : countFittingFromEnd(tokenWidths, budget - triggerWidth - gap, gap)
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enabled, tokenCount, tokenContentKey, containerWidth, layoutKey]);
+  }, [
+    enabled,
+    tokenCount,
+    tokenContentKey,
+    containerWidth,
+    layoutKey,
+    fieldRef,
+    measureRef,
+    measureTriggerRef,
+    leadingIconRef,
+    inputWrapperRef,
+  ]);
 
   return { containerRef, visibleCount: Math.min(visibleCount, tokenCount) };
 }

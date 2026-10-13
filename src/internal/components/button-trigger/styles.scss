@@ -127,7 +127,7 @@ $icon-offset: awsui.$space-xxxs;
     text-decoration: none;
   }
 
-  &:not(.in-filtering-token) {
+  &:not(.in-filtering-token):not(.compact) {
     @include focus-visible.when-visible {
       @include styles.form-focus-element();
     }
@@ -158,6 +158,29 @@ $icon-offset: awsui.$space-xxxs;
   &.inline-tokens {
     // Remove default paddings and just rely on center alignment of the content
     padding-block: 0;
+  }
+
+  &.compact {
+    @include styles.font-body-s;
+    inline-size: auto;
+    justify-content: center;
+    column-gap: awsui.$space-xxs;
+    box-sizing: border-box;
+    block-size: token.$token-max-height-inline;
+    min-block-size: unset;
+    padding-block: 0;
+    padding-inline: awsui.$space-xs;
+    white-space: nowrap;
+    @include styles.logical-radius(awsui.$border-radius-token-inline);
+
+    > .arrow {
+      position: static;
+      display: flex;
+    }
+
+    @include focus-visible.when-visible {
+      @include styles.focus-highlight(0px);
+    }
   }
 
   &.grouped {

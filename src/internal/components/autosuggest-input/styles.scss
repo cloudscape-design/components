@@ -7,8 +7,6 @@
 @use '../../../internal/styles' as styles;
 @use '../../../internal/styles/foundation' as foundation;
 @use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
-@use '../../../token/constants' as token-constants;
 
 .root {
   // Used in test-utils.
@@ -38,16 +36,16 @@
   padding-inline-start: styles.$control-padding-horizontal;
   padding-inline-end: 0;
   column-gap: awsui.$space-xxs;
-  background-color: awsui.$color-background-input-default;
-  border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
-  border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
   @include styles.logical-radius(styles.$control-border-radius);
+  @include styles.input-default-styles;
+
+  &:hover {
+    @include styles.input-hover-styles;
+  }
 
   &:focus-within {
-    @include styles.form-focus-element(
-      $border-color: var(#{custom-props.$styleBorderColorFocus}, awsui.$color-border-input-focused),
-      $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
-    );
+    background-color: var(#{custom-props.$styleBackgroundFocus}, awsui.$color-background-input-default);
+    @include styles.input-focus-styles;
   }
 
   &.token-field-disabled {
@@ -61,7 +59,8 @@
   }
 
   &.token-field-readonly {
-    @include styles.form-readonly-element();
+    box-shadow: var(#{custom-props.$styleBoxShadowReadonly});
+    @include styles.input-readonly-styles;
   }
 
   &.token-field-invalid {
@@ -129,45 +128,7 @@
 }
 
 .token-overflow-trigger {
-  @include styles.styles-reset;
-  @include styles.font-body-s;
-  @include styles.logical-radius(awsui.$border-radius-token-inline);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   flex-shrink: 0;
-  column-gap: awsui.$space-xxs;
-  box-sizing: border-box;
-  block-size: token-constants.$token-max-height-inline;
-  padding-inline: awsui.$space-xs;
-  border-block: awsui.$border-width-field solid awsui.$color-border-control-default;
-  border-inline: awsui.$border-width-field solid awsui.$color-border-control-default;
-  background-color: awsui.$color-background-control-default;
-  color: awsui.$color-text-body-default;
-  white-space: nowrap;
-
-  @include focus-visible.when-visible {
-    @include styles.focus-highlight(0px);
-  }
-
-  &:disabled {
-    border-color: awsui.$color-border-control-disabled;
-    background-color: awsui.$color-background-control-disabled;
-    color: awsui.$color-text-disabled;
-    cursor: auto;
-  }
-}
-
-.token-overflow-trigger-icon {
-  display: flex;
-  align-items: center;
-  @include styles.with-motion {
-    transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;
-  }
-}
-
-.token-overflow-trigger-icon-open {
-  transform: rotate(-180deg);
 }
 
 .overflow-dropdown {
@@ -177,7 +138,6 @@
 
 .overflow-dropdown-item {
   display: flex;
-  align-items: center;
   padding-block: awsui.$space-xxs;
   padding-inline: awsui.$space-xs;
 }

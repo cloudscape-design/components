@@ -5,9 +5,7 @@ import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import {
-  isThemeActive,
   SingleTabStopNavigationReset,
-  Theme,
   useMergeRefs,
   useSingleTabStopNavigation,
   useUniqueId,
@@ -15,12 +13,14 @@ import {
 
 import { AutosuggestProps } from '../../../autosuggest/interfaces';
 import InternalDropdown from '../../../dropdown/internal';
-import InternalIcon from '../../../icon/internal';
 import InternalToken from '../../../token/internal';
+import { BaseKeyDetail, CancelableEventHandler } from '../../../types/events';
 import { getBreakpointValue } from '../../breakpoints';
 import { useListFocusController } from '../../hooks/use-list-focus-controller';
+import { KeyCode } from '../../keycode';
 import { circleIndex } from '../../utils/circle-index';
 import handleKey from '../../utils/handle-key';
+import ButtonTrigger from '../button-trigger';
 
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
@@ -87,17 +87,14 @@ export function OverflowDropdown({
     onOpenChange(true);
   };
 
-  const onTriggerKeyDown = (event: React.KeyboardEvent) => {
-    handleKey(event as React.KeyboardEvent<HTMLElement>, {
-      onBlockEnd: () => {
-        event.preventDefault();
-        openAndFocus(0);
-      },
-      onBlockStart: () => {
-        event.preventDefault();
-        openAndFocus(tokens.length - 1);
-      },
-    });
+  const onTriggerKeyDown: CancelableEventHandler<BaseKeyDetail> = event => {
+    if (event.detail.keyCode === KeyCode.down) {
+      event.preventDefault();
+      openAndFocus(0);
+    } else if (event.detail.keyCode === KeyCode.up) {
+      event.preventDefault();
+      openAndFocus(tokens.length - 1);
+    }
   };
 
   const dismiss = (index: number) => {
@@ -139,20 +136,21 @@ export function OverflowDropdown({
         onEscape={() => close(true)}
         onOutsideClick={() => close(false)}
         trigger={
-          <button
+          <ButtonTrigger
             ref={mergedTriggerRef}
-            type="button"
+            compact={true}
             tabIndex={tabIndex}
             disabled={disabled}
+            pressed={open}
             className={clsx(styles['token-overflow-trigger'], testUtilStyles['token-overflow-trigger'])}
-            aria-expanded={open}
-            aria-controls={open ? dropdownId : undefined}
-            aria-label={tokenOverflowAriaLabel?.(tokens.length)}
+            ariaHasPopup={false}
+            ariaControls={open ? dropdownId : undefined}
+            ariaLabel={tokenOverflowAriaLabel?.(tokens.length)}
             onClick={() => onOpenChange(!open)}
             onKeyDown={onTriggerKeyDown}
           >
-            <OverflowTriggerContent hiddenCount={tokens.length} open={open} />
-          </button>
+            {`+${tokens.length}`}
+          </ButtonTrigger>
         }
         content={
           <SingleTabStopNavigationReset>
@@ -177,17 +175,5 @@ export function OverflowDropdown({
         }
       />
     </div>
-  );
-}
-
-export function OverflowTriggerContent({ hiddenCount, open }: { hiddenCount: number; open: boolean }) {
-  const isOneTheme = isThemeActive(Theme.OneTheme);
-  return (
-    <>
-      {`+${hiddenCount}`}
-      <span className={clsx(styles['token-overflow-trigger-icon'], open && styles['token-overflow-trigger-icon-open'])}>
-        <InternalIcon name={isOneTheme ? 'angle-down' : 'caret-down-filled'} size={isOneTheme ? 'x-small' : 'normal'} />
-      </span>
-    </>
   );
 }
