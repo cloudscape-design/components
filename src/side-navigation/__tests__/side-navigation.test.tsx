@@ -364,6 +364,45 @@ describe('SideNavigation', () => {
       expect(wrapper.findItemByIndex(1)?.findSection()?.findHeader()?.getElement()).toHaveTextContent('Section');
     });
 
+    it('has an additional info outside the expand button when "info" property is specified', () => {
+      const onChange = jest.fn();
+      const wrapper = renderSideNavigation({
+        onChange,
+        items: [
+          {
+            type: 'section',
+            text: 'Section',
+            info: <Badge>Additional info</Badge>,
+            items: [{ type: 'link', text: 'Page 1', href: '/something' }],
+          },
+        ],
+      });
+      const item = wrapper.findItemByIndex(1)!;
+      expect(item.findInfo()!.findBadge()!.getElement()).toHaveTextContent('Additional info');
+      expect(item.findSection()!.findExpandButton().getElement()).not.toHaveTextContent('Additional info');
+
+      item.findInfo()!.click();
+      expect(onChange).not.toHaveBeenCalled();
+
+      item.findSection()!.findExpandButton().click();
+      expect(onChange).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not render section info when collapsed', () => {
+      const wrapper = renderSideNavigation({
+        collapsed: true,
+        items: [
+          {
+            type: 'section',
+            text: 'Section',
+            info: <Badge>Additional info</Badge>,
+            items: [{ type: 'link', text: 'Page 1', href: '/something', icon: <span /> }],
+          },
+        ],
+      });
+      expect(wrapper.findItemByIndex(1)!.findSection()!.findHeader().find(`[class*="info"]`)).toBeNull();
+    });
+
     it('has links', () => {
       const wrapper = renderSideNavigation({
         items: [

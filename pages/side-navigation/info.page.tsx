@@ -80,6 +80,7 @@ const items: SideNavigationProps.Item[] = [
   {
     type: 'section',
     text: 'Virtual private network (VPN)',
+    info: restrictedInfo('Site-to-Site VPN'),
     items: [
       { type: 'link', text: 'Customer gateways', href: '#/customer-gateways' },
       { type: 'link', text: 'Site-to-Site VPN connections', href: '#/vpn-connections' },
