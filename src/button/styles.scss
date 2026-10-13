@@ -219,6 +219,14 @@ $tokens: style-api.resolve($props, carrier);
     padding-block: awsui.$space-field-vertical;
     padding-inline: awsui.$space-xs;
     min-block-size: awsui.$size-vertical-input;
+
+    // Color the seam shared with the last control in a group validation state.
+    &,
+    &:hover,
+    &:active,
+    &.disabled {
+      border-inline-start-color: var(#{custom-props.$groupedControlBorderColor}, #{awsui.$color-border-input-default});
+    }
   }
 
   > .icon-left {
