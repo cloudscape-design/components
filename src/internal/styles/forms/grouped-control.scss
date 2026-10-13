@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 @use '../tokens' as awsui;
+@use '../utils' as styles;
 @use './constants' as constants;
 
 $grouped-control-border-radius: constants.$control-border-radius;
