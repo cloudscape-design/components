@@ -1,11 +1,40 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+@use 'sass:list';
 @use '../tokens' as awsui;
 @use '../utils' as styles;
 @use './constants' as constants;
+@use '../../generated/custom-css-properties/index.scss' as custom-props;
 
 $grouped-control-border-radius: constants.$control-border-radius;
+
+// The group owns the validation state and publishes it to every grouped control
+// through the inherited `--awsui-grouped-control-border-color-*` custom property
+// (set once on the `.controls` box). Each control reads it on exactly its
+// OUTWARD-facing border edges — the edges that do NOT touch an adjacent control —
+// so the inner seams stay the control's own neutral border color. When the group
+// is neutral the property is unset and the `var()` falls back to the neutral
+// color, so grouped controls look unchanged outside a validation state.
+//
+// `$neutral-border-color` is the consuming control's own border color (the
+// fallback). Input and the Select/Multiselect trigger use the input border
+// color; segmented-control passes its segment-wrapper border color.
+@mixin grouped-control-outer-border-color($edges, $neutral-border-color: awsui.$color-border-input-default) {
+  $color: var(#{custom-props.$groupedControlBorderColor}, #{$neutral-border-color});
+  @if list.index($edges, inline-start) {
+    border-inline-start-color: $color;
+  }
+  @if list.index($edges, inline-end) {
+    border-inline-end-color: $color;
+  }
+  @if list.index($edges, block-start) {
+    border-block-start-color: $color;
+  }
+  @if list.index($edges, block-end) {
+    border-block-end-color: $color;
+  }
+}
 
 @mixin grouped-control-base {
   @include styles.logical-radius($grouped-control-border-radius);
@@ -31,30 +60,56 @@ $grouped-control-border-radius: constants.$control-border-radius;
   @include styles.logical-radius(0);
 }
 
-@mixin grouped-control {
+@mixin grouped-control($neutral-border-color: awsui.$color-border-input-default) {
   @include grouped-control-base;
 
   &-horizontal {
     &-first {
       @include grouped-control-horizontal-first;
+      // Outward edges: inline-start (group start) + both block edges.
+      // inline-end faces the next control, so it stays neutral.
+      @include grouped-control-outer-border-color((inline-start, block-start, block-end), $neutral-border-color);
     }
     &-middle {
       @include grouped-control-middle;
+      // Only the block edges face outward; both inline edges face neighbors.
+      @include grouped-control-outer-border-color((block-start, block-end), $neutral-border-color);
     }
     &-last {
       @include grouped-control-horizontal-last;
+      // Outward edges: inline-end (group end) + both block edges.
+      @include grouped-control-outer-border-color((inline-end, block-start, block-end), $neutral-border-color);
+    }
+    &-only {
+      @include grouped-control-outer-border-color(
+        (inline-start, inline-end, block-start, block-end),
+        $neutral-border-color
+      );
     }
   }
 
   &-vertical {
     &-first {
       @include grouped-control-vertical-first;
+      // Outward edges: block-start (group top) + both inline edges.
+      // block-end faces the next control, so it stays neutral.
+      @include grouped-control-outer-border-color((block-start, inline-start, inline-end), $neutral-border-color);
     }
     &-middle {
       @include grouped-control-middle;
+      // Only the inline edges face outward; both block edges face neighbors.
+      @include grouped-control-outer-border-color((inline-start, inline-end), $neutral-border-color);
     }
     &-last {
       @include grouped-control-vertical-last;
+      // Outward edges: block-end (group bottom) + both inline edges.
+      @include grouped-control-outer-border-color((block-end, inline-start, inline-end), $neutral-border-color);
+    }
+    &-only {
+      @include grouped-control-outer-border-color(
+        (inline-start, inline-end, block-start, block-end),
+        $neutral-border-color
+      );
     }
   }
 

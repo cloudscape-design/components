@@ -219,6 +219,52 @@ $tokens: style-api.resolve($props, carrier);
     padding-block: awsui.$space-field-vertical;
     padding-inline: awsui.$space-xs;
     min-block-size: awsui.$size-vertical-input;
+
+    // When this button is a ControlGroup action, its inline-start border is the
+    // single boundary line between the controls and the action button (the
+    // action slot overlaps the last control's inline-end border). The group
+    // publishes its validation color through the inherited
+    // `--awsui-grouped-control-border-color` custom property (set only when the
+    // group is in a validation state), so color ONLY that controls-facing edge
+    // with it, falling back to the neutral input border color otherwise. The
+    // block-start, block-end, and far inline-end edges keep the variant's own
+    // neutral border color, so the rest of the button stays neutral. Repeat the
+    // override on the interactive states so the seam keeps the validation color
+    // through hover/active/disabled (whose variant border colors would otherwise
+    // reset this edge to neutral at higher specificity).
+    &,
+    &:hover,
+    &:active,
+    &.disabled {
+      border-inline-start-color: var(#{custom-props.$groupedControlBorderColor}, #{awsui.$color-border-input-default});
+    }
+
+    // In a validation state the ControlGroup adds its
+    // `action-button-validation` marker class to this button (routed through the
+    // button's `className`). Match the EXTRA-THICK inline-start border the
+    // standalone invalid/warning controls render, reusing the SAME width token
+    // (`$invalid-control-left-border` = `$border-invalid-width`) so the seam stays
+    // in sync with that mechanism — no hardcoded width. Because `styles-reset`
+    // sets `box-sizing: border-box`, the thicker border grows INWARD, so the
+    // button's border-box width is unchanged and the wrapping row does not shift;
+    // the only effect is the centered icon nudging inward by the extra width.
+    // Mirror the standalone controls' compensation by reducing
+    // `padding-inline-start` by the same delta (the variant's inline padding is
+    // `$space-xs`), re-centering the icon. Apply thickness ONLY in the
+    // validation + action case, and repeat it across hover/active/disabled so the
+    // thickness — like the color above — persists when the action button is
+    // hovered (Change 2).
+    &.action-button-validation {
+      &,
+      &:hover,
+      &:active,
+      &.disabled {
+        border-inline-start-width: styles.$invalid-control-left-border;
+        padding-inline-start: calc(
+          #{awsui.$space-xs} - (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field})
+        );
+      }
+    }
   }
 
   > .icon-left {

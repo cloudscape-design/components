@@ -22,12 +22,24 @@ export interface GroupedControlContextProps {
    * inline-end corners facing the action so it owns the only rounded ones.
    */
   hasAction?: boolean;
+  /**
+   * Whether the surrounding control group is in an error state. The group owns
+   * the validation border; individual controls do not independently paint it.
+   */
+  invalid?: boolean;
+  /**
+   * Whether the surrounding control group is in a warning state. The group owns
+   * the validation border; individual controls do not independently paint it.
+   */
+  warning?: boolean;
 }
 
 export const GroupedControlContext = createContext<GroupedControlContextProps>({
   position: null,
   direction: 'horizontal',
   hasAction: false,
+  invalid: false,
+  warning: false,
 });
 
 export function useGroupedControlContext() {
@@ -41,11 +53,15 @@ export function useGroupedControlContext() {
  * content) should wrap that content with this provider. Otherwise a nested
  * control rendered inside such a slot would inherit the surrounding group's
  * `position` and incorrectly pick up the grouped-control styling
- * where adjacent borders lose their border radii.
+ * where adjacent borders lose their border radii. The group's validation
+ * state (`invalid`/`warning`) is also cleared so nested custom-slot controls
+ * never inherit the group's validation styling.
  */
 export function ResetGroupedControlContext({ children }: { children: React.ReactNode }) {
   const { direction } = useGroupedControlContext();
   return (
-    <GroupedControlContext.Provider value={{ position: null, direction }}>{children}</GroupedControlContext.Provider>
+    <GroupedControlContext.Provider value={{ position: null, direction, invalid: false, warning: false }}>
+      {children}
+    </GroupedControlContext.Provider>
   );
 }

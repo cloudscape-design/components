@@ -62,7 +62,7 @@
 }
 
 .grouped {
-  @include styles.grouped-control;
+  @include styles.grouped-control(awsui.$color-border-segment-wrapper);
 
   &.grouped-horizontal-middle,
   &.grouped-horizontal-last {
