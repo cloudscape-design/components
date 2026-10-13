@@ -11,10 +11,11 @@ import { GroupedControlContextProps } from '../../context/control-group-context'
  */
 export function getGroupedControlClassNames(
   styles: Record<string, string>,
-  { position, direction }: GroupedControlContextProps
+  { position, direction, hasAction }: GroupedControlContextProps
 ): string[] {
   if (!position) {
     return [];
   }
-  return [styles.grouped, styles[`grouped-${direction}-${position}`]];
+  const baseClassNames = [styles.grouped, styles[`grouped-${direction}-${position}`]];
+  return hasAction ? [...baseClassNames, styles['grouped-with-action']] : baseClassNames;
 }
