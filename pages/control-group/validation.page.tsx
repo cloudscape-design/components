@@ -8,7 +8,7 @@ import ControlGroup, { ControlGroupProps } from '~components/internal/components
 import { PermutationsPage } from '../app/templates';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
-import { input, select } from './common';
+import { input, segmentedControl, select } from './common';
 
 // Validation propagates through FormField context, so errorText/warningText are
 // carried on the permutation and applied by render, not passed to ControlGroup.
@@ -20,11 +20,19 @@ const children = (
     {select}
   </>
 );
+// Segmented control as the last/button-facing control.
+const segmentedChildren = (
+  <>
+    {input}
+    {segmentedControl}
+  </>
+);
 const directions: ReadonlyArray<ControlGroupProps['direction']> = ['horizontal', 'vertical'];
 const actionButtons: ReadonlyArray<ControlGroupProps['actionButton']> = [
   undefined,
   { iconName: 'remove', ariaLabel: 'Remove' },
 ];
+const actionButton: ControlGroupProps['actionButton'] = { iconName: 'remove', ariaLabel: 'Remove' };
 
 // Error and warning are mutually exclusive, so each lives in its own set.
 const permutations = createPermutations<ValidationPermutation>([
@@ -34,6 +42,18 @@ const permutations = createPermutations<ValidationPermutation>([
     warningText: ['Double-check this value'],
     direction: directions,
     actionButton: actionButtons,
+  },
+  {
+    children: [segmentedChildren],
+    errorText: ['This value is required'],
+    direction: directions,
+    actionButton: [actionButton],
+  },
+  {
+    children: [segmentedChildren],
+    warningText: ['Double-check this value'],
+    direction: directions,
+    actionButton: [actionButton],
   },
 ]);
 
