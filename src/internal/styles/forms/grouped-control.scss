@@ -4,10 +4,13 @@
 @use 'sass:list';
 @use '../tokens' as awsui;
 @use '../utils' as styles;
+@use '../foundation' as foundation;
 @use './constants' as constants;
 @use '../../generated/custom-css-properties/index.scss' as custom-props;
 
 $grouped-control-border-radius: constants.$control-border-radius;
+// Marker the group adds to every control in a validation state (focus gate).
+$grouped-control-validation-marker: '.grouped-in-validation';
 
 // The group owns the validation state and publishes it to every grouped control
 // through the inherited `--awsui-grouped-control-border-color-*` custom property
@@ -33,6 +36,18 @@ $grouped-control-border-radius: constants.$control-border-radius;
   }
   @if list.index($edges, block-end) {
     border-block-end-color: $color;
+  }
+}
+
+// In a validation state, keep the outward validation color on focus (so the
+// control's neutral `form-focus-element` border swap does not win) and layer the
+// invalid focus ring instead of swapping the border. Mirrors standalone invalid
+// controls. `&` is the position class; the control also carries the base
+// `-validation` marker.
+@mixin grouped-control-validation-focus($edges, $neutral-border-color) {
+  &#{$grouped-control-validation-marker}:focus {
+    @include grouped-control-outer-border-color($edges, $neutral-border-color);
+    box-shadow: foundation.$box-shadow-focused-light-invalid;
   }
 }
 
@@ -68,23 +83,28 @@ $grouped-control-border-radius: constants.$control-border-radius;
       @include grouped-control-horizontal-first;
       // Outward edges: inline-start (group start) + both block edges.
       // inline-end faces the next control, so it stays neutral.
-      @include grouped-control-outer-border-color((inline-start, block-start, block-end), $neutral-border-color);
+      $edges: (inline-start, block-start, block-end);
+      @include grouped-control-outer-border-color($edges, $neutral-border-color);
+      @include grouped-control-validation-focus($edges, $neutral-border-color);
     }
     &-middle {
       @include grouped-control-middle;
       // Only the block edges face outward; both inline edges face neighbors.
-      @include grouped-control-outer-border-color((block-start, block-end), $neutral-border-color);
+      $edges: (block-start, block-end);
+      @include grouped-control-outer-border-color($edges, $neutral-border-color);
+      @include grouped-control-validation-focus($edges, $neutral-border-color);
     }
     &-last {
       @include grouped-control-horizontal-last;
       // Outward edges: inline-end (group end) + both block edges.
-      @include grouped-control-outer-border-color((inline-end, block-start, block-end), $neutral-border-color);
+      $edges: (inline-end, block-start, block-end);
+      @include grouped-control-outer-border-color($edges, $neutral-border-color);
+      @include grouped-control-validation-focus($edges, $neutral-border-color);
     }
     &-only {
-      @include grouped-control-outer-border-color(
-        (inline-start, inline-end, block-start, block-end),
-        $neutral-border-color
-      );
+      $edges: (inline-start, inline-end, block-start, block-end);
+      @include grouped-control-outer-border-color($edges, $neutral-border-color);
+      @include grouped-control-validation-focus($edges, $neutral-border-color);
     }
   }
 
@@ -93,23 +113,28 @@ $grouped-control-border-radius: constants.$control-border-radius;
       @include grouped-control-vertical-first;
       // Outward edges: block-start (group top) + both inline edges.
       // block-end faces the next control, so it stays neutral.
-      @include grouped-control-outer-border-color((block-start, inline-start, inline-end), $neutral-border-color);
+      $edges: (block-start, inline-start, inline-end);
+      @include grouped-control-outer-border-color($edges, $neutral-border-color);
+      @include grouped-control-validation-focus($edges, $neutral-border-color);
     }
     &-middle {
       @include grouped-control-middle;
       // Only the inline edges face outward; both block edges face neighbors.
-      @include grouped-control-outer-border-color((inline-start, inline-end), $neutral-border-color);
+      $edges: (inline-start, inline-end);
+      @include grouped-control-outer-border-color($edges, $neutral-border-color);
+      @include grouped-control-validation-focus($edges, $neutral-border-color);
     }
     &-last {
       @include grouped-control-vertical-last;
       // Outward edges: block-end (group bottom) + both inline edges.
-      @include grouped-control-outer-border-color((block-end, inline-start, inline-end), $neutral-border-color);
+      $edges: (block-end, inline-start, inline-end);
+      @include grouped-control-outer-border-color($edges, $neutral-border-color);
+      @include grouped-control-validation-focus($edges, $neutral-border-color);
     }
     &-only {
-      @include grouped-control-outer-border-color(
-        (inline-start, inline-end, block-start, block-end),
-        $neutral-border-color
-      );
+      $edges: (inline-start, inline-end, block-start, block-end);
+      @include grouped-control-outer-border-color($edges, $neutral-border-color);
+      @include grouped-control-validation-focus($edges, $neutral-border-color);
     }
   }
 

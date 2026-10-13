@@ -14,6 +14,7 @@ import { colorTextStatusError, colorTextStatusWarning } from '../../generated/st
 import { flattenChildren } from '../../utils/flatten-children';
 import { ControlGroupProps } from './interfaces';
 
+import buttonStyles from '../../../button/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
@@ -89,7 +90,10 @@ export default function ControlGroup({
       {controls}
       <div className={styles['action-slot']}>
         <InternalButton
-          className={testUtilStyles['action-button']}
+          className={clsx(
+            testUtilStyles['action-button'],
+            (isInvalid || isWarning) && buttonStyles['variant-control-group-action-validation']
+          )}
           variant="control-group-action"
           formAction="none"
           iconName={actionButton.iconName}

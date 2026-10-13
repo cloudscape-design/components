@@ -20,12 +20,16 @@ export function getGroupedControlClassNames(
   if (hasAction) {
     classNames.push(styles['grouped-with-action']);
   }
-  // Mark the controls on the group's leading (inline-start) edge so they draw
-  // the thick validation seam: the first/only control horizontally, every
-  // control vertically (the leading edge spans the whole column).
-  const isLeading = direction === 'vertical' || position === 'first' || position === 'only';
-  if ((invalid || warning) && isLeading) {
-    classNames.push(styles['grouped-validation']);
+  if (invalid || warning) {
+    // Every control in the group gets the focus marker so each re-asserts its
+    // own outward validation color (and the invalid ring) on focus.
+    classNames.push(styles['grouped-in-validation']);
+    // Only the leading (inline-start) controls draw the thick validation seam:
+    // the first/only control horizontally, every control vertically.
+    const isLeading = direction === 'vertical' || position === 'first' || position === 'only';
+    if (isLeading) {
+      classNames.push(styles['grouped-validation']);
+    }
   }
   return classNames;
 }
