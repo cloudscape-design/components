@@ -12,18 +12,18 @@ const suite: TestSuite = {
       screenshotType: 'permutations',
     },
     {
-      description: 'Vertical permutations',
+      description: 'Permutations (direction: vertical)',
       path: 'control-group/permutations',
       screenshotType: 'permutations',
       queryParams: { controlGroupDirection: 'vertical' },
     },
     {
-      description: 'Action button permutations',
+      description: 'Action button',
       path: 'control-group/action-button',
       screenshotType: 'permutations',
     },
     {
-      description: 'Action button vertical permutations',
+      description: 'Action button (direction: vertical)',
       path: 'control-group/action-button',
       screenshotType: 'permutations',
       queryParams: { controlGroupDirection: 'vertical' },
