@@ -114,6 +114,7 @@ interface ExpandableHeaderTextWrapperProps extends ExpandableDefaultHeaderProps 
   headerCounter?: string;
   headerInfo?: ReactNode;
   headerActions?: ReactNode;
+  headerInlineInfo?: ReactNode;
   headingTagOverride?: ExpandableSectionProps.HeadingTag;
 }
 
@@ -127,6 +128,7 @@ interface ExpandableSectionHeaderProps extends Omit<ExpandableDefaultHeaderProps
   headingTagOverride?: ExpandableSectionProps.HeadingTag;
   ariaLabelledBy?: string;
   hideExpandIcon?: boolean;
+  headerInlineInfo?: ReactNode;
 }
 
 const getExpandActionAnalyticsMetadataAttribute = (expanded: boolean) => {
@@ -243,6 +245,7 @@ const ExpandableHeaderTextWrapper = ({
   headerCounter,
   headerInfo,
   headerActions,
+  headerInlineInfo,
   variant,
   headingTagOverride,
   onKeyUp,
@@ -252,8 +255,11 @@ const ExpandableHeaderTextWrapper = ({
   const isContainer = variant === 'container';
   const HeadingTag = headingTagOverride || 'div';
   const supportsInteractiveElements = variantSupportsActions(variant);
-  const restrictClickableArea = supportsInteractiveElements && (headerInfo || headerActions);
+  const restrictClickableArea = (supportsInteractiveElements && (headerInfo || headerActions)) || !!headerInlineInfo;
   const actions = supportsInteractiveElements && headerActions;
+  const inlineInfo = !isContainer && headerInlineInfo && (
+    <span className={styles['header-inline-info']}>{headerInlineInfo}</span>
+  );
   const description = variantSupportsDescription(variant) && headerDescription && (
     <span id={descriptionId} className={styles[`description-${variant}`]}>
       {headerDescription}
@@ -378,7 +384,13 @@ const ExpandableHeaderTextWrapper = ({
         </>
       ) : (
         <>
-          <div className={clsx(styles['header-content'], actions && styles['header-actions-wrapper'])}>
+          <div
+            className={clsx(
+              styles['header-content'],
+              actions && styles['header-actions-wrapper'],
+              inlineInfo && styles['header-content-with-inline-info']
+            )}
+          >
             <HeadingTag
               className={clsx(styles['header-wrapper'], headingTagListeners && styles['click-target'])}
               {...headingTagListeners}
@@ -387,6 +399,7 @@ const ExpandableHeaderTextWrapper = ({
             >
               {headerButton}
             </HeadingTag>
+            {inlineInfo}
             {actions}
           </div>
           {description && <HeaderDescription variantOverride="h3">{description}</HeaderDescription>}
@@ -418,6 +431,7 @@ export const ExpandableSectionHeader = ({
   onClick,
   expandIconPosition,
   hideExpandIcon,
+  headerInlineInfo,
 }: ExpandableSectionHeaderProps) => {
   const alwaysShowDivider = variantRequiresActionsDivider(variant) && headerActions;
   const icons = useInternalComponentIcons('expandable-section');
@@ -494,6 +508,7 @@ export const ExpandableSectionHeader = ({
         headerCounter={headerCounter}
         headerInfo={headerInfo}
         headerActions={headerActions}
+        headerInlineInfo={headerInlineInfo}
         headingTagOverride={headingTagOverride}
         onKeyUp={onKeyUp}
         onKeyDown={onKeyDown}

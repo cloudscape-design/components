@@ -637,6 +637,9 @@ function Section({
         </span>
       }
       __expandIconPosition={withIcons ? 'end' : 'start'}
+      __headerInlineInfo={
+        !collapsed && definition.info ? <span className={testUtilStyles.info}>{definition.info}</span> : undefined
+      }
     >
       <NavigationItemsList
         variant="section"

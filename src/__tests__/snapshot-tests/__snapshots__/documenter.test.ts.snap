@@ -27531,6 +27531,7 @@ Object that represents a section within the navigation.
 - \`type\`: \`'section'\`.
 - \`text\` (string) - Specifies the text to display as a title of the section.
 - \`defaultExpanded\` (boolean) - Determines whether the section should be expanded by default. Default value is \`true\`.
+- \`info\` (ReactNode) - Enables you to display content next to the section title.
 - \`items\` (array) - Specifies the content of the section. You can use any valid item from this list.
     Although there is no technical limitation to the nesting level,
     our UX recommendation is to use only one level.
