@@ -17,6 +17,28 @@ const suite: TestSuite = {
       screenshotType: 'permutations',
       queryParams: { controlGroupDirection: 'vertical' },
     },
+    {
+      description: 'Inline label permutations',
+      path: 'control-group/labels',
+      screenshotType: 'permutations',
+    },
+    {
+      description: 'Inline label vertical permutations',
+      path: 'control-group/labels',
+      screenshotType: 'permutations',
+      queryParams: { controlGroupDirection: 'vertical' },
+    },
+    {
+      description: 'Action button permutations',
+      path: 'control-group/action-button',
+      screenshotType: 'permutations',
+    },
+    {
+      description: 'Action button vertical permutations',
+      path: 'control-group/action-button',
+      screenshotType: 'permutations',
+      queryParams: { controlGroupDirection: 'vertical' },
+    },
   ],
 };
 
