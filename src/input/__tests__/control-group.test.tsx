@@ -10,23 +10,25 @@ import { PositionProbe } from '../../internal/components/control-group/__tests__
 const noop = () => {};
 
 describe('Input in control group', () => {
+  // The measurement ghost duplicates the children, so prefix/suffix content matches twice;
+  // the first match is the real control's.
   test('resets the context for prefix content', () => {
-    const { getByTestId } = render(
+    const { getAllByTestId } = render(
       <ControlGroup>
         <Input value="" onChange={noop} prefix={<PositionProbe />} />
       </ControlGroup>
     );
 
-    expect(getByTestId('probe')).toHaveTextContent('none');
+    expect(getAllByTestId('probe')[0]).toHaveTextContent('none');
   });
 
   test('resets the context for suffix content', () => {
-    const { getByTestId } = render(
+    const { getAllByTestId } = render(
       <ControlGroup>
         <Input value="" onChange={noop} suffix={<PositionProbe />} />
       </ControlGroup>
     );
 
-    expect(getByTestId('probe')).toHaveTextContent('none');
+    expect(getAllByTestId('probe')[0]).toHaveTextContent('none');
   });
 });

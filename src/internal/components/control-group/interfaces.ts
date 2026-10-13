@@ -6,9 +6,19 @@ import { BaseComponentProps } from '../../../types/base-component';
 import { GroupedControlDirection } from '../../context/control-group-context';
 import { CancelableEventHandler } from '../../events';
 
+// `'auto'` exists only at the prop boundary; it resolves to a concrete
+// GroupedControlDirection before reaching context, classes, or SCSS.
+export type ControlGroupDirection = GroupedControlDirection | 'auto';
+
 export interface ControlGroupProps extends BaseComponentProps {
   children?: React.ReactNode;
-  direction?: GroupedControlDirection;
+  /**
+   * The axis along which the controls are laid out.
+   * - `'auto'` (default): measures the available width and lays the controls out as a single
+   *   row when they fit, stacking them vertically when they do not.
+   * - `'horizontal'` / `'vertical'`: forces that axis and skips measurement.
+   */
+  direction?: ControlGroupDirection;
   inlineLabelText?: string;
   /**
    * Specifies an action button rendered next to the grouped controls.

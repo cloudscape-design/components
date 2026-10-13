@@ -38,6 +38,12 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
 .controls {
   display: flex;
   align-items: stretch;
+  // Keep the group at its natural width in a flex parent so it lays out as a single row until
+  // the sensor reports that the available width is smaller than the required width.
+  flex-shrink: 0;
+  // Must stay `position: static` so the sensor's containing block is a non-collapsing ancestor
+  // (not this group root), letting it measure the real available width. The ghost no longer
+  // anchors here; it uses its own `.ghost-wrapper` instead.
 
   &-horizontal {
     flex-direction: row;
@@ -77,6 +83,30 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
   }
 }
 
+// Width sensor (see index.tsx): an absolutely-positioned, zero-content-width block. Because the
+// group root (`.controls`) is `position: static`, its containing block is the nearest positioned
+// ancestor / the ICB, whose width is driven top-down and does not collapse with the group.
+// `inset-inline: 0` makes it fill that width, and having no intrinsic/min width it neither
+// shrink-wraps nor props its container open, so its measured width is the real available width in
+// both the row and stacked states.
+.sensor {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  block-size: 0;
+  min-inline-size: 0;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+// Zero-height relative anchor for the absolutely-positioned ghost (the group root is static now,
+// so it can no longer anchor the ghost). Adds no layout height.
+.ghost-wrapper {
+  position: relative;
+  block-size: 0;
+}
+
 .inline-label {
   @include forms.inline-label;
   // A grouped Multiselect always renders inline tokens, whose row sits higher
@@ -97,4 +127,17 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
 
 .inline-label-trigger-wrapper {
   @include forms.inline-label-trigger-wrapper;
+}
+
+// Measurement ghost (see index.tsx): out of flow and `max-content` wide so it reports the
+// controls' natural single-row width. Not `display: none` (that would measure zero).
+.ghost {
+  @include styles.measurement-ghost;
+  // Lay out the controls as a single row sized to their content, so the measured width is the
+  // width they need inline.
+  inline-size: max-content;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-end;
 }

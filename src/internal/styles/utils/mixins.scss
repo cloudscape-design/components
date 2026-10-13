@@ -10,6 +10,19 @@
   inset-inline-start: -9999px !important;
 }
 
+// A measurement ghost: out of flow and visually hidden, but still laid out so its size can be
+// read (unlike `display: none`, which measures zero). Non-interactive and inert; the caller
+// adds the layout being measured (for example the single-row flex it compares against).
+@mixin measurement-ghost {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  block-size: 0;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+}
+
 @mixin text-wrapping {
   // When using with Flexbox, a flex item has min-width set to "auto" by default, which
   // prevents the text wrapping. We need to override the min-width by setting it to "0"
