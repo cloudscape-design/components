@@ -7,6 +7,7 @@
 @use '../foundation' as foundation;
 @use './constants' as constants;
 @use '../../generated/custom-css-properties/index.scss' as custom-props;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 $grouped-control-border-radius: constants.$control-border-radius;
 // Marker the group adds to every control in a validation state (focus gate).
@@ -53,6 +54,15 @@ $grouped-control-validation-marker: '.grouped-in-validation';
   }
   &#{$grouped-control-validation-marker}:focus {
     box-shadow: foundation.$box-shadow-focused-light-invalid;
+  }
+  // The trigger's neutral keyboard focus runs through focus-visible.when-visible,
+  // whose body[data-awsui-focus-visible] descendant outranks a plain :focus. Match
+  // that scope so the validation color and invalid ring win on keyboard focus too.
+  &#{$grouped-control-validation-marker} {
+    @include focus-visible.when-visible {
+      @include grouped-control-outer-border-color($edges, $neutral-border-color);
+      box-shadow: foundation.$box-shadow-focused-light-invalid;
+    }
   }
 }
 
