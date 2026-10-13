@@ -3,10 +3,7 @@
 import React, { useState } from 'react';
 
 import Box from '~components/box';
-import Button from '~components/button';
-import Dialog from '~components/dialog';
 import Header from '~components/header';
-import Multiselect from '~components/multiselect';
 import OptionList, { OptionListProps } from '~components/option-list';
 import SpaceBetween from '~components/space-between';
 
@@ -56,45 +53,6 @@ const services: OptionListProps.Options = [
 
 const values = (options: ReadonlyArray<OptionListProps.Option>) => options.map(option => option.value).join(', ');
 
-function FollowUpQuestion() {
-  const [selectedOptions, setSelectedOptions] = useState<ReadonlyArray<OptionListProps.Option>>([]);
-  const [submitted, setSubmitted] = useState<string | null>(null);
-  return (
-    <SpaceBetween size="xs">
-      <Dialog
-        header={<span id="follow-up-question">What should we optimize for?</span>}
-        onDismiss={() => setSubmitted('Dismissed')}
-        i18nStrings={{ dismissAriaLabel: 'Close' }}
-        footer={
-          <Box float="right">
-            <SpaceBetween direction="horizontal" size="xs">
-              <Button onClick={() => setSubmitted('Skipped')}>Skip</Button>
-              <Button
-                variant="primary"
-                disabled={selectedOptions.length === 0}
-                onClick={() => setSubmitted(`Submitted: ${values(selectedOptions)}`)}
-              >
-                Continue
-              </Button>
-            </SpaceBetween>
-          </Box>
-        }
-      >
-        <OptionList
-          ariaLabelledby="follow-up-question"
-          options={goalLabels}
-          selectionType="single"
-          selectedOptions={selectedOptions}
-          onChange={({ detail }) => setSelectedOptions(detail.selectedOptions)}
-        />
-      </Dialog>
-      <Box variant="small" data-testid="follow-up-result">
-        {submitted ?? 'Not submitted'}
-      </Box>
-    </SpaceBetween>
-  );
-}
-
 function Section({
   id,
   title,
@@ -129,34 +87,9 @@ function Section({
   );
 }
 
-function SharedWithMultiselect() {
-  const [selectedOptions, setSelectedOptions] = useState<ReadonlyArray<OptionListProps.Option>>([]);
-  return (
-    <SpaceBetween size="xs">
-      <Header variant="h2" id="shared-heading">
-        Same options and selection shared with Multiselect
-      </Header>
-      <Multiselect
-        options={services}
-        selectedOptions={selectedOptions}
-        onChange={({ detail }) => setSelectedOptions(detail.selectedOptions)}
-        placeholder="Choose services"
-        ariaLabel="Services"
-      />
-      <OptionList
-        ariaLabelledby="shared-heading"
-        options={services}
-        selectionType="multi"
-        selectedOptions={selectedOptions}
-        onChange={({ detail }) => setSelectedOptions(detail.selectedOptions)}
-      />
-    </SpaceBetween>
-  );
-}
-
 export default function OptionListSimplePage() {
   return (
-    <SimplePage title="Option list">
+    <SimplePage title="Option list" screenshotArea={{}}>
       <div style={{ maxInlineSize: 520 }}>
         <SpaceBetween size="xl">
           <Section id="single" title="Single selection" options={goals} selectionType="single" />
@@ -171,18 +104,17 @@ export default function OptionListSimplePage() {
           <Section id="disabled" title="With a disabled option" options={goalsWithDisabled} selectionType="multi" />
           <Section id="grouped-single" title="Groups, single selection" options={services} selectionType="single" />
           <Section id="grouped-multi" title="Groups, multi selection" options={services} selectionType="multi" />
-          <SharedWithMultiselect />
 
           <SpaceBetween size="xs">
             <Header variant="h2" id="uncontrolled-heading">
               Uncontrolled
             </Header>
-            <OptionList ariaLabelledby="uncontrolled-heading" options={goalLabels} selectionType="multi" />
-          </SpaceBetween>
-
-          <SpaceBetween size="xs">
-            <Header variant="h2">In the follow-up questions Dialog</Header>
-            <FollowUpQuestion />
+            <OptionList
+              data-testid="uncontrolled"
+              ariaLabelledby="uncontrolled-heading"
+              options={goalLabels}
+              selectionType="multi"
+            />
           </SpaceBetween>
         </SpaceBetween>
       </div>
