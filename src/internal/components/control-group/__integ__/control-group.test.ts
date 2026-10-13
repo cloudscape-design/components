@@ -14,9 +14,6 @@ const controls = createWrapper(wrapperSelector)
 
 const expectedControlCount = 6;
 
-// The group alternates Input, Select, Input, ... so odd controls are inputs and even ones
-// are selects. The focus test tabs across the first few to confirm the real controls are
-// reachable in order and the hidden ghost adds no tab stops.
 const firstControl = controls.get(1).findInput().findNativeInput().toSelector();
 const secondControl = controls.get(2).findSelect().findTrigger().toSelector();
 const thirdControl = controls.get(3).findInput().findNativeInput().toSelector();
