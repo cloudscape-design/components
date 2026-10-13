@@ -27529,6 +27529,7 @@ Aggregates a set of items that are conceptually related to each other, and can b
 You can nest sections, links, link groups and expandable link groups within a section group depending on your information architecture needs.
 - \`type\`: \`'section-group'\`.
 - \`title\` (string) - Specifies the text to display as a title of the section group.
+- \`info\` (ReactNode) - Enables you to display content next to the section group title.
 - \`items\` (array) - Specifies the content of the section header group. You can use \`Section\`, \`Link\`, \`LinkGroup\`, \`ExpandableLinkGroup\`.
 
 #### LinkGroup
@@ -27551,6 +27552,7 @@ Object that represents an expandable group of links.
 - \`href\` (string) - Specifies the \`href\` of the group link.
 - \`defaultExpanded\` (boolean) - Specifies whether the group should be expanded by default.
    If not explicitly set, the group is collapsed by default, unless one of the nested links is active.
+- \`info\` (ReactNode) - Enables you to display content next to the group link.
 - \`items\` (array) - Specifies the content of the section. You can use any valid item from this list.
     Although there is no technical limitation to the nesting level,
     our UX recommendation is to use only one level.
