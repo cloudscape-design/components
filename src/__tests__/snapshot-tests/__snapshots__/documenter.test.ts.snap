@@ -20652,11 +20652,6 @@ exports[`Components definition for option-list matches the snapshot: option-list
   "events": [
     {
       "cancelable": false,
-      "description": "Called when the list loses focus.",
-      "name": "onBlur",
-    },
-    {
-      "cancelable": false,
       "description": "Called when the user selects or deselects an option.
 The event \`detail\` contains the new \`selectedOptions\`.",
       "detailInlineType": {
@@ -20672,11 +20667,6 @@ The event \`detail\` contains the new \`selectedOptions\`.",
       },
       "detailType": "OptionListProps.ChangeDetail",
       "name": "onChange",
-    },
-    {
-      "cancelable": false,
-      "description": "Called when the list receives focus.",
-      "name": "onFocus",
     },
   ],
   "functions": [
@@ -44336,20 +44326,6 @@ wrapper.selectOptionByValue('option_1');
           },
         },
         {
-          "description": "Returns the element that has the \`listbox\` role and receives focus.",
-          "name": "findListbox",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
           "description": "Returns an option for a given index. Group headers are not counted.",
           "name": "findOptionByIndex",
           "parameters": [
@@ -44395,6 +44371,20 @@ wrapper.selectOptionByValue('option_1');
             "typeArguments": [
               {
                 "name": "OptionListOptionWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the container of the options. This element receives focus and handles keyboard navigation.",
+          "name": "findOptionsContainer",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
               },
             ],
           },
@@ -55215,15 +55205,6 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
           },
         },
         {
-          "description": "Returns the element that has the \`listbox\` role and receives focus.",
-          "name": "findListbox",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
           "description": "Returns an option for a given index. Group headers are not counted.",
           "name": "findOptionByIndex",
           "parameters": [
@@ -55271,6 +55252,15 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
                 "name": "OptionListOptionWrapper",
               },
             ],
+          },
+        },
+        {
+          "description": "Returns the container of the options. This element receives focus and handles keyboard navigation.",
+          "name": "findOptionsContainer",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
           },
         },
         {

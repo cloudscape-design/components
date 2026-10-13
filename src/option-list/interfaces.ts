@@ -59,16 +59,6 @@ export interface OptionListProps extends BaseComponentProps {
   onChange?: NonCancelableEventHandler<OptionListProps.ChangeDetail>;
 
   /**
-   * Called when the list receives focus.
-   */
-  onFocus?: NonCancelableEventHandler;
-
-  /**
-   * Called when the list loses focus.
-   */
-  onBlur?: NonCancelableEventHandler;
-
-  /**
    * Adds an `aria-label` to the list. Use this when there is no visible label.
    */
   ariaLabel?: string;

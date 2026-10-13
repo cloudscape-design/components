@@ -4,6 +4,7 @@ import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/te
 import { escapeSelector } from '@cloudscape-design/test-utils-core/utils';
 
 import OptionWrapper from '../internal/option.js';
+import OptionsListWrapper from '../internal/options-list.js';
 
 import selectableItemsStyles from '../../../internal/components/selectable-item/styles.selectors.js';
 import styles from '../../../option-list/test-classes/styles.selectors.js';
@@ -64,10 +65,10 @@ export default class OptionListWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;
 
   /**
-   * Returns the element that has the `listbox` role and receives focus.
+   * Returns the container of the options. This element receives focus and handles keyboard navigation.
    */
-  findListbox(): ElementWrapper {
-    return this.find('[role="listbox"]')!;
+  findOptionsContainer(): ElementWrapper {
+    return this.findByClassName(OptionsListWrapper.rootSelector)!;
   }
 
   /**

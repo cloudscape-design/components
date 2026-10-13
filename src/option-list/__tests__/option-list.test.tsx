@@ -79,7 +79,7 @@ const clickOption = (wrapper: Wrapper, index: number) =>
   fireEvent.mouseUp(wrapper.findOptionByIndex(index)!.getElement());
 
 const pressKey = (wrapper: Wrapper, keyCode: number, key?: string) =>
-  fireEvent.keyDown(wrapper.findListbox().getElement(), { keyCode, key });
+  fireEvent.keyDown(wrapper.findOptionsContainer().getElement(), { keyCode, key });
 
 const selectedLabels = (wrapper: Wrapper) =>
   wrapper.findSelectedOptions().map(option => option.findLabel()!.getElement().textContent);
@@ -88,7 +88,7 @@ describe('OptionList', () => {
   describe('rendering', () => {
     test('renders a labelled, focusable listbox with an option per item', () => {
       const { wrapper } = renderOptionList(<Stateful />);
-      const listbox = wrapper.findListbox().getElement();
+      const listbox = wrapper.findOptionsContainer().getElement();
       expect(listbox).toHaveAttribute('role', 'listbox');
       expect(listbox).toHaveAttribute('aria-label', 'Goals');
       expect(listbox).toHaveAttribute('tabindex', '0');
@@ -134,7 +134,7 @@ describe('OptionList', () => {
       const { wrapper } = renderOptionList(
         <Stateful ariaLabel={undefined} ariaLabelledby="heading" ariaDescribedby="description" />
       );
-      const listbox = wrapper.findListbox().getElement();
+      const listbox = wrapper.findOptionsContainer().getElement();
       expect(listbox).toHaveAttribute('aria-labelledby', 'heading');
       expect(listbox).toHaveAttribute('aria-describedby', 'description');
     });
@@ -193,7 +193,7 @@ describe('OptionList', () => {
     test('keyboard can reach a disabled option but Enter does not select it', () => {
       const onChange = jest.fn();
       const { wrapper } = renderOptionList(<Stateful options={withDisabled} onChange={onChange} />);
-      fireEvent.focus(wrapper.findListbox().getElement());
+      fireEvent.focus(wrapper.findOptionsContainer().getElement());
       pressKey(wrapper, KeyCode.down);
       expect(wrapper.findHighlightedOption()!.getElement()).toBe(wrapper.findOptionByValue('b')!.getElement());
       pressKey(wrapper, KeyCode.enter);
@@ -247,7 +247,7 @@ describe('OptionList', () => {
 
       test('keyboard skips group headers', () => {
         const { wrapper } = renderOptionList(<Stateful options={groupedOptions} />);
-        fireEvent.focus(wrapper.findListbox().getElement());
+        fireEvent.focus(wrapper.findOptionsContainer().getElement());
         pressKey(wrapper, KeyCode.down);
         expect(wrapper.findHighlightedOption()!.findLabel()!.getElement()).toHaveTextContent('EC2');
       });
@@ -310,7 +310,7 @@ describe('OptionList', () => {
         const { wrapper } = renderOptionList(
           <Stateful selectionType="multi" options={groupedOptions} onChange={onChange} />
         );
-        const listbox = wrapper.findListbox().getElement();
+        const listbox = wrapper.findOptionsContainer().getElement();
         fireEvent.focus(listbox);
         pressKey(wrapper, KeyCode.down);
         expect(listbox).toHaveAttribute(
@@ -339,7 +339,7 @@ describe('OptionList', () => {
         'false',
       ]);
       expect(selectedLabels(wrapper)).toEqual(['Second']);
-      expect(wrapper.findListbox().getElement()).not.toHaveAttribute('aria-multiselectable');
+      expect(wrapper.findOptionsContainer().getElement()).not.toHaveAttribute('aria-multiselectable');
       expect(wrapper.findOptionByValue('b')!.find('[role="checkbox"], input[type="checkbox"]')).toBeNull();
     });
 
@@ -401,7 +401,7 @@ describe('OptionList', () => {
 
     test('keyboard focus highlights the selected option with the keyboard focus style', () => {
       const { wrapper } = renderOptionList(<Stateful initialSelected={['b']} />);
-      fireEvent.focus(wrapper.findListbox().getElement());
+      fireEvent.focus(wrapper.findOptionsContainer().getElement());
       const highlighted = wrapper.findHighlightedOption()!.getElement();
       expect(highlighted).toBe(wrapper.findOptionByValue('b')!.getElement());
       expect(highlighted.className).toMatch(/is-keyboard/);
@@ -412,7 +412,7 @@ describe('OptionList', () => {
   describe('multi selection', () => {
     test('marks the listbox multiselectable and renders a checkbox per option', () => {
       const { wrapper } = renderOptionList(<Stateful selectionType="multi" initialSelected={['a', 'c']} />);
-      expect(wrapper.findListbox().getElement()).toHaveAttribute('aria-multiselectable', 'true');
+      expect(wrapper.findOptionsContainer().getElement()).toHaveAttribute('aria-multiselectable', 'true');
       expect(selectedLabels(wrapper)).toEqual(['First', 'Third']);
       expect(wrapper.findAll('svg').length).toBeGreaterThanOrEqual(3);
     });
@@ -435,7 +435,7 @@ describe('OptionList', () => {
   describe('keyboard', () => {
     test('focus highlights the first option, arrows move with wrap-around, Home and End jump', () => {
       const { wrapper } = renderOptionList(<Stateful />);
-      const listbox = wrapper.findListbox().getElement();
+      const listbox = wrapper.findOptionsContainer().getElement();
       const optionId = (index: number) => wrapper.findOptionByIndex(index)!.getElement().id;
 
       fireEvent.focus(listbox);
@@ -461,7 +461,7 @@ describe('OptionList', () => {
     test('Enter and Space select the highlighted option', () => {
       const onChange = jest.fn();
       const { wrapper } = renderOptionList(<Stateful selectionType="multi" onChange={onChange} />);
-      fireEvent.focus(wrapper.findListbox().getElement());
+      fireEvent.focus(wrapper.findOptionsContainer().getElement());
 
       pressKey(wrapper, KeyCode.enter);
       expect(onChange).toHaveBeenLastCalledWith(['a']);
@@ -477,7 +477,7 @@ describe('OptionList', () => {
     test('Escape does not change the selection', () => {
       const onChange = jest.fn();
       const { wrapper } = renderOptionList(<Stateful onChange={onChange} />);
-      fireEvent.focus(wrapper.findListbox().getElement());
+      fireEvent.focus(wrapper.findOptionsContainer().getElement());
       pressKey(wrapper, KeyCode.escape);
       expect(onChange).not.toHaveBeenCalled();
       expect(wrapper.findOptions()).toHaveLength(3);
@@ -485,7 +485,7 @@ describe('OptionList', () => {
 
     test('type-ahead highlights the matching option', () => {
       const { wrapper } = renderOptionList(<Stateful />);
-      const listbox = wrapper.findListbox().getElement();
+      const listbox = wrapper.findOptionsContainer().getElement();
       fireEvent.focus(listbox);
       fireEvent.keyDown(listbox, { key: 't' });
       expect(listbox).toHaveAttribute('aria-activedescendant', wrapper.findOptionByValue('c')!.getElement().id);
@@ -493,24 +493,11 @@ describe('OptionList', () => {
 
     test('blur clears the highlight', () => {
       const { wrapper } = renderOptionList(<Stateful />);
-      const listbox = wrapper.findListbox().getElement();
+      const listbox = wrapper.findOptionsContainer().getElement();
       fireEvent.focus(listbox);
       expect(wrapper.findHighlightedOption()).not.toBeNull();
       fireEvent.blur(listbox);
       expect(wrapper.findHighlightedOption()).toBeNull();
-    });
-
-    test('fires onFocus and onBlur', () => {
-      const onFocus = jest.fn();
-      const onBlur = jest.fn();
-      const { wrapper } = renderOptionList(
-        <OptionList ariaLabel="Goals" options={options} selectionType="single" onFocus={onFocus} onBlur={onBlur} />
-      );
-      const listbox = wrapper.findListbox().getElement();
-      fireEvent.focus(listbox);
-      expect(onFocus).toHaveBeenCalledTimes(1);
-      fireEvent.blur(listbox);
-      expect(onBlur).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -575,14 +562,14 @@ describe('OptionList', () => {
       <OptionList ref={ref} ariaLabel="Goals" options={options} selectionType="single" />
     );
     act(() => ref.current!.focus());
-    expect(document.activeElement).toBe(wrapper.findListbox().getElement());
+    expect(document.activeElement).toBe(wrapper.findOptionsContainer().getElement());
   });
 
   test('announces the selected state of the highlighted option', () => {
     const { wrapper } = renderOptionList(
       <Stateful initialSelected={['a']} i18nStrings={{ selectedAriaLabel: 'Picked' }} />
     );
-    fireEvent.focus(wrapper.findListbox().getElement());
+    fireEvent.focus(wrapper.findOptionsContainer().getElement());
     expect(wrapper.findOptionByValue('a')!.getElement()).toHaveTextContent('Picked');
   });
 

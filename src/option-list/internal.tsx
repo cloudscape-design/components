@@ -37,8 +37,6 @@ function InternalOptionList(
     selectionType,
     selectedOptions: controlledSelectedOptions,
     onChange,
-    onFocus,
-    onBlur,
     ariaLabel,
     ariaLabelledby,
     ariaDescribedby,
@@ -137,12 +135,10 @@ function InternalOptionList(
       if (!isPointerInside && highlightedOption && highlightType.type === 'mouse') {
         highlightOption(highlightedOption);
       }
-      fireNonCancelableEvent(onFocus);
     },
     onBlur: event => {
       setIsFocused(false);
       internalMenuProps.onBlur?.(event);
-      fireNonCancelableEvent(onBlur);
     },
   };
   useForwardFocus(ref, menuProps.ref);

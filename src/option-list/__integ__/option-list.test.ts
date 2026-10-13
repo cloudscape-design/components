@@ -34,7 +34,7 @@ describe('OptionList', () => {
     setupTest(async page => {
       await page.click('#single-heading');
       await page.keys(['Tab']);
-      await expect(page.isFocused(singleList.findListbox().toSelector())).resolves.toBe(true);
+      await expect(page.isFocused(singleList.findOptionsContainer().toSelector())).resolves.toBe(true);
       await page.keys(['ArrowDown', 'ArrowDown', 'Enter']);
       await expect(page.getText(singleValue)).resolves.toBe('Selected: reliability');
     })
@@ -56,8 +56,8 @@ describe('OptionList', () => {
     setupTest(async page => {
       await page.click('#single-heading');
       await page.keys(['Tab', 'Tab']);
-      await expect(page.isFocused(singleList.findListbox().toSelector())).resolves.toBe(false);
-      await expect(page.isFocused(multiList.findListbox().toSelector())).resolves.toBe(true);
+      await expect(page.isFocused(singleList.findOptionsContainer().toSelector())).resolves.toBe(false);
+      await expect(page.isFocused(multiList.findOptionsContainer().toSelector())).resolves.toBe(true);
     })
   );
 
