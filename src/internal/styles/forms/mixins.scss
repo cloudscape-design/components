@@ -124,8 +124,12 @@
   // See focus-highlight above.
   outline: 2px dotted transparent;
 
-  border-block: awsui.$border-width-field solid $border-color;
-  border-inline: awsui.$border-width-field solid $border-color;
+  // Set focus border color/style only; do not reset the border width, so an
+  // already-applied thick invalid inline-start side survives focus.
+  border-block-style: solid;
+  border-inline-style: solid;
+  border-block-color: $border-color;
+  border-inline-color: $border-color;
 
   box-shadow: $box-shadow;
 }
