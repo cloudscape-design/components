@@ -8,7 +8,7 @@ import ControlGroup, { ControlGroupProps } from '~components/internal/components
 import { PermutationsPage } from '../app/templates';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
-import { input, segmentedControl, select } from './common';
+import { input, multiselect, segmentedControl, select } from './common';
 
 // Validation propagates through FormField context, so errorText/warningText are
 // carried on the permutation and applied by render, not passed to ControlGroup.
@@ -25,6 +25,19 @@ const segmentedChildren = (
   <>
     {input}
     {segmentedControl}
+  </>
+);
+// Multiselect as the last/button-facing control.
+const multiselectChildren = (
+  <>
+    {input}
+    {multiselect}
+  </>
+);
+const selectMultiselectChildren = (
+  <>
+    {select}
+    {multiselect}
   </>
 );
 const directions: ReadonlyArray<ControlGroupProps['direction']> = ['horizontal', 'vertical'];
@@ -51,6 +64,18 @@ const permutations = createPermutations<ValidationPermutation>([
   },
   {
     children: [segmentedChildren],
+    warningText: ['Double-check this value'],
+    direction: directions,
+    actionButton: [actionButton],
+  },
+  {
+    children: [multiselectChildren, selectMultiselectChildren],
+    errorText: ['This value is required'],
+    direction: directions,
+    actionButton: [actionButton],
+  },
+  {
+    children: [multiselectChildren, selectMultiselectChildren],
     warningText: ['Double-check this value'],
     direction: directions,
     actionButton: [actionButton],
