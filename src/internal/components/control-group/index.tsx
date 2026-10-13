@@ -34,17 +34,13 @@ export default function ControlGroup({
   const flattenedChildren = flattenChildren(children, 'ControlGroup');
   const controlCount = flattenedChildren.length;
 
-  // Only `'auto'` measures; a forced direction wins and the ghost is not rendered. The sensor
-  // reports the available width, the ghost the required single-row width; the comparison decides
-  // whether the controls stack. The resolved axis is a concrete GroupedControlDirection, so
-  // `'auto'` never reaches the context, classes, or SCSS.
   const { overflows, rootRef, ghostRef, sensorRef } = useFitsInline<HTMLDivElement>();
   const resolvedDirection: GroupedControlDirection =
     direction === 'auto' ? (overflows ? 'vertical' : 'horizontal') : direction;
 
   const rootClassnames = [styles.root, baseProps.className, testUtilStyles.root];
 
-  const renderControlSlots = () =>
+  const renderControlSlots = (isGhost = false) =>
     flattenedChildren.map((child, index) => {
       const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
       const position: GroupedControlPosition =
@@ -52,7 +48,12 @@ export default function ControlGroup({
       return (
         <div
           key={key ? String(key) : index}
-          className={clsx(testUtilStyles.control, styles.control, styles[`control-${position}-${resolvedDirection}`])}
+          className={clsx(
+            // Conditionally add the `control` class so that elements in the measurement ghost are excluded from test utils
+            !isGhost && testUtilStyles.control,
+            styles.control,
+            styles[`control-${position}-${resolvedDirection}`]
+          )}
         >
           <GroupedControlContext.Provider value={{ position, direction: resolvedDirection, hasAction: !!actionButton }}>
             {child}
@@ -74,21 +75,12 @@ export default function ControlGroup({
     >
       {renderControlSlots()}
 
-      {/*
-        Measurement helpers, only needed in `auto` mode:
-        - The sensor fills the inline space available to the group but has no intrinsic width,
-          so its measured width is the real available width (not the group's shrunk width).
-        - The ghost duplicates the controls as a single row to measure their required width,
-          out of flow so its width is stable when the visible group stacks. It is absolutely
-          positioned, so it gets its own zero-size relative wrapper to anchor against (the root
-          is `position: static` so the sensor can escape the group's collapse).
-      */}
       {direction === 'auto' && (
         <>
           <div ref={sensorRef} className={styles.sensor} aria-hidden="true" />
           <div className={styles['ghost-wrapper']}>
             <div ref={ghostRef} className={styles.ghost} aria-hidden="true">
-              {renderControlSlots()}
+              {renderControlSlots(true)}
             </div>
           </div>
         </>
