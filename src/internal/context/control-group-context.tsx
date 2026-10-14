@@ -6,6 +6,8 @@ export type GroupedControlPosition = 'first' | 'middle' | 'last' | 'only';
 
 export type GroupedControlDirection = 'horizontal' | 'vertical';
 
+export type GroupedControlValidation = 'error' | 'warning';
+
 export interface GroupedControlContextProps {
   /**
    * The control's position within a control group,
@@ -23,23 +25,18 @@ export interface GroupedControlContextProps {
    */
   hasAction?: boolean;
   /**
-   * Whether the surrounding control group is in an error state. The group owns
-   * the validation border; individual controls do not independently paint it.
+   * The surrounding control group's validation state, or `null` for none. The
+   * group owns the validation border; individual controls do not independently
+   * paint it.
    */
-  invalid?: boolean;
-  /**
-   * Whether the surrounding control group is in a warning state. The group owns
-   * the validation border; individual controls do not independently paint it.
-   */
-  warning?: boolean;
+  validation?: GroupedControlValidation | null;
 }
 
 export const GroupedControlContext = createContext<GroupedControlContextProps>({
   position: null,
   direction: 'horizontal',
   hasAction: false,
-  invalid: false,
-  warning: false,
+  validation: null,
 });
 
 export function useGroupedControlContext() {
@@ -53,14 +50,14 @@ export function useGroupedControlContext() {
  * content) should wrap that content with this provider. Otherwise a nested
  * control rendered inside such a slot would inherit the surrounding group's
  * `position` and incorrectly pick up the grouped-control styling
- * where adjacent borders lose their border radii. The group's validation
- * state (`invalid`/`warning`) is also cleared so nested custom-slot controls
- * never inherit the group's validation styling.
+ * where adjacent borders lose their border radii. The group's `validation`
+ * state is also cleared so nested custom-slot controls never inherit the
+ * group's validation styling.
  */
 export function ResetGroupedControlContext({ children }: { children: React.ReactNode }) {
   const { direction } = useGroupedControlContext();
   return (
-    <GroupedControlContext.Provider value={{ position: null, direction, invalid: false, warning: false }}>
+    <GroupedControlContext.Provider value={{ position: null, direction, validation: null }}>
       {children}
     </GroupedControlContext.Provider>
   );

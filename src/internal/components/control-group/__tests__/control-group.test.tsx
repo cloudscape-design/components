@@ -474,7 +474,7 @@ describe('Control group', () => {
         </FormField>
       );
 
-      expect(getByTestId('grouped-probe')).toHaveTextContent('invalid:true warning:false');
+      expect(getByTestId('grouped-probe')).toHaveTextContent('validation:error');
     });
   });
 });

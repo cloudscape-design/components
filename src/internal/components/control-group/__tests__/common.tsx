@@ -30,6 +30,6 @@ export function FormFieldValidationProbe({ testId = 'form-field-probe' }: { test
  * context (the real state the group owns).
  */
 export function GroupedValidationProbe({ testId = 'grouped-probe' }: { testId?: string }) {
-  const { invalid, warning } = useGroupedControlContext();
-  return <span data-testid={testId}>{`invalid:${!!invalid} warning:${!!warning}`}</span>;
+  const { validation } = useGroupedControlContext();
+  return <span data-testid={testId}>{`validation:${validation ?? 'null'}`}</span>;
 }

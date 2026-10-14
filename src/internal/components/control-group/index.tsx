@@ -60,7 +60,12 @@ export default function ControlGroup({
             className={clsx(styles.control, styles[`control-${position}-${direction}`])}
           >
             <GroupedControlContext.Provider
-              value={{ position, direction, hasAction: !!actionButton, invalid: isInvalid, warning: isWarning }}
+              value={{
+                position,
+                direction,
+                hasAction: !!actionButton,
+                validation: isInvalid ? 'error' : isWarning ? 'warning' : null,
+              }}
             >
               {/* Mask the form-field flags so inner controls do not color their own seams. */}
               <FormFieldContext.Provider value={{ ...formFieldContext, invalid: false, warning: false }}>
