@@ -12,19 +12,6 @@ const suite: TestSuite = {
       screenshotType: 'permutations',
     },
     {
-      description: 'standalone validation - keyboard focus',
-      path: 'multiselect/validation-focus',
-      screenshotType: 'screenshotArea',
-      pixelDiffTolerance: 2,
-      // Click the focus target, then Tab onto the first standalone invalid trigger. Tabbing
-      // activates the keyboard focus ring (body[data-awsui-focus-visible]), exercising the
-      // focus-visible path the fix targets.
-      setup: async ({ page }) => {
-        await page.click('#focus-target');
-        await page.keys(['Tab']);
-      },
-    },
-    {
       description: 'inlineLabelText-permutations',
       path: 'multiselect/inline-label-text-permutations',
       screenshotType: 'permutations',

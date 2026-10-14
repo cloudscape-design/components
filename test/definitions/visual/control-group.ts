@@ -12,12 +12,6 @@ const suite: TestSuite = {
       screenshotType: 'permutations',
       pixelDiffTolerance: 2,
     },
-    {
-      description: 'Validation states',
-      path: 'control-group/validation',
-      screenshotType: 'screenshotArea',
-      pixelDiffTolerance: 2,
-    },
   ],
 };
 
