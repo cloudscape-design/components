@@ -1080,6 +1080,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "transparent",
           },
         },
+        "color-border-dropdown-item-default": {
+          "$description": "The default border color of dropdown items, used as the divider between items. For example: dividers between options in select, multiselect, autosuggest, and button dropdown.",
+          "$value": {
+            "dark": "#d5dbdb",
+            "light": "#545b64",
+          },
+        },
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
@@ -4781,6 +4788,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-border-dropdown-item-default": {
+          "$description": "The default border color of dropdown items, used as the divider between items. For example: dividers between options in select, multiselect, autosuggest, and button dropdown.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#eaeded",
           },
         },
         "color-border-dropdown-item-focused": {
@@ -8486,6 +8500,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "transparent",
           },
         },
+        "color-border-dropdown-item-default": {
+          "$description": "The default border color of dropdown items, used as the divider between items. For example: dividers between options in select, multiselect, autosuggest, and button dropdown.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#eaeded",
+          },
+        },
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
@@ -12187,6 +12208,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-border-dropdown-item-default": {
+          "$description": "The default border color of dropdown items, used as the divider between items. For example: dividers between options in select, multiselect, autosuggest, and button dropdown.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-border-dropdown-item-focused": {
@@ -15892,6 +15920,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "transparent",
           },
         },
+        "color-border-dropdown-item-default": {
+          "$description": "The default border color of dropdown items, used as the divider between items. For example: dividers between options in select, multiselect, autosuggest, and button dropdown.",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
@@ -19595,6 +19630,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "transparent",
           },
         },
+        "color-border-dropdown-item-default": {
+          "$description": "The default border color of dropdown items, used as the divider between items. For example: dividers between options in select, multiselect, autosuggest, and button dropdown.",
+          "$value": {
+            "dark": "#414750",
+            "light": "#414750",
+          },
+        },
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
@@ -23296,6 +23338,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "transparent",
         "light": "transparent",
+      },
+    },
+    "color-border-dropdown-item-default": {
+      "$description": "The default border color of dropdown items, used as the divider between items. For example: dividers between options in select, multiselect, autosuggest, and button dropdown.",
+      "$value": {
+        "dark": "#414750",
+        "light": "#eaeded",
       },
     },
     "color-border-dropdown-item-focused": {
@@ -27006,6 +27055,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#b4b4bb",
           },
         },
+        "color-border-dropdown-item-default": {
+          "$description": "The default border color of dropdown items, used as the divider between items. For example: dividers between options in select, multiselect, autosuggest, and button dropdown.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#424650",
+          },
+        },
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
@@ -30707,6 +30763,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#656871",
             "light": "#656871",
+          },
+        },
+        "color-border-dropdown-item-default": {
+          "$description": "The default border color of dropdown items, used as the divider between items. For example: dividers between options in select, multiselect, autosuggest, and button dropdown.",
+          "$value": {
+            "dark": "#dedee3",
+            "light": "#dedee3",
           },
         },
         "color-border-dropdown-item-focused": {
@@ -34412,6 +34475,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#b4b4bb",
           },
         },
+        "color-border-dropdown-item-default": {
+          "$description": "The default border color of dropdown items, used as the divider between items. For example: dividers between options in select, multiselect, autosuggest, and button dropdown.",
+          "$value": {
+            "dark": "#424650",
+            "light": "#c6c6cd",
+          },
+        },
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
@@ -38113,6 +38183,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#656871",
             "light": "#b4b4bb",
+          },
+        },
+        "color-border-dropdown-item-default": {
+          "$description": "The default border color of dropdown items, used as the divider between items. For example: dividers between options in select, multiselect, autosuggest, and button dropdown.",
+          "$value": {
+            "dark": "#424650",
+            "light": "#c6c6cd",
           },
         },
         "color-border-dropdown-item-focused": {
@@ -41818,6 +41895,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#b4b4bb",
           },
         },
+        "color-border-dropdown-item-default": {
+          "$description": "The default border color of dropdown items, used as the divider between items. For example: dividers between options in select, multiselect, autosuggest, and button dropdown.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
@@ -45519,6 +45603,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#656871",
             "light": "#b4b4bb",
+          },
+        },
+        "color-border-dropdown-item-default": {
+          "$description": "The default border color of dropdown items, used as the divider between items. For example: dividers between options in select, multiselect, autosuggest, and button dropdown.",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-border-dropdown-item-focused": {
@@ -49224,6 +49315,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-border-dropdown-item-default": {
+          "$description": "The default border color of dropdown items, used as the divider between items. For example: dividers between options in select, multiselect, autosuggest, and button dropdown.",
+          "$value": {
+            "dark": "#424650",
+            "light": "#424650",
+          },
+        },
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
@@ -52927,6 +53025,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-border-dropdown-item-default": {
+          "$description": "The default border color of dropdown items, used as the divider between items. For example: dividers between options in select, multiselect, autosuggest, and button dropdown.",
+          "$value": {
+            "dark": "#424650",
+            "light": "#424650",
+          },
+        },
         "color-border-dropdown-item-focused": {
           "$description": "The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.",
           "$value": {
@@ -56628,6 +56733,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#656871",
         "light": "#b4b4bb",
+      },
+    },
+    "color-border-dropdown-item-default": {
+      "$description": "The default border color of dropdown items, used as the divider between items. For example: dividers between options in select, multiselect, autosuggest, and button dropdown.",
+      "$value": {
+        "dark": "#424650",
+        "light": "#c6c6cd",
       },
     },
     "color-border-dropdown-item-focused": {

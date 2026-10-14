@@ -10,6 +10,12 @@ const metadata: StyleDictionary.MetadataIndex = {
       'The default system divider width - used for dividers between sections of content such as key/value pairs and tabs, for both full width and inset dividers.',
   },
   borderInvalidWidth: { description: 'Used for invalid input left border width.' },
+  borderItemWidth: {
+    description:
+      'The border width of selectable items. For example: selected and hovered days in calendar and date range picker, highlighted dropdown items, and selected table rows.',
+    public: false,
+    themeable: true,
+  },
   borderWidthLayoutSideNavigation: {
     description: 'The border width of the side navigation divider in the AppLayout and AppLayoutToolbar components.',
     public: true,
