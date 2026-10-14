@@ -59,9 +59,11 @@
     "i18nStrings.externalIconAriaLabel": "Buka di tab baru"
   },
   "button-dropdown": {
+    "errorIconAriaLabel": "Kesalahan",
     "filteringResultsText": "{matchesCount} dari {totalCount} item",
     "i18nStrings.filteringItemAriaDescription": "Terus mengetik untuk memfilter hasil.",
-    "noMatch": "Tidak ada tindakan yang cocok"
+    "noMatch": "Tidak ada tindakan yang cocok",
+    "recoveryText": "Coba lagi"
   },
   "calendar": {
     "i18nStrings.currentMonthAriaLabel": "Bulan saat ini",

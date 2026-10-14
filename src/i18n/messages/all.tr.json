@@ -59,9 +59,11 @@
     "i18nStrings.externalIconAriaLabel": "Yeni bir sekmede açılır"
   },
   "button-dropdown": {
+    "errorIconAriaLabel": "Hata",
     "filteringResultsText": "{matchesCount}/{totalCount} öge",
     "i18nStrings.filteringItemAriaDescription": "Sonuçları filtrelemek için yazmaya devam edin.",
-    "noMatch": "Eşleşen eylem yok"
+    "noMatch": "Eşleşen eylem yok",
+    "recoveryText": "Yeniden dene"
   },
   "calendar": {
     "i18nStrings.currentMonthAriaLabel": "Geçerli ay",
