@@ -666,8 +666,8 @@ $icon-hover-motion: (
     (
       part: 'awsui-icon-panel',
       animation: icon-panel-slide-down,
-      duration: 600ms,
-      easing: cubic-bezier(0.65, 0, 0.35, 1),
+      duration: 450ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
       base: (
         transform-box: fill-box,
       ),
@@ -677,8 +677,8 @@ $icon-hover-motion: (
     (
       part: 'awsui-icon-panel',
       animation: icon-panel-slide-right,
-      duration: 600ms,
-      easing: cubic-bezier(0.65, 0, 0.35, 1),
+      duration: 450ms,
+      easing: cubic-bezier(0.4, 0, 0.2, 1),
       base: (
         transform-box: fill-box,
       ),
