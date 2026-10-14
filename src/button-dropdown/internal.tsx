@@ -489,7 +489,6 @@ const InternalButtonDropdown = React.forwardRef(
     // A recovery button inside an expanded group is rendered by the category element with the
     // same conditions as the main status (error state, recovery text, onLoadItems callback).
     const expandedGroupHasRecoveryButton =
-      showExpandableGroups &&
       !!recoveryText &&
       !!onLoadItems &&
       items.some(
