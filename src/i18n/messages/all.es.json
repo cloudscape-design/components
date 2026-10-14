@@ -51,7 +51,7 @@
     "errorIconAriaLabel": "Error",
     "i18nStrings.enteredTextLabel": "{isTokenMode, select, false {Usar: “{value}”} true {Agregar “{value}”} other {}}",
     "i18nStrings.tokenDismissLabel": "Eliminar {token__label}",
-    "i18nStrings.tokenInsertedAriaLabel": "{token__label} insertado",
+    "i18nStrings.tokenInsertedAriaLabel": "Se insertó {token__label}",
     "i18nStrings.tokenOverflowAriaLabel": "{count, plural, one {1 elemento más} other {{count} elementos más}}",
     "recoveryText": "Reintentar",
     "selectedAriaLabel": "Seleccionado"

@@ -72,8 +72,8 @@ function visibleLabels(wrapper: ReturnType<typeof renderTokens>['wrapper']) {
   return wrapper.findVisibleTokens().map(token => token.getElement().textContent);
 }
 
-function dismissButton(wrapper: ReturnType<typeof renderTokens>['wrapper'], index: number) {
-  return wrapper.findVisibleToken(index)!.findDismiss()!.getElement();
+function findDismissButton(wrapper: ReturnType<typeof renderTokens>['wrapper'], index: number) {
+  return wrapper.findVisibleToken(index)!.findDismiss()!;
 }
 
 function lastTokens(onChange: jest.Mock) {
@@ -282,41 +282,41 @@ describe('adding tokens', () => {
 describe('removing tokens', () => {
   test('dismiss button removes the token', () => {
     const { wrapper, onChange } = renderTokens({ initialTokens: toTokens('a', 'b', 'c') });
-    act(() => dismissButton(wrapper, 2).click());
+    findDismissButton(wrapper, 2).click();
     expect(lastTokens(onChange)).toEqual(toTokens('a', 'c'));
   });
 
   test.each([KeyCode.backspace, 46])('key %s on a token removes it', keyCode => {
     const { wrapper } = renderTokens({ initialTokens: toTokens('a', 'b') });
-    createWrapper(dismissButton(wrapper, 1)).focus();
-    createWrapper(dismissButton(wrapper, 1)).keydown({ keyCode });
+    findDismissButton(wrapper, 1).focus();
+    findDismissButton(wrapper, 1).keydown({ keyCode });
     expect(visibleLabels(wrapper)).toEqual(['b']);
   });
 
   test.each([{ readOnly: true }, { disabled: true }])('tokens cannot be removed when %o', props => {
     const { wrapper, onChange } = renderTokens({ initialTokens: toTokens('a'), ...props });
-    act(() => dismissButton(wrapper, 1).click());
-    createWrapper(dismissButton(wrapper, 1)).keydown(KeyCode.backspace);
+    findDismissButton(wrapper, 1).click();
+    findDismissButton(wrapper, 1).keydown(KeyCode.backspace);
     expect(onChange).not.toHaveBeenCalled();
-    expect(dismissButton(wrapper, 1)).toHaveAttribute('aria-disabled', 'true');
+    expect(findDismissButton(wrapper, 1).getElement()).toHaveAttribute('aria-disabled', 'true');
   });
 
   test('focus moves to the next token after removing a middle token', () => {
     const { wrapper } = renderTokens({ initialTokens: toTokens('a', 'b', 'c') });
-    act(() => dismissButton(wrapper, 2).click());
-    expect(document.activeElement).toBe(dismissButton(wrapper, 2));
+    findDismissButton(wrapper, 2).click();
+    expect(document.activeElement).toBe(findDismissButton(wrapper, 2).getElement());
     expect(wrapper.findVisibleToken(2)!.getElement()).toHaveTextContent('c');
   });
 
   test('focus moves to the previous token after removing the last token', () => {
     const { wrapper } = renderTokens({ initialTokens: toTokens('a', 'b') });
-    act(() => dismissButton(wrapper, 2).click());
-    expect(document.activeElement).toBe(dismissButton(wrapper, 1));
+    findDismissButton(wrapper, 2).click();
+    expect(document.activeElement).toBe(findDismissButton(wrapper, 1).getElement());
   });
 
   test('focus moves to the input without opening suggestions after removing the only token', () => {
     const { wrapper } = renderTokens({ initialTokens: toTokens('a') });
-    act(() => dismissButton(wrapper, 1).click());
+    findDismissButton(wrapper, 1).click();
     expect(document.activeElement).toBe(wrapper.findNativeInput().getElement());
     expect(wrapper.findDropdown().findOpenDropdown()).toBeNull();
   });
@@ -324,73 +324,73 @@ describe('removing tokens', () => {
   test('focus lands on the right token when a hidden token is revealed by the removal', () => {
     mockVisibleCount = 2;
     const { wrapper } = renderTokens({ initialTokens: toTokens('a', 'b', 'c') });
-    act(() => dismissButton(wrapper, 2).click());
+    findDismissButton(wrapper, 2).click();
     expect(visibleLabels(wrapper)).toEqual(['a', 'b']);
-    expect(document.activeElement).toBe(dismissButton(wrapper, 2));
+    expect(document.activeElement).toBe(findDismissButton(wrapper, 2).getElement());
   });
 });
 
 describe('keyboard navigation', () => {
   test('only one token is in the tab sequence', () => {
     const { wrapper } = renderTokens({ initialTokens: toTokens('a', 'b', 'c') });
-    expect([1, 2, 3].map(i => dismissButton(wrapper, i).tabIndex)).toEqual([0, -1, -1]);
+    expect([1, 2, 3].map(i => findDismissButton(wrapper, i).getElement().tabIndex)).toEqual([0, -1, -1]);
   });
 
   test('the overflow trigger is the tab stop when tokens are hidden', () => {
     mockVisibleCount = 1;
     const { wrapper } = renderTokens({ initialTokens: toTokens('a', 'b') });
     expect(wrapper.findOverflowTrigger()!.getElement().tabIndex).toBe(0);
-    expect(dismissButton(wrapper, 1).tabIndex).toBe(-1);
+    expect(findDismissButton(wrapper, 1).getElement().tabIndex).toBe(-1);
   });
 
   test('the tab stop follows the focused token while focus stays in the tokens', () => {
     const { wrapper } = renderTokens({ initialTokens: toTokens('a', 'b') });
-    createWrapper(dismissButton(wrapper, 1)).focus();
-    createWrapper(dismissButton(wrapper, 1)).keydown(KeyCode.right);
-    expect([1, 2].map(i => dismissButton(wrapper, i).tabIndex)).toEqual([-1, 0]);
+    findDismissButton(wrapper, 1).focus();
+    findDismissButton(wrapper, 1).keydown(KeyCode.right);
+    expect([1, 2].map(i => findDismissButton(wrapper, i).getElement().tabIndex)).toEqual([-1, 0]);
   });
 
   test('re-entering the tokens returns to the last focused token', () => {
     mockVisibleCount = 2;
     const { wrapper } = renderTokens({ initialTokens: toTokens('a', 'b', 'c') });
-    const trigger = wrapper.findOverflowTrigger()!.getElement();
-    createWrapper(trigger).focus();
-    createWrapper(trigger).keydown(KeyCode.right);
-    expect(document.activeElement).toBe(dismissButton(wrapper, 1));
+    const trigger = wrapper.findOverflowTrigger()!;
+    trigger.focus();
+    trigger.keydown(KeyCode.right);
+    expect(document.activeElement).toBe(findDismissButton(wrapper, 1).getElement());
     wrapper.findNativeInput().focus();
-    expect(trigger.tabIndex).toBe(-1);
-    expect([1, 2].map(i => dismissButton(wrapper, i).tabIndex)).toEqual([0, -1]);
+    expect(trigger.getElement().tabIndex).toBe(-1);
+    expect([1, 2].map(i => findDismissButton(wrapper, i).getElement().tabIndex)).toEqual([0, -1]);
   });
 
   test('arrow keys move between tokens and into the input', () => {
     const { wrapper } = renderTokens({ initialTokens: toTokens('a', 'b') });
-    createWrapper(dismissButton(wrapper, 1)).focus();
-    createWrapper(dismissButton(wrapper, 1)).keydown(KeyCode.right);
-    expect(document.activeElement).toBe(dismissButton(wrapper, 2));
-    createWrapper(dismissButton(wrapper, 2)).keydown(KeyCode.left);
-    expect(document.activeElement).toBe(dismissButton(wrapper, 1));
-    createWrapper(dismissButton(wrapper, 1)).keydown(KeyCode.left);
-    expect(document.activeElement).toBe(dismissButton(wrapper, 1));
-    createWrapper(dismissButton(wrapper, 1)).keydown(KeyCode.right);
-    createWrapper(dismissButton(wrapper, 2)).keydown(KeyCode.right);
+    findDismissButton(wrapper, 1).focus();
+    findDismissButton(wrapper, 1).keydown(KeyCode.right);
+    expect(document.activeElement).toBe(findDismissButton(wrapper, 2).getElement());
+    findDismissButton(wrapper, 2).keydown(KeyCode.left);
+    expect(document.activeElement).toBe(findDismissButton(wrapper, 1).getElement());
+    findDismissButton(wrapper, 1).keydown(KeyCode.left);
+    expect(document.activeElement).toBe(findDismissButton(wrapper, 1).getElement());
+    findDismissButton(wrapper, 1).keydown(KeyCode.right);
+    findDismissButton(wrapper, 2).keydown(KeyCode.right);
     expect(document.activeElement).toBe(wrapper.findNativeInput().getElement());
   });
 
   test('arrow keys follow the visual order in right-to-left layouts', () => {
     jest.mocked(getIsRtl).mockReturnValue(true);
     const { wrapper } = renderTokens({ initialTokens: toTokens('a', 'b') });
-    createWrapper(dismissButton(wrapper, 1)).focus();
-    createWrapper(dismissButton(wrapper, 1)).keydown(KeyCode.left);
-    expect(document.activeElement).toBe(dismissButton(wrapper, 2));
-    createWrapper(dismissButton(wrapper, 2)).keydown(KeyCode.right);
-    expect(document.activeElement).toBe(dismissButton(wrapper, 1));
+    findDismissButton(wrapper, 1).focus();
+    findDismissButton(wrapper, 1).keydown(KeyCode.left);
+    expect(document.activeElement).toBe(findDismissButton(wrapper, 2).getElement());
+    findDismissButton(wrapper, 2).keydown(KeyCode.right);
+    expect(document.activeElement).toBe(findDismissButton(wrapper, 1).getElement());
   });
 
   test('Home focuses the first item and End focuses the input', () => {
     mockVisibleCount = 2;
     const { wrapper } = renderTokens({ initialTokens: toTokens('a', 'b', 'c') });
-    createWrapper(dismissButton(wrapper, 2)).focus();
-    createWrapper(dismissButton(wrapper, 2)).keydown(KeyCode.home);
+    findDismissButton(wrapper, 2).focus();
+    findDismissButton(wrapper, 2).keydown(KeyCode.home);
     expect(document.activeElement).toBe(wrapper.findOverflowTrigger()!.getElement());
     wrapper.findOverflowTrigger()!.keydown(KeyCode.end);
     expect(document.activeElement).toBe(wrapper.findNativeInput().getElement());
@@ -399,18 +399,18 @@ describe('keyboard navigation', () => {
   test('Backspace in an empty input focuses the last token without removing it', () => {
     const { wrapper, onChange } = renderTokens({ initialTokens: toTokens('a', 'b') });
     wrapper.findNativeInput().keydown(KeyCode.backspace);
-    expect(document.activeElement).toBe(dismissButton(wrapper, 2));
+    expect(document.activeElement).toBe(findDismissButton(wrapper, 2).getElement());
     expect(onChange).not.toHaveBeenCalled();
   });
 
   test('Backspace in an empty input focuses the last token again after a token was removed', () => {
     const { wrapper } = renderTokens({ initialTokens: toTokens('a', 'b') });
     wrapper.findNativeInput().keydown(KeyCode.backspace);
-    createWrapper(dismissButton(wrapper, 2)).keydown({ keyCode: 46 });
+    findDismissButton(wrapper, 2).keydown({ keyCode: 46 });
     wrapper.findNativeInput().focus();
     wrapper.findNativeInput().keydown(KeyCode.backspace);
     expect(visibleLabels(wrapper)).toEqual(['a']);
-    expect(document.activeElement).toBe(dismissButton(wrapper, 1));
+    expect(document.activeElement).toBe(findDismissButton(wrapper, 1).getElement());
   });
 
   test('Backspace in an empty input focuses the overflow trigger when all tokens are hidden', () => {
@@ -429,9 +429,9 @@ describe('keyboard navigation', () => {
 
   test('focusing a token does not open the suggestions, focusing the input does', () => {
     const { wrapper } = renderTokens({ initialTokens: toTokens('a') });
-    createWrapper(dismissButton(wrapper, 1)).focus();
+    findDismissButton(wrapper, 1).focus();
     expect(wrapper.findDropdown().findOpenDropdown()).toBeNull();
-    act(() => dismissButton(wrapper, 1).blur());
+    findDismissButton(wrapper, 1).blur();
     wrapper.focus();
     expect(wrapper.findDropdown().findOpenDropdown()).not.toBeNull();
   });
@@ -441,30 +441,34 @@ describe('overflow dropdown', () => {
   function renderOverflow(props: StatefulProps = {}) {
     mockVisibleCount = 1;
     const result = renderTokens({ initialTokens: toTokens('a', 'b', 'c', 'd'), ...props });
-    const trigger = () => result.wrapper.findOverflowTrigger()!.getElement();
-    const dropdown = () => result.wrapper.findOverflowDropdown();
-    const dropdownDismiss = (index: number) => dropdown()!.findToken(index)!.findDismiss()!.getElement();
-    return { ...result, trigger, dropdown, dropdownDismiss };
+    const findTrigger = () => result.wrapper.findOverflowTrigger()!;
+    const findDropdown = () => result.wrapper.findOverflowDropdown();
+    const findDropdownDismissButton = (index: number) => findDropdown()!.findToken(index)!.findDismiss()!;
+    return { ...result, findTrigger, findDropdown, findDropdownDismissButton };
   }
 
   test('labels the trigger without announcing a listbox popup', () => {
-    const { trigger } = renderOverflow({ i18nStrings: { tokenOverflowAriaLabel: count => `${count} more` } });
-    expect(trigger()).toHaveAttribute('aria-label', '3 more');
-    expect(trigger()).not.toHaveAttribute('aria-haspopup');
+    const { findTrigger } = renderOverflow({ i18nStrings: { tokenOverflowAriaLabel: count => `${count} more` } });
+    expect(findTrigger().getElement()).toHaveAttribute('aria-label', '3 more');
+    expect(findTrigger().getElement()).not.toHaveAttribute('aria-haspopup');
   });
 
   test('reports expand and collapse analytics on the trigger', () => {
     activateAnalyticsMetadata(true);
-    const { trigger } = renderOverflow();
-    expect(getGeneratedAnalyticsMetadata(trigger())).toEqual(expect.objectContaining({ action: 'expand' }));
-    act(() => trigger().click());
-    expect(getGeneratedAnalyticsMetadata(trigger())).toEqual(expect.objectContaining({ action: 'collapse' }));
+    const { findTrigger } = renderOverflow();
+    expect(getGeneratedAnalyticsMetadata(findTrigger().getElement())).toEqual(
+      expect.objectContaining({ action: 'expand' })
+    );
+    findTrigger().click();
+    expect(getGeneratedAnalyticsMetadata(findTrigger().getElement())).toEqual(
+      expect.objectContaining({ action: 'collapse' })
+    );
     activateAnalyticsMetadata(false);
   });
 
   test('shows the number of hidden tokens on the trigger', () => {
-    const { trigger, wrapper } = renderOverflow();
-    expect(trigger()).toHaveTextContent('+3');
+    const { findTrigger, wrapper } = renderOverflow();
+    expect(findTrigger().getElement()).toHaveTextContent('+3');
     expect(visibleLabels(wrapper)).toEqual(['d']);
   });
 
@@ -474,124 +478,126 @@ describe('overflow dropdown', () => {
   });
 
   test('trigger toggles the dropdown listing hidden tokens', () => {
-    const { trigger, dropdown } = renderOverflow();
-    expect(trigger()).toHaveAttribute('aria-expanded', 'false');
-    act(() => trigger().click());
-    expect(trigger()).toHaveAttribute('aria-expanded', 'true');
+    const { findTrigger, findDropdown } = renderOverflow();
+    expect(findTrigger().getElement()).toHaveAttribute('aria-expanded', 'false');
+    findTrigger().click();
+    expect(findTrigger().getElement()).toHaveAttribute('aria-expanded', 'true');
     expect(
-      dropdown()!
+      findDropdown()!
         .findTokens()
         .map(token => token.getElement().textContent)
     ).toEqual(['a', 'b', 'c']);
-    expect(document.getElementById(trigger().getAttribute('aria-controls')!)).toBe(dropdown()!.getElement());
-    act(() => trigger().click());
-    expect(dropdown()).toBeNull();
+    expect(document.getElementById(findTrigger().getElement().getAttribute('aria-controls')!)).toBe(
+      findDropdown()!.getElement()
+    );
+    findTrigger().click();
+    expect(findDropdown()).toBeNull();
   });
 
   test('opening the overflow dropdown closes the suggestions', () => {
-    const { trigger, wrapper } = renderOverflow();
+    const { findTrigger, wrapper } = renderOverflow();
     wrapper.focus();
     expect(wrapper.findDropdown().findOptions()).toHaveLength(2);
-    act(() => trigger().click());
+    findTrigger().click();
     expect(wrapper.findDropdown().findOptions()).toHaveLength(0);
   });
 
   test('does not move focus into the dropdown on open', () => {
-    const { trigger } = renderOverflow();
-    createWrapper(trigger()).focus();
-    act(() => trigger().click());
-    expect(document.activeElement).toBe(trigger());
+    const { findTrigger } = renderOverflow();
+    findTrigger().focus();
+    findTrigger().click();
+    expect(document.activeElement).toBe(findTrigger().getElement());
   });
 
   test('ArrowDown and ArrowUp from the trigger move focus into the dropdown', () => {
-    const { trigger, dropdownDismiss } = renderOverflow();
-    act(() => trigger().click());
-    createWrapper(trigger()).focus();
-    createWrapper(trigger()).keydown(KeyCode.down);
-    expect(document.activeElement).toBe(dropdownDismiss(1));
-    createWrapper(trigger()).focus();
-    createWrapper(trigger()).keydown(KeyCode.up);
-    expect(document.activeElement).toBe(dropdownDismiss(3));
+    const { findTrigger, findDropdownDismissButton } = renderOverflow();
+    findTrigger().click();
+    findTrigger().focus();
+    findTrigger().keydown(KeyCode.down);
+    expect(document.activeElement).toBe(findDropdownDismissButton(1).getElement());
+    findTrigger().focus();
+    findTrigger().keydown(KeyCode.up);
+    expect(document.activeElement).toBe(findDropdownDismissButton(3).getElement());
   });
 
   test('ArrowDown on the closed trigger opens the dropdown and focuses the first token', () => {
-    const { trigger, dropdown, dropdownDismiss } = renderOverflow();
-    createWrapper(trigger()).focus();
-    createWrapper(trigger()).keydown(KeyCode.down);
-    expect(dropdown()).not.toBeNull();
-    expect(trigger()).toHaveAttribute('aria-expanded', 'true');
-    expect(document.activeElement).toBe(dropdownDismiss(1));
+    const { findTrigger, findDropdown, findDropdownDismissButton } = renderOverflow();
+    findTrigger().focus();
+    findTrigger().keydown(KeyCode.down);
+    expect(findDropdown()).not.toBeNull();
+    expect(findTrigger().getElement()).toHaveAttribute('aria-expanded', 'true');
+    expect(document.activeElement).toBe(findDropdownDismissButton(1).getElement());
   });
 
   test('ArrowUp on the closed trigger opens the dropdown and focuses the last token', () => {
-    const { trigger, dropdown, dropdownDismiss } = renderOverflow();
-    createWrapper(trigger()).focus();
-    createWrapper(trigger()).keydown(KeyCode.up);
-    expect(dropdown()).not.toBeNull();
-    expect(document.activeElement).toBe(dropdownDismiss(3));
+    const { findTrigger, findDropdown, findDropdownDismissButton } = renderOverflow();
+    findTrigger().focus();
+    findTrigger().keydown(KeyCode.up);
+    expect(findDropdown()).not.toBeNull();
+    expect(document.activeElement).toBe(findDropdownDismissButton(3).getElement());
   });
 
   test('ArrowDown and ArrowUp cycle through dropdown tokens', () => {
-    const { trigger, dropdownDismiss } = renderOverflow();
-    act(() => trigger().click());
-    createWrapper(dropdownDismiss(3)).focus();
-    createWrapper(dropdownDismiss(3)).keydown(KeyCode.down);
-    expect(document.activeElement).toBe(dropdownDismiss(1));
-    createWrapper(dropdownDismiss(1)).keydown(KeyCode.up);
-    expect(document.activeElement).toBe(dropdownDismiss(3));
+    const { findTrigger, findDropdownDismissButton } = renderOverflow();
+    findTrigger().click();
+    findDropdownDismissButton(3).focus();
+    findDropdownDismissButton(3).keydown(KeyCode.down);
+    expect(document.activeElement).toBe(findDropdownDismissButton(1).getElement());
+    findDropdownDismissButton(1).keydown(KeyCode.up);
+    expect(document.activeElement).toBe(findDropdownDismissButton(3).getElement());
   });
 
   test('Escape closes the dropdown and returns focus to the trigger', () => {
-    const { trigger, dropdown, dropdownDismiss } = renderOverflow();
-    act(() => trigger().click());
-    createWrapper(dropdownDismiss(1)).focus();
-    createWrapper(dropdownDismiss(1)).keydown({ keyCode: KeyCode.escape, key: 'Escape' });
-    expect(dropdown()).toBeNull();
-    expect(document.activeElement).toBe(trigger());
+    const { findTrigger, findDropdown, findDropdownDismissButton } = renderOverflow();
+    findTrigger().click();
+    findDropdownDismissButton(1).focus();
+    findDropdownDismissButton(1).keydown({ keyCode: KeyCode.escape, key: 'Escape' });
+    expect(findDropdown()).toBeNull();
+    expect(document.activeElement).toBe(findTrigger().getElement());
   });
 
   test('Tab closes the dropdown', () => {
-    const { trigger, dropdown, dropdownDismiss } = renderOverflow();
-    act(() => trigger().click());
-    createWrapper(dropdownDismiss(1)).keydown({ keyCode: KeyCode.tab, key: 'Tab' });
-    expect(dropdown()).toBeNull();
+    const { findTrigger, findDropdown, findDropdownDismissButton } = renderOverflow();
+    findTrigger().click();
+    findDropdownDismissButton(1).keydown({ keyCode: KeyCode.tab, key: 'Tab' });
+    expect(findDropdown()).toBeNull();
   });
 
   test('clicking outside closes the dropdown', () => {
-    const { trigger, dropdown } = renderOverflow();
-    act(() => trigger().click());
+    const { findTrigger, findDropdown } = renderOverflow();
+    findTrigger().click();
     act(() => {
       document.body.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
       document.body.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     });
-    expect(dropdown()).toBeNull();
+    expect(findDropdown()).toBeNull();
   });
 
   test('removing a token from the dropdown focuses the next one', () => {
-    const { trigger, dropdown, dropdownDismiss, onChange } = renderOverflow();
-    act(() => trigger().click());
-    act(() => dropdownDismiss(2).click());
+    const { findTrigger, findDropdown, findDropdownDismissButton, onChange } = renderOverflow();
+    findTrigger().click();
+    findDropdownDismissButton(2).click();
     expect(lastTokens(onChange)).toEqual(toTokens('a', 'c', 'd'));
-    expect(document.activeElement).toBe(dropdownDismiss(2));
-    expect(dropdown()!.findToken(2)!.getElement()).toHaveTextContent('c');
+    expect(document.activeElement).toBe(findDropdownDismissButton(2).getElement());
+    expect(findDropdown()!.findToken(2)!.getElement()).toHaveTextContent('c');
   });
 
   test.each([
     ['Backspace', KeyCode.backspace],
     ['Delete', 46],
   ])('%s on a dropdown token removes it and focuses the next one', (_, keyCode) => {
-    const { trigger, dropdownDismiss, onChange } = renderOverflow();
-    act(() => trigger().click());
-    createWrapper(dropdownDismiss(2)).focus();
-    createWrapper(dropdownDismiss(2)).keydown({ keyCode });
+    const { findTrigger, findDropdownDismissButton, onChange } = renderOverflow();
+    findTrigger().click();
+    findDropdownDismissButton(2).focus();
+    findDropdownDismissButton(2).keydown({ keyCode });
     expect(lastTokens(onChange)).toEqual(toTokens('a', 'c', 'd'));
-    expect(document.activeElement).toBe(dropdownDismiss(2));
+    expect(document.activeElement).toBe(findDropdownDismissButton(2).getElement());
   });
 
   test('Backspace on a dropdown token does not remove it when read-only', () => {
-    const { trigger, dropdownDismiss, onChange } = renderOverflow({ readOnly: true });
-    act(() => trigger().click());
-    createWrapper(dropdownDismiss(1)).keydown(KeyCode.backspace);
+    const { findTrigger, findDropdownDismissButton, onChange } = renderOverflow({ readOnly: true });
+    findTrigger().click();
+    findDropdownDismissButton(1).keydown(KeyCode.backspace);
     expect(onChange).not.toHaveBeenCalled();
   });
 
@@ -600,29 +606,29 @@ describe('overflow dropdown', () => {
     ['last', [3, 2, 1]],
     ['middle', [2, 1, 1]],
   ])('removing all hidden tokens starting from the %s one focuses the first visible token', (_, order) => {
-    const { trigger, dropdown, dropdownDismiss, wrapper } = renderOverflow();
-    act(() => trigger().click());
+    const { findTrigger, findDropdown, findDropdownDismissButton, wrapper } = renderOverflow();
+    findTrigger().click();
     for (const index of order) {
-      act(() => dropdownDismiss(index).click());
+      findDropdownDismissButton(index).click();
     }
-    expect(dropdown()).toBeNull();
+    expect(findDropdown()).toBeNull();
     expect(wrapper.findOverflowTrigger()).toBeNull();
     expect(visibleLabels(wrapper)).toEqual(['d']);
-    expect(document.activeElement).toBe(dismissButton(wrapper, 1));
+    expect(document.activeElement).toBe(findDismissButton(wrapper, 1).getElement());
   });
 
   test('focuses the first visible token when a removal lets the remaining hidden tokens fit', () => {
     mockVisibleCount = 2;
     const { wrapper, onChange } = renderTokens({ initialTokens: toTokens('a', 'b', 'c', 'd') });
-    act(() => wrapper.findOverflowTrigger()!.click());
-    const dismissFirstHidden = wrapper.findOverflowDropdown()!.findToken(1)!.findDismiss()!.getElement();
-    createWrapper(dismissFirstHidden).focus();
+    wrapper.findOverflowTrigger()!.click();
+    const dismissFirstHidden = wrapper.findOverflowDropdown()!.findToken(1)!.findDismiss()!;
+    dismissFirstHidden.focus();
     mockVisibleCount = 3;
-    act(() => dismissFirstHidden.click());
+    dismissFirstHidden.click();
     expect(lastTokens(onChange)).toEqual(toTokens('b', 'c', 'd'));
     expect(wrapper.findOverflowTrigger()).toBeNull();
     expect(visibleLabels(wrapper)).toEqual(['b', 'c', 'd']);
-    expect(document.activeElement).toBe(dismissButton(wrapper, 1));
+    expect(document.activeElement).toBe(findDismissButton(wrapper, 1).getElement());
   });
 
   test('does not move focus when hidden tokens become visible while focus is elsewhere in the field', () => {
@@ -632,7 +638,7 @@ describe('overflow dropdown', () => {
       <Autosuggest value="" onChange={() => {}} tokens={tokens} options={options} />
     );
     const wrapper = createWrapper(container).findAutosuggest()!;
-    act(() => wrapper.findOverflowTrigger()!.click());
+    wrapper.findOverflowTrigger()!.click();
     wrapper.findNativeInput().focus();
     mockVisibleCount = 2;
     rerender(<Autosuggest value="" onChange={() => {}} tokens={tokens} options={options} />);
@@ -647,7 +653,7 @@ describe('overflow dropdown', () => {
       <Autosuggest value="" onChange={() => {}} tokens={tokens} options={options} />
     );
     const wrapper = createWrapper(container).findAutosuggest()!;
-    act(() => wrapper.findOverflowTrigger()!.click());
+    wrapper.findOverflowTrigger()!.click();
     expect(wrapper.findOverflowDropdown()).not.toBeNull();
     rerender(<Autosuggest value="" onChange={() => {}} tokens={tokens} options={options} disabled={true} />);
     expect(wrapper.findOverflowDropdown()).toBeNull();
@@ -656,21 +662,21 @@ describe('overflow dropdown', () => {
   });
 
   test('trigger is disabled when the component is disabled', () => {
-    const { trigger } = renderOverflow({ disabled: true });
-    expect(trigger()).toBeDisabled();
+    const { findTrigger } = renderOverflow({ disabled: true });
+    expect(findTrigger().getElement()).toBeDisabled();
   });
 
   test('hidden tokens can be inspected but not removed when read-only', () => {
-    const { trigger, dropdownDismiss, onChange } = renderOverflow({ readOnly: true });
-    act(() => trigger().click());
-    act(() => dropdownDismiss(1).click());
+    const { findTrigger, findDropdownDismissButton, onChange } = renderOverflow({ readOnly: true });
+    findTrigger().click();
+    findDropdownDismissButton(1).click();
     expect(onChange).not.toHaveBeenCalled();
-    expect(dropdownDismiss(1)).toHaveAttribute('aria-disabled', 'true');
+    expect(findDropdownDismissButton(1).getElement()).toHaveAttribute('aria-disabled', 'true');
   });
 
   test('finds the dropdown rendered in a portal', () => {
-    const { trigger, wrapper } = renderOverflow({ expandToViewport: true });
-    act(() => trigger().click());
+    const { findTrigger, wrapper } = renderOverflow({ expandToViewport: true });
+    findTrigger().click();
     expect(wrapper.findOverflowDropdown({ expandToViewport: true })!.findTokens()).toHaveLength(3);
   });
 });
@@ -678,7 +684,7 @@ describe('overflow dropdown', () => {
 describe('input value', () => {
   test('clear button clears the value and keeps tokens', () => {
     const { wrapper, onChange } = renderTokens({ initialTokens: toTokens('a'), initialValue: 'x' });
-    act(() => wrapper.findClearButton()!.click());
+    wrapper.findClearButton()!.click();
     expect(onChange).toHaveBeenLastCalledWith(
       expect.objectContaining({ detail: { value: '', tokens: toTokens('a') } })
     );
@@ -721,13 +727,13 @@ describe('i18n', () => {
         tokenOverflowAriaLabel: count => `${count} hidden`,
       },
     });
-    expect(dismissButton(wrapper, 1)).toHaveAttribute('aria-label', 'Remove b');
+    expect(findDismissButton(wrapper, 1).getElement()).toHaveAttribute('aria-label', 'Remove b');
     expect(wrapper.findOverflowTrigger()!.getElement()).toHaveAttribute('aria-label', '1 hidden');
   });
 
   test('has no dismiss label when neither i18nStrings nor provider messages are given', () => {
     const { wrapper } = renderTokens({ initialTokens: toTokens('a') });
-    expect(dismissButton(wrapper, 1)).not.toHaveAttribute('aria-label');
+    expect(findDismissButton(wrapper, 1).getElement()).not.toHaveAttribute('aria-label');
   });
 
   test.each([
@@ -742,7 +748,10 @@ describe('i18n', () => {
     );
     const wrapper = createWrapper(container).findAutosuggest()!;
     expect(wrapper.findOverflowTrigger()!.getElement()).toHaveAttribute('aria-label', expected);
-    expect(dismissButton(wrapper, 1)).toHaveAttribute('aria-label', `Remove ${visibleCount === 2 ? 'b' : 'c'}`);
+    expect(findDismissButton(wrapper, 1).getElement()).toHaveAttribute(
+      'aria-label',
+      `Remove ${visibleCount === 2 ? 'b' : 'c'}`
+    );
   });
 
   test('i18nStrings take precedence over provider messages', () => {
@@ -752,6 +761,6 @@ describe('i18n', () => {
       </I18nProvider>
     );
     const wrapper = createWrapper(container).findAutosuggest()!;
-    expect(dismissButton(wrapper, 1)).toHaveAttribute('aria-label', 'Delete a');
+    expect(findDismissButton(wrapper, 1).getElement()).toHaveAttribute('aria-label', 'Delete a');
   });
 });

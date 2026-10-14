@@ -165,10 +165,12 @@ export default function AutosuggestTokenModePermutationsPage() {
           initTokens={[makeToken('us-east-1'), makeToken('eu-west-1')]}
         />
       </IconProvider>
-      <Scenario
-        label="Many tokens — overflow trigger"
-        initTokens={ALL_OPTIONS.slice(0, 6).map(o => makeToken(o.value!))}
-      />
+      <div style={{ maxInlineSize: '400px' }} data-testid="overflow">
+        <Scenario
+          label="Many tokens — overflow trigger"
+          initTokens={ALL_OPTIONS.slice(0, 6).map(o => makeToken(o.value!))}
+        />
+      </div>
       <Scenario label="Disabled" initTokens={[makeToken('us-east-1')]} disabled={true} />
       <Scenario label="Read-only" initTokens={[makeToken('us-east-1')]} readOnly={true} />
       <Scenario label="Invalid (error state)" initTokens={[makeToken('us-east-1')]} invalid={true} />
