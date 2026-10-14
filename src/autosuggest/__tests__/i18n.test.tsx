@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { act, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
@@ -272,12 +272,8 @@ describe('i18n provider', () => {
     const wrapper = createWrapper(container).findAutosuggest()!;
 
     wrapper.setInputValue('my-region');
-    act(() => {
-      wrapper.findNativeInput().keydown(KeyCode.enter);
-    });
-    act(() => {
-      jest.runAllTimers();
-    });
+    wrapper.findNativeInput().keydown(KeyCode.enter);
+    jest.runAllTimers();
     jest.useRealTimers();
 
     const liveRegion = document.querySelector('[aria-live="assertive"]');
@@ -308,12 +304,8 @@ describe('i18n provider', () => {
     const wrapper = createWrapper(container).findAutosuggest()!;
 
     wrapper.setInputValue('us-east-1');
-    act(() => {
-      wrapper.findNativeInput().keydown(KeyCode.enter);
-    });
-    act(() => {
-      jest.runAllTimers();
-    });
+    wrapper.findNativeInput().keydown(KeyCode.enter);
+    jest.runAllTimers();
     jest.useRealTimers();
 
     const liveRegion = document.querySelector('[aria-live="assertive"]');
