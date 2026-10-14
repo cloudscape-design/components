@@ -8,3 +8,8 @@ export function PositionProbe({ testId = 'probe' }: { testId?: string }) {
   const { position } = useGroupedControlContext();
   return <span data-testid={testId}>{position ?? 'none'}</span>;
 }
+
+export function DirectionProbe({ testId = 'direction-probe' }: { testId?: string }) {
+  const { direction } = useGroupedControlContext();
+  return <span data-testid={testId}>{direction}</span>;
+}

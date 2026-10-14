@@ -1,9 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { forwardRef, Ref } from 'react';
+import React, { forwardRef, Ref, useRef } from 'react';
 import clsx from 'clsx';
 
-import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
+import {
+  isThemeActive,
+  Theme,
+  useMergeRefs,
+  useSingleTabStopNavigation,
+} from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalIcon from '../icon/internal';
@@ -30,6 +35,9 @@ function DismissButton(
   ref: Ref<HTMLButtonElement>
 ) {
   const isOneTheme = isThemeActive(Theme.OneTheme);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const mergedRef = useMergeRefs(ref, buttonRef);
+  const { tabIndex } = useSingleTabStopNavigation(buttonRef);
   const analyticsMetadata: GeneratedAnalyticsMetadataTokenDismiss = {
     action: 'dismiss',
     detail: {
@@ -38,8 +46,9 @@ function DismissButton(
   };
   return (
     <button
-      ref={ref}
+      ref={mergedRef}
       type="button"
+      tabIndex={tabIndex}
       className={clsx(
         styles['dismiss-button'],
         legacyTestingStyles['dismiss-button'],

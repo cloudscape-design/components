@@ -75,8 +75,20 @@ const InternalMultiselect = React.forwardRef(
   ) => {
     const baseProps = getBaseProps(restProps);
     const formFieldContext = useFormFieldContext(restProps);
-    const { position: groupedControlPosition } = useGroupedControlContext();
+    const groupedControlProps = useGroupedControlContext();
     const i18n = useInternalI18n('multiselect');
+
+    const isGrouped = !!groupedControlProps.position;
+
+    // When rendered inside a control group, tokens are always shown inline in the
+    // trigger regardless of the `inlineTokens` prop, since there is no room to
+    // display tokens below the control within a group.
+    const showTokensInline = inlineTokens || isGrouped;
+
+    // When grouped, the dropdown is portaled regardless of the public
+    // `expandToViewport` prop so it escapes the control slot's stacking context
+    // and paints over the group's inline label (which the focus ring stays under).
+    const effectiveExpandToViewport = expandToViewport || isGrouped;
 
     const selfControlId = useUniqueId('trigger');
     const controlId = formFieldContext.controlId ?? selfControlId;
@@ -138,9 +150,9 @@ const InternalMultiselect = React.forwardRef(
         triggerProps={multiselectProps.getTriggerProps(disabled, autoFocus)}
         selectedOption={null}
         selectedOptions={selectedOptions}
-        triggerVariant={inlineTokens ? 'tokens' : 'placeholder'}
+        triggerVariant={showTokensInline ? 'tokens' : 'placeholder'}
         isOpen={multiselectProps.isOpen}
-        groupedControlPosition={groupedControlPosition}
+        groupedControlProps={groupedControlProps}
         inlineLabelText={inlineLabelText}
         {...formFieldContext}
         controlId={controlId}
@@ -166,7 +178,7 @@ const InternalMultiselect = React.forwardRef(
 
     const ListComponent = virtualScroll ? VirtualList : PlainList;
 
-    const showTokens = !hideTokens && !inlineTokens && tokens.length > 0;
+    const showTokens = !hideTokens && !showTokensInline && tokens.length > 0;
 
     const tokenGroupI18nStrings: TokenGroupProps.I18nStrings = {
       limitShowFewer: i18nStrings?.tokenLimitShowFewer,
@@ -209,12 +221,12 @@ const InternalMultiselect = React.forwardRef(
                 : undefined
             }
             open={multiselectProps.isOpen}
-            minWidth={getDropdownMinWidth({ expandToViewport, triggerWidth })}
+            minWidth={getDropdownMinWidth({ expandToViewport: effectiveExpandToViewport, triggerWidth })}
             maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
             trigger={trigger}
             header={dropdownHeader}
             footer={dropdownFooter}
-            expandToViewport={expandToViewport}
+            expandToViewport={effectiveExpandToViewport}
             // Forces dropdown position recalculation when new options are loaded
             contentKey={hasOptions.current.toString()}
             content={

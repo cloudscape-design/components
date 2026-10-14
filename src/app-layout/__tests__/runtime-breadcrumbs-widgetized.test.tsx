@@ -3,6 +3,8 @@
 import React from 'react';
 import { act, cleanup, render, waitFor } from '@testing-library/react';
 
+import { setGlobalFlag } from '@cloudscape-design/component-toolkit/internal/testing';
+
 import AppLayout from '../../../lib/components/app-layout';
 import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
 import { getFunnelNameSelector } from '../../../lib/components/internal/analytics/selectors';
@@ -362,5 +364,34 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(firstCallback).not.toHaveBeenCalled();
 
     second.unregister();
+  });
+
+  describe('with appLayoutHideToolbarBreadcrumbs flag', () => {
+    const flagName = 'appLayoutHideToolbarBreadcrumbs';
+
+    beforeEach(() => setGlobalFlag(flagName, true));
+    afterEach(() => setGlobalFlag(flagName, undefined));
+
+    test('marks breadcrumbs as externally owned on first render without a consumer', () => {
+      render(<AppLayout breadcrumbs={<BreadcrumbGroup items={defaultItems} />} />);
+      expectAppLayoutBreadcrumbsToBeExternallyOwned();
+      expect(getAppLayoutBreadcrumbGroup()).toBeTruthy();
+    });
+
+    test('keeps breadcrumbs externally owned after the consumer unregisters', async () => {
+      const externalContainer = document.createElement('div');
+      const { registration } = registerExternalContainer(externalContainer);
+      render(<AppLayout breadcrumbs={<BreadcrumbGroup items={defaultItems} />} />);
+
+      await waitFor(() => expect(externalContainer).toHaveTextContent('Home / Resource'));
+      act(() => registration.unregister());
+      expectAppLayoutBreadcrumbsToBeExternallyOwned();
+    });
+  });
+
+  test('does not mark breadcrumbs as externally owned without the flag or a consumer', () => {
+    render(<AppLayout breadcrumbs={<BreadcrumbGroup items={defaultItems} />} />);
+    const breadcrumbsSection = getAppLayoutBreadcrumbsSection()?.getElement();
+    expect(breadcrumbsSection).not.toHaveAttribute('data-awsui-external-breadcrumbs');
   });
 });

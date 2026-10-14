@@ -20,17 +20,8 @@ const ALL_VARIANTS: BoxProps.VisualAccent.Color[] = [
   'red',
   'green',
   'yellow',
-
-  'amber',
   'teal',
   'purple',
-  'blue',
-  'magenta',
-  'lime',
-
-  'violet',
-
-  'pink',
   'orange',
 ];
 

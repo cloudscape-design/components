@@ -7,6 +7,7 @@
 @use 'segment' as seg;
 @use 'sass:list' as list;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/utils/theming' as theming;
 
 @function repeatValue($value, $times) {
   $result: ();
@@ -43,19 +44,28 @@
     gap: calc(#{seg.$segment-gap} * 2 - #{seg.$segment-divider-width});
   }
 
+  @include theming.one-theme-only {
+    gap: #{seg.$one-theme-segment-gap};
+  }
+
   &:not(.grouped),
   &.grouped-only {
     @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
       display: none;
     }
   }
+
+  &.grouped.grouped-vertical {
+    inline-size: 100%;
+    box-sizing: border-box;
+  }
 }
 
 .grouped {
   @include styles.grouped-control;
 
-  &.grouped-middle,
-  &.grouped-last {
+  &.grouped-horizontal-middle,
+  &.grouped-horizontal-last {
     border-inline-start: none;
   }
 }
@@ -75,6 +85,11 @@
   .segment-count-#{$i} {
     // The repeat syntax is not used since it is broken when using with SASS together
     grid-template-columns: repeat(#{$i}, auto);
+
+    // Distribute segments evenly across the stretched vertical-group width.
+    &.grouped.grouped-vertical {
+      grid-template-columns: repeat(#{$i}, 1fr);
+    }
   }
 }
 

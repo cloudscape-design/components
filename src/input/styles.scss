@@ -29,44 +29,19 @@
 }
 
 %input-default-styles {
-  background-color: var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default);
-  border-block: awsui.$border-width-field solid
-    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default);
-  border-inline: awsui.$border-width-field solid
-    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default);
-  box-shadow: var(#{custom-props.$styleBoxShadowDefault});
+  @include styles.input-default-styles;
 }
 
 %input-hover-styles {
-  border-color: var(
-    #{custom-props.$styleBorderColorHover},
-    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default)
-  );
-  background-color: var(
-    #{custom-props.$styleBackgroundHover},
-    var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
-  );
-  box-shadow: var(#{custom-props.$styleBoxShadowHover}, #{custom-props.$styleBoxShadowDefault});
+  @include styles.input-hover-styles;
 }
 
 %input-readonly-styles {
-  @include styles.form-readonly-element(
-    $background-color: var(
-        #{custom-props.$styleBackgroundReadonly},
-        var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
-      ),
-    $border-color: var(
-        #{custom-props.$styleBorderColorReadonly},
-        var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-disabled)
-      )
-  );
+  @include styles.input-readonly-styles;
 }
 
 %input-focus-styles {
-  @include styles.form-focus-element(
-    $border-color: var(#{custom-props.$styleBorderColorFocus}, awsui.$color-border-input-focused),
-    $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
-  );
+  @include styles.input-focus-styles;
 }
 
 .root {
@@ -195,6 +170,17 @@
     border-start-end-radius: awsui.$border-radius-dropdown;
     border-end-start-radius: awsui.$border-radius-dropdown;
     border-end-end-radius: awsui.$border-radius-dropdown;
+  }
+  &.input-has-no-border {
+    min-block-size: unset;
+    &,
+    &:focus,
+    &:hover {
+      border-block-width: 0;
+      border-inline-width: 0;
+      box-shadow: none;
+      background-color: transparent;
+    }
   }
 }
 
