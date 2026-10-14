@@ -16,11 +16,7 @@ const options = [
 
 export default function SelectValidationFocusPage() {
   return (
-    <SimplePage
-      title="Standalone Select validation focus"
-      screenshotArea={{ disableAnimations: true }}
-      settings={<FocusTarget />}
-    >
+    <SimplePage title="Select validation focus" screenshotArea={{ disableAnimations: true }} settings={<FocusTarget />}>
       <SpaceBetween size="m">
         <Select
           data-testid="select-invalid"
