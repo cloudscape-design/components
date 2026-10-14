@@ -301,6 +301,25 @@ describe('nativeAttributes', () => {
     fireEvent.mouseEnter(itemCard.getElement());
     expect(onMouseEnter).toHaveBeenCalledTimes(1);
   });
+
+  test('forwards ref via nativeAttributes to the root element', () => {
+    const ref = React.createRef<HTMLDivElement>();
+    const { itemCard } = renderItemCard(<ItemCard nativeAttributes={{ ref }}>content</ItemCard>);
+    expect(ref.current).toBe(itemCard.getElement());
+  });
+
+  test('a ref from nativeAttributes does not replace the internal root ref', () => {
+    const internalRef = React.createRef<HTMLDivElement>();
+    const nativeRef = React.createRef<HTMLDivElement>();
+    const { container } = render(
+      <InternalItemCard __internalRootRef={internalRef} nativeAttributes={{ ref: nativeRef }}>
+        content
+      </InternalItemCard>
+    );
+    const root = createWrapper(container).findItemCard()!.getElement();
+    expect(internalRef.current).toBe(root);
+    expect(nativeRef.current).toBe(root);
+  });
 });
 
 describe('internal props', () => {

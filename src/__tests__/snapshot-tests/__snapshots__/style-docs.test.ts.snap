@@ -5,6 +5,9 @@ exports[`Style API docs definition for alert matches the snapshot: alert 1`] = `
   "slots": [
     {
       "name": "root",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
       "tokens": [
         "color",
         "background-color",
@@ -22,6 +25,9 @@ exports[`Style API docs definition for alert matches the snapshot: alert 1`] = `
     },
     {
       "name": "icon",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
       "tokens": [
         "color",
       ],
@@ -42,6 +48,9 @@ exports[`Style API docs definition for badge matches the snapshot: badge 1`] = `
   "slots": [
     {
       "name": "root",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
       "tokens": [
         "color",
         "background-color",
@@ -61,6 +70,9 @@ exports[`Style API docs definition for button matches the snapshot: button 1`] =
   "slots": [
     {
       "name": "root",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
       "tokens": [
         "color",
         "background-color",
@@ -86,6 +98,9 @@ exports[`Style API docs definition for checkbox matches the snapshot: checkbox 1
   "slots": [
     {
       "name": "control",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
       "tokens": [
         "color",
         "background-color",
@@ -99,12 +114,18 @@ exports[`Style API docs definition for checkbox matches the snapshot: checkbox 1
     },
     {
       "name": "label",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
       "tokens": [
         "color",
       ],
     },
     {
       "name": "description",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
       "tokens": [
         "color",
       ],
@@ -118,6 +139,9 @@ exports[`Style API docs definition for dropdown matches the snapshot: dropdown 1
   "slots": [
     {
       "name": "dropdown",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
       "tokens": [
         "background-color",
         "border-color",
@@ -134,6 +158,9 @@ exports[`Style API docs definition for link matches the snapshot: link 1`] = `
   "slots": [
     {
       "name": "root",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
       "tokens": [
         "color",
         "focus-ring-color",
@@ -152,6 +179,9 @@ exports[`Style API docs definition for radio-button matches the snapshot: radio-
   "slots": [
     {
       "name": "control",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
       "tokens": [
         "color",
         "background-color",
@@ -172,6 +202,9 @@ exports[`Style API docs definition for toggle matches the snapshot: toggle 1`] =
   "slots": [
     {
       "name": "control",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
       "tokens": [
         "color",
         "background-color",
@@ -184,12 +217,18 @@ exports[`Style API docs definition for toggle matches the snapshot: toggle 1`] =
     },
     {
       "name": "label",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
       "tokens": [
         "color",
       ],
     },
     {
       "name": "description",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
       "tokens": [
         "color",
       ],

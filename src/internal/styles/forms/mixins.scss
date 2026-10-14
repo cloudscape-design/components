@@ -221,6 +221,47 @@
   @content;
 }
 
+@mixin input-default-styles {
+  background-color: var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default);
+  border-block: awsui.$border-width-field solid
+    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default);
+  border-inline: awsui.$border-width-field solid
+    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default);
+  box-shadow: var(#{custom-props.$styleBoxShadowDefault});
+}
+
+@mixin input-hover-styles {
+  border-color: var(
+    #{custom-props.$styleBorderColorHover},
+    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default)
+  );
+  background-color: var(
+    #{custom-props.$styleBackgroundHover},
+    var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+  );
+  box-shadow: var(#{custom-props.$styleBoxShadowHover}, #{custom-props.$styleBoxShadowDefault});
+}
+
+@mixin input-readonly-styles {
+  @include form-readonly-element(
+    $background-color: var(
+        #{custom-props.$styleBackgroundReadonly},
+        var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+      ),
+    $border-color: var(
+        #{custom-props.$styleBorderColorReadonly},
+        var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-disabled)
+      )
+  );
+}
+
+@mixin input-focus-styles {
+  @include form-focus-element(
+    $border-color: var(#{custom-props.$styleBorderColorFocus}, awsui.$color-border-input-focused),
+    $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
+  );
+}
+
 @mixin label-info-link {
   margin-inline-start: typography.$base-size;
 }
@@ -353,38 +394,16 @@ $inline-label-border-radius: 2px;
   z-index: 1;
 }
 
+// Adjusts an inline label's vertical position so it does not overlap inline tokens.
+@mixin inline-label-inline-tokens {
+  padding-block-end: 0;
+  transform: translateY(-1.5px);
+}
+
 @mixin inline-label-disabled {
   background: linear-gradient(
     to bottom,
     var(#{custom-props.$inlineLabelBackgroundColor}, awsui.$color-background-layout-main),
     awsui.$color-background-input-disabled
   );
-}
-
-@mixin grouped-control {
-  $radius: constants.$control-border-radius;
-  &.grouped-first {
-    border-start-start-radius: $radius;
-    border-end-start-radius: $radius;
-    border-start-end-radius: 0;
-    border-end-end-radius: 0;
-  }
-  &.grouped-middle {
-    border-start-start-radius: 0;
-    border-start-end-radius: 0;
-    border-end-start-radius: 0;
-    border-end-end-radius: 0;
-  }
-  &.grouped-last {
-    border-start-end-radius: $radius;
-    border-end-end-radius: $radius;
-    border-start-start-radius: 0;
-    border-end-start-radius: 0;
-  }
-  &.grouped-only {
-    border-start-start-radius: $radius;
-    border-start-end-radius: $radius;
-    border-end-start-radius: $radius;
-    border-end-end-radius: $radius;
-  }
 }

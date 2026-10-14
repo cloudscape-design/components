@@ -1,0 +1,76 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/utils/theming' as theming;
+
+// Scopes @content to themes that opted in to $expressive-motion-themes in theming.scss.
+@mixin toggle-expressive-with-motion {
+  @media (prefers-reduced-motion: no-preference) {
+    @include theming.expressive-motion-only(':not(.awsui-motion-disabled):not(.awsui-mode-entering)') {
+      @content;
+    }
+  }
+}
+
+$travel-duration: awsui.$motion-duration-fast;
+$settle-easing: awsui.$motion-easing-refresh-only-a;
+$tail-duration: awsui.$motion-duration-refresh-only-medium;
+$tail-stretch: 4px;
+
+// Include inside the track rule.
+@mixin control {
+  @include toggle-expressive-with-motion {
+    transition: background-color $travel-duration $settle-easing;
+  }
+}
+
+// Include inside the handle rule. `$handle-size` is the handle's resting inline size.
+@mixin handle($handle-size) {
+  @include toggle-expressive-with-motion {
+    transition:
+      transform $travel-duration $settle-easing,
+      background-color $travel-duration $settle-easing;
+  }
+
+  // The tail only plays once the state has changed since mount.
+  &[data-awsui-motion-ready] {
+    @include toggle-expressive-with-motion {
+      animation: awsui-toggle-tail-off $tail-duration $settle-easing;
+    }
+    &.toggle-handle-checked {
+      @include toggle-expressive-with-motion {
+        animation-name: awsui-toggle-tail-on;
+      }
+    }
+  }
+
+  @if theming.has-expressive-motion() {
+    @keyframes awsui-toggle-tail-on {
+      0% {
+        inline-size: $handle-size;
+        margin-inline-start: 0;
+      }
+      35% {
+        inline-size: $handle-size + $tail-stretch;
+        margin-inline-start: -$tail-stretch;
+      }
+      100% {
+        inline-size: $handle-size;
+        margin-inline-start: 0;
+      }
+    }
+    // Going off, the trailing edge is the end edge, so the width alone grows.
+    @keyframes awsui-toggle-tail-off {
+      0% {
+        inline-size: $handle-size;
+      }
+      35% {
+        inline-size: $handle-size + $tail-stretch;
+      }
+      100% {
+        inline-size: $handle-size;
+      }
+    }
+  }
+}

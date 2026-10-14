@@ -1,0 +1,65 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use '../tokens' as awsui;
+@use '../utils' as styles;
+@use './constants' as constants;
+
+$grouped-control-border-radius: constants.$control-border-radius;
+
+@mixin grouped-control-base {
+  @include styles.logical-radius($grouped-control-border-radius);
+}
+
+@mixin grouped-control-horizontal-first {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+@mixin grouped-control-horizontal-last {
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+}
+@mixin grouped-control-vertical-first {
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+}
+@mixin grouped-control-vertical-last {
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+}
+@mixin grouped-control-middle {
+  @include styles.logical-radius(0);
+}
+
+@mixin grouped-control {
+  @include grouped-control-base;
+
+  &-horizontal {
+    &-first {
+      @include grouped-control-horizontal-first;
+    }
+    &-middle {
+      @include grouped-control-middle;
+    }
+    &-last {
+      @include grouped-control-horizontal-last;
+    }
+  }
+
+  &-vertical {
+    &-first {
+      @include grouped-control-vertical-first;
+    }
+    &-middle {
+      @include grouped-control-middle;
+    }
+    &-last {
+      @include grouped-control-vertical-last;
+    }
+  }
+
+  &-with-action {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+}

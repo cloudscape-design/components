@@ -34,8 +34,6 @@ $tokens: style-api.resolve($props, carrier);
     border-block-width: style-api.value($tokens, border-width, map.get($variant, 'border-width'));
     border-inline-width: style-api.value($tokens, border-width, map.get($variant, 'border-width'));
   }
-  position: relative;
-  text-decoration: none;
   @if map.get($variant, 'padding') {
     padding-block: style-api.value($tokens, padding-block, map.get($variant, 'padding'));
     padding-inline: style-api.value($tokens, padding-inline, map.get($variant, 'padding'));
@@ -55,7 +53,6 @@ $tokens: style-api.resolve($props, carrier);
     );
     color: style-api.value($tokens, color, var(#{custom-props.$styleColorHover}, map.get($variant, 'hover-color')));
     box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowHover}));
-    text-decoration: none;
   }
 
   &:active {
@@ -90,7 +87,6 @@ $tokens: style-api.resolve($props, carrier);
       var(#{custom-props.$styleColorDisabled}, map.get($variant, 'disabled-color'))
     );
     box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowDisabled}));
-    text-decoration: none;
     cursor: auto;
   }
 }
@@ -116,6 +112,7 @@ $tokens: style-api.resolve($props, carrier);
   display: inline-block; // for <a> as a button
   text-decoration: none;
   cursor: pointer;
+  position: relative;
 
   @each $variant in map.keys(constants.$variants) {
     &.variant-#{$variant} {
@@ -132,7 +129,10 @@ $tokens: style-api.resolve($props, carrier);
     $radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring);
     $width: var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width);
     $color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
-    @include style-api.focus-highlight($radius: $radius, $width: $width, $color: $color);
+
+    &:not(.variant-control-group-action) {
+      @include style-api.focus-highlight($radius: $radius, $width: $width, $color: $color);
+    }
 
     &.variant-icon,
     &.variant-modal-dismiss,
@@ -153,6 +153,13 @@ $tokens: style-api.resolve($props, carrier);
         $radius: $radius,
         $width: $width,
         $color: $color
+      );
+    }
+
+    &.variant-control-group-action {
+      @include styles.form-focus-element(
+        $border-color: $color,
+        $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
       );
     }
   }
@@ -202,6 +209,16 @@ $tokens: style-api.resolve($props, carrier);
     padding-block: awsui.$space-xxxs;
     border-block-width: 0;
     border-inline-width: 0;
+  }
+
+  &.variant-control-group-action {
+    border-block-style: solid;
+    border-inline-style: solid;
+    @include styles.grouped-control-base;
+    @include styles.grouped-control-horizontal-last;
+    padding-block: awsui.$space-field-vertical;
+    padding-inline: awsui.$space-xs;
+    min-block-size: awsui.$size-vertical-input;
   }
 
   > .icon-left {

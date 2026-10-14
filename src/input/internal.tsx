@@ -14,6 +14,7 @@ import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
+import { getGroupedControlClassNames } from '../internal/components/control-group/grouped-control-styles';
 import { ResetGroupedControlContext, useGroupedControlContext } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
@@ -50,6 +51,7 @@ export interface InternalInputProps
   __onEndIconClick?: () => void;
 
   __noBorderRadius?: boolean;
+  __noBorder?: boolean;
 
   __onDelayedInput?: NonCancelableEventHandler<BaseChangeDetail>;
   __onBlurWithDetail?: NonCancelableEventHandler<{ relatedTarget: Node | null }>;
@@ -77,6 +79,7 @@ function InternalInput(
     disableBrowserAutocorrect,
     spellcheck,
     __noBorderRadius,
+    __noBorder,
 
     __startIcon,
     __startIconVariant = 'subtle',
@@ -109,7 +112,7 @@ function InternalInput(
   ref: Ref<HTMLInputElement>
 ) {
   const baseProps = getBaseProps(rest);
-  const { position: groupedControlPosition } = useGroupedControlContext();
+  const groupedControlProps = useGroupedControlContext();
   const i18n = useInternalI18n('input');
   const fireDelayedInput = useDebounceCallback((value: string) => fireNonCancelableEvent(__onDelayedInput, { value }));
 
@@ -154,9 +157,7 @@ function InternalInput(
   const hasSuffix = !!suffix;
   const hasPrefixOrSuffix = hasPrefix || hasSuffix;
 
-  const groupedControlClasses = groupedControlPosition
-    ? [styles.grouped, styles[`grouped-${groupedControlPosition}`]]
-    : [];
+  const groupedControlClasses = getGroupedControlClassNames(styles, groupedControlProps);
 
   const inputStyles = getInputStyles(style);
   const nativeInputStyles =
@@ -185,6 +186,7 @@ function InternalInput(
       __endIcon && styles['input-has-icon-end'],
       __startIcon && styles['input-has-icon-start'],
       __noBorderRadius && styles['input-has-no-border-radius'],
+      __noBorder && styles['input-has-no-border'],
       !hasPrefixOrSuffix && groupedControlClasses,
       hasPrefixOrSuffix && styles['input-adorned'],
       {

@@ -8,6 +8,7 @@
 @use '../internal/styles/foundation' as foundation;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../internal/styles/style-api' as style-api;
+@use './motion' as motion;
 
 $toggle-width: 2.4 * styles.$base-size;
 $toggle-height: 1.6 * styles.$base-size;
@@ -62,6 +63,7 @@ $description-tokens: style-api.resolve((color), public);
   &-readonly {
     background: style-api.value($control-tokens, background-color, awsui.$color-background-control-disabled);
   }
+  @include motion.control;
 }
 
 .toggle-handle {
@@ -106,4 +108,6 @@ $description-tokens: style-api.resolve((color), public);
       background: style-api.value($control-tokens, color, awsui.$color-foreground-control-read-only);
     }
   }
+
+  @include motion.handle($handle-size);
 }
