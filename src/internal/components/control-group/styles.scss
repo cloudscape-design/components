@@ -84,9 +84,13 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
   }
 }
 
-// Width sensor (see use-fits-inline.ts for why a sensor and why the root must be static).
+// Width sensor (see use-fits-inline.ts for why a sensor and why the root must be static). Shares
+// the measurement-ghost scaffolding, then pins both inline edges and zeroes min-inline-size so its
+// measured content-box width equals the available width offered by the nearest positioned ancestor.
 .sensor {
-  @include styles.measurement-sensor;
+  @include styles.measurement-ghost;
+  inset-inline-end: 0;
+  min-inline-size: 0;
 }
 
 .ghost-wrapper {

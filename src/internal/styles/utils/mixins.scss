@@ -20,20 +20,6 @@
   pointer-events: none;
 }
 
-// A width sensor: an absolutely-positioned, zero-content-width block whose measured content-box
-// width equals the available width offered by the nearest positioned ancestor, provided the
-// element it sits in is `position: static` so it does not become the sensor's containing block.
-@mixin measurement-sensor {
-  position: absolute;
-  inset-block-start: 0;
-  inset-inline: 0;
-  block-size: 0;
-  min-inline-size: 0;
-  overflow: hidden;
-  visibility: hidden;
-  pointer-events: none;
-}
-
 // A zero-height relative anchor for the absolutely-positioned measurement ghost.
 @mixin measurement-ghost-anchor {
   position: relative;
