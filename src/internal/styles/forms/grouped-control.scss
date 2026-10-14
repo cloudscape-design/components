@@ -43,46 +43,34 @@ $grouped-control-warning-marker: '.grouped-in-warning';
 // passes its segment-wrapper border color.
 @mixin grouped-control-outer-border-color($edges, $neutral-border-color: awsui.$color-border-input-default) {
   @include grouped-control-edge-color($edges, $neutral-border-color);
-  &#{$grouped-control-error-marker} {
-    @include grouped-control-edge-color($edges, awsui.$color-text-status-error);
-  }
-  &#{$grouped-control-warning-marker} {
-    @include grouped-control-edge-color($edges, awsui.$color-text-status-warning);
-  }
-}
-
-// In a validation state, keep the outward validation color on focus (so the
-// control's neutral `form-focus-element` border swap does not win) and layer the
-// invalid focus ring instead of swapping the border. Mirrors standalone invalid
-// controls. `&` is the position class; the control also carries the state marker.
-@mixin grouped-control-validation-focus($edges, $neutral-border-color) {
-  // Re-assert the outward color on hover and focus so the control's own neutral
-  // hover/focus border-color does not win. Ring stays focus-only.
+  // Assert the outward color once per state across base/hover/focus so the
+  // control's own neutral hover/focus border-color does not win.
+  &#{$grouped-control-error-marker},
   &#{$grouped-control-error-marker}:hover,
   &#{$grouped-control-error-marker}:focus {
     @include grouped-control-edge-color($edges, awsui.$color-text-status-error);
   }
+  &#{$grouped-control-warning-marker},
   &#{$grouped-control-warning-marker}:hover,
   &#{$grouped-control-warning-marker}:focus {
     @include grouped-control-edge-color($edges, awsui.$color-text-status-warning);
   }
-  &#{$grouped-control-error-marker}:focus,
-  &#{$grouped-control-warning-marker}:focus {
-    box-shadow: foundation.$box-shadow-focused-light-invalid;
-  }
-  // The trigger's neutral keyboard focus runs through focus-visible.when-visible,
-  // whose body[data-awsui-focus-visible] descendant outranks a plain :focus. Match
-  // that scope so the validation color and invalid ring win on keyboard focus too.
+}
+
+// Keyboard focus runs through focus-visible.when-visible, whose
+// body[data-awsui-focus-visible] descendant outranks a plain :focus. Re-assert
+// the per-position outward validation color in that scope so it wins on keyboard
+// focus too. The invalid ring is hoisted (position-independent) into the mixin
+// body. `&` is the position class; the control also carries the state marker.
+@mixin grouped-control-validation-focus($edges, $neutral-border-color) {
   &#{$grouped-control-error-marker} {
     @include focus-visible.when-visible {
       @include grouped-control-edge-color($edges, awsui.$color-text-status-error);
-      box-shadow: foundation.$box-shadow-focused-light-invalid;
     }
   }
   &#{$grouped-control-warning-marker} {
     @include focus-visible.when-visible {
       @include grouped-control-edge-color($edges, awsui.$color-text-status-warning);
-      box-shadow: foundation.$box-shadow-focused-light-invalid;
     }
   }
 }
@@ -137,11 +125,6 @@ $grouped-control-warning-marker: '.grouped-in-warning';
       @include grouped-control-outer-border-color($edges, $neutral-border-color);
       @include grouped-control-validation-focus($edges, $neutral-border-color);
     }
-    &-only {
-      $edges: (inline-start, inline-end, block-start, block-end);
-      @include grouped-control-outer-border-color($edges, $neutral-border-color);
-      @include grouped-control-validation-focus($edges, $neutral-border-color);
-    }
   }
 
   &-vertical {
@@ -167,16 +150,33 @@ $grouped-control-warning-marker: '.grouped-in-warning';
       @include grouped-control-outer-border-color($edges, $neutral-border-color);
       @include grouped-control-validation-focus($edges, $neutral-border-color);
     }
-    &-only {
-      $edges: (inline-start, inline-end, block-start, block-end);
-      @include grouped-control-outer-border-color($edges, $neutral-border-color);
-      @include grouped-control-validation-focus($edges, $neutral-border-color);
-    }
+  }
+
+  // A sole control has every edge outward; axis is irrelevant, so both
+  // -only positions share one rule (identical edge set, base radius kept).
+  &-horizontal-only,
+  &-vertical-only {
+    $edges: (inline-start, inline-end, block-start, block-end);
+    @include grouped-control-outer-border-color($edges, $neutral-border-color);
+    @include grouped-control-validation-focus($edges, $neutral-border-color);
   }
 
   &-with-action {
     border-start-end-radius: 0;
     border-end-end-radius: 0;
+  }
+
+  // Invalid focus ring, position-independent. Keyed on the state markers and
+  // emitted after the per-position color rules so it layers on top on :focus.
+  &#{$grouped-control-error-marker}:focus,
+  &#{$grouped-control-warning-marker}:focus {
+    box-shadow: foundation.$box-shadow-focused-light-invalid;
+  }
+  &#{$grouped-control-error-marker},
+  &#{$grouped-control-warning-marker} {
+    @include focus-visible.when-visible {
+      box-shadow: foundation.$box-shadow-focused-light-invalid;
+    }
   }
 
   // Thick validation seam on the group's leading (inline-start) edge, reusing
