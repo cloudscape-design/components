@@ -81,11 +81,11 @@ const suite: TestSuite = {
       path: 'select/validation-focus',
       screenshotType: 'screenshotArea',
       pixelDiffTolerance: 2,
-      // Click the focus button, then Tab onto the first standalone invalid trigger. Tabbing
+      // Click the focus target, then Tab onto the first standalone invalid trigger. Tabbing
       // activates the keyboard focus ring (body[data-awsui-focus-visible]), exercising the
       // focus-visible path the fix targets.
       setup: async ({ page }) => {
-        await page.click('#focus-button');
+        await page.click('#focus-target');
         await page.keys(['Tab']);
       },
     },

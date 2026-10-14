@@ -7,6 +7,7 @@ import Select from '~components/select';
 import SpaceBetween from '~components/space-between';
 
 import { SimplePage } from '../app/templates';
+import FocusTarget from '../common/focus-target';
 
 const options = [
   { value: 'option1', label: 'Option 1' },
@@ -26,9 +27,7 @@ function Section({ caption, children }: { caption: string; children: React.React
 export default function SelectValidationFocusPage() {
   return (
     <SimplePage title="Standalone Select validation focus" screenshotArea={{ disableAnimations: true }}>
-      {/* Focus button is first in tab order: a test clicks it, then presses Tab to move
-          keyboard focus (focus-visible) onto the invalid Select trigger below. */}
-      <button id="focus-button">Focus below</button>
+      <FocusTarget />
       <Section caption="Select invalid">
         <Select
           data-testid="select-invalid"
