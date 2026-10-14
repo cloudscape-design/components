@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { GroupedControlContextProps } from '../../context/control-group-context';
+import { GroupedControlContextProps } from '../internal/context/control-group-context';
 
 /**
  * Builds the shared grouped-control CSS classes for a consumer.

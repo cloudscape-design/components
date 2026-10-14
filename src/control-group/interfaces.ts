@@ -1,14 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ButtonProps } from '../../../button/interfaces';
-import { IconProps } from '../../../icon/interfaces';
-import { BaseComponentProps } from '../../../types/base-component';
-import { GroupedControlDirection } from '../../context/control-group-context';
-import { CancelableEventHandler } from '../../events';
+import { ButtonProps } from '../button/interfaces';
+import { IconProps } from '../icon/interfaces';
+import { BaseComponentProps } from '../types/base-component';
+import { CancelableEventHandler } from '../types/events';
 
 export interface ControlGroupProps extends BaseComponentProps {
   children?: React.ReactNode;
-  direction?: GroupedControlDirection;
+  direction?: 'horizontal' | 'vertical';
   inlineLabelText?: string;
   /**
    * Specifies an action button rendered next to the grouped controls.
