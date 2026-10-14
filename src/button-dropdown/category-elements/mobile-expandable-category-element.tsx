@@ -198,7 +198,7 @@ const MobileExpandableCategoryElement = ({
               ) : null}
               {groupDropdownStatus.content && !groupDropdownStatus.isSticky ? (
                 // Finished text has no interactive content, so it follows the items inside the menu, like on desktop.
-                <li role="presentation">
+                <li role="menuitem" aria-disabled="true">
                   <StatusFooter
                     content={groupDropdownStatus.content}
                     id={footerId}

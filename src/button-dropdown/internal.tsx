@@ -646,7 +646,7 @@ const InternalButtonDropdown = React.forwardRef(
                 {dropdownStatus.content && !dropdownStatus.isSticky ? (
                   // Non-sticky status (finished text) scrolls together with the items, like the
                   // list bottom in Select, instead of covering the last item.
-                  <li role="presentation">
+                  <li role="menuitem" aria-disabled="true">
                     <StatusFooter
                       content={isOpen ? dropdownStatus.content : null}
                       id={footerId}

@@ -222,7 +222,7 @@ const ExpandableCategoryElement = ({
               ) : null}
               {groupDropdownStatus.content && !groupDropdownStatus.isSticky ? (
                 // Non-sticky status (finished text) follows the items, like in the main dropdown.
-                <li role="presentation">
+                <li role="menuitem" aria-disabled="true">
                   <StatusFooter
                     content={groupDropdownStatus.content}
                     id={footerId}
