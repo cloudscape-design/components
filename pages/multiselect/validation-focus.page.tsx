@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import Box from '~components/box';
 import Multiselect from '~components/multiselect';
 import SpaceBetween from '~components/space-between';
 
@@ -15,15 +14,6 @@ const options = [
   { value: 'option3', label: 'Option 3' },
 ];
 
-function Section({ caption, children }: { caption: string; children: React.ReactNode }) {
-  return (
-    <SpaceBetween size="xxs">
-      <Box variant="small">{caption}</Box>
-      {children}
-    </SpaceBetween>
-  );
-}
-
 export default function MultiselectValidationFocusPage() {
   return (
     <SimplePage
@@ -31,7 +21,7 @@ export default function MultiselectValidationFocusPage() {
       screenshotArea={{ disableAnimations: true }}
       settings={<FocusTarget />}
     >
-      <Section caption="Multiselect invalid">
+      <SpaceBetween size="m">
         <Multiselect
           data-testid="multiselect-invalid"
           ariaLabel="multiselect invalid"
@@ -41,8 +31,6 @@ export default function MultiselectValidationFocusPage() {
           placeholder="Choose options"
           onChange={() => {}}
         />
-      </Section>
-      <Section caption="Multiselect warning">
         <Multiselect
           data-testid="multiselect-warning"
           ariaLabel="multiselect warning"
@@ -52,7 +40,7 @@ export default function MultiselectValidationFocusPage() {
           placeholder="Choose options"
           onChange={() => {}}
         />
-      </Section>
+      </SpaceBetween>
     </SimplePage>
   );
 }

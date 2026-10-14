@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import Box from '~components/box';
 import Select from '~components/select';
 import SpaceBetween from '~components/space-between';
 
@@ -15,15 +14,6 @@ const options = [
   { value: 'option3', label: 'Option 3' },
 ];
 
-function Section({ caption, children }: { caption: string; children: React.ReactNode }) {
-  return (
-    <SpaceBetween size="xxs">
-      <Box variant="small">{caption}</Box>
-      {children}
-    </SpaceBetween>
-  );
-}
-
 export default function SelectValidationFocusPage() {
   return (
     <SimplePage
@@ -31,7 +21,7 @@ export default function SelectValidationFocusPage() {
       screenshotArea={{ disableAnimations: true }}
       settings={<FocusTarget />}
     >
-      <Section caption="Select invalid">
+      <SpaceBetween size="m">
         <Select
           data-testid="select-invalid"
           ariaLabel="select invalid"
@@ -41,8 +31,6 @@ export default function SelectValidationFocusPage() {
           placeholder="Choose an option"
           onChange={() => {}}
         />
-      </Section>
-      <Section caption="Select warning">
         <Select
           data-testid="select-warning"
           ariaLabel="select warning"
@@ -52,7 +40,7 @@ export default function SelectValidationFocusPage() {
           placeholder="Choose an option"
           onChange={() => {}}
         />
-      </Section>
+      </SpaceBetween>
     </SimplePage>
   );
 }
