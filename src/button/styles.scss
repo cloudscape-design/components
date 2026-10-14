@@ -230,11 +230,7 @@ $tokens: style-api.resolve($props, carrier);
     padding-inline: awsui.$space-xs;
     min-block-size: awsui.$size-vertical-input;
 
-    // Color the seam shared with the last control in a group validation state,
-    // selecting the status token off the state class. Includes focus so the
-    // leading validation color survives the focus border swap. Neutral groups
-    // carry no state class and keep the variant's default border color.
-    &.variant-control-group-action-error {
+    &-error {
       &,
       &:hover,
       &:active,
@@ -244,7 +240,7 @@ $tokens: style-api.resolve($props, carrier);
         border-inline-start-color: awsui.$color-text-status-error;
       }
     }
-    &.variant-control-group-action-warning {
+    &-warning {
       &,
       &:hover,
       &:active,
