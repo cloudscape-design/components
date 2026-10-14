@@ -9,7 +9,7 @@ $cell-vertical-padding: awsui.$space-table-cell-vertical;
 $cell-vertical-padding-w-border: calc(
   #{$cell-vertical-padding} + (#{awsui.$border-item-width} - #{awsui.$border-divider-list-width})
 );
-$cell-horizontal-padding: awsui.$space-scaled-l;
+$cell-horizontal-padding: calc(#{awsui.$space-s} + #{awsui.$space-scaled-xs});
 $cell-edge-horizontal-padding: calc(#{awsui.$space-l} - #{awsui.$border-item-width});
 $border-placeholder: awsui.$border-item-width solid transparent;
 // Divider inset from the cell's top/bottom edges. Shared with the existing Table's resizer so the two match.
