@@ -40,8 +40,12 @@ export default function ControlGroup({
 
   const rootClassnames = [styles.root, baseProps.className, testUtilStyles.root];
 
-  const renderControlSlots = (isGhost = false) =>
-    flattenedChildren.map((child, index) => {
+  const renderControlSlots = (isGhost = false) => {
+    // The ghost always measures a single horizontal row, so its slots must use the horizontal
+    // seam classes regardless of the resolved direction; using `resolvedDirection` once stacked
+    // would drop the inline overlap and overestimate the required width.
+    const slotDirection: GroupedControlDirection = isGhost ? 'horizontal' : resolvedDirection;
+    return flattenedChildren.map((child, index) => {
       const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
       const position: GroupedControlPosition =
         controlCount === 1 ? 'only' : index === 0 ? 'first' : index === controlCount - 1 ? 'last' : 'middle';
@@ -52,15 +56,16 @@ export default function ControlGroup({
             // Only on real controls, not the ghost's copies, so test utils exclude the ghost.
             !isGhost && testUtilStyles.control,
             styles.control,
-            styles[`control-${position}-${resolvedDirection}`]
+            styles[`control-${position}-${slotDirection}`]
           )}
         >
-          <GroupedControlContext.Provider value={{ position, direction: resolvedDirection, hasAction: !!actionButton }}>
+          <GroupedControlContext.Provider value={{ position, direction: slotDirection, hasAction: !!actionButton }}>
             {child}
           </GroupedControlContext.Provider>
         </div>
       );
     });
+  };
 
   const controls = (
     <div
