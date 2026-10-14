@@ -3,20 +3,29 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use '@cloudscape-design/component-toolkit/styling' as styling;
 @use '../style-api/palette' as palette;
 
 .alert-genai {
-  --awsui-style-background-color: #{palette.$genai-surface};
-  --awsui-style-color: #{palette.$genai-text};
-  --awsui-style-border-color: #{palette.$genai};
-  --awsui-style-border-radius: 4px;
-  --awsui-style-padding-block: 12px;
-  --awsui-style-padding-inline: 24px;
   --awsui-style-focus-ring-color: #{palette.$genai};
+
+  @include styling.override {
+    background-color: palette.$genai-surface;
+    color: palette.$genai-text;
+    border-color: palette.$genai;
+    border-start-start-radius: 4px;
+    border-start-end-radius: 4px;
+    border-end-start-radius: 4px;
+    border-end-end-radius: 4px;
+    padding-block: 12px;
+    padding-inline: 24px;
+  }
 }
 
 .alert-genai-icon {
-  --awsui-style-color: #{palette.$genai};
+  @include styling.override {
+    color: palette.$genai;
+  }
 }
 
 .alert-genai-action {
