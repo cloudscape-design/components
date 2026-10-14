@@ -146,6 +146,17 @@ $icon-offset: awsui.$space-xxxs;
     &.warning:focus {
       @include styles.form-warning-control();
     }
+
+    // Re-assert the validation border color at focus-visible specificity so it wins over
+    // the neutral keyboard-focus border. The blue invalid ring still layers around it.
+    @include focus-visible.when-visible {
+      &.invalid {
+        border-color: awsui.$color-text-status-error;
+      }
+      &.warning {
+        border-color: awsui.$color-text-status-warning;
+      }
+    }
   }
 
   &.custom-option {

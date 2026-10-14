@@ -77,6 +77,17 @@ const suite: TestSuite = {
       screenshotType: 'permutations',
     },
     {
+      description: 'standalone validation - keyboard focus',
+      path: 'select/validation-focus',
+      screenshotType: 'screenshotArea',
+      pixelDiffTolerance: 2,
+      // Tab activates the keyboard focus ring (body[data-awsui-focus-visible])
+      // on the first standalone invalid trigger, exercising the focus-visible path.
+      setup: async ({ page }) => {
+        await page.keys(['Tab']);
+      },
+    },
+    {
       description: 'Long virtual list - navigate to last item',
       path: 'select/virtual-scroll',
       screenshotType: 'screenshotArea',
