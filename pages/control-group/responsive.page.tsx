@@ -26,6 +26,19 @@ function LongGroup() {
   );
 }
 
+function LongGroupWithAction() {
+  return (
+    <ControlGroup actionButton={{ iconName: 'remove', ariaLabel: 'Remove', onClick: noop }}>
+      <Input ariaLabel="Label name" value="service" placeholder="Label name" onChange={noop} />
+      <Select ariaLabel="Operator" selectedOption={operators[0]} options={operators} onChange={noop} />
+      <Input ariaLabel="Label value" value="production" placeholder="Label value" onChange={noop} />
+      <Input ariaLabel="Label name 2" value="region" placeholder="Label name" onChange={noop} />
+      <Select ariaLabel="Operator 2" selectedOption={operators[0]} options={operators} onChange={noop} />
+      <Input ariaLabel="Label value 2" value="us-east-1" placeholder="Label value" onChange={noop} />
+    </ControlGroup>
+  );
+}
+
 export default function ControlGroupResponsiveness() {
   return (
     <SimplePage
@@ -46,6 +59,18 @@ export default function ControlGroupResponsiveness() {
         </SpaceBetween>
       </div>
       <Button data-testid="focus-after">Focus after</Button>
+      <div
+        data-testid="auto-button-spacebetween"
+        style={{
+          inlineSize: '100%',
+          overflow: 'hidden',
+        }}
+      >
+        <SpaceBetween direction="horizontal" size="s">
+          <LongGroupWithAction />
+          <Box variant="p">Sibling content</Box>
+        </SpaceBetween>
+      </div>
     </SimplePage>
   );
 }

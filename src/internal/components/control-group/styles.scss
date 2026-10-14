@@ -16,6 +16,8 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
 .action-slot {
   display: flex;
   margin-inline-start: $margin-overlap;
+  // Fixed-size icon button absorbs no deficit; only .controls shrinks.
+  flex-shrink: 0;
 }
 
 .group-layout {
@@ -40,7 +42,6 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
   align-items: stretch;
   // Keep the group at its natural single-row width until the sensor reports it no longer fits.
   flex-shrink: 0;
-  // Must stay `position: static` for the sensor to measure the real available width (see use-fits-inline.ts).
 
   &-horizontal {
     flex-direction: row;
@@ -50,6 +51,12 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
   &-vertical {
     flex-direction: column;
   }
+}
+
+// Only as a flex item of .group-layout may .controls shrink, so the slots compress, not overflow.
+.group-layout > .controls {
+  min-inline-size: 0;
+  flex-shrink: 1;
 }
 
 .control {
