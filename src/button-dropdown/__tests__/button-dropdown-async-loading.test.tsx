@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { act, render, waitFor } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
@@ -725,5 +725,91 @@ describe('ButtonDropdown async loading with expandable groups', () => {
     onLoadItems.mockClear();
     wrapper.findExpandableCategoryById('g2')!.click();
     expect(onLoadItems).not.toHaveBeenCalled();
+  });
+});
+
+describe('ButtonDropdown async groups in filtering mode: virtual focus', () => {
+  type GroupState = 'loading' | 'error' | 'finished';
+
+  function StatefulDropdown({ initial, onLoad }: { initial: GroupState; onLoad: jest.Mock }) {
+    const [state, setState] = React.useState<GroupState>(initial);
+    const [children, setChildren] = React.useState<ButtonDropdownProps.Items>([]);
+    (StatefulDropdown as any).setState = setState;
+    (StatefulDropdown as any).setChildren = setChildren;
+    return (
+      <ButtonDropdown
+        items={[{ id: 'g1', text: 'Group 1', items: children } as ButtonDropdownProps.ItemGroup]}
+        expandableGroups={true}
+        filteringType="manual"
+        getExpandableItemsAsyncLoadingState={() => state}
+        asyncLoadingProps={{ loadingText: () => 'Loading', errorText: () => 'Error', recoveryText: 'Retry' }}
+        onLoadItems={event => {
+          onLoad(event.detail);
+          if (event.detail.samePage) {
+            setState('loading');
+          }
+        }}
+      >
+        Actions
+      </ButtonDropdown>
+    );
+  }
+
+  function setup(initial: GroupState) {
+    const onLoad = jest.fn();
+    const result = render(<StatefulDropdown initial={initial} onLoad={onLoad} />);
+    const wrapper = createWrapper(result.container).findButtonDropdown()!;
+    wrapper.openDropdown();
+    const input = wrapper.findFilteringInput()!.findNativeInput().getElement();
+    const activeDescendant = () => {
+      const id = input.getAttribute('aria-activedescendant');
+      return id ? document.getElementById(id) : null;
+    };
+    return { wrapper, input, onLoad, activeDescendant };
+  }
+
+  test('points at the loading status, then at the first item once it arrives', () => {
+    const { wrapper, input, activeDescendant } = setup('loading');
+    input.focus();
+    wrapper.findExpandableCategoryById('g1')!.click();
+    expect(document.activeElement).toBe(input);
+    expect(activeDescendant()).toHaveTextContent('Loading');
+
+    act(() => {
+      (StatefulDropdown as any).setChildren([{ id: 'c1', text: 'Child 1' }]);
+      (StatefulDropdown as any).setState('finished');
+    });
+    expect(document.activeElement).toBe(input);
+    expect(activeDescendant()).toHaveTextContent('Child 1');
+  });
+
+  test('points at Retry on error, Enter retries, then loading, then the first item', () => {
+    const { wrapper, input, onLoad, activeDescendant } = setup('error');
+    input.focus();
+    wrapper.findExpandableCategoryById('g1')!.click();
+    expect(activeDescendant()).toBe(wrapper.findErrorRecoveryButton({ expandedGroupDropdown: true })!.getElement());
+
+    onLoad.mockClear();
+    wrapper.findFilteringInput()!.findNativeInput().keydown(KeyCode.enter);
+    expect(onLoad).toHaveBeenCalledWith(expect.objectContaining({ samePage: true, expandedGroupId: 'g1' }));
+    expect(document.activeElement).toBe(input);
+    expect(wrapper.findOpenDropdown()).not.toBeNull();
+    expect(activeDescendant()).toHaveTextContent('Loading');
+
+    act(() => {
+      (StatefulDropdown as any).setChildren([{ id: 'c1', text: 'Child 1' }]);
+      (StatefulDropdown as any).setState('finished');
+    });
+    expect(document.activeElement).toBe(input);
+    expect(activeDescendant()).toHaveTextContent('Child 1');
+  });
+
+  test('typing still goes into the filter input while the highlight is on Retry', () => {
+    const { wrapper, input } = setup('error');
+    input.focus();
+    wrapper.findExpandableCategoryById('g1')!.click();
+    wrapper.findFilteringInput()!.setInputValue('abc');
+    expect(document.activeElement).toBe(input);
+    expect(input).toHaveValue('abc');
   });
 });

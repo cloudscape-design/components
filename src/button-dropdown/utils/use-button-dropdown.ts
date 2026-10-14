@@ -35,6 +35,11 @@ interface UseButtonDropdownOptions extends ButtonDropdownSettings {
    * While it is, Tab moves focus to it instead of closing the dropdown.
    */
   hasRecoveryButton?: () => boolean;
+  /**
+   * Called on Enter in filtering mode while the highlight points into an expanded group
+   * that has no items yet, so the highlight sits on the group's status.
+   */
+  onPendingHighlightActivate?: () => void;
 }
 
 interface UseButtonDropdownApi extends HighlightProps {
@@ -52,6 +57,8 @@ interface UseButtonDropdownApi extends HighlightProps {
   setFilteringValue: (value: string) => void;
   filteredItems: ButtonDropdownProps.Items;
   isExpandable: (item: ButtonDropdownProps.ItemOrGroup) => boolean;
+  isHighlightPending: boolean;
+  expandedGroup: ButtonDropdownProps.ItemGroup | null;
 }
 
 export function useButtonDropdown({
@@ -67,6 +74,7 @@ export function useButtonDropdown({
   fireLoadItems,
   onGroupExpand,
   hasRecoveryButton,
+  onPendingHighlightActivate,
 }: UseButtonDropdownOptions): UseButtonDropdownApi {
   const [filteringValue, setFilteringValue] = useState('');
   const hasFiltering = filteringType === 'auto' || filteringType === 'manual';
@@ -86,6 +94,7 @@ export function useButtonDropdown({
   const {
     targetItem,
     isHighlightPending,
+    expandedGroup,
     isHighlighted,
     isKeyboardHighlight,
     isExpanded,
@@ -275,6 +284,12 @@ export function useButtonDropdown({
         // While filtering, pressing Enter without a highlighted item should not select
         // any item or close the dropdown.
         if (isOpen && hasFiltering && !targetItem) {
+          // The highlight sits on an expanded group's status (loading or error) instead of an
+          // item. Enter acts on that status, for example to retry a failed group.
+          if (isHighlightPending) {
+            onPendingHighlightActivate?.();
+            event.preventDefault();
+          }
           break;
         }
         if (!targetItem?.disabled) {
@@ -360,5 +375,7 @@ export function useButtonDropdown({
     setFilteringValue,
     filteredItems,
     isExpandable,
+    isHighlightPending,
+    expandedGroup,
   };
 }

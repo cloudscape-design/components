@@ -26,6 +26,7 @@ import {
   GeneratedAnalyticsMetadataButtonDropdownCollapse,
   GeneratedAnalyticsMetadataButtonDropdownExpand,
 } from './analytics-metadata/interfaces.js';
+import { getGroupStatusIds } from './category-elements/use-expandable-group-status';
 import ButtonDropdownFilter from './filter';
 import { ButtonDropdownProps } from './interfaces';
 import { InternalButtonDropdownProps, InternalItem } from './internal-interfaces';
@@ -158,6 +159,8 @@ const InternalButtonDropdown = React.forwardRef(
       setFilteringValue,
       filteredItems,
       isExpandable,
+      isHighlightPending,
+      expandedGroup,
     } = useButtonDropdown({
       items,
       onItemClick,
@@ -182,6 +185,13 @@ const InternalButtonDropdown = React.forwardRef(
         }
       },
       hasRecoveryButton: () => hasRecoveryButtonRef.current,
+      // Enter on a failed group's status retries loading it. The highlight stays on the status,
+      // which then reads the loading text, and moves to the first item once the items arrive.
+      onPendingHighlightActivate: () => {
+        if (pendingGroupStatus === 'error' && expandedGroup?.id && hasGroupRecoveryButton) {
+          onGroupRecoveryClick?.(expandedGroup.id);
+        }
+      },
     });
 
     const filterRef = useRef<HTMLInputElement>(null);
@@ -499,6 +509,13 @@ const InternalButtonDropdown = React.forwardRef(
           isExpanded(item) &&
           getExpandableItemsAsyncLoadingState?.({ item }) === 'error'
       );
+    const pendingGroupStatus =
+      hasFiltering && isHighlightPending && expandedGroup?.id
+        ? getExpandableItemsAsyncLoadingState?.({ item: expandedGroup })
+        : undefined;
+    // Same conditions under which the group renders its recovery button.
+    const hasGroupRecoveryButton = !!recoveryText && !!onLoadItems;
+
     hasRecoveryButtonRef.current = dropdownStatus.hasRecoveryButton || expandedGroupHasRecoveryButton;
 
     // Only create a filteringDescription element if filtering is actually enabled,
@@ -510,7 +527,16 @@ const InternalButtonDropdown = React.forwardRef(
 
     const shouldLabelWithTrigger = !ariaLabel && !mainAction && variant !== 'icon' && variant !== 'inline-icon';
 
-    const highlightedItemId = targetItem && targetItem.id ? `${menuId}-${targetItem.id}` : undefined;
+    // While the highlight points into an expanded group whose items haven't arrived, it sits on
+    // the group's status instead: the Retry button when loading failed, otherwise the status
+    // text (for example "Loading"). Focus stays in the filter input the whole time.
+    let highlightedItemId: string | undefined;
+    if (targetItem) {
+      highlightedItemId = targetItem.id ? `${menuId}-${targetItem.id}` : undefined;
+    } else if (isHighlightPending && expandedGroup?.id) {
+      const { statusId, recoveryButtonId } = getGroupStatusIds(menuId, expandedGroup.id);
+      highlightedItemId = pendingGroupStatus === 'error' && hasGroupRecoveryButton ? recoveryButtonId : statusId;
+    }
 
     const filterElement = hasFiltering ? (
       <ButtonDropdownFilter

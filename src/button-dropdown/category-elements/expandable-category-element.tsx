@@ -64,6 +64,7 @@ const ExpandableCategoryElement = ({
     getExpandableItemsAsyncLoadingState,
     onGroupRecoveryClick,
     filteringEnabled,
+    menuId,
     triggerRef,
   });
 

@@ -58,6 +58,7 @@ const MobileExpandableCategoryElement = ({
     getExpandableItemsAsyncLoadingState,
     onGroupRecoveryClick,
     filteringEnabled,
+    menuId,
     triggerRef,
   });
 

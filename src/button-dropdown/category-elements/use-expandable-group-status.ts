@@ -11,11 +11,27 @@ import { CategoryProps } from '../internal-interfaces';
 
 type UseExpandableGroupStatusProps = Pick<
   CategoryProps,
-  'item' | 'asyncLoadingProps' | 'getExpandableItemsAsyncLoadingState' | 'onGroupRecoveryClick' | 'filteringEnabled'
+  | 'item'
+  | 'asyncLoadingProps'
+  | 'getExpandableItemsAsyncLoadingState'
+  | 'onGroupRecoveryClick'
+  | 'filteringEnabled'
+  | 'menuId'
 > & {
   // Focused after the recovery action in menu (non-filtering) mode, where focus sits on the group header.
   triggerRef: React.RefObject<HTMLElement>;
 };
+
+/**
+ * Ids of a group's status element and its recovery button. `menuId` is only set in filtering
+ * mode, where the filter input points at these elements through `aria-activedescendant`.
+ */
+export function getGroupStatusIds(menuId: string, groupId: string) {
+  return {
+    statusId: `${menuId}-${groupId}-status`,
+    recoveryButtonId: `${menuId}-${groupId}-recovery`,
+  };
+}
 
 interface ExpandableGroupStatus {
   status: DropdownStatusResult;
@@ -34,10 +50,15 @@ export function useExpandableGroupStatus({
   getExpandableItemsAsyncLoadingState,
   onGroupRecoveryClick,
   filteringEnabled,
+  menuId,
   triggerRef,
 }: UseExpandableGroupStatusProps): ExpandableGroupStatus {
   const groupId = item.id;
-  const footerId = useUniqueId('awsui-button-dropdown__group-footer');
+  const uniqueFooterId = useUniqueId('awsui-button-dropdown__group-footer');
+  // In filtering mode the root references the status and the recovery button through
+  // `aria-activedescendant`, so their ids must be derivable from the menu and group ids.
+  const statusIds = menuId && groupId ? getGroupStatusIds(menuId, groupId) : undefined;
+  const footerId = statusIds?.statusId ?? uniqueFooterId;
   const hasGroupItems = !!item.items && item.items.length > 0;
 
   // A group is loaded as a whole, so `pending` (more pages available) has no meaning here.
@@ -60,6 +81,7 @@ export function useExpandableGroupStatus({
     isEmpty: !hasGroupItems,
     isNoMatch: false,
     hasRecoveryCallback: !!onGroupRecoveryClick,
+    recoveryButtonId: statusIds?.recoveryButtonId,
     onRecoveryClick: () => {
       if (groupId) {
         onGroupRecoveryClick?.(groupId);
