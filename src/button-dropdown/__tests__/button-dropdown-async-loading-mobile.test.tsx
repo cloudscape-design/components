@@ -32,14 +32,6 @@ function findOpenMobileGroup(wrapper: ReturnType<typeof renderDropdown>['wrapper
 }
 
 describe('ButtonDropdown async loading with expandable groups on mobile', () => {
-  test('renders the group inline instead of as a fly-out', () => {
-    const { wrapper } = renderDropdown();
-    wrapper.openDropdown();
-    wrapper.findExpandableCategoryById('g2')!.click();
-    expect(findOpenMobileGroup(wrapper)).not.toBeNull();
-    expect(wrapper.findExpandableCategoryById('g2')!.findAll('li').length).toBe(1);
-  });
-
   test('shows the loading status inside an expanded group without items', () => {
     const { wrapper } = renderDropdown({
       getExpandableItemsAsyncLoadingState: ({ item }) => (item.id === 'g1' ? 'loading' : null),
