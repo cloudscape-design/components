@@ -3,7 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import Box from '../box/internal';
 import ColumnLayout from '../column-layout/internal';
@@ -51,15 +51,6 @@ const InternalKeyValuePairs = React.forwardRef(
     }: KeyValuePairsProps & Required<Pick<KeyValuePairsProps, 'columns'>>,
     ref: React.Ref<HTMLDivElement>
   ) => {
-    const MAX_COLUMNS = 4;
-
-    if (columns > MAX_COLUMNS) {
-      warnOnce(
-        'Key-value pairs',
-        `\`columns\` (${columns}) must be <= ${MAX_COLUMNS}. Using ${MAX_COLUMNS} as default.`
-      );
-    }
-
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
         <div
@@ -70,15 +61,11 @@ const InternalKeyValuePairs = React.forwardRef(
           ref={ref}
         >
           {/*
-          minColumnWidth={150} is set to use FlexibleColumnLayout which has only 1 nested div wrapper for column items,
-          otherwise GridColumnLayout will be used, which has 2 nested div, therefore it is not a11y compatible for dl -> dt/dd relationship
+          A minColumnWidth is always passed (KeyValuePairs defaults it to 150) so that ColumnLayout
+          picks FlexibleColumnLayout, which wraps each column item in a single div. GridColumnLayout
+          wraps in two, which breaks the dl -> dt/dd relationship a11y relies on.
         */}
-          <ColumnLayout
-            __tagOverride="dl"
-            columns={Math.min(columns, MAX_COLUMNS)}
-            variant="text-grid"
-            minColumnWidth={minColumnWidth}
-          >
+          <ColumnLayout __tagOverride="dl" columns={columns} variant="text-grid" minColumnWidth={minColumnWidth}>
             {items.map((pair, index) => {
               if (pair.type === 'group') {
                 return (
