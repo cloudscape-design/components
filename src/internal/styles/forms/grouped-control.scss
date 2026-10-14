@@ -6,26 +6,19 @@
 @use '../utils' as styles;
 @use '../foundation' as foundation;
 @use './constants' as constants;
-@use '../../generated/custom-css-properties/index.scss' as custom-props;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 $grouped-control-border-radius: constants.$control-border-radius;
-// Marker the group adds to every control in a validation state (focus gate).
-$grouped-control-validation-marker: '.grouped-in-validation';
+// State classes the group adds to every control in a validation state. Error
+// wins over warning (set in grouped-control-styles.ts), so they are mutually
+// exclusive. Selecting the SCSS status token off these classes replaces the old
+// published custom property.
+$grouped-control-error-marker: '.grouped-in-error';
+$grouped-control-warning-marker: '.grouped-in-warning';
 
-// The group owns the validation state and publishes it to every grouped control
-// through the inherited `--awsui-grouped-control-border-color-*` custom property
-// (set once on the `.controls` box). Each control reads it on exactly its
-// OUTWARD-facing border edges — the edges that do NOT touch an adjacent control —
-// so the inner seams stay the control's own neutral border color. When the group
-// is neutral the property is unset and the `var()` falls back to the neutral
-// color, so grouped controls look unchanged outside a validation state.
-//
-// `$neutral-border-color` is the consuming control's own border color (the
-// fallback). Input and the Select/Multiselect trigger use the input border
-// color; segmented-control passes its segment-wrapper border color.
-@mixin grouped-control-outer-border-color($edges, $neutral-border-color: awsui.$color-border-input-default) {
-  $color: var(#{custom-props.$groupedControlBorderColor}, #{$neutral-border-color});
+// Sets the given color on the OUTWARD-facing border edges of `$edges` — the
+// edges that do NOT touch an adjacent control — so inner seams stay neutral.
+@mixin grouped-control-edge-color($edges, $color) {
   @if list.index($edges, inline-start) {
     border-inline-start-color: $color;
   }
@@ -40,27 +33,55 @@ $grouped-control-validation-marker: '.grouped-in-validation';
   }
 }
 
+// The group owns the validation state and drives it to every grouped control
+// through the context-emitted `.grouped-in-error` / `.grouped-in-warning` class.
+// Neutral controls get their own border color; the error/warning class selects
+// the matching SCSS status token on the outward edges only.
+//
+// `$neutral-border-color` is the consuming control's own border color. Input and
+// the Select/Multiselect trigger use the input border color; segmented-control
+// passes its segment-wrapper border color.
+@mixin grouped-control-outer-border-color($edges, $neutral-border-color: awsui.$color-border-input-default) {
+  @include grouped-control-edge-color($edges, $neutral-border-color);
+  &#{$grouped-control-error-marker} {
+    @include grouped-control-edge-color($edges, awsui.$color-text-status-error);
+  }
+  &#{$grouped-control-warning-marker} {
+    @include grouped-control-edge-color($edges, awsui.$color-text-status-warning);
+  }
+}
+
 // In a validation state, keep the outward validation color on focus (so the
 // control's neutral `form-focus-element` border swap does not win) and layer the
 // invalid focus ring instead of swapping the border. Mirrors standalone invalid
-// controls. `&` is the position class; the control also carries the base
-// `-validation` marker.
+// controls. `&` is the position class; the control also carries the state marker.
 @mixin grouped-control-validation-focus($edges, $neutral-border-color) {
   // Re-assert the outward color on hover and focus so the control's own neutral
   // hover/focus border-color does not win. Ring stays focus-only.
-  &#{$grouped-control-validation-marker}:hover,
-  &#{$grouped-control-validation-marker}:focus {
-    @include grouped-control-outer-border-color($edges, $neutral-border-color);
+  &#{$grouped-control-error-marker}:hover,
+  &#{$grouped-control-error-marker}:focus {
+    @include grouped-control-edge-color($edges, awsui.$color-text-status-error);
   }
-  &#{$grouped-control-validation-marker}:focus {
+  &#{$grouped-control-warning-marker}:hover,
+  &#{$grouped-control-warning-marker}:focus {
+    @include grouped-control-edge-color($edges, awsui.$color-text-status-warning);
+  }
+  &#{$grouped-control-error-marker}:focus,
+  &#{$grouped-control-warning-marker}:focus {
     box-shadow: foundation.$box-shadow-focused-light-invalid;
   }
   // The trigger's neutral keyboard focus runs through focus-visible.when-visible,
   // whose body[data-awsui-focus-visible] descendant outranks a plain :focus. Match
   // that scope so the validation color and invalid ring win on keyboard focus too.
-  &#{$grouped-control-validation-marker} {
+  &#{$grouped-control-error-marker} {
     @include focus-visible.when-visible {
-      @include grouped-control-outer-border-color($edges, $neutral-border-color);
+      @include grouped-control-edge-color($edges, awsui.$color-text-status-error);
+      box-shadow: foundation.$box-shadow-focused-light-invalid;
+    }
+  }
+  &#{$grouped-control-warning-marker} {
+    @include focus-visible.when-visible {
+      @include grouped-control-edge-color($edges, awsui.$color-text-status-warning);
       box-shadow: foundation.$box-shadow-focused-light-invalid;
     }
   }

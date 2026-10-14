@@ -21,9 +21,10 @@ export function getGroupedControlClassNames(
     classNames.push(styles['grouped-with-action']);
   }
   if (invalid || warning) {
-    // Every control in the group gets the focus marker so each re-asserts its
-    // own outward validation color (and the invalid ring) on focus.
-    classNames.push(styles['grouped-in-validation']);
+    // State class drives the outward validation color (and invalid ring) in SCSS;
+    // error wins over warning. Every control gets it so each re-asserts its own
+    // outward edges on focus.
+    classNames.push(invalid ? styles['grouped-in-error'] : styles['grouped-in-warning']);
     // Only the leading (inline-start) controls draw the thick validation seam:
     // the first/only control horizontally, every control vertically.
     const isLeading = direction === 'vertical' || position === 'first' || position === 'only';

@@ -9,8 +9,6 @@ import { InternalButton } from '../../../button/internal';
 import { getBaseProps } from '../../base-component';
 import { GroupedControlContext, GroupedControlPosition } from '../../context/control-group-context';
 import { FormFieldContext, useFormFieldContext } from '../../context/form-field-context';
-import customCssProps from '../../generated/custom-css-properties';
-import { colorTextStatusError, colorTextStatusWarning } from '../../generated/styles/tokens';
 import { flattenChildren } from '../../utils/flatten-children';
 import { ControlGroupProps } from './interfaces';
 
@@ -34,11 +32,6 @@ export default function ControlGroup({
   const isInvalid = !!formFieldContext.invalid;
   const isWarning = !!formFieldContext.warning && !isInvalid;
 
-  const groupedControlBorderColor = isInvalid ? colorTextStatusError : isWarning ? colorTextStatusWarning : undefined;
-  const controlsStyle = groupedControlBorderColor
-    ? ({ [customCssProps.groupedControlBorderColor]: groupedControlBorderColor } as React.CSSProperties)
-    : undefined;
-
   const flattenedChildren = flattenChildren(children, 'ControlGroup');
   const controlCount = flattenedChildren.length;
 
@@ -48,7 +41,6 @@ export default function ControlGroup({
     <div
       {...(inlineLabelText ? { 'aria-labelledby': labelId } : actionButton ? {} : baseProps)}
       role="group"
-      style={controlsStyle}
       className={clsx(
         styles.controls,
         styles[`controls-${direction}`],
@@ -84,7 +76,6 @@ export default function ControlGroup({
   const controlsWithAction = actionButton ? (
     <div
       {...(inlineLabelText ? {} : baseProps)}
-      style={controlsStyle}
       className={clsx(styles['group-layout'], styles[`group-layout-${direction}`], !inlineLabelText && rootClassnames)}
     >
       {controls}
@@ -92,7 +83,8 @@ export default function ControlGroup({
         <InternalButton
           className={clsx(
             testUtilStyles['action-button'],
-            (isInvalid || isWarning) && buttonStyles['variant-control-group-action-validation']
+            isInvalid && buttonStyles['variant-control-group-action-error'],
+            isWarning && buttonStyles['variant-control-group-action-warning']
           )}
           variant="control-group-action"
           formAction="none"

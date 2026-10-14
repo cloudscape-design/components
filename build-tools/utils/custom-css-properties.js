@@ -204,7 +204,5 @@ const customCssPropertiesList = [
   'inlineLabelBackgroundColor',
   // Container style API
   'containerStyleBorderRadius',
-  // Control group validation
-  'groupedControlBorderColor',
 ];
 module.exports = customCssPropertiesList;

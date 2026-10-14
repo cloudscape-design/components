@@ -7,19 +7,13 @@ import FormField from '../../../../../lib/components/form-field';
 import Input from '../../../../../lib/components/input';
 import ControlGroup from '../../../../../lib/components/internal/components/control-group';
 import { ResetGroupedControlContext } from '../../../../../lib/components/internal/context/control-group-context';
-import customCssProps from '../../../../../lib/components/internal/generated/custom-css-properties';
-import {
-  colorTextStatusError,
-  colorTextStatusWarning,
-} from '../../../../../lib/components/internal/generated/styles/tokens';
 import ControlGroupWrapper from '../../../../../lib/components/test-utils/dom/internal/control-group';
 import { DirectionProbe, FormFieldValidationProbe, GroupedValidationProbe, PositionProbe } from './common';
 
+import buttonStyles from '../../../../../lib/components/button/styles.selectors.js';
 import inputStyles from '../../../../../lib/components/input/styles.selectors.js';
 import controlGroupStyles from '../../../../../lib/components/internal/components/control-group/styles.selectors.js';
 import controlGroupTestStyles from '../../../../../lib/components/internal/components/control-group/test-classes/styles.selectors.js';
-
-const borderColorProp = customCssProps.groupedControlBorderColor;
 
 function findControlGroup(container: HTMLElement) {
   const element = container.querySelector<HTMLElement>(`.${ControlGroupWrapper.rootSelector}`);
@@ -210,20 +204,41 @@ describe('Control group', () => {
       expect(group).not.toHaveClass(warningClass);
     });
 
-    test('publishes the error color through the grouped-control border custom property', () => {
-      // The group sets the custom property inline on `.controls`; every grouped
-      // control then reads it on exactly its outward-facing border edges.
-      const { getByRole } = render(
+    // jsdom cannot compute the resolved border color/width or the focus ring;
+    // those are covered by the visual test. Here we assert the state class that
+    // drives the SCSS token selection is applied to each grouped control.
+    const controlErrorClass = inputStyles['grouped-in-error'];
+    const controlWarningClass = inputStyles['grouped-in-warning'];
+
+    test('marks each grouped control with the error state class in an error state', () => {
+      const { getAllByRole } = render(
         <FormField errorText="Required">
           <ControlGroup>
-            <input data-testid="alpha" />
-            <input data-testid="beta" />
+            <Input value="" readOnly={true} onChange={() => {}} />
+            <Input value="" readOnly={true} onChange={() => {}} />
           </ControlGroup>
         </FormField>
       );
 
-      const group = getByRole('group');
-      expect(group.style.getPropertyValue(borderColorProp)).toBe(colorTextStatusError);
+      for (const control of getAllByRole('textbox')) {
+        expect(control).toHaveClass(controlErrorClass);
+        expect(control).not.toHaveClass(controlWarningClass);
+      }
+    });
+
+    test('marks a non-leading control with the error state class but not the thick seam class', () => {
+      const { getAllByRole } = render(
+        <FormField errorText="Required">
+          <ControlGroup>
+            <Input value="" readOnly={true} onChange={() => {}} />
+            <Input value="" readOnly={true} onChange={() => {}} />
+          </ControlGroup>
+        </FormField>
+      );
+
+      const [, last] = getAllByRole('textbox');
+      expect(last).toHaveClass(controlErrorClass);
+      expect(last).not.toHaveClass(inputStyles['grouped-validation']);
     });
 
     test('applies the warning class to the group when the surrounding form field is in a warning state', () => {
@@ -242,18 +257,20 @@ describe('Control group', () => {
       expect(group).not.toHaveClass(invalidClass);
     });
 
-    test('publishes the warning color through the grouped-control border custom property', () => {
-      const { getByRole } = render(
+    test('marks each grouped control with the warning state class in a warning state', () => {
+      const { getAllByRole } = render(
         <FormField warningText="Careful">
           <ControlGroup>
-            <input data-testid="alpha" />
-            <input data-testid="beta" />
+            <Input value="" readOnly={true} onChange={() => {}} />
+            <Input value="" readOnly={true} onChange={() => {}} />
           </ControlGroup>
         </FormField>
       );
 
-      const group = getByRole('group');
-      expect(group.style.getPropertyValue(borderColorProp)).toBe(colorTextStatusWarning);
+      for (const control of getAllByRole('textbox')) {
+        expect(control).toHaveClass(controlWarningClass);
+        expect(control).not.toHaveClass(controlErrorClass);
+      }
     });
 
     test('applies no validation class when the surrounding form field is neutral', () => {
@@ -270,19 +287,20 @@ describe('Control group', () => {
       expect(group).not.toHaveClass(warningClass);
     });
 
-    test('does not set the border custom property when the surrounding form field is neutral', () => {
-      // With the property unset, each grouped control's `var()` falls back to its
-      // own neutral border color, so the group looks unchanged.
+    test('applies no validation state class to a control when the form field is neutral', () => {
+      // Without a state class, each grouped control keeps its own neutral border
+      // color, so the group looks unchanged.
       const { getByRole } = render(
         <FormField label="Field">
           <ControlGroup>
-            <input data-testid="alpha" />
+            <Input value="" readOnly={true} onChange={() => {}} />
           </ControlGroup>
         </FormField>
       );
 
-      const group = getByRole('group');
-      expect(group.style.getPropertyValue(borderColorProp)).toBe('');
+      const control = getByRole('textbox');
+      expect(control).not.toHaveClass(controlErrorClass);
+      expect(control).not.toHaveClass(controlWarningClass);
     });
 
     test('error takes precedence over warning when the form field has both', () => {
@@ -297,31 +315,60 @@ describe('Control group', () => {
       const group = getByRole('group');
       expect(group).toHaveClass(invalidClass);
       expect(group).not.toHaveClass(warningClass);
-      // Precedence also holds for the published color.
-      expect(group.style.getPropertyValue(borderColorProp)).toBe(colorTextStatusError);
     });
 
-    test('does not apply the group validation class to the action button element', () => {
-      const { container, getByRole } = render(
-        <FormField errorText="Required">
-          <ControlGroup inlineLabelText="Threshold" actionButton={{ iconName: 'remove', ariaLabel: 'Remove' }}>
-            <input data-testid="alpha" />
+    test('error takes precedence over warning on the control state class', () => {
+      const { getByRole } = render(
+        <FormField errorText="Required" warningText="Careful">
+          <ControlGroup>
+            <Input value="" readOnly={true} onChange={() => {}} />
           </ControlGroup>
         </FormField>
       );
 
-      // The group (`.controls`) carries the state and the custom property. The
-      // button carries neither validation markers nor the border custom property.
-      const group = getByRole('group');
-      expect(group).toHaveClass(invalidClass);
-      expect(group.style.getPropertyValue(borderColorProp)).toBe(colorTextStatusError);
+      const control = getByRole('textbox');
+      expect(control).toHaveClass(inputStyles['grouped-in-error']);
+      expect(control).not.toHaveClass(inputStyles['grouped-in-warning']);
+    });
 
-      const actionButton = findControlGroup(container)!.findActionButton()!.getElement();
-      expect(actionButton).not.toHaveClass(invalidClass);
-      expect(actionButton).not.toHaveClass(warningClass);
-      expect(actionButton).not.toHaveClass(controlGroupTestStyles['controls-invalid']);
-      expect(actionButton).not.toHaveClass(controlGroupTestStyles['controls-warning']);
-      expect(actionButton.style.getPropertyValue(borderColorProp)).toBe('');
+    test('applies the matching action-button validation class only in a validation state', () => {
+      const errorActionClass = buttonStyles['variant-control-group-action-error'];
+      const warningActionClass = buttonStyles['variant-control-group-action-warning'];
+
+      function renderActionButton(field: Record<string, string>) {
+        const { container } = render(
+          <FormField {...field}>
+            <ControlGroup inlineLabelText="Threshold" actionButton={{ iconName: 'remove', ariaLabel: 'Remove' }}>
+              <input data-testid="alpha" />
+            </ControlGroup>
+          </FormField>
+        );
+        return findControlGroup(container)!.findActionButton()!.getElement();
+      }
+
+      // Error: button gets the error variant class only.
+      const errorButton = renderActionButton({ errorText: 'Required' });
+      expect(errorButton).toHaveClass(errorActionClass);
+      expect(errorButton).not.toHaveClass(warningActionClass);
+
+      // Warning: button gets the warning variant class only.
+      const warningButton = renderActionButton({ warningText: 'Careful' });
+      expect(warningButton).toHaveClass(warningActionClass);
+      expect(warningButton).not.toHaveClass(errorActionClass);
+
+      // Error precedence: both texts -> error variant class, not warning.
+      const bothButton = renderActionButton({ errorText: 'Required', warningText: 'Careful' });
+      expect(bothButton).toHaveClass(errorActionClass);
+      expect(bothButton).not.toHaveClass(warningActionClass);
+
+      // Neutral: button carries no state variant class, nor the group's classes.
+      const neutralButton = renderActionButton({ label: 'Field' });
+      expect(neutralButton).not.toHaveClass(errorActionClass);
+      expect(neutralButton).not.toHaveClass(warningActionClass);
+      expect(neutralButton).not.toHaveClass(invalidClass);
+      expect(neutralButton).not.toHaveClass(warningClass);
+      expect(neutralButton).not.toHaveClass(controlGroupTestStyles['controls-invalid']);
+      expect(neutralButton).not.toHaveClass(controlGroupTestStyles['controls-warning']);
     });
 
     // The first/only control on the group's leading edge draws the seam via the
