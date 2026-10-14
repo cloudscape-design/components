@@ -36,6 +36,7 @@ export interface ItemProps<T = SelectProps.SelectOptionItemRenderer> {
   ariaSetsize?: number;
   highlightType?: HighlightType['type'];
   withScrollbar?: boolean;
+  hideTopDivider?: boolean;
   sticky?: boolean;
   renderOption?: T;
   parentProps?: ItemParentProps;
@@ -101,6 +102,7 @@ const Item = (
     ariaSetsize,
     highlightType,
     withScrollbar,
+    hideTopDivider,
     sticky,
     renderOption,
     parentProps,
@@ -174,6 +176,7 @@ const Item = (
       ariaDescribedby={isDisabledWithReason ? descriptionId : ''}
       value={option.option.value}
       withScrollbar={withScrollbar}
+      hideTopDivider={hideTopDivider}
       sticky={sticky}
       {...baseProps}
     >

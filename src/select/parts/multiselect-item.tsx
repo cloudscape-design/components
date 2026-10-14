@@ -88,6 +88,7 @@ const MultiSelectItem = (
     ariaSetsize,
     highlightType,
     withScrollbar,
+    hideTopDivider,
     sticky,
     renderOption,
     parentProps,
@@ -182,6 +183,7 @@ const MultiSelectItem = (
       value={option.option.value}
       afterHeader={option.afterHeader}
       withScrollbar={withScrollbar}
+      hideTopDivider={hideTopDivider}
       sticky={sticky}
       {...baseProps}
     >
