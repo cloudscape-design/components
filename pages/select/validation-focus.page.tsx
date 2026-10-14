@@ -3,7 +3,6 @@
 import React from 'react';
 
 import Box from '~components/box';
-import Multiselect from '~components/multiselect';
 import Select from '~components/select';
 import SpaceBetween from '~components/space-between';
 
@@ -26,7 +25,10 @@ function Section({ caption, children }: { caption: string; children: React.React
 
 export default function SelectValidationFocusPage() {
   return (
-    <SimplePage title="Standalone Select/Multiselect validation focus" screenshotArea={{ disableAnimations: true }}>
+    <SimplePage title="Standalone Select validation focus" screenshotArea={{ disableAnimations: true }}>
+      {/* Focus button is first in tab order: a test clicks it, then presses Tab to move
+          keyboard focus (focus-visible) onto the invalid Select trigger below. */}
+      <button id="focus-button">Focus below</button>
       <Section caption="Select invalid">
         <Select
           data-testid="select-invalid"
@@ -46,28 +48,6 @@ export default function SelectValidationFocusPage() {
           options={options}
           selectedOption={null}
           placeholder="Choose an option"
-          onChange={() => {}}
-        />
-      </Section>
-      <Section caption="Multiselect invalid">
-        <Multiselect
-          data-testid="multiselect-invalid"
-          ariaLabel="multiselect invalid"
-          invalid={true}
-          options={options}
-          selectedOptions={[]}
-          placeholder="Choose options"
-          onChange={() => {}}
-        />
-      </Section>
-      <Section caption="Multiselect warning">
-        <Multiselect
-          data-testid="multiselect-warning"
-          ariaLabel="multiselect warning"
-          warning={true}
-          options={options}
-          selectedOptions={[]}
-          placeholder="Choose options"
           onChange={() => {}}
         />
       </Section>
