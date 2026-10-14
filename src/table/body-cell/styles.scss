@@ -48,6 +48,17 @@ $editing-cell-padding-block: awsui.$space-scaled-xxxs;
   }
 }
 
+// Indentation comes from the tableExpandableLevel custom property. The level classes are still
+// applied because apps select on them.
+@for $i from 0 through 9 {
+  .expandable-level-#{$i} {
+    /* no styles */
+  }
+}
+.expandable-level-next {
+  /* no styles */
+}
+
 .expandable-toggle-wrapper {
   position: absolute;
   inset-block: 0;
