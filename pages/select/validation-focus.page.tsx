@@ -26,8 +26,11 @@ function Section({ caption, children }: { caption: string; children: React.React
 
 export default function SelectValidationFocusPage() {
   return (
-    <SimplePage title="Standalone Select validation focus" screenshotArea={{ disableAnimations: true }}>
-      <FocusTarget />
+    <SimplePage
+      title="Standalone Select validation focus"
+      screenshotArea={{ disableAnimations: true }}
+      settings={<FocusTarget />}
+    >
       <Section caption="Select invalid">
         <Select
           data-testid="select-invalid"

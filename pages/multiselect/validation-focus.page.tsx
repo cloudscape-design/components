@@ -26,8 +26,11 @@ function Section({ caption, children }: { caption: string; children: React.React
 
 export default function MultiselectValidationFocusPage() {
   return (
-    <SimplePage title="Standalone Multiselect validation focus" screenshotArea={{ disableAnimations: true }}>
-      <FocusTarget />
+    <SimplePage
+      title="Standalone Multiselect validation focus"
+      screenshotArea={{ disableAnimations: true }}
+      settings={<FocusTarget />}
+    >
       <Section caption="Multiselect invalid">
         <Multiselect
           data-testid="multiselect-invalid"
