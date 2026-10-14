@@ -35,14 +35,10 @@ $grouped-control-warning-marker: '.grouped-in-warning';
 
 // The group owns the validation state and drives it to every grouped control
 // through the context-emitted `.grouped-in-error` / `.grouped-in-warning` class.
-// Neutral controls get their own border color; the error/warning class selects
+// Neutral controls get the input border color; the error/warning class selects
 // the matching SCSS status token on the outward edges only.
-//
-// `$neutral-border-color` is the consuming control's own border color. Input and
-// the Select/Multiselect trigger use the input border color; segmented-control
-// passes its segment-wrapper border color.
-@mixin grouped-control-outer-border-color($edges, $neutral-border-color: awsui.$color-border-input-default) {
-  @include grouped-control-edge-color($edges, $neutral-border-color);
+@mixin grouped-control-outer-border-color($edges) {
+  @include grouped-control-edge-color($edges, awsui.$color-border-input-default);
   // Assert the outward color once per state across base/hover/focus so the
   // control's own neutral hover/focus border-color does not win.
   &#{$grouped-control-error-marker},
@@ -62,7 +58,7 @@ $grouped-control-warning-marker: '.grouped-in-warning';
 // the per-position outward validation color in that scope so it wins on keyboard
 // focus too. The invalid ring is hoisted (position-independent) into the mixin
 // body. `&` is the position class; the control also carries the state marker.
-@mixin grouped-control-validation-focus($edges, $neutral-border-color) {
+@mixin grouped-control-validation-focus($edges) {
   &#{$grouped-control-error-marker} {
     @include focus-visible.when-visible {
       @include grouped-control-edge-color($edges, awsui.$color-text-status-error);
@@ -99,7 +95,7 @@ $grouped-control-warning-marker: '.grouped-in-warning';
   @include styles.logical-radius(0);
 }
 
-@mixin grouped-control($neutral-border-color: awsui.$color-border-input-default) {
+@mixin grouped-control {
   @include grouped-control-base;
 
   &-horizontal {
@@ -108,22 +104,22 @@ $grouped-control-warning-marker: '.grouped-in-warning';
       // Outward edges: inline-start (group start) + both block edges.
       // inline-end faces the next control, so it stays neutral.
       $edges: (inline-start, block-start, block-end);
-      @include grouped-control-outer-border-color($edges, $neutral-border-color);
-      @include grouped-control-validation-focus($edges, $neutral-border-color);
+      @include grouped-control-outer-border-color($edges);
+      @include grouped-control-validation-focus($edges);
     }
     &-middle {
       @include grouped-control-middle;
       // Only the block edges face outward; both inline edges face neighbors.
       $edges: (block-start, block-end);
-      @include grouped-control-outer-border-color($edges, $neutral-border-color);
-      @include grouped-control-validation-focus($edges, $neutral-border-color);
+      @include grouped-control-outer-border-color($edges);
+      @include grouped-control-validation-focus($edges);
     }
     &-last {
       @include grouped-control-horizontal-last;
       // Outward edges: inline-end (group end) + both block edges.
       $edges: (inline-end, block-start, block-end);
-      @include grouped-control-outer-border-color($edges, $neutral-border-color);
-      @include grouped-control-validation-focus($edges, $neutral-border-color);
+      @include grouped-control-outer-border-color($edges);
+      @include grouped-control-validation-focus($edges);
     }
   }
 
@@ -133,22 +129,22 @@ $grouped-control-warning-marker: '.grouped-in-warning';
       // Outward edges: block-start (group top) + both inline edges.
       // block-end faces the next control, so it stays neutral.
       $edges: (block-start, inline-start, inline-end);
-      @include grouped-control-outer-border-color($edges, $neutral-border-color);
-      @include grouped-control-validation-focus($edges, $neutral-border-color);
+      @include grouped-control-outer-border-color($edges);
+      @include grouped-control-validation-focus($edges);
     }
     &-middle {
       @include grouped-control-middle;
       // Only the inline edges face outward; both block edges face neighbors.
       $edges: (inline-start, inline-end);
-      @include grouped-control-outer-border-color($edges, $neutral-border-color);
-      @include grouped-control-validation-focus($edges, $neutral-border-color);
+      @include grouped-control-outer-border-color($edges);
+      @include grouped-control-validation-focus($edges);
     }
     &-last {
       @include grouped-control-vertical-last;
       // Outward edges: block-end (group bottom) + both inline edges.
       $edges: (block-end, inline-start, inline-end);
-      @include grouped-control-outer-border-color($edges, $neutral-border-color);
-      @include grouped-control-validation-focus($edges, $neutral-border-color);
+      @include grouped-control-outer-border-color($edges);
+      @include grouped-control-validation-focus($edges);
     }
   }
 
@@ -157,8 +153,8 @@ $grouped-control-warning-marker: '.grouped-in-warning';
   &-horizontal-only,
   &-vertical-only {
     $edges: (inline-start, inline-end, block-start, block-end);
-    @include grouped-control-outer-border-color($edges, $neutral-border-color);
-    @include grouped-control-validation-focus($edges, $neutral-border-color);
+    @include grouped-control-outer-border-color($edges);
+    @include grouped-control-validation-focus($edges);
   }
 
   &-with-action {
