@@ -33,6 +33,7 @@ export interface MultiselectProps extends BaseSelectProps {
   hideTokens?: boolean;
   /**
    * Shows tokens inside the trigger instead of below it.
+   * When the component is rendered inside a control group, the tokens are rendered inside the trigger regardless of this property.
    */
   inlineTokens?: boolean;
   /**

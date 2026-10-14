@@ -20399,7 +20399,9 @@ Set this property if the dropdown would otherwise be constrained by a scrollable
 for example inside table and split view layouts.
 
 We recommend you use discretion, and don't enable this property unless necessary
-because fixed positioning results in a slight, visible lag when scrolling complex pages.",
+because fixed positioning results in a slight, visible lag when scrolling complex pages.
+
+When the component is rendered in a control group, the dropdown will be rendered using this portal-based method regardless of this property.",
       "name": "expandToViewport",
       "optional": true,
       "type": "boolean",
@@ -20537,7 +20539,8 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
-      "description": "Shows tokens inside the trigger instead of below it.",
+      "description": "Shows tokens inside the trigger instead of below it.
+When the component is rendered inside a control group, the tokens are rendered inside the trigger regardless of this property.",
       "name": "inlineTokens",
       "optional": true,
       "type": "boolean",
@@ -26845,7 +26848,9 @@ Set this property if the dropdown would otherwise be constrained by a scrollable
 for example inside table and split view layouts.
 
 We recommend you use discretion, and don't enable this property unless necessary
-because fixed positioning results in a slight, visible lag when scrolling complex pages.",
+because fixed positioning results in a slight, visible lag when scrolling complex pages.
+
+When the component is rendered in a control group, the dropdown will be rendered using this portal-based method regardless of this property.",
       "name": "expandToViewport",
       "optional": true,
       "type": "boolean",
