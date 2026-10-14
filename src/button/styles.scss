@@ -164,11 +164,13 @@ $tokens: style-api.resolve($props, carrier);
       // In a group validation state, keep the leading seam's validation color
       // and show the invalid ring instead of letting the focus border swap win.
       &.variant-control-group-action-error {
-        border-inline-start-color: awsui.$color-text-status-error;
+        border-block-color: awsui.$color-text-status-error;
+        border-inline-color: awsui.$color-text-status-error;
         box-shadow: foundation.$box-shadow-focused-light-invalid;
       }
       &.variant-control-group-action-warning {
-        border-inline-start-color: awsui.$color-text-status-warning;
+        border-block-color: awsui.$color-text-status-warning;
+        border-inline-color: awsui.$color-text-status-warning;
         box-shadow: foundation.$box-shadow-focused-light-invalid;
       }
     }
