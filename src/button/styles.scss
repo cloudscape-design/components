@@ -100,6 +100,9 @@ $tokens: style-api.resolve($props, carrier);
   @include styles.styles-reset;
   @include styles.text-wrapping;
   @include styles.font-button;
+
+  $focus-border-color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
+
   letter-spacing: awsui.$font-button-letter-spacing;
   border-start-start-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
   border-start-end-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
@@ -128,10 +131,9 @@ $tokens: style-api.resolve($props, carrier);
   @include focus-visible.when-visible {
     $radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring);
     $width: var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width);
-    $color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
 
     &:not(.variant-control-group-action) {
-      @include style-api.focus-highlight($radius: $radius, $width: $width, $color: $color);
+      @include style-api.focus-highlight($radius: $radius, $width: $width, $color: $focus-border-color);
     }
 
     &.variant-icon,
@@ -141,7 +143,7 @@ $tokens: style-api.resolve($props, carrier);
         $gutter-block: awsui.$space-button-icon-focus-outline-gutter-vertical,
         $radius: $radius,
         $width: $width,
-        $color: $color
+        $color: $focus-border-color
       );
     }
 
@@ -152,25 +154,8 @@ $tokens: style-api.resolve($props, carrier);
         $gutter-inline: awsui.$space-button-inline-icon-focus-outline-gutter,
         $radius: $radius,
         $width: $width,
-        $color: $color
+        $color: $focus-border-color
       );
-    }
-
-    &.variant-control-group-action {
-      @include styles.form-focus-element(
-        $border-color: $color,
-        $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
-      );
-      // In a group validation state, keep the leading seam's validation color
-      // and show the invalid ring instead of letting the focus border swap win.
-      &.variant-control-group-action-error {
-        border-inline-start-color: awsui.$color-text-status-error;
-        box-shadow: foundation.$box-shadow-focused-light-invalid;
-      }
-      &.variant-control-group-action-warning {
-        border-inline-start-color: awsui.$color-text-status-warning;
-        box-shadow: foundation.$box-shadow-focused-light-invalid;
-      }
     }
   }
 
@@ -231,24 +216,17 @@ $tokens: style-api.resolve($props, carrier);
     min-block-size: awsui.$size-vertical-input;
 
     &-error {
-      &,
-      &:hover,
-      &:active,
-      &.disabled,
-      &:focus,
-      &:focus-visible {
-        border-inline-start-color: awsui.$color-text-status-error;
-      }
+      border-inline-start-color: awsui.$color-text-status-error;
     }
     &-warning {
-      &,
-      &:hover,
-      &:active,
-      &.disabled,
-      &:focus,
-      &:focus-visible {
-        border-inline-start-color: awsui.$color-text-status-warning;
-      }
+      border-inline-start-color: awsui.$color-text-status-warning;
+    }
+
+    @include focus-visible.when-visible {
+      @include styles.form-focus-element(
+        $border-color: $focus-border-color,
+        $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
+      );
     }
   }
 
