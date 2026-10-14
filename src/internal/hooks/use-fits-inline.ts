@@ -6,38 +6,30 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 interface UseFitsInlineResult<T extends HTMLElement> {
-  // `true` when content does not fit (caller should stack); `false` until both widths are known.
+  // `true` when content does not fit; `false` until both widths are known.
   overflows: boolean;
-  // Attach to the group root; it MUST be `position: static` (see below).
+  // Attach to the group root; it MUST be `position: static`.
   rootRef: React.Ref<T>;
-  // Attach to the hidden single-row ghost; its width is the required width.
+  // Attach to the hidden single-row ghost (required width).
   ghostRef: React.Ref<T>;
-  // Attach to the hidden width sensor; its content-box width is the available width.
+  // Attach to the hidden sensor (available width).
   sensorRef: React.Ref<T>;
 }
 
 /**
- * Decides whether content fits the width available to it, by comparing two independent widths so
- * the content's own collapse can't feed back into the decision: the available width from a hidden
- * width sensor, and the required width from a hidden ghost that always renders content inline.
+ * Reports whether content fits by comparing the available width (hidden sensor) against the
+ * required width (hidden single-row ghost). Measuring these independently avoids the feedback
+ * loop where the content's own collapse would shrink the measurement and never re-expand.
  *
- * Why a sensor rather than walking the ancestor chain: when controls can shrink to fit
- * (`min-inline-size: 0`) the root never overflows and there is no constraining ancestor to find,
- * and measuring the root (or anything that shrink-wraps with it) deadlocks once stacked — it stays
- * narrower than the ghost forever, so the group never re-expands. The sensor is an
- * absolutely-positioned, zero-content-width block; because the root is `position: static`, the
- * sensor's containing block is the nearest positioned ancestor / the ICB (width driven top-down,
- * not the group's own stacking), so its width is the real available width in both states. Hence
- * the root MUST stay `position: static`.
+ * The sensor only reports the available width while the root stays `position: static`, so the
+ * sensor resolves against the nearest positioned ancestor instead of the group itself.
  */
 export function useFitsInline<T extends HTMLElement = HTMLElement>(): UseFitsInlineResult<T> {
-  // `useContainerQuery` observes each element via its own ResizeObserver (SSR-safe, re-measures on resize).
   const [availableWidth, sensorWidthRef] = useContainerQuery<number>(entry => entry.contentBoxWidth);
   const [requiredWidth, ghostWidthRef] = useContainerQuery<number>(entry => entry.contentBoxWidth);
 
-  // Mark the ghost subtree `inert` so its duplicated content adds no tab stops and is hidden
-  // from assistive tech. Set in a ref callback when the node is assigned (rather than a layout
-  // effect that runs every render) because `inert` isn't rendered by React < 19.
+  // Mark the ghost subtree `inert` so its duplicated content adds no tab stops and is hidden from
+  // assistive tech. A ref callback rather than an effect, since `inert` isn't rendered by React < 19.
   const ghostInertRef = useCallback((node: T | null) => {
     if (node) {
       node.inert = true;
@@ -47,7 +39,7 @@ export function useFitsInline<T extends HTMLElement = HTMLElement>(): UseFitsInl
   // Kept for a stable return shape; the sensor, not the root, is measured.
   const rootRef = useRef<T | null>(null);
 
-  // `-1` tolerance avoids flipping on sub-pixel rounding; report "fits" until both widths are known.
+  // `-1` tolerance avoids flipping on sub-pixel rounding.
   const overflows = availableWidth !== null && requiredWidth !== null ? availableWidth < requiredWidth - 1 : false;
 
   return {
