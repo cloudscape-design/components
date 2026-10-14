@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
@@ -36,13 +36,13 @@ export function useFitsInline<T extends HTMLElement = HTMLElement>(): UseFitsInl
   const [requiredWidth, ghostWidthRef] = useContainerQuery<number>(entry => entry.contentBoxWidth);
 
   // Mark the ghost subtree `inert` so its duplicated content adds no tab stops and is hidden
-  // from assistive tech. Set via ref because `inert` isn't rendered by React < 19.
-  const ghostElRef = useRef<T | null>(null);
-  useLayoutEffect(() => {
-    if (ghostElRef.current) {
-      ghostElRef.current.inert = true;
+  // from assistive tech. Set in a ref callback when the node is assigned (rather than a layout
+  // effect that runs every render) because `inert` isn't rendered by React < 19.
+  const ghostInertRef = useCallback((node: T | null) => {
+    if (node) {
+      node.inert = true;
     }
-  });
+  }, []);
 
   // Kept for a stable return shape; the sensor, not the root, is measured.
   const rootRef = useRef<T | null>(null);
@@ -53,7 +53,7 @@ export function useFitsInline<T extends HTMLElement = HTMLElement>(): UseFitsInl
   return {
     overflows,
     rootRef,
-    ghostRef: useMergeRefs(ghostWidthRef, ghostElRef),
+    ghostRef: useMergeRefs(ghostWidthRef, ghostInertRef),
     sensorRef: sensorWidthRef,
   };
 }
