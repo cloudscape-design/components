@@ -44,8 +44,8 @@ export default function ControlGroup({
       className={clsx(
         styles.controls,
         styles[`controls-${direction}`],
-        isInvalid && [styles['controls-invalid'], testUtilStyles['controls-invalid']],
-        isWarning && [styles['controls-warning'], testUtilStyles['controls-warning']],
+        isInvalid && styles['controls-invalid'],
+        isWarning && styles['controls-warning'],
         actionButton && styles['controls-with-action'],
         !actionButton && !inlineLabelText && rootClassnames
       )}
