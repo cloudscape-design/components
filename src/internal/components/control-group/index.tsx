@@ -50,7 +50,7 @@ export default function ControlGroup({
         controlCount === 1 ? 'only' : index === 0 ? 'first' : index === controlCount - 1 ? 'last' : 'middle';
       return (
         <div
-          key={key ? String(key) : index}
+          key={key !== null && key !== undefined ? String(key) : index}
           className={clsx(
             // Only on real controls, not the ghost's copies, so test utils exclude the ghost.
             !isGhost && testUtilStyles.control,
