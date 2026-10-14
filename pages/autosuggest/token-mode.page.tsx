@@ -29,7 +29,7 @@ export default function AutosuggestTokenModePage() {
   const filteredOptions = ALL_OPTIONS.filter(o => !selected.has(o.value!) && (!value || o.value!.includes(value)));
 
   return (
-    <SimplePage title="Autosuggest token mode">
+    <SimplePage title="Autosuggest token mode" screenshotArea={{ disableAnimations: true }}>
       <SpaceBetween size="s">
         <FormField
           label="Filter logs"
@@ -59,6 +59,7 @@ export default function AutosuggestTokenModePage() {
         <SpaceBetween direction="horizontal" size="xs">
           <Button onClick={() => setTokens([])}>Clear all tokens</Button>
           <Button
+            data-testid="add-token"
             onClick={() => {
               const next = ALL_OPTIONS.find(o => !selected.has(o.value!));
               if (next) {

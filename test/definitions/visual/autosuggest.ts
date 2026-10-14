@@ -1,8 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import VisualTestPageObject from '../page-object';
 import { TestDefinition, TestSuite, Wrapper } from '../types';
 
-const overflowAutosuggest = (wrapper: Wrapper) => wrapper.find('[data-testid="overflow"]').findAutosuggest();
+const addTokens = async (page: VisualTestPageObject, wrapper: Wrapper, count: number) => {
+  for (let i = 0; i < count; i++) {
+    await page.click(wrapper.find('[data-testid="add-token"]').toSelector());
+  }
+};
 
 const suite: TestSuite = {
   description: 'Autosuggest',
@@ -70,32 +75,26 @@ const suite: TestSuite = {
     {
       description: 'token mode permutations',
       path: 'autosuggest/token-mode-permutations',
-      screenshotType: 'screenshotArea',
-    },
-    {
-      description: 'token mode with suggestions open',
-      path: 'autosuggest/token-mode-permutations',
-      screenshotType: 'screenshotArea',
-      setup: async ({ page, wrapper }) => {
-        await page.click(wrapper.findAutosuggest().findNativeInput().toSelector());
-        await page.keys(['u', 's']);
-      },
+      screenshotType: 'permutations',
     },
     {
       description: 'token mode with a focused token',
-      path: 'autosuggest/token-mode-permutations',
+      path: 'autosuggest/token-mode',
       screenshotType: 'screenshotArea',
       setup: async ({ page, wrapper }) => {
-        await page.click(overflowAutosuggest(wrapper).findNativeInput().toSelector());
+        await addTokens(page, wrapper, 2);
+        await page.click(wrapper.findAutosuggest().findNativeInput().toSelector());
         await page.keys(['Backspace']);
       },
     },
     {
       description: 'token mode with overflow dropdown open',
-      path: 'autosuggest/token-mode-permutations',
+      path: 'autosuggest/token-mode',
       screenshotType: 'screenshotArea',
+      configuration: { width: 600 },
       setup: async ({ page, wrapper }) => {
-        await page.click(overflowAutosuggest(wrapper).findOverflowTrigger().toSelector());
+        await addTokens(page, wrapper, 6);
+        await page.click(wrapper.findAutosuggest().findOverflowTrigger().toSelector());
       },
     },
   ],
