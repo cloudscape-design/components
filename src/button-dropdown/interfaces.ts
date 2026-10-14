@@ -57,6 +57,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    *
    * - `items` (ReadonlyArray<Item>) - an array of item objects. Items will be rendered as nested menu items but only for the first nesting level, multi-nesting is not supported.
    * An item which belongs to nested group has the following properties: `id`, `text`, `disabled`, and `description`.
+   * - `expandable` (boolean) - (Optional) Defines whether the group is expandable (this overrides the component-level `expandableGroups` property).
    *
    */
   items: ReadonlyArray<ButtonDropdownProps.ItemOrGroup>;
