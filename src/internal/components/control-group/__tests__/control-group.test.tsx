@@ -18,50 +18,52 @@ describe('Control group', () => {
     const alpha = <input key="alpha" data-testid="alpha" />;
     const beta = <input key="beta" data-testid="beta" />;
 
-    const { getAllByTestId, rerender } = render(<ControlGroup>{[alpha, beta]}</ControlGroup>);
+    const { container, rerender } = render(<ControlGroup>{[alpha, beta]}</ControlGroup>);
 
-    // The measurement ghost duplicates each control's test id, so `[0]` is always the real control (applies throughout).
-    const alphaInput = getAllByTestId('alpha')[0];
+    // findControls() returns only the real control slots (never the measurement ghost's copies),
+    // so indexing by position is unambiguous.
+    const alphaInput = findControlGroup(container)!.findControls()[0].find('input')!.getElement();
     alphaInput.focus();
     expect(document.activeElement).toBe(alphaInput);
 
     // Move the focused control from first to last position.
     rerender(<ControlGroup>{[beta, alpha]}</ControlGroup>);
 
-    // The same DOM node is still focused; it was moved, not remounted.
-    expect(getAllByTestId('alpha')[0]).toBe(alphaInput);
+    // The same DOM node is still focused; it was moved (now last), not remounted.
+    expect(findControlGroup(container)!.findControls()[1].find('input')!.getElement()).toBe(alphaInput);
     expect(document.activeElement).toBe(alphaInput);
   });
 
   describe('position', () => {
     test('exposes the "only" position to a single child control', () => {
-      const { getAllByTestId } = render(
+      const { container } = render(
         <ControlGroup>
           <PositionProbe />
         </ControlGroup>
       );
 
-      expect(getAllByTestId('probe')[0]).toHaveTextContent('only');
+      expect(findControlGroup(container)!.findControls()[0].getElement()).toHaveTextContent('only');
     });
 
     test('exposes first / middle / last positions to each child in order', () => {
-      const { getAllByTestId } = render(
+      const { container } = render(
         <ControlGroup>
-          <PositionProbe testId="a" />
-          <PositionProbe testId="b" />
-          <PositionProbe testId="c" />
+          <PositionProbe />
+          <PositionProbe />
+          <PositionProbe />
         </ControlGroup>
       );
 
-      expect(getAllByTestId('a')[0]).toHaveTextContent('first');
-      expect(getAllByTestId('b')[0]).toHaveTextContent('middle');
-      expect(getAllByTestId('c')[0]).toHaveTextContent('last');
+      const controls = findControlGroup(container)!.findControls();
+      expect(controls[0].getElement()).toHaveTextContent('first');
+      expect(controls[1].getElement()).toHaveTextContent('middle');
+      expect(controls[2].getElement()).toHaveTextContent('last');
     });
 
     test('resets the grouped position for content wrapped in ResetGroupedControlContext', () => {
       // Mirrors a nested control rendered inside a control's custom slot (e.g.
       // Autosuggest `empty`): it must not inherit the surrounding group position.
-      const { getAllByTestId } = render(
+      const { container } = render(
         <ControlGroup>
           <ResetGroupedControlContext>
             <PositionProbe />
@@ -69,7 +71,7 @@ describe('Control group', () => {
         </ControlGroup>
       );
 
-      expect(getAllByTestId('probe')[0]).toHaveTextContent('none');
+      expect(findControlGroup(container)!.findControls()[0].getElement()).toHaveTextContent('none');
     });
   });
 
@@ -113,41 +115,43 @@ describe('Control group', () => {
   describe('direction', () => {
     // In jsdom there's no layout, so auto never stacks and defaults to horizontal.
     test('defaults the direction to "horizontal" and exposes it to each child', () => {
-      const { getAllByTestId } = render(
+      const { container } = render(
         <ControlGroup>
-          <DirectionProbe testId="a" />
-          <DirectionProbe testId="b" />
+          <DirectionProbe />
+          <DirectionProbe />
         </ControlGroup>
       );
 
-      expect(getAllByTestId('a')[0]).toHaveTextContent('horizontal');
-      expect(getAllByTestId('b')[0]).toHaveTextContent('horizontal');
+      const controls = findControlGroup(container)!.findControls();
+      expect(controls[0].getElement()).toHaveTextContent('horizontal');
+      expect(controls[1].getElement()).toHaveTextContent('horizontal');
     });
 
     test('exposes direction="vertical" to each child when the group is vertical', () => {
-      const { getAllByTestId } = render(
+      const { container } = render(
         <ControlGroup direction="vertical">
-          <DirectionProbe testId="a" />
-          <DirectionProbe testId="b" />
-          <DirectionProbe testId="c" />
+          <DirectionProbe />
+          <DirectionProbe />
+          <DirectionProbe />
         </ControlGroup>
       );
 
-      expect(getAllByTestId('a')[0]).toHaveTextContent('vertical');
-      expect(getAllByTestId('b')[0]).toHaveTextContent('vertical');
-      expect(getAllByTestId('c')[0]).toHaveTextContent('vertical');
+      const controls = findControlGroup(container)!.findControls();
+      expect(controls[0].getElement()).toHaveTextContent('vertical');
+      expect(controls[1].getElement()).toHaveTextContent('vertical');
+      expect(controls[2].getElement()).toHaveTextContent('vertical');
     });
 
     test('ResetGroupedControlContext preserves the group direction', () => {
-      const { getAllByTestId } = render(
+      const { container } = render(
         <ControlGroup direction="vertical">
           <ResetGroupedControlContext>
-            <DirectionProbe testId="direction" />
+            <DirectionProbe />
           </ResetGroupedControlContext>
         </ControlGroup>
       );
 
-      expect(getAllByTestId('direction')[0]).toHaveTextContent('vertical');
+      expect(findControlGroup(container)!.findControls()[0].getElement()).toHaveTextContent('vertical');
     });
   });
 
