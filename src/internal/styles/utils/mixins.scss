@@ -10,6 +10,16 @@
   inset-inline-start: -9999px !important;
 }
 
+@mixin measurement-ghost {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  block-size: 0;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+}
+
 @mixin text-wrapping {
   // When using with Flexbox, a flex item has min-width set to "auto" by default, which
   // prevents the text wrapping. We need to override the min-width by setting it to "0"

@@ -31,7 +31,10 @@ export interface ButtonTriggerProps extends BaseComponentProps {
   warning?: boolean;
   inFilteringToken?: 'root' | 'nested';
   inlineTokens?: boolean;
-  ariaHasPopup?: 'true' | 'listbox' | 'dialog';
+  compact?: boolean;
+  tabIndex?: number;
+  ariaLabel?: string;
+  ariaHasPopup?: 'true' | 'listbox' | 'dialog' | false;
   ariaControls?: string;
   ariaLabelledby?: string;
   ariaDescribedby?: string;
@@ -56,6 +59,9 @@ const ButtonTrigger = (
     invalid = false,
     warning = false,
     inlineTokens,
+    compact,
+    tabIndex,
+    ariaLabel,
     inFilteringToken,
     ariaHasPopup,
     ariaLabelledby,
@@ -92,14 +98,17 @@ const ButtonTrigger = (
       inFilteringToken && styles['in-filtering-token'],
       inFilteringToken && styles[`in-filtering-token-${inFilteringToken}`],
       inlineTokens && styles['inline-tokens'],
+      compact && styles.compact,
       ...getGroupedControlClassNames(styles, groupedControlProps),
       !!hasCustomContent && styles['custom-option']
     ),
     disabled: disabled,
+    tabIndex,
+    'aria-label': ariaLabel,
     'aria-expanded': pressed,
     'aria-labelledby': ariaLabelledby,
     'aria-describedby': ariaDescribedby,
-    'aria-haspopup': ariaHasPopup ?? 'listbox',
+    'aria-haspopup': ariaHasPopup === false ? undefined : (ariaHasPopup ?? 'listbox'),
     'aria-controls': ariaControls,
     'aria-disabled': readOnly && !disabled ? 'true' : undefined,
     autoFocus,
