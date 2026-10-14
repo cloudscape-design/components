@@ -42,8 +42,7 @@ export default function ControlGroup({
 
   const renderControlSlots = (isGhost = false) => {
     // The ghost always measures a single horizontal row, so its slots must use the horizontal
-    // seam classes regardless of the resolved direction; using `resolvedDirection` once stacked
-    // would drop the inline overlap and overestimate the required width.
+    // seam classes regardless of the resolved direction.
     const slotDirection: GroupedControlDirection = isGhost ? 'horizontal' : resolvedDirection;
     return flattenedChildren.map((child, index) => {
       const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
