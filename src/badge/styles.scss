@@ -9,7 +9,7 @@
 
 @include style-api.docs(
   'root',
-  $properties: (color, background-color, border, border-radius, padding, font-family, font-size, font-weight)
+  $properties: (color, background, border, border-radius, padding, font-family, font-size, font-weight)
 );
 
 .badge {

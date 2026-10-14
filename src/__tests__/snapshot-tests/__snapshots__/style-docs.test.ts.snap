@@ -50,7 +50,7 @@ exports[`Style API docs definition for badge matches the snapshot: badge 1`] = `
       "name": "root",
       "properties": [
         "color",
-        "background-color",
+        "background",
         "border",
         "border-radius",
         "padding",
