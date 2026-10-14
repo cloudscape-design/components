@@ -192,7 +192,7 @@ const ExpandableCategoryElement = ({
           ) : undefined
         }
         content={
-          expanded ? (
+          expanded && (hasGroupItems || groupDropdownStatus.content) ? (
             <ul
               role="menu"
               aria-label={item.text}
