@@ -63,17 +63,14 @@ $grouped-control-warning-marker: '.grouped-in-warning';
 // focus too. The invalid ring is hoisted (position-independent) into the mixin
 // body. `&` is the position class; the control also carries the state marker.
 @mixin grouped-control-validation-focus($edges, $neutral-border-color) {
-  // On keyboard focus the neutral form-focus-element paints all four sides, so
-  // re-assert the validation color on all four (seams included) to beat it.
-  $all: (inline-start, inline-end, block-start, block-end);
   &#{$grouped-control-error-marker} {
     @include focus-visible.when-visible {
-      @include grouped-control-edge-color($all, awsui.$color-text-status-error);
+      @include grouped-control-edge-color($edges, awsui.$color-text-status-error);
     }
   }
   &#{$grouped-control-warning-marker} {
     @include focus-visible.when-visible {
-      @include grouped-control-edge-color($all, awsui.$color-text-status-warning);
+      @include grouped-control-edge-color($edges, awsui.$color-text-status-warning);
     }
   }
 }
