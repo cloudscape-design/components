@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { TestDefinition, TestSuite } from '../types';
+import { TestDefinition, TestSuite, Wrapper } from '../types';
+
+const overflowAutosuggest = (wrapper: Wrapper) => wrapper.find('[data-testid="overflow"]').findAutosuggest();
 
 const suite: TestSuite = {
   description: 'Autosuggest',
@@ -60,6 +62,42 @@ const suite: TestSuite = {
           },
         }) as TestDefinition
     ),
+    {
+      description: 'style permutations',
+      path: 'autosuggest/style-permutations',
+      screenshotType: 'permutations',
+    },
+    {
+      description: 'token mode permutations',
+      path: 'autosuggest/token-mode-permutations',
+      screenshotType: 'screenshotArea',
+    },
+    {
+      description: 'token mode with suggestions open',
+      path: 'autosuggest/token-mode-permutations',
+      screenshotType: 'screenshotArea',
+      setup: async ({ page, wrapper }) => {
+        await page.click(wrapper.findAutosuggest().findNativeInput().toSelector());
+        await page.keys(['u', 's']);
+      },
+    },
+    {
+      description: 'token mode with a focused token',
+      path: 'autosuggest/token-mode-permutations',
+      screenshotType: 'screenshotArea',
+      setup: async ({ page, wrapper }) => {
+        await page.click(overflowAutosuggest(wrapper).findNativeInput().toSelector());
+        await page.keys(['Backspace']);
+      },
+    },
+    {
+      description: 'token mode with overflow dropdown open',
+      path: 'autosuggest/token-mode-permutations',
+      screenshotType: 'screenshotArea',
+      setup: async ({ page, wrapper }) => {
+        await page.click(overflowAutosuggest(wrapper).findOverflowTrigger().toSelector());
+      },
+    },
   ],
 };
 
