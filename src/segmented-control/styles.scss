@@ -46,6 +46,7 @@
 
   @include theming.one-theme-only {
     gap: #{seg.$one-theme-segment-gap};
+    box-sizing: border-box;
   }
 
   &:not(.grouped),
