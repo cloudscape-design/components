@@ -7,6 +7,7 @@ import createWrapper from '../../../../../lib/components/test-utils/selectors';
 import ControlGroupWrapper from '../../../../../lib/components/test-utils/selectors/internal/control-group';
 
 const wrapperSelector = '[data-testid="auto-spacebetween"]';
+const resizableContainerSelector = '[data-testid="resizable-container"]';
 
 const group = createWrapper(wrapperSelector).findComponent(
   `.${ControlGroupWrapper.rootSelector}`,
@@ -20,9 +21,6 @@ const firstControl = controls.get(1).findInput().findNativeInput().toSelector();
 const secondControl = controls.get(2).findSelect().findTrigger().toSelector();
 const thirdControl = controls.get(3).findInput().findNativeInput().toSelector();
 
-const wide = { width: 1200, height: 800 };
-const narrow = { width: 500, height: 800 }; // Headless Chrome does not shrink narrower than 500px.
-
 class ControlGroupPage extends BasePageObject {
   async getControlBoxes() {
     const boxes = [];
@@ -30,6 +28,13 @@ class ControlGroupPage extends BasePageObject {
       boxes.push(await this.getBoundingBox(controls.get(i).toSelector()));
     }
     return boxes;
+  }
+
+  async selectWidth(value: string) {
+    await this.click(
+      createWrapper().findRadioGroup('[data-testid="width-radio"]').findInputByValue(value).toSelector()
+    );
+    await this.pause(500);
   }
 
   async expectRow() {
@@ -60,7 +65,9 @@ class ControlGroupPage extends BasePageObject {
 function setup(withButton: boolean, testFn: (page: ControlGroupPage) => Promise<void>) {
   return useBrowser(async browser => {
     const page = new ControlGroupPage(browser);
-    await browser.url(`#/control-group/responsive${withButton ? '?withButton=true' : ''}`);
+    // Keep the viewport large so only the container width constrains the control group.
+    await page.setWindowSize({ width: 1600, height: 800 });
+    await browser.url(`#/control-group/responsive?containerWidth=1200${withButton ? '&withButton=true' : ''}`);
     await page.waitForVisible(wrapperSelector);
     await testFn(page);
   });
@@ -71,12 +78,12 @@ describe('Control Group responsiveness', () => {
     test(
       `Collapses and re-expands according to available width when \`direction="auto"\` ${withButton ? 'with' : 'without'} action button`,
       setup(withButton, async page => {
-        await page.setWindowSize(wide);
+        await page.selectWidth('1200');
         await page.expectRow();
-        await page.setWindowSize(narrow);
+        await page.selectWidth('300');
         await page.expectStacked();
         // Critical case: widening must re-expand it, not leave it stuck stacked.
-        await page.setWindowSize(wide);
+        await page.selectWidth('1200');
         await page.expectRow();
       })
     );
@@ -85,7 +92,7 @@ describe('Control Group responsiveness', () => {
   test(
     'Measurement ghost does not add tab stops',
     setup(false, async page => {
-      await page.setWindowSize(wide);
+      await page.selectWidth('1200');
       await page.click('#focus-target');
       await expect(page.isFocused('#focus-target')).resolves.toBe(true);
 
@@ -108,10 +115,10 @@ describe('Control Group responsiveness', () => {
   test(
     'Controls compress rather than overflow when an action button is present',
     setup(true, async page => {
-      await page.setWindowSize(narrow);
+      await page.selectWidth('300');
       // The group fits its clipping container: the action button stays within it.
       await page.waitForAssertion(async () => {
-        const container = await page.getBoundingBox(wrapperSelector);
+        const container = await page.getBoundingBox(resizableContainerSelector);
         const actionButton = await page.getBoundingBox(group.findActionButton()!.toSelector());
         expect(actionButton.right).toBeLessThanOrEqual(container.right);
       });
