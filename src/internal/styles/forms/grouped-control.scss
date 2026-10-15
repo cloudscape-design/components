@@ -175,11 +175,32 @@ $grouped-control-warning-marker: '.grouped-in-warning';
     }
   }
 
-  // Thick validation seam on the group's leading (inline-start) edge, reusing
-  // the standalone invalid control's width/padding. box-sizing: border-box
-  // grows the border inward, so the row does not shift.
+  // Thick validation seam on the group's leading (inline-start) edge. Painted as
+  // a flat ::before rectangle rather than a thick border so it cannot miter
+  // against the thin neutral block seams (which would notch the colored bar).
+  // The control keeps its real 1px inline-start border for the overlap seam math;
+  // the bar overlays the inline-start strip inside the (border-box) padding, and
+  // padding-inline-start pushes the content clear of it with no row shift.
   &#{&}-validation {
-    border-inline-start-width: constants.$invalid-control-left-border;
-    padding-inline-start: constants.$invalid-control-left-padding;
+    position: relative;
+    padding-inline-start: constants.$control-padding-horizontal;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset-block: 0;
+      inset-inline-start: 0;
+      inline-size: constants.$invalid-control-left-border;
+      // Match only the leading corners the position class rounded (border-radius
+      // is not inherited by default, so this pulls the control's computed values).
+      border-start-start-radius: inherit;
+      border-end-start-radius: inherit;
+    }
+    &#{$grouped-control-error-marker}::before {
+      background-color: awsui.$color-text-status-error;
+    }
+    &#{$grouped-control-warning-marker}::before {
+      background-color: awsui.$color-text-status-warning;
+    }
   }
 }
