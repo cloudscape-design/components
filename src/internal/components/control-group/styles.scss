@@ -40,6 +40,9 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
 .controls {
   display: flex;
   align-items: stretch;
+  // MUST stay static so the sensor resolves against the nearest positioned ancestor, not this root
+  // (see use-fits-inline.ts). Set explicitly to guard the invariant against future refactors.
+  position: static;
   // Keep the group at its natural single-row width until the sensor reports it no longer fits.
   flex-shrink: 0;
 
