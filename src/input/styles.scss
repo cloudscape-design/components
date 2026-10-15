@@ -63,10 +63,18 @@
 }
 
 %input-focus-styles {
-  @include styles.form-focus-element(
-    $border-color: var(#{custom-props.$styleBorderColorFocus}, awsui.$color-border-input-focused),
-    $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
-  );
+  &:not(.grouped-validation) {
+    @include styles.form-focus-element(
+      $border-color: var(#{custom-props.$styleBorderColorFocus}, awsui.$color-border-input-focused),
+      $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
+    );
+  }
+  &.grouped-validation {
+    @include styles.form-focus-element(
+      $border-color: false,
+      $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
+    );
+  }
 }
 
 .root {
