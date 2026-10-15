@@ -9,6 +9,22 @@
   display: contents;
 }
 
+.one-theme-trigger {
+  will-change: opacity;
+}
+
+.one-theme-trigger-success {
+  color: awsui.$color-text-status-success;
+}
+
+.one-theme-trigger-error {
+  color: awsui.$color-text-status-error;
+}
+
+.popover-message {
+  display: inline;
+}
+
 .inline-container {
   word-break: break-all;
 

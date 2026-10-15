@@ -3,11 +3,18 @@
 import React from 'react';
 import { act, render, waitFor } from '@testing-library/react';
 
+import { isThemeActive } from '@cloudscape-design/component-toolkit/internal';
+
 import CopyToClipboard from '../../../lib/components/copy-to-clipboard';
 import InternalCopyToClipboard from '../../../lib/components/copy-to-clipboard/internal';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import styles from '../../../lib/components/copy-to-clipboard/styles.css.js';
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  isThemeActive: jest.fn().mockReturnValue(false),
+}));
 
 const defaultProps = {
   copyTarget: 'Test content',
@@ -22,6 +29,7 @@ describe('CopyToClipboard', () => {
   const originalNavigatorPermissions = global.navigator.permissions;
 
   beforeEach(() => {
+    (isThemeActive as jest.Mock).mockReturnValue(false);
     Object.assign(global.navigator, {
       clipboard: {
         writeText: (text: string) =>
@@ -529,5 +537,59 @@ describe('CopyToClipboard', () => {
   test('InternalCopyToClipboard does not wrap text when wrapText=false', () => {
     const { container } = render(<InternalCopyToClipboard {...defaultProps} variant="inline" wrapText={false} />);
     expect(container.querySelector(`.${styles['inline-container-no-wrap']}`)).not.toBeNull();
+  });
+
+  describe('One Theme glyph-swap behavior', () => {
+    beforeEach(() => {
+      (isThemeActive as jest.Mock).mockReturnValue(true);
+    });
+
+    test('shows the success message as text-only popover content (no StatusIndicator icon)', async () => {
+      const { container } = render(<CopyToClipboard {...defaultProps} />);
+      const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+      wrapper.findCopyButton().click();
+      await waitFor(() => expect(wrapper.findStatusText()!.getElement().textContent).toBe('Copied to clipboard'));
+      expect(wrapper.findStatusText()!.findByClassName(styles['popover-message'])).not.toBe(null);
+      expect(container.querySelector(`.${styles['one-theme-trigger-success']}`)).not.toBeNull();
+    });
+
+    test('shows the error message as text-only popover content', async () => {
+      const { container } = render(<CopyToClipboard {...defaultProps} textToCopy="Text to copy with error" />);
+      const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+      wrapper.findCopyButton().click();
+      await waitFor(() =>
+        expect(wrapper.findStatusText()!.getElement().textContent).toBe('Failed to copy to clipboard')
+      );
+      // The error glyph is colored with the semantic error (red) token.
+      expect(container.querySelector(`.${styles['one-theme-trigger-error']}`)).not.toBeNull();
+    });
+
+    test('applies the one-theme-trigger motion class to the copy button', () => {
+      const { container } = render(<CopyToClipboard {...defaultProps} />);
+      expect(container.querySelector(`.${styles['one-theme-trigger']}`)).not.toBeNull();
+    });
+
+    test('auto-dismisses the popover after the 1500ms dwell', async () => {
+      jest.useFakeTimers();
+      try {
+        const { container } = render(<CopyToClipboard {...defaultProps} />);
+        const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+        await act(async () => {
+          wrapper.findCopyButton().click();
+          await Promise.resolve();
+        });
+        expect(wrapper.findStatusText()).not.toBe(null);
+
+        act(() => {
+          jest.advanceTimersByTime(1500);
+        });
+        expect(wrapper.findStatusText()).toBe(null);
+      } finally {
+        jest.useRealTimers();
+      }
+    });
   });
 });

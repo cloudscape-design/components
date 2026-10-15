@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import InternalButton from '../button/internal';
@@ -38,6 +38,16 @@ export default function InternalCopyToClipboard({
   const [statusText, setStatusText] = useState(copySuccessText);
   const isOneTheme = useOneTheme();
 
+  const COPY_RESULT_DWELL_MS = 1500;
+  const [showResult, setShowResult] = useState(false);
+  const resultTimerRef = useRef<ReturnType<typeof setTimeout>>();
+  const flashResult = () => {
+    setShowResult(true);
+    clearTimeout(resultTimerRef.current);
+    resultTimerRef.current = setTimeout(() => setShowResult(false), COPY_RESULT_DWELL_MS);
+  };
+  useEffect(() => () => clearTimeout(resultTimerRef.current), []);
+
   useEffect(() => {
     if (navigator.permissions) {
       navigator.permissions
@@ -60,6 +70,7 @@ export default function InternalCopyToClipboard({
       // The clipboard API is not available in insecure contexts.
       setStatus('error');
       setStatusText(copyErrorText);
+      flashResult();
       fireNonCancelableEvent(onCopyFailure, { text: textToCopy });
       return;
     }
@@ -69,11 +80,13 @@ export default function InternalCopyToClipboard({
       .then(() => {
         setStatus('success');
         setStatusText(copySuccessText);
+        flashResult();
         fireNonCancelableEvent(onCopySuccess, { text: textToCopy });
       })
       .catch(() => {
         setStatus('error');
         setStatusText(copyErrorText);
+        flashResult();
         fireNonCancelableEvent(onCopyFailure, { text: textToCopy });
       });
   };
@@ -88,10 +101,20 @@ export default function InternalCopyToClipboard({
 
   const isInline = variant === 'inline';
 
+  const resultIconName = status === 'error' ? 'status-negative' : 'status-positive';
+  const triggerIconName = isOneTheme && showResult ? resultIconName : 'copy';
+  const resultColorClass =
+    isOneTheme && showResult
+      ? status === 'error'
+        ? styles['one-theme-trigger-error']
+        : styles['one-theme-trigger-success']
+      : undefined;
+
   const button = (
     <InternalButton
       ariaLabel={copyButtonAriaLabel ?? copyButtonText}
-      iconName="copy"
+      iconName={triggerIconName}
+      className={clsx(isOneTheme && styles['one-theme-trigger'], resultColorClass)}
       variant={triggerVariant}
       wrapText={false}
       formAction="none"
@@ -112,10 +135,25 @@ export default function InternalCopyToClipboard({
       triggerType="custom"
       dismissButton={false}
       renderWithPortal={popoverRenderWithPortal}
+      {...(isOneTheme
+        ? {
+            __visible: showResult,
+            __onVisibleChange: ({ detail }: { detail: { visible: boolean } }) => {
+              if (!detail.visible) {
+                clearTimeout(resultTimerRef.current);
+                setShowResult(false);
+              }
+            },
+          }
+        : {})}
       content={
-        <InternalStatusIndicator type={status} __embedded={isOneTheme}>
-          {statusText}
-        </InternalStatusIndicator>
+        isOneTheme ? (
+          <span className={styles['popover-message']}>{statusText}</span>
+        ) : (
+          <InternalStatusIndicator type={status} __embedded={isOneTheme}>
+            {statusText}
+          </InternalStatusIndicator>
+        )
       }
       __onOpen={onClick}
     >
