@@ -12,7 +12,6 @@ import { FormFieldContext, useFormFieldContext } from '../../context/form-field-
 import { flattenChildren } from '../../utils/flatten-children';
 import { ControlGroupProps } from './interfaces';
 
-import buttonStyles from '../../../button/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
@@ -96,11 +95,7 @@ export default function ControlGroup({
       {controls}
       <div className={styles['action-slot']}>
         <InternalButton
-          className={clsx(
-            testUtilStyles['action-button'],
-            isInvalid && buttonStyles['variant-control-group-action-error'],
-            isWarning && buttonStyles['variant-control-group-action-warning']
-          )}
+          className={clsx(testUtilStyles['action-button'])}
           variant="control-group-action"
           formAction="none"
           iconName={actionButton.iconName}

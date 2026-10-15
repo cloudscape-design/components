@@ -211,22 +211,22 @@ $tokens: style-api.resolve($props, carrier);
     border-inline-style: solid;
     @include styles.grouped-control-base;
     @include styles.grouped-control-horizontal-last;
+    // The control owns the controls-to-button seam: the last control draws and
+    // validation-colors its inline-end border, so the button paints no inline-start
+    // border (width 0, neutral or colored) that would sit on top of it.
+    border-inline-start-width: 0;
     padding-block: awsui.$space-field-vertical;
     padding-inline: awsui.$space-xs;
     min-block-size: awsui.$size-vertical-input;
-
-    &-error {
-      border-inline-start-color: awsui.$color-text-status-error;
-    }
-    &-warning {
-      border-inline-start-color: awsui.$color-text-status-warning;
-    }
 
     @include focus-visible.when-visible {
       @include styles.form-focus-element(
         $border-color: $focus-border-color,
         $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
       );
+      // form-focus-element sets inline border style+color but not width, so re-assert
+      // the zeroed inline-start width so the seam edge stays absent on focus too.
+      border-inline-start-width: 0;
     }
   }
 

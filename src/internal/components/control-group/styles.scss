@@ -16,9 +16,11 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
 
 .action-slot {
   display: flex;
-  // Overlap the last control's inline-end border by one width so the control's
-  // seam and the button's edge coincide into a single boundary line.
-  margin-inline-start: $margin-overlap;
+  // Butt against the last control's inline-end border: the control owns the seam,
+  // and the button paints no inline-start border, so the slot sits flush with no
+  // overlap (margin 0 keeps total width unchanged with the control's edge as the
+  // single 1px seam).
+  margin-inline-start: 0;
 }
 
 .group-layout {
