@@ -70,8 +70,7 @@ export interface CopyToClipboardProps extends BaseComponentProps {
    * Provides a reason why the copy to clipboard button is disabled (only when `disabled` is `true`).
    * If provided, the copy to clipboard button becomes focusable.
    *
-   * Accepts formatted content. Keep it to text and inline formatting: the content is also used as the
-   * button's accessible description, and interactive elements inside it can't be reached.
+   * Do not place interactive elements like links or buttons.
    */
   disabledReason?: React.ReactNode;
 

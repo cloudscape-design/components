@@ -23,7 +23,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * - `text` (string) - description shown in the menu for this item. Mandatory for individual items, optional for categories.
    * - `lang` (string) - (Optional) The language of the item, provided as a BCP 47 language tag.
    * - `disabled` (boolean) - whether the item is disabled. Disabled items are not clickable, but they can be highlighted with the keyboard to make them accessible.
-   * - `disabledReason` (ReactNode) - (Optional) Displays text near the `text` property when item is disabled. Use to provide additional context. Accepts formatted content, but keep it to text and inline formatting: the content is also used as the item's accessible description, and interactive elements inside it can't be reached.
+   * - `disabledReason` (ReactNode) - (Optional) Displays text near the `text` property when item is disabled. Use to provide additional context. Do not place interactive elements like links or buttons.
    * - `description` (string) - additional data that will be passed to a `data-description` attribute. **Deprecated**, has no effect.
    * - `ariaLabel` (string) - (Optional) - ARIA label of the item element.
    * - `dataAttributes` (Record<string, string>) - (Optional) Custom data attributes for the item element. Attribute names are automatically prefixed with "data-". The "testid" key is reserved.
@@ -114,8 +114,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * Provides a reason why the button dropdown is disabled (only when `disabled` is `true`).
    * If provided, the disabled button becomes focusable.
    *
-   * Accepts formatted content. Keep it to text and inline formatting: the content is also used as the
-   * button's accessible description, and interactive elements inside it can't be reached.
+   * Do not place interactive elements like links or buttons.
    */
   disabledReason?: React.ReactNode;
   /**

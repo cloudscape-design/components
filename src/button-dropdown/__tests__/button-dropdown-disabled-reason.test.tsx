@@ -167,6 +167,46 @@ describe('Button Dropdown - Disabled Reason', () => {
     });
   });
 
+  describe('inline markup', () => {
+    beforeAll(() => {
+      (useMobile as jest.Mock).mockReturnValue(false);
+    });
+
+    afterAll(() => {
+      jest.resetAllMocks();
+    });
+
+    it('preserves markup in both the tooltip and the hidden description', () => {
+      const { wrapper } = renderOpenButtonDropdown({
+        items: [
+          {
+            id: 'markup',
+            text: 'Markup',
+            disabled: true,
+            disabledReason: (
+              <>
+                Requires <strong>write</strong> access to <code>my-bucket</code>.
+              </>
+            ),
+          },
+        ],
+      });
+      const menuItem = getMenuItemForId(wrapper, 'markup');
+      act(() => {
+        menuItem.focus();
+        jest.advanceTimersByTime(1000);
+      });
+
+      const tooltip = wrapper.findDisabledReason()!.getElement();
+      expect(tooltip).toContainHTML('<strong>write</strong>');
+      expect(tooltip).toContainHTML('<code>my-bucket</code>');
+
+      const description = getItemById(wrapper, 'markup').find('span[hidden]')!.getElement();
+      expect(description).toContainHTML('<strong>write</strong>');
+      expect(description).toContainHTML('<code>my-bucket</code>');
+    });
+  });
+
   it('does not attempt a state update after the component is unmounted', () => {
     const consoleError = jest.spyOn(console, 'error');
     const { wrapper, unmount } = renderOpenButtonDropdown(props);

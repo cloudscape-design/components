@@ -34,6 +34,8 @@ export interface DateRangePickerBaseProps {
   /**
    * Provides a reason why a particular date in the calendar is not enabled (only when `isDateEnabled` returns `false`).
    * If provided, the date becomes focusable.
+   *
+   * Do not place interactive elements like links or buttons.
    * @param date
    */
   dateDisabledReason?: DateRangePickerProps.DateDisabledReasonFunction;

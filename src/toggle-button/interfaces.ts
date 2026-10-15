@@ -65,8 +65,7 @@ export interface ToggleButtonProps extends BaseComponentProps, Omit<BaseButtonPr
    * If provided, the button becomes focusable.
    * Applicable only for the normal variant.
    *
-   * Accepts formatted content. Keep it to text and inline formatting: the content is also used as the
-   * button's accessible description, and interactive elements inside it can't be reached.
+   * Do not place interactive elements like links or buttons.
    */
   disabledReason?: React.ReactNode;
 

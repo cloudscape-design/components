@@ -18,7 +18,7 @@ export interface SegmentedControlProps extends BaseComponentProps {
    *
    * - `id` (string) - The ID of the segment.
    * - `disabled` [boolean] - (Optional) Determines whether the segment is disabled, which prevents the user from selecting it.
-   * - `disabledReason` (ReactNode) - (Optional) Displays tooltip near the segment when disabled. Use to provide additional context. Accepts formatted content, but keep it to text and inline formatting: the content is also used as the segment's accessible description, and interactive elements inside it can't be reached.
+   * - `disabledReason` (ReactNode) - (Optional) Displays tooltip near the segment when disabled. Use to provide additional context. Do not place interactive elements like links or buttons.
    * - `iconName` (string) - (Optional) Specifies the name of the icon, used with the [icon component](/components/icon/).
    * - `iconAlt` (string) - (Optional) Specifies alternate text for the icon when using `iconUrl`, or `iconName` without `text`.
    *            This is required when you use an icon without `text`.

@@ -39,7 +39,7 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * * `id` (string) - The unique identifier of the button, used as detail in `onItemClick` handler and to focus the button using `ref.focus(id)`.
    * * `text` (string) - The name shown as a tooltip for this button.
    * * `disabled` (optional, boolean) - The disabled state indication for this button.
-   * * `disabledReason` (optional, ReactNode) - Provides a reason why the button is disabled (only when `disabled` is `true`). If provided, the button becomes focusable. Accepts formatted content, but keep it to text and inline formatting: the content is also used as the button's accessible description, and interactive elements inside it can't be reached.
+   * * `disabledReason` (optional, ReactNode) - Provides a reason why the button is disabled (only when `disabled` is `true`). If provided, the button becomes focusable. Do not place interactive elements like links or buttons.
    * * `loading` (optional, boolean) - The loading state indication for this button.
    * * `loadingText` (optional, string) - The loading text announced to screen readers.
    * * `iconName` (optional, string) - Specifies the name of the icon, used with the [icon component](/components/icon/).
@@ -58,7 +58,7 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * * `pressed` (boolean) - The toggle button pressed state.
    * * `text` (string) - The name shown as a tooltip for this button.
    * * `disabled` (optional, boolean) - The disabled state indication for this button.
-   * * `disabledReason` (optional, ReactNode) - Provides a reason why the button is disabled (only when `disabled` is `true`). If provided, the button becomes focusable. Accepts formatted content, but keep it to text and inline formatting: the content is also used as the button's accessible description, and interactive elements inside it can't be reached.
+   * * `disabledReason` (optional, ReactNode) - Provides a reason why the button is disabled (only when `disabled` is `true`). If provided, the button becomes focusable. Do not place interactive elements like links or buttons.
    * * `loading` (optional, boolean) - The loading state indication for this button.
    * * `loadingText` (optional, string) - The loading text announced to screen readers.
    * * `iconName` (optional, string) - Specifies the name of the icon, used with the [icon component](/components/icon/).
@@ -82,7 +82,7 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * * `id` (string) - The unique identifier of the button, used as detail in `onItemClick`.
    * * `text` (string) - The name of the menu button shown as a tooltip.
    * * `disabled` (optional, boolean) - The disabled state indication for the menu button.
-   * * `disabledReason` (optional, ReactNode) - Provides a reason why the button is disabled (only when `disabled` is `true`). If provided, the button becomes focusable. Accepts formatted content, but keep it to text and inline formatting: the content is also used as the button's accessible description, and interactive elements inside it can't be reached.
+   * * `disabledReason` (optional, ReactNode) - Provides a reason why the button is disabled (only when `disabled` is `true`). If provided, the button becomes focusable. Do not place interactive elements like links or buttons.
    * * `loading` (optional, boolean) - The loading state indication for the menu button.
    * * `loadingText` (optional, string) - The loading text announced to screen readers.
    * * `iconName` (optional, string) - Specifies the name of the icon, used with the [icon component](/components/icon/). Defaults to `ellipsis`.
@@ -99,7 +99,7 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * * `copySuccessText` (string) - The message announced to screen readers and shown as a popover when the text is copied successfully.
    * * `copyErrorText` (string) - The message announced to screen readers and shown as a popover when the text fails to copy.
    * * `disabled` (optional, boolean) - The disabled state indication for this button.
-   * * `disabledReason` (optional, ReactNode) - Provides a reason why the button is disabled (only when `disabled` is `true`). If provided, the button becomes focusable. Accepts formatted content, but keep it to text and inline formatting: the content is also used as the button's accessible description, and interactive elements inside it can't be reached.
+   * * `disabledReason` (optional, ReactNode) - Provides a reason why the button is disabled (only when `disabled` is `true`). If provided, the button becomes focusable. Do not place interactive elements like links or buttons.
    *
    * ### group
    *
@@ -131,8 +131,20 @@ export interface ButtonGroupProps extends BaseComponentProps {
   style?: ButtonGroupProps.Style;
 }
 
-// The runtime plugin API cannot carry React nodes across the boundary, so node-typed properties are
-// either omitted or narrowed to a string.
+// The runtime plugin API cannot carry React nodes, so node-typed properties are omitted or narrowed
+// to a string at any depth.
+export interface DropdownItemRuntime extends Omit<ButtonDropdownProps.Item, 'disabledReason'> {
+  disabledReason?: string;
+}
+export interface DropdownCheckboxItemRuntime extends Omit<ButtonDropdownProps.CheckboxItem, 'disabledReason'> {
+  disabledReason?: string;
+}
+export interface DropdownItemGroupRuntime extends Omit<ButtonDropdownProps.ItemGroup, 'disabledReason' | 'items'> {
+  disabledReason?: string;
+  items: DropdownItemsRuntime;
+}
+export type DropdownItemOrGroupRuntime = DropdownItemRuntime | DropdownCheckboxItemRuntime | DropdownItemGroupRuntime;
+export type DropdownItemsRuntime = ReadonlyArray<DropdownItemOrGroupRuntime>;
 export interface IconButtonRuntime
   extends Omit<ButtonGroupProps.IconButton, 'iconSvg' | 'popoverFeedback' | 'disabledReason'> {
   iconSvg?: string;
@@ -147,14 +159,19 @@ export interface IconToggleButtonRuntime
   pressedIconSvg?: string;
   disabledReason?: string;
 }
-export interface MenuDropdownRuntime extends Omit<ButtonGroupProps.MenuDropdown, 'iconSvg' | 'disabledReason'> {
+export interface MenuDropdownRuntime
+  extends Omit<ButtonGroupProps.MenuDropdown, 'iconSvg' | 'disabledReason' | 'items'> {
   iconSvg?: string;
   disabledReason?: string;
+  items: DropdownItemsRuntime;
 }
 export interface IconCopyToClipboardRuntime extends Omit<ButtonGroupProps.IconCopyToClipboard, 'disabledReason'> {
   disabledReason?: string;
 }
-export type ItemOrGroupRuntime = ItemRuntime | ButtonGroupProps.Group;
+export interface GroupRuntime extends Omit<ButtonGroupProps.Group, 'items'> {
+  items: ReadonlyArray<ItemRuntime>;
+}
+export type ItemOrGroupRuntime = ItemRuntime | GroupRuntime;
 export type ItemRuntime =
   | IconButtonRuntime
   | IconToggleButtonRuntime
