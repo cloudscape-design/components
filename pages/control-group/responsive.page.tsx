@@ -30,9 +30,10 @@ function LongGroup({ withButton }: { withButton: boolean }) {
 }
 
 export default function ControlGroupResponsiveness() {
-  const { urlParams, setUrlParams } = useAppContext<'withButton' | 'containerWidth'>();
+  const { urlParams, setUrlParams } = useAppContext<'withButton' | 'containerWidth' | 'blockContainerWidth'>();
   const withButton = urlParams.withButton === true;
   const containerWidth = Number(urlParams.containerWidth) || 1200;
+  const blockContainerWidth = Number(urlParams.blockContainerWidth) || 1200;
 
   return (
     <SimplePage
@@ -56,10 +57,24 @@ export default function ControlGroupResponsiveness() {
               ]}
             />
           </FormField>
+          <FormField label="Block container width">
+            <RadioGroup
+              data-testid="width-radio-block"
+              value={String(blockContainerWidth)}
+              onChange={({ detail }) => setUrlParams({ blockContainerWidth: detail.value })}
+              items={[
+                { value: '300', label: '300px' },
+                { value: '600', label: '600px' },
+                { value: '800', label: '800px' },
+                { value: '1200', label: '1200px' },
+              ]}
+            />
+          </FormField>
         </SpaceBetween>
       }
     >
       <FocusTarget />
+      <Box variant="h3">In a flexbox</Box>
       <div
         data-testid="resizable-container"
         style={{
@@ -67,6 +82,9 @@ export default function ControlGroupResponsiveness() {
           inlineSize: containerWidth,
           overflow: 'hidden',
           resize: 'horizontal',
+          // Dashed outline makes the resizable boundary visible when dragging the handle.
+          border: '2px dashed #7d8998',
+          padding: 8,
         }}
       >
         <div
@@ -86,6 +104,30 @@ export default function ControlGroupResponsiveness() {
         This button should be focused after tabbing out of the last control{' '}
         <button data-testid="focus-after">focus after</button>
       </p>
+      <Box variant="h3">In a block container</Box>
+      <div
+        data-testid="resizable-container-block"
+        style={{
+          position: 'relative',
+          inlineSize: blockContainerWidth,
+          overflow: 'hidden',
+          resize: 'horizontal',
+          // Dashed outline makes the resizable boundary visible when dragging the handle.
+          border: '2px dashed #7d8998',
+          padding: 8,
+        }}
+      >
+        <div
+          data-testid="auto-block"
+          style={{
+            inlineSize: '100%',
+            overflow: 'hidden',
+          }}
+        >
+          <LongGroup withButton={withButton} />
+          <Box variant="p">Sibling content</Box>
+        </div>
+      </div>
     </SimplePage>
   );
 }

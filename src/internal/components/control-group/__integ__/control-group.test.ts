@@ -15,6 +15,16 @@ const group = createWrapper(wrapperSelector).findComponent(
 )!;
 const controls = group.findControls();
 
+// Second example: the control group lives directly inside a plain block container
+// (no flexbox), to prove the responsive logic also works in a block layout context.
+const blockWrapperSelector = '[data-testid="auto-block"]';
+
+const blockGroup = createWrapper(blockWrapperSelector).findComponent(
+  `.${ControlGroupWrapper.rootSelector}`,
+  ControlGroupWrapper
+)!;
+const blockControls = blockGroup.findControls();
+
 const expectedControlCount = 6;
 
 const firstControl = controls.get(1).findInput().findNativeInput().toSelector();
@@ -22,10 +32,10 @@ const secondControl = controls.get(2).findSelect().findTrigger().toSelector();
 const thirdControl = controls.get(3).findInput().findNativeInput().toSelector();
 
 class ControlGroupPage extends BasePageObject {
-  async getControlBoxes() {
+  async getControlBoxes(controlsCollection: typeof controls) {
     const boxes = [];
     for (let i = 1; i <= expectedControlCount; i++) {
-      boxes.push(await this.getBoundingBox(controls.get(i).toSelector()));
+      boxes.push(await this.getBoundingBox(controlsCollection.get(i).toSelector()));
     }
     return boxes;
   }
@@ -37,9 +47,16 @@ class ControlGroupPage extends BasePageObject {
     await this.pause(500);
   }
 
-  async expectRow() {
+  async selectWidthBlock(value: string) {
+    await this.click(
+      createWrapper().findRadioGroup('[data-testid="width-radio-block"]').findInputByValue(value).toSelector()
+    );
+    await this.pause(500);
+  }
+
+  async expectRow(controlsCollection: typeof controls) {
     await this.waitForAssertion(async () => {
-      const boxes = await this.getControlBoxes();
+      const boxes = await this.getControlBoxes(controlsCollection);
       expect(boxes).toHaveLength(expectedControlCount);
       for (const box of boxes) {
         expect(box.top).toEqual(boxes[0].top);
@@ -50,9 +67,9 @@ class ControlGroupPage extends BasePageObject {
     });
   }
 
-  async expectStacked() {
+  async expectStacked(controlsCollection: typeof controls) {
     await this.waitForAssertion(async () => {
-      const boxes = await this.getControlBoxes();
+      const boxes = await this.getControlBoxes(controlsCollection);
       expect(boxes).toHaveLength(expectedControlCount);
       // Every control is on its own row below the previous one (all-or-nothing stacking).
       for (let i = 1; i < boxes.length; i++) {
@@ -67,8 +84,11 @@ function setup(withButton: boolean, testFn: (page: ControlGroupPage) => Promise<
     const page = new ControlGroupPage(browser);
     // Keep the viewport large so only the container width constrains the control group.
     await page.setWindowSize({ width: 1600, height: 800 });
-    await browser.url(`#/control-group/responsive?containerWidth=1200${withButton ? '&withButton=true' : ''}`);
+    await browser.url(
+      `#/control-group/responsive?containerWidth=1200&blockContainerWidth=1200${withButton ? '&withButton=true' : ''}`
+    );
     await page.waitForVisible(wrapperSelector);
+    await page.waitForVisible(blockWrapperSelector);
     await testFn(page);
   });
 }
@@ -79,15 +99,28 @@ describe('Control Group responsiveness', () => {
       `Collapses and re-expands according to available width when \`direction="auto"\` ${withButton ? 'with' : 'without'} action button`,
       setup(withButton, async page => {
         await page.selectWidth('1200');
-        await page.expectRow();
+        await page.expectRow(controls);
         await page.selectWidth('300');
-        await page.expectStacked();
+        await page.expectStacked(controls);
         // Critical case: widening must re-expand it, not leave it stuck stacked.
         await page.selectWidth('1200');
-        await page.expectRow();
+        await page.expectRow(controls);
       })
     );
   });
+
+  test(
+    'Collapses and re-expands inside a plain block container (not a flexbox)',
+    setup(false, async page => {
+      await page.selectWidthBlock('1200');
+      await page.expectRow(blockControls);
+      await page.selectWidthBlock('300');
+      await page.expectStacked(blockControls);
+      // Critical case: widening must re-expand it, not leave it stuck stacked.
+      await page.selectWidthBlock('1200');
+      await page.expectRow(blockControls);
+    })
+  );
 
   test(
     'Measurement ghost does not add tab stops',
