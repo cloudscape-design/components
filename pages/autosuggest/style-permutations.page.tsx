@@ -78,6 +78,22 @@ const permutations = createPermutations<AutosuggestProps>([
     ],
     enteredTextLabel: [enteredTextLabel],
   },
+  {
+    value: ['', 'This is a test value'],
+    tokens: [[{ value: 'us-east-1' }, { value: 'eu-west-1' }]],
+    i18nStrings: [{ tokenDismissLabel: (value: string) => `Remove ${value}`, enteredTextLabel }],
+    disabled: [false, true],
+    readOnly: [false, true],
+    invalid: [false, true],
+    warning: [false, true],
+    style: [style1],
+    options: [
+      [
+        { value: 'option1', label: 'Option 1' },
+        { value: 'option2', label: 'Option 2' },
+      ],
+    ],
+  },
 ]);
 
 export default function AutosuggestStylePermutations() {

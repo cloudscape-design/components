@@ -9,6 +9,7 @@ import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import {
   autosuggest,
+  autosuggestTokens,
   DirectionSettings,
   input,
   multiselect,
@@ -44,6 +45,10 @@ const permutations = createPermutations<ControlGroupProps>([
         {select}
         {multiselect}
         {input}
+      </>,
+      <>
+        {select}
+        {autosuggestTokens}
       </>,
     ],
     actionButton: [
