@@ -34,6 +34,8 @@ const actionButtons: ReadonlyArray<ControlGroupProps['actionButton']> = [
   { iconName: 'remove', ariaLabel: 'Remove' },
 ];
 
+const labels = [undefined, 'Label'];
+
 const permutations = createPermutations<ValidationPermutation>([
   { children, errorText: ['This value is required'], direction: directions, actionButton: actionButtons },
   {
@@ -41,6 +43,7 @@ const permutations = createPermutations<ValidationPermutation>([
     warningText: ['Double-check this value'],
     direction: directions,
     actionButton: actionButtons,
+    inlineLabelText: labels,
   },
 ]);
 
