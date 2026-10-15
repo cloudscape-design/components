@@ -273,7 +273,9 @@ describe('Token Tooltip behavior', () => {
     fireEvent.mouseEnter(wrapper.getElement());
     expect(createWrapper().findTooltip()!.getElement()).toHaveTextContent('Trigger Very long label tag');
     fireEvent.mouseLeave(wrapper.getElement());
-    fireEvent.focus(wrapper.findLabel().getElement().querySelector('button')!);
+    fireEvent.focus(wrapper.getElement());
     expect(createWrapper().findTooltip()).not.toBeNull();
+    fireEvent.focus(wrapper.findLabel().getElement().querySelector('button')!);
+    expect(createWrapper().findTooltip()).toBeNull();
   });
 });

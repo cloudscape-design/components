@@ -165,9 +165,9 @@ function InternalToken({
         aria-labelledby={isPresentation || ariaLabel ? undefined : ariaLabelledbyId}
         aria-disabled={isPresentation ? undefined : !!disabled}
         role={role ?? 'group'}
-        onFocus={() => {
+        onFocus={event => {
           if (!isPresentation) {
-            setShowTooltip(true);
+            setShowTooltip(event.target === event.currentTarget);
           }
         }}
         onBlur={() => {
@@ -175,8 +175,12 @@ function InternalToken({
             setShowTooltip(false);
           }
         }}
-        onMouseEnter={() => {
-          if (!isPresentation) {
+        onMouseEnter={event => {
+          const activeElement = document.activeElement;
+          if (
+            !isPresentation &&
+            !(activeElement !== event.currentTarget && event.currentTarget.contains(activeElement))
+          ) {
             setShowTooltip(true);
           }
         }}
