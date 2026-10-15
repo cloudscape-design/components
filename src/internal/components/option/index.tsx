@@ -32,8 +32,10 @@ const Option = ({
   highlightedOption = false,
   selectedOption = false,
   disableTitleTooltip = false,
+  singleLineLabelContent = false,
   labelContainerRef,
   labelRef,
+  labelTagRef,
   labelId,
   customContent,
   ...restProps
@@ -93,7 +95,7 @@ const Option = ({
     >
       {icon}
       <SpanOrDivTag className={styles.content}>
-        <SpanOrDivTag className={styles['label-content']}>
+        <SpanOrDivTag className={clsx(styles['label-content'], singleLineLabelContent && styles['single-line'])}>
           {option.labelContent ? (
             <SpanOrDivTag className={clsx(styles.label, analyticsSelectors.label)}>{option.labelContent}</SpanOrDivTag>
           ) : (
@@ -107,7 +109,12 @@ const Option = ({
               triggerVariant={triggerVariant}
             />
           )}
-          <LabelTag labelTag={option.labelTag} highlightText={highlightText} triggerVariant={triggerVariant} />
+          <LabelTag
+            labelTag={option.labelTag}
+            highlightText={highlightText}
+            triggerVariant={triggerVariant}
+            labelTagRef={labelTagRef}
+          />
         </SpanOrDivTag>
         <Description
           description={option.description}

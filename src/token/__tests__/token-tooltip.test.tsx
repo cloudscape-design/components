@@ -233,4 +233,47 @@ describe('Token Tooltip behavior', () => {
     // Tooltip should be hidden
     expect(createWrapper().findTooltip()).toBeNull();
   });
+
+  const mockLabelTagOverflow = (labelTagElement: HTMLElement) => {
+    Object.defineProperty(labelTagElement, 'scrollWidth', { configurable: true, value: 300 });
+    Object.defineProperty(labelTagElement, 'clientWidth', { configurable: true, value: 100 });
+  };
+
+  test('shows tooltip when only the label tag overflows', () => {
+    const { container } = render(
+      <Token variant="inline" label="Short" labelTag="Very long label tag" tooltipContent="Short Very long label tag" />
+    );
+
+    const wrapper = createWrapper(container).findToken()!;
+    const labelElement = wrapper.findLabel().getElement();
+    mockEllipsisActive(labelElement, false);
+    mockLabelTagOverflow(wrapper.findLabelTag()!.getElement());
+    triggerResizeObserver(labelElement);
+
+    expect(wrapper.getElement()).toHaveAttribute('tabIndex', '0');
+    fireEvent.mouseEnter(wrapper.getElement());
+    expect(createWrapper().findTooltip()!.getElement()).toHaveTextContent('Short Very long label tag');
+  });
+
+  test('makes the root focusable and shows tooltip when the label tag overflows and the label is a node', () => {
+    const { container } = render(
+      <Token
+        variant="inline"
+        label={<button>Trigger</button>}
+        labelTag="Very long label tag"
+        tooltipContent="Trigger Very long label tag"
+      />
+    );
+
+    const wrapper = createWrapper(container).findToken()!;
+    mockLabelTagOverflow(wrapper.findLabelTag()!.getElement());
+    triggerResizeObserver(wrapper.findLabel().getElement());
+
+    expect(wrapper.getElement()).toHaveAttribute('tabIndex', '0');
+    fireEvent.mouseEnter(wrapper.getElement());
+    expect(createWrapper().findTooltip()!.getElement()).toHaveTextContent('Trigger Very long label tag');
+    fireEvent.mouseLeave(wrapper.getElement());
+    fireEvent.focus(wrapper.findLabel().getElement().querySelector('button')!);
+    expect(createWrapper().findTooltip()).not.toBeNull();
+  });
 });

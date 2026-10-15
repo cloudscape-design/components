@@ -19,7 +19,11 @@ export interface TokenProps extends BaseComponentProps {
    */
   ariaLabel?: string;
 
-  /** A label tag that provides additional guidance, shown next to the label. */
+  /** A label tag that provides additional guidance, shown next to the label.
+   *
+   * When `variant="inline"`, a long label tag is truncated. If `label` is plain text, include the
+   * label tag in `tooltipContent`. If `label` is interactive, repeat the label tag in the interactive content.
+   */
   labelTag?: string;
 
   /** Further information about the token that appears below the label. */
@@ -39,7 +43,7 @@ export interface TokenProps extends BaseComponentProps {
   /**
    * Specifies the token's visual style and functionality.
    *
-   * For `inline` only label, icon and dismiss button are displayed.
+   * When set to `inline`, only label, label tag, icon and dismiss button are displayed. Description and tags are not.
    *
    * Defaults to `normal` if not specified.
    */

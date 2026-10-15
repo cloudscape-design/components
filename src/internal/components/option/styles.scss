@@ -69,6 +69,23 @@
   }
 }
 
+.label-content.single-line {
+  flex-wrap: nowrap;
+
+  > .label {
+    flex: 0 1 auto;
+    min-inline-size: 0;
+  }
+
+  > .label-tag {
+    flex: 0 0 auto;
+    max-inline-size: 20ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
 .tags,
 .description {
   @include styles.font-body-s;
