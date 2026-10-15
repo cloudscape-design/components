@@ -162,6 +162,18 @@ describe('Token', () => {
     });
   });
 
+  describe('Label tag', () => {
+    test('renders label tag for normal variant', () => {
+      const wrapper = renderToken({ label: 'Test token', labelTag: '17%' });
+      expect(wrapper.findLabelTag()!.getElement()).toHaveTextContent('17%');
+    });
+
+    test('renders label tag for inline variant', () => {
+      const wrapper = renderToken({ label: 'Test token', variant: 'inline', labelTag: '17%' });
+      expect(wrapper.findLabelTag()!.getElement()).toHaveTextContent('17%');
+    });
+  });
+
   describe('One theme', () => {
     beforeEach(() => {
       document.body.classList.add('awsui-one-theme');
