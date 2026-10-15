@@ -41,9 +41,9 @@ export default function ControlGroup({
   const rootClassnames = [styles.root, baseProps.className, testUtilStyles.root];
 
   const renderControlSlots = (isGhost = false) => {
-    // The ghost always measures a single horizontal row, so its slots must use the horizontal
-    // seam classes regardless of the resolved direction.
-    const slotDirection: GroupedControlDirection = isGhost ? 'horizontal' : resolvedDirection;
+    const slotDirection: GroupedControlDirection = isGhost
+      ? 'horizontal' // The ghost always uses horizontal mode for measuring
+      : resolvedDirection;
     return flattenedChildren.map((child, index) => {
       const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
       const position: GroupedControlPosition =
@@ -52,7 +52,7 @@ export default function ControlGroup({
         <div
           key={key !== null && key !== undefined ? String(key) : index}
           className={clsx(
-            // Only on real controls, not the ghost's copies, so test utils exclude the ghost.
+            // Make sure that test utils exclude the ghost
             !isGhost && testUtilStyles.control,
             styles.control,
             styles[`control-${position}-${slotDirection}`]
