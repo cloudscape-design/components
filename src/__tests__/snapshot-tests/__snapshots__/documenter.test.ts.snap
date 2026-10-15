@@ -33935,7 +33935,10 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
-      "description": "A label tag that provides additional guidance, shown next to the label.",
+      "description": "A label tag that provides additional guidance, shown next to the label.
+
+When \`variant="inline"\`, a long label tag is truncated. If \`label\` is plain text, include the
+label tag in \`tooltipContent\`. If \`label\` is interactive, repeat the label tag in the interactive content.",
       "name": "labelTag",
       "optional": true,
       "type": "string",
