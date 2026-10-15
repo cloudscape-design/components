@@ -16,8 +16,6 @@ function findControlGroup(container: HTMLElement) {
 }
 
 describe('Input in control group', () => {
-  // findControls() returns only the real control slot (not the measurement ghost's copy),
-  // so the probe rendered in the input's prefix/suffix resolves unambiguously.
   test('resets the context for prefix content', () => {
     const { container } = render(
       <ControlGroup>

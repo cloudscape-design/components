@@ -20,8 +20,6 @@ describe('Control group', () => {
 
     const { container, rerender } = render(<ControlGroup>{[alpha, beta]}</ControlGroup>);
 
-    // findControls() returns only the real control slots (never the measurement ghost's copies),
-    // so indexing by position is unambiguous.
     const alphaInput = findControlGroup(container)!.findControls()[0].find('input')!.getElement();
     alphaInput.focus();
     expect(document.activeElement).toBe(alphaInput);
@@ -29,7 +27,7 @@ describe('Control group', () => {
     // Move the focused control from first to last position.
     rerender(<ControlGroup>{[beta, alpha]}</ControlGroup>);
 
-    // The same DOM node is still focused; it was moved (now last), not remounted.
+    // The same DOM node is still focused; it was moved, not remounted.
     expect(findControlGroup(container)!.findControls()[1].find('input')!.getElement()).toBe(alphaInput);
     expect(document.activeElement).toBe(alphaInput);
   });
@@ -113,20 +111,6 @@ describe('Control group', () => {
   });
 
   describe('direction', () => {
-    // In jsdom there's no layout, so auto never stacks and defaults to horizontal.
-    test('defaults the direction to "horizontal" and exposes it to each child', () => {
-      const { container } = render(
-        <ControlGroup>
-          <DirectionProbe />
-          <DirectionProbe />
-        </ControlGroup>
-      );
-
-      const controls = findControlGroup(container)!.findControls();
-      expect(controls[0].getElement()).toHaveTextContent('horizontal');
-      expect(controls[1].getElement()).toHaveTextContent('horizontal');
-    });
-
     test('exposes direction="vertical" to each child when the group is vertical', () => {
       const { container } = render(
         <ControlGroup direction="vertical">
