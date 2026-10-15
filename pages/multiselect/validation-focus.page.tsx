@@ -17,7 +17,7 @@ const options = [
 export default function MultiselectValidationFocusPage() {
   return (
     <SimplePage
-      title="Standalone Multiselect validation focus"
+      title="Multiselect validation focus"
       screenshotArea={{ disableAnimations: true }}
       settings={<FocusTarget />}
     >
