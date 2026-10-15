@@ -7,10 +7,13 @@ import DatePickerWrapper from '../../../../lib/components/test-utils/selectors/d
 import DropdownWrapper from '../../../../lib/components/test-utils/selectors/internal/dropdown';
 
 import styles from '../../../../lib/components/date-picker/styles.selectors.js';
+import inputStyles from '../../../../lib/components/input/styles.selectors.js';
 
 export default class DatePickerPage extends BasePageObject {
   public datePickerWrapper: DatePickerWrapper;
   public datePickerInput: string;
+  // The field box that paints the border; the native input sits inside it and is border-width smaller on each side.
+  public datePickerField: string;
   public sourceInput: string;
   private readonly expandToViewport: boolean;
 
@@ -22,6 +25,7 @@ export default class DatePickerPage extends BasePageObject {
     super(browser);
     this.datePickerWrapper = new DatePickerWrapper(datepickerId);
     this.datePickerInput = this.datePickerWrapper.findNativeInput().toSelector();
+    this.datePickerField = this.datePickerWrapper.find(`.${inputStyles['input-field']}`).toSelector();
     this.sourceInput = createWrapper().findInput().findNativeInput().toSelector();
     this.expandToViewport = expandToViewport;
   }
@@ -42,7 +46,7 @@ export default class DatePickerPage extends BasePageObject {
   }
 
   async getInputBoundingBox() {
-    const boundingBox = await this.getBoundingBox(this.datePickerInput);
+    const boundingBox = await this.getBoundingBox(this.datePickerField);
     return boundingBox;
   }
 
