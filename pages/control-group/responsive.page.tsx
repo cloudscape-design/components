@@ -3,7 +3,6 @@
 import React from 'react';
 
 import Box from '~components/box';
-import Button from '~components/button';
 import Checkbox from '~components/checkbox';
 import Input from '~components/input';
 import ControlGroup from '~components/internal/components/control-group';
@@ -55,7 +54,10 @@ export default function ControlGroupResponsiveness() {
           <Box variant="p">Sibling content</Box>
         </SpaceBetween>
       </div>
-      <Button data-testid="focus-after">Focus after</Button>
+      <p>
+        This button should be focused after tabbing out of the last control{' '}
+        <button data-testid="focus-after">focus after</button>
+      </p>
     </SimplePage>
   );
 }
