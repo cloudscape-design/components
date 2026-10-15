@@ -6,7 +6,8 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../../../lib/components/test-utils/selectors';
 import ControlGroupWrapper from '../../../../../lib/components/test-utils/selectors/internal/control-group';
 
-const wrapperSelector = '[data-testid="auto-spacebetween"]';
+// One shared anchor drives every wrap mode, so a single selector set resolves the group.
+const wrapperSelector = '[data-testid="control-group-wrapper"]';
 const resizableContainerSelector = '[data-testid="resizable-container"]';
 
 const group = createWrapper(wrapperSelector).findComponent(
@@ -14,16 +15,6 @@ const group = createWrapper(wrapperSelector).findComponent(
   ControlGroupWrapper
 )!;
 const controls = group.findControls();
-
-// Second example: the control group lives directly inside a plain block container
-// (no flexbox), to prove the responsive logic also works in a block layout context.
-const blockWrapperSelector = '[data-testid="auto-block"]';
-
-const blockGroup = createWrapper(blockWrapperSelector).findComponent(
-  `.${ControlGroupWrapper.rootSelector}`,
-  ControlGroupWrapper
-)!;
-const blockControls = blockGroup.findControls();
 
 const expectedControlCount = 6;
 
@@ -43,13 +34,6 @@ class ControlGroupPage extends BasePageObject {
   async selectWidth(value: string) {
     await this.click(
       createWrapper().findRadioGroup('[data-testid="width-radio"]').findInputByValue(value).toSelector()
-    );
-    await this.pause(500);
-  }
-
-  async selectWidthBlock(value: string) {
-    await this.click(
-      createWrapper().findRadioGroup('[data-testid="width-radio-block"]').findInputByValue(value).toSelector()
     );
     await this.pause(500);
   }
@@ -79,25 +63,36 @@ class ControlGroupPage extends BasePageObject {
   }
 }
 
-function setup(withButton: boolean, testFn: (page: ControlGroupPage) => Promise<void>) {
+// Container-constrained modes (flex / block): a large window keeps the resizable
+// container the only width constraint; the width radio drives the container width.
+function setup(wrapMode: 'flex' | 'block', withButton: boolean, testFn: (page: ControlGroupPage) => Promise<void>) {
   return useBrowser(async browser => {
     const page = new ControlGroupPage(browser);
-    // Keep the viewport large so only the container width constrains the control group.
     await page.setWindowSize({ width: 1600, height: 800 });
     await browser.url(
-      `#/control-group/responsive?containerWidth=1200&blockContainerWidth=1200${withButton ? '&withButton=true' : ''}`
+      `#/control-group/responsive?wrapMode=${wrapMode}&containerWidth=1200${withButton ? '&withButton=true' : ''}`
     );
     await page.waitForVisible(wrapperSelector);
-    await page.waitForVisible(blockWrapperSelector);
+    await testFn(page);
+  });
+}
+
+// Window-constrained mode (none): there is no width-constraining wrapper, so the
+// group resolves against the viewport; the window size drives the available width.
+function setupWindow(testFn: (page: ControlGroupPage) => Promise<void>) {
+  return useBrowser(async browser => {
+    const page = new ControlGroupPage(browser);
+    await browser.url('#/control-group/responsive?wrapMode=none');
+    await page.waitForVisible(wrapperSelector);
     await testFn(page);
   });
 }
 
 describe('Control Group responsiveness', () => {
-  [false, true].forEach(withButton => {
+  (['flex', 'block'] as const).forEach(mode => {
     test(
-      `Collapses and re-expands according to available width when \`direction="auto"\` ${withButton ? 'with' : 'without'} action button`,
-      setup(withButton, async page => {
+      `Collapses and re-expands according to the ${mode} container width when \`direction="auto"\``,
+      setup(mode, false, async page => {
         await page.selectWidth('1200');
         await page.expectRow(controls);
         await page.selectWidth('300');
@@ -110,21 +105,23 @@ describe('Control Group responsiveness', () => {
   });
 
   test(
-    'Collapses and re-expands inside a plain block container (not a flexbox)',
-    setup(false, async page => {
-      await page.selectWidthBlock('1200');
-      await page.expectRow(blockControls);
-      await page.selectWidthBlock('300');
-      await page.expectStacked(blockControls);
+    'Collapses and re-expands according to the window width when constrained only by the window',
+    setupWindow(async page => {
+      await page.setWindowSize({ width: 1600, height: 800 });
+      await page.expectRow(controls);
+      // Headless Chrome will not shrink below ~500px wide; the 6-control single-row
+      // width exceeds this, so a narrow window forces stacking.
+      await page.setWindowSize({ width: 500, height: 800 });
+      await page.expectStacked(controls);
       // Critical case: widening must re-expand it, not leave it stuck stacked.
-      await page.selectWidthBlock('1200');
-      await page.expectRow(blockControls);
+      await page.setWindowSize({ width: 1600, height: 800 });
+      await page.expectRow(controls);
     })
   );
 
   test(
     'Measurement ghost does not add tab stops',
-    setup(false, async page => {
+    setup('flex', false, async page => {
       await page.selectWidth('1200');
       await page.click('#focus-target');
       await expect(page.isFocused('#focus-target')).resolves.toBe(true);
@@ -147,7 +144,7 @@ describe('Control Group responsiveness', () => {
 
   test(
     'Controls compress rather than overflow when an action button is present',
-    setup(true, async page => {
+    setup('flex', true, async page => {
       await page.selectWidth('300');
       // The group fits its clipping container: the action button stays within it.
       await page.waitForAssertion(async () => {
