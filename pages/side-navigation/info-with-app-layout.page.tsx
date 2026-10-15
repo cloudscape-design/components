@@ -157,6 +157,11 @@ export default function SideNavigationInfoPage() {
             { id: 'state', header: 'State', cell: () => null },
           ]}
           selectionType="multi"
+          ariaLabels={{
+            selectionGroupLabel: 'Transit gateway selection',
+            allItemsSelectionLabel: () => 'Select all transit gateways',
+            itemSelectionLabel: () => 'Select transit gateway',
+          }}
           header={
             <Header
               variant="awsui-h1-sticky"
@@ -179,7 +184,17 @@ export default function SideNavigationInfoPage() {
               filteringAriaLabel="Find transit gateway"
             />
           }
-          pagination={<Pagination currentPageIndex={1} pagesCount={1} />}
+          pagination={
+            <Pagination
+              currentPageIndex={1}
+              pagesCount={1}
+              ariaLabels={{
+                nextPageLabel: 'Next page',
+                previousPageLabel: 'Previous page',
+                pageLabel: pageNumber => `Page ${pageNumber}`,
+              }}
+            />
+          }
           empty={
             <Box textAlign="center" color="inherit">
               <b>No transit gateways</b>
