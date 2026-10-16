@@ -4,13 +4,7 @@
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import {
-  isThemeActive,
-  Theme,
-  useResizeObserver,
-  useUniqueId,
-  warnOnce,
-} from '@cloudscape-design/component-toolkit/internal';
+import { isThemeActive, Theme, useResizeObserver, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
@@ -78,6 +72,7 @@ function InternalToken({
   const tokenRootStyleProps = getTokenRootStyles(restProps.style);
   const labelContainerRef = useRef<HTMLSpanElement>(null);
   const labelRef = useRef<HTMLSpanElement>(null);
+  const labelTagRef = useRef<HTMLSpanElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
   const [isEllipsisActive, setIsEllipsisActive] = useState(false);
   const isInline = variant === 'inline';
@@ -90,17 +85,22 @@ function InternalToken({
   const isLabelOverflowing = () => {
     const labelContent = labelRef.current;
     const labelContainer = labelContainerRef.current;
+    return !!labelContent && !!labelContainer && labelContent.offsetWidth > labelContainer.offsetWidth;
+  };
 
-    if (labelContent && labelContainer) {
-      return labelContent.offsetWidth > labelContainer.offsetWidth;
+  const isLabelTagOverflowing = () => {
+    const labelTagElement = labelTagRef.current;
+    return !!labelTagElement && labelTagElement.scrollWidth > labelTagElement.clientWidth;
+  };
+
+  const updateEllipsis = () => {
+    if (isInline) {
+      setIsEllipsisActive(isLabelOverflowing() || isLabelTagOverflowing());
     }
   };
 
-  useResizeObserver(labelContainerRef, () => {
-    if (isInline) {
-      setIsEllipsisActive(isLabelOverflowing() ?? false);
-    }
-  });
+  useResizeObserver(labelContainerRef, updateEllipsis);
+  useResizeObserver(labelTagRef, updateEllipsis);
 
   const sizedIcon = (iconNode: React.ReactNode) => {
     const isIconComponent =
@@ -117,13 +117,10 @@ function InternalToken({
     const labelObject = isLabelStringOrNumber ? { label: String(label) } : { labelContent: label };
 
     if (isInline) {
-      if (!isLabelStringOrNumber) {
-        warnOnce('Label', `Only plain text (strings or numbers) are supported when variant="inline".`);
-      }
-
       return {
         ...labelObject,
         disabled,
+        labelTag,
         __customIcon: icon && <span className={clsx(styles.icon, styles['icon-inline'])}>{sizedIcon(icon)}</span>,
       };
     } else {
@@ -158,9 +155,9 @@ function InternalToken({
         aria-labelledby={isPresentation || ariaLabel ? undefined : ariaLabelledbyId}
         aria-disabled={isPresentation ? undefined : !!disabled}
         role={role ?? 'group'}
-        onFocus={() => {
+        onFocus={event => {
           if (!isPresentation) {
-            setShowTooltip(true);
+            setShowTooltip(event.target === event.currentTarget);
           }
         }}
         onBlur={() => {
@@ -168,8 +165,12 @@ function InternalToken({
             setShowTooltip(false);
           }
         }}
-        onMouseEnter={() => {
-          if (!isPresentation) {
+        onMouseEnter={event => {
+          const activeElement = document.activeElement;
+          if (
+            !isPresentation &&
+            !(activeElement !== event.currentTarget && event.currentTarget.contains(activeElement))
+          ) {
             setShowTooltip(true);
           }
         }}
@@ -192,12 +193,14 @@ function InternalToken({
           style={tokenRootStyleProps}
         >
           <Option
-            className={clsx(isInline && styles['token-option-inline'])}
+            className={clsx(isInline && onDismiss && styles['token-option-inline-dismissible'])}
             triggerVariant={isInline}
+            singleLineLabelContent={isInline}
             option={buildOptionDefinition()}
             disableTitleTooltip={!!tooltipContent}
             labelContainerRef={labelContainerRef}
             labelRef={labelRef}
+            labelTagRef={labelTagRef}
             labelId={ariaLabelledbyId}
             customContent={__customContent}
           />
@@ -214,7 +217,7 @@ function InternalToken({
         {!!tooltipContent && isInline && isEllipsisActive && showTooltip && (
           <Tooltip
             data-testid="token-tooltip"
-            getTrack={() => labelContainerRef.current}
+            getTrack={() => labelContainerRef.current ?? labelTagRef.current?.parentElement ?? null}
             content={
               <LiveRegion>
                 <span data-testid="tooltip-live-region-content">{tooltipContent}</span>

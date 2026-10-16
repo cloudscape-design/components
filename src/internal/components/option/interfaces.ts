@@ -25,8 +25,10 @@ export interface OptionProps extends BaseComponentProps {
   selectedOption?: boolean;
   isGroupOption?: boolean;
   disableTitleTooltip?: boolean;
+  singleLineLabelContent?: boolean;
   labelContainerRef?: React.RefObject<HTMLSpanElement>;
   labelRef?: React.RefObject<HTMLSpanElement>;
+  labelTagRef?: React.RefObject<HTMLSpanElement>;
   labelId?: string;
   customContent?: ReactNode;
 }

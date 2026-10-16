@@ -162,6 +162,18 @@ describe('Token', () => {
     });
   });
 
+  describe('Label tag', () => {
+    test('renders label tag for normal variant', () => {
+      const wrapper = renderToken({ label: 'Test token', labelTag: '17%' });
+      expect(wrapper.findLabelTag()!.getElement()).toHaveTextContent('17%');
+    });
+
+    test('renders label tag for inline variant', () => {
+      const wrapper = renderToken({ label: 'Test token', variant: 'inline', labelTag: '17%' });
+      expect(wrapper.findLabelTag()!.getElement()).toHaveTextContent('17%');
+    });
+  });
+
   describe('One theme', () => {
     beforeEach(() => {
       document.body.classList.add('awsui-one-theme');
@@ -180,42 +192,6 @@ describe('Token', () => {
       const iconElement = screen.getByTestId('one-theme-inline-icon');
       expect(iconElement).toHaveClass(iconStyles['size-x-small']);
       expect(iconElement).not.toHaveClass(iconStyles['size-normal']);
-    });
-  });
-
-  describe('Error handling for inline variants', () => {
-    test('React elements trigger a dev warning', () => {
-      // Mock console.warn to capture the warning
-      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-
-      // Positive case: React element with inline variant should trigger warning
-      renderToken({
-        variant: 'inline',
-        label: <span data-testid="react-element">React element</span>,
-      });
-
-      expect(consoleSpy).toHaveBeenCalledWith(
-        expect.stringContaining(
-          '[AwsUi] [Label] Only plain text (strings or numbers) are supported when variant="inline"'
-        )
-      );
-
-      consoleSpy.mockRestore();
-    });
-
-    test('strings do not throw a dev warning', () => {
-      // Mock console.warn to capture any warnings
-      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-
-      // Negative case: string with inline variant should not trigger warning
-      renderToken({
-        variant: 'inline',
-        label: 'String label',
-      });
-
-      expect(consoleSpy).not.toHaveBeenCalled();
-
-      consoleSpy.mockRestore();
     });
   });
 

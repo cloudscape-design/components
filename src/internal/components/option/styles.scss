@@ -7,6 +7,7 @@
 @use '../../styles/tokens' as awsui;
 @use './constants' as constants;
 @use '../../generated/custom-css-properties/index' as custom-props;
+@use '../../../token/constants' as token-constants;
 
 .option {
   @include styles.styles-reset;
@@ -66,6 +67,28 @@
 
   &:empty {
     display: none;
+  }
+}
+
+.option.single-line {
+  max-block-size: token-constants.$token-max-height-inline;
+}
+
+.label-content.single-line {
+  flex-wrap: nowrap;
+
+  > .label {
+    flex: 0 1 auto;
+    min-inline-size: 0;
+  }
+
+  > .label-tag {
+    // huge number to ensure tag shrinks before label
+    flex: 0 100000 auto;
+    min-inline-size: 4ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 
