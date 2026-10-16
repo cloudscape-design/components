@@ -132,19 +132,7 @@ export interface ButtonGroupProps extends BaseComponentProps {
 }
 
 // The runtime plugin API cannot carry React nodes, so node-typed properties are omitted or narrowed
-// to a string at any depth.
-export interface DropdownItemRuntime extends Omit<ButtonDropdownProps.Item, 'disabledReason'> {
-  disabledReason?: string;
-}
-export interface DropdownCheckboxItemRuntime extends Omit<ButtonDropdownProps.CheckboxItem, 'disabledReason'> {
-  disabledReason?: string;
-}
-export interface DropdownItemGroupRuntime extends Omit<ButtonDropdownProps.ItemGroup, 'disabledReason' | 'items'> {
-  disabledReason?: string;
-  items: DropdownItemsRuntime;
-}
-export type DropdownItemOrGroupRuntime = DropdownItemRuntime | DropdownCheckboxItemRuntime | DropdownItemGroupRuntime;
-export type DropdownItemsRuntime = ReadonlyArray<DropdownItemOrGroupRuntime>;
+// to a string.
 export interface IconButtonRuntime
   extends Omit<ButtonGroupProps.IconButton, 'iconSvg' | 'popoverFeedback' | 'disabledReason'> {
   iconSvg?: string;
@@ -159,11 +147,9 @@ export interface IconToggleButtonRuntime
   pressedIconSvg?: string;
   disabledReason?: string;
 }
-export interface MenuDropdownRuntime
-  extends Omit<ButtonGroupProps.MenuDropdown, 'iconSvg' | 'disabledReason' | 'items'> {
+export interface MenuDropdownRuntime extends Omit<ButtonGroupProps.MenuDropdown, 'iconSvg' | 'disabledReason'> {
   iconSvg?: string;
   disabledReason?: string;
-  items: DropdownItemsRuntime;
 }
 export interface IconCopyToClipboardRuntime extends Omit<ButtonGroupProps.IconCopyToClipboard, 'disabledReason'> {
   disabledReason?: string;
