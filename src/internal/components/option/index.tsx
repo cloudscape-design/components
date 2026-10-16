@@ -71,6 +71,7 @@ const Option = ({
     disabled && styles.disabled,
     isGroupOption && styles.parent,
     highlightedOption && styles.highlighted,
+    singleLineLabelContent && styles['single-line'],
     baseProps.className
   );
 
