@@ -84,13 +84,13 @@ export default function ControlGroup({
       </div>
     ) : null;
 
-  // A single render path for both the real row and the ghost copy, so the ghost measures the whole
-  // row (controls + action button, including the overlap seam between them) as one unit. The ghost
-  // copy carries no role, no aria-labelledby, no base props, and no test-util classes.
-  const renderRow = (isGhost: boolean) => {
+  // A single render path for both the real group layout and the ghost copy, so the ghost measures
+  // the whole group (controls + action button, including the overlap seam between them) as one unit.
+  // The ghost copy carries no role, no aria-labelledby, no base props, and no test-util classes.
+  const renderGroupLayout = (isGhost: boolean) => {
     const slotDirection: GroupedControlDirection = isGhost ? 'horizontal' : resolvedDirection;
     return (
-      <div className={clsx(styles.row, styles[`row-${slotDirection}`])}>
+      <div className={clsx(styles['group-layout'], styles[`group-layout-${slotDirection}`])}>
         <div
           {...(isGhost ? {} : inlineLabelText ? { role: 'group', 'aria-labelledby': labelId } : { role: 'group' })}
           className={clsx(styles.controls, styles[`controls-${slotDirection}`])}
@@ -102,20 +102,20 @@ export default function ControlGroup({
     );
   };
 
-  const rowWrapper = (
+  const groupLayoutWrapper = (
     <div
       {...(inlineLabelText ? {} : baseProps)}
       ref={rootRef}
-      className={clsx(styles['row-wrapper'], !inlineLabelText && rootClassnames)}
+      className={clsx(styles['group-layout-wrapper'], !inlineLabelText && rootClassnames)}
     >
-      {renderRow(false)}
+      {renderGroupLayout(false)}
 
       {direction === 'auto' && (
         <>
           <div ref={sensorRef} className={styles.sensor} aria-hidden="true" />
           <div className={styles['ghost-wrapper']}>
             <div ref={ghostRef} className={styles.ghost} aria-hidden="true">
-              {renderRow(true)}
+              {renderGroupLayout(true)}
             </div>
           </div>
         </>
@@ -129,10 +129,10 @@ export default function ControlGroup({
         <label id={labelId} className={clsx(styles['inline-label'], testUtilStyles['inline-label'])}>
           {inlineLabelText}
         </label>
-        <div className={styles['inline-label-trigger-wrapper']}>{rowWrapper}</div>
+        <div className={styles['inline-label-trigger-wrapper']}>{groupLayoutWrapper}</div>
       </div>
     );
   }
 
-  return rowWrapper;
+  return groupLayoutWrapper;
 }
