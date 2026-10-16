@@ -10,6 +10,7 @@ import { getBaseProps } from '../../base-component';
 import { GroupedControlContext, GroupedControlPosition } from '../../context/control-group-context';
 import { FormFieldContext, useFormFieldContext } from '../../context/form-field-context';
 import { flattenChildren } from '../../utils/flatten-children';
+import { joinStrings } from '../../utils/strings/join-strings';
 import { ControlGroupProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -31,6 +32,12 @@ export default function ControlGroup({
   const isInvalid = !!formFieldContext.invalid;
   const isWarning = !!formFieldContext.warning && !isInvalid;
 
+  // The parent FormField's validation (describedby/invalid) and label associate with the group as a
+  // unit, not the inner controls (whose FormField context is reset below). Merge FormField's label
+  // id (first) with the internal inline label when present.
+  const groupAriaLabelledby = joinStrings(formFieldContext.ariaLabelledby, inlineLabelText ? labelId : undefined);
+  const groupAriaDescribedby = joinStrings(formFieldContext.ariaDescribedby);
+
   const flattenedChildren = flattenChildren(children, 'ControlGroup');
   const controlCount = flattenedChildren.length;
 
@@ -38,8 +45,11 @@ export default function ControlGroup({
 
   const controls = (
     <div
-      {...(inlineLabelText ? { 'aria-labelledby': labelId } : actionButton ? {} : baseProps)}
+      {...(!inlineLabelText && !actionButton ? baseProps : {})}
       role="group"
+      aria-labelledby={groupAriaLabelledby}
+      aria-describedby={groupAriaDescribedby}
+      aria-invalid={isInvalid ? 'true' : undefined}
       className={clsx(
         styles.controls,
         styles[`controls-${direction}`],
@@ -74,10 +84,7 @@ export default function ControlGroup({
                 validation: isInvalid ? 'error' : isWarning ? 'warning' : null,
               }}
             >
-              {/* Mask the form-field flags so inner controls do not color their own seams. */}
-              <FormFieldContext.Provider value={{ ...formFieldContext, invalid: false, warning: false }}>
-                {child}
-              </FormFieldContext.Provider>
+              <FormFieldContext.Provider value={{}}>{child}</FormFieldContext.Provider>
             </GroupedControlContext.Provider>
           </div>
         );
