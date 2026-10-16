@@ -52,14 +52,8 @@ $grouped-control-warning-marker: '.grouped-in-warning';
       )
   {
     &#{$marker},
-    &#{$marker}:hover,
-    &#{$marker}:focus {
+    &#{$marker}:hover {
       @include grouped-control-edge-color($edges, $color);
-    }
-    &#{$marker} {
-      @include focus-visible.when-visible {
-        @include grouped-control-edge-color($edges, $color);
-      }
     }
   }
 }
