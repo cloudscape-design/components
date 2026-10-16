@@ -56,6 +56,7 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
 
   &-vertical {
     flex-direction: column;
+    flex-grow: 1;
   }
 }
 
