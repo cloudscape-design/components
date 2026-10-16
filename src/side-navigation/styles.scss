@@ -497,6 +497,15 @@ $content-exit-clip-delay: $content-exit-duration;
   padding-block: 0;
 }
 
+.section-group-title-with-info {
+  display: flex;
+  align-items: baseline;
+
+  > .section-group-title {
+    flex: 0 1 auto;
+  }
+}
+
 // ==========================================================================
 // Links — all links use awsui.$size-side-navigation-item-height for consistent row sizing;
 // collapsed icon square uses awsui.$size-side-navigation-item-collapsed.
