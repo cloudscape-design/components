@@ -50,7 +50,6 @@ export default function ControlGroupResponsiveness() {
 
     const resizableContainer = (children: React.ReactNode) => (
       <div
-        data-testid="resizable-container"
         style={{
           position: 'relative',
           inlineSize: containerWidth,
