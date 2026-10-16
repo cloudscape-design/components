@@ -4,13 +4,7 @@
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import {
-  isThemeActive,
-  Theme,
-  useResizeObserver,
-  useUniqueId,
-  warnOnce,
-} from '@cloudscape-design/component-toolkit/internal';
+import { isThemeActive, Theme, useResizeObserver, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
@@ -123,10 +117,6 @@ function InternalToken({
     const labelObject = isLabelStringOrNumber ? { label: String(label) } : { labelContent: label };
 
     if (isInline) {
-      if (!isLabelStringOrNumber) {
-        warnOnce('Label', `Only plain text (strings or numbers) are supported when variant="inline".`);
-      }
-
       return {
         ...labelObject,
         disabled,

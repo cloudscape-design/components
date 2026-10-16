@@ -195,42 +195,6 @@ describe('Token', () => {
     });
   });
 
-  describe('Error handling for inline variants', () => {
-    test('React elements trigger a dev warning', () => {
-      // Mock console.warn to capture the warning
-      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-
-      // Positive case: React element with inline variant should trigger warning
-      renderToken({
-        variant: 'inline',
-        label: <span data-testid="react-element">React element</span>,
-      });
-
-      expect(consoleSpy).toHaveBeenCalledWith(
-        expect.stringContaining(
-          '[AwsUi] [Label] Only plain text (strings or numbers) are supported when variant="inline"'
-        )
-      );
-
-      consoleSpy.mockRestore();
-    });
-
-    test('strings do not throw a dev warning', () => {
-      // Mock console.warn to capture any warnings
-      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-
-      // Negative case: string with inline variant should not trigger warning
-      renderToken({
-        variant: 'inline',
-        label: 'String label',
-      });
-
-      expect(consoleSpy).not.toHaveBeenCalled();
-
-      consoleSpy.mockRestore();
-    });
-  });
-
   describe('Inline element tags', () => {
     test('normal variant renders div elements', () => {
       const wrapper = renderToken({ label: 'Test token' });
