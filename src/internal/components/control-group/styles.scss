@@ -13,13 +13,22 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
   @include styles.styles-reset;
 }
 
+// Spans the whole accessible row (controls + action) and hosts the measurement scaffolding
+// (sensor + ghost). It must stay `position: static` so the sensor resolves against the nearest
+// positioned ancestor OUTSIDE the component instead of this wrapper (see use-fits-inline.ts).
+.row-wrapper {
+  position: static;
+}
+
 .action-slot {
   display: flex;
   margin-inline-start: $margin-overlap;
   flex-shrink: 0;
 }
 
-.group-layout {
+// The visible row: the controls group next to the action button. Only the controls stack
+// horizontal<->vertical; the action button always stays beside them.
+.row {
   display: flex;
   flex-direction: row;
 
@@ -39,7 +48,7 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
 .controls {
   display: flex;
   align-items: stretch;
-  // Needed for the width sensor to find the nearest containing block
+  // Keep static so it does not become the sensor's containing block either.
   position: static;
 
   &-horizontal {
@@ -115,11 +124,10 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
   @include forms.inline-label-trigger-wrapper;
 }
 
+// Hidden single-row copy of the whole row (controls + action), laid out at its natural width so
+// its `max-content` size is the true required width including the action button and the overlap
+// seam. Its child `.row` (forced to the horizontal variant) supplies the flex layout.
 .ghost {
   @include styles.measurement-ghost;
   inline-size: max-content;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: flex-end;
 }

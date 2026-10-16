@@ -34,15 +34,13 @@ export default function ControlGroup({
   const flattenedChildren = flattenChildren(children, 'ControlGroup');
   const controlCount = flattenedChildren.length;
 
-  const { overflows, rootRef, ghostRef, sensorRef, actionSlotRef } = useFitsInline<HTMLDivElement>({
-    hasActionSlot: !!actionButton,
-  });
+  const { overflows, rootRef, ghostRef, sensorRef } = useFitsInline<HTMLDivElement>();
   const resolvedDirection: GroupedControlDirection =
     direction === 'auto' ? (overflows ? 'vertical' : 'horizontal') : direction;
 
   const rootClassnames = [styles.root, baseProps.className, testUtilStyles.root];
 
-  const renderControlSlots = (isGhost = false) => {
+  const renderControlSlots = (isGhost: boolean) => {
     const slotDirection: GroupedControlDirection = isGhost
       ? 'horizontal' // The ghost always uses horizontal mode for measuring
       : resolvedDirection;
@@ -68,45 +66,12 @@ export default function ControlGroup({
     });
   };
 
-  const controls = (
-    <div
-      {...(inlineLabelText ? { 'aria-labelledby': labelId } : actionButton ? {} : baseProps)}
-      ref={rootRef}
-      role="group"
-      className={clsx(
-        styles.controls,
-        styles[`controls-${resolvedDirection}`],
-        !actionButton && !inlineLabelText && rootClassnames
-      )}
-    >
-      {renderControlSlots()}
-
-      {direction === 'auto' && (
-        <>
-          <div ref={sensorRef} className={styles.sensor} aria-hidden="true" />
-          <div className={styles['ghost-wrapper']}>
-            <div ref={ghostRef} className={styles.ghost} aria-hidden="true">
-              {renderControlSlots(true)}
-            </div>
-          </div>
-        </>
-      )}
-    </div>
-  );
-
-  const controlsWithAction = actionButton ? (
-    <div
-      {...(inlineLabelText ? {} : baseProps)}
-      className={clsx(
-        styles['group-layout'],
-        styles[`group-layout-${resolvedDirection}`],
-        !inlineLabelText && rootClassnames
-      )}
-    >
-      {controls}
-      <div ref={actionSlotRef} className={styles['action-slot']}>
+  const renderActionButton = (isGhost: boolean) =>
+    actionButton ? (
+      <div className={styles['action-slot']}>
         <InternalButton
-          className={testUtilStyles['action-button']}
+          // Only the real action button carries the test-util class, so test utils exclude the ghost copy.
+          className={isGhost ? undefined : testUtilStyles['action-button']}
           variant="control-group-action"
           formAction="none"
           iconName={actionButton.iconName}
@@ -117,9 +82,45 @@ export default function ControlGroup({
           onClick={actionButton.onClick}
         />
       </div>
+    ) : null;
+
+  // A single render path for both the real row and the ghost copy, so the ghost measures the whole
+  // row (controls + action button, including the overlap seam between them) as one unit. The ghost
+  // copy carries no role, no aria-labelledby, no base props, and no test-util classes.
+  const renderRow = (isGhost: boolean) => {
+    const slotDirection: GroupedControlDirection = isGhost ? 'horizontal' : resolvedDirection;
+    return (
+      <div className={clsx(styles.row, styles[`row-${slotDirection}`])}>
+        <div
+          {...(isGhost ? {} : inlineLabelText ? { role: 'group', 'aria-labelledby': labelId } : { role: 'group' })}
+          className={clsx(styles.controls, styles[`controls-${slotDirection}`])}
+        >
+          {renderControlSlots(isGhost)}
+        </div>
+        {renderActionButton(isGhost)}
+      </div>
+    );
+  };
+
+  const rowWrapper = (
+    <div
+      {...(inlineLabelText ? {} : baseProps)}
+      ref={rootRef}
+      className={clsx(styles['row-wrapper'], !inlineLabelText && rootClassnames)}
+    >
+      {renderRow(false)}
+
+      {direction === 'auto' && (
+        <>
+          <div ref={sensorRef} className={styles.sensor} aria-hidden="true" />
+          <div className={styles['ghost-wrapper']}>
+            <div ref={ghostRef} className={styles.ghost} aria-hidden="true">
+              {renderRow(true)}
+            </div>
+          </div>
+        </>
+      )}
     </div>
-  ) : (
-    controls
   );
 
   if (inlineLabelText) {
@@ -128,10 +129,10 @@ export default function ControlGroup({
         <label id={labelId} className={clsx(styles['inline-label'], testUtilStyles['inline-label'])}>
           {inlineLabelText}
         </label>
-        <div className={styles['inline-label-trigger-wrapper']}>{controlsWithAction}</div>
+        <div className={styles['inline-label-trigger-wrapper']}>{rowWrapper}</div>
       </div>
     );
   }
 
-  return controlsWithAction;
+  return rowWrapper;
 }
