@@ -51,15 +51,6 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
   &-vertical {
     flex-direction: column;
   }
-
-  // The group publishes the validation color via an inherited custom property
-  // set inline on this box; each control reads it on its outward-facing edges.
-  // These marker classes carry no styling — they only let test-utils detect the
-  // validation state.
-  &-invalid,
-  &-warning {
-    /* Marker only. */
-  }
 }
 
 .control {
