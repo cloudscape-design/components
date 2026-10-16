@@ -6,10 +6,6 @@ import { BaseComponentProps } from '../../../types/base-component';
 import { GroupedControlDirection } from '../../context/control-group-context';
 import { CancelableEventHandler } from '../../events';
 
-// `'auto'` exists only at the prop boundary; it resolves to a concrete
-// GroupedControlDirection before reaching context, classes, or SCSS.
-export type ControlGroupDirection = GroupedControlDirection | 'auto';
-
 export interface ControlGroupProps extends BaseComponentProps {
   children?: React.ReactNode;
   /**
@@ -17,7 +13,7 @@ export interface ControlGroupProps extends BaseComponentProps {
    * When set to `auto` (default), the component decides the direction based on whether it
    * fits in its container's width.
    */
-  direction?: ControlGroupDirection;
+  direction?: ControlGroupProps.ControlGroupDirection;
   inlineLabelText?: string;
   /**
    * Specifies an action button rendered next to the grouped controls.
@@ -26,6 +22,10 @@ export interface ControlGroupProps extends BaseComponentProps {
 }
 
 export namespace ControlGroupProps {
+  // `'auto'` exists only for the control group but not for the inner grouped controls,
+  // which receive a definite value (`horizontal` or `vertical`).
+  export type ControlGroupDirection = GroupedControlDirection | 'auto';
+
   export interface ActionButton {
     /**
      * Called when the user clicks on the button and the button is not disabled.

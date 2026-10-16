@@ -16,7 +16,6 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
 .action-slot {
   display: flex;
   margin-inline-start: $margin-overlap;
-  // Fixed-size icon button absorbs no deficit; only .controls shrinks.
   flex-shrink: 0;
 }
 
@@ -40,26 +39,19 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
 .controls {
   display: flex;
   align-items: stretch;
-  // MUST stay static so the sensor resolves against the nearest positioned ancestor, not this root
-  // (see use-fits-inline.ts). Set explicitly to guard the invariant against future refactors.
+  // Needed for the width sensor to find the nearest containing block
   position: static;
-  // Keep the group at its natural single-row width until the sensor reports it no longer fits.
-  flex-shrink: 0;
 
   &-horizontal {
     flex-direction: row;
     flex-wrap: nowrap;
+    min-inline-size: 0;
+    flex-shrink: 1;
   }
 
   &-vertical {
     flex-direction: column;
   }
-}
-
-// Only as a flex item of .group-layout may .controls shrink, so the slots compress, not overflow.
-.group-layout > .controls {
-  min-inline-size: 0;
-  flex-shrink: 1;
 }
 
 .control {
@@ -123,8 +115,6 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
   @include forms.inline-label-trigger-wrapper;
 }
 
-// The caller-supplied layout being measured: the controls as a single `max-content` row, so the
-// ghost reports the width they need inline (see use-fits-inline.ts).
 .ghost {
   @include styles.measurement-ghost;
   inline-size: max-content;
