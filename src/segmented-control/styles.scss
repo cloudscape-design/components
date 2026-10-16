@@ -25,6 +25,10 @@
 
 .segment-part {
   display: inline-grid;
+  // Positioning context for the grouped validation bar (grouped-control.scss
+  // `::before`). Side-effect-free: the segments' abs-positioned descendants
+  // resolve against the position: relative .segment cells, not .segment-part.
+  position: relative;
   border-inline: solid awsui.$border-width-field awsui.$color-border-segment-wrapper;
   border-block: solid awsui.$border-width-field awsui.$color-border-segment-wrapper;
   border-start-start-radius: awsui.$border-radius-button;

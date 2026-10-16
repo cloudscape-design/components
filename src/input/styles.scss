@@ -248,7 +248,57 @@
     // validation rule's specificity and wins by source order.
     &#{&}-validation {
       padding-inline-start: awsui.$border-width-field;
+
+      // Suppress the shared control-hosted bar (grouped-control.scss `::before`):
+      // .input-field is `overflow: clip`, which crops a border-box ::before at
+      // the rounded leading corners, and making the field a positioning context
+      // repaints it over the preceding abs-positioned .input-icon-start sibling
+      // (hiding the start/search icon). Input hosts the bar on .input-container
+      // instead (below): unclipped and already a positioning context.
+      &::before {
+        content: none;
+      }
     }
+  }
+}
+
+// Input leading validation bar, hosted on the unclipped .input-container instead
+// of the clipped .input-field (see the suppressed ::before above). The container
+// is already `position: relative` and has no background to paint over the start
+// icon, so it resolves both the corner-crop and the hidden-icon regressions. The
+// bar geometry mirrors the shared control-hosted bar in grouped-control.scss: it
+// sits at the container's border box (= the field's border box, since the field
+// fills the container and the icon is an abs-positioned, zero-footprint sibling)
+// and overpaints the control's 1px gray leading border inward.
+.input-container:has(> .input-field.grouped-validation) {
+  &::before {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    z-index: 1;
+    inline-size: calc(#{styles.$invalid-control-left-border} + #{awsui.$border-width-field});
+    // Leading corners default to the control radius; vertical seams flatten the
+    // adjacent corner so the bar follows the group's outer corners (first=top
+    // only, last=bottom only, middle=none). Horizontal-first/only keep both.
+    border-start-start-radius: styles.$control-border-radius;
+    border-end-start-radius: styles.$control-border-radius;
+  }
+  &:has(> .input-field.grouped-vertical-first)::before {
+    border-end-start-radius: 0;
+  }
+  &:has(> .input-field.grouped-vertical-last)::before {
+    border-start-start-radius: 0;
+  }
+  &:has(> .input-field.grouped-vertical-middle)::before {
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+  }
+  &:has(> .input-field.grouped-in-error)::before {
+    background-color: awsui.$color-text-status-error;
+  }
+  &:has(> .input-field.grouped-in-warning)::before {
+    background-color: awsui.$color-text-status-warning;
   }
 }
 

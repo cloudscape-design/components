@@ -53,20 +53,10 @@ export default function ControlGroup({
         const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
         const position: GroupedControlPosition =
           controlCount === 1 ? 'only' : index === 0 ? 'first' : index === controlCount - 1 ? 'last' : 'middle';
-        // Only the leading (inline-start) slots host the thick validation bar:
-        // the first/only control horizontally, every control vertically. Mirrors
-        // the isLeading rule in grouped-control-styles.ts.
-        const isLeading = direction === 'vertical' || position === 'first' || position === 'only';
         return (
           <div
             key={key ? String(key) : index}
-            className={clsx(
-              styles.control,
-              styles[`control-${position}-${direction}`],
-              isLeading && (isInvalid || isWarning) && styles['control-validation'],
-              isLeading && isInvalid && styles['control-in-error'],
-              isLeading && isWarning && styles['control-in-warning']
-            )}
+            className={clsx(styles.control, styles[`control-${position}-${direction}`])}
           >
             <GroupedControlContext.Provider
               value={{

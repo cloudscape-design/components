@@ -176,14 +176,44 @@ $grouped-control-warning-marker: '.grouped-in-warning';
     }
   }
 
-  // Content inset for the thick leading validation bar. The bar is drawn by the
-  // group's leading `.control` slot (control-group/styles.scss) as a flat <div>
-  // rectangle, so it cannot miter and renders for replaced-element controls
-  // (Input/Autosuggest) too. The inset is the bar width plus the invalid content
-  // gap, matching the standalone validation text position. Single-element
-  // controls (button-trigger, segmented-control) take the full inset here; Input
-  // overrides the wrapper (its inner native input already contributes cph).
+  // Content inset for the thick leading validation bar. The inset is the bar
+  // width plus the invalid content gap, matching the standalone validation text
+  // position. Single-element controls (button-trigger, segmented-control) take
+  // the full inset here; Input overrides the wrapper (its inner native input
+  // already contributes cph).
   &#{&}-validation {
     padding-inline-start: calc(#{constants.$invalid-control-left-border} + #{constants.$invalid-control-left-padding});
+  }
+
+  // Thick leading validation bar, hosted on the control itself. Only leading
+  // controls carry `.grouped-validation` (first/only horizontal, every vertical;
+  // emitted by grouped-control-styles.ts). A flat rectangle that cannot miter
+  // against the control's thin block seams; it overpaints the control's 1px gray
+  // leading border. The negative block/inline-start insets pull the rectangle out
+  // to the control's BORDER box (an absolute ::before otherwise anchors to the
+  // padding box, which sits one border-width inside the gray border and would
+  // leave it uncovered), and the inline-size spans that border plus the bar so it
+  // overpaints inward exactly like the old slot bar. `border-radius: inherit`
+  // pulls the host's per-position leading corner radii (set by grouped-control-base
+  // + the per-position mixins), so the bar's rounded corners coincide with the
+  // group's outer corners. The host establishes its own positioning context
+  // (button-trigger, Input .input-field, segmented-control .segment-part).
+  &.grouped-validation {
+    &::before {
+      content: '';
+      position: absolute;
+      inset-block: calc(-1 * #{awsui.$border-width-field});
+      inset-inline-start: calc(-1 * #{awsui.$border-width-field});
+      z-index: 1;
+      inline-size: calc(#{constants.$invalid-control-left-border} + #{awsui.$border-width-field});
+      border-start-start-radius: inherit;
+      border-end-start-radius: inherit;
+    }
+    &#{$grouped-control-error-marker}::before {
+      background-color: awsui.$color-text-status-error;
+    }
+    &#{$grouped-control-warning-marker}::before {
+      background-color: awsui.$color-text-status-warning;
+    }
   }
 }
