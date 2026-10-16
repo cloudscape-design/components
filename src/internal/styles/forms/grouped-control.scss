@@ -41,8 +41,8 @@ $grouped-control-warning-marker: '.grouped-in-warning';
   background-color: awsui.$color-border-input-default;
 }
 
-// Asserts the status color on $edges across every state so the control's own
-// neutral hover/focus border never wins.
+// Asserts the base status color on $edges. Hover/focus neutral borders are scoped
+// away from grouped controls (:not), so no per-state re-assertion is needed.
 @mixin grouped-control-status-edges($edges) {
   @each $marker,
     $color
@@ -51,8 +51,7 @@ $grouped-control-warning-marker: '.grouped-in-warning';
         $grouped-control-warning-marker: awsui.$color-text-status-warning
       )
   {
-    &#{$marker},
-    &#{$marker}:hover {
+    &#{$marker} {
       @include grouped-control-edge-color($edges, $color);
     }
   }

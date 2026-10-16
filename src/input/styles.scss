@@ -144,7 +144,13 @@
       #{custom-props.$styleColorHover},
       var(#{custom-props.$styleColorDefault}, awsui.$color-text-form-secondary)
     );
-    @include styles.input-hover-styles;
+    &:not(.grouped-validation) {
+      @include styles.input-hover-styles;
+    }
+    // Do not alter border colors when grouped, since the border color is predefined.
+    &.grouped-validation {
+      @include styles.input-hover-background-styles;
+    }
   }
 
   &.input-field-readonly {
