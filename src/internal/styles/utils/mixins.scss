@@ -20,6 +20,12 @@
   pointer-events: none;
 }
 
+// A zero-height relative anchor for the absolutely-positioned measurement ghost.
+@mixin measurement-ghost-anchor {
+  position: relative;
+  block-size: 0;
+}
+
 @mixin text-wrapping {
   // When using with Flexbox, a flex item has min-width set to "auto" by default, which
   // prevents the text wrapping. We need to override the min-width by setting it to "0"
