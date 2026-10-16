@@ -124,8 +124,13 @@
   // See focus-highlight above.
   outline: 2px dotted transparent;
 
-  border-block: awsui.$border-width-field solid $border-color;
-  border-inline: awsui.$border-width-field solid $border-color;
+  border-block-style: solid;
+  border-inline-style: solid;
+
+  @if $border-color {
+    border-block-color: $border-color;
+    border-inline-color: $border-color;
+  }
 
   box-shadow: $box-shadow;
 }
@@ -230,15 +235,19 @@
   box-shadow: var(#{custom-props.$styleBoxShadowDefault});
 }
 
+@mixin input-hover-background-styles {
+  background-color: var(
+    #{custom-props.$styleBackgroundHover},
+    var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+  );
+}
+
 @mixin input-hover-styles {
   border-color: var(
     #{custom-props.$styleBorderColorHover},
     var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default)
   );
-  background-color: var(
-    #{custom-props.$styleBackgroundHover},
-    var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
-  );
+  @include input-hover-background-styles();
   box-shadow: var(#{custom-props.$styleBoxShadowHover}, #{custom-props.$styleBoxShadowDefault});
 }
 

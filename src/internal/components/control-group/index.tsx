@@ -8,7 +8,9 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { InternalButton } from '../../../button/internal';
 import { getBaseProps } from '../../base-component';
 import { GroupedControlContext, GroupedControlPosition } from '../../context/control-group-context';
+import { FormFieldContext, useFormFieldContext } from '../../context/form-field-context';
 import { flattenChildren } from '../../utils/flatten-children';
+import { joinStrings } from '../../utils/strings/join-strings';
 import { ControlGroupProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -26,6 +28,16 @@ export default function ControlGroup({
   const baseProps = getBaseProps(props);
   const labelId = useUniqueId('control-group-label');
 
+  const formFieldContext = useFormFieldContext({});
+  const isInvalid = !!formFieldContext.invalid;
+  const isWarning = !!formFieldContext.warning && !isInvalid;
+
+  // The parent FormField's validation (describedby/invalid) and label associate with the group as a
+  // unit, not the inner controls (whose FormField context is reset below). Merge FormField's label
+  // id (first) with the internal inline label when present.
+  const groupAriaLabelledby = joinStrings(formFieldContext.ariaLabelledby, inlineLabelText ? labelId : undefined);
+  const groupAriaDescribedby = joinStrings(formFieldContext.ariaDescribedby);
+
   const flattenedChildren = flattenChildren(children, 'ControlGroup');
   const controlCount = flattenedChildren.length;
 
@@ -33,8 +45,11 @@ export default function ControlGroup({
 
   const controls = (
     <div
-      {...(inlineLabelText ? { 'aria-labelledby': labelId } : actionButton ? {} : baseProps)}
+      {...(!inlineLabelText && !actionButton ? baseProps : {})}
       role="group"
+      aria-labelledby={groupAriaLabelledby}
+      aria-describedby={groupAriaDescribedby}
+      aria-invalid={isInvalid ? 'true' : undefined}
       className={clsx(
         styles.controls,
         styles[`controls-${direction}`],
@@ -50,8 +65,15 @@ export default function ControlGroup({
             key={key ? String(key) : index}
             className={clsx(styles.control, styles[`control-${position}-${direction}`])}
           >
-            <GroupedControlContext.Provider value={{ position, direction, hasAction: !!actionButton }}>
-              {child}
+            <GroupedControlContext.Provider
+              value={{
+                position,
+                direction,
+                hasAction: !!actionButton,
+                validation: isInvalid ? 'error' : isWarning ? 'warning' : null,
+              }}
+            >
+              <FormFieldContext.Provider value={{}}>{child}</FormFieldContext.Provider>
             </GroupedControlContext.Provider>
           </div>
         );

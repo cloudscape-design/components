@@ -144,7 +144,13 @@
       #{custom-props.$styleColorHover},
       var(#{custom-props.$styleColorDefault}, awsui.$color-text-form-secondary)
     );
-    @include styles.input-hover-styles;
+    &:not(.grouped-validation) {
+      @include styles.input-hover-styles;
+    }
+    // Do not alter border colors when grouped, since the border color is predefined.
+    &.grouped-validation {
+      @include styles.input-hover-background-styles;
+    }
   }
 
   &.input-field-readonly {
@@ -162,7 +168,15 @@
       var(#{custom-props.$styleColorDefault}, awsui.$color-text-form-secondary)
     );
     background-color: var(#{custom-props.$styleBackgroundFocus}, awsui.$color-background-input-default);
-    @include styles.input-focus-styles;
+    &:not(.grouped-validation) {
+      @include styles.input-focus-styles;
+    }
+    &.grouped-validation {
+      @include styles.form-focus-element(
+        $border-color: false,
+        $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
+      );
+    }
   }
 
   // Keep disabled styles before validation modifiers so invalid/warning border colors win when both modifiers are present.
@@ -186,6 +200,9 @@
     }
 
     &:focus-within {
+      // Re-assert the validation border under focus so the neutral focus color
+      // (.input-field:focus-within, equal specificity) does not win by order.
+      border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-error);
       box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid);
     }
   }
@@ -200,6 +217,9 @@
     }
 
     &:focus-within {
+      // Re-assert the validation border under focus so the neutral focus color
+      // (.input-field:focus-within, equal specificity) does not win by order.
+      border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-warning);
       box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid);
     }
   }
@@ -226,6 +246,44 @@
 
   &.grouped {
     @include styles.grouped-control;
+
+    // The inner .input supplies the content inset, so the wrapper adds none.
+    &#{&}-validation {
+      padding-inline-start: 0;
+    }
+
+    // .input-field is overflow: clip, so the seam strips move to .input-container.
+    &-vertical-middle.grouped-validation,
+    &-vertical-last.grouped-validation {
+      &::before {
+        content: none;
+      }
+    }
+    &-vertical-first.grouped-validation,
+    &-vertical-middle.grouped-validation {
+      &::after {
+        content: none;
+      }
+    }
+  }
+}
+
+// Input seam covers, hosted on the unclipped .input-container (see above).
+.input-container:has(> .input-field.grouped-vertical-middle.grouped-validation),
+.input-container:has(> .input-field.grouped-vertical-last.grouped-validation) {
+  &::before {
+    @include styles.grouped-control-seam-cover(inset-block-start, calc(-1 * #{awsui.$border-width-field}));
+  }
+}
+.input-container:has(> .input-field.grouped-vertical-first.grouped-validation),
+.input-container:has(> .input-field.grouped-vertical-middle.grouped-validation) {
+  &::after {
+    @include styles.grouped-control-seam-cover(
+      inset-block-end,
+      0,
+      $inline-start: styles.$invalid-control-left-border,
+      $inline-end: awsui.$border-width-field
+    );
   }
 }
 
@@ -262,10 +320,11 @@
   cursor: default;
 }
 
-// The wider invalid/warning start border is absorbed by the first cell, so the content does not shift.
-// The first cell is the prefix when present, otherwise the native input.
+// The thick start border is absorbed by the first cell so content does not shift,
+// for both standalone validation and the leading grouped-validation control.
 .input-field-invalid,
-.input-field-warning {
+.input-field-warning,
+.grouped-validation {
   > .input-prefix,
   > .input:first-child {
     padding-inline-start: styles.$invalid-control-left-padding;

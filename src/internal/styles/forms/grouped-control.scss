@@ -1,11 +1,67 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+@use 'sass:list';
 @use '../tokens' as awsui;
 @use '../utils' as styles;
+@use '../foundation' as foundation;
 @use './constants' as constants;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 $grouped-control-border-radius: constants.$control-border-radius;
+// State classes the group adds to every control; error wins over warning.
+$grouped-control-error-marker: '.grouped-in-error';
+$grouped-control-warning-marker: '.grouped-in-warning';
+
+// Sets $color on the given border edges.
+@mixin grouped-control-edge-color($edges, $color) {
+  @if list.index($edges, inline-start) {
+    border-inline-start-color: $color;
+  }
+  @if list.index($edges, inline-end) {
+    border-inline-end-color: $color;
+  }
+  @if list.index($edges, block-start) {
+    border-block-start-color: $color;
+  }
+  @if list.index($edges, block-end) {
+    border-block-end-color: $color;
+  }
+}
+
+// A flat 1px gray strip over a status-colored seam border so the seam reads neutral.
+@mixin grouped-control-seam-cover($block-prop, $block-value, $inline-start: 0, $inline-end: 0) {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  #{$block-prop}: $block-value;
+  inset-inline-start: $inline-start;
+  inset-inline-end: $inline-end;
+  block-size: awsui.$border-width-field;
+  background-color: awsui.$color-border-input-default;
+}
+
+// Asserts the base status color on $edges. Hover/focus neutral borders are scoped
+// away from grouped controls (:not), so no per-state re-assertion is needed.
+@mixin grouped-control-status-edges($edges) {
+  @each $marker,
+    $color
+      in (
+        $grouped-control-error-marker: awsui.$color-text-status-error,
+        $grouped-control-warning-marker: awsui.$color-text-status-warning
+      )
+  {
+    &#{$marker} {
+      @include grouped-control-edge-color($edges, $color);
+    }
+  }
+}
+
+// Neutral outward edges, status-colored in a validation state.
+@mixin grouped-control-outer-border-color($edges) {
+  @include grouped-control-edge-color($edges, awsui.$color-border-input-default);
+  @include grouped-control-status-edges($edges);
+}
 
 @mixin grouped-control-base {
   @include styles.logical-radius($grouped-control-border-radius);
@@ -34,32 +90,87 @@ $grouped-control-border-radius: constants.$control-border-radius;
 @mixin grouped-control {
   @include grouped-control-base;
 
+  // Each position colors only its outward edges; seams are handled below.
   &-horizontal {
     &-first {
       @include grouped-control-horizontal-first;
+      @include grouped-control-outer-border-color((inline-start, block-start, block-end));
     }
     &-middle {
       @include grouped-control-middle;
+      @include grouped-control-outer-border-color((block-start, block-end));
     }
     &-last {
       @include grouped-control-horizontal-last;
+      @include grouped-control-outer-border-color((inline-end, block-start, block-end));
     }
   }
 
   &-vertical {
     &-first {
       @include grouped-control-vertical-first;
+      @include grouped-control-outer-border-color((block-start, inline-start, inline-end));
     }
     &-middle {
       @include grouped-control-middle;
+      @include grouped-control-outer-border-color((inline-start, inline-end));
     }
     &-last {
       @include grouped-control-vertical-last;
+      @include grouped-control-outer-border-color((block-end, inline-start, inline-end));
     }
+  }
+
+  &-horizontal-only,
+  &-vertical-only {
+    @include grouped-control-outer-border-color((inline-start, inline-end, block-start, block-end));
   }
 
   &-with-action {
     border-start-end-radius: 0;
     border-end-end-radius: 0;
+  }
+
+  // Focus ring, position-independent. The group owns the ring (grouped controls
+  // are excluded from the control's own form-focus-element via :not(.grouped)):
+  // invalid when in a validation state, neutral otherwise. :focus-within also
+  // catches the Input wrapper (focus on its inner input).
+  &#{$grouped-control-error-marker}:focus-within,
+  &#{$grouped-control-warning-marker}:focus-within {
+    box-shadow: foundation.$box-shadow-focused-light-invalid;
+  }
+  &:not(#{$grouped-control-error-marker}):not(#{$grouped-control-warning-marker}) {
+    @include focus-visible.when-visible {
+      box-shadow: foundation.$box-shadow-focused;
+    }
+  }
+
+  // Thick leading validation border, reduced inset keeps text at the neutral position.
+  &.grouped-validation {
+    padding-inline-start: constants.$invalid-control-left-padding;
+    @include grouped-control-status-edges((inline-start));
+    &#{$grouped-control-error-marker},
+    &#{$grouped-control-warning-marker} {
+      border-inline-start-width: constants.$invalid-control-left-border;
+    }
+  }
+
+  // Interior seams are status-colored to hide the miter against the thick border,
+  // then covered by a 1px gray strip so the seam reads neutral.
+  &-vertical-first.grouped-validation,
+  &-vertical-middle.grouped-validation {
+    position: relative;
+    @include grouped-control-status-edges((block-end));
+    &::after {
+      @include grouped-control-seam-cover(inset-block-end, calc(-1 * #{awsui.$border-width-field}));
+    }
+  }
+  &-vertical-middle.grouped-validation,
+  &-vertical-last.grouped-validation {
+    position: relative;
+    @include grouped-control-status-edges((block-start));
+    &::before {
+      @include grouped-control-seam-cover(inset-block-start, calc(-1 * #{awsui.$border-width-field}));
+    }
   }
 }

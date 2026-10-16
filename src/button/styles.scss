@@ -10,6 +10,7 @@
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use './constants' as constants;
+@use '../internal/styles/forms/constants' as form-constants;
 @use '../internal/styles/style-api' as style-api;
 
 $props: style-api.combine(style-api.$surface, (box-shadow, padding-block, padding-inline), style-api.$focus-ring);
@@ -100,6 +101,9 @@ $tokens: style-api.resolve($props, carrier);
   @include styles.styles-reset;
   @include styles.text-wrapping;
   @include styles.font-button;
+
+  $focus-border-color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
+
   letter-spacing: awsui.$font-button-letter-spacing;
   border-start-start-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
   border-start-end-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
@@ -128,10 +132,9 @@ $tokens: style-api.resolve($props, carrier);
   @include focus-visible.when-visible {
     $radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring);
     $width: var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width);
-    $color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
 
     &:not(.variant-control-group-action) {
-      @include style-api.focus-highlight($radius: $radius, $width: $width, $color: $color);
+      @include style-api.focus-highlight($radius: $radius, $width: $width, $color: $focus-border-color);
     }
 
     &.variant-icon,
@@ -141,7 +144,7 @@ $tokens: style-api.resolve($props, carrier);
         $gutter-block: awsui.$space-button-icon-focus-outline-gutter-vertical,
         $radius: $radius,
         $width: $width,
-        $color: $color
+        $color: $focus-border-color
       );
     }
 
@@ -152,14 +155,7 @@ $tokens: style-api.resolve($props, carrier);
         $gutter-inline: awsui.$space-button-inline-icon-focus-outline-gutter,
         $radius: $radius,
         $width: $width,
-        $color: $color
-      );
-    }
-
-    &.variant-control-group-action {
-      @include styles.form-focus-element(
-        $border-color: $color,
-        $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
+        $color: $focus-border-color
       );
     }
   }
@@ -219,6 +215,18 @@ $tokens: style-api.resolve($props, carrier);
     padding-block: awsui.$space-field-vertical;
     padding-inline: awsui.$space-xs;
     min-block-size: awsui.$size-vertical-input;
+
+    &,
+    &:hover {
+      border-inline-start-color: form-constants.$control-group-action-seam-border-color;
+    }
+
+    @include focus-visible.when-visible {
+      @include styles.form-focus-element(
+        $border-color: $focus-border-color,
+        $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
+      );
+    }
   }
 
   > .icon-left {

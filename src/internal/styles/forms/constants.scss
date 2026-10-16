@@ -27,6 +27,10 @@ $invalid-control-left-padding: calc(
   #{$control-padding-horizontal} - (#{$invalid-control-left-border} - #{awsui.$border-width-field})
 );
 
+// The ControlGroup action button keeps a 1px inline-start border for layout but
+// leaves the seam to the adjacent control, so that edge is transparent until focus.
+$control-group-action-seam-border-color: transparent;
+
 $control-icon-vertical-offset: calc(50% - #{awsui.$line-height-body-m} / 2);
 $control-icon-horizontal-offset: $control-padding-horizontal;
 $control-icon-horizontal-padding: awsui.$space-field-icon-offset;

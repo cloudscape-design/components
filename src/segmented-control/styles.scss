@@ -8,6 +8,7 @@
 @use 'sass:list' as list;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/utils/theming' as theming;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 @function repeatValue($value, $times) {
   $result: ();
@@ -25,6 +26,8 @@
 
 .segment-part {
   display: inline-grid;
+  // Positioning context for the grouped validation seam (grouped-control.scss `::before`).
+  position: relative;
   border-inline: solid awsui.$border-width-field awsui.$color-border-segment-wrapper;
   border-block: solid awsui.$border-width-field awsui.$color-border-segment-wrapper;
   border-start-start-radius: awsui.$border-radius-button;
@@ -68,6 +71,17 @@
   &.grouped-horizontal-middle,
   &.grouped-horizontal-last {
     border-inline-start: none;
+  }
+
+  // The focused inner segment option draws its own ring, so suppress the group's.
+  &.grouped-in-error,
+  &.grouped-in-warning {
+    &:focus-within {
+      box-shadow: none;
+    }
+    @include focus-visible.when-visible {
+      box-shadow: none;
+    }
   }
 }
 
