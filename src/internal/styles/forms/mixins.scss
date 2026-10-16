@@ -203,12 +203,20 @@
 ) {
   color: $color;
   border-color: $border-color;
-  padding-inline-start: constants.$invalid-control-left-padding;
-  border-inline-start-width: constants.$invalid-control-left-border;
+  // Standalone only: thicken the real leading border and reduce the padding so
+  // text stays at the neutral position. Grouped controls get the overlay bar and
+  // a bar+cph content inset instead (grouped-control.scss), so they must not pull
+  // a real thick border here. @content is scoped to the standalone path so a
+  // caller (Input) can zero the wrapper padding when an inner cell owns the
+  // compensation, at the same specificity as the padding above.
+  &:not(.grouped) {
+    padding-inline-start: constants.$invalid-control-left-padding;
+    border-inline-start-width: constants.$invalid-control-left-border;
+    @content;
+  }
   &:focus {
     box-shadow: $focus-box-shadow;
   }
-  @content;
 }
 
 @mixin form-warning-control(
@@ -218,12 +226,58 @@
 ) {
   color: $color;
   border-color: $border-color;
-  padding-inline-start: constants.$invalid-control-left-padding;
-  border-inline-start-width: constants.$invalid-control-left-border;
+  // Symmetric with form-invalid-control: standalone only gets the thick real
+  // border + reduced padding; grouped uses the overlay bar + bar+cph inset.
+  // @content is scoped to the standalone path for the same reason.
+  &:not(.grouped) {
+    padding-inline-start: constants.$invalid-control-left-padding;
+    border-inline-start-width: constants.$invalid-control-left-border;
+    @content;
+  }
   &:focus {
     box-shadow: $focus-box-shadow;
   }
-  @content;
+}
+
+@mixin input-default-styles {
+  background-color: var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default);
+  border-block: awsui.$border-width-field solid
+    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default);
+  border-inline: awsui.$border-width-field solid
+    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default);
+  box-shadow: var(#{custom-props.$styleBoxShadowDefault});
+}
+
+@mixin input-hover-styles {
+  border-color: var(
+    #{custom-props.$styleBorderColorHover},
+    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default)
+  );
+  background-color: var(
+    #{custom-props.$styleBackgroundHover},
+    var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+  );
+  box-shadow: var(#{custom-props.$styleBoxShadowHover}, #{custom-props.$styleBoxShadowDefault});
+}
+
+@mixin input-readonly-styles {
+  @include form-readonly-element(
+    $background-color: var(
+        #{custom-props.$styleBackgroundReadonly},
+        var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+      ),
+    $border-color: var(
+        #{custom-props.$styleBorderColorReadonly},
+        var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-disabled)
+      )
+  );
+}
+
+@mixin input-focus-styles {
+  @include form-focus-element(
+    $border-color: var(#{custom-props.$styleBorderColorFocus}, awsui.$color-border-input-focused),
+    $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
+  );
 }
 
 @mixin label-info-link {

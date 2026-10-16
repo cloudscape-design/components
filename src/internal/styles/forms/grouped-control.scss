@@ -162,10 +162,11 @@ $grouped-control-warning-marker: '.grouped-in-warning';
     border-end-end-radius: 0;
   }
 
-  // Invalid focus ring, position-independent. Keyed on the state markers and
-  // emitted after the per-position color rules so it layers on top on :focus.
-  &#{$grouped-control-error-marker}:focus,
-  &#{$grouped-control-warning-marker}:focus {
+  // Invalid focus ring, position-independent. Keyed on the state markers with
+  // :focus-within so it fires for the button-trigger (focus on self) and the
+  // Input .input-field wrapper (focus on the inner native input).
+  &#{$grouped-control-error-marker}:focus-within,
+  &#{$grouped-control-warning-marker}:focus-within {
     box-shadow: foundation.$box-shadow-focused-light-invalid;
   }
   &#{$grouped-control-error-marker},
@@ -175,12 +176,14 @@ $grouped-control-warning-marker: '.grouped-in-warning';
     }
   }
 
-  // Content inset for the thick leading validation bar. The bar itself is drawn
-  // by the group's leading `.control` slot (control-group/styles.scss) so it is a
-  // flat <div> rectangle that cannot miter and renders for replaced-element
-  // controls (Input/Autosuggest) too; this padding keeps the control's content
-  // clear of that bar with no row shift.
+  // Content inset for the thick leading validation bar. The bar is drawn by the
+  // group's leading `.control` slot (control-group/styles.scss) as a flat <div>
+  // rectangle, so it cannot miter and renders for replaced-element controls
+  // (Input/Autosuggest) too. The inset is the bar width plus the invalid content
+  // gap, matching the standalone validation text position. Single-element
+  // controls (button-trigger, segmented-control) take the full inset here; Input
+  // overrides the wrapper (its inner native input already contributes cph).
   &#{&}-validation {
-    padding-inline-start: constants.$control-padding-horizontal;
+    padding-inline-start: calc(#{constants.$invalid-control-left-border} + #{constants.$invalid-control-left-padding});
   }
 }

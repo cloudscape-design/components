@@ -127,7 +127,7 @@ $icon-offset: awsui.$space-xxxs;
     text-decoration: none;
   }
 
-  &:not(.in-filtering-token):not(.grouped-validation) {
+  &:not(.in-filtering-token):not(.compact) {
     @include focus-visible.when-visible {
       @include styles.form-focus-element();
     }
@@ -156,6 +156,15 @@ $icon-offset: awsui.$space-xxxs;
       &.warning {
         border-color: awsui.$color-text-status-warning;
       }
+
+      // Grouped controls get no `invalid`/`warning` class (the group masks the
+      // form-field context), so form-focus-element above paints every border blue
+      // on keyboard focus. The group owns border coloring — it recolors outward
+      // edges per state and keeps inner seams neutral — so drop the neutral focus
+      // border here and let the group's higher-specificity rules win.
+      &.grouped {
+        border-color: awsui.$color-border-input-default;
+      }
     }
   }
 
@@ -169,6 +178,25 @@ $icon-offset: awsui.$space-xxxs;
   &.inline-tokens {
     // Remove default paddings and just rely on center alignment of the content
     padding-block: 0;
+  }
+
+  &.compact {
+    @include styles.font-body-s;
+    column-gap: awsui.$space-xxs;
+    block-size: token.$token-max-height-inline;
+    min-block-size: unset;
+    padding-block: 0;
+    padding-inline: awsui.$space-xs;
+    white-space: nowrap;
+    @include styles.logical-radius(awsui.$border-radius-token-inline);
+
+    > .arrow {
+      position: static;
+    }
+
+    @include focus-visible.when-visible {
+      @include styles.focus-highlight(0px);
+    }
   }
 
   &.grouped {

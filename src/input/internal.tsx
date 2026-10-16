@@ -51,6 +51,7 @@ export interface InternalInputProps
   __onEndIconClick?: () => void;
 
   __noBorderRadius?: boolean;
+  __noBorder?: boolean;
 
   __onDelayedInput?: NonCancelableEventHandler<BaseChangeDetail>;
   __onBlurWithDetail?: NonCancelableEventHandler<{ relatedTarget: Node | null }>;
@@ -78,6 +79,7 @@ function InternalInput(
     disableBrowserAutocorrect,
     spellcheck,
     __noBorderRadius,
+    __noBorder,
 
     __startIcon,
     __startIconVariant = 'subtle',
@@ -153,19 +155,15 @@ function InternalInput(
 
   const hasPrefix = !!prefix;
   const hasSuffix = !!suffix;
-  const hasPrefixOrSuffix = hasPrefix || hasSuffix;
+  const hasAdornments = hasPrefix || hasSuffix;
 
   const groupedControlClasses = getGroupedControlClassNames(styles, groupedControlProps);
 
+  // The field box owns the border, the native input owns the text padding. Custom properties
+  // are set on both so each element resolves its own state tokens.
   const inputStyles = getInputStyles(style);
-  const nativeInputStyles =
-    hasPrefixOrSuffix && inputStyles
-      ? { ...inputStyles, borderRadius: undefined, borderWidth: undefined }
-      : inputStyles;
-  const adornedContainerStyles =
-    hasPrefixOrSuffix && inputStyles
-      ? { ...inputStyles, paddingBlock: undefined, paddingInline: undefined }
-      : undefined;
+  const nativeInputStyles = inputStyles && { ...inputStyles, borderRadius: undefined, borderWidth: undefined };
+  const fieldStyles = inputStyles && { ...inputStyles, paddingBlock: undefined, paddingInline: undefined };
 
   const attributes: React.InputHTMLAttributes<HTMLInputElement> = {
     'aria-label': ariaLabel,
@@ -183,13 +181,11 @@ function InternalInput(
       type && styles[`input-type-${type}`],
       __endIcon && styles['input-has-icon-end'],
       __startIcon && styles['input-has-icon-start'],
-      __noBorderRadius && styles['input-has-no-border-radius'],
-      !hasPrefixOrSuffix && groupedControlClasses,
-      hasPrefixOrSuffix && styles['input-adorned'],
       {
         [styles['input-readonly']]: readOnly,
-        [styles['input-invalid']]: invalid && !hasPrefixOrSuffix,
-        [styles['input-warning']]: warning && !invalid && !hasPrefixOrSuffix,
+        // With adornments the status color goes to the prefix/suffix only and the value keeps the default text color.
+        [styles['input-invalid']]: invalid && !hasAdornments,
+        [styles['input-warning']]: warning && !invalid && !hasAdornments,
       }
     ),
     autoComplete: convertAutoComplete(autoComplete),
@@ -295,7 +291,7 @@ function InternalInput(
       : copyAnalyticsMetadataAttribute(rest)),
   };
 
-  const renderInputWithPrefixSuffix = (
+  const renderInputField = (
     extraProps: React.HTMLAttributes<HTMLDivElement> & { ref?: React.Ref<HTMLDivElement> } = {}
   ) => (
     <div
@@ -308,47 +304,43 @@ function InternalInput(
           <InternalIcon name={__startIcon} variant={disabled ? 'disabled' : readOnly ? 'subtle' : __startIconVariant} />
         </span>
       )}
-      {hasPrefixOrSuffix ? (
-        // [prefix][divider][input][divider][suffix] - one flex bar owns the border and focus ring.
-        <div
-          className={clsx(
-            styles['input-adorned-container'],
-            invalid && styles['input-adorned-container-invalid'],
-            warning && !invalid && styles['input-adorned-container-warning'],
-            disabled && styles['input-adorned-container-disabled'],
-            readOnly && !disabled && styles['input-adorned-container-readonly'],
-            groupedControlClasses
-          )}
-          aria-disabled={disabled || undefined}
-          style={adornedContainerStyles}
-        >
-          {hasPrefix && (
-            <>
-              <span className={styles['input-prefix']} aria-hidden="true">
-                <span className={styles['input-adornment-content']}>
-                  <ResetGroupedControlContext>{prefix}</ResetGroupedControlContext>
-                </span>
+      <div
+        className={clsx(
+          styles['input-field'],
+          invalid && styles['input-field-invalid'],
+          warning && !invalid && styles['input-field-warning'],
+          disabled && styles['input-field-disabled'],
+          readOnly && !disabled && styles['input-field-readonly'],
+          __noBorderRadius && styles['input-field-no-border-radius'],
+          __noBorder && styles['input-field-no-border'],
+          groupedControlClasses
+        )}
+        aria-disabled={disabled || undefined}
+        style={fieldStyles}
+      >
+        {hasPrefix && (
+          <>
+            <span className={styles['input-prefix']} aria-hidden="true">
+              <span className={styles['input-adornment-content']}>
+                <ResetGroupedControlContext>{prefix}</ResetGroupedControlContext>
               </span>
-              <span className={styles['input-adornment-divider']} />
-            </>
-          )}
-          {mainInput}
-          {hasSuffix && (
-            <>
-              <span className={styles['input-adornment-divider']} />
-              <span className={styles['input-suffix']} aria-hidden="true">
-                <span className={styles['input-adornment-content']}>
-                  <ResetGroupedControlContext>{suffix}</ResetGroupedControlContext>
-                </span>
+            </span>
+            <span className={styles['input-adornment-divider']} />
+          </>
+        )}
+        {mainInput}
+        {hasSuffix && (
+          <>
+            <span className={styles['input-adornment-divider']} />
+            <span className={styles['input-suffix']} aria-hidden="true">
+              <span className={styles['input-adornment-content']}>
+                <ResetGroupedControlContext>{suffix}</ResetGroupedControlContext>
               </span>
-            </>
-          )}
-          {endIcon}
-        </div>
-      ) : (
-        mainInput
-      )}
-      {!hasPrefixOrSuffix && endIcon}
+            </span>
+          </>
+        )}
+      </div>
+      {endIcon}
     </div>
   );
 
@@ -370,11 +362,11 @@ function InternalInput(
           __fullWidth && styles['inline-label-trigger-wrapper-full-width']
         )}
       >
-        {renderInputWithPrefixSuffix()}
+        {renderInputField()}
       </div>
     </div>
   ) : (
-    renderInputWithPrefixSuffix(rootProps)
+    renderInputField(rootProps)
   );
   return inputWithLabel;
 }
