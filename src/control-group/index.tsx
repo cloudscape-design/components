@@ -1,14 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+'use client';
 import React from 'react';
 import clsx from 'clsx';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { InternalButton } from '../../../button/internal';
-import { getBaseProps } from '../../base-component';
-import { GroupedControlContext, GroupedControlPosition } from '../../context/control-group-context';
-import { flattenChildren } from '../../utils/flatten-children';
+import { InternalButton } from '../button/internal';
+import { getBaseProps } from '../internal/base-component';
+import { GroupedControlContext, GroupedControlPosition } from '../internal/context/control-group-context';
+import { flattenChildren } from '../internal/utils/flatten-children';
 import { ControlGroupProps } from './interfaces';
 
 import styles from './styles.css.js';

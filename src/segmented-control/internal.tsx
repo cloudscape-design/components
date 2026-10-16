@@ -3,9 +3,9 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { getGroupedControlClassNames } from '../control-group/grouped-control-styles';
 import InternalFormField from '../form-field/internal';
 import { getBaseProps } from '../internal/base-component';
-import { getGroupedControlClassNames } from '../internal/components/control-group/grouped-control-styles';
 import { useGroupedControlContext } from '../internal/context/control-group-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';

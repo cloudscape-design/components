@@ -3,9 +3,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import ControlGroup from '../../../../../lib/components/internal/components/control-group';
-import { ResetGroupedControlContext } from '../../../../../lib/components/internal/context/control-group-context';
-import ControlGroupWrapper from '../../../../../lib/components/test-utils/dom/internal/control-group';
+import ControlGroup from '../../../lib/components/control-group';
+import { ResetGroupedControlContext } from '../../../lib/components/internal/context/control-group-context';
+import ControlGroupWrapper from '../../../lib/components/test-utils/dom/control-group';
 import { DirectionProbe, PositionProbe } from './common';
 
 function findControlGroup(container: HTMLElement) {
