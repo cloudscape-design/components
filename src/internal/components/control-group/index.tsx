@@ -34,7 +34,7 @@ export default function ControlGroup({
   const flattenedChildren = flattenChildren(children, 'ControlGroup');
   const controlCount = flattenedChildren.length;
 
-  const { overflows, rootRef, ghostRef, sensorRef } = useFitsInline<HTMLDivElement>();
+  const { overflows, ghostRef, sensorRef } = useFitsInline<HTMLDivElement>();
   const resolvedDirection: GroupedControlDirection =
     direction === 'auto' ? (overflows ? 'vertical' : 'horizontal') : direction;
 
@@ -105,7 +105,6 @@ export default function ControlGroup({
   const groupLayoutWrapper = (
     <div
       {...(inlineLabelText ? {} : baseProps)}
-      ref={rootRef}
       className={clsx(styles['group-layout-wrapper'], !inlineLabelText && rootClassnames)}
     >
       {renderGroupLayout(false)}

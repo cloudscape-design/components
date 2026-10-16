@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback } from 'react';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
@@ -8,8 +8,6 @@ import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 interface UseFitsInlineResult<T extends HTMLElement> {
   // `true` when content does not fit; `false` until both widths are known.
   overflows: boolean;
-  // Attach to the group root; it MUST be `position: static`.
-  rootRef: React.Ref<T>;
   // Attach to the hidden single-row ghost (required width). The ghost must contain
   // everything that shares the row, so its measured width is the full required width.
   ghostRef: React.Ref<T>;
@@ -36,15 +34,11 @@ export function useFitsInline<T extends HTMLElement = HTMLElement>(): UseFitsInl
     }
   }, []);
 
-  // Kept for a stable return shape; the sensor, not the root, is measured.
-  const rootRef = useRef<T | null>(null);
-
   // `-1` tolerance avoids flipping on sub-pixel rounding.
   const overflows = availableWidth !== null && requiredWidth !== null ? availableWidth < requiredWidth - 1 : false;
 
   return {
     overflows,
-    rootRef,
     ghostRef: useMergeRefs(ghostWidthRef, ghostInertRef),
     sensorRef: sensorWidthRef,
   };
