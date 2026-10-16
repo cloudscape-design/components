@@ -78,8 +78,9 @@
   }
 
   > .label-tag {
-    flex: 0 0 auto;
-    max-inline-size: 20ch;
+    // huge number to ensure tag shrinks before label
+    flex: 0 100000 auto;
+    min-inline-size: 4ch;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
