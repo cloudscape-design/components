@@ -43,7 +43,6 @@ export default function ControlGroup({
       className={clsx(
         styles.controls,
         styles[`controls-${direction}`],
-        actionButton && styles['controls-with-action'],
         !actionButton && !inlineLabelText && rootClassnames
       )}
     >
@@ -83,7 +82,7 @@ export default function ControlGroup({
       {controls}
       <div className={styles['action-slot']}>
         <InternalButton
-          className={clsx(testUtilStyles['action-button'])}
+          className={testUtilStyles['action-button']}
           variant="control-group-action"
           formAction="none"
           iconName={actionButton.iconName}
