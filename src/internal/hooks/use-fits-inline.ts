@@ -22,12 +22,7 @@ interface UseFitsInlineResult<T extends HTMLElement> {
  * required width (hidden single-row ghost). Measuring these independently avoids the feedback
  * loop where the content's own collapse would shrink the measurement and never re-expand.
  *
- * The sensor only reports the available width while the root stays `position: static`, so the
- * sensor resolves against the nearest positioned ancestor instead of the group itself.
- *
- * The ghost is a hidden single-row copy of everything on the row, laid out at its natural
- * width. The caller decides what the ghost contains, so the hook stays agnostic to the
- * component using it.
+ * The ghost is a hidden single-row copy of everything on the row.
  */
 export function useFitsInline<T extends HTMLElement = HTMLElement>(): UseFitsInlineResult<T> {
   const [availableWidth, sensorWidthRef] = useContainerQuery<number>(entry => entry.contentBoxWidth);

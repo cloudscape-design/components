@@ -70,7 +70,7 @@ export default function ControlGroup({
     actionButton ? (
       <div className={styles['action-slot']}>
         <InternalButton
-          // Only the real action button carries the test-util class, so test utils exclude the ghost copy.
+          // Make sure that test utils exclude the ghost
           className={isGhost ? undefined : testUtilStyles['action-button']}
           variant="control-group-action"
           formAction="none"
