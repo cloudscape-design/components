@@ -7,6 +7,7 @@
 @use '../../styles/tokens' as awsui;
 @use './constants' as constants;
 @use '../../generated/custom-css-properties/index' as custom-props;
+@use '../../../token/constants' as token-constants;
 
 .option {
   @include styles.styles-reset;
@@ -67,6 +68,10 @@
   &:empty {
     display: none;
   }
+}
+
+.option.single-line {
+  max-block-size: token-constants.$token-max-height-inline;
 }
 
 .label-content.single-line {

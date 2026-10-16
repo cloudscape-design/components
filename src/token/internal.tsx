@@ -203,10 +203,7 @@ function InternalToken({
           style={tokenRootStyleProps}
         >
           <Option
-            className={clsx(
-              isInline && styles['token-option-inline'],
-              isInline && onDismiss && styles['token-option-inline-dismissible']
-            )}
+            className={clsx(isInline && onDismiss && styles['token-option-inline-dismissible'])}
             triggerVariant={isInline}
             singleLineLabelContent={isInline}
             option={buildOptionDefinition()}

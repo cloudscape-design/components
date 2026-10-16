@@ -92,11 +92,8 @@
   }
 }
 
-.token-option-inline {
-  max-block-size: constants.$token-max-height-inline;
-  &-dismissible {
-    min-inline-size: constants.$token-min-label-width-inline;
-  }
+.token-option-inline-dismissible {
+  min-inline-size: constants.$token-min-label-width-inline;
 }
 
 .token-box {
