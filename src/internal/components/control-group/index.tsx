@@ -34,7 +34,9 @@ export default function ControlGroup({
   const flattenedChildren = flattenChildren(children, 'ControlGroup');
   const controlCount = flattenedChildren.length;
 
-  const { overflows, rootRef, ghostRef, sensorRef } = useFitsInline<HTMLDivElement>();
+  const { overflows, rootRef, ghostRef, sensorRef, actionSlotRef } = useFitsInline<HTMLDivElement>({
+    hasActionSlot: !!actionButton,
+  });
   const resolvedDirection: GroupedControlDirection =
     direction === 'auto' ? (overflows ? 'vertical' : 'horizontal') : direction;
 
@@ -102,7 +104,7 @@ export default function ControlGroup({
       )}
     >
       {controls}
-      <div className={styles['action-slot']}>
+      <div ref={actionSlotRef} className={styles['action-slot']}>
         <InternalButton
           className={testUtilStyles['action-button']}
           variant="control-group-action"

@@ -77,6 +77,22 @@ function setup(wrapMode: 'flex' | 'block', withButton: boolean, testFn: (page: C
   });
 }
 
+// Loads the flex example at an exact container width, navigating fresh each time: a
+// hash-only change leaves a stale `overflows` closure, so each case must land on a blank
+// page first and reload to force a clean re-measure.
+function setupWidth(containerWidth: number, withButton: boolean, testFn: (page: ControlGroupPage) => Promise<void>) {
+  return useBrowser(async browser => {
+    const page = new ControlGroupPage(browser);
+    await page.setWindowSize({ width: 1600, height: 800 });
+    await browser.url('about:blank');
+    await browser.url(
+      `#/control-group/responsive?wrapMode=flex&containerWidth=${containerWidth}${withButton ? '&withButton=true' : ''}`
+    );
+    await page.waitForVisible(wrapperSelector);
+    await testFn(page);
+  });
+}
+
 // Window-constrained mode (none): there is no width-constraining wrapper, so the
 // group resolves against the viewport; the window size drives the available width.
 function setupWindow(testFn: (page: ControlGroupPage) => Promise<void>) {
@@ -152,6 +168,29 @@ describe('Control Group responsiveness', () => {
         const actionButton = await page.getBoundingBox(group.findActionButton()!.toSelector());
         expect(actionButton.right).toBeLessThanOrEqual(container.right);
       });
+    })
+  );
+
+  // The action button must be counted on the row: at a width where the controls' own
+  // single row still fits but the controls + button do not, the group must STACK rather
+  // than keep the row and force-compress the controls by ~1 button-width.
+  //
+  // `thresholdWidth` sits between the two stack points: the no-button group stacks only
+  // below ~818px, while the with-button group stacks below ~851px once the ~34px button
+  // (minus its 1px overlap seam) no longer fits beside the controls.
+  const thresholdWidth = 840;
+
+  test(
+    `A control group without an action button still rows at ${thresholdWidth}px`,
+    setupWidth(thresholdWidth, false, async page => {
+      await page.expectRow(controls);
+    })
+  );
+
+  test(
+    `A control group with an action button stacks at ${thresholdWidth}px because the button is accounted for`,
+    setupWidth(thresholdWidth, true, async page => {
+      await page.expectStacked(controls);
     })
   );
 });
