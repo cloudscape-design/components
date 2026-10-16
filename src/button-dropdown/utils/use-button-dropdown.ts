@@ -23,7 +23,23 @@ interface UseButtonDropdownOptions extends ButtonDropdownSettings {
   // Returns whether the given element is (or is inside) the dropdown trigger.
   isTriggerElement: (element: Element) => boolean;
   expandToViewport?: boolean;
-  hasFiltering: boolean;
+  filteringType?: ButtonDropdownProps.FilteringType;
+  fireLoadItems?: (filteringText: string) => void;
+  /**
+   * Called whenever an expandable group gets expanded, regardless of whether it was
+   * expanded with the pointer or with the keyboard.
+   */
+  onGroupExpand?: (group: ButtonDropdownProps.ItemGroup) => void;
+  /**
+   * Returns whether a recovery button is currently rendered inside the dropdown.
+   * While it is, Tab moves focus to it instead of closing the dropdown.
+   */
+  hasRecoveryButton?: () => boolean;
+  /**
+   * Called on Enter in filtering mode while the highlight points into an expanded group
+   * that has no items yet, so the highlight sits on the group's status.
+   */
+  onPendingHighlightActivate?: () => void;
 }
 
 interface UseButtonDropdownApi extends HighlightProps {
@@ -41,6 +57,8 @@ interface UseButtonDropdownApi extends HighlightProps {
   setFilteringValue: (value: string) => void;
   filteredItems: ButtonDropdownProps.Items;
   isExpandable: (item: ButtonDropdownProps.ItemOrGroup) => boolean;
+  isHighlightPending: boolean;
+  expandedGroup: ButtonDropdownProps.ItemGroup | null;
 }
 
 export function useButtonDropdown({
@@ -52,13 +70,18 @@ export function useButtonDropdown({
   hasExpandableGroups,
   isInRestrictedView = false,
   expandToViewport = false,
-  hasFiltering,
+  filteringType,
+  fireLoadItems,
+  onGroupExpand,
+  hasRecoveryButton,
+  onPendingHighlightActivate,
 }: UseButtonDropdownOptions): UseButtonDropdownApi {
   const [filteringValue, setFilteringValue] = useState('');
+  const hasFiltering = filteringType === 'auto' || filteringType === 'manual';
 
   const filteredItems = useMemo(
-    () => (hasFiltering && filteringValue ? filterItems(items, filteringValue) : items),
-    [hasFiltering, filteringValue, items]
+    () => (filteringType === 'auto' && filteringValue ? filterItems(items, filteringValue) : items),
+    [filteringType, filteringValue, items]
   );
 
   // an active filter flattens every group; otherwise a group's own `expandable` flag wins, falling
@@ -70,6 +93,8 @@ export function useButtonDropdown({
 
   const {
     targetItem,
+    isHighlightPending,
+    expandedGroup,
     isHighlighted,
     isKeyboardHighlight,
     isExpanded,
@@ -95,7 +120,14 @@ export function useButtonDropdown({
     }
   }, [filteringValue, reset]);
 
-  const { isOpen, closeDropdown: closeDropdownState, ...openStateProps } = useOpenState({ onClose: reset });
+  const {
+    isOpen,
+    closeDropdown: closeDropdownState,
+    ...openStateProps
+  } = useOpenState({
+    onOpen: () => fireLoadItems?.(''),
+    onClose: reset,
+  });
 
   const closeDropdown = () => {
     setFilteringValue('');
@@ -144,7 +176,14 @@ export function useButtonDropdown({
     }
   };
 
-  const onGroupToggle: GroupToggle = item => (!isExpanded(item) ? expandGroup(item) : collapseGroup());
+  // Single entry point for expanding a group so that pointer and keyboard expansion
+  // both notify the consumer (used to load the group's items asynchronously).
+  const expandGroupAndNotify = (group: ButtonDropdownProps.ItemGroup) => {
+    expandGroup(group);
+    onGroupExpand?.(group);
+  };
+
+  const onGroupToggle: GroupToggle = item => (!isExpanded(item) ? expandGroupAndNotify(item) : collapseGroup());
 
   const onItemActivate: ItemActivate = (item, event) => {
     const isCheckbox = isCheckboxItem(item);
@@ -172,6 +211,11 @@ export function useButtonDropdown({
   };
 
   const actOnParentDropdown = (event: React.KeyboardEvent) => {
+    // The highlight points into an expanded group whose items haven't loaded yet. There is
+    // nothing to activate, and the dropdown must stay open so the items can arrive.
+    if (isHighlightPending) {
+      return;
+    }
     // if there is no highlighted item we act on the trigger by opening or closing dropdown
     if (!targetItem) {
       if (isOpen && !isInRestrictedView) {
@@ -240,6 +284,12 @@ export function useButtonDropdown({
         // While filtering, pressing Enter without a highlighted item should not select
         // any item or close the dropdown.
         if (isOpen && hasFiltering && !targetItem) {
+          // The highlight sits on an expanded group's status (loading or error) instead of an
+          // item. Enter acts on that status, for example to retry a failed group.
+          if (isHighlightPending) {
+            onPendingHighlightActivate?.();
+            event.preventDefault();
+          }
           break;
         }
         if (!targetItem?.disabled) {
@@ -255,7 +305,7 @@ export function useButtonDropdown({
           break;
         }
         if (targetItem && !targetItem.disabled && isItemGroup(targetItem) && !isExpanded(targetItem)) {
-          expandGroup();
+          expandGroupAndNotify(targetItem);
         } else {
           collapseGroup();
         }
@@ -278,6 +328,11 @@ export function useButtonDropdown({
         // closing on Tab is handled by onDropdownFocusLeave instead, which only fires once
         // focus actually leaves the dropdown.
         if (hasFiltering) {
+          break;
+        }
+        // A recovery button rendered in the status footer must be reachable with Tab. The
+        // dropdown then closes through onDropdownBlur once focus actually leaves it.
+        if (hasRecoveryButton?.()) {
           break;
         }
         // When expanded to viewport the focus can't move naturally to the next element.
@@ -320,5 +375,7 @@ export function useButtonDropdown({
     setFilteringValue,
     filteredItems,
     isExpandable,
+    isHighlightPending,
+    expandedGroup,
   };
 }

@@ -63,9 +63,11 @@
     "i18nStrings.externalIconAriaLabel": "在新选项卡中打开"
   },
   "button-dropdown": {
+    "errorIconAriaLabel": "错误",
     "filteringResultsText": "{matchesCount} 个项目（共 {totalCount} 个）",
     "i18nStrings.filteringItemAriaDescription": "继续键入以筛选结果。",
-    "noMatch": "没有匹配的操作"
+    "noMatch": "没有匹配的操作",
+    "recoveryText": "重试"
   },
   "calendar": {
     "i18nStrings.currentMonthAriaLabel": "本月",
