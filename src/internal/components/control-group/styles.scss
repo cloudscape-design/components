@@ -46,8 +46,6 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
 .controls {
   display: flex;
   align-items: stretch;
-  // Keep static so it does not become the sensor's containing block either.
-  position: static;
 
   &-horizontal {
     flex-direction: row;
@@ -89,14 +87,14 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
   }
 }
 
-// Width sensor (see use-fits-inline.ts for why a sensor and why the root must be static).
+// Width sensor
 .sensor {
   @include styles.measurement-ghost;
   inset-inline-end: 0;
   min-inline-size: 0;
 }
 
-.ghost-wrapper {
+.ghost-anchor {
   @include styles.measurement-ghost-anchor;
 }
 

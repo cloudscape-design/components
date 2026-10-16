@@ -113,7 +113,7 @@ export default function ControlGroup({
       {direction === 'auto' && (
         <>
           <div ref={sensorRef} className={styles.sensor} aria-hidden="true" />
-          <div className={styles['ghost-wrapper']}>
+          <div className={styles['ghost-anchor']}>
             <div ref={ghostRef} className={styles.ghost} aria-hidden="true">
               {renderGroupLayout(true)}
             </div>
