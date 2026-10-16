@@ -53,7 +53,7 @@ class ControlGroupPage extends BasePageObject {
     await this.waitForAssertion(async () => {
       const boxes = await this.getControlBoxes(controlsCollection);
       expect(boxes).toHaveLength(expectedControlCount);
-      // Every control is on its own row below the previous one (all-or-nothing stacking).
+      // Each control sits below the previous one.
       for (let i = 1; i < boxes.length; i++) {
         expect(boxes[i].top).toBeGreaterThan(boxes[i - 1].top);
       }
@@ -68,7 +68,7 @@ interface SetupSettings {
 }
 
 function setupTest(settings: SetupSettings, testFn: (page: ControlGroupPage) => Promise<void>) {
-  const { wrapMode = 'flex', containerWidth = 1200, withButton = false } = settings;
+  const { wrapMode = 'flex', containerWidth = 1000, withButton = false } = settings;
   return useBrowser(async browser => {
     const page = new ControlGroupPage(browser);
     await page.setWindowSize({ width: 1600, height: 800 });
@@ -88,12 +88,12 @@ describe('Control Group responsiveness', () => {
     test(
       `Collapses and re-expands according to the ${mode} container width when \`direction="auto"\``,
       setupTest({ wrapMode: mode }, async page => {
-        await page.selectWidth('1200');
+        await page.selectWidth('1000');
         await page.expectRow(controls);
-        await page.selectWidth('300');
+        await page.selectWidth('500');
         await page.expectStacked(controls);
-        // Critical case: widening must re-expand it, not leave it stuck stacked.
-        await page.selectWidth('1200');
+        // Widening must re-expand it, not leave it stuck stacked.
+        await page.selectWidth('1000');
         await page.expectRow(controls);
       })
     );
@@ -107,7 +107,7 @@ describe('Control Group responsiveness', () => {
       // Headless Chrome will not shrink below ~500px wide.
       await page.setWindowSize({ width: 500, height: 800 });
       await page.expectStacked(controls);
-      // Critical case: widening must re-expand it, not leave it stuck stacked.
+      // Widening must re-expand it, not leave it stuck stacked.
       await page.setWindowSize({ width: 1600, height: 800 });
       await page.expectRow(controls);
     })
@@ -116,7 +116,7 @@ describe('Control Group responsiveness', () => {
   test(
     'Measurement ghost does not add tab stops',
     setupTest({ wrapMode: 'flex' }, async page => {
-      await page.selectWidth('1200');
+      await page.selectWidth('1000');
       await page.click('#focus-target');
       await expect(page.isFocused('#focus-target')).resolves.toBe(true);
 
@@ -131,7 +131,7 @@ describe('Control Group responsiveness', () => {
         await page.keys(['Tab']);
       }
       await page.keys(['Tab']);
-      // Focus exits the group, not intercepted by the measurement ghost.
+      // Focus exits the group rather than entering the measurement ghost.
       await expect(page.isFocused('[data-testid="focus-after"]')).resolves.toBe(true);
     })
   );
