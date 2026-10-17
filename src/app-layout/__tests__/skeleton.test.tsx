@@ -5,6 +5,7 @@ import { render } from '@testing-library/react';
 
 import AppLayout from '../../../lib/components/app-layout';
 import { BeforeMainSlotSkeleton } from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/skeleton-parts';
+import AppLayoutToolbar from '../../../lib/components/app-layout-toolbar';
 import BreadcrumbGroup from '../../../lib/components/breadcrumb-group';
 import { getFunnelKeySelector } from '../../../lib/components/internal/analytics/selectors';
 import { describeEachAppLayout, renderComponent } from './utils';
@@ -91,6 +92,46 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
       expect(wrapper.findByClassName(skeletonStyles.navigation)).toBeTruthy();
       expect(wrapper.findByClassName(skeletonStyles['panel-hidden'])).toBeTruthy();
       rerender(<AppLayout navigation="test nav" navigationOpen={true} onNavigationChange={noop} />);
+      expect(wrapper.findByClassName(skeletonStyles.navigation)).toBeTruthy();
+      expect(wrapper.findByClassName(skeletonStyles['panel-hidden'])).toBeFalsy();
+    });
+
+    it('reserves space for the open navigation when the navigation trigger is hidden', () => {
+      const noop = () => {};
+      const { wrapper, rerender } = renderComponent(
+        <AppLayoutToolbar
+          navigation="test nav"
+          navigationTriggerHide={true}
+          navigationOpen={true}
+          onNavigationChange={noop}
+          breadcrumbs="dummy"
+        />
+      );
+      expect(wrapper.findNavigationToggle()).toBeFalsy();
+      expect(wrapper.findByClassName(skeletonStyles.navigation)).toBeTruthy();
+      expect(wrapper.findByClassName(skeletonStyles['panel-hidden'])).toBeFalsy();
+      rerender(
+        <AppLayoutToolbar
+          navigation="test nav"
+          navigationTriggerHide={true}
+          navigationOpen={false}
+          onNavigationChange={noop}
+          breadcrumbs="dummy"
+        />
+      );
+      expect(wrapper.findByClassName(skeletonStyles['panel-hidden'])).toBeTruthy();
+    });
+
+    it('reserves space for the open navigation in a secondary layout', () => {
+      const { wrapper } = renderComponent(
+        <AppLayout
+          {...{ __forceDeduplicationType: 'secondary' }}
+          navigation="test nav"
+          navigationOpen={true}
+          onNavigationChange={() => {}}
+        />
+      );
+      expect(wrapper.findByClassName(skeletonStyles['toolbar-container'])).toBeFalsy();
       expect(wrapper.findByClassName(skeletonStyles.navigation)).toBeTruthy();
       expect(wrapper.findByClassName(skeletonStyles['panel-hidden'])).toBeFalsy();
     });
