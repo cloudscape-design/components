@@ -71,11 +71,15 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   }
 
   &.textarea-invalid {
+    // The thick leading border lives on this root while the compensating reduced
+    // padding lives on inner content cells (.textarea etc.), so the root must own
+    // zero inline-start padding. Pass the zero as mixin @content so it lands inside
+    // the mixin's `:not(.grouped)` branch and wins the specificity contest against
+    // the mixin's own padding (matching the working Input pattern).
     @include styles.form-invalid-control(
       $color: var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-status-error),
       $border-color: var(#{custom-props.$promptInputStyleBorderColorDefault}, awsui.$color-text-status-error)
-    );
-    & {
+    ) {
       padding-inline-start: 0;
     }
 
@@ -84,8 +88,7 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
       @include styles.form-invalid-control(
         $color: var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-status-error),
         $border-color: var(#{custom-props.$promptInputStyleBorderColorDefault}, awsui.$color-text-status-error)
-      );
-      & {
+      ) {
         padding-inline-start: 0;
         box-shadow: foundation.$box-shadow-focused-light-invalid;
       }
@@ -99,11 +102,13 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   }
 
   &.textarea-warning {
+    // Symmetric with the invalid state: pass the root's zero inline-start padding
+    // as mixin @content so it wins the specificity contest against the mixin's own
+    // padding, keeping text at the neutral x-position next to the thick border.
     @include styles.form-warning-control(
       $color: var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-status-warning),
       $border-color: var(#{custom-props.$promptInputStyleBorderColorDefault}, awsui.$color-text-status-warning)
-    );
-    & {
+    ) {
       padding-inline-start: 0;
     }
 
@@ -112,8 +117,7 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
       @include styles.form-warning-control(
         $color: var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-status-warning),
         $border-color: var(#{custom-props.$promptInputStyleBorderColorDefault}, awsui.$color-text-status-warning)
-      );
-      & {
+      ) {
         padding-inline-start: 0;
         box-shadow: foundation.$box-shadow-focused-light-invalid;
       }

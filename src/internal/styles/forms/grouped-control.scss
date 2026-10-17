@@ -1,11 +1,60 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+@use 'sass:list';
 @use '../tokens' as awsui;
 @use '../utils' as styles;
+@use '../foundation' as foundation;
 @use './constants' as constants;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 $grouped-control-border-radius: constants.$control-border-radius;
+
+$grouped-control-error-marker: '.grouped-in-error';
+$grouped-control-warning-marker: '.grouped-in-warning';
+
+// Sets the given color on the outward-facing border edges of `$edges`.
+// Inner borders stay neutral.
+@mixin grouped-control-edge-color($edges, $color) {
+  @if list.index($edges, inline-start) {
+    border-inline-start-color: $color;
+  }
+  @if list.index($edges, inline-end) {
+    border-inline-end-color: $color;
+  }
+  @if list.index($edges, block-start) {
+    border-block-start-color: $color;
+  }
+  @if list.index($edges, block-end) {
+    border-block-end-color: $color;
+  }
+}
+
+@mixin grouped-control-status-edges($edges) {
+  @each $marker,
+    $color
+      in (
+        $grouped-control-error-marker: awsui.$color-text-status-error,
+        $grouped-control-warning-marker: awsui.$color-text-status-warning
+      )
+  {
+    &#{$marker},
+    &#{$marker}:hover,
+    &#{$marker}:focus {
+      @include grouped-control-edge-color($edges, $color);
+    }
+    &#{$marker} {
+      @include focus-visible.when-visible {
+        @include grouped-control-edge-color($edges, $color);
+      }
+    }
+  }
+}
+
+@mixin grouped-control-outer-border-color($edges) {
+  @include grouped-control-edge-color($edges, awsui.$color-border-input-default);
+  @include grouped-control-status-edges($edges);
+}
 
 @mixin grouped-control-base {
   @include styles.logical-radius($grouped-control-border-radius);
@@ -37,29 +86,58 @@ $grouped-control-border-radius: constants.$control-border-radius;
   &-horizontal {
     &-first {
       @include grouped-control-horizontal-first;
+      @include grouped-control-outer-border-color((inline-start, block-start, block-end));
     }
     &-middle {
       @include grouped-control-middle;
+      @include grouped-control-outer-border-color((block-start, block-end));
     }
     &-last {
       @include grouped-control-horizontal-last;
+      @include grouped-control-outer-border-color((inline-end, block-start, block-end));
     }
   }
 
   &-vertical {
     &-first {
       @include grouped-control-vertical-first;
+      @include grouped-control-outer-border-color((block-start, inline-start, inline-end));
     }
     &-middle {
       @include grouped-control-middle;
+      @include grouped-control-outer-border-color((inline-start, inline-end));
     }
     &-last {
       @include grouped-control-vertical-last;
+      @include grouped-control-outer-border-color((block-end, inline-start, inline-end));
     }
+  }
+
+  &-horizontal-only,
+  &-vertical-only {
+    @include grouped-control-outer-border-color((inline-start, inline-end, block-start, block-end));
   }
 
   &-with-action {
     border-start-end-radius: 0;
     border-end-end-radius: 0;
+  }
+
+  // Invalid focus ring, position-independent. Keyed on the state markers with
+  // :focus-within so it fires for the button-trigger (focus on self) and the
+  // Input .input-field wrapper (focus on the inner native input).
+  &#{$grouped-control-error-marker}:focus-within,
+  &#{$grouped-control-warning-marker}:focus-within {
+    box-shadow: foundation.$box-shadow-focused-light-invalid;
+  }
+  &#{$grouped-control-error-marker},
+  &#{$grouped-control-warning-marker} {
+    @include focus-visible.when-visible {
+      box-shadow: foundation.$box-shadow-focused-light-invalid;
+    }
+  }
+
+  &#{&}-validation {
+    padding-inline-start: calc(#{constants.$invalid-control-left-border} + #{constants.$invalid-control-left-padding});
   }
 }

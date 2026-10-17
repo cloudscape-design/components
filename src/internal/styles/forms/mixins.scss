@@ -124,8 +124,13 @@
   // See focus-highlight above.
   outline: 2px dotted transparent;
 
-  border-block: awsui.$border-width-field solid $border-color;
-  border-inline: awsui.$border-width-field solid $border-color;
+  border-block-style: solid;
+  border-inline-style: solid;
+
+  @if $border-color {
+    border-block-color: $border-color;
+    border-inline-color: $border-color;
+  }
 
   box-shadow: $box-shadow;
 }
@@ -198,12 +203,20 @@
 ) {
   color: $color;
   border-color: $border-color;
-  padding-inline-start: constants.$invalid-control-left-padding;
-  border-inline-start-width: constants.$invalid-control-left-border;
+  // Standalone only: thicken the real leading border and reduce the padding so
+  // text stays at the neutral position. Grouped controls get the overlay bar and
+  // a bar+cph content inset instead (grouped-control.scss), so they must not pull
+  // a real thick border here. @content is scoped to the standalone path so a
+  // caller (Input) can zero the wrapper padding when an inner cell owns the
+  // compensation, at the same specificity as the padding above.
+  &:not(.grouped) {
+    padding-inline-start: constants.$invalid-control-left-padding;
+    border-inline-start-width: constants.$invalid-control-left-border;
+    @content;
+  }
   &:focus {
     box-shadow: $focus-box-shadow;
   }
-  @content;
 }
 
 @mixin form-warning-control(
@@ -213,12 +226,17 @@
 ) {
   color: $color;
   border-color: $border-color;
-  padding-inline-start: constants.$invalid-control-left-padding;
-  border-inline-start-width: constants.$invalid-control-left-border;
+  // Symmetric with form-invalid-control: standalone only gets the thick real
+  // border + reduced padding; grouped uses the overlay bar + bar+cph inset.
+  // @content is scoped to the standalone path for the same reason.
+  &:not(.grouped) {
+    padding-inline-start: constants.$invalid-control-left-padding;
+    border-inline-start-width: constants.$invalid-control-left-border;
+    @content;
+  }
   &:focus {
     box-shadow: $focus-box-shadow;
   }
-  @content;
 }
 
 @mixin input-default-styles {

@@ -128,8 +128,10 @@ $icon-offset: awsui.$space-xxxs;
   }
 
   &:not(.in-filtering-token):not(.compact) {
-    @include focus-visible.when-visible {
-      @include styles.form-focus-element();
+    &:not(.grouped) {
+      @include focus-visible.when-visible {
+        @include styles.form-focus-element();
+      }
     }
 
     &:invalid {
@@ -145,6 +147,15 @@ $icon-offset: awsui.$space-xxxs;
     &.warning,
     &.warning:focus {
       @include styles.form-warning-control();
+    }
+
+    @include focus-visible.when-visible {
+      &.invalid {
+        border-color: awsui.$color-text-status-error;
+      }
+      &.warning {
+        border-color: awsui.$color-text-status-warning;
+      }
     }
   }
 

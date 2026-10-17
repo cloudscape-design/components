@@ -11,11 +11,25 @@ import { GroupedControlContextProps } from '../../context/control-group-context'
  */
 export function getGroupedControlClassNames(
   styles: Record<string, string>,
-  { position, direction, hasAction }: GroupedControlContextProps
+  { position, direction, hasAction, validation }: GroupedControlContextProps
 ): string[] {
   if (!position) {
     return [];
   }
-  const baseClassNames = [styles.grouped, styles[`grouped-${direction}-${position}`]];
-  return hasAction ? [...baseClassNames, styles['grouped-with-action']] : baseClassNames;
+  const classNames = [styles.grouped, styles[`grouped-${direction}-${position}`]];
+  if (hasAction) {
+    classNames.push(styles['grouped-with-action']);
+  }
+  if (validation) {
+    // State class drives the outward validation color (and invalid ring) in SCSS.
+    // Every control gets it so each re-asserts its own outward edges on focus.
+    classNames.push(validation === 'error' ? styles['grouped-in-error'] : styles['grouped-in-warning']);
+    // Only the leading (inline-start) controls draw the thick validation seam:
+    // the first/only control horizontally, every control vertically.
+    const isLeading = direction === 'vertical' || position === 'first' || position === 'only';
+    if (isLeading) {
+      classNames.push(styles['grouped-validation']);
+    }
+  }
+  return classNames;
 }

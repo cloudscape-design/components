@@ -162,7 +162,15 @@
       var(#{custom-props.$styleColorDefault}, awsui.$color-text-form-secondary)
     );
     background-color: var(#{custom-props.$styleBackgroundFocus}, awsui.$color-background-input-default);
-    @include styles.input-focus-styles;
+    &:not(.grouped-validation) {
+      @include styles.input-focus-styles;
+    }
+    &.grouped-validation {
+      @include styles.form-focus-element(
+        $border-color: false,
+        $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
+      );
+    }
   }
 
   // Keep disabled styles before validation modifiers so invalid/warning border colors win when both modifiers are present.
@@ -186,6 +194,9 @@
     }
 
     &:focus-within {
+      // Re-assert the validation border under focus so the neutral focus color
+      // (.input-field:focus-within, equal specificity) does not win by order.
+      border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-error);
       box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid);
     }
   }
@@ -200,6 +211,9 @@
     }
 
     &:focus-within {
+      // Re-assert the validation border under focus so the neutral focus color
+      // (.input-field:focus-within, equal specificity) does not win by order.
+      border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-warning);
       box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid);
     }
   }
@@ -226,6 +240,15 @@
 
   &.grouped {
     @include styles.grouped-control;
+
+    // The grouped inset (bar + cph) assumes a single-element control. Input's
+    // inner native .input already supplies its own cph, so the wrapper adds only
+    // one border width; wrapper(1px) + inner(cph) nets the same bar + invalid gap
+    // as single-element controls. The doubled selector matches the grouped-control
+    // validation rule's specificity and wins by source order.
+    &#{&}-validation {
+      padding-inline-start: awsui.$border-width-field;
+    }
   }
 }
 
@@ -262,8 +285,11 @@
   cursor: default;
 }
 
-// The wider invalid/warning start border is absorbed by the first cell, so the content does not shift.
-// The first cell is the prefix when present, otherwise the native input.
+// Standalone only: the wider invalid/warning start border is absorbed by the first
+// cell, so the content does not shift. The first cell is the prefix when present,
+// otherwise the native input. Grouped controls keep their 1px gray border under the
+// overlay bar and get their inset from the grouped wrapper, so the inner cell keeps
+// its normal cph (no re-pad here).
 .input-field-invalid,
 .input-field-warning {
   > .input-prefix,

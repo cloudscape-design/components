@@ -6,6 +6,7 @@
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
 @use '../../styles/forms/mixins' as forms;
+@use '../../styles/forms/constants' as constants;
 
 $margin-overlap: calc(-1 * #{awsui.$border-width-field});
 
@@ -64,6 +65,53 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
     }
     &-vertical {
       margin-block-start: $margin-overlap;
+    }
+  }
+
+  // Thick leading validation bar. Drawn on the slot <div> (not the control) so it
+  // is a flat rectangle that cannot miter against the control's thin block seams
+  // and renders for replaced-element controls (Input/Autosuggest). Offset one
+  // border width outboard and widened to match so it sits flush with the control's
+  // outer edge and overpaints the control's 1px gray leading border. z-index: 1
+  // keeps it above the control's border/box-shadow phase; the slot's own
+  // isolation keeps it from reaching an adjacent slot.
+  &-validation {
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset-block: 0;
+      inline-size: calc(#{constants.$invalid-control-left-border} + #{awsui.$border-width-field});
+      z-index: 1;
+    }
+
+    // Per-position leading corner radii. border-radius is not inherited and the
+    // slot carries none, so match the leading corners each position rounds in
+    // grouped-control.scss so the bar's rounded corners coincide with the group's
+    // outer corners (and stay square where the group is square).
+    // Leading horizontal positions (first/only) round both leading corners.
+    &.control-first-horizontal::before,
+    &.control-only-horizontal::before,
+    &.control-only-vertical::before {
+      border-start-start-radius: constants.$control-border-radius;
+      border-end-start-radius: constants.$control-border-radius;
+    }
+    // Vertical first rounds only the top-leading corner.
+    &.control-first-vertical::before {
+      border-start-start-radius: constants.$control-border-radius;
+    }
+    // Vertical last rounds only the bottom-leading corner.
+    &.control-last-vertical::before {
+      border-end-start-radius: constants.$control-border-radius;
+    }
+    // Vertical middle rounds neither (no radius rule needed).
+
+    &.control-in-error::before {
+      background-color: awsui.$color-text-status-error;
+    }
+    &.control-in-warning::before {
+      background-color: awsui.$color-text-status-warning;
     }
   }
 }
