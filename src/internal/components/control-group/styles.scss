@@ -16,11 +16,7 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
 
 .action-slot {
   display: flex;
-  // Butt against the last control's inline-end border: the control owns the seam,
-  // and the button paints no inline-start border, so the slot sits flush with no
-  // overlap (margin 0 keeps total width unchanged with the control's edge as the
-  // single 1px seam).
-  margin-inline-start: 0;
+  margin-inline-start: $margin-overlap;
 }
 
 .group-layout {
@@ -51,15 +47,6 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
 
   &-vertical {
     flex-direction: column;
-  }
-
-  // The group publishes the validation color via an inherited custom property
-  // set inline on this box; each control reads it on its outward-facing edges.
-  // These marker classes carry no styling — they only let test-utils detect the
-  // validation state.
-  &-invalid,
-  &-warning {
-    /* Marker only. */
   }
 }
 
