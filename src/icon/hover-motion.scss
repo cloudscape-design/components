@@ -1570,9 +1570,10 @@ $icon-hover-motion: (
 }
 
 // Also fires on :focus-visible, covering a focus owner nested inside the trigger.
+// The states share one selector because a separate selector per state repeats the long
+// prefix in every rule.
 @mixin _on-hover-trigger($suffix) {
-  #{'#{$_hover-trigger}:hover #{$suffix}'},
-  #{'#{$_hover-trigger}:is(:focus-visible, :has([#{$_trigger-attribute}~="focus"]:focus-visible)) #{$suffix}'} {
+  #{'#{$_hover-trigger}:is(:hover, :focus-visible, :has([#{$_trigger-attribute}~="focus"]:focus-visible)) #{$suffix}'} {
     @content;
   }
 }
@@ -1641,63 +1642,102 @@ $icon-hover-motion: (
   }
 }
 
+@function _rest-declarations($spec) {
+  $declarations: ();
+  @if map.get($spec, to) {
+    $declarations: map.merge(
+      $declarations,
+      (
+        transition-property: map.get($spec, property) or transform,
+        transition-duration: map.get($spec, duration),
+        transition-timing-function: map.get($spec, easing),
+      )
+    );
+  }
+  @if map.get($spec, base) {
+    $declarations: map.merge($declarations, map.get($spec, base));
+  }
+  @if map.get($spec, origin) {
+    $declarations: map.set($declarations, transform-origin, map.get($spec, origin));
+  }
+  @return $declarations;
+}
+
+@function _hover-declarations($spec) {
+  $animation: map.get($spec, animation);
+  @if not $animation {
+    @return map.get($spec, to) or ();
+  }
+
+  $declarations: (
+    animation-name: $animation,
+    animation-duration: map.get($spec, duration),
+    animation-timing-function: map.get($spec, easing),
+  );
+  $iterations: map.get($spec, iterations) or 1;
+  $fill: map.get($spec, fill) or none;
+  $delay: map.get($spec, delay) or 0s;
+  @if $iterations != 1 {
+    $declarations: map.set($declarations, animation-iteration-count, $iterations);
+  }
+  @if $fill != none {
+    $declarations: map.set($declarations, animation-fill-mode, $fill);
+  }
+  @if $delay != 0s {
+    $declarations: map.set($declarations, animation-delay, $delay);
+  }
+  @return $declarations;
+}
+
+// Appends `.name-$name` to the list stored under `$key`, creating the list if needed.
+@function _add-name($groups, $key, $name) {
+  $names: map.get($groups, $key) or ();
+  @return map.set($groups, $key, list.append($names, '.name-#{$name}', comma));
+}
+
+@function _names-selector($names) {
+  @if list.length($names) == 1 {
+    @return list.nth($names, 1);
+  }
+  @return ':is(#{$names})';
+}
+
+// Icons whose specs produce the same declarations on the same part share a rule, so each
+// distinct motion emits the long trigger and theme prefix once rather than once per icon.
+// An icon has a single name class, so merging rules across icons cannot change the cascade.
 @mixin per-icon-hover-motion {
+  $rest-groups: ();
+  $hover-groups: ();
+
   @each $name, $specs in $icon-hover-motion {
     @each $spec in _specs($specs) {
-      $part: map.get($spec, part);
-      $target: _target($part);
-      $to: map.get($spec, to);
-      $animation: map.get($spec, animation);
-      $duration: map.get($spec, duration);
-      $easing: map.get($spec, easing);
-      $base: map.get($spec, base);
-      $origin: map.get($spec, origin);
+      $target: _target(map.get($spec, part));
+      $rest: _rest-declarations($spec);
+      $hover: _hover-declarations($spec);
+      @if list.length($rest) > 0 {
+        $rest-groups: _add-name($rest-groups, ($target, $rest), $name);
+      }
+      @if list.length($hover) > 0 {
+        $hover-groups: _add-name($hover-groups, ($target, $hover), $name);
+      }
+    }
+  }
 
-      $property: map.get($spec, property) or transform;
-      $iterations: map.get($spec, iterations) or 1;
-      $fill: map.get($spec, fill) or none;
-      $delay: map.get($spec, delay) or 0s;
-
-      @if $to or $base or $origin {
-        .icon.name-#{$name} #{$target} {
-          @include with-motion {
-            @if $to {
-              transition-property: #{$property};
-              transition-duration: $duration;
-              transition-timing-function: $easing;
-            }
-            @if $base {
-              @each $property, $value in $base {
-                #{$property}: #{$value};
-              }
-            }
-            @if $origin {
-              transform-origin: $origin;
-            }
-          }
+  @each $key, $names in $rest-groups {
+    .icon#{_names-selector($names)} #{list.nth($key, 1)} {
+      @include with-motion {
+        @each $property, $value in list.nth($key, 2) {
+          #{$property}: #{$value};
         }
       }
+    }
+  }
 
-      @include _on-hover-trigger('.icon#{$_animating-icon}.name-#{$name} #{$target}') {
-        @include with-motion {
-          @if $animation {
-            animation-name: $animation;
-            animation-duration: $duration;
-            animation-timing-function: $easing;
-            @if $iterations != 1 {
-              animation-iteration-count: $iterations;
-            }
-            @if $fill != none {
-              animation-fill-mode: $fill;
-            }
-            @if $delay != 0s {
-              animation-delay: $delay;
-            }
-          } @else if $to {
-            @each $property, $value in $to {
-              #{$property}: #{$value};
-            }
-          }
+  @each $key, $names in $hover-groups {
+    @include _on-hover-trigger('.icon#{$_animating-icon}#{_names-selector($names)} #{list.nth($key, 1)}') {
+      @include with-motion {
+        @each $property, $value in list.nth($key, 2) {
+          #{$property}: #{$value};
         }
       }
     }
