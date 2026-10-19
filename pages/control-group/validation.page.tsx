@@ -25,6 +25,21 @@ const children = [
     {select}
     {multiselect}
   </>,
+  <>
+    {input}
+    {select}
+    {multiselect}
+  </>,
+  <>
+    {input}
+    {segmentedControl}
+    {select}
+  </>,
+  <>
+    {select}
+    {input}
+    {multiselect}
+  </>,
 ];
 
 const directions: ReadonlyArray<ControlGroupProps['direction']> = ['horizontal', 'vertical'];
