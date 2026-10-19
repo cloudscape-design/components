@@ -48,9 +48,9 @@ export function useGroupedControlContext() {
  * content) should wrap that content with this provider. Otherwise a nested
  * control rendered inside such a slot would inherit the surrounding group's
  * `position` and incorrectly pick up the grouped-control styling
- * where adjacent borders lose their border radii. The group's `validation`
- * state is also cleared so nested custom-slot controls never inherit the
- * group's validation styling.
+ * where adjacent borders lose their border radii.
+ * The group's `validation` state is also cleared so that nested controls do
+ * not inherit the group's validation styling.
  */
 export function ResetGroupedControlContext({ children }: { children: React.ReactNode }) {
   const { direction } = useGroupedControlContext();
