@@ -38,7 +38,6 @@ interface ControlGroupValidationSettings {
   group: ValidationState;
   // The set of controls (and the action button) rendered in their disabled state.
   disabled: ReadonlySet<Disableable>;
-  // Group-level layout settings, extracted from the former validation page's permutation axes.
   direction: Direction;
   label: boolean;
   actionButton: boolean;
@@ -106,34 +105,27 @@ function renderControl(kind: ControlKind, disabled: ReadonlySet<Disableable>) {
   }
 }
 
-const paramKeys: Record<keyof ControlGroupValidationSettings, string> = {
-  group: 'group',
-  disabled: 'disabled',
-  direction: 'controlGroupDirection',
-  label: 'label',
-  actionButton: 'actionButton',
-};
+type ParamName = 'group' | 'disabled' | 'controlGroupDirection' | 'label' | 'actionButton';
 
 function useControlGroupValidationSettings() {
-  const { urlParams, setUrlParams } = useAppContext<(typeof paramKeys)[keyof typeof paramKeys]>();
+  const { urlParams, setUrlParams } = useAppContext<ParamName>();
 
   const settings: ControlGroupValidationSettings = {
-    group: parseValidationState(urlParams[paramKeys.group]),
-    disabled: parseDisabled(urlParams[paramKeys.disabled]),
-    direction: urlParams[paramKeys.direction] === 'vertical' ? 'vertical' : 'horizontal',
-    label: urlParams[paramKeys.label] === true,
-    actionButton: urlParams[paramKeys.actionButton] === true,
+    group: parseValidationState(urlParams.group),
+    disabled: parseDisabled(urlParams.disabled),
+    direction: urlParams.controlGroupDirection === 'vertical' ? 'vertical' : 'horizontal',
+    label: urlParams.label === true,
+    actionButton: urlParams.actionButton === true,
   };
 
   const setSettings = (next: Partial<ControlGroupValidationSettings>) =>
-    setUrlParams(
-      Object.fromEntries(
-        Object.entries(next).map(([key, value]): [string, string | boolean] => [
-          paramKeys[key as keyof ControlGroupValidationSettings],
-          value instanceof Set ? serializeDisabled(value) : (value as string | boolean),
-        ])
-      )
-    );
+    setUrlParams({
+      ...(next.group !== undefined && { group: next.group }),
+      ...(next.disabled !== undefined && { disabled: serializeDisabled(next.disabled) }),
+      ...(next.direction !== undefined && { controlGroupDirection: next.direction }),
+      ...(next.label !== undefined && { label: next.label }),
+      ...(next.actionButton !== undefined && { actionButton: next.actionButton }),
+    });
 
   return { settings, setSettings };
 }
@@ -266,9 +258,7 @@ export default function ControlGroupValidationSettings() {
               inlineLabelText={settings.label ? 'Label' : undefined}
               actionButton={settings.actionButton ? action : undefined}
             >
-              {controls.map((kind, index) => (
-                <React.Fragment key={index}>{renderControl(kind, settings.disabled)}</React.Fragment>
-              ))}
+              {controls.map(kind => renderControl(kind, settings.disabled))}
             </ControlGroup>
           </FormField>
         )}
