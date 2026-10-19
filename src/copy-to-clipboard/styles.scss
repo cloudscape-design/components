@@ -4,9 +4,56 @@
 */
 
 @use '../internal/styles/tokens' as awsui;
+@use './motion';
 
 .root {
   display: contents;
+}
+
+.icon-swap {
+  position: relative;
+  display: inline-block;
+  inline-size: awsui.$size-icon-normal;
+  block-size: awsui.$size-icon-normal;
+}
+
+.icon-swap-copy,
+.icon-swap-result {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+}
+
+.icon-swap-copy {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.icon-swap-result {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.icon-swap-copied > .icon-swap-copy {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.icon-swap-copied > .icon-swap-result {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.icon-swap-success.icon-swap-success {
+  color: awsui.$color-text-status-success;
+}
+
+.icon-swap-error.icon-swap-error {
+  color: awsui.$color-text-status-error;
+}
+
+.popover-message {
+  display: inline;
 }
 
 .inline-container {
