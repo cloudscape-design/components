@@ -146,15 +146,6 @@ $icon-offset: awsui.$space-xxxs;
     &.warning:focus {
       @include styles.form-warning-control();
     }
-
-    @include focus-visible.when-visible {
-      &.invalid {
-        border-color: awsui.$color-text-status-error;
-      }
-      &.warning {
-        border-color: awsui.$color-text-status-warning;
-      }
-    }
   }
 
   &.custom-option {
