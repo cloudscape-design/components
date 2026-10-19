@@ -17,51 +17,60 @@ import { useAppContext } from '../app/app-context';
 import { PermutationsPage } from '../app/templates';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
-import { Direction, enteredTextLabel, multiOptions, noop, operators, segments, suggestions } from './common';
+import { Direction, multiOptions, noop, operators, segments, suggestions } from './common';
 
 type ValidationState = 'none' | 'error' | 'warning';
 
-// Per-control state: either normal or disabled.
-type ControlState = 'none' | 'disabled';
-
-// The individual controls that take a per-control state.
+// The individual controls that can be individually disabled.
 type StatefulControl = 'input' | 'autosuggest' | 'select' | 'multiselect';
 
-// Control kinds that can appear inside a group. The stateful ones take a per-control disabled
-// state; segmentedControl has none.
+// Control kinds that can appear inside a group. The stateful ones can be disabled;
+// segmentedControl cannot.
 type ControlKind = StatefulControl | 'segmentedControl';
+
+// Things that can appear in the `disabled` list: the stateful controls plus the action button.
+type Disableable = StatefulControl | 'actionbutton';
+
+const disableableItems: ReadonlyArray<Disableable> = ['input', 'autosuggest', 'select', 'multiselect', 'actionbutton'];
 
 interface ControlGroupValidationSettings {
   // The group-as-a-unit validation, applied through the surrounding FormField.
   group: ValidationState;
-  // Per-control state, applied to each control's own `disabled` prop.
-  input: ControlState;
-  autosuggest: ControlState;
-  select: ControlState;
-  multiselect: ControlState;
+  // The set of controls (and the action button) rendered in their disabled state.
+  disabled: ReadonlySet<Disableable>;
   // Group-level layout settings, extracted from the former validation page's permutation axes.
   direction: Direction;
   label: boolean;
   actionButton: boolean;
-  // Renders the action button (when present) in its disabled state.
-  actionButtonDisabled: boolean;
 }
 
 const parseValidationState = (value: unknown): ValidationState =>
   value === 'error' ? 'error' : value === 'warning' ? 'warning' : 'none';
 
-const parseControlState = (value: unknown): ControlState => (value === 'disabled' ? 'disabled' : 'none');
-
-// Translates a per-control state into the `disabled` prop.
-function stateProps(state: ControlState): { disabled?: boolean } {
-  return { disabled: state === 'disabled' || undefined };
+// Parses a comma-separated, lowercase list of control names into a set.
+function parseDisabled(value: unknown): ReadonlySet<Disableable> {
+  if (typeof value !== 'string') {
+    return new Set();
+  }
+  const names = value.split(',').map(name => name.trim().toLowerCase());
+  return new Set(disableableItems.filter(item => names.includes(item)));
 }
 
-// Builds a control of the given kind, applying the per-control state where supported.
-function renderControl(kind: ControlKind, controlStates: Record<StatefulControl, ControlState>) {
+// Serializes the disabled set back into a comma-separated, lowercase list in a stable order.
+function serializeDisabled(disabled: ReadonlySet<Disableable>): string {
+  return disableableItems.filter(item => disabled.has(item)).join(',');
+}
+
+// Translates the disabled set into a control's `disabled` prop.
+function stateProps(control: StatefulControl, disabled: ReadonlySet<Disableable>): { disabled?: boolean } {
+  return { disabled: disabled.has(control) || undefined };
+}
+
+// Builds a control of the given kind, applying the disabled state where supported.
+function renderControl(kind: ControlKind, disabled: ReadonlySet<Disableable>) {
   switch (kind) {
     case 'input':
-      return <Input ariaLabel="Value" value="service" onChange={noop} {...stateProps(controlStates.input)} />;
+      return <Input ariaLabel="Value" value="service" onChange={noop} {...stateProps('input', disabled)} />;
     case 'autosuggest':
       return (
         <Autosuggest
@@ -69,8 +78,7 @@ function renderControl(kind: ControlKind, controlStates: Record<StatefulControl,
           value="CPU"
           onChange={noop}
           options={suggestions}
-          enteredTextLabel={enteredTextLabel}
-          {...stateProps(controlStates.autosuggest)}
+          {...stateProps('autosuggest', disabled)}
         />
       );
     case 'select':
@@ -80,18 +88,17 @@ function renderControl(kind: ControlKind, controlStates: Record<StatefulControl,
           selectedOption={operators[0]}
           options={operators}
           onChange={noop}
-          {...stateProps(controlStates.select)}
+          {...stateProps('select', disabled)}
         />
       );
     case 'multiselect':
       return (
         <Multiselect
           ariaLabel="Labels"
-          inlineTokens={true}
           selectedOptions={[multiOptions[0]]}
           options={multiOptions}
           onChange={noop}
-          {...stateProps(controlStates.multiselect)}
+          {...stateProps('multiselect', disabled)}
         />
       );
     case 'segmentedControl':
@@ -99,18 +106,12 @@ function renderControl(kind: ControlKind, controlStates: Record<StatefulControl,
   }
 }
 
-// Maps each setting to the URL-param name that persists it (so integ tests can target the state
-// and links are shareable). Direction reuses the shared `controlGroupDirection` param.
 const paramKeys: Record<keyof ControlGroupValidationSettings, string> = {
-  group: 'controlGroupValidationGroup',
-  input: 'controlGroupStateInput',
-  autosuggest: 'controlGroupStateAutosuggest',
-  select: 'controlGroupStateSelect',
-  multiselect: 'controlGroupStateMultiselect',
+  group: 'group',
+  disabled: 'disabled',
   direction: 'controlGroupDirection',
-  label: 'controlGroupLabel',
-  actionButton: 'controlGroupActionButton',
-  actionButtonDisabled: 'controlGroupActionButtonDisabled',
+  label: 'label',
+  actionButton: 'actionButton',
 };
 
 function useControlGroupValidationSettings() {
@@ -118,24 +119,34 @@ function useControlGroupValidationSettings() {
 
   const settings: ControlGroupValidationSettings = {
     group: parseValidationState(urlParams[paramKeys.group]),
-    input: parseControlState(urlParams[paramKeys.input]),
-    autosuggest: parseControlState(urlParams[paramKeys.autosuggest]),
-    select: parseControlState(urlParams[paramKeys.select]),
-    multiselect: parseControlState(urlParams[paramKeys.multiselect]),
+    disabled: parseDisabled(urlParams[paramKeys.disabled]),
     direction: urlParams[paramKeys.direction] === 'vertical' ? 'vertical' : 'horizontal',
     label: urlParams[paramKeys.label] === true,
     actionButton: urlParams[paramKeys.actionButton] === true,
-    actionButtonDisabled: urlParams[paramKeys.actionButtonDisabled] === true,
   };
 
   const setSettings = (next: Partial<ControlGroupValidationSettings>) =>
     setUrlParams(
       Object.fromEntries(
-        Object.entries(next).map(([key, value]) => [paramKeys[key as keyof ControlGroupValidationSettings], value])
+        Object.entries(next).map(([key, value]): [string, string | boolean] => [
+          paramKeys[key as keyof ControlGroupValidationSettings],
+          value instanceof Set ? serializeDisabled(value) : (value as string | boolean),
+        ])
       )
     );
 
   return { settings, setSettings };
+}
+
+// Returns a copy of the disabled set with `item` added or removed.
+function toggleDisabled(disabled: ReadonlySet<Disableable>, item: Disableable, checked: boolean): Set<Disableable> {
+  const next = new Set(disabled);
+  if (checked) {
+    next.add(item);
+  } else {
+    next.delete(item);
+  }
+  return next;
 }
 
 const validationItems: ReadonlyArray<{ value: ValidationState; label: string }> = [
@@ -161,7 +172,7 @@ function SettingsPanel({
 }) {
   return (
     <SpaceBetween size="xxl" direction="horizontal">
-      <FormField label="Control group">
+      <FormField label="Validation state">
         <RadioGroup
           value={settings.group}
           onChange={({ detail }) => setSettings({ group: detail.value as ValidationState })}
@@ -173,15 +184,19 @@ function SettingsPanel({
           {statefulControls.map(({ key, label }) => (
             <Checkbox
               key={key}
-              checked={settings[key] === 'disabled'}
-              onChange={({ detail }) => setSettings({ [key]: detail.checked ? 'disabled' : 'none' })}
+              checked={settings.disabled.has(key)}
+              onChange={({ detail }) =>
+                setSettings({ disabled: toggleDisabled(settings.disabled, key, detail.checked) })
+              }
             >
               {label}
             </Checkbox>
           ))}
           <Checkbox
-            checked={settings.actionButtonDisabled}
-            onChange={({ detail }) => setSettings({ actionButtonDisabled: detail.checked })}
+            checked={settings.disabled.has('actionbutton')}
+            onChange={({ detail }) =>
+              setSettings({ disabled: toggleDisabled(settings.disabled, 'actionbutton', detail.checked) })
+            }
           >
             Action button
           </Checkbox>
@@ -212,8 +227,6 @@ function SettingsPanel({
   );
 }
 
-// The same child combinations the former validation page covered, as control-kind sequences.
-// Validation state and inline-label presence are now settings, so they are no longer axes here.
 const combinations: ReadonlyArray<ControlKind[]> = [
   ['input', 'select'],
   ['input', 'segmentedControl'],
@@ -235,7 +248,7 @@ export default function ControlGroupValidationSettings() {
   const action: ControlGroupProps['actionButton'] = {
     iconName: 'remove',
     ariaLabel: 'Remove',
-    disabled: settings.actionButtonDisabled,
+    disabled: settings.disabled.has('actionbutton'),
   };
 
   return (
@@ -254,7 +267,7 @@ export default function ControlGroupValidationSettings() {
               actionButton={settings.actionButton ? action : undefined}
             >
               {controls.map((kind, index) => (
-                <React.Fragment key={index}>{renderControl(kind, settings)}</React.Fragment>
+                <React.Fragment key={index}>{renderControl(kind, settings.disabled)}</React.Fragment>
               ))}
             </ControlGroup>
           </FormField>
