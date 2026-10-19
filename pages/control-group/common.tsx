@@ -75,15 +75,20 @@ export const autosuggestTokens = (
   />
 );
 
-// Control kinds that can appear inside a group. The validatable ones (input/autosuggest/select/
-// multiselect) accept a per-control validation state; segmentedControl has no validation.
-export type ControlKind = ValidatableControl | 'segmentedControl';
+// Control kinds that can appear inside a group. The stateful ones (input/autosuggest/select/
+// multiselect) accept a per-control disabled / read-only state; segmentedControl has none.
+export type ControlKind = StatefulControl | 'segmentedControl';
 
-// Builds a control of the given kind, applying the per-control validation state where supported.
-export function renderControl(kind: ControlKind, validation: Record<ValidatableControl, ValidationState>) {
+// Translates a per-control state into the `disabled` prop.
+function stateProps(state: ControlState): { disabled?: boolean } {
+  return { disabled: state === 'disabled' || undefined };
+}
+
+// Builds a control of the given kind, applying the per-control state where supported.
+export function renderControl(kind: ControlKind, controlStates: Record<StatefulControl, ControlState>) {
   switch (kind) {
     case 'input':
-      return <Input ariaLabel="Value" value="service" onChange={noop} {...validationProps(validation.input)} />;
+      return <Input ariaLabel="Value" value="service" onChange={noop} {...stateProps(controlStates.input)} />;
     case 'autosuggest':
       return (
         <Autosuggest
@@ -92,7 +97,7 @@ export function renderControl(kind: ControlKind, validation: Record<ValidatableC
           onChange={noop}
           options={suggestions}
           enteredTextLabel={enteredTextLabel}
-          {...validationProps(validation.autosuggest)}
+          {...stateProps(controlStates.autosuggest)}
         />
       );
     case 'select':
@@ -102,7 +107,7 @@ export function renderControl(kind: ControlKind, validation: Record<ValidatableC
           selectedOption={operators[0]}
           options={operators}
           onChange={noop}
-          {...validationProps(validation.select)}
+          {...stateProps(controlStates.select)}
         />
       );
     case 'multiselect':
@@ -113,7 +118,7 @@ export function renderControl(kind: ControlKind, validation: Record<ValidatableC
           selectedOptions={[multiOptions[0]]}
           options={multiOptions}
           onChange={noop}
-          {...validationProps(validation.multiselect)}
+          {...stateProps(controlStates.multiselect)}
         />
       );
     case 'segmentedControl':
@@ -153,17 +158,20 @@ export function DirectionSettings({
 
 export type ValidationState = 'none' | 'error' | 'warning';
 
-// The individual controls that support a validation state (invalid / warning).
-export type ValidatableControl = 'input' | 'autosuggest' | 'select' | 'multiselect';
+// Per-control state: either normal or disabled.
+export type ControlState = 'none' | 'disabled';
+
+// The individual controls that take a per-control state.
+export type StatefulControl = 'input' | 'autosuggest' | 'select' | 'multiselect';
 
 export interface ControlGroupValidationSettings {
   // The group-as-a-unit validation, applied through the surrounding FormField.
   group: ValidationState;
-  // Per-control validation, applied to each control's own `invalid` / `warning` prop.
-  input: ValidationState;
-  autosuggest: ValidationState;
-  select: ValidationState;
-  multiselect: ValidationState;
+  // Per-control state, applied to each control's own `disabled` prop.
+  input: ControlState;
+  autosuggest: ControlState;
+  select: ControlState;
+  multiselect: ControlState;
   // Group-level layout settings, extracted from the former validation page's permutation axes.
   direction: Direction;
   label: boolean;
@@ -173,19 +181,16 @@ export interface ControlGroupValidationSettings {
 const parseValidationState = (value: unknown): ValidationState =>
   value === 'error' ? 'error' : value === 'warning' ? 'warning' : 'none';
 
-// Translates a validation state into the `invalid` / `warning` props shared by the controls.
-export function validationProps(state: ValidationState): { invalid?: boolean; warning?: boolean } {
-  return { invalid: state === 'error' || undefined, warning: state === 'warning' || undefined };
-}
+const parseControlState = (value: unknown): ControlState => (value === 'disabled' ? 'disabled' : 'none');
 
 // Maps each setting to the URL-param name that persists it (so integ tests can target the state
 // and links are shareable). Direction reuses the shared `controlGroupDirection` param.
 const paramKeys: Record<keyof ControlGroupValidationSettings, string> = {
   group: 'controlGroupValidationGroup',
-  input: 'controlGroupValidationInput',
-  autosuggest: 'controlGroupValidationAutosuggest',
-  select: 'controlGroupValidationSelect',
-  multiselect: 'controlGroupValidationMultiselect',
+  input: 'controlGroupStateInput',
+  autosuggest: 'controlGroupStateAutosuggest',
+  select: 'controlGroupStateSelect',
+  multiselect: 'controlGroupStateMultiselect',
   direction: 'controlGroupDirection',
   label: 'controlGroupLabel',
   actionButton: 'controlGroupActionButton',
@@ -196,10 +201,10 @@ export function useControlGroupValidationSettings() {
 
   const settings: ControlGroupValidationSettings = {
     group: parseValidationState(urlParams[paramKeys.group]),
-    input: parseValidationState(urlParams[paramKeys.input]),
-    autosuggest: parseValidationState(urlParams[paramKeys.autosuggest]),
-    select: parseValidationState(urlParams[paramKeys.select]),
-    multiselect: parseValidationState(urlParams[paramKeys.multiselect]),
+    input: parseControlState(urlParams[paramKeys.input]),
+    autosuggest: parseControlState(urlParams[paramKeys.autosuggest]),
+    select: parseControlState(urlParams[paramKeys.select]),
+    multiselect: parseControlState(urlParams[paramKeys.multiselect]),
     direction: urlParams[paramKeys.direction] === 'vertical' ? 'vertical' : 'horizontal',
     label: urlParams[paramKeys.label] === true,
     actionButton: urlParams[paramKeys.actionButton] === true,
@@ -221,7 +226,10 @@ const validationItems: ReadonlyArray<{ value: ValidationState; label: string }> 
   { value: 'warning', label: 'Warning' },
 ];
 
-type ValidationKey = 'group' | 'input' | 'autosuggest' | 'select' | 'multiselect';
+const controlStateItems: ReadonlyArray<{ value: ControlState; label: string }> = [
+  { value: 'none', label: 'None' },
+  { value: 'disabled', label: 'Disabled' },
+];
 
 export function ControlGroupValidationSettingsPanel({
   settings,
@@ -230,23 +238,29 @@ export function ControlGroupValidationSettingsPanel({
   settings: ControlGroupValidationSettings;
   setSettings: (next: Partial<ControlGroupValidationSettings>) => void;
 }) {
-  const validationField = (key: ValidationKey, label: string) => (
+  const controlStateField = (key: StatefulControl, label: string) => (
     <FormField label={label}>
       <RadioGroup
         value={settings[key]}
-        onChange={({ detail }) => setSettings({ [key]: detail.value as ValidationState })}
-        items={validationItems}
+        onChange={({ detail }) => setSettings({ [key]: detail.value as ControlState })}
+        items={controlStateItems}
       />
     </FormField>
   );
 
   return (
     <SpaceBetween size="l" direction="horizontal">
-      {validationField('group', 'Control group')}
-      {validationField('input', 'Input')}
-      {validationField('autosuggest', 'Autosuggest')}
-      {validationField('select', 'Select')}
-      {validationField('multiselect', 'Multiselect')}
+      <FormField label="Control group">
+        <RadioGroup
+          value={settings.group}
+          onChange={({ detail }) => setSettings({ group: detail.value as ValidationState })}
+          items={validationItems}
+        />
+      </FormField>
+      {controlStateField('input', 'Input')}
+      {controlStateField('autosuggest', 'Autosuggest')}
+      {controlStateField('select', 'Select')}
+      {controlStateField('multiselect', 'Multiselect')}
       <FormField label="Direction">
         <RadioGroup
           value={settings.direction}

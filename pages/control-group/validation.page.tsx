@@ -21,9 +21,10 @@ const combinations: ReadonlyArray<ControlKind[]> = [
   ['input', 'select'],
   ['input', 'segmentedControl'],
   ['select', 'multiselect'],
+  ['autosuggest', 'select'],
   ['input', 'select', 'multiselect'],
   ['input', 'segmentedControl', 'select'],
-  ['select', 'input', 'multiselect'],
+  ['select', 'autosuggest', 'multiselect'],
 ];
 
 const permutations = createPermutations<{ controls: ControlKind[] }>([{ controls: combinations }]);
