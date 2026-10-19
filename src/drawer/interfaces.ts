@@ -139,6 +139,8 @@ export interface DrawerProps extends BaseComponentProps {
    * The close button fires the `onClose` event with method `'close-action'` when
    * clicked.
    *
+   * Do not place interactive elements like links or buttons in `disabledReason`.
+   *
    * Do not use this property when using drawers inside app layout.
    */
   closeAction?: DrawerProps.CloseActionProps;
@@ -228,7 +230,7 @@ export namespace DrawerProps {
   export interface CloseActionProps {
     ariaLabel?: string;
     disabled?: boolean;
-    disabledReason?: string;
+    disabledReason?: React.ReactNode;
     iconName?: IconProps.Name;
     iconUrl?: string;
     iconSvg?: React.ReactNode;
