@@ -63,18 +63,15 @@ describe('the generic hover motion rule, as compiled', () => {
   });
 
   test('the generic rule also fires on :focus-visible, guarded the same way as :hover', () => {
-    expect(genericRuleSelector()).toMatch(
-      /\[data-awsui-motion-trigger~=hover]:not\(:disabled\):not\(\[aria-disabled=true]\):is\(:focus-visible,/
+    expect(genericRuleSelector()).toContain(
+      '[data-awsui-motion-trigger~=hover]:not(:disabled):not([aria-disabled=true])' +
+        ':is(:hover, :focus-visible, :has([data-awsui-motion-trigger~=focus]:focus-visible))'
     );
   });
 
   test('the disabled guard excludes aria-disabled="true" but not aria-disabled="false"', () => {
-    // The trigger's compound is whitespace-free (e.g. `[data-awsui-motion-trigger~=hover]:not(...):hover`),
-    // so token splitting isolates it; `:hover` is dropped since jsdom cannot set hover state.
-    const guard = genericRuleSelector()
-      .split(/\s+/)
-      .find(token => token.startsWith('[data-awsui-motion-trigger'))!
-      .replace(':hover', '');
+    // The state `:is(...)` is dropped since jsdom cannot set hover or focus-visible state.
+    const guard = genericRuleSelector().match(/\[data-awsui-motion-trigger~=hover][^\s]*?(?=:is\(:hover)/)![0];
 
     const button = (attributes: Record<string, string> = {}) => {
       const element = document.createElement('button');
@@ -158,5 +155,33 @@ describe('keyframes', () => {
     const css = compile([THEME]);
     expect(css).toMatch(/stroke-dashoffset/);
     expect(css).not.toMatch(/stroke-dashoffset:\s*-/);
+  });
+});
+
+describe('per-icon rules', () => {
+  /** The compiled rules outside `@keyframes`, as selector and declaration pairs. */
+  function rules(): Array<{ selector: string; declarations: string }> {
+    const css = compile([THEME])
+      .replace(/@keyframes[^{]+\{(?:[^{}]*\{[^{}]*\})*[^{}]*\}/g, '')
+      .replace(/@media[^{]+\{/, '');
+    return Array.from(css.matchAll(/([^{}]+)\{([^{}]*)\}/g)).map(([, selector, declarations]) => ({
+      selector: selector.trim(),
+      declarations: declarations.replace(/\s+/g, ' ').trim(),
+    }));
+  }
+
+  test('icons with identical motion share one rule', () => {
+    const thumbsUp = rules().filter(rule => rule.declarations.includes('rotate(-12deg) scale(0.92)'));
+    expect(thumbsUp).toHaveLength(1);
+    expect(thumbsUp[0].selector).toContain('.name-thumbs-up,');
+    expect(thumbsUp[0].selector).toContain('.name-thumbs-up-filled)');
+  });
+
+  test('no two rules differ only in the icon name', () => {
+    const anyName = /:is\(\.name-[\w-]+(?:, \.name-[\w-]+)*\)|\.name-[\w-]+/g;
+    const keys = rules()
+      .filter(rule => !rule.selector.includes(':has('))
+      .map(rule => `${rule.selector.replace(anyName, '.name-*')} { ${rule.declarations} }`);
+    expect(new Set(keys).size).toBe(keys.length);
   });
 });
