@@ -162,14 +162,9 @@
       var(#{custom-props.$styleColorDefault}, awsui.$color-text-form-secondary)
     );
     background-color: var(#{custom-props.$styleBackgroundFocus}, awsui.$color-background-input-default);
-    &:not(.grouped-validation-first) {
+
+    &:not(.grouped) {
       @include styles.input-focus-styles;
-    }
-    &.grouped-validation-first {
-      @include styles.form-focus-element(
-        $border-color: false,
-        $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
-      );
     }
   }
 
@@ -281,6 +276,8 @@
   cursor: default;
 }
 
+// The wider invalid/warning start border is absorbed by the first cell, so the content does not shift.
+// The first cell is the prefix when present, otherwise the native input.
 .input-field-invalid,
 .input-field-warning {
   > .input-prefix,

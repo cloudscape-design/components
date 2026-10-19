@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-@use 'sass:list';
 @use '../tokens' as awsui;
 @use '../utils' as styles;
 @use '../foundation' as foundation;
@@ -10,80 +9,12 @@
 
 $grouped-control-border-radius: constants.$control-border-radius;
 
-// Sets the status color on the outward-facing border edges of `$edges`.
-// Inner borders stay neutral.
-@mixin grouped-control-status-edges($edges) {
-  &.grouped-in-error {
-    @include focus-visible.when-visible {
-      @if list.index($edges, inline-start) {
-        border-inline-start-color: awsui.$color-text-status-error;
-      }
-      @if list.index($edges, inline-end) {
-        border-inline-end-color: awsui.$color-text-status-error;
-      }
-      @if list.index($edges, block-start) {
-        border-block-start-color: awsui.$color-text-status-error;
-      }
-      @if list.index($edges, block-end) {
-        border-block-end-color: awsui.$color-text-status-error;
-      }
-    }
-  }
-
-  &.grouped-in-error,
-  &.grouped-in-error:hover,
-  &.grouped-in-error:focus {
-    @if list.index($edges, inline-start) {
-      border-inline-start-color: awsui.$color-text-status-error;
-    }
-    @if list.index($edges, inline-end) {
-      border-inline-end-color: awsui.$color-text-status-error;
-    }
-    @if list.index($edges, block-start) {
-      border-block-start-color: awsui.$color-text-status-error;
-    }
-    @if list.index($edges, block-end) {
-      border-block-end-color: awsui.$color-text-status-error;
-    }
-  }
-
-  &.grouped-in-warning {
-    @include focus-visible.when-visible {
-      @if list.index($edges, inline-start) {
-        border-inline-start-color: awsui.$color-text-status-warning;
-      }
-      @if list.index($edges, inline-end) {
-        border-inline-end-color: awsui.$color-text-status-warning;
-      }
-      @if list.index($edges, block-start) {
-        border-block-start-color: awsui.$color-text-status-warning;
-      }
-      @if list.index($edges, block-end) {
-        border-block-end-color: awsui.$color-text-status-warning;
-      }
-    }
-  }
-
-  &.grouped-in-warning,
-  &.grouped-in-warning:hover,
-  &.grouped-in-warning:focus {
-    @if list.index($edges, inline-start) {
-      border-inline-start-color: awsui.$color-text-status-warning;
-    }
-    @if list.index($edges, inline-end) {
-      border-inline-end-color: awsui.$color-text-status-warning;
-    }
-    @if list.index($edges, block-start) {
-      border-block-start-color: awsui.$color-text-status-warning;
-    }
-    @if list.index($edges, block-end) {
-      border-block-end-color: awsui.$color-text-status-warning;
-    }
-  }
-}
-
 @mixin grouped-control-base {
   @include styles.logical-radius($grouped-control-border-radius);
+  border-inline-start-color: awsui.$color-border-input-default;
+  border-inline-end-color: awsui.$color-border-input-default;
+  border-block-start-color: awsui.$color-border-input-default;
+  border-block-end-color: awsui.$color-border-input-default;
 }
 
 @mixin grouped-control-horizontal-first {
@@ -106,62 +37,132 @@ $grouped-control-border-radius: constants.$control-border-radius;
   @include styles.logical-radius(0);
 }
 
+// Recolors the outward border edges of each grouped position to `$color`.
+@mixin grouped-control-status-edges($color) {
+  &.grouped-horizontal-first {
+    @include focus-visible.when-visible {
+      border-inline-start-color: $color;
+      border-block-start-color: $color;
+      border-block-end-color: $color;
+    }
+    &,
+    &:hover,
+    &:focus {
+      border-inline-start-color: $color;
+      border-block-start-color: $color;
+      border-block-end-color: $color;
+    }
+  }
+  &.grouped-horizontal-middle {
+    @include focus-visible.when-visible {
+      border-block-start-color: $color;
+      border-block-end-color: $color;
+    }
+    &,
+    &:hover,
+    &:focus {
+      border-block-start-color: $color;
+      border-block-end-color: $color;
+    }
+  }
+  &.grouped-horizontal-last {
+    @include focus-visible.when-visible {
+      border-inline-end-color: $color;
+      border-block-start-color: $color;
+      border-block-end-color: $color;
+    }
+    &,
+    &:hover,
+    &:focus {
+      border-inline-end-color: $color;
+      border-block-start-color: $color;
+      border-block-end-color: $color;
+    }
+  }
+  &.grouped-vertical-first {
+    @include focus-visible.when-visible {
+      border-block-start-color: $color;
+      border-inline-start-color: $color;
+      border-inline-end-color: $color;
+    }
+    &,
+    &:hover,
+    &:focus {
+      border-block-start-color: $color;
+      border-inline-start-color: $color;
+      border-inline-end-color: $color;
+    }
+  }
+  &.grouped-vertical-middle {
+    @include focus-visible.when-visible {
+      border-inline-start-color: $color;
+      border-inline-end-color: $color;
+    }
+    &,
+    &:hover,
+    &:focus {
+      border-inline-start-color: $color;
+      border-inline-end-color: $color;
+    }
+  }
+  &.grouped-vertical-last {
+    @include focus-visible.when-visible {
+      border-block-end-color: $color;
+      border-inline-start-color: $color;
+      border-inline-end-color: $color;
+    }
+    &,
+    &:hover,
+    &:focus {
+      border-block-end-color: $color;
+      border-inline-start-color: $color;
+      border-inline-end-color: $color;
+    }
+  }
+  &.grouped-horizontal-only,
+  &.grouped-vertical-only {
+    @include focus-visible.when-visible {
+      border-inline-start-color: $color;
+      border-inline-end-color: $color;
+      border-block-start-color: $color;
+      border-block-end-color: $color;
+    }
+    &,
+    &:hover,
+    &:focus {
+      border-inline-start-color: $color;
+      border-inline-end-color: $color;
+      border-block-start-color: $color;
+      border-block-end-color: $color;
+    }
+  }
+}
+
 @mixin grouped-control {
   @include grouped-control-base;
 
   &-horizontal {
     &-first {
       @include grouped-control-horizontal-first;
-      border-inline-start-color: awsui.$color-border-input-default;
-      border-block-start-color: awsui.$color-border-input-default;
-      border-block-end-color: awsui.$color-border-input-default;
-      @include grouped-control-status-edges((inline-start, block-start, block-end));
     }
     &-middle {
       @include grouped-control-middle;
-      border-block-start-color: awsui.$color-border-input-default;
-      border-block-end-color: awsui.$color-border-input-default;
-      @include grouped-control-status-edges((block-start, block-end));
     }
     &-last {
       @include grouped-control-horizontal-last;
-      border-inline-end-color: awsui.$color-border-input-default;
-      border-block-start-color: awsui.$color-border-input-default;
-      border-block-end-color: awsui.$color-border-input-default;
-      @include grouped-control-status-edges((inline-end, block-start, block-end));
     }
   }
 
   &-vertical {
     &-first {
       @include grouped-control-vertical-first;
-      border-block-start-color: awsui.$color-border-input-default;
-      border-inline-start-color: awsui.$color-border-input-default;
-      border-inline-end-color: awsui.$color-border-input-default;
-      @include grouped-control-status-edges((block-start, inline-start, inline-end));
     }
     &-middle {
       @include grouped-control-middle;
-      border-inline-start-color: awsui.$color-border-input-default;
-      border-inline-end-color: awsui.$color-border-input-default;
-      @include grouped-control-status-edges((inline-start, inline-end));
     }
     &-last {
       @include grouped-control-vertical-last;
-      border-block-end-color: awsui.$color-border-input-default;
-      border-inline-start-color: awsui.$color-border-input-default;
-      border-inline-end-color: awsui.$color-border-input-default;
-      @include grouped-control-status-edges((block-end, inline-start, inline-end));
     }
-  }
-
-  &-horizontal-only,
-  &-vertical-only {
-    border-inline-start-color: awsui.$color-border-input-default;
-    border-inline-end-color: awsui.$color-border-input-default;
-    border-block-start-color: awsui.$color-border-input-default;
-    border-block-end-color: awsui.$color-border-input-default;
-    @include grouped-control-status-edges((inline-start, inline-end, block-start, block-end));
   }
 
   &-with-action {
@@ -169,8 +170,15 @@ $grouped-control-border-radius: constants.$control-border-radius;
     border-end-end-radius: 0;
   }
 
-  &.grouped-in-error,
-  &.grouped-in-warning {
+  &.with-error {
+    @include grouped-control-status-edges(awsui.$color-text-status-error);
+  }
+  &.with-warning {
+    @include grouped-control-status-edges(awsui.$color-text-status-warning);
+  }
+
+  &.with-error,
+  &.with-warning {
     @include focus-visible.when-visible {
       box-shadow: foundation.$box-shadow-focused-light-invalid;
     }
@@ -180,6 +188,7 @@ $grouped-control-border-radius: constants.$control-border-radius;
   }
 
   &.grouped-validation-first {
+    // Room for the validation thick border, which is rendered from the control group wrapper
     padding-inline-start: calc(#{constants.$invalid-control-left-border} + #{constants.$invalid-control-left-padding});
   }
 }

@@ -21,7 +21,7 @@ export function getGroupedControlClassNames(
     classNames.push(styles['grouped-with-action']);
   }
   if (validation) {
-    classNames.push(validation === 'error' ? styles['grouped-in-error'] : styles['grouped-in-warning']);
+    classNames.push(validation === 'error' ? styles['with-error'] : styles['with-warning']);
     // Only the leading (inline-start) controls draw the thick validation border:
     // the first/only control horizontally, every control vertically.
     const isLeading = direction === 'vertical' || position === 'first' || position === 'only';
