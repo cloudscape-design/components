@@ -18,8 +18,10 @@ export interface BaseButtonProps {
   /**
    * Provides a reason why the button is disabled (only when `disabled` is `true`).
    * If provided, the button becomes focusable.
+   *
+   * Do not place interactive elements like links or buttons.
    */
-  disabledReason?: string;
+  disabledReason?: React.ReactNode;
   /**
    * Renders the button as being in a loading state. It takes precedence over the `disabled` if both are set to `true`.
    * It prevents users from clicking the button, but it can still be focused.

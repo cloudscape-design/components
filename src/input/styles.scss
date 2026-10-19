@@ -81,6 +81,7 @@
   }
 
   &:disabled {
+    opacity: 1;
     color: var(#{custom-props.$styleColorDisabled}, awsui.$color-text-input-disabled);
     cursor: default;
     @include placeholder {
