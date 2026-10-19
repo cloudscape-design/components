@@ -164,9 +164,7 @@
     );
     background-color: var(#{custom-props.$styleBackgroundFocus}, awsui.$color-background-input-default);
 
-    &:not(.grouped) {
-      @include styles.input-focus-styles;
-    }
+    @include styles.input-focus-styles;
   }
 
   // Keep disabled styles before validation modifiers so invalid/warning border colors win when both modifiers are present.
@@ -190,8 +188,6 @@
     }
 
     &:focus-within {
-      // Re-assert the validation border under focus so the neutral focus color
-      // (.input-field:focus-within, equal specificity) does not win by order.
       border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-error);
       box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid);
     }
@@ -207,8 +203,6 @@
     }
 
     &:focus-within {
-      // Re-assert the validation border under focus so the neutral focus color
-      // (.input-field:focus-within, equal specificity) does not win by order.
       border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-warning);
       box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid);
     }

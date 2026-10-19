@@ -128,10 +128,8 @@ $icon-offset: awsui.$space-xxxs;
   }
 
   &:not(.in-filtering-token):not(.compact) {
-    &:not(.grouped) {
-      @include focus-visible.when-visible {
-        @include styles.form-focus-element();
-      }
+    @include focus-visible.when-visible {
+      @include styles.form-focus-element();
     }
 
     &:invalid {
