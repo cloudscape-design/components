@@ -226,9 +226,12 @@ const validationItems: ReadonlyArray<{ value: ValidationState; label: string }> 
   { value: 'warning', label: 'Warning' },
 ];
 
-const controlStateItems: ReadonlyArray<{ value: ControlState; label: string }> = [
-  { value: 'none', label: 'None' },
-  { value: 'disabled', label: 'Disabled' },
+// The controls listed in the "Disabled controls" field, in display order.
+const statefulControls: ReadonlyArray<{ key: StatefulControl; label: string }> = [
+  { key: 'input', label: 'Input' },
+  { key: 'autosuggest', label: 'Autosuggest' },
+  { key: 'select', label: 'Select' },
+  { key: 'multiselect', label: 'Multiselect' },
 ];
 
 export function ControlGroupValidationSettingsPanel({
@@ -238,16 +241,6 @@ export function ControlGroupValidationSettingsPanel({
   settings: ControlGroupValidationSettings;
   setSettings: (next: Partial<ControlGroupValidationSettings>) => void;
 }) {
-  const controlStateField = (key: StatefulControl, label: string) => (
-    <FormField label={label}>
-      <RadioGroup
-        value={settings[key]}
-        onChange={({ detail }) => setSettings({ [key]: detail.value as ControlState })}
-        items={controlStateItems}
-      />
-    </FormField>
-  );
-
   return (
     <SpaceBetween size="l" direction="horizontal">
       <FormField label="Control group">
@@ -257,10 +250,19 @@ export function ControlGroupValidationSettingsPanel({
           items={validationItems}
         />
       </FormField>
-      {controlStateField('input', 'Input')}
-      {controlStateField('autosuggest', 'Autosuggest')}
-      {controlStateField('select', 'Select')}
-      {controlStateField('multiselect', 'Multiselect')}
+      <FormField label="Disabled controls">
+        <SpaceBetween size="xs">
+          {statefulControls.map(({ key, label }) => (
+            <Checkbox
+              key={key}
+              checked={settings[key] === 'disabled'}
+              onChange={({ detail }) => setSettings({ [key]: detail.checked ? 'disabled' : 'none' })}
+            >
+              {label}
+            </Checkbox>
+          ))}
+        </SpaceBetween>
+      </FormField>
       <FormField label="Direction">
         <RadioGroup
           value={settings.direction}
