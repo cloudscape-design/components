@@ -80,6 +80,7 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
       inset-block: 0;
       inline-size: calc(#{constants.$invalid-control-left-border} + #{awsui.$border-width-field});
       z-index: 1;
+      pointer-events: none;
     }
 
     &.control-first-horizontal::before,
