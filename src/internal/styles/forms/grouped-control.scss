@@ -39,10 +39,6 @@ $grouped-control-border-radius: constants.$control-border-radius;
 }
 
 // Recolors the outward border edges of each grouped position to `$color`.
-// The `&, &:hover, &:focus` rule already applies the recolor in every interaction
-// state (including focus), so a separate `focus-visible.when-visible` block would
-// only re-declare the identical border colors under an extra ancestor selector and
-// is omitted as redundant — the computed styles are unchanged.
 @mixin grouped-control-status-edges($color) {
   &.grouped-horizontal-first {
     &,
