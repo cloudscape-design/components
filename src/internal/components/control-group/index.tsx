@@ -53,7 +53,6 @@ export default function ControlGroup({
       className={clsx(
         styles.controls,
         styles[`controls-${direction}`],
-        actionButton && styles['controls-with-action'],
         !actionButton && !inlineLabelText && rootClassnames
       )}
     >

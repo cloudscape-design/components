@@ -57,11 +57,11 @@ export default function InternalSegmentedControl({
   const isGrouped = !!groupedControlProps?.position;
   const isGroupedVertical = isGrouped && groupedControlProps?.direction === 'vertical';
 
-  const groupedControlClassNames = isGrouped ? getGroupedControlClassNames(styles, groupedControlProps) : [];
+  const groupedControlClassNames = isGrouped ? getGroupedControlClassNames(styles, groupedControlProps) : '';
 
   return (
     <div
-      className={clsx(styles['segment-part'], styles[`segment-count-${options?.length}`], ...groupedControlClassNames, {
+      className={clsx(styles['segment-part'], styles[`segment-count-${options?.length}`], groupedControlClassNames, {
         [styles.refresh]: isVisualRefresh,
         [styles['grouped-vertical']]: isGroupedVertical,
       })}
