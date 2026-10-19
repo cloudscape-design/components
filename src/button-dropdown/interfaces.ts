@@ -57,6 +57,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    *
    * - `items` (ReadonlyArray<Item>) - an array of item objects. Items will be rendered as nested menu items but only for the first nesting level, multi-nesting is not supported.
    * An item which belongs to nested group has the following properties: `id`, `text`, `disabled`, and `description`.
+   * - `expandable` (boolean) - (Optional) Defines whether the group is expandable (this overrides the component-level `expandableGroups` property).
    *
    */
   items: ReadonlyArray<ButtonDropdownProps.ItemOrGroup>;
@@ -113,8 +114,10 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
   /**
    * Provides a reason why the button dropdown is disabled (only when `disabled` is `true`).
    * If provided, the disabled button becomes focusable.
+   *
+   * Do not place interactive elements like links or buttons.
    */
-  disabledReason?: string;
+  disabledReason?: React.ReactNode;
   /**
    * Renders the button as being in a loading state. It takes precedence over the `disabled` if both are set to `true`.
    * It prevents clicks.
@@ -321,7 +324,7 @@ export namespace ButtonDropdownProps {
     onClick?: CancelableEventHandler<ButtonProps.ClickDetail>;
     onFollow?: CancelableEventHandler<ButtonProps.FollowDetail>;
     disabled?: boolean;
-    disabledReason?: string;
+    disabledReason?: React.ReactNode;
     loading?: boolean;
     loadingText?: string;
     href?: string;
@@ -431,7 +434,7 @@ export interface CustomTriggerProps {
   testUtilsClass: string;
   ariaLabel: string | undefined;
   disabled: boolean;
-  disabledReason?: string;
+  disabledReason?: React.ReactNode;
   isOpen: boolean;
   onClick: () => void;
   ariaExpanded: boolean;

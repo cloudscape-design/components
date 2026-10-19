@@ -72,6 +72,43 @@ describe('Control group', () => {
     });
   });
 
+  describe('actionButton', () => {
+    test('renders a button inside an action-slot element when actionButton is provided', () => {
+      const { container } = render(
+        <ControlGroup inlineLabelText="Threshold" actionButton={{ iconName: 'remove', ariaLabel: 'Remove' }}>
+          <input data-testid="control" />
+        </ControlGroup>
+      );
+
+      const actionButton = findControlGroup(container)!.findActionButton();
+      expect(actionButton).not.toBeNull();
+      expect(actionButton!.getElement()).toHaveAccessibleName('Remove');
+    });
+
+    test('renders no action-slot element when actionButton is absent', () => {
+      const { container } = render(
+        <ControlGroup inlineLabelText="Threshold">
+          <input data-testid="control" />
+        </ControlGroup>
+      );
+
+      expect(findControlGroup(container)!.findActionButton()).toBeNull();
+    });
+
+    test('calls onClick when the action button is clicked', () => {
+      const onClick = jest.fn();
+      const { container } = render(
+        <ControlGroup inlineLabelText="Threshold" actionButton={{ iconName: 'remove', ariaLabel: 'Remove', onClick }}>
+          <input data-testid="control" />
+        </ControlGroup>
+      );
+
+      const actionButton = findControlGroup(container)!.findActionButton()!;
+      actionButton.click();
+      expect(onClick).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('direction', () => {
     test('defaults the direction to "horizontal" and exposes it to each child', () => {
       const { getByTestId } = render(
@@ -137,6 +174,6 @@ describe('Control group', () => {
     );
 
     expect(getByRole('group').getAttribute('aria-labelledby')).toBeNull();
-    expect(findControlGroup(container)).toBeNull();
+    expect(findControlGroup(container)?.findInlineLabel()).toBeNull();
   });
 });
