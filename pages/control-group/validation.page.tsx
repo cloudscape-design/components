@@ -8,53 +8,68 @@ import ControlGroup, { ControlGroupProps } from '~components/internal/components
 import { PermutationsPage } from '../app/templates';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
-import {
-  ControlGroupValidationSettingsPanel,
-  ControlKind,
-  renderControl,
-  useControlGroupValidationSettings,
-} from './common';
+import { input, multiselect, segmentedControl, select } from './common';
 
-// The same child combinations the former validation page covered, as control-kind sequences.
-// Validation state and inline-label presence are now settings, so they are no longer axes here.
-const combinations: ReadonlyArray<ControlKind[]> = [
-  ['input', 'select'],
-  ['input', 'segmentedControl'],
-  ['select', 'multiselect'],
-  ['input', 'select', 'multiselect'],
-  ['input', 'segmentedControl', 'select'],
-  ['select', 'input', 'multiselect'],
+type ValidationPermutation = ControlGroupProps & { errorText?: string; warningText?: string };
+
+const children = [
+  <>
+    {input}
+    {select}
+  </>,
+  <>
+    {input}
+    {segmentedControl}
+  </>,
+  <>
+    {select}
+    {multiselect}
+  </>,
+  <>
+    {input}
+    {select}
+    {multiselect}
+  </>,
+  <>
+    {input}
+    {segmentedControl}
+    {select}
+  </>,
+  <>
+    {select}
+    {input}
+    {multiselect}
+  </>,
 ];
 
-const permutations = createPermutations<{ controls: ControlKind[] }>([{ controls: combinations }]);
+const directions: ReadonlyArray<ControlGroupProps['direction']> = ['horizontal', 'vertical'];
 
-const action: ControlGroupProps['actionButton'] = { iconName: 'remove', ariaLabel: 'Remove' };
+const actionButtons: ReadonlyArray<ControlGroupProps['actionButton']> = [
+  undefined,
+  { iconName: 'remove', ariaLabel: 'Remove' },
+];
 
-export default function ControlGroupValidationSettings() {
-  const { settings, setSettings } = useControlGroupValidationSettings();
+const labels = [undefined, 'Label'];
 
-  const errorText = settings.group === 'error' ? 'This value is required' : undefined;
-  const warningText = settings.group === 'warning' ? 'Double-check this value' : undefined;
+const permutations = createPermutations<ValidationPermutation>([
+  { children, errorText: ['This value is required'], direction: directions, actionButton: actionButtons },
+  {
+    children,
+    warningText: ['Double-check this value'],
+    direction: directions,
+    actionButton: actionButtons,
+    inlineLabelText: labels,
+  },
+]);
 
+export default function ControlGroupValidation() {
   return (
-    <PermutationsPage
-      title="Control group validation"
-      i18n={{}}
-      settings={<ControlGroupValidationSettingsPanel settings={settings} setSettings={setSettings} />}
-    >
+    <PermutationsPage title="Control group validation" i18n={{}}>
       <PermutationsView
         permutations={permutations}
-        render={({ controls }) => (
+        render={({ errorText, warningText, ...controlGroupProps }) => (
           <FormField errorText={errorText} warningText={warningText}>
-            <ControlGroup
-              direction={settings.direction}
-              inlineLabelText={settings.label ? 'Label' : undefined}
-              actionButton={settings.actionButton ? action : undefined}
-            >
-              {controls.map((kind, index) => (
-                <React.Fragment key={index}>{renderControl(kind, settings)}</React.Fragment>
-              ))}
-            </ControlGroup>
+            <ControlGroup {...controlGroupProps} />
           </FormField>
         )}
       />
