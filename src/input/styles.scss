@@ -163,7 +163,6 @@
       var(#{custom-props.$styleColorDefault}, awsui.$color-text-form-secondary)
     );
     background-color: var(#{custom-props.$styleBackgroundFocus}, awsui.$color-background-input-default);
-
     @include styles.input-focus-styles;
   }
 
