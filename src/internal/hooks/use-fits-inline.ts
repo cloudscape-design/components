@@ -6,8 +6,8 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 interface UseFitsInlineResult<T extends HTMLElement> {
-  // `true` when content does not fit; `false` until both widths are known.
-  overflows: boolean;
+  // `true` when content fits; also `true` until both widths are known.
+  fits: boolean;
   // Attach to the hidden single-row ghost (required width). The ghost must contain
   // everything that shares the row, so its measured width is the full required width.
   ghostRef: React.Ref<T>;
@@ -35,10 +35,10 @@ export function useFitsInline<T extends HTMLElement = HTMLElement>(): UseFitsInl
   }, []);
 
   // `-1` tolerance avoids flipping on sub-pixel rounding.
-  const overflows = availableWidth !== null && requiredWidth !== null ? availableWidth < requiredWidth - 1 : false;
+  const fits = availableWidth !== null && requiredWidth !== null ? availableWidth >= requiredWidth - 1 : true;
 
   return {
-    overflows,
+    fits,
     ghostRef: useMergeRefs(ghostWidthRef, ghostInertRef),
     sensorRef: sensorWidthRef,
   };

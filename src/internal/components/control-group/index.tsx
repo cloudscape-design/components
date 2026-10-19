@@ -34,9 +34,9 @@ export default function ControlGroup({
   const flattenedChildren = flattenChildren(children, 'ControlGroup');
   const controlCount = flattenedChildren.length;
 
-  const { overflows, ghostRef, sensorRef } = useFitsInline<HTMLDivElement>();
+  const { fits, ghostRef, sensorRef } = useFitsInline<HTMLDivElement>();
   const resolvedDirection: GroupedControlDirection =
-    direction === 'auto' ? (overflows ? 'vertical' : 'horizontal') : direction;
+    direction === 'auto' ? (fits ? 'horizontal' : 'vertical') : direction;
 
   const rootClassnames = [styles.root, baseProps.className, testUtilStyles.root];
 
