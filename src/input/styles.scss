@@ -230,7 +230,7 @@
   &.grouped {
     @include styles.grouped-control;
 
-    // Unlike other controls, input's padding is rendered by the inner input and not by its wrapper.
+    // Unlike other controls, input's padding is rendered by the inner input element and not by its wrapper.
     &.grouped-validation-first {
       padding-inline-start: awsui.$border-width-field;
     }

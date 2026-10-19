@@ -5,6 +5,7 @@
 @use '../utils' as styles;
 @use '../foundation' as foundation;
 @use './constants' as constants;
+@use './mixins' as mixins;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 $grouped-control-border-radius: constants.$control-border-radius;
@@ -180,9 +181,11 @@ $grouped-control-border-radius: constants.$control-border-radius;
   &.with-error,
   &.with-warning {
     @include focus-visible.when-visible {
+      @include mixins.windows-high-contrast-outline;
       box-shadow: foundation.$box-shadow-focused-light-invalid;
     }
     &:focus-within {
+      @include mixins.windows-high-contrast-outline;
       box-shadow: foundation.$box-shadow-focused-light-invalid;
     }
   }
