@@ -1,0 +1,44 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/utils/theming' as theming;
+
+@mixin exiting-with-motion {
+  @include theming.expressive-motion-only {
+    @include styles.with-motion {
+      transition-property: opacity, transform;
+      transition-duration: awsui.$motion-duration-refresh-only-fast;
+      transition-timing-function: awsui.$motion-easing-refresh-only-b;
+      transition-delay: 0s;
+    }
+  }
+}
+
+@mixin entering-with-motion {
+  @include theming.expressive-motion-only {
+    @include styles.with-motion {
+      transition-property: opacity, transform;
+      transition-duration: awsui.$motion-duration-refresh-only-medium;
+      transition-timing-function: awsui.$motion-easing-refresh-only-a;
+      transition-delay: awsui.$motion-duration-refresh-only-fast;
+    }
+  }
+}
+
+.icon-swap-copy {
+  @include entering-with-motion;
+}
+
+.icon-swap-result {
+  @include exiting-with-motion;
+}
+
+.icon-swap-copied > .icon-swap-copy {
+  @include exiting-with-motion;
+}
+
+.icon-swap-copied > .icon-swap-result {
+  @include entering-with-motion;
+}
