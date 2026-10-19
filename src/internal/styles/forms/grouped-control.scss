@@ -39,13 +39,12 @@ $grouped-control-border-radius: constants.$control-border-radius;
 }
 
 // Recolors the outward border edges of each grouped position to `$color`.
+// The `&, &:hover, &:focus` rule already applies the recolor in every interaction
+// state (including focus), so a separate `focus-visible.when-visible` block would
+// only re-declare the identical border colors under an extra ancestor selector and
+// is omitted as redundant — the computed styles are unchanged.
 @mixin grouped-control-status-edges($color) {
   &.grouped-horizontal-first {
-    @include focus-visible.when-visible {
-      border-inline-start-color: $color;
-      border-block-start-color: $color;
-      border-block-end-color: $color;
-    }
     &,
     &:hover,
     &:focus {
@@ -55,10 +54,6 @@ $grouped-control-border-radius: constants.$control-border-radius;
     }
   }
   &.grouped-horizontal-middle {
-    @include focus-visible.when-visible {
-      border-block-start-color: $color;
-      border-block-end-color: $color;
-    }
     &,
     &:hover,
     &:focus {
@@ -67,11 +62,6 @@ $grouped-control-border-radius: constants.$control-border-radius;
     }
   }
   &.grouped-horizontal-last {
-    @include focus-visible.when-visible {
-      border-inline-end-color: $color;
-      border-block-start-color: $color;
-      border-block-end-color: $color;
-    }
     &,
     &:hover,
     &:focus {
@@ -81,11 +71,6 @@ $grouped-control-border-radius: constants.$control-border-radius;
     }
   }
   &.grouped-vertical-first {
-    @include focus-visible.when-visible {
-      border-block-start-color: $color;
-      border-inline-start-color: $color;
-      border-inline-end-color: $color;
-    }
     &,
     &:hover,
     &:focus {
@@ -95,10 +80,6 @@ $grouped-control-border-radius: constants.$control-border-radius;
     }
   }
   &.grouped-vertical-middle {
-    @include focus-visible.when-visible {
-      border-inline-start-color: $color;
-      border-inline-end-color: $color;
-    }
     &,
     &:hover,
     &:focus {
@@ -107,11 +88,6 @@ $grouped-control-border-radius: constants.$control-border-radius;
     }
   }
   &.grouped-vertical-last {
-    @include focus-visible.when-visible {
-      border-block-end-color: $color;
-      border-inline-start-color: $color;
-      border-inline-end-color: $color;
-    }
     &,
     &:hover,
     &:focus {
@@ -122,12 +98,6 @@ $grouped-control-border-radius: constants.$control-border-radius;
   }
   &.grouped-horizontal-only,
   &.grouped-vertical-only {
-    @include focus-visible.when-visible {
-      border-inline-start-color: $color;
-      border-inline-end-color: $color;
-      border-block-start-color: $color;
-      border-block-end-color: $color;
-    }
     &,
     &:hover,
     &:focus {
