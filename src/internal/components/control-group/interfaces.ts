@@ -11,7 +11,8 @@ export interface ControlGroupProps extends BaseComponentProps {
   /**
    * The axis along which the controls are laid out (`horizontal`, `vertical` or `auto`).
    * When set to `auto` (default), the component decides the direction based on whether it
-   * fits in its container's width.
+   * fits in the padding box of its
+   * [containing block](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Display/Containing_block).
    */
   direction?: ControlGroupProps.ControlGroupDirection;
   inlineLabelText?: string;
