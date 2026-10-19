@@ -21,14 +21,12 @@ export function getGroupedControlClassNames(
     classNames.push(styles['grouped-with-action']);
   }
   if (validation) {
-    // State class drives the outward validation color (and invalid ring) in SCSS.
-    // Every control gets it so each re-asserts its own outward edges on focus.
     classNames.push(validation === 'error' ? styles['grouped-in-error'] : styles['grouped-in-warning']);
-    // Only the leading (inline-start) controls draw the thick validation seam:
+    // Only the leading (inline-start) controls draw the thick validation border:
     // the first/only control horizontally, every control vertically.
     const isLeading = direction === 'vertical' || position === 'first' || position === 'only';
     if (isLeading) {
-      classNames.push(styles['grouped-validation']);
+      classNames.push(styles['grouped-validation-first']);
     }
   }
   return classNames;

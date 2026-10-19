@@ -25,9 +25,7 @@ export interface GroupedControlContextProps {
    */
   hasAction?: boolean;
   /**
-   * The surrounding control group's validation state, or `null` for none. The
-   * group owns the validation border; individual controls do not independently
-   * paint it.
+   * The surrounding control group's validation state, or `null` for none.
    */
   validation?: GroupedControlValidation | null;
 }
