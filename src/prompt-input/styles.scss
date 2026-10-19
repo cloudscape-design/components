@@ -90,7 +90,7 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
         box-shadow: foundation.$box-shadow-focused-light-invalid;
       }
     }
-
+    
     // When disabled, keep validation border (including thick left border) but remove focus box-shadow
     &.disabled:focus-within,
     &.disabled:focus {
@@ -118,7 +118,7 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
         box-shadow: foundation.$box-shadow-focused-light-invalid;
       }
     }
-
+    
     // When disabled, keep validation border (including thick left border) but remove focus box-shadow
     &.disabled:focus-within,
     &.disabled:focus {
@@ -264,7 +264,7 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
       var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-body-default)
     );
   }
-
+  
   // Placeholder for disabled contentEditable div (token mode)
   &.textarea-disabled.placeholder-visible::before {
     @include styles.form-placeholder-disabled;
