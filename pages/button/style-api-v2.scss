@@ -30,18 +30,16 @@
   }
 }
 
-.button-circle {
+.button-pill {
   @include button.root(
     $background: palette.$subtle,
     $color: palette.$text,
     $border-color: palette.$subtle,
-    $border-radius: 50%,
-    $padding-inline: 10px,
+    $border-radius: 999px,
+    $padding-inline: 16px,
     $padding-block: 8px,
     $focus-ring-color: palette.$accent,
-    $focus-ring-radius: 50%,
-    $focus-ring-gutter-block: 5px,
-    $focus-ring-gutter-inline: 5px
+    $focus-ring-radius: 99px
   );
 
   &:hover,
