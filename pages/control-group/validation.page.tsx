@@ -46,6 +46,8 @@ interface ControlGroupValidationSettings {
 const parseValidationState = (value: unknown): ValidationState =>
   value === 'error' ? 'error' : value === 'warning' ? 'warning' : 'none';
 
+const parseDirection = (value: unknown): Direction => (value === 'vertical' ? 'vertical' : 'horizontal');
+
 // Parses a comma-separated, lowercase list of control names into a set.
 function parseDisabled(value: unknown): ReadonlySet<Disableable> {
   if (typeof value !== 'string') {
@@ -113,7 +115,7 @@ function useControlGroupValidationSettings() {
   const settings: ControlGroupValidationSettings = {
     group: parseValidationState(urlParams.group),
     disabled: parseDisabled(urlParams.disabled),
-    direction: urlParams.controlGroupDirection === 'vertical' ? 'vertical' : 'horizontal',
+    direction: parseDirection(urlParams.controlGroupDirection),
     label: urlParams.label === true,
     actionButton: urlParams.actionButton === true,
   };
@@ -167,7 +169,7 @@ function SettingsPanel({
       <FormField label="Validation state">
         <RadioGroup
           value={settings.group}
-          onChange={({ detail }) => setSettings({ group: detail.value as ValidationState })}
+          onChange={({ detail }) => setSettings({ group: parseValidationState(detail.value) })}
           items={validationItems}
         />
       </FormField>
@@ -197,7 +199,7 @@ function SettingsPanel({
       <FormField label="Direction">
         <RadioGroup
           value={settings.direction}
-          onChange={({ detail }) => setSettings({ direction: detail.value as Direction })}
+          onChange={({ detail }) => setSettings({ direction: parseDirection(detail.value) })}
           items={[
             { value: 'horizontal', label: 'Horizontal' },
             { value: 'vertical', label: 'Vertical' },
