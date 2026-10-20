@@ -124,8 +124,8 @@
   // See focus-highlight above.
   outline: 2px dotted transparent;
 
-  border-block: awsui.$border-width-field solid $border-color;
-  border-inline: awsui.$border-width-field solid $border-color;
+  border-block-color: $border-color;
+  border-inline-color: $border-color;
 
   box-shadow: $box-shadow;
 }
