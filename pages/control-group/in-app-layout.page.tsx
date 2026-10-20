@@ -31,9 +31,7 @@ export default function ControlGroupSurfacesPage() {
                 <Header variant="h2">Layout content background</Header>
                 {controlGroup}
               </Box>
-
               <Container header={<Header variant="h2">Container</Header>}>{controlGroup}</Container>
-
               <ItemCard header={<Header variant="h2">Item card</Header>}>{controlGroup}</ItemCard>
             </SpaceBetween>
           </ContentLayout>
