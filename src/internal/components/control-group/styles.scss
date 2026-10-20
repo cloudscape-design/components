@@ -84,17 +84,17 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
 
     // Thick validation border rendered by the wrapping `.control` instead of the grouped individual controls
     // in order to prevent subtle visual artifacts where the horizontal and vertical borders of the controls meet.
-    // The bar is drawn as a real `border-inline-start` (rather than a background fill) so it survives
-    // forced-colors mode: forced-colors recolors borders to the system palette instead of flattening
-    // background fills to Canvas, keeping the thick validation cue visible against a neutral group.
     &::before {
       content: '';
       position: absolute;
       inset-block: 0;
       inset-inline-start: 0;
       box-sizing: border-box;
-      border-inline-start: calc(#{constants.$invalid-control-left-border} + #{awsui.$border-width-field}) solid
-        transparent;
+      // Rneder the thick border as an actual border (rather than a background fill) so it works also in
+      // forced-colors mode: forced-colors recolors borders to the system palette whereas backgrounds get flattened
+      // to Canvas.
+      border-inline-start-style: solid;
+      border-inline-start-width: constants.$invalid-control-left-border;
       z-index: 1;
       pointer-events: none;
     }
