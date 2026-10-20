@@ -260,7 +260,9 @@ export default function ControlGroupValidationSettings() {
               inlineLabelText={settings.label ? 'Label' : undefined}
               actionButton={settings.actionButton ? action : undefined}
             >
-              {controls.map(kind => renderControl(kind, settings.disabled))}
+              {controls.map((kind, index) => (
+                <React.Fragment key={index}>{renderControl(kind, settings.disabled)}</React.Fragment>
+              ))}
             </ControlGroup>
           </FormField>
         )}
