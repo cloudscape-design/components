@@ -34125,6 +34125,7 @@ Only applies to plain text labels.",
       "type": "string",
     },
     {
+      "defaultValue": "'normal'",
       "description": "Specifies the token's visual style and functionality.
 
 For \`inline\` only label, icon and dismiss button are displayed.

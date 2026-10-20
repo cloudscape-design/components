@@ -123,10 +123,9 @@
 ) {
   @include windows-high-contrast-outline;
 
-  border-block-style: solid;
-  border-inline-style: solid;
   border-block-color: $border-color;
   border-inline-color: $border-color;
+  
   box-shadow: $box-shadow;
 }
 
