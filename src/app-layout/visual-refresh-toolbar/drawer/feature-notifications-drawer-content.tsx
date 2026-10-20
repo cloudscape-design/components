@@ -8,7 +8,7 @@ import { useInternalI18n } from '../../../i18n/context';
 import { Feature, FeatureNotificationsPayload, MountContentPart } from '../../../internal/plugins/widget/interfaces';
 import { formatDate } from '../../../internal/utils/date-time';
 import Link from '../../../link/internal';
-import List from '../../../list/internal';
+import List from '../../../list/plain-list';
 import SpaceBetween from '../../../space-between/internal';
 
 import styles from './styles.css.js';
