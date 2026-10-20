@@ -14,7 +14,7 @@ export interface TabsProps extends BaseComponentProps {
    * - `label` (ReactNode) - Tab label shown in the UI.
    * - `content` (ReactNode) - (Optional) Tab content to render in the container.
    * - `disabled` (boolean) - (Optional) Specifies if this tab is disabled.
-   * - `disabledReason` (string) - (Optional) Displays tooltip near the tab when disabled. Use to provide additional context.
+   * - `disabledReason` (ReactNode) - (Optional) Displays tooltip near the tab when disabled. Use to provide additional context. Do not place interactive elements like links or buttons.
    * - `dismissible` (boolean) - (Optional) Determines whether the tab includes a dismiss icon button. By default, the dismiss button is not included.
    * - `dismissLabel` (boolean) - (Optional) Specifies an aria-label for the dismiss icon button.
    * - `dismissDisabled` (boolean) - (Optional) Determines whether the dismiss button is disabled.
@@ -132,8 +132,10 @@ export namespace TabsProps {
     disabled?: boolean;
     /**
      * Provides a reason why this tab is disabled.
+     *
+     * Do not place interactive elements like links or buttons.
      */
-    disabledReason?: string;
+    disabledReason?: React.ReactNode;
     /**
      * (Optional) Determines whether the tab includes a dismiss icon button. By default, the dismiss button is not included.
      * When a user clicks on this button the onDismiss handler is called.

@@ -127,8 +127,8 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *   * `editConfig.errorIconAriaLabel` (string) - Specifies an ariaLabel for the error icon that is displayed when the validation fails.
    *   * `editConfig.editIconAriaLabel` (string) - Specifies an alternate text for the edit icon used in column header.
    *   * `editConfig.constraintText` (string) - Constraint text that is displayed below the edit control.
-   *   * `editConfig.disabledReason` ((item) => string | undefined) - A function that determines whether inline edit for certain items is disabled, and provides a reason why.
-   *            Return a string from the function to disable inline edit with a reason. Return `undefined` (or no return) from the function allow inline edit.
+   *   * `editConfig.disabledReason` ((item) => ReactNode) - A function that determines whether inline edit for certain items is disabled, and provides a reason why. Do not place interactive elements like links or buttons.
+   *            Return a reason from the function to disable inline edit. Return `undefined` (or no return) from the function to allow inline edit.
    *   * `editConfig.validation` ((item, value) => string) - A function that allows you to validate the value of the edit control.
    *            Return a string from the function to display an error message. Return `undefined` (or no return) from the function to indicate that the value is valid.
    *   * `editConfig.editingCell` ((item, cellContext) => ReactNode) - Determines the display of a cell's content when inline editing is active on a cell;
@@ -561,8 +561,10 @@ export namespace TableProps {
 
     /**
      * Determines whether inline edit for certain items is disabled, and provides a reason why.
+     *
+     * Do not place interactive elements like links or buttons.
      */
-    disabledReason?: (item: T) => string | undefined;
+    disabledReason?: (item: T) => React.ReactNode;
 
     /**
      * Disables the use of a `<form>` element to capture submissions inside the inline editor.

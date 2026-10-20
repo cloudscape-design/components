@@ -12,6 +12,7 @@ import Autosuggest, { AutosuggestProps } from '../../../lib/components/autosugge
 import FormField from '../../../lib/components/form-field';
 import I18nProvider from '../../../lib/components/i18n';
 import messages from '../../../lib/components/i18n/messages/all.en';
+import { KeyCodeDelete } from '../../../lib/components/internal/keycode';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 let mockVisibleCount: number | null = null;
@@ -94,19 +95,15 @@ describe('rendering', () => {
   });
 
   test('renders no tokens and no group semantics without the tokens property', () => {
-    const { container } = render(<Autosuggest value="" onChange={() => {}} options={options} ariaLabel="Regions" />);
-    const wrapper = createWrapper(container).findAutosuggest()!;
+    const { wrapper } = renderTokens({ tokens: undefined });
     expect(wrapper.findVisibleTokens()).toEqual([]);
     expect(wrapper.findOverflowTrigger()).toBeNull();
     expect(wrapper.getElement()).not.toHaveAttribute('role');
   });
 
   test('does not include tokens in the change detail without the tokens property', () => {
-    const onChange = jest.fn();
-    const { container } = render(
-      <Autosuggest value="" onChange={onChange} options={options} enteredTextLabel={v => `Use "${v}"`} />
-    );
-    createWrapper(container).findAutosuggest()!.setInputValue('x');
+    const { wrapper, onChange } = renderTokens({ tokens: undefined });
+    wrapper.setInputValue('x');
     expect(onChange).toHaveBeenCalledTimes(1);
     const { detail } = onChange.mock.calls[0][0];
     expect(detail.value).toBe('x');
@@ -286,7 +283,7 @@ describe('removing tokens', () => {
     expect(lastTokens(onChange)).toEqual(toTokens('a', 'c'));
   });
 
-  test.each([KeyCode.backspace, 46])('key %s on a token removes it', keyCode => {
+  test.each([KeyCode.backspace, KeyCodeDelete])('key %s on a token removes it', keyCode => {
     const { wrapper } = renderTokens({ initialTokens: toTokens('a', 'b') });
     findDismissButton(wrapper, 1).focus();
     findDismissButton(wrapper, 1).keydown({ keyCode });
@@ -299,6 +296,19 @@ describe('removing tokens', () => {
     findDismissButton(wrapper, 1).keydown(KeyCode.backspace);
     expect(onChange).not.toHaveBeenCalled();
     expect(findDismissButton(wrapper, 1).getElement()).toHaveAttribute('aria-disabled', 'true');
+  });
+
+  test('read-only tokens stay focusable and keyboard navigable', () => {
+    const { wrapper } = renderTokens({ initialTokens: toTokens('a', 'b'), readOnly: true });
+    expect([1, 2].map(i => findDismissButton(wrapper, i).getElement().tabIndex)).toEqual([0, -1]);
+    findDismissButton(wrapper, 1).focus();
+    findDismissButton(wrapper, 1).keydown(KeyCode.right);
+    expect(document.activeElement).toBe(findDismissButton(wrapper, 2).getElement());
+  });
+
+  test('disabled tokens are not in the tab sequence', () => {
+    const { wrapper } = renderTokens({ initialTokens: toTokens('a', 'b'), disabled: true });
+    expect([1, 2].map(i => findDismissButton(wrapper, i).getElement().tabIndex)).toEqual([-1, -1]);
   });
 
   test('focus moves to the next token after removing a middle token', () => {
@@ -406,7 +416,7 @@ describe('keyboard navigation', () => {
   test('Backspace in an empty input focuses the last token again after a token was removed', () => {
     const { wrapper } = renderTokens({ initialTokens: toTokens('a', 'b') });
     wrapper.findNativeInput().keydown(KeyCode.backspace);
-    findDismissButton(wrapper, 2).keydown({ keyCode: 46 });
+    findDismissButton(wrapper, 2).keydown({ keyCode: KeyCodeDelete });
     wrapper.findNativeInput().focus();
     wrapper.findNativeInput().keydown(KeyCode.backspace);
     expect(visibleLabels(wrapper)).toEqual(['a']);
@@ -584,7 +594,7 @@ describe('overflow dropdown', () => {
 
   test.each([
     ['Backspace', KeyCode.backspace],
-    ['Delete', 46],
+    ['Delete', KeyCodeDelete],
   ])('%s on a dropdown token removes it and focuses the next one', (_, keyCode) => {
     const { findTrigger, findDropdownDismissButton, onChange } = renderOverflow();
     findTrigger().click();

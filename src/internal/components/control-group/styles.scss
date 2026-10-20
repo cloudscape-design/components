@@ -13,9 +13,17 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
   @include styles.styles-reset;
 }
 
+// Spans the whole row (controls + action) and hosts the measurement scaffolding (sensor + ghost).
+// It must have `position: static` so the sensor resolves against the nearest positioned ancestor
+// outside the component instead of this wrapper.
+.group-layout-wrapper {
+  position: static;
+}
+
 .action-slot {
   display: flex;
   margin-inline-start: $margin-overlap;
+  flex-shrink: 0;
 }
 
 .group-layout {
@@ -42,10 +50,13 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
   &-horizontal {
     flex-direction: row;
     flex-wrap: nowrap;
+    min-inline-size: 0;
+    flex-shrink: 1;
   }
 
   &-vertical {
     flex-direction: column;
+    flex-grow: 1;
   }
 }
 
@@ -77,6 +88,17 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
   }
 }
 
+// Width sensor
+.sensor {
+  @include styles.measurement-ghost;
+  inset-inline-end: 0;
+  min-inline-size: 0;
+}
+
+.ghost-anchor {
+  @include styles.measurement-ghost-anchor;
+}
+
 .inline-label {
   @include forms.inline-label;
   // A grouped Multiselect always renders inline tokens, whose row sits higher
@@ -97,4 +119,11 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
 
 .inline-label-trigger-wrapper {
   @include forms.inline-label-trigger-wrapper;
+}
+
+// Hidden single-row copy of the layout, laid out at its natural width so its
+// `max-content` size is the true required width including the action button.
+.ghost {
+  @include styles.measurement-ghost;
+  inline-size: max-content;
 }
