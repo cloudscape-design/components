@@ -5,17 +5,16 @@ exports[`Style API docs definition for alert matches the snapshot: alert 1`] = `
   "slots": [
     {
       "name": "root",
-      "properties": [],
+      "properties": [
+        "color",
+        "background",
+        "border",
+        "border-radius",
+        "padding",
+      ],
       "propertyDescriptions": {},
       "tokenDescriptions": {},
       "tokens": [
-        "color",
-        "background-color",
-        "border-color",
-        "border-width",
-        "border-radius",
-        "padding-block",
-        "padding-inline",
         "focus-ring-color",
         "focus-ring-width",
         "focus-ring-radius",
@@ -25,12 +24,12 @@ exports[`Style API docs definition for alert matches the snapshot: alert 1`] = `
     },
     {
       "name": "icon",
-      "properties": [],
-      "propertyDescriptions": {},
-      "tokenDescriptions": {},
-      "tokens": [
+      "properties": [
         "color",
       ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
     },
     {
       "forwardsTo": {
@@ -71,18 +70,17 @@ exports[`Style API docs definition for button matches the snapshot: button 1`] =
   "slots": [
     {
       "name": "root",
-      "properties": [],
+      "properties": [
+        "color",
+        "background",
+        "border",
+        "border-radius",
+        "padding",
+        "box-shadow",
+      ],
       "propertyDescriptions": {},
       "tokenDescriptions": {},
       "tokens": [
-        "color",
-        "background-color",
-        "border-color",
-        "border-width",
-        "border-radius",
-        "box-shadow",
-        "padding-block",
-        "padding-inline",
         "focus-ring-color",
         "focus-ring-width",
         "focus-ring-radius",
