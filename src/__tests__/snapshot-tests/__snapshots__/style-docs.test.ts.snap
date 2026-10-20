@@ -133,16 +133,19 @@ exports[`Style API docs definition for link matches the snapshot: link 1`] = `
   "slots": [
     {
       "name": "root",
-      "properties": [],
+      "properties": [
+        "color",
+        "text-decoration",
+        "font-family",
+        "font-size",
+        "font-weight",
+      ],
       "propertyDescriptions": {},
       "tokenDescriptions": {},
       "tokens": [
-        "color",
         "focus-ring-color",
         "focus-ring-width",
         "focus-ring-radius",
-        "text-decoration-line",
-        "text-decoration-color",
       ],
     },
   ],

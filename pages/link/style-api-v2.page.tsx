@@ -26,7 +26,7 @@ export default function () {
           },
           {
             type: 'pair',
-            label: 'Secondary link (underlined by the token)',
+            label: 'Secondary link (always underlined)',
             value: (
               <Link href="#" variant="secondary" {...brand}>
                 View details
@@ -71,6 +71,15 @@ export default function () {
           },
           {
             type: 'pair',
+            label: 'Custom font',
+            value: (
+              <Link href="#" {...{ styleClassNames: { root: styles['link-custom-font'] } }}>
+                Read the guide
+              </Link>
+            ),
+          },
+          {
+            type: 'pair',
             label: 'Inverted link (dedicated class)',
             value: (
               <div className={styles['container-inverted']}>
@@ -85,7 +94,7 @@ export default function () {
           },
           {
             type: 'pair',
-            label: 'Link nested in text content (tokens apply only to the styled link)',
+            label: 'Link nested in text content (styles apply only to the styled link)',
             value: (
               <TextContent>
                 <p>
