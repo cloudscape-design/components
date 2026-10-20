@@ -50,6 +50,7 @@
   }
 
   &-inline {
+    // Extra space keeps the dismiss button clear of small interactive labels (WCAG target spacing).
     margin-inline-start: calc(#{awsui.$space-xxs} + #{awsui.$border-width-field});
     padding-inline: 0;
     display: flex;

@@ -166,6 +166,7 @@ function InternalToken({
           }
         }}
         onMouseEnter={event => {
+          // Don't reopen the tooltip on hover while focus is inside the label.
           const activeElement = document.activeElement;
           if (
             !isPresentation &&
