@@ -23,6 +23,8 @@ export interface CalendarProps extends BaseComponentProps {
   /**
    * Provides a reason why a particular date in the calendar is not enabled (only when `isDateEnabled` returns `false`).
    * If provided, the date becomes focusable.
+   *
+   * Do not place interactive elements like links or buttons.
    * @param date
    */
   dateDisabledReason?: CalendarProps.DateDisabledReasonFunction;
@@ -108,7 +110,7 @@ export namespace CalendarProps {
   }
 
   export interface DateDisabledReasonFunction {
-    (date: Date): string;
+    (date: Date): React.ReactNode;
   }
 
   export type Granularity = DateGranularity;

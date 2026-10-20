@@ -6,7 +6,7 @@ import { render } from '@testing-library/react';
 import Autosuggest from '../../../lib/components/autosuggest';
 import ControlGroup from '../../../lib/components/control-group';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import { PositionProbe } from '../../control-group/__tests__/common';
+import { PositionProbe } from '../../internal/components/control-group/__tests__/common';
 
 const noop = () => {};
 

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { useGroupedControlContext } from '../../../lib/components/internal/context/control-group-context';
+import { useGroupedControlContext } from '../../../../../lib/components/internal/context/control-group-context';
 
 export function PositionProbe({ testId = 'probe' }: { testId?: string }) {
   const { position } = useGroupedControlContext();

@@ -1,6 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { TestDefinition, TestSuite } from '../types';
+import VisualTestPageObject from '../page-object';
+import { TestDefinition, TestSuite, Wrapper } from '../types';
+
+const addTokens = async (page: VisualTestPageObject, wrapper: Wrapper, count: number) => {
+  for (let i = 0; i < count; i++) {
+    await page.click(wrapper.find('[data-testid="add-token"]').toSelector());
+  }
+};
 
 const suite: TestSuite = {
   description: 'Autosuggest',
@@ -60,6 +67,36 @@ const suite: TestSuite = {
           },
         }) as TestDefinition
     ),
+    {
+      description: 'style permutations',
+      path: 'autosuggest/style-permutations',
+      screenshotType: 'permutations',
+    },
+    {
+      description: 'token mode permutations',
+      path: 'autosuggest/token-mode-permutations',
+      screenshotType: 'permutations',
+    },
+    {
+      description: 'token mode with a focused token',
+      path: 'autosuggest/token-mode',
+      screenshotType: 'screenshotArea',
+      setup: async ({ page, wrapper }) => {
+        await addTokens(page, wrapper, 2);
+        await page.click(wrapper.findAutosuggest().findNativeInput().toSelector());
+        await page.keys(['Backspace']);
+      },
+    },
+    {
+      description: 'token mode with overflow dropdown open',
+      path: 'autosuggest/token-mode',
+      screenshotType: 'screenshotArea',
+      configuration: { width: 600 },
+      setup: async ({ page, wrapper }) => {
+        await addTokens(page, wrapper, 6);
+        await page.click(wrapper.findAutosuggest().findOverflowTrigger().toSelector());
+      },
+    },
   ],
 };
 

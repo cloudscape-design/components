@@ -4,10 +4,17 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 
 import ButtonWrapper from '../button';
 
-import testUtilStyles from '../../../control-group/test-classes/styles.selectors.js';
+import testUtilStyles from '../../../internal/components/control-group/test-classes/styles.selectors.js';
 
 export default class ControlGroupWrapper extends ComponentWrapper {
   static rootSelector: string = testUtilStyles.root;
+
+  /**
+   * Returns an array of the individual grouped controls.
+   */
+  findControls(): Array<ElementWrapper> {
+    return this.findAll(`.${testUtilStyles.control}`);
+  }
 
   /**
    * Returns the visible inline label element, or null if no label is set.

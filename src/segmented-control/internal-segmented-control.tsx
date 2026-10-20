@@ -3,7 +3,7 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
-import { getGroupedControlClassNames } from '../control-group/grouped-control-styles';
+import { getGroupedControlClassNames } from '../internal/components/control-group/grouped-control-styles';
 import { GroupedControlContextProps } from '../internal/context/control-group-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
