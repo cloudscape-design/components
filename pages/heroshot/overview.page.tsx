@@ -135,7 +135,9 @@ export default function HeroshotOverviewPage() {
         </Heroshot>
 
         <Heroshot id="anchor-navigation" label="AnchorNavigation" stretch={true}>
-          <AnchorNavigation activeHref="#overview" anchors={anchors} />
+          <div style={{ transform: `translateX(100px)` }}>
+            <AnchorNavigation activeHref="#overview" anchors={anchors} />
+          </div>
         </Heroshot>
 
         <Heroshot id="annotation-context" label="AnnotationContext" padding={0} contentSize={ANNOTATION_CONTENT_SIZE}>
@@ -143,6 +145,7 @@ export default function HeroshotOverviewPage() {
             id="heroshot-annotation-context"
             size={ANNOTATION_CONTENT_SIZE}
             AppComponent={AnnotationContextHeroshot}
+            transparentBackground={true}
           />
         </Heroshot>
 
@@ -151,6 +154,7 @@ export default function HeroshotOverviewPage() {
             id="heroshot-hands-on-tutorials"
             size={ANNOTATION_CONTENT_SIZE}
             AppComponent={AnnotationContextHeroshot}
+            transparentBackground={true}
           />
         </Heroshot>
 
@@ -416,24 +420,26 @@ export default function HeroshotOverviewPage() {
         </Heroshot>
 
         <Heroshot id="dropdown" label="Dropdown" align="start">
-          <Dropdown
-            open={true}
-            minWidth="trigger"
-            // The frame clips its overflow, so without this the dropdown would shrink to the
-            // remaining space inside the frame and the list would become scrollable.
-            stretchHeight={true}
-            onOutsideClick={noop}
-            onMouseDown={noop}
-            trigger={<Button>Actions</Button>}
-            content={
-              // SelectableItem renders `role="option"`, so the list has to be a listbox: inside a
-              // `role="menu"` the rows would be invalid children without a required parent.
-              <OptionsList open={true} statusType="finished" role="listbox" ariaLabel="Actions">
-                <SelectableItem>View details</SelectableItem>
-                <SelectableItem>Delete</SelectableItem>
-              </OptionsList>
-            }
-          />
+          <div style={{ transform: `translate(-8px, 20px)` }}>
+            <Dropdown
+              open={true}
+              minWidth="trigger"
+              // The frame clips its overflow, so without this the dropdown would shrink to the
+              // remaining space inside the frame and the list would become scrollable.
+              stretchHeight={true}
+              onOutsideClick={noop}
+              onMouseDown={noop}
+              trigger={<Button>Actions</Button>}
+              content={
+                // SelectableItem renders `role="option"`, so the list has to be a listbox: inside a
+                // `role="menu"` the rows would be invalid children without a required parent.
+                <OptionsList open={true} statusType="finished" role="listbox" ariaLabel="Actions">
+                  <SelectableItem>View details</SelectableItem>
+                  <SelectableItem>Delete</SelectableItem>
+                </OptionsList>
+              }
+            />
+          </div>
         </Heroshot>
 
         <Heroshot id="expandable-section" label="ExpandableSection" stretch={true}>
@@ -1277,9 +1283,9 @@ function AnnotationContextHeroshot() {
       onStartTutorial={noop}
       onExitTutorial={noop}
     >
-      <div style={{ inlineSize: 150, padding: '130px 10px 0' }}>
+      <div style={{ inlineSize: 150, padding: '130px 10px 0', transform: `translateY(22px)` }}>
         <Hotspot hotspotId={previewTutorial.tasks[0].steps[0].hotspotId} direction="top">
-          <Input value="" placeholder="Bucket name" onChange={noop} />
+          <Input value="" onChange={noop} />
         </Hotspot>
       </div>
     </AnnotationContext>
