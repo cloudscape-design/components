@@ -114,14 +114,19 @@ exports[`Style API docs definition for dropdown matches the snapshot: dropdown 1
   "slots": [
     {
       "name": "dropdown",
-      "properties": [],
-      "propertyDescriptions": {},
-      "tokenDescriptions": {},
-      "tokens": [
-        "background-color",
-        "border-color",
-        "border-width",
+      "properties": [
+        "background",
         "border-radius",
+        "box-shadow",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {
+        "outline-color": "Color of the line drawn over the dropdown edges. Unlike a border, it takes no space.",
+        "outline-width": "Width of the line drawn over the dropdown edges. Unlike a border, it takes no space.",
+      },
+      "tokens": [
+        "outline-color",
+        "outline-width",
       ],
     },
   ],

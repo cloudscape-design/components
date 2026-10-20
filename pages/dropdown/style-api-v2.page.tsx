@@ -47,7 +47,7 @@ export default function () {
             },
             {
               type: 'pair',
-              label: 'Borderless panel',
+              label: 'Borderless panel with custom shadow',
               value: <StyledDropdown styleClassName={styles['dropdown-borderless']} />,
             },
             {

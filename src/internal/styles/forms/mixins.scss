@@ -294,10 +294,10 @@
     background-color: transparent;
     border-block: $border-width solid $border-color;
     border-inline: $border-width solid $border-color;
-    border-start-start-radius: $border-radius;
-    border-start-end-radius: $border-radius;
-    border-end-start-radius: $border-radius;
-    border-end-end-radius: $border-radius;
+    border-start-start-radius: inherit;
+    border-start-end-radius: inherit;
+    border-end-start-radius: inherit;
+    border-end-end-radius: inherit;
     pointer-events: none;
   }
 }
