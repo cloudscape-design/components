@@ -5,12 +5,9 @@ import merge from 'lodash/merge.js';
 import { expandDensityDictionary } from '../utils/index.js';
 import { StyleDictionary } from '../utils/interfaces.js';
 import { tokens as parentTokens } from '../visual-refresh/typography.js';
+import { fontFamilyTokenNames } from './font-family.js';
 
 const tokens: StyleDictionary.DensityTypographyDictionary = {
-  fontFamilyBase: "'Ember Modern Text UI', 'Amazon Ember', Roboto, Arial, sans-serif",
-  fontFamilyMonospace:
-    "'Ember Modern Mono', Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
-
   // ── Headings ──────────────────────────────────────────────────────────────
   fontSizeHeadingXl: '24px',
   lineHeightHeadingXl: '30px',
@@ -62,9 +59,15 @@ const tokens: StyleDictionary.DensityTypographyDictionary = {
   fontWeightBreadcrumbCurrent: '400',
 };
 
-const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = expandDensityDictionary(
-  merge({}, parentTokens, tokens)
-);
+// Font-family tokens never vary by density; they are supplied by the global
+// font-family category, so strip them from the density set to keep the density
+// mode from resolving them into { comfortable, compact } objects.
+const densityTokens = merge({}, parentTokens, tokens);
+for (const name of fontFamilyTokenNames) {
+  delete densityTokens[name];
+}
+
+const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = expandDensityDictionary(densityTokens);
 
 export { expandedTokens as tokens };
 export const mode: StyleDictionary.ModeIdentifier = 'density';

@@ -25,6 +25,7 @@ const tokenCategories: Array<StyleDictionary.CategoryModule> = [
   await import('../visual-refresh/color-charts.js'),
   await import('../visual-refresh/color-severity.js'),
   await import('./colors.js'),
+  await import('./font-family.js'),
   await import('./typography.js'),
   await import('./borders.js'),
   await import('./motion.js'),
