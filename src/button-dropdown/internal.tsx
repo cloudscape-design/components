@@ -138,6 +138,7 @@ const InternalButtonDropdown = React.forwardRef(
     // dropdown status below, which in turn depends on the hook output, so the hook reads the
     // latest value through a ref instead of receiving it as an argument.
     const hasRecoveryButtonRef = useRef(false);
+    const hasRootRecoveryButtonRef = useRef(false);
 
     const {
       isOpen,
@@ -186,6 +187,7 @@ const InternalButtonDropdown = React.forwardRef(
         }
       },
       hasRecoveryButton: () => hasRecoveryButtonRef.current,
+      hasRootRecoveryButton: () => hasRootRecoveryButtonRef.current,
       // Enter on a failed group's status retries loading it. The highlight stays on the status,
       // which then reads the loading text, and moves to the first item once the items arrive.
       onPendingHighlightActivate: () => {
@@ -522,6 +524,7 @@ const InternalButtonDropdown = React.forwardRef(
     const hasGroupRecoveryButton = !!recoveryText && !!onLoadItems;
 
     hasRecoveryButtonRef.current = dropdownStatus.hasRecoveryButton || expandedGroupHasRecoveryButton;
+    hasRootRecoveryButtonRef.current = !!dropdownStatus.hasRecoveryButton;
 
     // Only create a filteringDescription element if filtering is actually enabled,
     // not just if the string is provided.

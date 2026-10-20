@@ -37,6 +37,11 @@ interface UseButtonDropdownOptions extends ButtonDropdownSettings {
    */
   hasRecoveryButton?: () => boolean;
   /**
+   * Returns whether the root list currently renders a recovery button. It comes after any group
+   * recovery button in the focus order, so Tab from a group recovery button must not close the dropdown.
+   */
+  hasRootRecoveryButton?: () => boolean;
+  /**
    * Called on Enter in filtering mode while the highlight points into an expanded group
    * that has no items yet, so the highlight sits on the group's status.
    */
@@ -76,6 +81,7 @@ export function useButtonDropdown({
   fireLoadItems,
   onGroupExpand,
   hasRecoveryButton,
+  hasRootRecoveryButton,
   onPendingHighlightActivate,
 }: UseButtonDropdownOptions): UseButtonDropdownApi {
   const [filteringValue, setFilteringValue] = useState('');
@@ -86,13 +92,11 @@ export function useButtonDropdown({
     [filteringType, filteringValue, items]
   );
 
-  // an active automatic filter flattens every group; otherwise a group's own `expandable` flag wins,
-  // falling back to the dropdown-level `expandableGroups` default. Manually filtered groups stay
-  // expandable so groups returned by the server can still load their items.
-  const isAutoFiltered = filteringType === 'auto' && !!filteringValue;
+  // an active filter flattens every group; otherwise a group's own `expandable` flag wins, falling
+  // back to the dropdown-level `expandableGroups` default
   const isExpandable = useCallback(
-    (item: ButtonDropdownProps.ItemOrGroup) => !isAutoFiltered && isGroupExpandable(item, hasExpandableGroups),
-    [isAutoFiltered, hasExpandableGroups]
+    (item: ButtonDropdownProps.ItemOrGroup) => !filteringValue && isGroupExpandable(item, hasExpandableGroups),
+    [filteringValue, hasExpandableGroups]
   );
 
   const {
@@ -254,6 +258,8 @@ export function useButtonDropdown({
   const ignoreNextSpaceKeyUpRef = useRef(false);
   const isRecoveryTarget = (event: React.KeyboardEvent) =>
     isElement(event.target) && !!event.target.closest(`[${RECOVERY_FOOTER_ATTRIBUTE}]`);
+  const isGroupRecoveryTarget = (event: React.KeyboardEvent) =>
+    isElement(event.target) && !!event.target.closest(`[${RECOVERY_FOOTER_ATTRIBUTE}="group"]`);
 
   const onKeyDownCapture = (event: React.KeyboardEvent) => {
     if (event.keyCode === KeyCode.space && isRecoveryTarget(event)) {
@@ -353,6 +359,10 @@ export function useButtonDropdown({
         // viewport the portalled dropdown would otherwise trap focus, so it is handed back to the
         // trigger below and the browser moves it on.
         if (hasRecoveryButton?.() && (event.shiftKey || !isRecoveryTarget(event))) {
+          break;
+        }
+        // Tab from a group recovery button moves focus to the root recovery button if there's one
+        if (isGroupRecoveryTarget(event) && hasRootRecoveryButton?.()) {
           break;
         }
         // When expanded to viewport the focus can't move naturally to the next element.

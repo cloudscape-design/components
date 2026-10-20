@@ -77,7 +77,7 @@ export function useExpandableGroupStatus({
     errorText: asyncLoadingProps?.errorText?.(groupId),
     recoveryText,
     errorIconAriaLabel,
-    isEmpty: !hasGroupItems,
+    isEmpty: statusType === 'finished' && !hasGroupItems,
     isNoMatch: false,
     hasRecoveryCallback: !!onGroupRecoveryClick,
     recoveryButtonId: statusIds?.recoveryButtonId,

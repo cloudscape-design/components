@@ -608,9 +608,7 @@ describe('ButtonDropdown async loading with expandable groups', () => {
     });
     wrapper.openDropdown();
     wrapper.findExpandableCategoryById('g1')!.click();
-    expect(wrapper.findStatusIndicator({ expandedGroupDropdown: true })!.getElement()).toHaveTextContent(
-      'No actions in this group'
-    );
+    expect(wrapper.findStatusIndicator({ expandedGroupDropdown: true })).toBeNull();
     wrapper.findExpandableCategoryById('g2')!.click();
     expect(wrapper.findStatusIndicator({ expandedGroupDropdown: true })).toBeNull();
   });
@@ -906,7 +904,7 @@ describe('ButtonDropdown async loading: keyboard and filtering edge cases', () =
     }
   });
 
-  test('manually filtered groups stay expandable while the input has text', () => {
+  test('groups are not expandable while a manual filter has text', () => {
     const onLoadItems = jest.fn();
     const { wrapper } = renderDropdown({
       items: errorGroupItems,
@@ -917,8 +915,20 @@ describe('ButtonDropdown async loading: keyboard and filtering edge cases', () =
     });
     wrapper.openDropdown();
     wrapper.findFilteringInput()!.setInputValue('Group');
-    onLoadItems.mockClear();
+    expect(wrapper.findExpandableCategoryById('g1')).toBeNull();
+  });
+
+  test('Tab from a group recovery button moves on to the root recovery button', () => {
+    const { wrapper } = renderDropdown({
+      ...errorProps,
+      items: errorGroupItems,
+      expandableGroups: true,
+      getExpandableItemsAsyncLoadingState: () => 'error',
+      onLoadItems: () => {},
+    });
+    wrapper.openDropdown();
     wrapper.findExpandableCategoryById('g1')!.click();
-    expect(onLoadItems).toHaveBeenCalledWith(expect.objectContaining({ expandedGroupId: 'g1' }));
+    wrapper.findErrorRecoveryButton({ expandedGroupDropdown: true })!.keydown(KeyCode.tab);
+    expect(wrapper.findOpenDropdown()).not.toBeNull();
   });
 });

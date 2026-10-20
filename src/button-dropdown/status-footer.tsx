@@ -31,7 +31,7 @@ const StatusFooter = ({ content, id, hasItems, scope }: StatusFooterProps) => {
   return (
     <div
       className={testUtilStyles[`${scope}-status`]}
-      {...{ [RECOVERY_FOOTER_ATTRIBUTE]: true }}
+      {...{ [RECOVERY_FOOTER_ATTRIBUTE]: scope }}
       onClick={event => event.stopPropagation()}
       onKeyDown={stopActivationKeys}
       onKeyUp={stopActivationKeys}
