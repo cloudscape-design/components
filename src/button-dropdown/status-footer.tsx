@@ -7,6 +7,9 @@ import { KeyCode } from '../internal/keycode';
 
 import testUtilStyles from './test-classes/styles.css.js';
 
+// Marks the status footer so the button dropdown can recognize keyboard events from its recovery button.
+export const RECOVERY_FOOTER_ATTRIBUTE = 'data-awsui-button-dropdown-status';
+
 interface StatusFooterProps {
   content: React.ReactNode | null;
   id: string;
@@ -28,6 +31,7 @@ const StatusFooter = ({ content, id, hasItems, scope }: StatusFooterProps) => {
   return (
     <div
       className={testUtilStyles[`${scope}-status`]}
+      {...{ [RECOVERY_FOOTER_ATTRIBUTE]: true }}
       onClick={event => event.stopPropagation()}
       onKeyDown={stopActivationKeys}
       onKeyUp={stopActivationKeys}

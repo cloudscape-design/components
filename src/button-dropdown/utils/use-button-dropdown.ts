@@ -9,6 +9,7 @@ import { isElement } from '../../internal/utils/dom';
 import { isKeyboardInteraction } from '../../internal/utils/focus-visible';
 import { CancelableEventHandler, NonCancelableCustomEvent } from '../../types/events';
 import { ButtonDropdownProps, ButtonDropdownSettings, GroupToggle, HighlightProps, ItemActivate } from '../interfaces';
+import { RECOVERY_FOOTER_ATTRIBUTE } from '../status-footer';
 import { filterItems } from './filter-items';
 import useHighlightedMenu from './use-highlighted-menu';
 import { getItemTarget, isCheckboxItem, isGroupExpandable, isItemGroup, isLinkItem } from './utils';
@@ -59,6 +60,7 @@ interface UseButtonDropdownApi extends HighlightProps {
   isExpandable: (item: ButtonDropdownProps.ItemOrGroup) => boolean;
   isHighlightPending: boolean;
   expandedGroup: ButtonDropdownProps.ItemGroup | null;
+  onKeyDownCapture: (event: React.KeyboardEvent) => void;
 }
 
 export function useButtonDropdown({
@@ -84,11 +86,13 @@ export function useButtonDropdown({
     [filteringType, filteringValue, items]
   );
 
-  // an active filter flattens every group; otherwise a group's own `expandable` flag wins, falling
-  // back to the dropdown-level `expandableGroups` default
+  // an active automatic filter flattens every group; otherwise a group's own `expandable` flag wins,
+  // falling back to the dropdown-level `expandableGroups` default. Manually filtered groups stay
+  // expandable so groups returned by the server can still load their items.
+  const isAutoFiltered = filteringType === 'auto' && !!filteringValue;
   const isExpandable = useCallback(
-    (item: ButtonDropdownProps.ItemOrGroup) => !filteringValue && isGroupExpandable(item, hasExpandableGroups),
-    [filteringValue, hasExpandableGroups]
+    (item: ButtonDropdownProps.ItemOrGroup) => !isAutoFiltered && isGroupExpandable(item, hasExpandableGroups),
+    [isAutoFiltered, hasExpandableGroups]
   );
 
   const {
@@ -244,8 +248,22 @@ export function useButtonDropdown({
     actOnParentDropdown(event);
   };
 
+  // A recovery button activates on Space keydown and then moves focus out of the status footer,
+  // so the matching keyup reaches onKeyUp. It must not also activate the highlighted item. The
+  // flag is cleared by the next keydown that reaches this handler.
+  const ignoreNextSpaceKeyUpRef = useRef(false);
+  const isRecoveryTarget = (event: React.KeyboardEvent) =>
+    isElement(event.target) && !!event.target.closest(`[${RECOVERY_FOOTER_ATTRIBUTE}]`);
+
+  const onKeyDownCapture = (event: React.KeyboardEvent) => {
+    if (event.keyCode === KeyCode.space && isRecoveryTarget(event)) {
+      ignoreNextSpaceKeyUpRef.current = true;
+    }
+  };
+
   const onKeyDown = (event: React.KeyboardEvent) => {
     setIsUsingMouse(false);
+    ignoreNextSpaceKeyUpRef.current = false;
     switch (event.keyCode) {
       case KeyCode.down: {
         if (!isOpen) {
@@ -330,9 +348,11 @@ export function useButtonDropdown({
         if (hasFiltering) {
           break;
         }
-        // A recovery button rendered in the status footer must be reachable with Tab. The
-        // dropdown then closes through onDropdownBlur once focus actually leaves it.
-        if (hasRecoveryButton?.()) {
+        // A recovery button rendered in the status footer must be reachable with Tab. Tab from the
+        // recovery button itself (the last focusable element) leaves the widget: when expanded to
+        // viewport the portalled dropdown would otherwise trap focus, so it is handed back to the
+        // trigger below and the browser moves it on.
+        if (hasRecoveryButton?.() && (event.shiftKey || !isRecoveryTarget(event))) {
           break;
         }
         // When expanded to viewport the focus can't move naturally to the next element.
@@ -350,7 +370,14 @@ export function useButtonDropdown({
     // with Space separately because there is a bug in Firefox where changing the focus during
     // a Space keydown event it will trigger unexpected click events on the new element.
     // See https://bugzilla.mozilla.org/show_bug.cgi?id=1220143
-    if (event.keyCode === KeyCode.space && !targetItem?.disabled && !hasFiltering) {
+    if (event.keyCode !== KeyCode.space) {
+      return;
+    }
+    if (ignoreNextSpaceKeyUpRef.current) {
+      ignoreNextSpaceKeyUpRef.current = false;
+      return;
+    }
+    if (!targetItem?.disabled && !hasFiltering) {
       activate(event);
     }
   };
@@ -377,5 +404,6 @@ export function useButtonDropdown({
     isExpandable,
     isHighlightPending,
     expandedGroup,
+    onKeyDownCapture,
   };
 }

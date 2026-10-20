@@ -61,10 +61,9 @@ export function useExpandableGroupStatus({
   const footerId = statusIds?.statusId ?? uniqueFooterId;
   const hasGroupItems = !!item.items && item.items.length > 0;
 
-  // A group is loaded as a whole, so `pending` (more pages available) has no meaning here.
-  const reportedStatus = groupId ? getExpandableItemsAsyncLoadingState?.({ item }) : undefined;
-  const statusType: ButtonDropdownProps.AsyncLoadingStatusType | undefined =
-    reportedStatus === 'pending' ? 'finished' : (reportedStatus ?? undefined);
+  // A null or undefined status is treated as `finished`, as documented.
+  const statusType: ButtonDropdownProps.AsyncLoadingStatusType =
+    (groupId ? getExpandableItemsAsyncLoadingState?.({ item }) : undefined) ?? 'finished';
 
   const i18n = useInternalI18n('button-dropdown');
   const recoveryText = i18n('recoveryText', asyncLoadingProps?.recoveryText);

@@ -238,13 +238,12 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * Use only if you load the nested items asynchronously upon expanding a group.
    *
    * Return values are:
+   * * `pending` - Indicates that no request in progress, but more options may be loaded.
    * * `loading` - Indicates that data fetching is in progress.
    * * `finished` - Indicates that the group's items are loaded and no more requests are expected.
    * * `error` - Indicates that an error occurred during fetch. You should use `recoveryText` to enable the user to recover.
    *
-   * The items of a group are loaded in a single page: `pending` is treated as `finished`, and scrolling inside a group
-   * does not fire `onLoadItems`. If null or undefined, no status-specific text is displayed (but `empty` can still be shown for an empty group).
-   * The function is only called for groups that have an `id`.
+   * If null or undefined, the status will be treated as `finished`.
    */
   getExpandableItemsAsyncLoadingState?: (options: {
     item: ButtonDropdownProps.ItemGroup;

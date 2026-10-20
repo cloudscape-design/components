@@ -599,7 +599,7 @@ describe('ButtonDropdown async loading with expandable groups', () => {
     expect(wrapper.findStatusIndicator()!.getElement()).toHaveTextContent('End of results');
   });
 
-  test('treats a group status of "pending" as "finished"', () => {
+  test('shows no finished text for a group with status "pending"', () => {
     const { wrapper } = renderDropdown({
       items: groupItems,
       expandableGroups: true,
@@ -612,9 +612,7 @@ describe('ButtonDropdown async loading with expandable groups', () => {
       'No actions in this group'
     );
     wrapper.findExpandableCategoryById('g2')!.click();
-    expect(wrapper.findStatusIndicator({ expandedGroupDropdown: true })!.getElement()).toHaveTextContent(
-      'End of group'
-    );
+    expect(wrapper.findStatusIndicator({ expandedGroupDropdown: true })).toBeNull();
   });
 
   test('Tab does not close the dropdown while a group recovery button is shown', () => {
@@ -811,5 +809,116 @@ describe('ButtonDropdown async groups in filtering mode: virtual focus', () => {
     wrapper.findFilteringInput()!.setInputValue('abc');
     expect(document.activeElement).toBe(input);
     expect(input).toHaveValue('abc');
+  });
+});
+
+describe('ButtonDropdown async loading: keyboard and filtering edge cases', () => {
+  const errorProps: Partial<ButtonDropdownProps> = {
+    asyncLoadingProps: { statusType: 'error', errorText: () => 'Error fetching items', recoveryText: 'Retry' },
+  };
+  const errorGroupItems: ButtonDropdownProps.Items = [
+    { id: 'i1', text: 'Cut' },
+    { id: 'g1', text: 'Group 1', items: [] as ButtonDropdownProps.Items } as ButtonDropdownProps.ItemGroup,
+  ];
+
+  test('Space on the root recovery button does not activate the highlighted item after focus moves', () => {
+    const onItemClick = jest.fn();
+    const { wrapper } = renderDropdown({ ...errorProps, onLoadItems: () => {}, onItemClick });
+    wrapper.openDropdown();
+    expect(wrapper.findHighlightedItem()).not.toBeNull();
+    const recoveryButton = wrapper.findErrorRecoveryButton()!;
+    recoveryButton.keydown(KeyCode.space);
+    // Retry moves focus to the trigger, so the keyup lands there.
+    wrapper.findNativeButton().keyup(KeyCode.space);
+    expect(onItemClick).not.toHaveBeenCalled();
+    expect(wrapper.findOpenDropdown()).not.toBeNull();
+  });
+
+  test('Space on a group recovery button does not activate the highlighted item after focus moves', () => {
+    const onItemClick = jest.fn();
+    const { wrapper } = renderDropdown({
+      items: errorGroupItems,
+      expandableGroups: true,
+      getExpandableItemsAsyncLoadingState: ({ item }) => (item.id === 'g1' ? 'error' : null),
+      asyncLoadingProps: { recoveryText: 'Retry', errorText: () => 'Error' },
+      onLoadItems: () => {},
+      onItemClick,
+    });
+    wrapper.openDropdown();
+    wrapper.findExpandableCategoryById('g1')!.click();
+    wrapper.findErrorRecoveryButton({ expandedGroupDropdown: true })!.keydown(KeyCode.space);
+    wrapper.findNativeButton().keyup(KeyCode.space);
+    expect(onItemClick).not.toHaveBeenCalled();
+  });
+
+  test('Space keyup still activates the highlighted item after a normal Space keydown', () => {
+    const onItemClick = jest.fn();
+    const { wrapper } = renderDropdown({ ...errorProps, onLoadItems: () => {}, onItemClick });
+    wrapper.openDropdown();
+    wrapper.findErrorRecoveryButton()!.keydown(KeyCode.space);
+    wrapper.findOpenDropdown()!.keydown(KeyCode.space);
+    wrapper.findOpenDropdown()!.keyup(KeyCode.space);
+    expect(onItemClick).toHaveBeenCalledTimes(1);
+  });
+
+  test.each([false, true])('Tab from the recovery button leaves the widget (expandToViewport=%s)', expandToViewport => {
+    const { wrapper } = renderDropdown({ ...errorProps, onLoadItems: () => {}, expandToViewport });
+    wrapper.openDropdown();
+    wrapper.findErrorRecoveryButton()!.keydown(KeyCode.tab);
+    expect(wrapper.findOpenDropdown()).toBeNull();
+    if (expandToViewport) {
+      expect(wrapper.findNativeButton().getElement()).toHaveFocus();
+    }
+  });
+
+  test('Tab from a group recovery button leaves the widget when expanded to viewport', () => {
+    const { wrapper } = renderDropdown({
+      items: errorGroupItems,
+      expandableGroups: true,
+      expandToViewport: true,
+      getExpandableItemsAsyncLoadingState: ({ item }) => (item.id === 'g1' ? 'error' : null),
+      asyncLoadingProps: { recoveryText: 'Retry', errorText: () => 'Error' },
+      onLoadItems: () => {},
+    });
+    wrapper.openDropdown();
+    wrapper.findExpandableCategoryById('g1')!.click();
+    wrapper.findErrorRecoveryButton({ expandedGroupDropdown: true })!.keydown(KeyCode.tab);
+    expect(wrapper.findOpenDropdown()).toBeNull();
+    expect(wrapper.findNativeButton().getElement()).toHaveFocus();
+  });
+
+  test('a query typed before closing does not fire after reopening within the debounce', () => {
+    jest.useFakeTimers();
+    try {
+      const onLoadItems = jest.fn();
+      const { wrapper } = renderDropdown({ filteringType: 'manual', onLoadItems: event => onLoadItems(event.detail) });
+      wrapper.openDropdown();
+      wrapper.findFilteringInput()!.setInputValue('old');
+      wrapper.openDropdown();
+      wrapper.openDropdown();
+      onLoadItems.mockClear();
+      act(() => {
+        jest.advanceTimersByTime(1000);
+      });
+      expect(onLoadItems).not.toHaveBeenCalledWith(expect.objectContaining({ filteringText: 'old' }));
+    } finally {
+      jest.useRealTimers();
+    }
+  });
+
+  test('manually filtered groups stay expandable while the input has text', () => {
+    const onLoadItems = jest.fn();
+    const { wrapper } = renderDropdown({
+      items: errorGroupItems,
+      expandableGroups: true,
+      filteringType: 'manual',
+      getExpandableItemsAsyncLoadingState: ({ item }) => (item.id === 'g1' ? 'pending' : null),
+      onLoadItems: event => onLoadItems(event.detail),
+    });
+    wrapper.openDropdown();
+    wrapper.findFilteringInput()!.setInputValue('Group');
+    onLoadItems.mockClear();
+    wrapper.findExpandableCategoryById('g1')!.click();
+    expect(onLoadItems).toHaveBeenCalledWith(expect.objectContaining({ expandedGroupId: 'g1' }));
   });
 });

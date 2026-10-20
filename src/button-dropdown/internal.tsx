@@ -148,6 +148,7 @@ const InternalButtonDropdown = React.forwardRef(
       highlightItem,
       onKeyDown,
       onKeyUp,
+      onKeyDownCapture,
       onItemActivate,
       onGroupToggle,
       onDropdownFocusLeave,
@@ -195,6 +196,10 @@ const InternalButtonDropdown = React.forwardRef(
     });
 
     const filterRef = useRef<HTMLInputElement>(null);
+    const isOpenRef = useRef(isOpen);
+    isOpenRef.current = isOpen;
+    const filteringValueRef = useRef(filteringValue);
+    filteringValueRef.current = filteringValue;
 
     useEffect(() => {
       // Focus the filter input when it opens.
@@ -543,7 +548,13 @@ const InternalButtonDropdown = React.forwardRef(
         ref={filterRef}
         value={filteringValue}
         onChange={event => setFilteringValue(event.detail.value)}
-        __onDelayedInput={event => fireLoadItems(event.detail.value)}
+        __onDelayedInput={event => {
+          // The input's debounce outlives a close/reopen or a filter reset, and the portalled input
+          // may already be unmounted. Only fire for the query that is still current.
+          if (isOpenRef.current && event.detail.value === filteringValueRef.current) {
+            fireLoadItems(event.detail.value);
+          }
+        }}
         placeholder={filteringPlaceholder}
         ariaLabel={filteringAriaLabel}
         clearAriaLabel={filteringClearAriaLabel}
@@ -570,6 +581,7 @@ const InternalButtonDropdown = React.forwardRef(
       <div
         {...baseProps}
         onKeyDown={onKeyDown}
+        onKeyDownCapture={onKeyDownCapture}
         onKeyUp={onKeyUp}
         onMouseDown={handleMouseEvent}
         onMouseMove={handleMouseEvent}

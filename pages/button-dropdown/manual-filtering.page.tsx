@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 
 import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
 import Checkbox from '~components/checkbox';
@@ -57,6 +57,7 @@ export default function ButtonDropdownManualFilteringPage() {
   // Scenario "server": items fetched from a simulated server with a configurable delay.
   const [serverItems, setServerItems] = useState<ButtonDropdownProps.Items>(SOURCE_ITEMS);
   const [serverStatus, setServerStatus] = useState<ButtonDropdownProps.AsyncLoadingStatusType>('finished');
+  const serverRequestId = useRef(0);
 
   const content =
     scenario === 'client' ? (
@@ -91,7 +92,12 @@ export default function ButtonDropdownManualFilteringPage() {
         onLoadItems={({ detail: { filteringText } }) => {
           setServerStatus('loading');
           setServerItems([]);
+          const requestId = ++serverRequestId.current;
           simulateServer(filteringText, parseInt(serverDelay, 10)).then(results => {
+            // Ignore responses for earlier filtering text that resolve after a newer request.
+            if (requestId !== serverRequestId.current) {
+              return;
+            }
             setServerItems(results);
             setServerStatus('finished');
           });

@@ -57,19 +57,20 @@ const ALL_ITEMS: ButtonDropdownProps.Item[] = Array.from({ length: 12 }, (_, i) 
   secondaryText: i % 3 === 0 ? `Description for action ${i + 1}` : undefined,
 }));
 
-const GROUP_ITEMS: ButtonDropdownProps.Item[] = Array.from({ length: 6 }, (_, i) => ({
-  id: `sub-${i + 1}`,
-  text: `Sub-action ${i + 1}`,
+const GROUP_A_ITEMS: ButtonDropdownProps.Item[] = Array.from({ length: 12 }, (_, i) => ({
+  id: `group-a-sub-${i + 1}`,
+  text: `Sub-action A${i + 1}`,
 }));
 
+const GROUP_B_ITEMS: ButtonDropdownProps.Item[] = Array.from({ length: 12 }, (_, i) => ({
+  id: `group-b-sub-${i + 1}`,
+  text: `Sub-action B${i + 1}`,
+}));
+
+const PRESET_COUNTS: Record<string, number> = { none: 0, some: 6, all: 12 };
+
 function itemsFromPreset(preset: string, source: ButtonDropdownProps.Item[]): ButtonDropdownProps.Items {
-  if (preset === 'none') {
-    return [];
-  }
-  if (preset === 'some') {
-    return source.slice(0, Math.floor(source.length / 2));
-  }
-  return source;
+  return source.slice(0, PRESET_COUNTS[preset] ?? 0);
 }
 
 const flatSourceItems: ButtonDropdownProps.Item[] = Array.from({ length: 25 }, (_, i) => ({
@@ -189,8 +190,8 @@ export default function ButtonDropdownAsyncLoadingPage() {
           {...commonProps}
           items={
             [
-              { id: 'group-a', text: 'Group A', items: itemsFromPreset(groupAPreset, GROUP_ITEMS) },
-              { id: 'group-b', text: 'Group B', items: itemsFromPreset(groupBPreset, GROUP_ITEMS) },
+              { id: 'group-a', text: 'Group A', items: itemsFromPreset(groupAPreset, GROUP_A_ITEMS) },
+              { id: 'group-b', text: 'Group B', items: itemsFromPreset(groupBPreset, GROUP_B_ITEMS) },
             ] as ButtonDropdownProps.Items
           }
           expandableGroups={true}
