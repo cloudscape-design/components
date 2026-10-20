@@ -20,7 +20,7 @@ interface InternalCopyToClipboardProps extends CopyToClipboardProps, InternalBas
 
 type CopyStatus = 'success' | 'error';
 
-const RESULT_DWELL_MS = 1500;
+const STATUS_ICON_VISIBLE_MS = 1500;
 
 function useTransientFlag(durationMs: number) {
   const [active, setActive] = useState(false);
@@ -51,10 +51,8 @@ function IconSwap({ status, showResult }: { status: CopyStatus; showResult: bool
       <InternalIcon name="copy" className={styles['icon-swap-copy']} />
       <InternalIcon
         name={status === 'error' ? 'status-negative' : 'status-positive'}
-        className={clsx(
-          styles['icon-swap-result'],
-          status === 'error' ? styles['icon-swap-error'] : styles['icon-swap-success']
-        )}
+        variant={status === 'error' ? 'error' : 'success'}
+        className={styles['icon-swap-result']}
       />
     </span>
   );
@@ -80,7 +78,7 @@ export default function InternalCopyToClipboard({
   const [status, setStatus] = useState<CopyStatus>('success');
   const [statusText, setStatusText] = useState(copySuccessText);
   const isOneTheme = useOneTheme();
-  const result = useTransientFlag(RESULT_DWELL_MS);
+  const result = useTransientFlag(STATUS_ICON_VISIBLE_MS);
 
   useEffect(() => {
     if (navigator.permissions) {
@@ -103,7 +101,9 @@ export default function InternalCopyToClipboard({
   const reportResult = (nextStatus: CopyStatus) => {
     setStatus(nextStatus);
     setStatusText(nextStatus === 'success' ? copySuccessText : copyErrorText);
-    result.trigger();
+    if (isOneTheme) {
+      result.trigger();
+    }
     fireNonCancelableEvent(nextStatus === 'success' ? onCopySuccess : onCopyFailure, { text: textToCopy });
   };
 

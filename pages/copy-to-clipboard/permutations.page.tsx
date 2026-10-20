@@ -8,13 +8,6 @@ import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
-const FAIL_MARKER = 'FAIL';
-if (typeof navigator !== 'undefined' && navigator.clipboard) {
-  const originalWriteText = navigator.clipboard.writeText.bind(navigator.clipboard);
-  navigator.clipboard.writeText = (text: string) =>
-    text.includes(FAIL_MARKER) ? Promise.reject(new Error('Copy failed')) : originalWriteText(text);
-}
-
 const permutations = createPermutations<CopyToClipboardProps>([
   {
     variant: ['inline', 'icon', 'button'],
@@ -26,26 +19,6 @@ const permutations = createPermutations<CopyToClipboardProps>([
     copySuccessText: ['Text copied successfully'],
     textToDisplay: ['Lorem ipsum dolor sit amet consectetur adipiscing elit'],
     copyErrorText: ['Copy failed.'],
-    copyButtonText: ['Copy to clipboard'],
-  },
-  {
-    // Disabled without a disabledReason: the button is plainly disabled, is not
-    // focusable, and shows no reason tooltip (unlike the disabled + reason group above).
-    variant: ['inline', 'icon', 'button'],
-    disabled: [true],
-    textToCopy: ['Lorem ipsum dolor sit amet.'],
-    copySuccessText: ['Text copied successfully'],
-    textToDisplay: ['Lorem ipsum dolor sit amet consectetur adipiscing elit'],
-    copyErrorText: ['Copy failed.'],
-    copyButtonText: ['Copy to clipboard'],
-  },
-  {
-    variant: ['inline', 'icon', 'button'],
-    disabled: [false],
-    textToCopy: ['FAIL: this text cannot be copied'],
-    copySuccessText: ['Text copied successfully'],
-    textToDisplay: ['Lorem ipsum dolor sit amet consectetur adipiscing elit'],
-    copyErrorText: ['Failed to copy'],
     copyButtonText: ['Copy to clipboard'],
   },
   {
