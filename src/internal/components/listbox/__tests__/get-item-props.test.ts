@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { flattenOptions } from '../../internal/components/option/utils/flatten-options';
-import { generateTestIndexes } from '../../internal/components/options-list/utils/test-indexes';
-import { getItemProps } from '../utils/get-item-props';
+import { flattenOptions } from '../../option/utils/flatten-options';
+import { generateTestIndexes } from '../../options-list/utils/test-indexes';
+import { getItemProps } from '../parts/get-item-props';
 
 const options = [
   {

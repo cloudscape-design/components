@@ -5,15 +5,15 @@ import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
+import { fallbackItemHeight } from '../../internal/components/listbox/parts/common';
+import { renderOptions } from '../../internal/components/listbox/parts/render-options';
+import scrollToIndex from '../../internal/components/listbox/parts/scroll-to-index';
 import { DropdownOption } from '../../internal/components/option/interfaces';
 import OptionsList from '../../internal/components/options-list';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
 import { MultiselectProps } from '../../multiselect/interfaces';
 import { SelectProps } from '../interfaces';
-import { renderOptions } from '../utils/render-options';
-import scrollToIndex from '../utils/scroll-to-index';
 import { GetOptionProps, MenuProps } from '../utils/use-select';
-import { fallbackItemHeight } from './common';
 
 import styles from './styles.css.js';
 

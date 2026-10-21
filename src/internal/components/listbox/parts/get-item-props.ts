@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { DropdownOption } from '../../internal/components/option/interfaces';
-import { getTestOptionIndexes } from '../../internal/components/options-list/utils/test-indexes';
+import { DropdownOption } from '../../option/interfaces';
+import { getTestOptionIndexes } from '../../options-list/utils/test-indexes';
 
 interface ItemProps {
   option: DropdownOption;
