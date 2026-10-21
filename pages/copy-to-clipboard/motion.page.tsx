@@ -33,17 +33,9 @@ export default function CopyToClipboardMotionPage() {
     <SimplePage
       title="Copy to clipboard motion"
       settings={
-        <SpaceBetween size="s" direction="horizontal">
-          <Toggle checked={copyFails} onChange={({ detail }) => setUrlParams({ copyFails: detail.checked })}>
-            Copy fails
-          </Toggle>
-          <Toggle
-            checked={urlParams.motionDisabled}
-            onChange={({ detail }) => setUrlParams({ motionDisabled: detail.checked })}
-          >
-            Disable motion
-          </Toggle>
-        </SpaceBetween>
+        <Toggle checked={copyFails} onChange={({ detail }) => setUrlParams({ copyFails: detail.checked })}>
+          Copy fails
+        </Toggle>
       }
       screenshotArea={{}}
     >
