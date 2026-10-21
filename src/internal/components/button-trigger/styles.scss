@@ -127,7 +127,7 @@ $icon-offset: awsui.$space-xxxs;
     text-decoration: none;
   }
 
-  &:not(.in-filtering-token):not(.compact) {
+  &:not(.in-filtering-token):not(.compact):not(.grouped.with-error):not(.grouped.with-warning) {
     @include focus-visible.when-visible {
       @include styles.form-focus-element();
     }

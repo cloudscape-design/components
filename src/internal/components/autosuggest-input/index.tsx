@@ -442,7 +442,7 @@ const AutosuggestInput = React.forwardRef(
           formFieldContext.warning && !formFieldContext.invalid && styles['token-field-warning'],
           disabled && styles['token-field-disabled'],
           readOnly && !disabled && styles['token-field-readonly'],
-          ...getGroupedControlClassNames(styles, groupedControlProps)
+          getGroupedControlClassNames(styles, groupedControlProps)
         )}
         style={getInputStylesCss(style)}
       >
