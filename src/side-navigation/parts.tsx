@@ -704,10 +704,10 @@ function SectionGroup({
 
   return (
     <div ref={sectionGroupRef} className={styles['section-group']}>
-      {showInfo ? (
+      {definition.info ? (
         <div className={styles['section-group-title-with-info']}>
           {title}
-          <span className={clsx(styles.info, testUtilStyles.info)}>{definition.info}</span>
+          {showInfo && <span className={clsx(styles.info, testUtilStyles.info)}>{definition.info}</span>}
         </div>
       ) : (
         title
@@ -891,6 +891,7 @@ function ExpandableLinkGroup({
       __disableHeaderPaddings={true}
       __expandIconPosition={withIcons ? 'end' : 'start'}
       __hideExpandIcon={!!collapsed}
+      headerAriaLabel={definition.info ? definition.text : undefined}
       headerText={
         <Link
           definition={{
