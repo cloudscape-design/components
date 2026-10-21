@@ -16,53 +16,60 @@ import { InternalContainerAsSubstep } from './internal';
 
 export { ContainerProps };
 
-export default function Container({
-  variant = 'default',
-  disableHeaderPaddings = false,
-  disableContentPaddings = false,
-  fitHeight = false,
-  ...props
-}: ContainerProps) {
-  const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
-  const baseComponentProps = useBaseComponent(
-    'Container',
+const Container = React.forwardRef(
+  (
     {
-      props: {
-        disableContentPaddings,
-        disableHeaderPaddings,
-        fitHeight,
-        variant,
+      variant = 'default',
+      disableHeaderPaddings = false,
+      disableContentPaddings = false,
+      fitHeight = false,
+      ...props
+    }: ContainerProps,
+    ref: React.Ref<ContainerProps.Ref>
+  ) => {
+    const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
+    const baseComponentProps = useBaseComponent(
+      'Container',
+      {
+        props: {
+          disableContentPaddings,
+          disableHeaderPaddings,
+          fitHeight,
+          variant,
+        },
+        metadata: {
+          hasInstanceIdentifier: Boolean(analyticsMetadata?.instanceIdentifier),
+        },
       },
-      metadata: {
-        hasInstanceIdentifier: Boolean(analyticsMetadata?.instanceIdentifier),
-      },
-    },
-    analyticsMetadata
-  );
-  const externalProps = getExternalProps(props);
+      analyticsMetadata
+    );
+    const externalProps = getExternalProps(props);
 
-  const analyticsComponentMetadata: GeneratedAnalyticsMetadataContainerComponent = {
-    name: 'awsui.Container',
-    label: { root: 'self' },
-  };
+    const analyticsComponentMetadata: GeneratedAnalyticsMetadataContainerComponent = {
+      name: 'awsui.Container',
+      label: { root: 'self' },
+    };
 
-  return (
-    <AnalyticsFunnelSubStep
-      subStepIdentifier={analyticsMetadata?.instanceIdentifier}
-      subStepErrorContext={analyticsMetadata?.errorContext}
-    >
-      <InternalContainerAsSubstep
-        variant={variant}
-        disableContentPaddings={disableContentPaddings}
-        disableHeaderPaddings={disableHeaderPaddings}
-        fitHeight={fitHeight}
-        {...props}
-        {...externalProps}
-        {...baseComponentProps}
-        {...getAnalyticsMetadataAttribute({ component: analyticsComponentMetadata })}
-      />
-    </AnalyticsFunnelSubStep>
-  );
-}
+    return (
+      <AnalyticsFunnelSubStep
+        subStepIdentifier={analyticsMetadata?.instanceIdentifier}
+        subStepErrorContext={analyticsMetadata?.errorContext}
+      >
+        <InternalContainerAsSubstep
+          ref={ref}
+          variant={variant}
+          disableContentPaddings={disableContentPaddings}
+          disableHeaderPaddings={disableHeaderPaddings}
+          fitHeight={fitHeight}
+          {...props}
+          {...externalProps}
+          {...baseComponentProps}
+          {...getAnalyticsMetadataAttribute({ component: analyticsComponentMetadata })}
+        />
+      </AnalyticsFunnelSubStep>
+    );
+  }
+);
 
 applyDisplayName(Container, 'Container');
+export default Container;

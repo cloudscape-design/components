@@ -339,7 +339,19 @@ export type ColorPaletteTokenName =
   | 'colorYellow800'
   | 'colorYellow900'
   | 'colorYellow950'
-  | 'colorYellow1000';
+  | 'colorYellow1000'
+  | 'colorOneThemeYellow50'
+  | 'colorOneThemeYellow100'
+  | 'colorOneThemeYellow200'
+  | 'colorOneThemeYellow300'
+  | 'colorOneThemeYellow400'
+  | 'colorOneThemeYellow500'
+  | 'colorOneThemeYellow600'
+  | 'colorOneThemeYellow700'
+  | 'colorOneThemeYellow800'
+  | 'colorOneThemeYellow900'
+  | 'colorOneThemeYellow950'
+  | 'colorOneThemeYellow1000';
 export type ColorChartsTokenName =
   | 'colorChartsRed300'
   | 'colorChartsRed400'
@@ -717,6 +729,7 @@ export type ColorsTokenName =
   | 'colorBorderDropdownItemHover'
   | 'colorBorderDropdownItemSelected'
   | 'colorBorderDropdownItemTop'
+  | 'colorBorderControlGroupDefault'
   | 'colorBorderEditableCellHover'
   | 'colorBorderInputDefault'
   | 'colorBorderInputDisabled'
@@ -728,6 +741,8 @@ export type ColorsTokenName =
   | 'colorBorderLayout'
   | 'colorBorderLayoutSideNavigation'
   | 'colorBorderNotificationStackBar'
+  | 'colorBorderNotificationStackBarActive'
+  | 'colorBorderNotificationStackBarHover'
   | 'colorBorderNotificationStackBarFocused'
   | 'colorBorderPanelHeader'
   | 'colorBorderPopover'
@@ -1083,6 +1098,7 @@ export type BordersTokenName =
   | 'borderWidthDialog'
   | 'borderWidthItemSelected'
   | 'borderWidthLayoutSideNavigation'
+  | 'borderWidthNotificationStackBar'
   | 'borderWidthButton'
   | 'borderWidthDropdown'
   | 'borderWidthField'
@@ -1171,6 +1187,8 @@ export type SpacingTokenName =
   | 'spaceAlertMessageRight'
   | 'spaceAlertVertical'
   | 'spaceButtonFocusOutlineGutter'
+  | 'spaceButtonInlineLinkFocusOutlineGutter'
+  | 'spaceExpandToggleFocusOutlineGutter'
   | 'spaceButtonHorizontal'
   | 'spaceButtonVertical'
   | 'spaceTokenVertical'
@@ -1198,6 +1216,7 @@ export type SpacingTokenName =
   | 'spaceDialogSectionGap'
   | 'spaceCodeEditorStatusFocusOutlineGutter'
   | 'spaceContainerContentTop'
+  | 'spaceContainerContentVertical'
   | 'spaceContainerHeaderTop'
   | 'spaceContainerHeaderBottom'
   | 'spaceContainerHorizontal'
@@ -1241,6 +1260,7 @@ export type SpacingTokenName =
   | 'spaceTableHeaderToolsBottom'
   | 'spaceTableHeaderToolsFullPageBottom'
   | 'spaceTableHorizontal'
+  | 'spaceTableCellVertical'
   | 'spaceTileGutter'
   | 'spaceTreeViewIndentation'
   | 'spaceSideNavigationItemDefaultGap'
@@ -1323,6 +1343,6 @@ export type ColorScopeTokenName =
   | ColorSeverityTokenName
   | ColorPaletteTokenName;
 export type MotionScopeTokenName = MotionTokenName;
-export type DensityScopeTokenName = SizesTokenName | SpacingTokenName;
+export type DensityScopeTokenName = SizesTokenName | SpacingTokenName | TypographyTokenName;
 
 export type TokenName = GlobalScopeTokenName | ColorScopeTokenName | MotionScopeTokenName | DensityScopeTokenName;

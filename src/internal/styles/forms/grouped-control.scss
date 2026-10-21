@@ -1,0 +1,163 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use '../tokens' as awsui;
+@use '../utils' as styles;
+@use '../foundation' as foundation;
+@use './constants' as constants;
+@use './mixins' as mixins;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+$grouped-control-border-radius: constants.$control-border-radius;
+
+@mixin grouped-control-base {
+  @include styles.logical-radius($grouped-control-border-radius);
+  border-inline-start-color: awsui.$color-border-input-default;
+  border-inline-end-color: awsui.$color-border-input-default;
+  border-block-start-color: awsui.$color-border-input-default;
+  border-block-end-color: awsui.$color-border-input-default;
+}
+
+@mixin grouped-control-horizontal-first {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+@mixin grouped-control-horizontal-last {
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+}
+@mixin grouped-control-vertical-first {
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+}
+@mixin grouped-control-vertical-last {
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+}
+@mixin grouped-control-middle {
+  @include styles.logical-radius(0);
+}
+
+// Recolors the outward border edges of each grouped position to `$color`.
+@mixin grouped-control-status-edges($color) {
+  &.grouped-horizontal-first {
+    &,
+    &:hover,
+    &:focus {
+      border-inline-start-color: $color;
+      border-block-start-color: $color;
+      border-block-end-color: $color;
+    }
+  }
+  &.grouped-horizontal-middle {
+    &,
+    &:hover,
+    &:focus {
+      border-block-start-color: $color;
+      border-block-end-color: $color;
+    }
+  }
+  &.grouped-horizontal-last {
+    &,
+    &:hover,
+    &:focus {
+      border-inline-end-color: $color;
+      border-block-start-color: $color;
+      border-block-end-color: $color;
+    }
+  }
+  &.grouped-vertical-first {
+    &,
+    &:hover,
+    &:focus {
+      border-block-start-color: $color;
+      border-inline-start-color: $color;
+      border-inline-end-color: $color;
+    }
+  }
+  &.grouped-vertical-middle {
+    &,
+    &:hover,
+    &:focus {
+      border-inline-start-color: $color;
+      border-inline-end-color: $color;
+    }
+  }
+  &.grouped-vertical-last {
+    &,
+    &:hover,
+    &:focus {
+      border-block-end-color: $color;
+      border-inline-start-color: $color;
+      border-inline-end-color: $color;
+    }
+  }
+  &.grouped-horizontal-only,
+  &.grouped-vertical-only {
+    &,
+    &:hover,
+    &:focus {
+      border-inline-start-color: $color;
+      border-inline-end-color: $color;
+      border-block-start-color: $color;
+      border-block-end-color: $color;
+    }
+  }
+}
+
+@mixin grouped-control {
+  @include grouped-control-base;
+
+  &-horizontal {
+    &-first {
+      @include grouped-control-horizontal-first;
+    }
+    &-middle {
+      @include grouped-control-middle;
+    }
+    &-last {
+      @include grouped-control-horizontal-last;
+    }
+  }
+
+  &-vertical {
+    &-first {
+      @include grouped-control-vertical-first;
+    }
+    &-middle {
+      @include grouped-control-middle;
+    }
+    &-last {
+      @include grouped-control-vertical-last;
+    }
+  }
+
+  &-with-action {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+
+  &.with-error {
+    @include grouped-control-status-edges(awsui.$color-text-status-error);
+  }
+  &.with-warning {
+    @include grouped-control-status-edges(awsui.$color-text-status-warning);
+  }
+
+  &.with-error,
+  &.with-warning {
+    @include focus-visible.when-visible {
+      @include mixins.windows-high-contrast-outline;
+      box-shadow: foundation.$box-shadow-focused-light-invalid;
+    }
+    &:focus-within {
+      @include mixins.windows-high-contrast-outline;
+      box-shadow: foundation.$box-shadow-focused-light-invalid;
+    }
+  }
+
+  &.grouped-validation-first {
+    // Room for the validation thick border, which is rendered from the control group wrapper
+    padding-inline-start: calc(#{constants.$invalid-control-left-border} + #{constants.$invalid-control-left-padding});
+  }
+}

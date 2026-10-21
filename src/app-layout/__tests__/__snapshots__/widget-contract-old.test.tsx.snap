@@ -159,6 +159,8 @@ Map {
       "drawer": null,
       "renderLatestFeaturePrompt": [Function],
     },
+    "hideBreadcrumbsInToolbar": false,
+    "reportOwnBreadcrumbsProps": [Function],
     "toolbarProps": {
       "activeDrawerId": null,
       "ariaLabels": {
@@ -1019,6 +1021,8 @@ Map {
       "drawer": null,
       "renderLatestFeaturePrompt": [Function],
     },
+    "hideBreadcrumbsInToolbar": false,
+    "reportOwnBreadcrumbsProps": [Function],
     "toolbarProps": {
       "activeDrawerId": null,
       "ariaLabels": {
@@ -2081,6 +2085,8 @@ Map {
       "drawer": null,
       "renderLatestFeaturePrompt": [Function],
     },
+    "hideBreadcrumbsInToolbar": false,
+    "reportOwnBreadcrumbsProps": [Function],
     "toolbarProps": {
       "activeDrawerId": "security",
       "ariaLabels": {

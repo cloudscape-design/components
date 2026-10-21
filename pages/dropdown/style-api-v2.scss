@@ -3,6 +3,7 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use '../../lib/components/styling/dropdown';
 @use '../style-api/palette' as palette;
 
 .dropdown-row {
@@ -15,24 +16,27 @@
 }
 
 .dropdown-brand {
-  --awsui-style-background-color: #{palette.$surface-alt};
-  --awsui-style-border-color: #{palette.$border-accent};
-  --awsui-style-border-width: 2px;
-  --awsui-style-border-radius: 0px;
+  @include dropdown.dropdown(
+    $background: palette.$surface-alt,
+    $border-radius: 0px,
+    $outline-color: palette.$border-accent,
+    $outline-width: 2px
+  );
 }
 
 .dropdown-borderless {
-  --awsui-style-background-color: #{palette.$subtle};
-  --awsui-style-border-width: 0px;
-  --awsui-style-border-radius: 12px;
+  @include dropdown.dropdown(
+    $background: palette.$subtle,
+    $border-radius: 12px,
+    $box-shadow: 0 0 24px rgba(0, 0, 0, 0.2),
+    $outline-width: 0px
+  );
 }
 
 .dropdown-focus-within {
-  --awsui-style-background-color: #{palette.$surface};
-  --awsui-style-border-color: #{palette.$border};
-  --awsui-style-border-width: 2px;
+  @include dropdown.dropdown($background: palette.$surface, $outline-color: palette.$border, $outline-width: 2px);
 
   &:focus-within {
-    --awsui-style-border-color: #{palette.$accent};
+    @include dropdown.dropdown($outline-color: palette.$accent);
   }
 }

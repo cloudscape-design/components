@@ -34,6 +34,9 @@ export default function runA11yTests(theme: Theme, mode: Mode, skip: string[] = 
         'app-layout/with-error-boundaries',
         // nested app layouts aren't accessible, as every page should contain a level-one heading
         'app-layout-toolbar/without-toolbar-nested',
+        // Test pages that intentionally render multiple App Layout instances.
+        'app-layout/global-nav-breadcrumbs-multi-layout',
+        'app-layout/global-nav-breadcrumbs-hidden-instances-iframe',
       ];
       const testFunction = skipPages.includes(inputUrl) ? test.skip : test;
       const url = urlFormatter(inputUrl, mode);

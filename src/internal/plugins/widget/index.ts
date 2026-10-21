@@ -5,11 +5,15 @@ import { getExternalProps } from '../../utils/external-props';
 import { getAppLayoutInitialMessages, getAppLayoutMessageHandler, pushInitialMessage, setInitialMessage } from './core';
 import {
   AppLayoutUpdateMessage,
+  BreadcrumbsConsumerPayload,
+  BreadcrumbsConsumerRegistration,
   DrawerPayload,
   FeatureNotificationsPayload,
   FeatureNotificationsPayloadPublic,
+  RegisterBreadcrumbsExternalConsumerMessage,
   RegisterDrawerMessage,
   RegisterFeatureNotificationsMessage,
+  UnregisterBreadcrumbsExternalConsumerMessage,
   WidgetMessage,
 } from './interfaces';
 
@@ -58,6 +62,32 @@ export function clearFeatureNotifications() {
 }
 
 /**
+ * Registers the surface that renders breadcrumbs outside App Layout.
+ */
+export function registerBreadcrumbsConsumer(payload: BreadcrumbsConsumerPayload): BreadcrumbsConsumerRegistration {
+  const message: RegisterBreadcrumbsExternalConsumerMessage = {
+    type: 'registerBreadcrumbsExternalConsumer',
+    payload,
+  };
+  pushInitialMessage(message);
+  getAppLayoutMessageHandler()?.(message as WidgetMessage<unknown>);
+
+  return {
+    unregister: () => {
+      const initialMessages = getAppLayoutInitialMessages();
+      setInitialMessage(
+        initialMessages.filter(initialMessage => initialMessage.type !== 'registerBreadcrumbsExternalConsumer')
+      );
+      const unregisterMessage: UnregisterBreadcrumbsExternalConsumerMessage = {
+        type: 'unregisterBreadcrumbsExternalConsumer',
+        payload: undefined,
+      };
+      getAppLayoutMessageHandler()?.(unregisterMessage as WidgetMessage<unknown>);
+    },
+  };
+}
+
+/**
  * Interact with already registered app layout drawers
  * @param message
  */
@@ -65,7 +95,10 @@ export function updateDrawer<T = unknown>(message: AppLayoutUpdateMessage<T>) {
   const initialMessages = getAppLayoutInitialMessages();
   if (message.type === 'updateDrawerConfig') {
     initialMessages.forEach(initialMessage => {
-      if (initialMessage.payload.id === message.payload.id) {
+      if (
+        initialMessage.type !== 'registerBreadcrumbsExternalConsumer' &&
+        initialMessage.payload.id === message.payload.id
+      ) {
         initialMessage.payload = { ...initialMessage.payload, ...message.payload };
       }
     });

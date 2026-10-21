@@ -1,0 +1,39 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/index' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+.root {
+  @include styles.styles-reset;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
+  background: awsui.$color-background-container-content;
+}
+
+.body-scroller {
+  overflow-x: auto;
+  @include focus-visible.when-visible {
+    @include styles.container-focus();
+  }
+}
+
+.table {
+  inline-size: 100%;
+  // Separate borders: the collapsed model breaks sticky columns and blurs the selected-row outline corners.
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-auto {
+  table-layout: auto;
+}
+
+.table-grid {
+  display: block;
+}

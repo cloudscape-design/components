@@ -3,11 +3,20 @@
 import React from 'react';
 import { act, render, waitFor } from '@testing-library/react';
 
+import { isThemeActive } from '@cloudscape-design/component-toolkit/internal';
+
 import CopyToClipboard from '../../../lib/components/copy-to-clipboard';
 import InternalCopyToClipboard from '../../../lib/components/copy-to-clipboard/internal';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import { KeyCode } from '../../internal/keycode';
 
 import styles from '../../../lib/components/copy-to-clipboard/styles.css.js';
+import iconStyles from '../../../lib/components/icon/styles.css.js';
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  isThemeActive: jest.fn().mockReturnValue(false),
+}));
 
 const defaultProps = {
   copyTarget: 'Test content',
@@ -22,6 +31,7 @@ describe('CopyToClipboard', () => {
   const originalNavigatorPermissions = global.navigator.permissions;
 
   beforeEach(() => {
+    (isThemeActive as jest.Mock).mockReturnValue(false);
     Object.assign(global.navigator, {
       clipboard: {
         writeText: (text: string) =>
@@ -132,6 +142,20 @@ describe('CopyToClipboard', () => {
     // Assert content written to the clipboard
     wrapper.findCopyButton().click();
     expect(mockedWriteText).toHaveBeenCalledWith('Text to copy');
+  });
+
+  test('does not schedule the One Theme status icon timer outside One Theme', async () => {
+    jest.useFakeTimers();
+    const { container } = render(<CopyToClipboard {...defaultProps} />);
+    const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+    await act(async () => {
+      wrapper.findCopyButton().click();
+      await Promise.resolve();
+    });
+
+    expect(jest.getTimerCount()).toBe(0);
+    jest.useRealTimers();
   });
 
   describe.each([false, true])('popoverRenderWithPortal set to %s', (popoverRenderWithPortal: boolean) => {
@@ -529,5 +553,168 @@ describe('CopyToClipboard', () => {
   test('InternalCopyToClipboard does not wrap text when wrapText=false', () => {
     const { container } = render(<InternalCopyToClipboard {...defaultProps} variant="inline" wrapText={false} />);
     expect(container.querySelector(`.${styles['inline-container-no-wrap']}`)).not.toBeNull();
+  });
+
+  describe('One Theme glyph-swap behavior', () => {
+    beforeEach(() => {
+      (isThemeActive as jest.Mock).mockReturnValue(true);
+      jest.useFakeTimers();
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    function renderCopyToClipboard(props: Partial<React.ComponentProps<typeof CopyToClipboard>> = {}) {
+      const { container, unmount } = render(<CopyToClipboard {...defaultProps} {...props} />);
+      const wrapper = createWrapper(container).findCopyToClipboard()!;
+      const hasClass = (className: string) => container.querySelector(`.${className}`) !== null;
+      const copy = () =>
+        act(async () => {
+          wrapper.findCopyButton().click();
+          await Promise.resolve();
+        });
+      return { container, unmount, wrapper, hasClass, copy };
+    }
+
+    test('swaps the copy glyph for the success glyph and shows the message as plain text', async () => {
+      const { wrapper, hasClass, copy } = renderCopyToClipboard();
+      // Both glyphs are mounted up front so the swap can transition; the result is hidden until a copy.
+      expect(hasClass(styles['icon-swap'])).toBe(true);
+      expect(hasClass(styles['icon-swap-copied'])).toBe(false);
+
+      await copy();
+
+      expect(wrapper.findStatusText()!.getElement().textContent).toBe('Copied to clipboard');
+      expect(wrapper.findStatusText()!.findByClassName(styles['popover-message'])).not.toBeNull();
+      expect(hasClass(iconStyles['variant-success'])).toBe(true);
+      expect(hasClass(styles['icon-swap-copied'])).toBe(true);
+    });
+
+    test('swaps the copy glyph for the error glyph when the copy fails', async () => {
+      const { wrapper, hasClass, copy } = renderCopyToClipboard({ textToCopy: 'Text to copy with error' });
+
+      await copy();
+
+      expect(wrapper.findStatusText()!.getElement().textContent).toBe('Failed to copy to clipboard');
+      expect(hasClass(iconStyles['variant-error'])).toBe(true);
+      expect(hasClass(styles['icon-swap-copied'])).toBe(true);
+    });
+
+    test('hands back to the copy glyph and dismisses the popover after the status icon duration', async () => {
+      const { wrapper, hasClass, copy } = renderCopyToClipboard();
+      await copy();
+      expect(hasClass(styles['icon-swap-copied'])).toBe(true);
+      expect(wrapper.findStatusText()).not.toBeNull();
+
+      act(() => jest.advanceTimersByTime(1499));
+      expect(hasClass(styles['icon-swap-copied'])).toBe(true);
+
+      act(() => jest.advanceTimersByTime(1));
+      expect(hasClass(styles['icon-swap-copied'])).toBe(false);
+      expect(wrapper.findStatusText()).toBeNull();
+    });
+
+    test('restarts the status icon timer without replaying the swap on rapid re-click', async () => {
+      const { hasClass, copy } = renderCopyToClipboard();
+      await copy();
+      act(() => jest.advanceTimersByTime(1000));
+      await copy();
+
+      act(() => jest.advanceTimersByTime(1000));
+      expect(hasClass(styles['icon-swap-copied'])).toBe(true);
+
+      act(() => jest.advanceTimersByTime(500));
+      expect(hasClass(styles['icon-swap-copied'])).toBe(false);
+    });
+
+    test('does not render the stacked glyphs outside One Theme', () => {
+      (isThemeActive as jest.Mock).mockReturnValue(false);
+      const { wrapper, hasClass } = renderCopyToClipboard();
+      expect(hasClass(styles['icon-swap'])).toBe(false);
+      expect(wrapper.findCopyButton().getElement().querySelector('svg')).not.toBeNull();
+    });
+
+    test.each(['button', 'icon', 'inline'] as const)('swaps the glyph for variant="%s"', async variant => {
+      const { hasClass, copy } = renderCopyToClipboard({ variant });
+      expect(hasClass(styles['icon-swap'])).toBe(true);
+      await copy();
+      expect(hasClass(styles['icon-swap-copied'])).toBe(true);
+    });
+
+    test('does not swap the glyph or show a popover when disabled', async () => {
+      const { container, hasClass, copy } = renderCopyToClipboard({ disabled: true });
+      await copy();
+      expect(hasClass(styles['icon-swap-copied'])).toBe(false);
+      expect(createWrapper(container).findPopover()).toBeNull();
+    });
+
+    test('keeps the copy glyph when permission is denied on mount and recovers on a successful copy', async () => {
+      // The permission query resolves through a promise chain; real timers let `waitFor` observe it.
+      jest.useRealTimers();
+      Object.assign(global.navigator, {
+        permissions: { query: jest.fn().mockResolvedValue({ state: 'denied' }) },
+      });
+      const { hasClass, copy } = renderCopyToClipboard();
+
+      // The denial only seeds the status; the trigger does not announce anything before a click.
+      await waitFor(() => expect(hasClass(iconStyles['variant-error'])).toBe(true));
+      expect(hasClass(styles['icon-swap-copied'])).toBe(false);
+
+      await copy();
+
+      await waitFor(() => expect(hasClass(styles['icon-swap-copied'])).toBe(true));
+      expect(hasClass(iconStyles['variant-success'])).toBe(true);
+      expect(hasClass(iconStyles['variant-error'])).toBe(false);
+    });
+
+    test('swaps to the error glyph when the clipboard API is unavailable', async () => {
+      Object.assign(global.navigator, { clipboard: undefined });
+      const onCopyFailure = jest.fn();
+      const { wrapper, hasClass, copy } = renderCopyToClipboard({ onCopyFailure });
+      await copy();
+
+      expect(hasClass(styles['icon-swap-copied'])).toBe(true);
+      expect(hasClass(iconStyles['variant-error'])).toBe(true);
+      expect(wrapper.findStatusText()!.getElement().textContent).toBe('Failed to copy to clipboard');
+      expect(onCopyFailure).toHaveBeenCalledWith(expect.objectContaining({ detail: { text: 'Text to copy' } }));
+    });
+
+    test('keeps the button accessible name and hides the glyphs from assistive technology', async () => {
+      const { wrapper, copy } = renderCopyToClipboard({ copyButtonAriaLabel: 'Copy ARN' });
+      const button = wrapper.findCopyButton().getElement();
+      expect(button).toHaveAccessibleName('Copy ARN');
+
+      await copy();
+
+      expect(button).toHaveAccessibleName('Copy ARN');
+      expect(button).not.toHaveAttribute('aria-pressed');
+      const stack = button.querySelector(`.${styles['icon-swap']}`)!;
+      expect(stack.closest('[aria-hidden="true"]')).not.toBeNull();
+    });
+
+    test('cancels the status icon timer on unmount', async () => {
+      const { unmount, copy } = renderCopyToClipboard();
+      await copy();
+      const pendingTimersWhileShown = jest.getTimerCount();
+
+      unmount();
+
+      expect(jest.getTimerCount()).toBeLessThan(pendingTimersWhileShown);
+      expect(() => act(() => jest.advanceTimersByTime(1500))).not.toThrow();
+    });
+
+    test('hands back immediately and cancels the status icon timer when the popover is closed with Escape', async () => {
+      const { wrapper, hasClass, copy } = renderCopyToClipboard();
+      await copy();
+      expect(wrapper.findStatusText()).not.toBeNull();
+
+      act(() => wrapper.findCopyButton().keydown(KeyCode.escape));
+      expect(wrapper.findStatusText()).toBeNull();
+      expect(hasClass(styles['icon-swap-copied'])).toBe(false);
+
+      act(() => jest.advanceTimersByTime(1500));
+      expect(wrapper.findStatusText()).toBeNull();
+    });
   });
 });

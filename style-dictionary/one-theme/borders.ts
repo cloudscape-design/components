@@ -17,6 +17,7 @@ const tokens: StyleDictionary.BordersDictionary = {
   borderWidthFlashbarInlineStart: '2px',
   borderWidthItemSelected: '1px',
   borderWidthCardSelected: '1px',
+  borderWidthNotificationStackBar: '1px',
 
   // ── Icon stroke widths ────────────────────────────────────────────────────
   borderWidthIconSmall: '1.5px',
@@ -30,7 +31,7 @@ const tokens: StyleDictionary.BordersDictionary = {
   borderRadiusBadge: '16px',
   borderRadiusButton: '4px',
   borderRadiusContainer: '2px',
-  borderRadiusDropdown: '6px',
+  borderRadiusDropdown: '4px',
   borderRadiusDropzone: '2px',
   borderRadiusFlashbar: '2px',
   borderRadiusInput: '4px',

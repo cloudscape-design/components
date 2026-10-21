@@ -199,6 +199,8 @@ const metadata: StyleDictionary.MetadataIndex = {
   colorBackgroundLayoutPanelContent: {
     description:
       'The background color of app layout panel content area. For example: The side navigation and tools panel content background color.',
+    themeable: true,
+    public: true,
   },
   colorBackgroundLayoutToolbar: {
     description:
@@ -754,6 +756,12 @@ const metadata: StyleDictionary.MetadataIndex = {
       'The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.',
     public: true,
     themeable: true,
+  },
+  colorBorderControlGroupDefault: {
+    description:
+      'The default border color of control group action buttons that sit next to form inputs. Independent from the input border color.',
+    public: false,
+    themeable: false,
   },
   colorBorderInputDefault: {
     description:

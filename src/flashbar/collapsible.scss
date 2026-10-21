@@ -8,6 +8,7 @@
 @use '../internal/styles/foundation' as foundation;
 @use '../internal/styles' as styles;
 @use '../internal/styles/typography' as typography;
+@use '../internal/styles/utils/theming' as theming;
 @use './collapsible.motion';
 
 $notification-bar-top-overlap: (
@@ -20,10 +21,7 @@ $notification-bar-collapsed-item-overflow: (
   'x': 10px,
   'y': 8px,
 );
-$notification-bar-border-width: (
-  'classic': 1px,
-  'visual-refresh': 2px,
-);
+$notification-bar-border-width: awsui.$border-width-notification-stack-bar;
 
 .stack {
   $notification-bar-horizontal-margin: 3 * map.get($notification-bar-collapsed-item-overflow, 'x');
@@ -137,18 +135,7 @@ the grid layout will be:
 .stack.collapsible {
   &:not(.expanded) {
     &:not(.short-list) {
-      &:not(.visual-refresh) {
-        @include vertical-spacing(
-          map.get($notification-bar-top-overlap, 'collapsed'),
-          map.get($notification-bar-border-width, 'classic')
-        );
-      }
-      &.visual-refresh {
-        @include vertical-spacing(
-          map.get($notification-bar-top-overlap, 'collapsed'),
-          map.get($notification-bar-border-width, 'visual-refresh')
-        );
-      }
+      @include vertical-spacing(map.get($notification-bar-top-overlap, 'collapsed'), $notification-bar-border-width);
     }
 
     /*
@@ -156,22 +143,12 @@ the grid layout will be:
     missing third item when there are only 2 items in the stack.
      */
     &.short-list {
-      &:not(.visual-refresh) {
-        @include vertical-spacing(
-          map.get($notification-bar-top-overlap, 'collapsed'),
-          map.get($notification-bar-border-width, 'classic'),
-          0px,
-          map.get($notification-bar-collapsed-item-overflow, 'y')
-        );
-      }
-      &.visual-refresh {
-        @include vertical-spacing(
-          map.get($notification-bar-top-overlap, 'collapsed'),
-          map.get($notification-bar-border-width, 'visual-refresh'),
-          0px,
-          map.get($notification-bar-collapsed-item-overflow, 'y')
-        );
-      }
+      @include vertical-spacing(
+        map.get($notification-bar-top-overlap, 'collapsed'),
+        $notification-bar-border-width,
+        0px,
+        map.get($notification-bar-collapsed-item-overflow, 'y')
+      );
     }
   }
 
@@ -183,15 +160,12 @@ the grid layout will be:
        */
       @include vertical-spacing(
         map.get($notification-bar-top-overlap, 'expanded'),
-        map.get($notification-bar-border-width, 'classic'),
+        $notification-bar-border-width,
         awsui.$space-scaled-m
       );
     }
     &.visual-refresh {
-      @include vertical-spacing(
-        map.get($notification-bar-top-overlap, 'expanded'),
-        map.get($notification-bar-border-width, 'visual-refresh')
-      );
+      @include vertical-spacing(map.get($notification-bar-top-overlap, 'expanded'), $notification-bar-border-width);
     }
   }
 }
@@ -206,6 +180,8 @@ the grid layout will be:
   border-end-end-radius: awsui.$border-radius-button;
   border-block-style: solid;
   border-inline-style: solid;
+  border-block-width: $notification-bar-border-width;
+  border-inline-width: $notification-bar-border-width;
   box-shadow: awsui.$shadow-panel-toggle;
   color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-notification-stack-bar);
   cursor: pointer;
@@ -262,27 +238,25 @@ the grid layout will be:
 
   &:hover {
     background: var(#{custom-props.$styleBackgroundHover}, awsui.$color-background-notification-stack-bar-hover);
-    border-color: var(#{custom-props.$styleBorderColorHover}, awsui.$color-background-notification-stack-bar-hover);
+    border-color: var(#{custom-props.$styleBorderColorHover}, awsui.$color-border-notification-stack-bar-hover);
     color: var(#{custom-props.$styleColorHover}, awsui.$color-text-notification-stack-bar);
   }
 
   &:active {
     background: var(#{custom-props.$styleBackgroundActive}, awsui.$color-background-notification-stack-bar-active);
-    border-color: var(#{custom-props.$styleBorderColorActive}, awsui.$color-background-notification-stack-bar);
+    border-color: var(#{custom-props.$styleBorderColorActive}, awsui.$color-border-notification-stack-bar-active);
     color: var(#{custom-props.$styleColorActive}, awsui.$color-text-notification-stack-bar);
   }
 
   &.visual-refresh {
-    $border-width: map.get($notification-bar-border-width, 'visual-refresh');
-    border-block-width: $border-width;
-    border-inline-width: $border-width;
     padding-inline: awsui.$space-l;
+
+    @include theming.one-theme-only {
+      padding-inline: awsui.$space-s;
+    }
   }
 
   &:not(.visual-refresh) {
-    $border-width: map.get($notification-bar-border-width, 'classic');
-    border-block-width: $border-width;
-    border-inline-width: $border-width;
     padding-inline: awsui.$space-s;
 
     &:focus {
@@ -301,6 +275,9 @@ the grid layout will be:
     border-block: 0;
     border-inline: none;
     padding-block: 0;
+    @include theming.one-theme-only {
+      padding-inline: 0;
+    }
     #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
       var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
       var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-notification-stack-bar-focused);

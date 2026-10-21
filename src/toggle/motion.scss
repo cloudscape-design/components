@@ -1,0 +1,102 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use 'sass:math';
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/utils/theming' as theming;
+
+// Scopes @content to themes that opted in to $expressive-motion-themes in theming.scss.
+@mixin toggle-expressive-with-motion {
+  @media (prefers-reduced-motion: no-preference) {
+    @include theming.expressive-motion-only(':not(.awsui-motion-disabled):not(.awsui-mode-entering)') {
+      @content;
+    }
+  }
+}
+
+$travel-duration: awsui.$motion-duration-fast;
+$settle-easing: awsui.$motion-easing-refresh-only-a;
+$tail-duration: awsui.$motion-duration-refresh-only-medium;
+$tail-stretch: 4px;
+
+// Include inside the track rule.
+@mixin control {
+  @include toggle-expressive-with-motion {
+    transition: background-color $travel-duration $settle-easing;
+  }
+}
+
+// Include inside the handle rule. `$handle-size` is the handle's resting inline size,
+// `$travel` the distance it moves to the checked position.
+//
+// Travel (`translate`) and tail (`scale`) are transforms so they keep running while a change
+// handler blocks the main thread; layout properties froze mid-stretch and snapped. They use
+// separate properties because one `transform` animation would override the travel transition.
+@mixin handle($handle-size, $travel) {
+  @include toggle-expressive-with-motion {
+    transition:
+      translate $travel-duration $settle-easing,
+      background-color $travel-duration $settle-easing;
+  }
+
+  &.toggle-handle-checked {
+    @include toggle-expressive-with-motion {
+      transform: none;
+      translate: $travel 0;
+    }
+    @include styles.with-direction('rtl') {
+      @include toggle-expressive-with-motion {
+        translate: -$travel 0;
+      }
+    }
+  }
+
+  // The tail only plays once the state has changed since mount. It stretches away from the leading
+  // edge: inline-end going on, inline-start going off. `transform-origin` is physical, so RTL swaps.
+  &[data-awsui-motion-ready] {
+    @include toggle-expressive-with-motion {
+      animation: awsui-toggle-tail-off $tail-duration $settle-easing;
+      transform-origin: 0 50%;
+    }
+    @include styles.with-direction('rtl') {
+      @include toggle-expressive-with-motion {
+        transform-origin: 100% 50%;
+      }
+    }
+    &.toggle-handle-checked {
+      @include toggle-expressive-with-motion {
+        animation-name: awsui-toggle-tail-on;
+        transform-origin: 100% 50%;
+      }
+      @include styles.with-direction('rtl') {
+        @include toggle-expressive-with-motion {
+          transform-origin: 0 50%;
+        }
+      }
+    }
+  }
+
+  // Identical keyframes under two names: the animation only restarts when `animation-name` changes.
+  @if theming.has-expressive-motion() {
+    $tail-scale: math.div($handle-size + $tail-stretch, $handle-size);
+    @keyframes awsui-toggle-tail-on {
+      0%,
+      100% {
+        scale: 1;
+      }
+      35% {
+        scale: $tail-scale 1;
+      }
+    }
+    @keyframes awsui-toggle-tail-off {
+      0%,
+      100% {
+        scale: 1;
+      }
+      35% {
+        scale: $tail-scale 1;
+      }
+    }
+  }
+}

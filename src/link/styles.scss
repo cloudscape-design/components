@@ -13,9 +13,9 @@
 @use '../internal/styles/utils/theming' as theming;
 @use '../internal/styles/style-api' as style-api;
 
-$tokens: style-api.resolve((color, focus-ring-color, focus-ring-width, focus-ring-radius), public);
+$tokens: style-api.resolve(style-api.$focus-ring, public);
 @include style-api.register($tokens);
-@include style-api.docs('root', $tokens);
+@include style-api.docs('root', $tokens, $properties: (color, text-decoration, font-family, font-size, font-weight));
 
 @mixin focus-ring-box-shadow($color) {
   #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
@@ -34,7 +34,7 @@ $tokens: style-api.resolve((color, focus-ring-color, focus-ring-width, focus-rin
 
   @include focus-ring-box-shadow(awsui.$color-border-item-focused);
 
-  @include styles.link-default($tokens: $tokens);
+  @include styles.link-default;
 
   @each $variant in map.keys(constants.$link-variants) {
     &.variant-#{$variant} {
@@ -45,16 +45,16 @@ $tokens: style-api.resolve((color, focus-ring-color, focus-ring-width, focus-rin
         -webkit-font-smoothing: inherit;
         -moz-osx-font-smoothing: inherit;
       }
-      @include styles.link-variant-style(map.get(constants.$link-variants, $variant), $tokens);
+      @include styles.link-variant-style(map.get(constants.$link-variants, $variant));
     }
   }
 
   &.button {
     @include styles.font-smoothing;
-    @include styles.link-variant-style(map.get(constants.$link-styles, 'button'), $tokens);
+    @include styles.link-variant-style(map.get(constants.$link-styles, 'button'));
 
     @include theming.one-theme-only {
-      @include styles.link-variant-style(map.get(constants.$link-variants, 'primary'), $tokens);
+      @include styles.link-variant-style(map.get(constants.$link-variants, 'primary'));
       & {
         font-weight: inherit;
         letter-spacing: normal;
@@ -62,17 +62,17 @@ $tokens: style-api.resolve((color, focus-ring-color, focus-ring-width, focus-rin
         -moz-osx-font-smoothing: auto;
       }
       &.color-inverted {
-        color: style-api.value($tokens, color, awsui.$color-text-link-inverted-default);
+        color: awsui.$color-text-link-inverted-default;
         text-decoration-color: currentColor;
         &:hover {
-          color: style-api.value($tokens, color, awsui.$color-text-link-inverted-hover);
+          color: awsui.$color-text-link-inverted-hover;
         }
       }
     }
   }
 
   &.color-inverted {
-    color: style-api.value($tokens, color, awsui.$color-text-link-inverted-default);
+    color: awsui.$color-text-link-inverted-default;
     @include theming.one-theme-only {
       @include focus-ring-box-shadow(currentColor);
     }
@@ -81,7 +81,7 @@ $tokens: style-api.resolve((color, focus-ring-color, focus-ring-width, focus-rin
       text-decoration-color: currentColor;
     }
     &:hover {
-      color: style-api.value($tokens, color, awsui.$color-text-link-inverted-hover);
+      color: awsui.$color-text-link-inverted-hover;
     }
   }
 

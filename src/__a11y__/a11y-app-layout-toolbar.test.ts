@@ -10,6 +10,9 @@ const EXCLUDED_PAGES = [
   // Test page for an app layout nested inside another through an iframe.
   // Not a use case that's encouraged.
   'app-layout/multi-layout-global-drawer-child-layout',
+  // Test pages that intentionally render multiple App Layout instances.
+  'app-layout/global-nav-breadcrumbs-multi-layout',
+  'app-layout/global-nav-breadcrumbs-hidden-instances-iframe',
   'app-layout/with-error-boundaries',
   'app-layout-toolbar/without-toolbar-nested',
 ];

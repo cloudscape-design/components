@@ -64,14 +64,14 @@ export default function () {
           },
           {
             type: 'pair',
-            label: 'Circle button',
+            label: 'Pill button',
             value: (
               <Button
                 variant="icon"
                 iconName="copy"
                 ariaLabel="Copy"
                 {...shared}
-                {...{ styleClassNames: { root: clsx(styles['button-circle'], disabledStyle) } }}
+                {...{ styleClassNames: { root: clsx(styles['button-pill'], disabledStyle) } }}
               />
             ),
           },

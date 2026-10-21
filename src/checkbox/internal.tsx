@@ -33,8 +33,6 @@ interface InternalProps extends CheckboxProps, InternalBaseComponentProps {
 // Style API v2
 interface StyleClassNames {
   control?: string;
-  label?: string;
-  description?: string;
 }
 
 const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
@@ -102,13 +100,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
         disabled={disabled}
         readOnly={readOnly}
         label={children}
-        labelClassName={clsx(styleClassNames?.label, styles.label, disabled && styles['label-disabled'])}
         description={description}
-        descriptionClassName={clsx(
-          styleClassNames?.description,
-          styles.description,
-          disabled && styles['description-disabled']
-        )}
         descriptionBottomPadding={true}
         ariaLabel={ariaLabel}
         ariaLabelledby={ariaLabelledby}

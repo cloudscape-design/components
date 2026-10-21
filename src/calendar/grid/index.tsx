@@ -51,7 +51,7 @@ export interface GridProps {
 }
 
 interface GridCellProps extends TdHTMLAttributes<HTMLTableCellElement> {
-  disabledReason?: string;
+  disabledReason?: React.ReactNode;
   referrerId?: string;
 }
 

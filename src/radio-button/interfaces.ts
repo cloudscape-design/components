@@ -16,6 +16,23 @@ export interface RadioButtonProps extends BaseComponentProps {
   checked: boolean;
 
   /**
+   * Adds an `aria-label` to the native control.
+   *
+   * Use this if you don't have a visible label for this control.
+   */
+  ariaLabel?: string;
+
+  /**
+   * Adds `aria-labelledby` to the native control.
+   */
+  ariaLabelledby?: string;
+
+  /**
+   * Adds `aria-describedby` to the native control.
+   */
+  ariaDescribedby?: string;
+
+  /**
    * Specifies the ID of the native form element. You can use it to relate
    * a label element's `for` attribute to this control.
    */
@@ -52,6 +69,10 @@ export interface RadioButtonProps extends BaseComponentProps {
    * - Event handlers will be chained, unless the default is prevented.
    *
    * We do not support using this attribute to apply custom styling.
+   *
+   * Pass a `ref` to access the native element for measurement, observation, or third-party integration.
+   * For actions such as focus or selection, use the component's explicit ref methods;
+   * operations performed directly on the native element may bypass the built-in component's behaviors.
    *
    * @awsuiSystem core
    */

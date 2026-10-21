@@ -10,7 +10,9 @@ import InternalIcon from '../../../icon/internal';
 import { BaseComponentProps } from '../../../types/base-component';
 import { BaseKeyDetail, CancelableEventHandler } from '../../../types/events';
 import { getBaseProps } from '../../base-component';
+import { GroupedControlContextProps } from '../../context/control-group-context';
 import { fireCancelableEvent, fireKeyboardEvent } from '../../events';
+import { getGroupedControlClassNames } from '../control-group/grouped-control-styles';
 import {
   GeneratedAnalyticsMetadataButtonTriggerCollapse,
   GeneratedAnalyticsMetadataButtonTriggerExpand,
@@ -29,7 +31,10 @@ export interface ButtonTriggerProps extends BaseComponentProps {
   warning?: boolean;
   inFilteringToken?: 'root' | 'nested';
   inlineTokens?: boolean;
-  ariaHasPopup?: 'true' | 'listbox' | 'dialog';
+  compact?: boolean;
+  tabIndex?: number;
+  ariaLabel?: string;
+  ariaHasPopup?: 'true' | 'listbox' | 'dialog' | false;
   ariaControls?: string;
   ariaLabelledby?: string;
   ariaDescribedby?: string;
@@ -41,6 +46,7 @@ export interface ButtonTriggerProps extends BaseComponentProps {
   onBlur?: CancelableEventHandler<{ relatedTarget: Node | null }>;
   hasCustomContent?: boolean;
   autoFocus?: boolean;
+  groupedControlProps?: GroupedControlContextProps;
 }
 
 const ButtonTrigger = (
@@ -53,6 +59,9 @@ const ButtonTrigger = (
     invalid = false,
     warning = false,
     inlineTokens,
+    compact,
+    tabIndex,
+    ariaLabel,
     inFilteringToken,
     ariaHasPopup,
     ariaLabelledby,
@@ -66,11 +75,13 @@ const ButtonTrigger = (
     onBlur,
     hasCustomContent = false,
     autoFocus,
+    groupedControlProps = { position: null, direction: 'horizontal' },
     ...restProps
   }: ButtonTriggerProps,
   ref: React.Ref<HTMLButtonElement>
 ) => {
   const baseProps = getBaseProps(restProps);
+
   let attributes: ButtonHTMLAttributes<HTMLButtonElement> = {
     ...baseProps,
     type: 'button',
@@ -87,13 +98,17 @@ const ButtonTrigger = (
       inFilteringToken && styles['in-filtering-token'],
       inFilteringToken && styles[`in-filtering-token-${inFilteringToken}`],
       inlineTokens && styles['inline-tokens'],
+      compact && styles.compact,
+      getGroupedControlClassNames(styles, groupedControlProps),
       !!hasCustomContent && styles['custom-option']
     ),
     disabled: disabled,
+    tabIndex,
+    'aria-label': ariaLabel,
     'aria-expanded': pressed,
     'aria-labelledby': ariaLabelledby,
     'aria-describedby': ariaDescribedby,
-    'aria-haspopup': ariaHasPopup ?? 'listbox',
+    'aria-haspopup': ariaHasPopup === false ? undefined : (ariaHasPopup ?? 'listbox'),
     'aria-controls': ariaControls,
     'aria-disabled': readOnly && !disabled ? 'true' : undefined,
     autoFocus,

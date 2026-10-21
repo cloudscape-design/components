@@ -51,7 +51,7 @@
 }
 
 .description {
-  @include styles.form-control-description;
+  @include styles.form-control-description($color: awsui.$color-text-form-secondary);
   &-bottom-padding {
     padding-block-end: awsui.$space-scaled-xxs;
   }

@@ -1,0 +1,57 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+@use '../table/cell-base/cell-box' as cell-base;
+
+.header-cell {
+  box-sizing: border-box;
+}
+
+// Presentation-only divider `::after` (the substrate has no Resizer child); geometry mirrors the existing
+// Table's resizer `.divider` via the shared `$divider-block-gap`.
+.header-cell:not(:last-child):not(.no-divider)::after {
+  content: '';
+  position: absolute;
+  inset-inline-end: 0;
+  inset-block-start: 0;
+  inset-block-end: 0;
+  min-block-size: awsui.$line-height-heading-xs;
+  max-block-size: calc(100% - #{cell-base.$divider-block-gap});
+  margin-block: auto;
+  border-inline-start: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.header-cell.disable-paddings {
+  padding-block: 0;
+  padding-inline: 0;
+}
+
+.header-cell-content {
+  padding-block: awsui.$space-scaled-xxs;
+  padding-inline-start: awsui.$space-s;
+  padding-inline-end: awsui.$space-s;
+  line-height: awsui.$line-height-body-m;
+}
+
+.header-cell.disable-paddings > .header-cell-content {
+  padding-block: 0;
+  padding-inline: 0;
+}
+
+// VR-gated: the substrate is shared with the existing Table, which still supports non-VR mode.
+.header-cell.is-visual-refresh:first-child > .header-cell-content {
+  padding-inline-start: 0;
+}
+
+// Stretch to the row track, else an empty control header collapses to ~1px, leaving a stray divider stub.
+.header-cell-grid {
+  min-inline-size: 0;
+  align-self: stretch;
+  display: grid;
+  align-items: center;
+}

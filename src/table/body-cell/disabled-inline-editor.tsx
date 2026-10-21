@@ -20,7 +20,7 @@ import { TableTdElement, TableTdElementProps } from './td-element';
 import styles from './styles.css.js';
 
 interface DisabledInlineEditorProps<ItemType> extends TableBodyCellProps<ItemType> {
-  editDisabledReason: string;
+  editDisabledReason: React.ReactNode;
 }
 
 export function DisabledInlineEditor<ItemType>({

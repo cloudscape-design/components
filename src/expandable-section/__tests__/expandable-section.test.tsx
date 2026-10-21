@@ -52,6 +52,10 @@ describe('Expandable Section', () => {
       expect(wrapper.findAll('button').length).toBe(1);
       expect(wrapper.findAll('div[role=button]').length).toBe(0);
     });
+    test('does not mark the non-interactive header wrapper as a click target for variant navigation', () => {
+      const wrapper = renderExpandableSection({ variant: 'navigation', headerText: 'Test Header' });
+      expect(wrapper.findHeader().getElement()).not.toHaveClass(styles['click-target']);
+    });
     describe('has no trigger button and div=[role=button]', () => {
       for (const variant of containerizedVariants) {
         test(`${variant} variant`, () => {

@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { SYSTEM } from '../internal/environment';
+import customCssProps from '../internal/generated/custom-css-properties';
 import { ContainerProps } from './interfaces';
 
 export function getRootStyles(style: ContainerProps.Style | undefined) {
@@ -11,7 +12,9 @@ export function getRootStyles(style: ContainerProps.Style | undefined) {
   return {
     background: style?.root?.background,
     borderColor: style?.root?.borderColor,
-    borderRadius: style?.root?.borderRadius,
+    // Set as a custom property, not inline `border-radius`, so stacked containers can still
+    // flatten their adjacent corners in CSS.
+    ...(style?.root?.borderRadius && { [customCssProps.containerStyleBorderRadius]: style.root.borderRadius }),
     borderWidth: style?.root?.borderWidth,
     boxShadow: style?.root?.boxShadow,
     color: style?.root?.color,
@@ -36,7 +39,8 @@ export function getHeaderStyles(style: ContainerProps.Style | undefined) {
 
   return {
     ...(style?.root?.background && { background: 'transparent' }), // Fix for AWSUI-61442
-    borderRadius: style?.root?.borderRadius,
+    // Same as the root: use a custom property so stacked headers can still flatten corners in CSS.
+    ...(style?.root?.borderRadius && { [customCssProps.containerStyleBorderRadius]: style.root.borderRadius }),
     paddingBlock: style?.header?.paddingBlock,
     paddingInline: style?.header?.paddingInline,
   };

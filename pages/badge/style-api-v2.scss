@@ -3,24 +3,27 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use '../../lib/components/styling/badge';
 @use '../style-api/palette' as palette;
 
 .badge {
-  --awsui-style-border-color: transparent;
-  --awsui-style-border-radius: 4px;
-  --awsui-style-border-width: 3px;
-  --awsui-style-padding-block: 6px;
-  --awsui-style-padding-inline: 12px;
+  @include badge.root(
+    $border-color: transparent,
+    $border-width: 3px,
+    $border-radius: 4px,
+    $padding-block: 6px,
+    $padding-inline: 12px
+  );
 }
 
 .badge-info-pill {
-  --awsui-style-background-color: #{palette.$accent};
-  --awsui-style-color: #{palette.$text-on-accent};
-  --awsui-style-border-radius: 77px;
+  @include badge.root($background: palette.$accent, $color: palette.$text-on-accent, $border-radius: 77px);
 }
 
 .badge-error-square {
-  --awsui-style-background-color: #{palette.$error-surface};
-  --awsui-style-color: #{palette.$error};
-  --awsui-style-border-color: #{palette.$error};
+  @include badge.root($background: palette.$error-surface, $color: palette.$error, $border-color: palette.$error);
+}
+
+.badge-label {
+  @include badge.root($font-family: monospace, $font-size: 14px, $font-weight: 400);
 }

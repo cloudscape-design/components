@@ -1,0 +1,24 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/styles/utils/theming' as theming;
+
+$border-width: awsui.$border-divider-list-width;
+
+// Adds a persistent border to the sticky column boundary before the scroll shadow appears.
+// The pseudo-element avoids affecting cell width or conflicting with existing shadows.
+@mixin sticky-boundary-border($side, $offset: 0) {
+  @include theming.one-theme-only {
+    &::after {
+      content: '';
+      position: absolute;
+      inset-block: 0;
+      inset-inline-#{$side}: $offset;
+      inline-size: $border-width;
+      background: awsui.$color-border-divider-default;
+      pointer-events: none;
+    }
+    @content;
+  }
+}

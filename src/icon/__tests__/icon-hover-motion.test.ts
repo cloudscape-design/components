@@ -1,51 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import * as fs from 'node:fs';
-import * as path from 'node:path';
-import * as sass from 'sass';
+import { compileMotionScss, ONE_THEME as THEME, readSource } from '../../__tests__/compile-motion-scss';
 
-const SRC_ROOT = path.resolve(__dirname, '../..'); // .../src
+const HOVER_MOTION_SOURCE = readSource('icon/hover-motion.scss');
 
-const HOVER_MOTION_SOURCE = fs.readFileSync(path.join(SRC_ROOT, 'icon/hover-motion.scss'), 'utf8');
-const THEMING_SOURCE = fs.readFileSync(path.join(SRC_ROOT, 'internal/styles/utils/theming.scss'), 'utf8');
-
-const THEME = '.awsui-one-theme';
-
-/**
- * Compiles `hover-motion.scss` against the real `theming.scss`, for an artefact whose
- * `resolved-tokens` carry `optedInThemes`. dart-sass's filesystem importer crashes under
- * jest's jsdom environment, so every module is served from memory; `source` lets the
- * mutation tests below patch the map without touching the file on disk.
- */
-function compile(optedInThemes: string[], source: string = HOVER_MOTION_SOURCE): string {
-  return sass.compileString(`@use 'hover-motion' as hover-motion;\n@include hover-motion.icon-hover-motion;`, {
-    importers: [
-      {
-        canonicalize(url: string) {
-          if (url.endsWith('hover-motion')) {
-            return new URL('mem:hover-motion');
-          }
-          if (url.endsWith('theming')) {
-            return new URL('mem:theming');
-          }
-          if (url.startsWith('awsui:')) {
-            return new URL('mem:resolved-tokens');
-          }
-          return null;
-        },
-        load(canonicalUrl: URL) {
-          const contents = {
-            'mem:hover-motion': source,
-            'mem:theming': THEMING_SOURCE,
-            'mem:resolved-tokens': `$resolved-tokens: [${optedInThemes
-              .map(selector => `(selector: "${selector}", tokens: ())`)
-              .join(',')}];`,
-          }[canonicalUrl.href];
-          return { contents: contents ?? '', syntax: 'scss' as const };
-        },
-      },
-    ],
-  }).css;
+/** Compiles `hover-motion.scss`; `source` lets the mutation tests below patch it without touching the file on disk. */
+function compile(artefactThemes: string[], source: string = HOVER_MOTION_SOURCE): string {
+  return compileMotionScss({
+    entry: `@use 'hover-motion' as hover-motion;\n@include hover-motion.icon-hover-motion;`,
+    artefactThemes,
+    inline: { 'hover-motion': source },
+  });
 }
 
 /**
@@ -98,8 +63,22 @@ describe('the generic hover motion rule, as compiled', () => {
   });
 
   test('the generic rule also fires on :focus-visible, guarded the same way as :hover', () => {
+    const selector = genericRuleSelector();
+    expect(selector).toMatch(
+      /\[data-awsui-motion-trigger~=hover]:not\(:disabled\):not\(\[aria-disabled=true]\):focus-visible /
+    );
+    expect(selector).toMatch(
+      /\[data-awsui-motion-trigger~=focus]:not\(:disabled\):not\(\[aria-disabled=true]\):focus-visible /
+    );
+  });
+
+  test('no rule uses :has(), which is costly to match on every style recalc and DOM insert', () => {
+    expect(compile([THEME])).not.toContain(':has(');
+  });
+
+  test('a delegated-focus trigger fires on :focus-within, only during keyboard interaction', () => {
     expect(genericRuleSelector()).toMatch(
-      /\[data-awsui-motion-trigger~=hover]:not\(:disabled\):not\(\[aria-disabled=true]\):is\(:focus-visible,/
+      /\[data-awsui-motion-trigger~=delegated-focus]:not\(:disabled\):not\(\[aria-disabled=true]\):focus-within:where\(body\[data-awsui-focus-visible=true] \*\) /
     );
   });
 
@@ -193,5 +172,29 @@ describe('keyframes', () => {
     const css = compile([THEME]);
     expect(css).toMatch(/stroke-dashoffset/);
     expect(css).not.toMatch(/stroke-dashoffset:\s*-/);
+  });
+});
+
+describe('the cancel rule for icons with only part motion', () => {
+  // The cancel rule matches by icon name alone, relying on every such generated icon carrying the
+  // animated parts. Without them, the icon would lose the generic motion and get none instead.
+  test('every cancelled icon contains the parts its motion targets', () => {
+    const css = compile([THEME]);
+    const cancelBlock = css.split('}').find(block => block.includes('transform: none'))!;
+    const names = Array.from(new Set(Array.from(cancelBlock.matchAll(/\.name-([\w-]+)/g)).map(match => match[1])));
+    expect(names.length).toBeGreaterThan(0);
+
+    for (const name of names) {
+      const parts = new Set(
+        Array.from(
+          css.matchAll(new RegExp(`\\.name-${name} > :global\\(svg\\[data-awsui-icon-animated\\] \\.([\\w-]+)\\)`, 'g'))
+        ).map(match => match[1])
+      );
+      expect(parts.size).toBeGreaterThan(0);
+      const svg = readSource(`icon/icons/${name}.svg`);
+      for (const part of parts) {
+        expect({ name, part, present: svg.includes(part) }).toEqual({ name, part, present: true });
+      }
+    }
   });
 });

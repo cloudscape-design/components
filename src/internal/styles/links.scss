@@ -9,15 +9,9 @@
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../../link/constants.scss' as constants;
 @use '../generated/custom-css-properties/index.scss' as custom-props;
-@use './style-api' as style-api;
 
-// $tokens: optional Style API v2 token map from style-api.resolve.
-@mixin link-variant-style($variant, $tokens: null) {
-  color: style-api.value(
-    $tokens,
-    color,
-    var(#{custom-props.$styleColorDefault}, map.get($variant, 'text-color-default'))
-  );
+@mixin link-variant-style($variant) {
+  color: var(#{custom-props.$styleColorDefault}, map.get($variant, 'text-color-default'));
   font-weight: map.get($variant, 'font-weight');
   letter-spacing: map.get($variant, 'letter-spacing');
   text-decoration-line: map.get($variant, 'decoration-line');
@@ -30,11 +24,7 @@
 
   &:hover {
     cursor: pointer;
-    color: style-api.value(
-      $tokens,
-      color,
-      var(#{custom-props.$styleColorHover}, map.get($variant, 'text-color-hover'))
-    );
+    color: var(#{custom-props.$styleColorHover}, map.get($variant, 'text-color-hover'));
   }
 
   &:focus {
@@ -42,11 +32,7 @@
   }
 
   &:active {
-    color: style-api.value(
-      $tokens,
-      color,
-      var(#{custom-props.$styleColorActive}, map.get($variant, 'text-color-active'))
-    );
+    color: var(#{custom-props.$styleColorActive}, map.get($variant, 'text-color-active'));
   }
 
   &:active,
@@ -63,9 +49,9 @@
   text-decoration-style: awsui.$font-decoration-style-link;
 }
 
-@mixin link-default($font-size: 'inherit', $tokens: null) {
+@mixin link-default($font-size: 'inherit') {
   @include link-font-size-style(map.get(constants.$link-font-sizes, $font-size));
-  @include link-variant-style(map.get(constants.$link-variants, 'secondary'), $tokens);
+  @include link-variant-style(map.get(constants.$link-variants, 'secondary'));
 }
 
 /* Style used for links in slots/components that are text heavy, to help links stand out among

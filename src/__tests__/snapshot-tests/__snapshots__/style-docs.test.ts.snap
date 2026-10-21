@@ -5,26 +5,29 @@ exports[`Style API docs definition for alert matches the snapshot: alert 1`] = `
   "slots": [
     {
       "name": "root",
-      "tokens": [
+      "properties": [
         "color",
-        "background-color",
-        "border-color",
-        "border-width",
+        "background",
+        "border",
         "border-radius",
-        "padding-block",
-        "padding-inline",
+        "padding",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [
         "focus-ring-color",
         "focus-ring-width",
         "focus-ring-radius",
-        "focus-ring-gutter-block",
-        "focus-ring-gutter-inline",
       ],
     },
     {
       "name": "icon",
-      "tokens": [
+      "properties": [
         "color",
       ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
     },
     {
       "forwardsTo": {
@@ -42,15 +45,19 @@ exports[`Style API docs definition for badge matches the snapshot: badge 1`] = `
   "slots": [
     {
       "name": "root",
-      "tokens": [
+      "properties": [
         "color",
-        "background-color",
-        "border-color",
-        "border-width",
+        "background",
+        "border",
         "border-radius",
-        "padding-block",
-        "padding-inline",
+        "padding",
+        "font-family",
+        "font-size",
+        "font-weight",
       ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
     },
   ],
 }
@@ -61,20 +68,20 @@ exports[`Style API docs definition for button matches the snapshot: button 1`] =
   "slots": [
     {
       "name": "root",
-      "tokens": [
+      "properties": [
         "color",
-        "background-color",
-        "border-color",
-        "border-width",
+        "background",
+        "border",
         "border-radius",
+        "padding",
         "box-shadow",
-        "padding-block",
-        "padding-inline",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [
         "focus-ring-color",
         "focus-ring-width",
         "focus-ring-radius",
-        "focus-ring-gutter-block",
-        "focus-ring-gutter-inline",
       ],
     },
   ],
@@ -86,27 +93,16 @@ exports[`Style API docs definition for checkbox matches the snapshot: checkbox 1
   "slots": [
     {
       "name": "control",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
       "tokens": [
-        "color",
-        "background-color",
+        "fill-color",
         "border-color",
+        "indicator-color",
         "focus-ring-color",
         "focus-ring-width",
         "focus-ring-radius",
-        "focus-ring-gutter-block",
-        "focus-ring-gutter-inline",
-      ],
-    },
-    {
-      "name": "label",
-      "tokens": [
-        "color",
-      ],
-    },
-    {
-      "name": "description",
-      "tokens": [
-        "color",
       ],
     },
   ],
@@ -118,11 +114,19 @@ exports[`Style API docs definition for dropdown matches the snapshot: dropdown 1
   "slots": [
     {
       "name": "dropdown",
-      "tokens": [
-        "background-color",
-        "border-color",
-        "border-width",
+      "properties": [
+        "background",
         "border-radius",
+        "box-shadow",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {
+        "outline-color": "Color of the line drawn over the dropdown edges. Unlike a border, it takes no space.",
+        "outline-width": "Width of the line drawn over the dropdown edges. Unlike a border, it takes no space.",
+      },
+      "tokens": [
+        "outline-color",
+        "outline-width",
       ],
     },
   ],
@@ -134,8 +138,57 @@ exports[`Style API docs definition for link matches the snapshot: link 1`] = `
   "slots": [
     {
       "name": "root",
-      "tokens": [
+      "properties": [
         "color",
+        "text-decoration",
+        "font-family",
+        "font-size",
+        "font-weight",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [
+        "focus-ring-color",
+        "focus-ring-width",
+        "focus-ring-radius",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`Style API docs definition for radio-button matches the snapshot: radio-button 1`] = `
+{
+  "slots": [
+    {
+      "name": "control",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [
+        "fill-color",
+        "border-color",
+        "indicator-color",
+        "focus-ring-color",
+        "focus-ring-width",
+        "focus-ring-radius",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`Style API docs definition for toggle matches the snapshot: toggle 1`] = `
+{
+  "slots": [
+    {
+      "name": "control",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [
+        "fill-color",
+        "indicator-color",
         "focus-ring-color",
         "focus-ring-width",
         "focus-ring-radius",
@@ -153,5 +206,7 @@ exports[`Style API docs list of components with a Style API doc matches the snap
   "checkbox",
   "dropdown",
   "link",
+  "radio-button",
+  "toggle",
 ]
 `;

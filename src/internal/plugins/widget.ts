@@ -9,4 +9,5 @@ export {
   updateDrawer,
   showFeaturePromptIfPossible,
   clearFeatureNotifications,
+  registerBreadcrumbsConsumer,
 } from './widget/index';

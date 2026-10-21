@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import clsx from 'clsx';
+
 import {
   StickyColumnsModel,
   useStickyCellStyles,
@@ -114,6 +116,8 @@ test('generates non-empty sticky cell state', () => {
         {
           lastInsetInlineStart: false,
           lastInsetInlineEnd: false,
+          boundaryInlineStart: true,
+          boundaryInlineEnd: false,
           padInlineStart: false,
           offset: { insetInlineStart: 0 },
         },
@@ -153,6 +157,47 @@ test('generates empty sticky cell state if not enough scrollable space', () => {
   });
 });
 
+test('allows for the padding the first sticky cell gets when scrolled', () => {
+  const { result, rerender } = renderHook(() =>
+    useStickyColumns({ visibleColumns: [1, 2, 3], stickyColumnsFirst: 1, stickyColumnsLast: 0 })
+  );
+  // Sticky cell 100px + minimum scrollable space 148px + table padding 20px = 268px.
+  const { wrapper, table, cells } = createMockTable(result.current, 268, 500, 100, 200, 200);
+  table.style.paddingInlineStart = table.style.paddingInlineEnd = '10px';
+  const isEnabled = () => result.current.store.get().cellState.size > 0;
+  const setWidth = (element: HTMLElement, width: number) =>
+    jest.spyOn(element, 'getBoundingClientRect').mockImplementation(() => ({ width }) as DOMRect);
+  const scroll = () => wrapper.dispatchEvent(new UIEvent('scroll'));
+
+  // Wait for effect
+  rerender({});
+  expect(isEnabled()).toBe(false);
+
+  setWidth(wrapper, 269);
+  scroll();
+  expect(isEnabled()).toBe(true);
+
+  // Scrolling applies the padding and widens the first cell, which must not disable the feature.
+  wrapper.scrollLeft = 20;
+  scroll();
+  setWidth(cells[0], 118);
+  scroll();
+  expect(result.current.store.get().cellState.get(1)?.padInlineStart).toBe(true);
+  expect(isEnabled()).toBe(true);
+
+  // With selection the padding is set but the first cell does not grow: narrowing the wrapper while scrolled keeps
+  // the feature (100px + 124px + 20px = 244px), scrolling back disables it as the wrapper is below 268px.
+  setWidth(cells[0], 100);
+  setWidth(wrapper, 260);
+  scroll();
+  expect(isEnabled()).toBe(true);
+  wrapper.scrollLeft = 0;
+  // The first update removes the padding, the next one (any later scroll or resize) evaluates without it.
+  scroll();
+  scroll();
+  expect(isEnabled()).toBe(false);
+});
+
 test('generates non-empty styles for sticky cells', () => {
   const { result, rerender } = renderHook(() =>
     useStickyColumns({ visibleColumns: [1, 2, 3], stickyColumnsFirst: 0, stickyColumnsLast: 1 })
@@ -171,6 +216,8 @@ test('generates non-empty styles for sticky cells', () => {
   expect(getClassName).toHaveBeenCalledWith({
     lastInsetInlineStart: false,
     lastInsetInlineEnd: false,
+    boundaryInlineStart: false,
+    boundaryInlineEnd: true,
     padInlineStart: false,
     offset: { insetInlineEnd: 0 },
   });
@@ -271,6 +318,8 @@ describe('getStickyClassNames helper', () => {
     'sticky-cell-pad-inline-start': 'sticky-cell-pad-inline-start',
     'sticky-cell-last-inline-start': 'sticky-cell-last-inline-start',
     'sticky-cell-last-inline-end': 'sticky-cell-last-inline-end',
+    'sticky-cell-boundary-inline-start': 'sticky-cell-boundary-inline-start',
+    'sticky-cell-boundary-inline-end': 'sticky-cell-boundary-inline-end',
   };
 
   it('returns correct styles when props is null', () => {
@@ -280,6 +329,8 @@ describe('getStickyClassNames helper', () => {
       'sticky-cell-pad-inline-start': false,
       'sticky-cell-last-inline-start': false,
       'sticky-cell-last-inline-end': false,
+      'sticky-cell-boundary-inline-start': false,
+      'sticky-cell-boundary-inline-end': false,
     });
   });
 
@@ -288,6 +339,8 @@ describe('getStickyClassNames helper', () => {
       padInlineStart: true,
       lastInsetInlineStart: true,
       lastInsetInlineEnd: false,
+      boundaryInlineStart: true,
+      boundaryInlineEnd: false,
       offset: {},
     };
     const result = getStickyClassNames(styles, props);
@@ -296,6 +349,8 @@ describe('getStickyClassNames helper', () => {
       'sticky-cell-pad-inline-start': true,
       'sticky-cell-last-inline-start': true,
       'sticky-cell-last-inline-end': false,
+      'sticky-cell-boundary-inline-start': true,
+      'sticky-cell-boundary-inline-end': false,
     });
   });
 
@@ -304,6 +359,8 @@ describe('getStickyClassNames helper', () => {
       padInlineStart: false,
       lastInsetInlineStart: false,
       lastInsetInlineEnd: true,
+      boundaryInlineStart: false,
+      boundaryInlineEnd: true,
       offset: {},
     };
     const result = getStickyClassNames(styles, props);
@@ -312,7 +369,55 @@ describe('getStickyClassNames helper', () => {
       'sticky-cell-pad-inline-start': false,
       'sticky-cell-last-inline-start': false,
       'sticky-cell-last-inline-end': true,
+      'sticky-cell-boundary-inline-start': false,
+      'sticky-cell-boundary-inline-end': true,
     });
+  });
+
+  it('marks the sticky boundary regardless of the scroll position', () => {
+    const props = {
+      padInlineStart: false,
+      lastInsetInlineStart: false,
+      lastInsetInlineEnd: false,
+      boundaryInlineStart: true,
+      boundaryInlineEnd: false,
+      offset: {},
+    };
+    const result = getStickyClassNames(styles, props);
+    expect(result).toEqual({
+      'sticky-cell': true,
+      'sticky-cell-pad-inline-start': false,
+      'sticky-cell-last-inline-start': false,
+      'sticky-cell-last-inline-end': false,
+      'sticky-cell-boundary-inline-start': true,
+      'sticky-cell-boundary-inline-end': false,
+    });
+  });
+
+  it('omits class names that are missing from the stylesheet instead of emitting "undefined"', () => {
+    const stylesWithoutBoundary = {
+      'sticky-cell': 'sticky-cell',
+      'sticky-cell-pad-inline-start': 'sticky-cell-pad-inline-start',
+      'sticky-cell-last-inline-start': 'sticky-cell-last-inline-start',
+      'sticky-cell-last-inline-end': 'sticky-cell-last-inline-end',
+    };
+    const props = {
+      padInlineStart: false,
+      lastInsetInlineStart: false,
+      lastInsetInlineEnd: true,
+      boundaryInlineStart: false,
+      boundaryInlineEnd: true,
+      offset: {},
+    };
+    const result = getStickyClassNames(stylesWithoutBoundary, props);
+    expect(result).toEqual({
+      'sticky-cell': true,
+      'sticky-cell-pad-inline-start': false,
+      'sticky-cell-last-inline-start': false,
+      'sticky-cell-last-inline-end': true,
+    });
+    expect(Object.keys(result)).not.toContain('undefined');
+    expect(clsx(result)).not.toContain('undefined');
   });
 });
 

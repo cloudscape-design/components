@@ -4,14 +4,14 @@ import React, { useEffect, useRef } from 'react';
 import { Transition } from 'react-transition-group';
 import clsx from 'clsx';
 
-import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+import { isThemeActive, Theme, useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { AppLayoutBuiltInErrorBoundary } from '../../../error-boundary/internal';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutProps } from '../../interfaces';
 import { OnChangeParams } from '../../utils/use-drawers';
 import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
-import { AppLayoutInternals } from '../interfaces';
+import { AppLayoutInternals, AppLayoutWidgetizedState } from '../interfaces';
 import { ToolbarSkeleton } from '../skeleton/skeleton-parts';
 import { ToolbarSlot } from '../skeleton/slots';
 import { ToolbarBreadcrumbsSection, ToolbarContainer } from '../skeleton/toolbar-container';
@@ -68,12 +68,16 @@ export interface ToolbarProps {
 
 export interface AppLayoutToolbarImplementationProps {
   appLayoutInternals: AppLayoutInternals;
+  hideBreadcrumbsInToolbar?: AppLayoutWidgetizedState['hideBreadcrumbsInToolbar'];
+  reportOwnBreadcrumbsProps?: AppLayoutWidgetizedState['reportOwnBreadcrumbsProps'];
   toolbarProps: ToolbarProps;
   featureNotificationsProps?: FeatureNotificationsProps;
 }
 
 export function AppLayoutToolbarImplementation({
   appLayoutInternals,
+  hideBreadcrumbsInToolbar,
+  reportOwnBreadcrumbsProps,
   // the value could be undefined if this component is loaded as a widget by a different app layout version
   // not testable in a single-version setup
   toolbarProps = {},
@@ -149,6 +153,7 @@ export function AppLayoutToolbarImplementation({
   const navLandmarkAttributes = navigationOpen
     ? { role: 'presentation' }
     : { role: 'navigation', 'aria-label': ariaLabels?.navigation };
+  const isOneTheme = isThemeActive(Theme.OneTheme);
 
   return (
     <ToolbarSlot
@@ -208,7 +213,7 @@ export function AppLayoutToolbarImplementation({
               <TriggerButton
                 ariaLabel={ariaLabels?.navigationToggle ?? undefined}
                 ariaExpanded={!drawerExpandedMode && navigationOpen}
-                iconName="menu"
+                iconName={isOneTheme ? 'side-bar' : 'menu'}
                 className={testutilStyles['navigation-toggle']}
                 onClick={() => {
                   if (setExpandedDrawerId) {
@@ -231,6 +236,8 @@ export function AppLayoutToolbarImplementation({
             <ToolbarBreadcrumbsSection
               ownBreadcrumbs={appLayoutInternals.breadcrumbs}
               discoveredBreadcrumbs={appLayoutInternals.discoveredBreadcrumbs}
+              hideBreadcrumbsInToolbar={hideBreadcrumbsInToolbar}
+              reportOwnBreadcrumbsProps={reportOwnBreadcrumbsProps}
               includeTestUtils={true}
             />
           </AppLayoutBuiltInErrorBoundary>

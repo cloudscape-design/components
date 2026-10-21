@@ -20,6 +20,7 @@ interface SegmentProps extends SegmentedControlProps.Option {
   isActive: boolean;
   tabIndex: number;
   style: SegmentedControlProps['style'];
+  fullWidth?: boolean;
 }
 
 export const Segment = React.forwardRef(
@@ -38,6 +39,7 @@ export const Segment = React.forwardRef(
       tabIndex,
       id,
       style,
+      fullWidth,
     }: SegmentProps,
     ref: React.Ref<HTMLButtonElement>
   ) => {
@@ -54,7 +56,8 @@ export const Segment = React.forwardRef(
           styles.segment,
           { [styles.disabled]: !!disabled },
           { [styles.selected]: isActive },
-          { [styles.refresh]: isVisualRefresh }
+          { [styles.refresh]: isVisualRefresh },
+          { [styles['full-width']]: fullWidth }
         )}
         ref={useMergeRefs(ref, buttonRef)}
         onClick={onClick}

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { KeyValuePairs, Link } from '~components';
+import { KeyValuePairs, Link, TextContent } from '~components';
 
 import { SimplePage } from '../app/templates';
 
@@ -26,7 +26,7 @@ export default function () {
           },
           {
             type: 'pair',
-            label: 'Secondary link',
+            label: 'Secondary link (always underlined)',
             value: (
               <Link href="#" variant="secondary" {...brand}>
                 View details
@@ -71,6 +71,15 @@ export default function () {
           },
           {
             type: 'pair',
+            label: 'Custom font',
+            value: (
+              <Link href="#" {...{ styleClassNames: { root: styles['link-custom-font'] } }}>
+                Read the guide
+              </Link>
+            ),
+          },
+          {
+            type: 'pair',
             label: 'Inverted link (dedicated class)',
             value: (
               <div className={styles['container-inverted']}>
@@ -81,6 +90,25 @@ export default function () {
                   Inverted button link
                 </Link>
               </div>
+            ),
+          },
+          {
+            type: 'pair',
+            label: 'Link nested in text content (styles apply only to the styled link)',
+            value: (
+              <TextContent>
+                <p>
+                  A <a href="#">plain anchor</a>, a{' '}
+                  <Link href="#" variant="secondary">
+                    default link
+                  </Link>{' '}
+                  and a{' '}
+                  <Link href="#" variant="secondary" {...brand}>
+                    styled link
+                  </Link>
+                  .
+                </p>
+              </TextContent>
             ),
           },
         ]}

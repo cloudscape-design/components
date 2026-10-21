@@ -70,6 +70,7 @@ export type BuiltInIconName =
   | 'forward-10-seconds'
   | 'full-screen'
   | 'gen-ai'
+  | 'gen-ai-token'
   | 'globe'
   | 'grid-view'
   | 'group-active'

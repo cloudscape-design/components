@@ -6,7 +6,7 @@ import { StyleDictionary } from '../utils/interfaces.js';
 import { tokens as parentTokens } from '../visual-refresh/typography.js';
 
 // core-update typography overrides; the full visual-refresh set (parentTokens) is the base.
-const tokens: StyleDictionary.TypographyDictionary = {
+const tokens: StyleDictionary.DensityTypographyDictionary = {
   fontFamilyBase: "'Noto Sans', 'Helvetica Neue', Roboto, Arial, sans-serif",
 
   fontSizeHeadingXl: '24px',
@@ -37,3 +37,4 @@ const tokens: StyleDictionary.TypographyDictionary = {
 const expandedTokens: StyleDictionary.ExpandedGlobalScopeDictionary = merge({}, parentTokens, tokens);
 
 export { expandedTokens as tokens };
+export const mode: StyleDictionary.ModeIdentifier = 'density';

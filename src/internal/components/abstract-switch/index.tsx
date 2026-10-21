@@ -26,9 +26,7 @@ export interface AbstractSwitchProps extends React.HTMLAttributes<HTMLElement>, 
   nativeControl: (props: React.InputHTMLAttributes<HTMLInputElement>) => React.ReactElement;
   styledControl: React.ReactElement;
   label?: React.ReactNode;
-  labelClassName?: string;
   description?: React.ReactNode;
-  descriptionClassName?: string;
   descriptionBottomPadding?: boolean;
   ariaLabel?: string;
   ariaLabelledby?: string;
@@ -67,9 +65,7 @@ export default function AbstractSwitch({
   nativeControl,
   styledControl,
   label,
-  labelClassName,
   description,
-  descriptionClassName,
   descriptionBottomPadding,
   ariaLabel,
   ariaLabelledby,
@@ -158,7 +154,7 @@ export default function AbstractSwitch({
           {label && (
             <span
               id={labelId}
-              className={clsx(styles.label, labelClassName, analyticsSelectors.label, {
+              className={clsx(styles.label, analyticsSelectors.label, {
                 [styles['label-disabled']]: disabled,
               })}
               style={{ color: style?.label?.color }}
@@ -169,7 +165,7 @@ export default function AbstractSwitch({
           {description && (
             <span
               id={descriptionId}
-              className={clsx(styles.description, descriptionClassName, {
+              className={clsx(styles.description, {
                 [styles['description-disabled']]: disabled,
                 [styles['description-bottom-padding']]: descriptionBottomPadding,
               })}

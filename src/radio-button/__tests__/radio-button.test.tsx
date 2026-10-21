@@ -8,6 +8,8 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import { RadioButtonProps } from '../interfaces';
 import { renderRadioButton } from './common';
 
+import radioButtonStyles from '../../../lib/components/internal/components/radio-button/styles.selectors.js';
+
 describe('Radio Button native attributes from props', () => {
   test('sets the `checked` attribute of the native element to true when `checked` is true', () => {
     const radioButton = renderRadioButton(<RadioButton name="my-radio-group-name" checked={true} />);
@@ -27,6 +29,21 @@ describe('Radio Button native attributes from props', () => {
   test('propagates the value of the `value` prop to the `value` attribute of the native element', () => {
     const radioButton = renderRadioButton(<RadioButton value="my-radio-button-value" name="group" checked={false} />);
     expect(radioButton.findNativeInput()!.getElement().getAttribute('value')).toBe('my-radio-button-value');
+  });
+
+  test('applies the `ariaLabel` prop as `aria-label` on the native element', () => {
+    const radioButton = renderRadioButton(<RadioButton name="group" checked={false} ariaLabel="Select resource" />);
+    expect(radioButton.findNativeInput()!.getElement()).toHaveAttribute('aria-label', 'Select resource');
+  });
+
+  test('applies the `ariaLabelledby` prop as `aria-labelledby` on the native element', () => {
+    const radioButton = renderRadioButton(<RadioButton name="group" checked={false} ariaLabelledby="label-id" />);
+    expect(radioButton.findNativeInput()!.getElement()).toHaveAttribute('aria-labelledby', 'label-id');
+  });
+
+  test('applies the `ariaDescribedby` prop as `aria-describedby` on the native element', () => {
+    const radioButton = renderRadioButton(<RadioButton name="group" checked={false} ariaDescribedby="desc-id" />);
+    expect(radioButton.findNativeInput()!.getElement()).toHaveAttribute('aria-describedby', 'desc-id');
   });
 });
 
@@ -115,5 +132,27 @@ describe('Radio Button events', () => {
 
     rerender(<RadioButton name="group" checked={false} onSelect={onSelect} />);
     expect(onSelect).not.toHaveBeenCalled();
+  });
+});
+
+describe('select animation', () => {
+  const readyAttribute = 'data-awsui-motion-ready';
+
+  function renderWithRerender(checked: boolean) {
+    const { container, rerender } = render(<RadioButton name="group" checked={checked} />);
+    const radioButton = createWrapper(container).findRadioButton()!;
+    const findFillCircle = () => radioButton.findByClassName(radioButtonStyles['styled-circle-fill'])!.getElement();
+    return { findFillCircle, rerender: (checked: boolean) => rerender(<RadioButton name="group" checked={checked} />) };
+  }
+
+  test('does not animate a radio button that is checked on mount', () => {
+    const { findFillCircle } = renderWithRerender(true);
+    expect(findFillCircle()).not.toHaveAttribute(readyAttribute);
+  });
+
+  test('animates once the state changes after mount', () => {
+    const { findFillCircle, rerender } = renderWithRerender(false);
+    rerender(true);
+    expect(findFillCircle()).toHaveAttribute(readyAttribute);
   });
 });

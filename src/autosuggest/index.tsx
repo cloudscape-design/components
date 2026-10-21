@@ -36,6 +36,9 @@ const Autosuggest = React.forwardRef(
         virtualScroll: props.virtualScroll,
         hideEnteredTextOption,
       },
+      metadata: {
+        hasTokens: props.tokens !== undefined,
+      },
     });
 
     const componentAnalyticsMetadata: GeneratedAnalyticsMetadataAutosuggestComponent = {
