@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import Box from '~components/box';
 import Select from '~components/select';
 import SpaceBetween from '~components/space-between';
 
@@ -17,26 +18,28 @@ const options = [
 export default function SelectValidationFocusPage() {
   return (
     <SimplePage title="Select validation focus" screenshotArea={{ disableAnimations: true }} settings={<FocusTarget />}>
-      <SpaceBetween size="m">
-        <Select
-          data-testid="select-invalid"
-          ariaLabel="select invalid"
-          invalid={true}
-          options={options}
-          selectedOption={null}
-          placeholder="Choose an option"
-          onChange={() => {}}
-        />
-        <Select
-          data-testid="select-warning"
-          ariaLabel="select warning"
-          warning={true}
-          options={options}
-          selectedOption={null}
-          placeholder="Choose an option"
-          onChange={() => {}}
-        />
-      </SpaceBetween>
+      <Box padding="xs">
+        <SpaceBetween size="m">
+          <Select
+            data-testid="select-invalid"
+            ariaLabel="select invalid"
+            invalid={true}
+            options={options}
+            selectedOption={null}
+            placeholder="Choose an option"
+            onChange={() => {}}
+          />
+          <Select
+            data-testid="select-warning"
+            ariaLabel="select warning"
+            warning={true}
+            options={options}
+            selectedOption={null}
+            placeholder="Choose an option"
+            onChange={() => {}}
+          />
+        </SpaceBetween>
+      </Box>
     </SimplePage>
   );
 }

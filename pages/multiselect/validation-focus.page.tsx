@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import Box from '~components/box';
 import Multiselect from '~components/multiselect';
 import SpaceBetween from '~components/space-between';
 
@@ -21,26 +22,28 @@ export default function MultiselectValidationFocusPage() {
       screenshotArea={{ disableAnimations: true }}
       settings={<FocusTarget />}
     >
-      <SpaceBetween size="m">
-        <Multiselect
-          data-testid="multiselect-invalid"
-          ariaLabel="multiselect invalid"
-          invalid={true}
-          options={options}
-          selectedOptions={[]}
-          placeholder="Choose options"
-          onChange={() => {}}
-        />
-        <Multiselect
-          data-testid="multiselect-warning"
-          ariaLabel="multiselect warning"
-          warning={true}
-          options={options}
-          selectedOptions={[]}
-          placeholder="Choose options"
-          onChange={() => {}}
-        />
-      </SpaceBetween>
+      <Box padding="xs">
+        <SpaceBetween size="m">
+          <Multiselect
+            data-testid="multiselect-invalid"
+            ariaLabel="multiselect invalid"
+            invalid={true}
+            options={options}
+            selectedOptions={[]}
+            placeholder="Choose options"
+            onChange={() => {}}
+          />
+          <Multiselect
+            data-testid="multiselect-warning"
+            ariaLabel="multiselect warning"
+            warning={true}
+            options={options}
+            selectedOptions={[]}
+            placeholder="Choose options"
+            onChange={() => {}}
+          />
+        </SpaceBetween>
+      </Box>
     </SimplePage>
   );
 }
