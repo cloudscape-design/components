@@ -2,14 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import merge from 'lodash/merge.js';
 
+import { expandDensityDictionary } from '../utils/index.js';
 import { StyleDictionary } from '../utils/interfaces.js';
 import { tokens as parentTokens } from '../visual-refresh/typography.js';
+import { fontFamilyTokenNames } from './font-family.js';
 
-const tokens: StyleDictionary.TypographyDictionary = {
-  fontFamilyBase: "'Ember Modern Text UI', 'Amazon Ember', Roboto, Arial, sans-serif",
-  fontFamilyMonospace:
-    "'Ember Modern Mono', Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
-
+const tokens: StyleDictionary.DensityTypographyDictionary = {
   // ── Headings ──────────────────────────────────────────────────────────────
   fontSizeHeadingXl: '24px',
   lineHeightHeadingXl: '30px',
@@ -47,23 +45,29 @@ const tokens: StyleDictionary.TypographyDictionary = {
   fontWeightFlashbarHeader: '500',
 
   // ── Form labels ───────────────────────────────────────────────────────────
-  fontSizeFormLabel: '14px',
-  lineHeightFormLabel: '20px',
   fontWeightFormLabel: '600',
   fontDisplayLabelWeight: '500',
 
   // ── Body text ─────────────────────────────────────────────────────────────
+  fontSizeBodyM: { comfortable: '14px', compact: '13px' },
   fontWeightBold: '600',
 
   // ── Key-value pairs ───────────────────────────────────────────────────────
-  fontSizeKeyValuePairsLabel: '14px',
-  lineHeightKeyValuePairsLabel: '20px',
   fontWeightKeyValuePairsLabel: '400',
 
   // ── Breadcrumb ────────────────────────────────────────────────────────────
   fontWeightBreadcrumbCurrent: '400',
 };
 
-const expandedTokens: StyleDictionary.ExpandedGlobalScopeDictionary = merge({}, parentTokens, tokens);
+// Font-family tokens never vary by density; they are supplied by the global
+// font-family category, so strip them from the density set to keep the density
+// mode from resolving them into { comfortable, compact } objects.
+const densityTokens = merge({}, parentTokens, tokens);
+for (const name of fontFamilyTokenNames) {
+  delete densityTokens[name];
+}
+
+const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = expandDensityDictionary(densityTokens);
 
 export { expandedTokens as tokens };
+export const mode: StyleDictionary.ModeIdentifier = 'density';
