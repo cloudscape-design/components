@@ -114,7 +114,7 @@ interface ExpandableHeaderTextWrapperProps extends ExpandableDefaultHeaderProps 
   headerCounter?: string;
   headerInfo?: ReactNode;
   headerActions?: ReactNode;
-  headerInlineInfo?: ReactNode;
+  headerEndInfo?: ReactNode;
   headingTagOverride?: ExpandableSectionProps.HeadingTag;
 }
 
@@ -128,7 +128,7 @@ interface ExpandableSectionHeaderProps extends Omit<ExpandableDefaultHeaderProps
   headingTagOverride?: ExpandableSectionProps.HeadingTag;
   ariaLabelledBy?: string;
   hideExpandIcon?: boolean;
-  headerInlineInfo?: ReactNode;
+  headerEndInfo?: ReactNode;
 }
 
 const getExpandActionAnalyticsMetadataAttribute = (expanded: boolean) => {
@@ -249,7 +249,7 @@ const ExpandableHeaderTextWrapper = ({
   headerCounter,
   headerInfo,
   headerActions,
-  headerInlineInfo,
+  headerEndInfo,
   variant,
   headingTagOverride,
   onKeyUp,
@@ -259,12 +259,9 @@ const ExpandableHeaderTextWrapper = ({
   const isContainer = variant === 'container';
   const HeadingTag = headingTagOverride || 'div';
   const supportsInteractiveElements = variantSupportsActions(variant);
-  const restrictClickableArea =
-    (supportsInteractiveElements && (!!headerInfo || !!headerActions)) || !!headerInlineInfo;
+  const restrictClickableArea = (supportsInteractiveElements && (!!headerInfo || !!headerActions)) || !!headerEndInfo;
   const actions = supportsInteractiveElements && headerActions;
-  const inlineInfo = !isContainer && headerInlineInfo && (
-    <span className={styles['header-inline-info']}>{headerInlineInfo}</span>
-  );
+  const endInfo = !isContainer && headerEndInfo;
   const description = variantSupportsDescription(variant) && headerDescription && (
     <span id={descriptionId} className={styles[`description-${variant}`]}>
       {headerDescription}
@@ -275,7 +272,7 @@ const ExpandableHeaderTextWrapper = ({
   // For the variants that allow actions, when end placement is active, the icon is rendered outside the
   // InternalHeader so it appears at the inline-end of the wrapper, past any header actions.
   // Other variants render the icon at the end of the headerButton itself.
-  const renderIconOutsideHeader = iconAtEnd && (isContainer || !!actions || !!inlineInfo);
+  const renderIconOutsideHeader = iconAtEnd && (isContainer || !!actions || !!endInfo);
 
   // If interactive elements are present, constrain the clickable area to only the icon and the header text
   // to prevent nesting interactive elements.
@@ -371,7 +368,7 @@ const ExpandableHeaderTextWrapper = ({
         className,
         wrapperListeners && styles['click-target'],
         iconAtEnd && styles['header-icon-end'],
-        iconAtEnd && inlineInfo && styles['header-icon-end-with-inline-info']
+        iconAtEnd && endInfo && styles['header-icon-end-with-info']
       )}
       {...wrapperListeners}
       {...wrapperMotionTrigger}
@@ -398,7 +395,7 @@ const ExpandableHeaderTextWrapper = ({
             className={clsx(
               styles['header-content'],
               actions && styles['header-actions-wrapper'],
-              inlineInfo && styles['header-content-with-inline-info']
+              endInfo && styles['header-content-with-info']
             )}
           >
             <HeadingTag
@@ -409,7 +406,7 @@ const ExpandableHeaderTextWrapper = ({
             >
               {headerButton}
             </HeadingTag>
-            {inlineInfo}
+            {endInfo}
             {actions}
           </div>
           {description && <HeaderDescription variantOverride="h3">{description}</HeaderDescription>}
@@ -441,7 +438,7 @@ export const ExpandableSectionHeader = ({
   onClick,
   expandIconPosition,
   hideExpandIcon,
-  headerInlineInfo,
+  headerEndInfo,
 }: ExpandableSectionHeaderProps) => {
   const alwaysShowDivider = variantRequiresActionsDivider(variant) && headerActions;
   const icons = useInternalComponentIcons('expandable-section');
@@ -518,7 +515,7 @@ export const ExpandableSectionHeader = ({
         headerCounter={headerCounter}
         headerInfo={headerInfo}
         headerActions={headerActions}
-        headerInlineInfo={headerInlineInfo}
+        headerEndInfo={headerEndInfo}
         headingTagOverride={headingTagOverride}
         onKeyUp={onKeyUp}
         onKeyDown={onKeyDown}

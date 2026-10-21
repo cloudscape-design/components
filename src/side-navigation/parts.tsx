@@ -638,8 +638,10 @@ function Section({
         </span>
       }
       __expandIconPosition={withIcons ? 'end' : 'start'}
-      __headerInlineInfo={
-        !collapsed && definition.info ? <span className={testUtilStyles.info}>{definition.info}</span> : undefined
+      __headerEndInfo={
+        !collapsed && definition.info ? (
+          <span className={clsx(styles.info, testUtilStyles.info)}>{definition.info}</span>
+        ) : undefined
       }
     >
       <NavigationItemsList
@@ -705,7 +707,7 @@ function SectionGroup({
   return (
     <div ref={sectionGroupRef} className={styles['section-group']}>
       {definition.info ? (
-        <div className={styles['section-group-title-with-info']}>
+        <div className={styles['list-item--link-with-info']}>
           {title}
           {showInfo && <span className={clsx(styles.info, testUtilStyles.info)}>{definition.info}</span>}
         </div>

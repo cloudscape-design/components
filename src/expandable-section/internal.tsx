@@ -48,7 +48,7 @@ export type InternalExpandableSectionProps = Omit<ExpandableSectionProps, 'varia
      * Content rendered next to the header button, outside of it, for variants that don't support `headerInfo`.
      * Used by side-navigation to render the `info` slot of a section.
      */
-    __headerInlineInfo?: React.ReactNode;
+    __headerEndInfo?: React.ReactNode;
   };
 
 export default function InternalExpandableSection({
@@ -71,7 +71,7 @@ export default function InternalExpandableSection({
   __expandIconPosition = 'start',
   __disableHeaderPaddings = false,
   __hideExpandIcon = false,
-  __headerInlineInfo,
+  __headerEndInfo,
   ...props
 }: InternalExpandableSectionProps) {
   const contentInnerRef = useRef<HTMLDivElement>(null);
@@ -166,7 +166,7 @@ export default function InternalExpandableSection({
           headingTagOverride={headingTagOverride}
           expandIconPosition={__expandIconPosition}
           hideExpandIcon={__hideExpandIcon}
-          headerInlineInfo={__headerInlineInfo}
+          headerEndInfo={__headerEndInfo}
           {...triggerProps}
         />
       }

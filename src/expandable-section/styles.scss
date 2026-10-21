@@ -485,7 +485,7 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
     column-gap: awsui.$space-xs;
   }
 
-  &-with-inline-info {
+  &-with-info {
     display: flex;
     align-items: flex-start;
     column-gap: awsui.$space-xs;
@@ -588,15 +588,10 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
   min-block-size: 0;
   min-inline-size: 0;
 
-  &-with-inline-info {
+  &-with-info {
     display: flex;
     align-items: baseline;
   }
-}
-
-.header-inline-info {
-  margin-inline-start: awsui.$space-s;
-  flex-shrink: 0;
 }
 
 // In the end-icon layout, header content elements must shrink without overflowing.
