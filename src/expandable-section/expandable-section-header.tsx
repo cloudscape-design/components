@@ -255,7 +255,8 @@ const ExpandableHeaderTextWrapper = ({
   const isContainer = variant === 'container';
   const HeadingTag = headingTagOverride || 'div';
   const supportsInteractiveElements = variantSupportsActions(variant);
-  const restrictClickableArea = (supportsInteractiveElements && (headerInfo || headerActions)) || !!headerInlineInfo;
+  const restrictClickableArea =
+    (supportsInteractiveElements && (!!headerInfo || !!headerActions)) || !!headerInlineInfo;
   const actions = supportsInteractiveElements && headerActions;
   const inlineInfo = !isContainer && headerInlineInfo && (
     <span className={styles['header-inline-info']}>{headerInlineInfo}</span>
