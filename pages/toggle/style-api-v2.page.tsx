@@ -14,12 +14,10 @@ interface StyledToggleProps {
   checked: boolean;
   disabled?: boolean;
   readOnly?: boolean;
-  highlightState?: boolean;
 }
 
-function StyledToggle({ label, checked: initialChecked, disabled, readOnly, highlightState }: StyledToggleProps) {
+function StyledToggle({ label, checked: initialChecked, disabled, readOnly }: StyledToggleProps) {
   const [checked, setChecked] = useState(initialChecked);
-  const isChecked = highlightState && checked;
   return (
     <Toggle
       checked={checked}
@@ -34,16 +32,6 @@ function StyledToggle({ label, checked: initialChecked, disabled, readOnly, high
             checked && styles['toggle-control-checked'],
             disabled && styles['toggle-control-disabled'],
             readOnly && styles['toggle-control-readonly']
-          ),
-          label: clsx(
-            styles['toggle-label'],
-            disabled && styles['toggle-label-disabled'],
-            isChecked && styles['toggle-label-checked']
-          ),
-          description: clsx(
-            styles['toggle-description'],
-            disabled && styles['toggle-description-disabled'],
-            isChecked && styles['toggle-description-checked']
           ),
         },
       }}
@@ -65,9 +53,6 @@ export default function () {
         <StyledToggle label="Checked" checked={true} />
         <StyledToggle label="Checked disabled" checked={true} disabled={true} />
         <StyledToggle label="Checked read-only" checked={true} readOnly={true} />
-      </SpaceBetween>
-      <SpaceBetween size="m" direction="horizontal">
-        <StyledToggle label="Highlighted" checked={false} highlightState={true} />
       </SpaceBetween>
     </SimplePage>
   );

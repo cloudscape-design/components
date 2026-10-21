@@ -66,6 +66,19 @@ export interface I18nFormatArgTypes {
       "value": string | number;
     }
     "errorIconAriaLabel": never;
+    "i18nStrings.enteredTextLabel": {
+      "isTokenMode": string;
+      "value": string | number;
+    }
+    "i18nStrings.tokenDismissLabel": {
+      "token__label": string | number;
+    }
+    "i18nStrings.tokenInsertedAriaLabel": {
+      "token__label": string | number;
+    }
+    "i18nStrings.tokenOverflowAriaLabel": {
+      "count": number;
+    }
     "recoveryText": never;
     "selectedAriaLabel": never;
   }

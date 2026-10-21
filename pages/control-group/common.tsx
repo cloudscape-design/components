@@ -62,6 +62,17 @@ export const autosuggest = (
   />
 );
 
+export const autosuggestTokens = (
+  <Autosuggest
+    ariaLabel="Metrics"
+    value=""
+    tokens={[{ value: 'CPUUtilization' }, { value: 'MemoryUtilization' }]}
+    onChange={noop}
+    options={suggestions}
+    enteredTextLabel={enteredTextLabel}
+  />
+);
+
 export type Direction = NonNullable<ControlGroupProps['direction']>;
 
 export function useControlGroupDirection() {

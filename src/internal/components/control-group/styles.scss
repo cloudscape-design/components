@@ -6,6 +6,7 @@
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
 @use '../../styles/forms/mixins' as forms;
+@use '../../styles/forms/constants' as constants;
 
 $margin-overlap: calc(-1 * #{awsui.$border-width-field});
 
@@ -13,9 +14,17 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
   @include styles.styles-reset;
 }
 
+// Spans the whole row (controls + action) and hosts the measurement scaffolding (sensor + ghost).
+// It must have `position: static` so the sensor resolves against the nearest positioned ancestor
+// outside the component instead of this wrapper.
+.group-layout-wrapper {
+  position: static;
+}
+
 .action-slot {
   display: flex;
   margin-inline-start: $margin-overlap;
+  flex-shrink: 0;
 }
 
 .group-layout {
@@ -38,14 +47,20 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
 .controls {
   display: flex;
   align-items: stretch;
+  // Keep control borders above the action button's.
+  // This becomes especially relevant when controls render validation-style border colors.
+  z-index: 1;
 
   &-horizontal {
     flex-direction: row;
     flex-wrap: nowrap;
+    min-inline-size: 0;
+    flex-shrink: 1;
   }
 
   &-vertical {
     flex-direction: column;
+    flex-grow: 1;
   }
 }
 
@@ -66,6 +81,47 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
       margin-block-start: $margin-overlap;
     }
   }
+
+  &-validation {
+    position: relative;
+
+    // Thick validation border rendered by the wrapping `.control` instead of the grouped individual controls
+    // in order to prevent subtle visual artifacts where the horizontal and vertical borders of the controls meet.
+    &::before {
+      content: '';
+      position: absolute;
+      inset-block: 0;
+      inset-inline-start: 0;
+      box-sizing: border-box;
+      // Rneder the thick border as an actual border (rather than a background fill) so it works also in
+      // forced-colors mode: forced-colors recolors borders to the system palette whereas backgrounds get flattened
+      // to Canvas.
+      border-inline-start-style: solid;
+      border-inline-start-width: constants.$invalid-control-left-border;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    &.control-in-error::before {
+      border-inline-start-color: awsui.$color-text-status-error;
+    }
+    &.control-in-warning::before {
+      border-inline-start-color: awsui.$color-text-status-warning;
+    }
+
+    &.control-first-horizontal::before,
+    &.control-only-horizontal::before,
+    &.control-only-vertical::before {
+      border-start-start-radius: constants.$control-border-radius;
+      border-end-start-radius: constants.$control-border-radius;
+    }
+    &.control-first-vertical::before {
+      border-start-start-radius: constants.$control-border-radius;
+    }
+    &.control-last-vertical::before {
+      border-end-start-radius: constants.$control-border-radius;
+    }
+  }
 }
 
 .action-slot,
@@ -75,6 +131,17 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
   &:focus-within {
     z-index: 1;
   }
+}
+
+// Width sensor
+.sensor {
+  @include styles.measurement-ghost;
+  inset-inline-end: 0;
+  min-inline-size: 0;
+}
+
+.ghost-anchor {
+  @include styles.measurement-ghost-anchor;
 }
 
 .inline-label {
@@ -97,4 +164,11 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
 
 .inline-label-trigger-wrapper {
   @include forms.inline-label-trigger-wrapper;
+}
+
+// Hidden single-row copy of the layout, laid out at its natural width so its
+// `max-content` size is the true required width including the action button.
+.ghost {
+  @include styles.measurement-ghost;
+  inline-size: max-content;
 }

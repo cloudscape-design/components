@@ -12,7 +12,7 @@ interface InternalOptionDefinition extends OptionDefinition {
 export interface DropdownOption {
   type?: 'child' | 'parent' | 'select-all' | 'use-entered';
   disabled?: boolean;
-  disabledReason?: string;
+  disabledReason?: React.ReactNode;
   option: OptionDefinition | OptionGroup;
   afterHeader?: boolean;
 }

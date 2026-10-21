@@ -10,6 +10,13 @@ export default class ControlGroupWrapper extends ComponentWrapper {
   static rootSelector: string = testUtilStyles.root;
 
   /**
+   * Returns an array of the individual grouped controls.
+   */
+  findControls(): Array<ElementWrapper> {
+    return this.findAll(`.${testUtilStyles.control}`);
+  }
+
+  /**
    * Returns the visible inline label element, or null if no label is set.
    */
   findInlineLabel(): ElementWrapper | null {

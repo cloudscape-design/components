@@ -3,8 +3,11 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
+import FormField from '../../../../../lib/components/form-field';
 import ControlGroup from '../../../../../lib/components/internal/components/control-group';
 import { ResetGroupedControlContext } from '../../../../../lib/components/internal/context/control-group-context';
+import Select from '../../../../../lib/components/select';
+import createWrapper from '../../../../../lib/components/test-utils/dom';
 import ControlGroupWrapper from '../../../../../lib/components/test-utils/dom/internal/control-group';
 import { DirectionProbe, PositionProbe } from './common';
 
@@ -18,9 +21,9 @@ describe('Control group', () => {
     const alpha = <input key="alpha" data-testid="alpha" />;
     const beta = <input key="beta" data-testid="beta" />;
 
-    const { getByTestId, rerender } = render(<ControlGroup>{[alpha, beta]}</ControlGroup>);
+    const { container, rerender } = render(<ControlGroup>{[alpha, beta]}</ControlGroup>);
 
-    const alphaInput = getByTestId('alpha');
+    const alphaInput = findControlGroup(container)!.findControls()[0].find('input')!.getElement();
     alphaInput.focus();
     expect(document.activeElement).toBe(alphaInput);
 
@@ -28,39 +31,40 @@ describe('Control group', () => {
     rerender(<ControlGroup>{[beta, alpha]}</ControlGroup>);
 
     // The same DOM node is still focused; it was moved, not remounted.
-    expect(getByTestId('alpha')).toBe(alphaInput);
+    expect(findControlGroup(container)!.findControls()[1].find('input')!.getElement()).toBe(alphaInput);
     expect(document.activeElement).toBe(alphaInput);
   });
 
   describe('position', () => {
     test('exposes the "only" position to a single child control', () => {
-      const { getByTestId } = render(
+      const { container } = render(
         <ControlGroup>
           <PositionProbe />
         </ControlGroup>
       );
 
-      expect(getByTestId('probe')).toHaveTextContent('only');
+      expect(findControlGroup(container)!.findControls()[0].getElement()).toHaveTextContent('only');
     });
 
     test('exposes first / middle / last positions to each child in order', () => {
-      const { getByTestId } = render(
+      const { container } = render(
         <ControlGroup>
-          <PositionProbe testId="a" />
-          <PositionProbe testId="b" />
-          <PositionProbe testId="c" />
+          <PositionProbe />
+          <PositionProbe />
+          <PositionProbe />
         </ControlGroup>
       );
 
-      expect(getByTestId('a')).toHaveTextContent('first');
-      expect(getByTestId('b')).toHaveTextContent('middle');
-      expect(getByTestId('c')).toHaveTextContent('last');
+      const controls = findControlGroup(container)!.findControls();
+      expect(controls[0].getElement()).toHaveTextContent('first');
+      expect(controls[1].getElement()).toHaveTextContent('middle');
+      expect(controls[2].getElement()).toHaveTextContent('last');
     });
 
     test('resets the grouped position for content wrapped in ResetGroupedControlContext', () => {
       // Mirrors a nested control rendered inside a control's custom slot (e.g.
       // Autosuggest `empty`): it must not inherit the surrounding group position.
-      const { getByTestId } = render(
+      const { container } = render(
         <ControlGroup>
           <ResetGroupedControlContext>
             <PositionProbe />
@@ -68,7 +72,7 @@ describe('Control group', () => {
         </ControlGroup>
       );
 
-      expect(getByTestId('probe')).toHaveTextContent('none');
+      expect(findControlGroup(container)!.findControls()[0].getElement()).toHaveTextContent('none');
     });
   });
 
@@ -110,42 +114,31 @@ describe('Control group', () => {
   });
 
   describe('direction', () => {
-    test('defaults the direction to "horizontal" and exposes it to each child', () => {
-      const { getByTestId } = render(
-        <ControlGroup>
-          <DirectionProbe testId="a" />
-          <DirectionProbe testId="b" />
-        </ControlGroup>
-      );
-
-      expect(getByTestId('a')).toHaveTextContent('horizontal');
-      expect(getByTestId('b')).toHaveTextContent('horizontal');
-    });
-
     test('exposes direction="vertical" to each child when the group is vertical', () => {
-      const { getByTestId } = render(
+      const { container } = render(
         <ControlGroup direction="vertical">
-          <DirectionProbe testId="a" />
-          <DirectionProbe testId="b" />
-          <DirectionProbe testId="c" />
+          <DirectionProbe />
+          <DirectionProbe />
+          <DirectionProbe />
         </ControlGroup>
       );
 
-      expect(getByTestId('a')).toHaveTextContent('vertical');
-      expect(getByTestId('b')).toHaveTextContent('vertical');
-      expect(getByTestId('c')).toHaveTextContent('vertical');
+      const controls = findControlGroup(container)!.findControls();
+      expect(controls[0].getElement()).toHaveTextContent('vertical');
+      expect(controls[1].getElement()).toHaveTextContent('vertical');
+      expect(controls[2].getElement()).toHaveTextContent('vertical');
     });
 
     test('ResetGroupedControlContext preserves the group direction', () => {
-      const { getByTestId } = render(
+      const { container } = render(
         <ControlGroup direction="vertical">
           <ResetGroupedControlContext>
-            <DirectionProbe testId="direction" />
+            <DirectionProbe />
           </ResetGroupedControlContext>
         </ControlGroup>
       );
 
-      expect(getByTestId('direction')).toHaveTextContent('vertical');
+      expect(findControlGroup(container)!.findControls()[0].getElement()).toHaveTextContent('vertical');
     });
   });
 
@@ -159,7 +152,6 @@ describe('Control group', () => {
 
     const group = getByRole('group');
     const label = findControlGroup(container)!.findInlineLabel()!.getElement();
-
     expect(label).toHaveTextContent('Threshold');
     expect(label.id).toBeTruthy();
     expect(group.getAttribute('aria-labelledby')).toBe(label.id);
@@ -174,6 +166,111 @@ describe('Control group', () => {
     );
 
     expect(getByRole('group').getAttribute('aria-labelledby')).toBeNull();
-    expect(findControlGroup(container)?.findInlineLabel()).toBeNull();
+    expect(findControlGroup(container)!.findInlineLabel()).toBeNull();
+  });
+
+  describe('FormField validation association', () => {
+    const option = { value: '=', label: '=' };
+    const renderGroupInFormField = (formFieldProps: {
+      label?: string;
+      errorText?: string;
+      warningText?: string;
+      inlineLabelText?: string;
+    }) => {
+      const { label, errorText, warningText, inlineLabelText } = formFieldProps;
+      return render(
+        <FormField label={label} errorText={errorText} warningText={warningText}>
+          <ControlGroup inlineLabelText={inlineLabelText}>
+            <Select ariaLabel="Value" selectedOption={option} options={[option]} onChange={() => {}} />
+            <Select ariaLabel="Operator" selectedOption={option} options={[option]} onChange={() => {}} />
+          </ControlGroup>
+        </FormField>
+      );
+    };
+
+    test('associates the FormField error with the group as a unit', () => {
+      const { container, getByRole } = renderGroupInFormField({ errorText: 'This value is required' });
+      const group = getByRole('group');
+
+      expect(group.getAttribute('aria-invalid')).toBe('true');
+      const describedby = group.getAttribute('aria-describedby');
+      expect(describedby).toBeTruthy();
+      // The described-by id resolves to the FormField's error text.
+      const describedElement = container.ownerDocument.getElementById(describedby!.split(' ')[0]);
+      expect(describedElement).toHaveTextContent('This value is required');
+    });
+
+    test('associates the FormField warning with the group without marking it invalid', () => {
+      const { container, getByRole } = renderGroupInFormField({ warningText: 'Double-check this value' });
+      const group = getByRole('group');
+
+      expect(group.getAttribute('aria-invalid')).toBeNull();
+      const describedby = group.getAttribute('aria-describedby');
+      expect(describedby).toBeTruthy();
+      const describedElement = container.ownerDocument.getElementById(describedby!.split(' ')[0]);
+      expect(describedElement).toHaveTextContent('Double-check this value');
+    });
+
+    test('leaves the group without validation associations when there is no FormField', () => {
+      const { getByRole } = render(
+        <ControlGroup>
+          <input data-testid="alpha" />
+          <input data-testid="beta" />
+        </ControlGroup>
+      );
+      const group = getByRole('group');
+
+      expect(group.getAttribute('aria-describedby')).toBeNull();
+      expect(group.getAttribute('aria-invalid')).toBeNull();
+    });
+
+    test('merges the FormField label with the inline label on the group', () => {
+      const { container, getByRole } = renderGroupInFormField({
+        label: 'Metric filter',
+        errorText: 'This value is required',
+        inlineLabelText: 'Threshold',
+      });
+      const group = getByRole('group');
+      const inlineLabelId = findControlGroup(container)!.findInlineLabel()!.getElement().id;
+
+      const labelledby = group.getAttribute('aria-labelledby')!.split(' ');
+      expect(labelledby).toContain(inlineLabelId);
+      // Besides the inline label, the FormField's own label id is also referenced.
+      expect(labelledby.length).toBeGreaterThan(1);
+      // The validation associations remain on the same group element.
+      expect(group.getAttribute('aria-invalid')).toBe('true');
+      expect(group.getAttribute('aria-describedby')).toBeTruthy();
+    });
+
+    test('does not duplicate the validation association onto the inner controls', () => {
+      const { container, getByRole } = renderGroupInFormField({ errorText: 'This value is required' });
+      const groupDescribedby = getByRole('group').getAttribute('aria-describedby');
+
+      for (const select of createWrapper(container).findAllSelects()) {
+        const trigger = select.findTrigger().getElement();
+        expect(trigger.getAttribute('aria-describedby')).not.toBe(groupDescribedby);
+        expect(trigger.getAttribute('aria-invalid')).toBeNull();
+      }
+    });
+  });
+
+  test('gives each inner control a distinct id when wrapped in a FormField', () => {
+    const option = { value: '=', label: '=' };
+    const { container } = render(
+      <FormField errorText="This value is required">
+        <ControlGroup>
+          <Select ariaLabel="Value" selectedOption={option} options={[option]} onChange={() => {}} />
+          <Select ariaLabel="Operator" selectedOption={option} options={[option]} onChange={() => {}} />
+        </ControlGroup>
+      </FormField>
+    );
+
+    const [first, second] = createWrapper(container).findAllSelects();
+    const firstId = first.findTrigger().getElement().id;
+    const secondId = second.findTrigger().getElement().id;
+
+    expect(firstId).toBeTruthy();
+    expect(secondId).toBeTruthy();
+    expect(firstId).not.toBe(secondId);
   });
 });

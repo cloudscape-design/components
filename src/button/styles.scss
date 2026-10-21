@@ -10,83 +10,47 @@
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use './constants' as constants;
+@use '../internal/styles/forms/constants' as form-constants;
 @use '../internal/styles/style-api' as style-api;
 
-$props: style-api.combine(style-api.$surface, (box-shadow, padding-block, padding-inline), style-api.$focus-ring);
-$tokens: style-api.resolve($props, carrier);
+$tokens: style-api.resolve(style-api.$focus-ring, carrier);
 @include style-api.register($tokens);
-@include style-api.docs('root', $tokens);
+@include style-api.docs('root', $tokens, $properties: (color, background, border, border-radius, padding, box-shadow));
 
 @mixin adjust-for-variant($variant) {
-  background: style-api.value(
-    $tokens,
-    background-color,
-    var(#{custom-props.$styleBackgroundDefault}, map.get($variant, 'default-background'))
-  );
-  color: style-api.value($tokens, color, var(#{custom-props.$styleColorDefault}, map.get($variant, 'default-color')));
-  border-color: style-api.value(
-    $tokens,
-    border-color,
-    var(#{custom-props.$styleBorderColorDefault}, #{map.get($variant, 'default-border-color')})
-  );
-  box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowDefault}));
+  background: var(#{custom-props.$styleBackgroundDefault}, map.get($variant, 'default-background'));
+  color: var(#{custom-props.$styleColorDefault}, map.get($variant, 'default-color'));
+  border-color: var(#{custom-props.$styleBorderColorDefault}, #{map.get($variant, 'default-border-color')});
+  box-shadow: var(#{custom-props.$styleBoxShadowDefault});
   @if map.get($variant, 'border-width') {
-    border-block-width: style-api.value($tokens, border-width, map.get($variant, 'border-width'));
-    border-inline-width: style-api.value($tokens, border-width, map.get($variant, 'border-width'));
+    border-block-width: map.get($variant, 'border-width');
+    border-inline-width: map.get($variant, 'border-width');
   }
   @if map.get($variant, 'padding') {
-    padding-block: style-api.value($tokens, padding-block, map.get($variant, 'padding'));
-    padding-inline: style-api.value($tokens, padding-inline, map.get($variant, 'padding'));
+    padding-block: map.get($variant, 'padding');
+    padding-inline: map.get($variant, 'padding');
   }
   font-weight: map.get($variant, 'font-weight');
 
   &:hover {
-    background: style-api.value(
-      $tokens,
-      background-color,
-      var(#{custom-props.$styleBackgroundHover}, map.get($variant, 'hover-background'))
-    );
-    border-color: style-api.value(
-      $tokens,
-      border-color,
-      var(#{custom-props.$styleBorderColorHover}, map.get($variant, 'hover-border-color'))
-    );
-    color: style-api.value($tokens, color, var(#{custom-props.$styleColorHover}, map.get($variant, 'hover-color')));
-    box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowHover}));
+    background: var(#{custom-props.$styleBackgroundHover}, map.get($variant, 'hover-background'));
+    border-color: var(#{custom-props.$styleBorderColorHover}, map.get($variant, 'hover-border-color'));
+    color: var(#{custom-props.$styleColorHover}, map.get($variant, 'hover-color'));
+    box-shadow: var(#{custom-props.$styleBoxShadowHover});
   }
 
   &:active {
-    background: style-api.value(
-      $tokens,
-      background-color,
-      var(#{custom-props.$styleBackgroundActive}, map.get($variant, 'active-background'))
-    );
-    border-color: style-api.value(
-      $tokens,
-      border-color,
-      var(#{custom-props.$styleBorderColorActive}, map.get($variant, 'active-border-color'))
-    );
-    color: style-api.value($tokens, color, var(#{custom-props.$styleColorActive}, map.get($variant, 'active-color')));
-    box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowActive}));
+    background: var(#{custom-props.$styleBackgroundActive}, map.get($variant, 'active-background'));
+    border-color: var(#{custom-props.$styleBorderColorActive}, map.get($variant, 'active-border-color'));
+    color: var(#{custom-props.$styleColorActive}, map.get($variant, 'active-color'));
+    box-shadow: var(#{custom-props.$styleBoxShadowActive});
   }
 
   &.disabled {
-    background: style-api.value(
-      $tokens,
-      background-color,
-      var(#{custom-props.$styleBackgroundDisabled}, map.get($variant, 'disabled-background'))
-    );
-    border-color: style-api.value(
-      $tokens,
-      border-color,
-      var(#{custom-props.$styleBorderColorDisabled}, map.get($variant, 'disabled-border-color'))
-    );
-    color: style-api.value(
-      $tokens,
-      color,
-      var(#{custom-props.$styleColorDisabled}, map.get($variant, 'disabled-color'))
-    );
-    box-shadow: style-api.value($tokens, box-shadow, var(#{custom-props.$styleBoxShadowDisabled}));
+    background: var(#{custom-props.$styleBackgroundDisabled}, map.get($variant, 'disabled-background'));
+    border-color: var(#{custom-props.$styleBorderColorDisabled}, map.get($variant, 'disabled-border-color'));
+    color: var(#{custom-props.$styleColorDisabled}, map.get($variant, 'disabled-color'));
+    box-shadow: var(#{custom-props.$styleBoxShadowDisabled});
     cursor: auto;
   }
 }
@@ -100,15 +64,18 @@ $tokens: style-api.resolve($props, carrier);
   @include styles.styles-reset;
   @include styles.text-wrapping;
   @include styles.font-button;
+
+  $focus-border-color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
+
   letter-spacing: awsui.$font-button-letter-spacing;
-  border-start-start-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
-  border-start-end-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
-  border-end-start-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
-  border-end-end-radius: style-api.value($tokens, border-radius, awsui.$border-radius-button);
-  border-block: style-api.value($tokens, border-width, awsui.$border-width-button) solid;
-  border-inline: style-api.value($tokens, border-width, awsui.$border-width-button) solid;
-  padding-block: style-api.value($tokens, padding-block, awsui.$space-button-vertical);
-  padding-inline: style-api.value($tokens, padding-inline, awsui.$space-button-horizontal);
+  border-start-start-radius: awsui.$border-radius-button;
+  border-start-end-radius: awsui.$border-radius-button;
+  border-end-start-radius: awsui.$border-radius-button;
+  border-end-end-radius: awsui.$border-radius-button;
+  border-block: awsui.$border-width-button solid;
+  border-inline: awsui.$border-width-button solid;
+  padding-block: awsui.$space-button-vertical;
+  padding-inline: awsui.$space-button-horizontal;
   display: inline-block; // for <a> as a button
   text-decoration: none;
   cursor: pointer;
@@ -128,10 +95,9 @@ $tokens: style-api.resolve($props, carrier);
   @include focus-visible.when-visible {
     $radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring);
     $width: var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width);
-    $color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
 
     &:not(.variant-control-group-action) {
-      @include style-api.focus-highlight($radius: $radius, $width: $width, $color: $color);
+      @include style-api.focus-highlight($radius: $radius, $width: $width, $color: $focus-border-color);
     }
 
     &.variant-icon,
@@ -141,7 +107,7 @@ $tokens: style-api.resolve($props, carrier);
         $gutter-block: awsui.$space-button-icon-focus-outline-gutter-vertical,
         $radius: $radius,
         $width: $width,
-        $color: $color
+        $color: $focus-border-color
       );
     }
 
@@ -152,21 +118,23 @@ $tokens: style-api.resolve($props, carrier);
         $gutter-inline: awsui.$space-button-inline-icon-focus-outline-gutter,
         $radius: $radius,
         $width: $width,
-        $color: $color
+        $color: $focus-border-color
       );
     }
 
-    &.variant-control-group-action {
-      @include styles.form-focus-element(
-        $border-color: $color,
-        $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
+    &.variant-inline-link {
+      @include style-api.focus-highlight(
+        $gutter-block: awsui.$space-button-inline-link-focus-outline-gutter,
+        $radius: $radius,
+        $width: $width,
+        $color: $focus-border-color
       );
     }
   }
 
   &.button-no-text {
-    padding-inline-start: style-api.value($tokens, padding-inline, awsui.$space-button-icon-only-horizontal);
-    padding-inline-end: style-api.value($tokens, padding-inline, awsui.$space-button-icon-only-horizontal);
+    padding-inline-start: awsui.$space-button-icon-only-horizontal;
+    padding-inline-end: awsui.$space-button-icon-only-horizontal;
   }
 
   &.button-no-wrap {
@@ -184,12 +152,12 @@ $tokens: style-api.resolve($props, carrier);
   &.variant-flashbar-icon {
     // Icon has vertical padding, but no horizontal, we need to conpensate this
     // in order to have equal height and width
-    padding-inline: style-api.value($tokens, padding-inline, awsui.$space-xxs);
+    padding-inline: awsui.$space-xxs;
   }
 
   &.variant-modal-dismiss {
-    padding-block: style-api.value($tokens, padding-block, awsui.$space-button-modal-dismiss-vertical);
-    padding-inline: style-api.value($tokens, padding-inline, awsui.$space-xxs);
+    padding-block: awsui.$space-button-modal-dismiss-vertical;
+    padding-inline: awsui.$space-xxs;
     margin-inline-end: calc(-1 * #{awsui.$space-xxs});
   }
 
@@ -219,6 +187,13 @@ $tokens: style-api.resolve($props, carrier);
     padding-block: awsui.$space-field-vertical;
     padding-inline: awsui.$space-xs;
     min-block-size: awsui.$size-vertical-input;
+
+    @include focus-visible.when-visible {
+      @include styles.form-focus-element(
+        $border-color: $focus-border-color,
+        $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
+      );
+    }
   }
 
   > .icon-left {

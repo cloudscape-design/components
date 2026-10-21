@@ -127,7 +127,7 @@ $icon-offset: awsui.$space-xxxs;
     text-decoration: none;
   }
 
-  &:not(.in-filtering-token) {
+  &:not(.in-filtering-token):not(.compact):not(.grouped.with-error):not(.grouped.with-warning) {
     @include focus-visible.when-visible {
       @include styles.form-focus-element();
     }
@@ -146,6 +146,15 @@ $icon-offset: awsui.$space-xxxs;
     &.warning:focus {
       @include styles.form-warning-control();
     }
+
+    @include focus-visible.when-visible {
+      &.invalid {
+        border-color: awsui.$color-text-status-error;
+      }
+      &.warning {
+        border-color: awsui.$color-text-status-warning;
+      }
+    }
   }
 
   &.custom-option {
@@ -158,6 +167,25 @@ $icon-offset: awsui.$space-xxxs;
   &.inline-tokens {
     // Remove default paddings and just rely on center alignment of the content
     padding-block: 0;
+  }
+
+  &.compact {
+    @include styles.font-body-s;
+    column-gap: awsui.$space-xxs;
+    block-size: token.$token-max-height-inline;
+    min-block-size: unset;
+    padding-block: 0;
+    padding-inline: awsui.$space-xs;
+    white-space: nowrap;
+    @include styles.logical-radius(awsui.$border-radius-token-inline);
+
+    > .arrow {
+      position: static;
+    }
+
+    @include focus-visible.when-visible {
+      @include styles.focus-highlight(0px);
+    }
   }
 
   &.grouped {

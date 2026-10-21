@@ -14,10 +14,11 @@ function compile(artefactThemes: string[]): string {
   return compileMotionScss({
     entry: `@use 'motion' as motion;
       .toggle-control { @include motion.control; }
-      .toggle-handle { @include motion.handle(12px); }`,
+      .toggle-handle { @include motion.handle(12px, 8px); }`,
     artefactThemes,
     files: { motion: 'toggle/motion.scss' },
     inline: {
+      styles: sharedStubs.styles,
       // Later declarations win, so the values this test asserts on go after the shared stub.
       tokens: `
         ${sharedStubs.tokens}
@@ -38,13 +39,25 @@ describe('toggle motion, as compiled', () => {
     const css = compile([THEME]);
     expect(css).toMatch(
       new RegExp(
-        `${escape(SCOPE)} \\.toggle-handle \\{\\s*transition:\\s*transform 90ms cubic-bezier\\(0, 0, 0, 1\\),\\s*background-color 90ms cubic-bezier\\(0, 0, 0, 1\\);`
+        `${escape(SCOPE)} \\.toggle-handle \\{\\s*transition:\\s*translate 90ms cubic-bezier\\(0, 0, 0, 1\\),\\s*background-color 90ms cubic-bezier\\(0, 0, 0, 1\\);`
       )
     );
     expect(css).toMatch(
       new RegExp(
         `${escape(SCOPE)} \\.toggle-control \\{\\s*transition: background-color 90ms cubic-bezier\\(0, 0, 0, 1\\);`
       )
+    );
+  });
+
+  test('moves the handle with `translate`, so the tail animation cannot override the travel', () => {
+    const css = compile([THEME]);
+    expect(css).toMatch(
+      new RegExp(
+        `${escape(SCOPE)} \\.toggle-handle\\.toggle-handle-checked \\{\\s*transform: none;\\s*translate: 8px 0;`
+      )
+    );
+    expect(css).toMatch(
+      new RegExp(`${escape(SCOPE)} \\.toggle-handle\\.toggle-handle-checked:dir\\(rtl\\) \\{\\s*translate: -8px 0;`)
     );
   });
 
@@ -63,22 +76,25 @@ describe('toggle motion, as compiled', () => {
     expect(css).not.toMatch(/\.toggle-handle \{\s*animation/);
   });
 
-  test('the tail pins the leading edge: going on opens the start edge, going off grows the width alone', () => {
+  test('the tail stretches the handle with a transform, pinned at the leading edge', () => {
     const css = compile([THEME]);
     const on = css.match(/@keyframes awsui-toggle-tail-on \{[^@]*?\n\}/)![0];
     const off = css.match(/@keyframes awsui-toggle-tail-off \{[^@]*?\n\}/)![0];
-    expect(on).toMatch(/35% \{\s*inline-size: 16px;\s*margin-inline-start: -4px;/);
-    expect(off).toMatch(/35% \{\s*inline-size: 16px;\s*\}/);
     for (const block of [on, off]) {
-      expect(block).toMatch(/0% \{\s*inline-size: 12px;/);
-      expect(block).toMatch(/100% \{\s*inline-size: 12px;/);
-      expect(block).not.toMatch(/transform/);
+      expect(block).toMatch(/0%,\s*100% \{\s*scale: 1;\s*\}/);
+      expect(block).toMatch(/35% \{\s*scale: 1\.33\d* 1;\s*\}/);
+      expect(block).not.toMatch(/inline-size|margin|transform:/);
     }
+    const ready = `${escape(SCOPE)} \\.toggle-handle\\[data-awsui-motion-ready\\]`;
+    expect(css).toMatch(new RegExp(`${ready} \\{[^}]*transform-origin: 0 50%;`));
+    expect(css).toMatch(new RegExp(`${ready}:dir\\(rtl\\) \\{\\s*transform-origin: 100% 50%;`));
+    expect(css).toMatch(new RegExp(`${ready}\\.toggle-handle-checked \\{[^}]*transform-origin: 100% 50%;`));
+    expect(css).toMatch(new RegExp(`${ready}\\.toggle-handle-checked:dir\\(rtl\\) \\{\\s*transform-origin: 0 50%;`));
   });
 
   test('every motion rule sits in a reduced-motion media query, with no per-rule override', () => {
     const css = compile([THEME]);
-    expect(css.match(/@media \(prefers-reduced-motion: no-preference\)/g)).toHaveLength(4);
+    expect(css.match(/@media \(prefers-reduced-motion: no-preference\)/g)).toHaveLength(8);
     expect(css).not.toMatch(/(animation|transition):\s*none/);
   });
 });

@@ -12,25 +12,23 @@ function renderCheckbox(element: React.ReactElement) {
 }
 
 describe('Checkbox Style API v2', () => {
-  test('applies styleClassNames to the control, label, and description slots', () => {
+  test('applies styleClassNames to the control slot', () => {
     const { container, wrapper } = renderCheckbox(
       <Checkbox
         checked={false}
         description="Description"
-        {...({ styleClassNames: { control: 'a', label: 'b', description: 'c', unknown: 'd' } } as any)}
+        {...({ styleClassNames: { control: 'a', unknown: 'b' } } as any)}
       >
         Label
       </Checkbox>
     );
     expect(wrapper.findNativeInput().getElement().parentElement).toHaveClass('a');
-    expect(container.querySelector('.b')).toHaveTextContent('Label');
-    expect(wrapper.findDescription()!.getElement()).toHaveClass('c');
-    expect(container.querySelector('.d')).toBeNull();
+    expect(container.querySelector('.b')).toBeNull();
   });
 
   test('does not leak the styleClassNames prop to the DOM', () => {
     const { container } = renderCheckbox(
-      <Checkbox checked={false} {...({ styleClassNames: { control: 'a', label: 'b' } } as any)}>
+      <Checkbox checked={false} {...({ styleClassNames: { control: 'a' } } as any)}>
         Label
       </Checkbox>
     );
