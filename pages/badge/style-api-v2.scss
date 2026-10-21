@@ -3,7 +3,7 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../../lib/components/styling/badge';
+@use '~components/styling/badge';
 @use '../style-api/palette' as palette;
 
 .badge {
