@@ -28,8 +28,8 @@ type UseExpandableGroupStatusProps = Pick<
  */
 export function getGroupStatusIds(menuId: string, groupId: string) {
   return {
-    statusId: `${menuId}-${groupId}-status`,
-    recoveryButtonId: `${menuId}-${groupId}-recovery`,
+    statusId: `status-${menuId}-${groupId}`,
+    recoveryButtonId: `recovery-${menuId}-${groupId}`,
   };
 }
 
