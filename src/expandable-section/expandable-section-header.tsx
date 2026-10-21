@@ -271,7 +271,7 @@ const ExpandableHeaderTextWrapper = ({
   // For the variants that allow actions, when end placement is active, the icon is rendered outside the
   // InternalHeader so it appears at the inline-end of the wrapper, past any header actions.
   // Other variants render the icon at the end of the headerButton itself.
-  const renderIconOutsideHeader = iconAtEnd && (isContainer || !!actions);
+  const renderIconOutsideHeader = iconAtEnd && (isContainer || !!actions || !!inlineInfo);
 
   // If interactive elements are present, constrain the clickable area to only the icon and the header text
   // to prevent nesting interactive elements.
@@ -363,7 +363,12 @@ const ExpandableHeaderTextWrapper = ({
 
   return (
     <div
-      className={clsx(className, wrapperListeners && styles['click-target'], iconAtEnd && styles['header-icon-end'])}
+      className={clsx(
+        className,
+        wrapperListeners && styles['click-target'],
+        iconAtEnd && styles['header-icon-end'],
+        iconAtEnd && inlineInfo && styles['header-icon-end-with-inline-info']
+      )}
       {...wrapperListeners}
       {...wrapperMotionTrigger}
       {...(wrapperListeners ? getExpandActionAnalyticsMetadataAttribute(expanded) : {})}

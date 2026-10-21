@@ -807,6 +807,11 @@ $content-exit-clip-delay: $content-exit-duration;
     }
   }
 
+  > .list-item > .section--expand-icon-end-with-info > :first-child {
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: awsui.$space-xs;
+  }
+
   // In collapsed mode, icon-layout section headers are zero-height; zero their inline offsets
   // to prevent influencing the layout of children below.
   > .list-item--collapsed > .section--collapsed > :first-child {

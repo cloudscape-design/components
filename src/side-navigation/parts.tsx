@@ -625,6 +625,7 @@ function Section({
         styles.section,
         isInSectionGroup && styles['section--no-ident'],
         withIcons && styles['section--expand-icon-end'],
+        withIcons && !collapsed && definition.info && styles['section--expand-icon-end-with-info'],
         isVisualRefresh && styles.refresh,
         collapsed && styles['section--collapsed']
       )}
