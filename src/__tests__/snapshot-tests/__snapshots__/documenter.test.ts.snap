@@ -142,13 +142,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>",
         "type": "union",
         "values": [
           "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLAnchorElement> | undefined; }",
         ],
       },
       "name": "nativeAnchorAttributes",
@@ -156,7 +161,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>",
     },
     {
       "description": "Attributes to add to the native button element.
@@ -164,13 +169,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>",
         "type": "union",
         "values": [
           "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLButtonElement> | undefined; }",
         ],
       },
       "name": "nativeButtonAttributes",
@@ -178,7 +188,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>",
     },
     {
       "description": "Adds a \`rel\` attribute to the link. By default, the component sets the \`rel\` attribute to "noopener noreferrer" when \`target\` is \`"_blank"\`.
@@ -3088,11 +3098,21 @@ exports[`Components definition for autosuggest matches the snapshot: autosuggest
     },
     {
       "cancelable": false,
-      "description": "Called whenever a user changes the input value (by typing or pasting).
-The event \`detail\` contains the current value of the field.",
+      "description": "Called whenever the input value or token list changes.
+
+In default mode, fires on every keystroke with \`{ value }\`.
+When \`tokens\` is provided, fires in three situations:
+* Keystroke — \`value\` is the new text; \`tokens\` is unchanged.
+* Token added — \`value\` is \`""\`; \`tokens\` contains the updated list.
+* Token dismissed — \`value\` is unchanged; \`tokens\` contains the updated list.",
       "detailInlineType": {
-        "name": "BaseChangeDetail",
+        "name": "AutosuggestProps.ChangeDetail",
         "properties": [
+          {
+            "name": "tokens",
+            "optional": true,
+            "type": "ReadonlyArray<AutosuggestProps.Token>",
+          },
           {
             "name": "value",
             "optional": false,
@@ -3101,7 +3121,7 @@ The event \`detail\` contains the current value of the field.",
         ],
         "type": "object",
       },
-      "detailType": "BaseChangeDetail",
+      "detailType": "AutosuggestProps.ChangeDetail",
       "name": "onChange",
     },
     {
@@ -3274,7 +3294,7 @@ Instead, use \`onSelect\` in combination with the \`onChange\` handler only as a
                 {
                   "name": "disabledReason",
                   "optional": true,
-                  "type": "string",
+                  "type": "React.ReactNode",
                 },
                 {
                   "name": "filteringTags",
@@ -3615,6 +3635,7 @@ receive focus.",
       "type": "boolean",
     },
     {
+      "deprecatedTag": "Use \`i18nStrings.enteredTextLabel\` instead.",
       "description": "Specifies a function that generates the custom value indicator (for example, \`Use "\${value}"\`).",
       "i18nTag": true,
       "inlineType": {
@@ -3727,6 +3748,88 @@ Note: Manual filtering doesn't disable match highlighting.",
       "type": "boolean",
     },
     {
+      "description": "An object containing all the localized strings required by the component.
+
+- \`enteredTextLabel\` ((value: string) => string) - Label for the "Use/Add" item shown at the top of the dropdown when the user types a value. Applies in both default and token mode.
+- \`tokenOverflowAriaLabel\` ((hiddenCount: number) => string) - Aria label for the \`+N\` overflow button. Applies only when \`tokens\` is provided.
+- \`tokenInsertedAriaLabel\` ((value: string) => string) - Announced via \`aria-live\` when a token is added. Applies only when \`tokens\` is provided.
+- \`tokenDismissLabel\` ((value: string) => string) - Aria label for the dismiss button on each token. Applies only when \`tokens\` is provided.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "AutosuggestProps.I18nStrings",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "(value: string) => string",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": "string",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "enteredTextLabel",
+            "optional": true,
+            "type": "((value: string) => string)",
+          },
+          {
+            "inlineType": {
+              "name": "(value: string) => string",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": "string",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "tokenDismissLabel",
+            "optional": true,
+            "type": "((value: string) => string)",
+          },
+          {
+            "inlineType": {
+              "name": "(value: string) => string",
+              "parameters": [
+                {
+                  "name": "value",
+                  "type": "string",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "tokenInsertedAriaLabel",
+            "optional": true,
+            "type": "((value: string) => string)",
+          },
+          {
+            "inlineType": {
+              "name": "(hiddenCount: number) => string",
+              "parameters": [
+                {
+                  "name": "hiddenCount",
+                  "type": "number",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "tokenOverflowAriaLabel",
+            "optional": true,
+            "type": "((hiddenCount: number) => string)",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "AutosuggestProps.I18nStrings",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
@@ -3763,13 +3866,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
         "values": [
           "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLInputElement> | undefined; }",
         ],
       },
       "name": "nativeInputAttributes",
@@ -3777,7 +3885,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
     },
     {
       "description": "Specifies an array of options that are displayed to the user as a dropdown list.
@@ -4177,6 +4285,16 @@ Refer to the [style](/components/autosuggest/?tabId=style) tab for more details.
       "type": "AutosuggestProps.Style",
     },
     {
+      "description": "Specifies the list of tokens to display inline before the text input.
+When this prop is provided (including an empty array), the component enters token mode:
+accepted values accumulate as dismissible inline tokens before the text input.
+Tokens that don't fit the available width collapse into a \`+N\` overflow button.
+This is a controlled prop — update it in response to \`onChange\`.",
+      "name": "tokens",
+      "optional": true,
+      "type": "ReadonlyArray<AutosuggestProps.Token>",
+    },
+    {
       "description": "Specifies the text entered into the form element.",
       "name": "value",
       "optional": false,
@@ -4273,13 +4391,16 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
-        "name": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<React.HTMLAttributes<HTMLElement>>",
         "type": "union",
         "values": [
           "Omit<React.HTMLAttributes<HTMLElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLElement> | undefined; }",
         ],
       },
       "name": "nativeAttributes",
@@ -4287,7 +4408,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<React.HTMLAttributes<HTMLElement>>",
     },
     {
       "description": "An object containing CSS properties to customize the badge's visual appearance.
@@ -5042,13 +5163,16 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
-        "name": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<React.HTMLAttributes<HTMLElement>>",
         "type": "union",
         "values": [
           "Omit<React.HTMLAttributes<HTMLElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLElement> | undefined; }",
         ],
       },
       "name": "nativeAttributes",
@@ -5056,7 +5180,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<React.HTMLAttributes<HTMLElement>>",
     },
     {
       "defaultValue": "{}",
@@ -5229,20 +5353,14 @@ This is a One Theme only feature and must not be used in VR.",
               "name": "BoxProps.VisualAccent.Color",
               "type": "union",
               "values": [
-                "blue",
                 "green",
                 "grey",
                 "indigo",
-                "lime",
-                "magenta",
                 "orange",
-                "pink",
                 "purple",
                 "red",
                 "teal",
-                "violet",
                 "yellow",
-                "amber",
               ],
             },
             "name": "color",
@@ -5583,13 +5701,6 @@ The text will also be added to the \`title\` attribute of the button.",
       "type": "boolean",
     },
     {
-      "description": "Provides a reason why the button is disabled (only when \`disabled\` is \`true\`).
-If provided, the button becomes focusable.",
-      "name": "disabledReason",
-      "optional": true,
-      "type": "string",
-    },
-    {
       "description": "Specifies whether the linked URL, when selected, will prompt the user to download instead of navigate.
 You can specify a string value that will be suggested as the name of the downloaded file.
 This property only applies when an \`href\` is provided.",
@@ -5884,13 +5995,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>",
         "type": "union",
         "values": [
           "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLAnchorElement> | undefined; }",
         ],
       },
       "name": "nativeAnchorAttributes",
@@ -5898,7 +6014,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>",
     },
     {
       "description": "Attributes to add to the native \`button\` element.
@@ -5906,13 +6022,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>",
         "type": "union",
         "values": [
           "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLButtonElement> | undefined; }",
         ],
       },
       "name": "nativeButtonAttributes",
@@ -5920,7 +6041,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>",
     },
     {
       "description": "Adds a \`rel\` attribute to the link. By default, the component sets the \`rel\` attribute to "noopener noreferrer" when \`target\` is \`"_blank"\`.
@@ -6174,6 +6295,14 @@ This property only applies when an \`href\` is provided.",
       "name": "children",
     },
     {
+      "description": "Provides a reason why the button is disabled (only when \`disabled\` is \`true\`).
+If provided, the button becomes focusable.
+
+Do not place interactive elements like links or buttons.",
+      "isDefault": false,
+      "name": "disabledReason",
+    },
+    {
       "description": "Specifies the SVG of a custom icon.
 
 Use this property if you want your custom icon to inherit colors dictated by variant or hover states.
@@ -6327,13 +6456,6 @@ Use this to provide an accessible name for buttons that don't have visible text.
       "name": "disabled",
       "optional": true,
       "type": "boolean",
-    },
-    {
-      "description": "Provides a reason why the button dropdown is disabled (only when \`disabled\` is \`true\`).
-If provided, the disabled button becomes focusable.",
-      "name": "disabledReason",
-      "optional": true,
-      "type": "string",
     },
     {
       "defaultValue": "false",
@@ -6664,7 +6786,8 @@ When \`type\` is set to "checkbox", the values set to \`href\`, \`external\` and
 ### group
 
 - \`items\` (ReadonlyArray<Item>) - an array of item objects. Items will be rendered as nested menu items but only for the first nesting level, multi-nesting is not supported.
-An item which belongs to nested group has the following properties: \`id\`, \`text\`, \`disabled\`, and \`description\`.",
+An item which belongs to nested group has the following properties: \`id\`, \`text\`, \`disabled\`, and \`description\`.
+- \`expandable\` (boolean) - (Optional) Defines whether the group is expandable (this overrides the component-level \`expandableGroups\` property).",
       "name": "items",
       "optional": false,
       "type": "ReadonlyArray<ButtonDropdownProps.ItemOrGroup>",
@@ -6710,7 +6833,7 @@ The main action also supports the following properties of the [button](/componen
           {
             "name": "disabledReason",
             "optional": true,
-            "type": "string",
+            "type": "React.ReactNode",
           },
           {
             "inlineType": {
@@ -6984,35 +7107,41 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
         "name": "object",
         "properties": [
           {
             "inlineType": {
-              "name": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+              "name": "NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>",
               "type": "union",
               "values": [
                 "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children">",
                 "Record<\`data-\${string}\`, string>",
+                "{ readonly ref?: React.Ref<HTMLAnchorElement> | undefined; }",
               ],
             },
             "name": "anchor",
             "optional": true,
-            "type": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+            "type": "NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>",
           },
           {
             "inlineType": {
-              "name": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+              "name": "NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>",
               "type": "union",
               "values": [
                 "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children">",
                 "Record<\`data-\${string}\`, string>",
+                "{ readonly ref?: React.Ref<HTMLButtonElement> | undefined; }",
               ],
             },
             "name": "button",
             "optional": true,
-            "type": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+            "type": "NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>",
           },
         ],
         "type": "object",
@@ -7022,7 +7151,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "{ button?: NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>; anchor?: NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>; }",
+      "type": "{ button?: NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>> | undefined; anchor?: NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>> | undefined; }",
     },
     {
       "description": "Attributes to add to the native \`button\` element.
@@ -7030,13 +7159,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>",
         "type": "union",
         "values": [
           "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLButtonElement> | undefined; }",
         ],
       },
       "name": "nativeTriggerAttributes",
@@ -7044,7 +7178,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>",
     },
     {
       "description": "Specifies a render function to render custom options in the dropdown menu.
@@ -7131,6 +7265,14 @@ When returning \`null\`, the default styling will be applied.",
       "displayName": "text",
       "isDefault": true,
       "name": "children",
+    },
+    {
+      "description": "Provides a reason why the button dropdown is disabled (only when \`disabled\` is \`true\`).
+If provided, the disabled button becomes focusable.
+
+Do not place interactive elements like links or buttons.",
+      "isDefault": false,
+      "name": "disabledReason",
     },
     {
       "description": "Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
@@ -7311,7 +7453,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
 * \`id\` (string) - The unique identifier of the button, used as detail in \`onItemClick\` handler and to focus the button using \`ref.focus(id)\`.
 * \`text\` (string) - The name shown as a tooltip for this button.
 * \`disabled\` (optional, boolean) - The disabled state indication for this button.
-* \`disabledReason\` (optional, boolean) - Provides a reason why the button is disabled (only when \`disabled\` is \`true\`). If provided, the button becomes focusable.
+* \`disabledReason\` (optional, ReactNode) - Provides a reason why the button is disabled (only when \`disabled\` is \`true\`). If provided, the button becomes focusable. Do not place interactive elements like links or buttons.
 * \`loading\` (optional, boolean) - The loading state indication for this button.
 * \`loadingText\` (optional, string) - The loading text announced to screen readers.
 * \`iconName\` (optional, string) - Specifies the name of the icon, used with the [icon component](/components/icon/).
@@ -7330,7 +7472,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
 * \`pressed\` (boolean) - The toggle button pressed state.
 * \`text\` (string) - The name shown as a tooltip for this button.
 * \`disabled\` (optional, boolean) - The disabled state indication for this button.
-* \`disabledReason\` (optional, boolean) - Provides a reason why the button is disabled (only when \`disabled\` is \`true\`). If provided, the button becomes focusable.
+* \`disabledReason\` (optional, ReactNode) - Provides a reason why the button is disabled (only when \`disabled\` is \`true\`). If provided, the button becomes focusable. Do not place interactive elements like links or buttons.
 * \`loading\` (optional, boolean) - The loading state indication for this button.
 * \`loadingText\` (optional, string) - The loading text announced to screen readers.
 * \`iconName\` (optional, string) - Specifies the name of the icon, used with the [icon component](/components/icon/).
@@ -7354,7 +7496,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
 * \`id\` (string) - The unique identifier of the button, used as detail in \`onItemClick\`.
 * \`text\` (string) - The name of the menu button shown as a tooltip.
 * \`disabled\` (optional, boolean) - The disabled state indication for the menu button.
-* \`disabledReason\` (optional, boolean) - Provides a reason why the button is disabled (only when \`disabled\` is \`true\`). If provided, the button becomes focusable.
+* \`disabledReason\` (optional, ReactNode) - Provides a reason why the button is disabled (only when \`disabled\` is \`true\`). If provided, the button becomes focusable. Do not place interactive elements like links or buttons.
 * \`loading\` (optional, boolean) - The loading state indication for the menu button.
 * \`loadingText\` (optional, string) - The loading text announced to screen readers.
 * \`iconName\` (optional, string) - Specifies the name of the icon, used with the [icon component](/components/icon/). Defaults to \`ellipsis\`.
@@ -7371,7 +7513,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
 * \`copySuccessText\` (string) - The message announced to screen readers and shown as a popover when the text is copied successfully.
 * \`copyErrorText\` (string) - The message announced to screen readers and shown as a popover when the text fails to copy.
 * \`disabled\` (optional, boolean) - The disabled state indication for this button.
-* \`disabledReason\` (optional, boolean) - Provides a reason why the button is disabled (only when \`disabled\` is \`true\`). If provided, the button becomes focusable.
+* \`disabledReason\` (optional, ReactNode) - Provides a reason why the button is disabled (only when \`disabled\` is \`true\`). If provided, the button becomes focusable. Do not place interactive elements like links or buttons.
 
 ### group
 
@@ -7641,7 +7783,9 @@ The event \`detail\` contains the current value of the field.",
     },
     {
       "description": "Provides a reason why a particular date in the calendar is not enabled (only when \`isDateEnabled\` returns \`false\`).
-If provided, the date becomes focusable.",
+If provided, the date becomes focusable.
+
+Do not place interactive elements like links or buttons.",
       "inlineType": {
         "name": "CalendarProps.DateDisabledReasonFunction",
         "parameters": [
@@ -7650,7 +7794,7 @@ If provided, the date becomes focusable.",
             "type": "Date",
           },
         ],
-        "returnType": "string",
+        "returnType": "React.ReactNode",
         "type": "function",
       },
       "name": "dateDisabledReason",
@@ -8340,13 +8484,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
         "values": [
           "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLInputElement> | undefined; }",
         ],
       },
       "name": "nativeInputAttributes",
@@ -8354,7 +8503,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
     },
     {
       "description": "Specifies if the control is read-only, which prevents the
@@ -10778,13 +10927,6 @@ and to distinguish between multiple buttons with identical visible text. The tex
       "type": "boolean",
     },
     {
-      "description": "Provides a reason why the copy to clipboard button is disabled (only when \`disabled\` is \`true\`).
-If provided, the copy to clipboard button becomes focusable.",
-      "name": "disabledReason",
-      "optional": true,
-      "type": "string",
-    },
-    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
@@ -10842,6 +10984,14 @@ from wrapping and truncates it with an ellipsis. Only applies to \`variant="inli
     },
   ],
   "regions": [
+    {
+      "description": "Provides a reason why the copy to clipboard button is disabled (only when \`disabled\` is \`true\`).
+If provided, the copy to clipboard button becomes focusable.
+
+Do not place interactive elements like links or buttons.",
+      "isDefault": false,
+      "name": "disabledReason",
+    },
     {
       "description": "The content to display next to the copy button when \`variant="inline"\`. If not provided, \`textToCopy\` will be displayed instead.",
       "isDefault": false,
@@ -11065,13 +11215,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
         "values": [
           "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLInputElement> | undefined; }",
         ],
       },
       "name": "nativeInputAttributes",
@@ -11079,7 +11234,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
     },
     {
       "description": "Specifies the placeholder text rendered when the value is an empty string.",
@@ -11234,7 +11389,9 @@ is provided by its parent form field component.",
     },
     {
       "description": "Provides a reason why a particular date in the calendar is not enabled (only when \`isDateEnabled\` returns \`false\`).
-If provided, the date becomes focusable.",
+If provided, the date becomes focusable.
+
+Do not place interactive elements like links or buttons.",
       "inlineType": {
         "name": "CalendarProps.DateDisabledReasonFunction",
         "parameters": [
@@ -11243,7 +11400,7 @@ If provided, the date becomes focusable.",
             "type": "Date",
           },
         ],
-        "returnType": "string",
+        "returnType": "React.ReactNode",
         "type": "function",
       },
       "name": "dateDisabledReason",
@@ -11704,7 +11861,9 @@ is provided by its parent form field component.",
     },
     {
       "description": "Provides a reason why a particular date in the calendar is not enabled (only when \`isDateEnabled\` returns \`false\`).
-If provided, the date becomes focusable.",
+If provided, the date becomes focusable.
+
+Do not place interactive elements like links or buttons.",
       "inlineType": {
         "name": "DateRangePickerProps.DateDisabledReasonFunction",
         "parameters": [
@@ -11713,7 +11872,7 @@ If provided, the date becomes focusable.",
             "type": "Date",
           },
         ],
-        "returnType": "string",
+        "returnType": "React.ReactNode",
         "type": "function",
       },
       "name": "dateDisabledReason",
@@ -12443,13 +12602,16 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
-        "name": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<React.HTMLAttributes<HTMLElement>>",
         "type": "union",
         "values": [
           "Omit<React.HTMLAttributes<HTMLElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLElement> | undefined; }",
         ],
       },
       "name": "nativeAttributes",
@@ -12457,7 +12619,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<React.HTMLAttributes<HTMLElement>>",
     },
     {
       "defaultValue": "'horizontal'",
@@ -12587,6 +12749,8 @@ Do not use this property when using drawers inside app layout.",
 The close button fires the \`onClose\` event with method \`'close-action'\` when
 clicked.
 
+Do not place interactive elements like links or buttons in \`disabledReason\`.
+
 Do not use this property when using drawers inside app layout.",
       "inlineType": {
         "name": "DrawerProps.CloseActionProps",
@@ -12604,7 +12768,7 @@ Do not use this property when using drawers inside app layout.",
           {
             "name": "disabledReason",
             "optional": true,
-            "type": "string",
+            "type": "React.ReactNode",
           },
           {
             "name": "iconAlt",
@@ -15986,13 +16150,16 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
-        "name": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<React.HTMLAttributes<HTMLElement>>",
         "type": "union",
         "values": [
           "Omit<React.HTMLAttributes<HTMLElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLElement> | undefined; }",
         ],
       },
       "name": "nativeAttributes",
@@ -16000,7 +16167,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<React.HTMLAttributes<HTMLElement>>",
     },
     {
       "defaultValue": "'normal'",
@@ -17305,13 +17472,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
         "values": [
           "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLInputElement> | undefined; }",
         ],
       },
       "name": "nativeInputAttributes",
@@ -17319,7 +17491,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
     },
     {
       "description": "Specifies the placeholder text rendered when the value is an empty string.",
@@ -17705,13 +17877,16 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
-        "name": "Omit<React.HTMLAttributes<HTMLDivElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<React.HTMLAttributes<HTMLDivElement>>",
         "type": "union",
         "values": [
           "Omit<React.HTMLAttributes<HTMLDivElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLDivElement> | undefined; }",
         ],
       },
       "name": "nativeAttributes",
@@ -17719,7 +17894,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.HTMLAttributes<HTMLDivElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<React.HTMLAttributes<HTMLDivElement>>",
     },
     {
       "description": "An object containing CSS properties to customize the item card's visual appearance.
@@ -18667,13 +18842,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>",
         "type": "union",
         "values": [
           "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLAnchorElement> | undefined; }",
         ],
       },
       "name": "nativeAttributes",
@@ -18681,7 +18861,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>",
     },
     {
       "description": "Adds a \`rel\` attribute to the link. If the \`rel\` property is provided, it overrides the default behaviour.
@@ -20261,7 +20441,7 @@ The options can be grouped using \`OptionGroup\` objects.
 - \`lang\` (string) - (Optional) The language of the option or group, provided as a BCP 47 language tag.
 - \`description\` (string) - (Optional) Further information about the option or group that appears below the label.
 - \`disabled\` (boolean) - (Optional) Determines whether the option or group is disabled.
-- \`disabledReason\` (string) - (Optional) Displays tooltip near the item when disabled. Use to provide additional context.
+- \`disabledReason\` (ReactNode) - (Optional) Displays tooltip near the item when disabled. Use to provide additional context. Do not place interactive elements like links or buttons.
 - \`labelTag\` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
 - \`tags\` [string[]] - (Optional) A list of tags giving further guidance about the option or group.
 - \`filteringTags\` [string[]] - (Optional) A list of additional tags used for automatic filtering.
@@ -22141,7 +22321,7 @@ Requires React 18.",
                 {
                   "name": "disabledReason",
                   "optional": true,
-                  "type": "string",
+                  "type": "React.ReactNode",
                 },
                 {
                   "name": "filteringTags",
@@ -22995,13 +23175,18 @@ Some attributes will be automatically combined with internal attribute values:
 - Event handlers will be chained, unless the default is prevented.
 
 We do not support using this attribute to apply custom styling.
-When \`tokens\` is defined, nativeTextareaAttributes will be ignored.",
+When \`tokens\` is defined, nativeTextareaAttributes will be ignored.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<React.TextareaHTMLAttributes<HTMLTextAreaElement>>",
         "type": "union",
         "values": [
           "Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLTextAreaElement> | undefined; }",
         ],
       },
       "name": "nativeTextareaAttributes",
@@ -23009,7 +23194,7 @@ When \`tokens\` is defined, nativeTextareaAttributes will be ignored.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<React.TextareaHTMLAttributes<HTMLTextAreaElement>>",
     },
     {
       "description": "Specifies the placeholder text rendered when the value is an empty string.",
@@ -24301,13 +24486,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
         "values": [
           "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLInputElement> | undefined; }",
         ],
       },
       "name": "nativeInputAttributes",
@@ -24315,7 +24505,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
     },
     {
       "description": "Specifies if the radio button is read-only, which prevents the
@@ -25907,7 +26097,7 @@ Each segment has the following properties:
 
 - \`id\` (string) - The ID of the segment.
 - \`disabled\` [boolean] - (Optional) Determines whether the segment is disabled, which prevents the user from selecting it.
-- \`disabledReason\` (string) - (Optional) Displays tooltip near the segment when disabled. Use to provide additional context.
+- \`disabledReason\` (ReactNode) - (Optional) Displays tooltip near the segment when disabled. Use to provide additional context. Do not place interactive elements like links or buttons.
 - \`iconName\` (string) - (Optional) Specifies the name of the icon, used with the [icon component](/components/icon/).
 - \`iconAlt\` (string) - (Optional) Specifies alternate text for the icon when using \`iconUrl\`, or \`iconName\` without \`text\`.
            This is required when you use an icon without \`text\`.
@@ -26119,7 +26309,7 @@ The event \`detail\` contains the current \`selectedOption\`.",
                 {
                   "name": "disabledReason",
                   "optional": true,
-                  "type": "string",
+                  "type": "React.ReactNode",
                 },
                 {
                   "name": "filteringTags",
@@ -26644,7 +26834,7 @@ The options can be grouped using \`OptionGroup\` objects.
 - \`lang\` (string) - (Optional) The language of the option or group, provided as a BCP 47 language tag.
 - \`description\` (string) - (Optional) Further information about the option or group that appears below the label.
 - \`disabled\` (boolean) - (Optional) Determines whether the option or group is disabled.
-- \`disabledReason\` (string) - (Optional) Displays tooltip near the item when disabled. Use to provide additional context.
+- \`disabledReason\` (ReactNode) - (Optional) Displays tooltip near the item when disabled. Use to provide additional context. Do not place interactive elements like links or buttons.
 - \`labelTag\` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
 - \`tags\` [string[]] - (Optional) A list of tags giving further guidance about the option or group.
 - \`filteringTags\` [string[]] - (Optional) A list of additional tags used for automatic filtering.
@@ -26803,7 +26993,7 @@ If you want to clear the selection, use \`null\`.",
           {
             "name": "disabledReason",
             "optional": true,
-            "type": "string",
+            "type": "React.ReactNode",
           },
           {
             "name": "filteringTags",
@@ -27885,13 +28075,16 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
-        "name": "Omit<React.HTMLAttributes<HTMLDivElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<React.HTMLAttributes<HTMLDivElement>>",
         "type": "union",
         "values": [
           "Omit<React.HTMLAttributes<HTMLDivElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLDivElement> | undefined; }",
         ],
       },
       "name": "nativeAttributes",
@@ -27899,7 +28092,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.HTMLAttributes<HTMLDivElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<React.HTMLAttributes<HTMLDivElement>>",
     },
     {
       "description": "Defines the spacing between the individual items of the content.",
@@ -27962,13 +28155,16 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
-        "name": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<React.HTMLAttributes<HTMLElement>>",
         "type": "union",
         "values": [
           "Omit<React.HTMLAttributes<HTMLElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLElement> | undefined; }",
         ],
       },
       "name": "nativeAttributes",
@@ -27976,7 +28172,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<React.HTMLAttributes<HTMLElement>>",
     },
     {
       "defaultValue": "'normal'",
@@ -28241,13 +28437,16 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.",
       "inlineType": {
-        "name": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<React.HTMLAttributes<HTMLElement>>",
         "type": "union",
         "values": [
           "Omit<React.HTMLAttributes<HTMLElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLElement> | undefined; }",
         ],
       },
       "name": "nativeAttributes",
@@ -28255,7 +28454,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.HTMLAttributes<HTMLElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<React.HTMLAttributes<HTMLElement>>",
     },
     {
       "defaultValue": "'success'",
@@ -29005,8 +29204,8 @@ To target individual cells use \`columnDefinitions.verticalAlign\`, that takes p
   * \`editConfig.errorIconAriaLabel\` (string) - Specifies an ariaLabel for the error icon that is displayed when the validation fails.
   * \`editConfig.editIconAriaLabel\` (string) - Specifies an alternate text for the edit icon used in column header.
   * \`editConfig.constraintText\` (string) - Constraint text that is displayed below the edit control.
-  * \`editConfig.disabledReason\` ((item) => string | undefined) - A function that determines whether inline edit for certain items is disabled, and provides a reason why.
-           Return a string from the function to disable inline edit with a reason. Return \`undefined\` (or no return) from the function allow inline edit.
+  * \`editConfig.disabledReason\` ((item) => ReactNode) - A function that determines whether inline edit for certain items is disabled, and provides a reason why. Do not place interactive elements like links or buttons.
+           Return a reason from the function to disable inline edit. Return \`undefined\` (or no return) from the function to allow inline edit.
   * \`editConfig.validation\` ((item, value) => string) - A function that allows you to validate the value of the edit control.
            Return a string from the function to display an error message. Return \`undefined\` (or no return) from the function to indicate that the value is valid.
   * \`editConfig.editingCell\` ((item, cellContext) => ReactNode) - Determines the display of a cell's content when inline editing is active on a cell;
@@ -30825,7 +31024,7 @@ Refer to the [style](/components/tabs/?tabId=style) tab for more details.",
 - \`label\` (ReactNode) - Tab label shown in the UI.
 - \`content\` (ReactNode) - (Optional) Tab content to render in the container.
 - \`disabled\` (boolean) - (Optional) Specifies if this tab is disabled.
-- \`disabledReason\` (string) - (Optional) Displays tooltip near the tab when disabled. Use to provide additional context.
+- \`disabledReason\` (ReactNode) - (Optional) Displays tooltip near the tab when disabled. Use to provide additional context. Do not place interactive elements like links or buttons.
 - \`dismissible\` (boolean) - (Optional) Determines whether the tab includes a dismiss icon button. By default, the dismiss button is not included.
 - \`dismissLabel\` (boolean) - (Optional) Specifies an aria-label for the dismiss icon button.
 - \`dismissDisabled\` (boolean) - (Optional) Determines whether the dismiss button is disabled.
@@ -32006,13 +32205,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<React.TextareaHTMLAttributes<HTMLTextAreaElement>>",
         "type": "union",
         "values": [
           "Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLTextAreaElement> | undefined; }",
         ],
       },
       "name": "nativeTextareaAttributes",
@@ -32020,7 +32224,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<React.TextareaHTMLAttributes<HTMLTextAreaElement>>",
     },
     {
       "description": "Specifies the placeholder text rendered when the value is an empty string.",
@@ -32676,13 +32880,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
         "values": [
           "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLInputElement> | undefined; }",
         ],
       },
       "name": "nativeInputAttributes",
@@ -32690,7 +32899,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
     },
     {
       "description": "Specifies the placeholder text rendered when the value is an empty string.",
@@ -32871,13 +33080,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
         "type": "union",
         "values": [
           "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLInputElement> | undefined; }",
         ],
       },
       "name": "nativeInputAttributes",
@@ -32885,7 +33099,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.InputHTMLAttributes<HTMLInputElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>",
     },
     {
       "description": "Specifies if the control is read-only, which prevents the
@@ -33155,14 +33369,6 @@ The text will also be added to the \`title\` attribute of the button.",
       "type": "boolean",
     },
     {
-      "description": "Provides a reason why the button is disabled (only when \`disabled\` is \`true\`).
-If provided, the button becomes focusable.
-Applicable only for the normal variant.",
-      "name": "disabledReason",
-      "optional": true,
-      "type": "string",
-    },
-    {
       "description": "Adds an external icon after the button label text.
 If an href is provided, it opens the link in a new tab.",
       "name": "external",
@@ -33382,13 +33588,18 @@ Some attributes will be automatically combined with internal attribute values:
 - \`className\` will be appended.
 - Event handlers will be chained, unless the default is prevented.
 
-We do not support using this attribute to apply custom styling.",
+We do not support using this attribute to apply custom styling.
+
+Pass a \`ref\` to access the native element for measurement, observation, or third-party integration.
+For actions such as focus or selection, use the component's explicit ref methods;
+operations performed directly on the native element may bypass the built-in component's behaviors.",
       "inlineType": {
-        "name": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+        "name": "NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>",
         "type": "union",
         "values": [
           "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children">",
           "Record<\`data-\${string}\`, string>",
+          "{ readonly ref?: React.Ref<HTMLButtonElement> | undefined; }",
         ],
       },
       "name": "nativeButtonAttributes",
@@ -33396,7 +33607,7 @@ We do not support using this attribute to apply custom styling.",
       "systemTags": [
         "core",
       ],
-      "type": "Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & Record<\`data-\${string}\`, string>",
+      "type": "NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>",
     },
     {
       "defaultValue": "false",
@@ -33602,6 +33813,15 @@ Defaults to \`normal\` if not specified.",
       "displayName": "text",
       "isDefault": true,
       "name": "children",
+    },
+    {
+      "description": "Provides a reason why the button is disabled (only when \`disabled\` is \`true\`).
+If provided, the button becomes focusable.
+Applicable only for the normal variant.
+
+Do not place interactive elements like links or buttons.",
+      "isDefault": false,
+      "name": "disabledReason",
     },
     {
       "description": "Specifies the SVG of a custom icon.
@@ -33905,6 +34125,7 @@ Only applies to plain text labels.",
       "type": "string",
     },
     {
+      "defaultValue": "'normal'",
       "description": "Specifies the token's visual style and functionality.
 
 For \`inline\` only label, icon and dismiss button are displayed.
@@ -33929,7 +34150,7 @@ Defaults to \`normal\` if not specified.",
 
 When \`variant="normal"\`, if a description or tags are set, icon size should be \`normal\`.
 
-When \`variant="inline"\`, icon size should be \`small\`.",
+When \`variant="inline"\`, icon size should be \`x-small\`.",
       "isDefault": false,
       "name": "icon",
     },
@@ -38172,6 +38393,40 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
           },
         },
         {
+          "description": "Returns the open overflow dropdown that lists the tokens collapsed behind the \`+N\` button.",
+          "name": "findOverflowDropdown",
+          "parameters": [
+            {
+              "defaultValue": "{ expandToViewport: false }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "AutosuggestOverflowDropdownWrapper",
+          },
+        },
+        {
+          "description": "Returns the \`+N\` button that opens the overflow dropdown, or \`null\` when all tokens fit.
+Applies only when the \`tokens\` property is set.",
+          "name": "findOverflowTrigger",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLButtonElement",
+              },
+            ],
+          },
+        },
+        {
           "inheritedFrom": {
             "name": "InputWrapper.findPrefix",
           },
@@ -38222,6 +38477,39 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
             "typeArguments": [
               {
                 "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns an inline token. Applies only when the \`tokens\` property is set.",
+          "name": "findVisibleToken",
+          "parameters": [
+            {
+              "description": "1-based index among the visible tokens.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "index",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "TokenWrapper",
+          },
+        },
+        {
+          "description": "Returns the tokens shown inline in the input (tokens collapsed into the overflow dropdown are excluded).
+Applies only when the \`tokens\` property is set.",
+          "name": "findVisibleTokens",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "TokenWrapper",
               },
             ],
           },
@@ -38509,6 +38797,118 @@ Options get highlighted when they match the value of the input field.",
         },
       ],
       "name": "AutosuggestDropdownWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the token description.",
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the token dismiss button.",
+          "name": "findDismiss",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the token label.",
+          "name": "findLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the token label tag.",
+          "name": "findLabelTag",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the token tags.",
+          "name": "findTags",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<HTMLElement>",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "TokenWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns a token from the overflow dropdown.",
+          "name": "findToken",
+          "parameters": [
+            {
+              "description": "1-based index of the token.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "index",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "TokenWrapper",
+          },
+        },
+        {
+          "description": "Returns the tokens listed in the overflow dropdown.",
+          "name": "findTokens",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "TokenWrapper",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "AutosuggestOverflowDropdownWrapper",
     },
     {
       "methods": [],
@@ -43932,81 +44332,6 @@ wrapper.selectOptionByValue('option_1');
     {
       "methods": [
         {
-          "description": "Returns the token description.",
-          "name": "findDescription",
-          "parameters": [],
-          "returnType": {
-            "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
-          "description": "Returns the token dismiss button.",
-          "name": "findDismiss",
-          "parameters": [],
-          "returnType": {
-            "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
-          "description": "Returns the token label.",
-          "name": "findLabel",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
-          "description": "Returns the token label tag.",
-          "name": "findLabelTag",
-          "parameters": [],
-          "returnType": {
-            "isNullable": true,
-            "name": "ElementWrapper",
-            "typeArguments": [
-              {
-                "name": "HTMLElement",
-              },
-            ],
-          },
-        },
-        {
-          "description": "Returns the token tags.",
-          "name": "findTags",
-          "parameters": [],
-          "returnType": {
-            "isNullable": true,
-            "name": "Array",
-            "typeArguments": [
-              {
-                "name": "ElementWrapper<HTMLElement>",
-              },
-            ],
-          },
-        },
-      ],
-      "name": "TokenWrapper",
-    },
-    {
-      "methods": [
-        {
           "name": "findContent",
           "parameters": [],
           "returnType": {
@@ -44702,6 +45027,46 @@ and this method will have no effect.",
           },
         },
         {
+          "description": "Returns the open overflow dropdown that lists the tokens collapsed behind the \`+N\` button.",
+          "inheritedFrom": {
+            "name": "AutosuggestWrapper.findOverflowDropdown",
+          },
+          "name": "findOverflowDropdown",
+          "parameters": [
+            {
+              "defaultValue": "{ expandToViewport: false }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "AutosuggestOverflowDropdownWrapper",
+          },
+        },
+        {
+          "description": "Returns the \`+N\` button that opens the overflow dropdown, or \`null\` when all tokens fit.
+Applies only when the \`tokens\` property is set.",
+          "inheritedFrom": {
+            "name": "AutosuggestWrapper.findOverflowTrigger",
+          },
+          "name": "findOverflowTrigger",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLButtonElement",
+              },
+            ],
+          },
+        },
+        {
           "inheritedFrom": {
             "name": "InputWrapper.findPrefix",
           },
@@ -44847,6 +45212,45 @@ and this method will have no effect.",
             "typeArguments": [
               {
                 "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns an inline token. Applies only when the \`tokens\` property is set.",
+          "inheritedFrom": {
+            "name": "AutosuggestWrapper.findVisibleToken",
+          },
+          "name": "findVisibleToken",
+          "parameters": [
+            {
+              "description": "1-based index among the visible tokens.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "index",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "TokenWrapper",
+          },
+        },
+        {
+          "description": "Returns the tokens shown inline in the input (tokens collapsed into the overflow dropdown are excluded).
+Applies only when the \`tokens\` property is set.",
+          "inheritedFrom": {
+            "name": "AutosuggestWrapper.findVisibleTokens",
+          },
+          "name": "findVisibleTokens",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "TokenWrapper",
               },
             ],
           },
@@ -50468,6 +50872,37 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
           },
         },
         {
+          "description": "Returns the open overflow dropdown that lists the tokens collapsed behind the \`+N\` button.",
+          "name": "findOverflowDropdown",
+          "parameters": [
+            {
+              "defaultValue": "{
+    expandToViewport: false
+  }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "AutosuggestOverflowDropdownWrapper",
+          },
+        },
+        {
+          "description": "Returns the \`+N\` button that opens the overflow dropdown, or \`null\` when all tokens fit.
+Applies only when the \`tokens\` property is set.",
+          "name": "findOverflowTrigger",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "inheritedFrom": {
             "name": "InputWrapper.findPrefix",
           },
@@ -50507,6 +50942,39 @@ To find a specific row use the \`findRow(n)\` function as chaining \`findRows().
           "returnType": {
             "isNullable": false,
             "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns an inline token. Applies only when the \`tokens\` property is set.",
+          "name": "findVisibleToken",
+          "parameters": [
+            {
+              "description": "1-based index among the visible tokens.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "index",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "TokenWrapper",
+          },
+        },
+        {
+          "description": "Returns the tokens shown inline in the input (tokens collapsed into the overflow dropdown are excluded).
+Applies only when the \`tokens\` property is set.",
+          "name": "findVisibleTokens",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "TokenWrapper",
+              },
+            ],
           },
         },
       ],
@@ -50661,6 +51129,98 @@ Options get highlighted when they match the value of the input field.",
         },
       ],
       "name": "AutosuggestDropdownWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the token description.",
+          "name": "findDescription",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the token dismiss button.",
+          "name": "findDismiss",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the token label.",
+          "name": "findLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the token label tag.",
+          "name": "findLabelTag",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the token tags.",
+          "name": "findTags",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "TokenWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns a token from the overflow dropdown.",
+          "name": "findToken",
+          "parameters": [
+            {
+              "description": "1-based index of the token.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "index",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "TokenWrapper",
+          },
+        },
+        {
+          "description": "Returns the tokens listed in the overflow dropdown.",
+          "name": "findTokens",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "TokenWrapper",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "AutosuggestOverflowDropdownWrapper",
     },
     {
       "methods": [],
@@ -54618,61 +55178,6 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
     {
       "methods": [
         {
-          "description": "Returns the token description.",
-          "name": "findDescription",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the token dismiss button.",
-          "name": "findDismiss",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the token label.",
-          "name": "findLabel",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the token label tag.",
-          "name": "findLabelTag",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "ElementWrapper",
-          },
-        },
-        {
-          "description": "Returns the token tags.",
-          "name": "findTags",
-          "parameters": [],
-          "returnType": {
-            "isNullable": false,
-            "name": "MultiElementWrapper",
-            "typeArguments": [
-              {
-                "name": "ElementWrapper",
-              },
-            ],
-          },
-        },
-      ],
-      "name": "TokenWrapper",
-    },
-    {
-      "methods": [
-        {
           "name": "findContent",
           "parameters": [],
           "returnType": {
@@ -55143,6 +55648,43 @@ In this case, use findContentEditableElement() instead.",
           },
         },
         {
+          "description": "Returns the open overflow dropdown that lists the tokens collapsed behind the \`+N\` button.",
+          "inheritedFrom": {
+            "name": "AutosuggestWrapper.findOverflowDropdown",
+          },
+          "name": "findOverflowDropdown",
+          "parameters": [
+            {
+              "defaultValue": "{
+    expandToViewport: false
+  }",
+              "description": "* expandToViewport (boolean) - Use this when the component under test is rendered with an \`expandToViewport\` flag.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandToViewport: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "AutosuggestOverflowDropdownWrapper",
+          },
+        },
+        {
+          "description": "Returns the \`+N\` button that opens the overflow dropdown, or \`null\` when all tokens fit.
+Applies only when the \`tokens\` property is set.",
+          "inheritedFrom": {
+            "name": "AutosuggestWrapper.findOverflowTrigger",
+          },
+          "name": "findOverflowTrigger",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "inheritedFrom": {
             "name": "InputWrapper.findPrefix",
           },
@@ -55266,6 +55808,45 @@ In this case, use findContentEditableElement() instead.",
           "returnType": {
             "isNullable": false,
             "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns an inline token. Applies only when the \`tokens\` property is set.",
+          "inheritedFrom": {
+            "name": "AutosuggestWrapper.findVisibleToken",
+          },
+          "name": "findVisibleToken",
+          "parameters": [
+            {
+              "description": "1-based index among the visible tokens.",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "index",
+              "typeName": "number",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "TokenWrapper",
+          },
+        },
+        {
+          "description": "Returns the tokens shown inline in the input (tokens collapsed into the overflow dropdown are excluded).
+Applies only when the \`tokens\` property is set.",
+          "inheritedFrom": {
+            "name": "AutosuggestWrapper.findVisibleTokens",
+          },
+          "name": "findVisibleTokens",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "TokenWrapper",
+              },
+            ],
           },
         },
       ],

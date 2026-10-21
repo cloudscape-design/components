@@ -92,7 +92,10 @@ $tokens: style-api.resolve(style-api.$focus-ring, carrier);
     $radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring);
     $width: var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width);
     $color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
-    @include style-api.focus-highlight($radius: $radius, $width: $width, $color: $color);
+
+    &:not(.variant-control-group-action) {
+      @include style-api.focus-highlight($radius: $radius, $width: $width, $color: $color);
+    }
 
     &.variant-icon,
     &.variant-modal-dismiss,
@@ -113,6 +116,13 @@ $tokens: style-api.resolve(style-api.$focus-ring, carrier);
         $radius: $radius,
         $width: $width,
         $color: $color
+      );
+    }
+
+    &.variant-control-group-action {
+      @include styles.form-focus-element(
+        $border-color: $color,
+        $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
       );
     }
   }
@@ -162,6 +172,16 @@ $tokens: style-api.resolve(style-api.$focus-ring, carrier);
     padding-block: awsui.$space-xxxs;
     border-block-width: 0;
     border-inline-width: 0;
+  }
+
+  &.variant-control-group-action {
+    border-block-style: solid;
+    border-inline-style: solid;
+    @include styles.grouped-control-base;
+    @include styles.grouped-control-horizontal-last;
+    padding-block: awsui.$space-field-vertical;
+    padding-inline: awsui.$space-xs;
+    min-block-size: awsui.$size-vertical-input;
   }
 
   > .icon-left {

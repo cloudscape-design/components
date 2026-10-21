@@ -14,6 +14,7 @@ $toggle-width: 2.4 * styles.$base-size;
 $toggle-height: 1.6 * styles.$base-size;
 $handle-size: 1.2 * styles.$base-size;
 $handle-offset: 0.2 * styles.$base-size;
+$handle-travel: 0.8 * styles.$base-size;
 $shadow-color: awsui.$color-shadow-toggle-handle;
 
 $control-props: style-api.combine((fill-color, indicator-color), style-api.$focus-ring);
@@ -86,10 +87,10 @@ $control-tokens: style-api.resolve($control-props, carrier);
   }
 
   &-checked {
-    transform: translateX(0.8 * styles.$base-size);
+    transform: translateX($handle-travel);
 
     @include styles.with-direction('rtl') {
-      transform: translateX(-0.8 * styles.$base-size);
+      transform: translateX(-$handle-travel);
     }
   }
 
@@ -105,5 +106,5 @@ $control-tokens: style-api.resolve($control-props, carrier);
     }
   }
 
-  @include motion.handle($handle-size);
+  @include motion.handle($handle-size, $handle-travel);
 }

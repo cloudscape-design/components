@@ -85,17 +85,28 @@ describe('AreaChart computeDomainY', () => {
     expect(domain).toHaveLength(0);
   });
 
-  it('returns min/max domain for linear series', () => {
+  it('includes zero baseline in linear domain for threshold series', () => {
     const domain = computeDomainY([{ type: 'threshold', y: 10, title: 'T10' }], 'linear');
-    expect(domain).toEqual([10, 10]);
+    expect(domain).toEqual([0, 10]);
   });
 
-  it('returns min/max domain for log series', () => {
-    const domain = computeDomainY([{ type: 'threshold', y: 10, title: 'T10' }], 'linear');
-    expect(domain).toEqual([10, 10]);
+  it('includes zero baseline in linear domain when all values are positive', () => {
+    const domain = computeDomainY(
+      [{ type: 'area', data: [50, 75, 100].map((y, x) => ({ x, y })), title: 'A' }],
+      'linear'
+    );
+    expect(domain).toEqual([0, 100]);
   });
 
-  it('replaces lower range bound with 1 for log scale type', () => {
+  it('includes zero baseline in linear domain when all values are negative', () => {
+    const domain = computeDomainY(
+      [{ type: 'area', data: [-50, -75, -100].map((y, x) => ({ x, y })), title: 'A' }],
+      'linear'
+    );
+    expect(domain).toEqual([-100, 0]);
+  });
+
+  it('keeps zero lower bound for linear scale type', () => {
     const domain = computeDomainY(
       [
         { type: 'threshold', y: 0, title: 'T0' },
@@ -104,6 +115,28 @@ describe('AreaChart computeDomainY', () => {
       'linear'
     );
     expect(domain).toEqual([0, 10]);
+  });
+
+  it('replaces zero lower bound with 1 for log scale type', () => {
+    const domain = computeDomainY(
+      [
+        { type: 'threshold', y: 0, title: 'T0' },
+        { type: 'threshold', y: 10, title: 'T10' },
+      ],
+      'log'
+    );
+    expect(domain).toEqual([1, 10]);
+  });
+
+  it('keeps log domain as is when values are below 1', () => {
+    const domain = computeDomainY(
+      [
+        { type: 'threshold', y: 0.1, title: 'T0.1' },
+        { type: 'threshold', y: 0.5, title: 'T0.5' },
+      ],
+      'log'
+    );
+    expect(domain).toEqual([0.1, 0.5]);
   });
 
   it('computes stacked min/max', () => {
@@ -115,7 +148,7 @@ describe('AreaChart computeDomainY', () => {
       ],
       'linear'
     );
-    expect(domain).toEqual([1, 15]);
+    expect(domain).toEqual([0, 15]);
   });
 
   it('computes min/max with both series and threshold', () => {
@@ -128,7 +161,7 @@ describe('AreaChart computeDomainY', () => {
       ],
       'linear'
     );
-    expect(domain).toEqual([1, 20]);
+    expect(domain).toEqual([0, 20]);
   });
 });
 

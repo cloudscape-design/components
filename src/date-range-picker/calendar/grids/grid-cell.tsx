@@ -11,7 +11,7 @@ import Tooltip from '../../../tooltip/internal.js';
 import testutilStyles from '../../test-classes/styles.css.js';
 
 interface GridCellProps extends TdHTMLAttributes<HTMLTableCellElement> {
-  disabledReason?: string;
+  disabledReason?: React.ReactNode;
   referrerId?: string;
 }
 

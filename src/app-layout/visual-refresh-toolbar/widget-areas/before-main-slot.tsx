@@ -54,7 +54,7 @@ export const BeforeMainSlotImplementationInternal = ({
     activeAiDrawer,
     bottomDrawerReportedSize,
     featureNotificationsProps,
-    breadcrumbsExternallyOwned,
+    hideBreadcrumbsInToolbar,
     reportOwnBreadcrumbsProps,
   } = appLayoutState.widgetizedState;
   const drawerExpandedMode = !!expandedDrawerId;
@@ -67,7 +67,7 @@ export const BeforeMainSlotImplementationInternal = ({
       {!!toolbarProps && !embeddedViewMode && !aiDrawerExpandedMode && (
         <AppLayoutToolbar
           appLayoutInternals={appLayoutState.appLayoutInternals}
-          breadcrumbsExternallyOwned={breadcrumbsExternallyOwned}
+          hideBreadcrumbsInToolbar={hideBreadcrumbsInToolbar}
           reportOwnBreadcrumbsProps={reportOwnBreadcrumbsProps}
           toolbarProps={toolbarProps}
           featureNotificationsProps={featureNotificationsProps}

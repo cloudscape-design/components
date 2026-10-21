@@ -109,10 +109,6 @@ $accent-colors: (
     background: awsui.$color-background-visual-accent-purple,
     foreground: awsui.$color-text-visual-accent-purple,
   ),
-  'lime': (
-    background: awsui.$color-background-visual-accent-lime,
-    foreground: awsui.$color-text-visual-accent-lime,
-  ),
   'grey': (
     background: awsui.$color-background-visual-accent-grey,
     foreground: awsui.$color-text-visual-accent-grey,
@@ -120,26 +116,6 @@ $accent-colors: (
   'teal': (
     background: awsui.$color-background-visual-accent-teal,
     foreground: awsui.$color-text-visual-accent-teal,
-  ),
-  'blue': (
-    background: awsui.$color-background-visual-accent-blue,
-    foreground: awsui.$color-text-visual-accent-blue,
-  ),
-  'violet': (
-    background: awsui.$color-background-visual-accent-violet,
-    foreground: awsui.$color-text-visual-accent-violet,
-  ),
-  'magenta': (
-    background: awsui.$color-background-visual-accent-magenta,
-    foreground: awsui.$color-text-visual-accent-magenta,
-  ),
-  'pink': (
-    background: awsui.$color-background-visual-accent-pink,
-    foreground: awsui.$color-text-visual-accent-pink,
-  ),
-  'amber': (
-    background: awsui.$color-background-visual-accent-amber,
-    foreground: awsui.$color-text-visual-accent-amber,
   ),
 );
 

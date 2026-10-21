@@ -49,6 +49,11 @@ When you flag something, cite the rule and say why. These are the repo's house c
   and required→optional relaxations are fine. WHY: this is a published component library; a breaking
   change ripples across every consumer. (See `.github/instructions/component-structure.instructions.md`
   for the file-level detail.)
+- Release the replacement before marking the old API `@deprecated` — never in the same change, and
+  never before. `@typescript-eslint/no-deprecated` promotes consumer usage of a deprecated member to a
+  build error, so a `@deprecated` mark that lands before its replacement is available deadlocks the
+  release: consumers can't migrate off the old API until the new one ships, and the deprecation blocks
+  the build that would ship it. Order: ship the replacement → then deprecate the old API.
 
 ---
 Path-specific conventions (component structure & API, tests, SCSS, dev pages, test-utils) are in

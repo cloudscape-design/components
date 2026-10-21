@@ -3,47 +3,135 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { BaseComponentProps } from '../../../types/base-component';
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
+import { InternalButton } from '../../../button/internal';
 import { getBaseProps } from '../../base-component';
 import {
   GroupedControlContext,
   GroupedControlDirection,
   GroupedControlPosition,
 } from '../../context/control-group-context';
+import { useFitsInline } from '../../hooks/use-fits-inline';
 import { flattenChildren } from '../../utils/flatten-children';
+import { ControlGroupProps } from './interfaces';
 
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
-export interface InternalControlGroupProps extends BaseComponentProps {
-  children?: React.ReactNode;
-  direction?: GroupedControlDirection;
-}
+export { ControlGroupProps };
 
-export default function InternalControlGroup({
+export default function ControlGroup({
   children,
-  direction = 'horizontal',
+  direction = 'auto',
+  inlineLabelText,
+  actionButton,
   ...props
-}: InternalControlGroupProps) {
+}: ControlGroupProps) {
   const baseProps = getBaseProps(props);
+  const labelId = useUniqueId('control-group-label');
 
   const flattenedChildren = flattenChildren(children, 'ControlGroup');
   const controlCount = flattenedChildren.length;
 
-  return (
-    <div {...baseProps} role="group" className={clsx(baseProps.className, styles.root, styles[`root-${direction}`])}>
-      {flattenedChildren.map((child, index) => {
-        const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
-        const position: GroupedControlPosition =
-          controlCount === 1 ? 'only' : index === 0 ? 'first' : index === controlCount - 1 ? 'last' : 'middle';
-        return (
-          <div
-            key={key ? String(key) : index}
-            className={clsx(styles.control, styles[`control-${position}-${direction}`])}
-          >
-            <GroupedControlContext.Provider value={{ position, direction }}>{child}</GroupedControlContext.Provider>
+  const { fits, ghostRef, sensorRef } = useFitsInline<HTMLDivElement>();
+  const resolvedDirection: GroupedControlDirection =
+    direction === 'auto' ? (fits ? 'horizontal' : 'vertical') : direction;
+
+  const rootClassnames = [styles.root, baseProps.className, testUtilStyles.root];
+
+  const renderControlSlots = (isGhost: boolean) => {
+    const slotDirection: GroupedControlDirection = isGhost
+      ? 'horizontal' // The ghost always uses horizontal mode for measuring
+      : resolvedDirection;
+    return flattenedChildren.map((child, index) => {
+      const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
+      const position: GroupedControlPosition =
+        controlCount === 1 ? 'only' : index === 0 ? 'first' : index === controlCount - 1 ? 'last' : 'middle';
+      return (
+        <div
+          key={key !== null && key !== undefined ? String(key) : index}
+          className={clsx(
+            // Make sure that test utils exclude the ghost
+            !isGhost && testUtilStyles.control,
+            styles.control,
+            styles[`control-${position}-${slotDirection}`]
+          )}
+        >
+          <GroupedControlContext.Provider value={{ position, direction: slotDirection, hasAction: !!actionButton }}>
+            {child}
+          </GroupedControlContext.Provider>
+        </div>
+      );
+    });
+  };
+
+  const renderActionButton = (isGhost: boolean) =>
+    actionButton ? (
+      <div className={styles['action-slot']}>
+        <InternalButton
+          // Make sure that test utils exclude the ghost
+          className={isGhost ? undefined : testUtilStyles['action-button']}
+          variant="control-group-action"
+          formAction="none"
+          iconName={actionButton.iconName}
+          ariaLabel={actionButton.ariaLabel}
+          disabled={actionButton.disabled}
+          disabledReason={actionButton.disabledReason}
+          ariaDescribedby={actionButton.ariaDescribedby}
+          onClick={actionButton.onClick}
+        />
+      </div>
+    ) : null;
+
+  // A single render path for both the real group layout and the ghost copy, so the ghost measures
+  // the whole group (controls + action button, including the overlap seam between them) as one unit.
+  // The ghost copy carries no role, no aria-labelledby, no base props, and no test-util classes.
+  const renderGroupLayout = (isGhost: boolean) => {
+    const slotDirection: GroupedControlDirection = isGhost ? 'horizontal' : resolvedDirection;
+    return (
+      <div className={clsx(styles['group-layout'], styles[`group-layout-${slotDirection}`])}>
+        <div
+          {...(isGhost ? {} : inlineLabelText ? { role: 'group', 'aria-labelledby': labelId } : { role: 'group' })}
+          className={clsx(styles.controls, styles[`controls-${slotDirection}`])}
+        >
+          {renderControlSlots(isGhost)}
+        </div>
+        {renderActionButton(isGhost)}
+      </div>
+    );
+  };
+
+  const groupLayoutWrapper = (
+    <div
+      {...(inlineLabelText ? {} : baseProps)}
+      className={clsx(styles['group-layout-wrapper'], !inlineLabelText && rootClassnames)}
+    >
+      {renderGroupLayout(false)}
+
+      {direction === 'auto' && (
+        <>
+          <div ref={sensorRef} className={styles.sensor} aria-hidden="true" />
+          <div className={styles['ghost-anchor']}>
+            <div ref={ghostRef} className={styles.ghost} aria-hidden="true">
+              {renderGroupLayout(true)}
+            </div>
           </div>
-        );
-      })}
+        </>
+      )}
     </div>
   );
+
+  if (inlineLabelText) {
+    return (
+      <div {...baseProps} className={clsx(...rootClassnames, styles['inline-label-wrapper'])}>
+        <label id={labelId} className={clsx(styles['inline-label'], testUtilStyles['inline-label'])}>
+          {inlineLabelText}
+        </label>
+        <div className={styles['inline-label-trigger-wrapper']}>{groupLayoutWrapper}</div>
+      </div>
+    );
+  }
+
+  return groupLayoutWrapper;
 }

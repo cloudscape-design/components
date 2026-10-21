@@ -63,8 +63,22 @@ describe('the generic hover motion rule, as compiled', () => {
   });
 
   test('the generic rule also fires on :focus-visible, guarded the same way as :hover', () => {
+    const selector = genericRuleSelector();
+    expect(selector).toMatch(
+      /\[data-awsui-motion-trigger~=hover]:not\(:disabled\):not\(\[aria-disabled=true]\):focus-visible /
+    );
+    expect(selector).toMatch(
+      /\[data-awsui-motion-trigger~=focus]:not\(:disabled\):not\(\[aria-disabled=true]\):focus-visible /
+    );
+  });
+
+  test('no rule uses :has(), which is costly to match on every style recalc and DOM insert', () => {
+    expect(compile([THEME])).not.toContain(':has(');
+  });
+
+  test('a delegated-focus trigger fires on :focus-within, only during keyboard interaction', () => {
     expect(genericRuleSelector()).toMatch(
-      /\[data-awsui-motion-trigger~=hover]:not\(:disabled\):not\(\[aria-disabled=true]\):is\(:focus-visible,/
+      /\[data-awsui-motion-trigger~=delegated-focus]:not\(:disabled\):not\(\[aria-disabled=true]\):focus-within:where\(body\[data-awsui-focus-visible=true] \*\) /
     );
   });
 
@@ -158,5 +172,29 @@ describe('keyframes', () => {
     const css = compile([THEME]);
     expect(css).toMatch(/stroke-dashoffset/);
     expect(css).not.toMatch(/stroke-dashoffset:\s*-/);
+  });
+});
+
+describe('the cancel rule for icons with only part motion', () => {
+  // The cancel rule matches by icon name alone, relying on every such generated icon carrying the
+  // animated parts. Without them, the icon would lose the generic motion and get none instead.
+  test('every cancelled icon contains the parts its motion targets', () => {
+    const css = compile([THEME]);
+    const cancelBlock = css.split('}').find(block => block.includes('transform: none'))!;
+    const names = Array.from(new Set(Array.from(cancelBlock.matchAll(/\.name-([\w-]+)/g)).map(match => match[1])));
+    expect(names.length).toBeGreaterThan(0);
+
+    for (const name of names) {
+      const parts = new Set(
+        Array.from(
+          css.matchAll(new RegExp(`\\.name-${name} > :global\\(svg\\[data-awsui-icon-animated\\] \\.([\\w-]+)\\)`, 'g'))
+        ).map(match => match[1])
+      );
+      expect(parts.size).toBeGreaterThan(0);
+      const svg = readSource(`icon/icons/${name}.svg`);
+      for (const part of parts) {
+        expect({ name, part, present: svg.includes(part) }).toEqual({ name, part, present: true });
+      }
+    }
   });
 });
