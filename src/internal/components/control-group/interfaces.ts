@@ -3,10 +3,11 @@
 import { ButtonProps } from '../../../button/interfaces';
 import { IconProps } from '../../../icon/interfaces';
 import { BaseComponentProps } from '../../../types/base-component';
+import { FormFieldControlProps } from '../../../types/form-field';
 import { GroupedControlDirection } from '../../context/control-group-context';
 import { CancelableEventHandler } from '../../events';
 
-export interface ControlGroupProps extends BaseComponentProps {
+export interface ControlGroupProps extends BaseComponentProps, FormFieldControlProps {
   children?: React.ReactNode;
   /**
    * The axis along which the controls are laid out (`horizontal`, `vertical` or `auto`).

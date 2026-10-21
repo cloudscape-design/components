@@ -28,6 +28,9 @@ export default function ControlGroup({
   direction = 'auto',
   inlineLabelText,
   actionButton,
+  controlId,
+  ariaLabelledby,
+  ariaDescribedby,
   ...props
 }: ControlGroupProps) {
   const baseProps = getBaseProps(props);
@@ -112,19 +115,20 @@ export default function ControlGroup({
   // The ghost copy carries no role, no aria wiring, no base props, and no test-util classes.
   const renderGroupLayout = (isGhost: boolean) => {
     const slotDirection: GroupedControlDirection = isGhost ? 'horizontal' : resolvedDirection;
+    const groupProps = isGhost
+      ? {}
+      : {
+          role: 'group',
+          ...(controlId ? { id: controlId } : {}),
+          ...(() => {
+            const labelledBy = joinStrings(ariaLabelledby, inlineLabelText ? labelId : undefined);
+            return labelledBy ? { 'aria-labelledby': labelledBy } : {};
+          })(),
+          ...(ariaDescribedby ? { 'aria-describedby': ariaDescribedby } : {}),
+        };
     return (
       <div className={clsx(styles['group-layout'], styles[`group-layout-${slotDirection}`])}>
-        <div
-          {...(isGhost
-            ? {}
-            : {
-                role: 'group',
-                'aria-labelledby': groupAriaLabelledby,
-                'aria-describedby': groupAriaDescribedby,
-                'aria-invalid': isInvalid ? 'true' : undefined,
-              })}
-          className={clsx(styles.controls, styles[`controls-${slotDirection}`])}
-        >
+        <div {...groupProps} className={clsx(styles.controls, styles[`controls-${slotDirection}`])}>
           {renderControlSlots(isGhost)}
         </div>
         {renderActionButton(isGhost)}
