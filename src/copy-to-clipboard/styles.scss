@@ -4,9 +4,50 @@
 */
 
 @use '../internal/styles/tokens' as awsui;
+@use './motion';
 
 .root {
   display: contents;
+}
+
+.icon-swap {
+  position: absolute;
+  inset: 0;
+}
+
+.icon-swap-copy,
+.icon-swap-result {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+}
+
+.icon-swap-copy {
+  opacity: 1;
+  transform: scale(1);
+  @include motion.entering-with-motion;
+}
+
+.icon-swap-result {
+  opacity: 0;
+  transform: scale(0);
+  @include motion.exiting-with-motion;
+}
+
+.icon-swap-copied > .icon-swap-copy {
+  opacity: 0;
+  transform: scale(0);
+  @include motion.exiting-with-motion;
+}
+
+.icon-swap-copied > .icon-swap-result {
+  opacity: 1;
+  transform: scale(1);
+  @include motion.entering-with-motion;
+}
+
+.popover-message {
+  display: inline;
 }
 
 .inline-container {

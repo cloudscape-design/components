@@ -82,6 +82,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   // ── Input / form ──────────────────────────────────────────────────────────
   colorBackgroundInputDefault: { light: '{colorWhite}', dark: '{colorNeutral1000}' },
   colorBackgroundInputDisabled: { light: '{colorNeutral250}', dark: '{colorNeutral800}' },
+  colorBorderControlGroupDefault: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
   colorBorderInputDefault: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
   colorTextFormLabel: { light: '{colorNeutral850}', dark: '{colorNeutral350}' },
   colorTextFormSecondary: { light: '{colorNeutral600}', dark: '{colorNeutral500}' },

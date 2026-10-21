@@ -3,47 +3,50 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use '../../lib/components/styling/alert';
+@use '../../lib/components/styling/button';
 @use '../style-api/palette' as palette;
 
 .alert-genai {
-  --awsui-style-background-color: #{palette.$genai-surface};
-  --awsui-style-color: #{palette.$genai-text};
-  --awsui-style-border-color: #{palette.$genai};
-  --awsui-style-border-radius: 4px;
-  --awsui-style-padding-block: 12px;
-  --awsui-style-padding-inline: 24px;
-  --awsui-style-focus-ring-color: #{palette.$genai};
+  @include alert.root(
+    $background: palette.$genai-surface,
+    $color: palette.$genai-text,
+    $border-color: palette.$genai,
+    $border-radius: 4px,
+    $padding-block: 12px,
+    $padding-inline: 24px,
+    $focus-ring-color: palette.$genai
+  );
 }
 
 .alert-genai-icon {
-  --awsui-style-color: #{palette.$genai};
+  @include alert.icon($color: palette.$genai);
 }
 
 .alert-genai-action {
-  --awsui-style-background-color: #{palette.$genai};
-  --awsui-style-color: #{palette.$text-on-accent};
-  --awsui-style-border-color: #{palette.$genai};
-  --awsui-style-border-radius: 4px;
-  --awsui-style-focus-ring-color: #{palette.$genai};
+  @include button.root(
+    $background: palette.$genai,
+    $color: palette.$text-on-accent,
+    $border-color: palette.$genai,
+    $border-radius: 4px,
+    $focus-ring-color: palette.$genai
+  );
 
   &:hover,
   &:focus {
-    --awsui-style-background-color: #{palette.$genai-hover};
-    --awsui-style-border-color: #{palette.$genai-hover};
+    @include button.root($background: palette.$genai-hover, $border-color: palette.$genai-hover);
   }
 
   &:active {
-    --awsui-style-background-color: #{palette.$genai-active};
-    --awsui-style-border-color: #{palette.$genai-active};
+    @include button.root($background: palette.$genai-active, $border-color: palette.$genai-active);
   }
 }
 
 .alert-genai-dismiss {
-  --awsui-style-color: #{palette.$genai-text};
-  --awsui-style-focus-ring-color: #{palette.$genai};
+  @include button.root($color: palette.$genai-text, $focus-ring-color: palette.$genai);
 
   &:hover,
   &:focus {
-    --awsui-style-color: #{palette.$genai};
+    @include button.root($color: palette.$genai);
   }
 }
