@@ -19,8 +19,8 @@
 
 .code-editor :global .ace_editor {
   font-family: awsui.$font-family-monospace;
-  font-size: 14px;
-  line-height: 20px;
+  font-size: awsui.$font-size-body-m;
+  line-height: awsui.$line-height-body-m;
 
   $gutter-padding-left: 24px;
   $gutter-padding-right: 16px;
