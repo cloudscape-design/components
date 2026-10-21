@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { fireNonCancelableEvent } from '../../internal/events';
-import { useLoadItems as useBaseLoadItems } from '../../select/utils/use-load-items';
+import { useLoadItems as useBaseLoadItems } from '../../internal/hooks/use-load-items';
 import { ButtonDropdownProps } from '../interfaces';
 
 interface UseLoadItemsProps {
@@ -11,7 +11,7 @@ interface UseLoadItemsProps {
 }
 
 export const useLoadItems = ({ onLoadItems, items, statusType }: UseLoadItemsProps) => {
-  const base = useBaseLoadItems({ onLoadItems, options: items, statusType });
+  const base = useBaseLoadItems({ onLoadItems, isEmpty: items.length === 0, statusType });
 
   const fireLoadItems = (filteringText: string) => {
     if (onLoadItems) {
