@@ -110,4 +110,16 @@ export interface ExpandableSectionProps extends BaseComponentProps {
    * Actions for the header. Use with the default or container, default, inline or stacked variants.
    */
   headerActions?: React.ReactNode;
+
+  /**
+   * Secondary content displayed next to the header text, such as an interactive control or supporting text.
+   * Use with the default or container variant.
+   */
+  headerSecondaryContent?: React.ReactNode;
+
+  /**
+   * Visually hides the header text while keeping it available to assistive technology.
+   * Use with `headerSecondaryContent` to present a purely interactive header control.
+   */
+  hideHeaderText?: boolean;
 }

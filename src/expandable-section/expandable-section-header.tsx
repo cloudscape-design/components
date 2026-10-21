@@ -114,6 +114,9 @@ interface ExpandableHeaderTextWrapperProps extends ExpandableDefaultHeaderProps 
   headerCounter?: string;
   headerInfo?: ReactNode;
   headerActions?: ReactNode;
+  headerSecondaryContent?: ReactNode;
+  secondaryContentId?: string;
+  hideHeaderText?: boolean;
   headingTagOverride?: ExpandableSectionProps.HeadingTag;
 }
 
@@ -124,6 +127,9 @@ interface ExpandableSectionHeaderProps extends Omit<ExpandableDefaultHeaderProps
   headerCounter?: string;
   headerInfo?: ReactNode;
   headerActions?: ReactNode;
+  headerSecondaryContent?: ReactNode;
+  secondaryContentId?: string;
+  hideHeaderText?: boolean;
   headingTagOverride?: ExpandableSectionProps.HeadingTag;
   ariaLabelledBy?: string;
   hideExpandIcon?: boolean;
@@ -243,6 +249,9 @@ const ExpandableHeaderTextWrapper = ({
   headerCounter,
   headerInfo,
   headerActions,
+  headerSecondaryContent,
+  secondaryContentId,
+  hideHeaderText,
   variant,
   headingTagOverride,
   onKeyUp,
@@ -250,9 +259,13 @@ const ExpandableHeaderTextWrapper = ({
   expandIconPosition,
 }: ExpandableHeaderTextWrapperProps) => {
   const isContainer = variant === 'container';
-  const HeadingTag = headingTagOverride || 'div';
+  // When the header text is hidden there is no heading to expose, so render the title wrapper as a
+  // plain div regardless of any heading override.
+  const HeadingTag = hideHeaderText ? 'div' : headingTagOverride || 'div';
   const supportsInteractiveElements = variantSupportsActions(variant);
-  const restrictClickableArea = supportsInteractiveElements && (headerInfo || headerActions);
+  const secondaryContent = supportsInteractiveElements && headerSecondaryContent;
+  const describedById = secondaryContent ? secondaryContentId : undefined;
+  const restrictClickableArea = supportsInteractiveElements && (headerInfo || headerActions || secondaryContent);
   const actions = supportsInteractiveElements && headerActions;
   const description = variantSupportsDescription(variant) && headerDescription && (
     <span id={descriptionId} className={styles[`description-${variant}`]}>
@@ -315,7 +328,14 @@ const ExpandableHeaderTextWrapper = ({
   const outsideIcon = renderIconOutsideHeader ? expandButton : null;
 
   const textElement = (
-    <span id={id} className={clsx(styles['header-text'], analyticsSelectors['header-label'])}>
+    <span
+      id={id}
+      className={clsx(
+        styles['header-text'],
+        hideHeaderText && styles['header-text-hidden'],
+        analyticsSelectors['header-label']
+      )}
+    >
       {children}
     </span>
   );
@@ -330,8 +350,8 @@ const ExpandableHeaderTextWrapper = ({
       role="button"
       tabIndex={0}
       aria-label={ariaLabel}
-      aria-labelledby={!ariaLabel && description ? id : undefined}
-      aria-describedby={description ? descriptionId : undefined}
+      aria-labelledby={!ariaLabel && (hideHeaderText || description) ? id : undefined}
+      aria-describedby={clsx(description && descriptionId, describedById) || undefined}
       aria-controls={ariaControls}
       aria-expanded={expanded}
       {...headerButtonListeners}
@@ -369,8 +389,9 @@ const ExpandableHeaderTextWrapper = ({
             counter={headerCounter}
             info={headerInfo}
             actions={actions}
-            headingTagOverride={headingTagOverride}
+            headingTagOverride={hideHeaderText ? 'div' : headingTagOverride}
             __inExpandableSection={true}
+            __additionalTitleContent={secondaryContent ? <span id={describedById}>{secondaryContent}</span> : undefined}
           >
             {headerButton}
           </InternalHeader>
@@ -378,15 +399,27 @@ const ExpandableHeaderTextWrapper = ({
         </>
       ) : (
         <>
-          <div className={clsx(styles['header-content'], actions && styles['header-actions-wrapper'])}>
-            <HeadingTag
-              className={clsx(styles['header-wrapper'], headingTagListeners && styles['click-target'])}
-              {...headingTagListeners}
-              {...headingTagMotionTrigger}
-              {...(headingTagListeners ? getExpandActionAnalyticsMetadataAttribute(expanded) : {})}
-            >
-              {headerButton}
-            </HeadingTag>
+          <div
+            className={clsx(
+              styles['header-content'],
+              (actions || secondaryContent) && styles['header-actions-wrapper']
+            )}
+          >
+            <div className={styles['header-main']}>
+              <HeadingTag
+                className={clsx(styles['header-wrapper'], headingTagListeners && styles['click-target'])}
+                {...headingTagListeners}
+                {...headingTagMotionTrigger}
+                {...(headingTagListeners ? getExpandActionAnalyticsMetadataAttribute(expanded) : {})}
+              >
+                {headerButton}
+              </HeadingTag>
+              {secondaryContent && (
+                <div id={describedById} className={styles['header-secondary-content']}>
+                  {secondaryContent}
+                </div>
+              )}
+            </div>
             {actions}
           </div>
           {description && <HeaderDescription variantOverride="h3">{description}</HeaderDescription>}
@@ -408,6 +441,9 @@ export const ExpandableSectionHeader = ({
   headerCounter,
   headerInfo,
   headerActions,
+  headerSecondaryContent,
+  secondaryContentId,
+  hideHeaderText,
   headingTagOverride,
   expanded,
   ariaControls,
@@ -455,6 +491,17 @@ export const ExpandableSectionHeader = ({
     warnOnce(componentName, `The \`headerActions\` prop is only supported for the "container" and "default" variants.`);
   }
 
+  if (headerSecondaryContent && !variantSupportsActions(variant) && isDevelopment) {
+    warnOnce(
+      componentName,
+      `The \`headerSecondaryContent\` prop is only supported for the "container" and "default" variants.`
+    );
+  }
+
+  if (hideHeaderText && !headerText && isDevelopment) {
+    warnOnce(componentName, 'The `hideHeaderText` prop requires `headerText` to be set.');
+  }
+
   if (headerDescription && !variantSupportsDescription(variant) && isDevelopment) {
     warnOnce(componentName, `The \`headerDescription\` prop is not supported for the ${variant} variant.`);
   }
@@ -487,13 +534,19 @@ export const ExpandableSectionHeader = ({
           className,
           wrapperClassName,
           expanded && styles.expanded,
-          !expanded && (!headerActions || headerDescription) && styles['wrapper-not-expanded-without-actions']
+          !expanded &&
+            (!headerActions || headerDescription) &&
+            !headerSecondaryContent &&
+            styles['wrapper-not-expanded-without-actions']
         )}
         descriptionId={descriptionId}
         headerDescription={headerDescription}
         headerCounter={headerCounter}
         headerInfo={headerInfo}
         headerActions={headerActions}
+        headerSecondaryContent={headerSecondaryContent}
+        secondaryContentId={secondaryContentId}
+        hideHeaderText={hideHeaderText}
         headingTagOverride={headingTagOverride}
         onKeyUp={onKeyUp}
         onKeyDown={onKeyDown}

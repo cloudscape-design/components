@@ -130,6 +130,13 @@
   }
 }
 
+.additional-title-content {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-inline-end: auto;
+}
+
 .title {
   @include styles.text-wrapping;
   color: awsui.$color-text-heading-default;
@@ -175,6 +182,19 @@
     padding-block-start: calc(
       #{space-heading-button-diff(awsui.$line-height-heading-l)} - 2 * #{awsui.$border-width-button}
     );
+  }
+}
+
+// With secondary content beside the heading, center both against a constant-height line so their
+// alignment no longer shifts when actions wrap to a second row.
+.main:has(> .additional-title-content) > .title-variant-h2.title-in-expandable-section.refresh {
+  padding-block-start: 0;
+  min-block-size: awsui.$size-vertical-input;
+  display: flex;
+  align-items: center;
+
+  @include theming.one-theme-only {
+    min-block-size: calc(#{awsui.$size-vertical-input} - 2 * #{awsui.$border-width-button});
   }
 }
 

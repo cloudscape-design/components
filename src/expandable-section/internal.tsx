@@ -58,6 +58,8 @@ export default function InternalExpandableSection({
   headerDescription,
   headerInfo,
   headerActions,
+  headerSecondaryContent,
+  hideHeaderText,
   headingTagOverride,
   disableContentPaddings,
   headerAriaLabel,
@@ -73,6 +75,7 @@ export default function InternalExpandableSection({
   const controlId = useUniqueId();
   const triggerControlId = `${controlId}-trigger`;
   const descriptionId = `${controlId}-description`;
+  const secondaryContentId = `${controlId}-secondary`;
 
   const baseProps = getBaseProps(props);
   const [expanded, setExpanded] = useControllable(controlledExpanded, onChange, defaultExpanded, {
@@ -138,6 +141,12 @@ export default function InternalExpandableSection({
       expanded={expanded}
       className={clsx(baseProps.className, styles.root, analyticsSelectors.root)}
       variant={variant}
+      {...(hideHeaderText
+        ? {
+            role: 'region',
+            ...(headerAriaLabel ? { ariaLabel: headerAriaLabel } : { ariaLabelledby: triggerControlId }),
+          }
+        : {})}
       __injectAnalyticsComponentMetadata={__injectAnalyticsComponentMetadata}
       header={
         <ExpandableSectionHeader
@@ -157,6 +166,9 @@ export default function InternalExpandableSection({
           headerCounter={headerCounter}
           headerInfo={headerInfo}
           headerActions={headerActions}
+          headerSecondaryContent={headerSecondaryContent}
+          secondaryContentId={secondaryContentId}
+          hideHeaderText={hideHeaderText}
           headingTagOverride={headingTagOverride}
           expandIconPosition={__expandIconPosition}
           hideExpandIcon={__hideExpandIcon}

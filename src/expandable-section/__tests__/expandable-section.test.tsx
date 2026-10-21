@@ -125,6 +125,35 @@ describe('Expandable Section', () => {
         });
       }
     });
+    describe('populates header secondary content slot correctly', () => {
+      for (const variant of variantsWithActions) {
+        test(`${variant} variant`, () => {
+          const wrapper = renderExpandableSection({
+            headerText: 'Test Header',
+            variant,
+            headerSecondaryContent: <Button data-testid="interactive">Interactive</Button>,
+          });
+          const interactive = wrapper.findHeader().find('[data-testid="interactive"]');
+          expect(interactive).toBeTruthy();
+          expect(interactive!.getElement()).toHaveTextContent('Interactive');
+        });
+      }
+    });
+    describe('hideHeaderText keeps the header text accessible while visually hiding it', () => {
+      for (const variant of variantsWithActions) {
+        test(`${variant} variant`, () => {
+          const wrapper = renderExpandableSection({
+            headerText: 'Test Header',
+            variant,
+            hideHeaderText: true,
+          });
+          // Text remains in the DOM (and thus available to assistive technology)...
+          expect(wrapper.findHeaderText()!.getElement()).toHaveTextContent('Test Header');
+          // ...but carries the visually-hidden class that is the actual effect of the prop.
+          expect(wrapper.findHeaderText()!.getElement()).toHaveClass(styles['header-text-hidden']);
+        });
+      }
+    });
     test.each<ExpandableSectionProps.Variant>(['default', 'footer', 'container', 'navigation', 'stacked', 'inline'])(
       'populates content slot correctly for "%s" variant',
       variant => {
@@ -370,6 +399,9 @@ describe('Expandable Section', () => {
             if (!variantsWithActions.includes(variant)) {
               test('headerActions', () => {
                 testWarnings({ variant, headerActions: <Button>Action</Button> });
+              });
+              test('headerSecondaryContent', () => {
+                testWarnings({ variant, headerSecondaryContent: <Button>Interactive</Button> });
               });
             }
           });
@@ -947,5 +979,85 @@ describe('__expandIconPosition', () => {
       expect(headerRow).toBeTruthy();
       expect(headerRow.querySelector('[data-awsui-motion-target]')).toBeTruthy();
     });
+  });
+});
+
+describe('hideHeaderText a11y', () => {
+  describe('drops the heading element and labels the trigger with the header text', () => {
+    for (const variant of variantsWithActions) {
+      test(`${variant} variant`, () => {
+        const wrapper = renderExpandableSection({ variant, headerText: 'Data source A', hideHeaderText: true });
+        // No heading element is rendered when the text is hidden.
+        expect(wrapper.findHeader().findAll('h1,h2,h3,h4,h5,h6').length).toBe(0);
+        // The trigger keeps the header text as its accessible name.
+        expect(wrapper.findExpandButton().getElement()).toHaveAccessibleName('Data source A');
+      });
+    }
+  });
+
+  describe('exposes the section as a labelled region', () => {
+    for (const variant of variantsWithActions) {
+      test(`${variant} variant is a region labelled by the header text`, () => {
+        const wrapper = renderExpandableSection({ variant, headerText: 'Data source A', hideHeaderText: true });
+        expect(wrapper.getElement()).toHaveAttribute('role', 'region');
+        expect(wrapper.getElement()).toHaveAccessibleName('Data source A');
+      });
+
+      test(`${variant} variant region prefers headerAriaLabel over the header text`, () => {
+        const wrapper = renderExpandableSection({
+          variant,
+          headerText: 'Data source A',
+          headerAriaLabel: 'Pick a data source',
+          hideHeaderText: true,
+        });
+        expect(wrapper.getElement()).toHaveAttribute('role', 'region');
+        expect(wrapper.getElement()).toHaveAttribute('aria-label', 'Pick a data source');
+      });
+    }
+  });
+
+  test('does not add a region role when the header text is visible', () => {
+    const wrapper = renderExpandableSection({ variant: 'container', headerText: 'Data source A' });
+    expect(wrapper.getElement()).not.toHaveAttribute('role', 'region');
+  });
+
+  test('validates a11y for a container with hidden header text and a control', async () => {
+    const { container } = render(
+      <ExpandableSection
+        variant="container"
+        headerText="Data source A"
+        hideHeaderText={true}
+        headerSecondaryContent={<Button>Refresh</Button>}
+      />
+    );
+    await expect(container).toValidateA11y();
+  });
+});
+
+describe('headerSecondaryContent describes the trigger', () => {
+  for (const variant of variantsWithActions) {
+    test(`${variant} variant, visible header text`, () => {
+      const wrapper = renderExpandableSection({
+        variant,
+        headerText: 'Production database',
+        headerSecondaryContent: <span>Last synced 3 minutes ago</span>,
+      });
+      expect(wrapper.findExpandButton().getElement()).toHaveAccessibleDescription('Last synced 3 minutes ago');
+    });
+
+    test(`${variant} variant, hidden header text`, () => {
+      const wrapper = renderExpandableSection({
+        variant,
+        headerText: 'Data source A',
+        hideHeaderText: true,
+        headerSecondaryContent: <span>Choose a source</span>,
+      });
+      expect(wrapper.findExpandButton().getElement()).toHaveAccessibleDescription('Choose a source');
+    });
+  }
+
+  test('does not set aria-describedby when no secondary content is provided', () => {
+    const wrapper = renderExpandableSection({ variant: 'container', headerText: 'Production database' });
+    expect(wrapper.findExpandButton().getElement()).not.toHaveAttribute('aria-describedby');
   });
 });
