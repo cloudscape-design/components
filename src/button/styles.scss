@@ -225,11 +225,6 @@ $tokens: style-api.resolve($props, carrier);
     padding-inline: awsui.$space-xs;
     min-block-size: awsui.$size-vertical-input;
 
-    &,
-    &:hover {
-      border-inline-start-color: transparent;
-    }
-
     @include focus-visible.when-visible {
       @include styles.form-focus-element(
         $border-color: $focus-border-color,

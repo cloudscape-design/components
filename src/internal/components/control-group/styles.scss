@@ -47,6 +47,9 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
 .controls {
   display: flex;
   align-items: stretch;
+  // Keep control borders above the action button's.
+  // This becomes especially relevant when controls render validation-style border colors.
+  z-index: 1;
 
   &-horizontal {
     flex-direction: row;
