@@ -560,7 +560,6 @@ const permutations = createPermutations<SideNavigationProps>([
         },
       ],
     ],
-    collapsed: [false, true],
   },
 ]);
 
