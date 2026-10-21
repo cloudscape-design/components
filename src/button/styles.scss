@@ -158,6 +158,15 @@ $tokens: style-api.resolve($props, carrier);
         $color: $focus-border-color
       );
     }
+
+    &.variant-inline-link {
+      @include style-api.focus-highlight(
+        $gutter-block: awsui.$space-button-inline-link-focus-outline-gutter,
+        $radius: $radius,
+        $width: $width,
+        $color: $focus-border-color
+      );
+    }
   }
 
   &.button-no-text {
