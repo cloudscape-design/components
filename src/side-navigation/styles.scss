@@ -696,6 +696,10 @@ $content-exit-clip-delay: $content-exit-duration;
   }
 }
 
+.list-item--link-with-info > .link > .link-text-wrapper {
+  align-self: baseline;
+}
+
 // Shared text-fade for non-link labels (section headers, section-group titles).
 // Uses the same opacity timing as .link-text-wrapper for visual consistency.
 .label-text {
