@@ -3,52 +3,27 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use '../../lib/components/styling/toggle';
 @use '../style-api/palette' as palette;
 
 .toggle-control {
-  --awsui-style-background-color: #{palette.$control-border};
-  --awsui-style-color: #{palette.$control-fg};
-  --awsui-style-focus-ring-color: #{palette.$accent};
-  --awsui-style-focus-ring-width: 3px;
-  --awsui-style-focus-ring-radius: 12px;
-  --awsui-style-focus-ring-gutter-block: 4px;
-  --awsui-style-focus-ring-gutter-inline: 4px;
-}
+  @include toggle.control(
+    $fill-color: palette.$control-border,
+    $indicator-color: palette.$control-fg,
+    $focus-ring-color: palette.$accent,
+    $focus-ring-width: 3px,
+    $focus-ring-radius: 12px
+  );
 
-.toggle-control-checked {
-  --awsui-style-background-color: #{palette.$control-bg-checked};
-}
+  &-checked {
+    @include toggle.control($fill-color: palette.$control-bg-checked);
+  }
 
-.toggle-control-readonly {
-  --awsui-style-background-color: #{palette.$surface-alt};
-  --awsui-style-color: #{palette.$text-muted};
-}
+  &.toggle-control-readonly {
+    @include toggle.control($fill-color: palette.$surface-alt, $indicator-color: palette.$text-muted);
+  }
 
-.toggle-control-disabled {
-  --awsui-style-background-color: #{palette.$control-bg-disabled};
-  --awsui-style-color: #{palette.$control-fg-disabled};
-}
-
-.toggle-label {
-  --awsui-style-color: #{palette.$text};
-}
-
-.toggle-label-disabled {
-  --awsui-style-color: #{palette.$text-disabled};
-}
-
-.toggle-label-checked {
-  --awsui-style-color: #{palette.$accent};
-}
-
-.toggle-description {
-  --awsui-style-color: #{palette.$text-muted};
-}
-
-.toggle-description-disabled {
-  --awsui-style-color: #{palette.$text-disabled};
-}
-
-.toggle-description-checked {
-  --awsui-style-color: #{palette.$accent-hover};
+  &.toggle-control-disabled {
+    @include toggle.control($fill-color: palette.$control-bg-disabled, $indicator-color: palette.$control-fg-disabled);
+  }
 }

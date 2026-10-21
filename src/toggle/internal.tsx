@@ -29,8 +29,6 @@ interface InternalToggleProps extends ToggleProps, InternalBaseComponentProps {
 // Style API v2
 interface StyleClassNames {
   control?: string;
-  label?: string;
-  description?: string;
 }
 
 const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
@@ -100,9 +98,7 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
         disabled={disabled}
         readOnly={readOnly}
         label={children}
-        labelClassName={styleClassNames?.label}
         description={description}
-        descriptionClassName={styleClassNames?.description}
         descriptionBottomPadding={true}
         ariaLabel={ariaLabel}
         ariaLabelledby={ariaLabelledby}
