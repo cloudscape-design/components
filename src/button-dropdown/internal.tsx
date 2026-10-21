@@ -542,8 +542,19 @@ const InternalButtonDropdown = React.forwardRef(
     if (targetItem) {
       highlightedItemId = targetItem.id ? `${menuId}-${targetItem.id}` : undefined;
     } else if (isHighlightPending && expandedGroup?.id) {
-      const { statusId, recoveryButtonId } = getGroupStatusIds(menuId, expandedGroup.id);
-      highlightedItemId = pendingGroupStatus === 'error' && hasGroupRecoveryButton ? recoveryButtonId : statusId;
+      const groupId = expandedGroup.id;
+      const { statusId, recoveryButtonId } = getGroupStatusIds(menuId, groupId);
+      const groupStatus = pendingGroupStatus ?? 'finished';
+      const hasGroupStatusContent =
+        groupStatus === 'loading' ||
+        groupStatus === 'error' ||
+        (groupStatus === 'finished' &&
+          (!!asyncLoadingProps?.empty?.(groupId) || !!asyncLoadingProps?.finishedText?.(groupId)));
+      if (groupStatus === 'error' && hasGroupRecoveryButton) {
+        highlightedItemId = recoveryButtonId;
+      } else {
+        highlightedItemId = hasGroupStatusContent ? statusId : `${menuId}-${groupId}`;
+      }
     }
 
     const filterElement = hasFiltering ? (

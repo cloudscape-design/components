@@ -725,7 +725,7 @@ describe('ButtonDropdown async loading with expandable groups', () => {
 });
 
 describe('ButtonDropdown async groups in filtering mode: virtual focus', () => {
-  type GroupState = 'loading' | 'error' | 'finished';
+  type GroupState = 'pending' | 'loading' | 'error' | 'finished';
 
   function StatefulDropdown({ initial, onLoad }: { initial: GroupState; onLoad: jest.Mock }) {
     const [state, setState] = React.useState<GroupState>(initial);
@@ -763,6 +763,14 @@ describe('ButtonDropdown async groups in filtering mode: virtual focus', () => {
     };
     return { wrapper, input, onLoad, activeDescendant };
   }
+
+  test.each(['pending', 'finished'] as const)('points at the group header when no status renders (%s)', state => {
+    const { wrapper, input, activeDescendant } = setup(state);
+    input.focus();
+    wrapper.findExpandableCategoryById('g1')!.click();
+    expect(activeDescendant()).not.toBeNull();
+    expect(activeDescendant()).toHaveTextContent('Group 1');
+  });
 
   test('points at the loading status, then at the first item once it arrives', () => {
     const { wrapper, input, activeDescendant } = setup('loading');
