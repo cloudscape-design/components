@@ -195,7 +195,6 @@ const ExpandableNavigationHeader = ({
   expandIconPosition,
   hideExpandIcon,
 }: ExpandableNavigationHeaderProps) => {
-  const labelFromButton = !!ariaLabel && !hideExpandIcon;
   const expandButton = hideExpandIcon ? null : (
     <ExpandIconButton
       icon={icon}
@@ -204,10 +203,7 @@ const ExpandableNavigationHeader = ({
       ariaControls={ariaControls}
       expanded={expanded}
       onClick={onClick}
-      className={clsx(
-        expandIconPosition === 'end' && styles['icon-container-end'],
-        labelFromButton && analyticsSelectors['header-label']
-      )}
+      className={clsx(expandIconPosition === 'end' && styles['icon-container-end'], analyticsSelectors['header-label'])}
     />
   );
   return (
@@ -215,7 +211,7 @@ const ExpandableNavigationHeader = ({
       id={id}
       className={clsx(
         className,
-        !labelFromButton && analyticsSelectors['header-label'],
+        hideExpandIcon && analyticsSelectors['header-label'],
         expandIconPosition === 'end' && styles['header-icon-end']
       )}
       data-awsui-motion-trigger="hover"
