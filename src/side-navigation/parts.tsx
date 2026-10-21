@@ -625,6 +625,7 @@ function Section({
         styles.section,
         isInSectionGroup && styles['section--no-ident'],
         withIcons && styles['section--expand-icon-end'],
+        withIcons && !collapsed && definition.info && styles['section--expand-icon-end-with-info'],
         isVisualRefresh && styles.refresh,
         collapsed && styles['section--collapsed']
       )}
@@ -637,6 +638,11 @@ function Section({
         </span>
       }
       __expandIconPosition={withIcons ? 'end' : 'start'}
+      __headerEndInfo={
+        !collapsed && definition.info ? (
+          <span className={clsx(styles.info, testUtilStyles.info)}>{definition.info}</span>
+        ) : undefined
+      }
     >
       <NavigationItemsList
         variant="section"
@@ -681,20 +687,33 @@ function SectionGroup({
     }
   }, [collapsed]);
 
+  const showInfo = !collapsed && definition.info;
+
+  const title = (
+    <InternalBox
+      className={clsx(styles['section-group-title'], collapsed && styles['section-group-title--collapsed'])}
+      variant="h3"
+      fontSize={isOneTheme ? 'heading-s' : undefined}
+    >
+      <span
+        className={clsx(styles['label-text'], collapsed && styles['label-text--collapsed'])}
+        aria-hidden={collapsed ? true : undefined}
+      >
+        {definition.title}
+      </span>
+    </InternalBox>
+  );
+
   return (
     <div ref={sectionGroupRef} className={styles['section-group']}>
-      <InternalBox
-        className={clsx(styles['section-group-title'], collapsed && styles['section-group-title--collapsed'])}
-        variant="h3"
-        fontSize={isOneTheme ? 'heading-s' : undefined}
-      >
-        <span
-          className={clsx(styles['label-text'], collapsed && styles['label-text--collapsed'])}
-          aria-hidden={collapsed ? true : undefined}
-        >
-          {definition.title}
-        </span>
-      </InternalBox>
+      {definition.info ? (
+        <div className={styles['list-item--link-with-info']}>
+          {title}
+          {showInfo && <span className={clsx(styles.info, testUtilStyles.info)}>{definition.info}</span>}
+        </div>
+      ) : (
+        title
+      )}
       <NavigationItemsList
         variant="section-group"
         items={definition.items}
@@ -874,9 +893,16 @@ function ExpandableLinkGroup({
       __disableHeaderPaddings={true}
       __expandIconPosition={withIcons ? 'end' : 'start'}
       __hideExpandIcon={!!collapsed}
+      headerAriaLabel={definition.info ? definition.text : undefined}
       headerText={
         <Link
-          definition={{ type: 'link', href: definition.href, text: definition.text, icon: definition.icon }}
+          definition={{
+            type: 'link',
+            href: definition.href,
+            text: definition.text,
+            info: definition.info,
+            icon: definition.icon,
+          }}
           fireFollow={onHeaderFollow}
           fireChange={fireChange}
           activeHref={activeHref}
