@@ -1,0 +1,29 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../style-api/palette' as palette;
+
+.popover-brand {
+  --awsui-style-color: #{palette.$genai-text};
+  --awsui-style-background: #{palette.$genai-surface};
+  --awsui-style-border-color: #{palette.$genai};
+  --awsui-style-border-width: 3px;
+  --awsui-style-border-radius: 8px;
+}
+
+.popover-borderless {
+  --awsui-style-background: #{palette.$subtle};
+  --awsui-style-border-width: 0px;
+  --awsui-style-border-radius: 4px;
+}
+
+.popover-brand-dismiss {
+  --awsui-style-color: #{palette.$genai};
+  --awsui-style-focus-ring-color: #{palette.$genai};
+
+  &:hover {
+    --awsui-style-color: #{palette.$genai-hover};
+  }
+}

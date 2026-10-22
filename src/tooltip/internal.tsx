@@ -22,7 +22,13 @@ type InternalTooltipComponentProps = InternalTooltipProps &
     // ID of the associated trigger. When the trigger and the tooltip are connected via referrer ID, the
     // nodeBelongs(triggerNode, tooltipNode) returns true.
     referrerId?: string;
+    styleClassNames?: StyleClassNames;
   };
+
+// Style API v2
+interface StyleClassNames {
+  tooltip?: string;
+}
 
 export default function InternalTooltip({
   content,
@@ -31,6 +37,7 @@ export default function InternalTooltip({
   position = 'top',
   onEscape,
   referrerId,
+  styleClassNames,
   __internalRootRef,
   ...restProps
 }: InternalTooltipComponentProps) {
@@ -86,7 +93,7 @@ export default function InternalTooltip({
               zIndex={7000}
               arrow={position => <PopoverArrow position={position} />}
               hideOnOverscroll={true}
-              className={className}
+              className={clsx(className, styleClassNames?.tooltip)}
             >
               <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={undefined} header={undefined}>
                 {content}
