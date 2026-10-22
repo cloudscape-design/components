@@ -40,9 +40,10 @@ module.exports = ({
     resolve: {
       extensions: ['.ts', '.tsx', '.js'],
       alias: {
-        // rewrite design tokens in SASS
+        // rewrite components and design tokens in SASS
         // The NormalModuleReplacementPlugin does not work there
         // https://github.com/webpack-contrib/sass-loader/issues/489
+        '~components': componentsPath,
         '~design-tokens': designTokensPath,
         ...(react18
           ? {

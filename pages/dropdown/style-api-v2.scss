@@ -3,7 +3,7 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../../lib/components/styling/dropdown';
+@use '~components/styling/dropdown';
 @use '../style-api/palette' as palette;
 
 .dropdown-row {

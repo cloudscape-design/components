@@ -3,7 +3,7 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../../lib/components/styling/link';
+@use '~components/styling/link';
 @use '../style-api/palette' as palette;
 
 .link-brand {
