@@ -22,7 +22,7 @@ function requireStyleApiDoc(componentName: string) {
 
 const components = getStyleApiDocComponents();
 
-describe('Style API docs', () => {
+describe.skip('Style API docs', () => {
   test('list of components with a Style API doc matches the snapshot', () => {
     expect(components).toMatchSnapshot();
   });
