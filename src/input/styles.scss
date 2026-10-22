@@ -231,6 +231,9 @@
     // Unlike other controls, input's padding is rendered by the inner input element and not by its wrapper,
     // so we should not add extra space to the wrapper for the validation border.
     @include styles.grouped-control($validation-border-padding: awsui.$border-width-field);
+    &.input-field-disabled {
+      @include styles.grouped-control-disabled;
+    }
   }
 }
 

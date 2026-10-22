@@ -13,36 +13,6 @@ $grouped-control-border-radius: constants.$control-border-radius;
 @mixin grouped-control-base {
   @include styles.logical-radius($grouped-control-border-radius);
   border-color: awsui.$color-border-control-group-default;
-  &:not(.grouped-with-error):not(.grouped-with-warning) {
-    &.grouped-disabled {
-      &.grouped-horizontal-first,
-      &.grouped-horizontal-middle,
-      &.grouped-horizontal-last,
-      &.grouped-horizontal-only {
-        border-block-color: transparent;
-      }
-      &.grouped-vertical-first,
-      &.grouped-vertical-only {
-        border-block-start-color: transparent;
-      }
-      &.grouped-vertical-last,
-      &.grouped-vertical-only {
-        border-block-end-color: transparent;
-      }
-      &.grouped-disabled.grouped-row-first {
-        border-inline-start-color: transparent;
-      }
-      &:not(.grouped-with-action) {
-        &.grouped-vertical-first,
-        &.grouped-vertical-middle,
-        &.grouped-vertical-only,
-        &.grouped-horizontal-last,
-        &.grouped-horizontal-only {
-          border-inline-end-color: transparent;
-        }
-      }
-    }
-  }
 }
 
 @mixin grouped-control-horizontal-first {
@@ -128,6 +98,37 @@ $grouped-control-border-radius: constants.$control-border-radius;
       border-inline-end-color: $color;
       border-block-start-color: $color;
       border-block-end-color: $color;
+    }
+  }
+}
+
+@mixin grouped-control-disabled {
+  &:not(.grouped-with-error):not(.grouped-with-warning) {
+    &.grouped-horizontal-first,
+    &.grouped-horizontal-middle,
+    &.grouped-horizontal-last,
+    &.grouped-horizontal-only {
+      border-block-color: transparent;
+    }
+    &.grouped-vertical-first,
+    &.grouped-vertical-only {
+      border-block-start-color: transparent;
+    }
+    &.grouped-vertical-last,
+    &.grouped-vertical-only {
+      border-block-end-color: transparent;
+    }
+    &.grouped-row-first {
+      border-inline-start-color: transparent;
+    }
+    &:not(.grouped-with-action) {
+      &.grouped-vertical-first,
+      &.grouped-vertical-middle,
+      &.grouped-vertical-only,
+      &.grouped-horizontal-last,
+      &.grouped-horizontal-only {
+        border-inline-end-color: transparent;
+      }
     }
   }
 }

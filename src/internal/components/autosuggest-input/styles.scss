@@ -89,6 +89,9 @@
 
   &.grouped {
     @include styles.grouped-control;
+    &.token-field-disabled {
+      @include styles.grouped-control-disabled;
+    }
   }
 }
 

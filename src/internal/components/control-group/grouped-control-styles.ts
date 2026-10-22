@@ -13,7 +13,7 @@ import { GroupedControlContextProps } from '../../context/control-group-context'
  */
 export function getGroupedControlClassNames(
   styles: Record<string, string>,
-  { position, direction, hasAction, validation, disabled }: GroupedControlContextProps & { disabled?: boolean }
+  { position, direction, hasAction, validation }: GroupedControlContextProps
 ): string {
   if (!position) {
     return '';
@@ -24,7 +24,6 @@ export function getGroupedControlClassNames(
     styles[`grouped-${direction}-${position}`],
     hasAction && styles['grouped-with-action'],
     validation && (validation === 'error' ? styles['grouped-with-error'] : styles['grouped-with-warning']),
-    isFirstInRow && styles['grouped-row-first'],
-    disabled && styles['grouped-disabled']
+    isFirstInRow && styles['grouped-row-first']
   );
 }

@@ -190,5 +190,8 @@ $icon-offset: awsui.$space-xxxs;
 
   &.grouped {
     @include styles.grouped-control;
+    &.disabled {
+      @include styles.grouped-control-disabled;
+    }
   }
 }
