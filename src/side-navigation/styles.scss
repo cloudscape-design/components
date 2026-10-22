@@ -696,6 +696,10 @@ $content-exit-clip-delay: $content-exit-duration;
   }
 }
 
+.list-item--link-with-info > .link > .link-text-wrapper {
+  align-self: baseline;
+}
+
 // Shared text-fade for non-link labels (section headers, section-group titles).
 // Uses the same opacity timing as .link-text-wrapper for visual consistency.
 .label-text {
@@ -796,6 +800,11 @@ $content-exit-clip-delay: $content-exit-duration;
     &:hover {
       @include icon-layout-hover-background;
     }
+  }
+
+  > .list-item > .section--expand-icon-end-with-info > :first-child {
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: awsui.$space-xs;
   }
 
   // In collapsed mode, icon-layout section headers are zero-height; zero their inline offsets

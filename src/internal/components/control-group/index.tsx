@@ -12,9 +12,11 @@ import {
   GroupedControlDirection,
   GroupedControlPosition,
 } from '../../context/control-group-context';
+import { FormFieldContext, useFormFieldContext } from '../../context/form-field-context';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
 import { useFitsInline } from '../../hooks/use-fits-inline';
 import { flattenChildren } from '../../utils/flatten-children';
+import { joinStrings } from '../../utils/strings/join-strings';
 import { ControlGroupProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -33,6 +35,16 @@ export default function ControlGroup({
   const baseProps = getBaseProps(props);
   const labelId = useUniqueId('control-group-label');
 
+  const formFieldContext = useFormFieldContext({});
+  const isInvalid = !!formFieldContext.invalid;
+  const isWarning = !!formFieldContext.warning && !isInvalid;
+
+  // The parent FormField's validation (describedby/invalid) and label associate with the group as a
+  // unit, not the inner controls (whose FormField context is reset below).
+  // Merge FormField's label id (first) with the internal inline label when present.
+  const groupAriaLabelledby = joinStrings(formFieldContext.ariaLabelledby, inlineLabelText ? labelId : undefined);
+  const groupAriaDescribedby = joinStrings(formFieldContext.ariaDescribedby);
+
   const flattenedChildren = flattenChildren(children, 'ControlGroup');
   const controlCount = flattenedChildren.length;
 
@@ -50,6 +62,7 @@ export default function ControlGroup({
       const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
       const position: GroupedControlPosition =
         controlCount === 1 ? 'only' : index === 0 ? 'first' : index === controlCount - 1 ? 'last' : 'middle';
+      const isLeading = slotDirection === 'vertical' || position === 'first' || position === 'only';
       return (
         <div
           key={key !== null && key !== undefined ? String(key) : index}
@@ -57,11 +70,21 @@ export default function ControlGroup({
             // Make sure that test utils exclude the ghost
             !isGhost && testUtilStyles.control,
             styles.control,
-            styles[`control-${position}-${slotDirection}`]
+            styles[`control-${position}-${slotDirection}`],
+            isLeading && (isInvalid || isWarning) && styles['control-validation'],
+            isLeading && isInvalid && styles['control-in-error'],
+            isLeading && isWarning && styles['control-in-warning']
           )}
         >
-          <GroupedControlContext.Provider value={{ position, direction: slotDirection, hasAction: !!actionButton }}>
-            {child}
+          <GroupedControlContext.Provider
+            value={{
+              position,
+              direction: slotDirection,
+              hasAction: !!actionButton,
+              validation: isInvalid ? 'error' : isWarning ? 'warning' : null,
+            }}
+          >
+            <FormFieldContext.Provider value={{}}>{child}</FormFieldContext.Provider>
           </GroupedControlContext.Provider>
         </div>
       );
@@ -88,13 +111,20 @@ export default function ControlGroup({
 
   // A single render path for both the real group layout and the ghost copy, so the ghost measures
   // the whole group (controls + action button, including the overlap seam between them) as one unit.
-  // The ghost copy carries no role, no aria-labelledby, no base props, and no test-util classes.
+  // The ghost copy carries no role, no aria wiring, no base props, and no test-util classes.
   const renderGroupLayout = (isGhost: boolean) => {
     const slotDirection: GroupedControlDirection = isGhost ? 'horizontal' : resolvedDirection;
     return (
       <div className={clsx(styles['group-layout'], styles[`group-layout-${slotDirection}`])}>
         <div
-          {...(isGhost ? {} : inlineLabelText ? { role: 'group', 'aria-labelledby': labelId } : { role: 'group' })}
+          {...(isGhost
+            ? {}
+            : {
+                role: 'group',
+                'aria-labelledby': groupAriaLabelledby,
+                'aria-describedby': groupAriaDescribedby,
+                'aria-invalid': isInvalid ? 'true' : undefined,
+              })}
           className={clsx(styles.controls, styles[`controls-${slotDirection}`])}
         >
           {renderControlSlots(isGhost)}

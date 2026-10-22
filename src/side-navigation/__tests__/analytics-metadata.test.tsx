@@ -196,5 +196,13 @@ describe('Side Navigation renders correct analytics metadata', () => {
       validateComponentNameAndLabels(expandButton, labels);
       expect(getGeneratedAnalyticsMetadata(expandButton)).toEqual(getExpandGeneratedMetadata('Parent page'));
     });
+    test('in expandable link group with info', () => {
+      const wrapper = renderSideNavigation({
+        items: [{ type: 'expandable-link-group', text: 'Parent page', href: '#/parent-page', info: 'New', items: [] }],
+      });
+
+      const expandButton = wrapper.findItemByIndex(1)!.findExpandableLinkGroup()!.findExpandButton()!.getElement();
+      expect(getGeneratedAnalyticsMetadata(expandButton)).toEqual(getExpandGeneratedMetadata('Parent page'));
+    });
   });
 });

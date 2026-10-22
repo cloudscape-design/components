@@ -6,6 +6,8 @@ export type GroupedControlPosition = 'first' | 'middle' | 'last' | 'only';
 
 export type GroupedControlDirection = 'horizontal' | 'vertical';
 
+export type GroupedControlValidation = 'error' | 'warning';
+
 export interface GroupedControlContextProps {
   /**
    * The control's position within a control group,
@@ -22,12 +24,17 @@ export interface GroupedControlContextProps {
    * inline-end corners facing the action so it owns the only rounded ones.
    */
   hasAction?: boolean;
+  /**
+   * The surrounding control group's validation state, or `null` for none.
+   */
+  validation?: GroupedControlValidation | null;
 }
 
 export const GroupedControlContext = createContext<GroupedControlContextProps>({
   position: null,
   direction: 'horizontal',
   hasAction: false,
+  validation: null,
 });
 
 export function useGroupedControlContext() {
@@ -42,10 +49,14 @@ export function useGroupedControlContext() {
  * control rendered inside such a slot would inherit the surrounding group's
  * `position` and incorrectly pick up the grouped-control styling
  * where adjacent borders lose their border radii.
+ * The group's `validation` state is also cleared so that nested controls do
+ * not inherit the group's validation styling.
  */
 export function ResetGroupedControlContext({ children }: { children: React.ReactNode }) {
   const { direction } = useGroupedControlContext();
   return (
-    <GroupedControlContext.Provider value={{ position: null, direction }}>{children}</GroupedControlContext.Provider>
+    <GroupedControlContext.Provider value={{ position: null, direction, validation: null }}>
+      {children}
+    </GroupedControlContext.Provider>
   );
 }

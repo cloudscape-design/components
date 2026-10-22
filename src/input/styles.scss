@@ -187,6 +187,7 @@
     }
 
     &:focus-within {
+      border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-error);
       box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid);
     }
   }
@@ -201,6 +202,7 @@
     }
 
     &:focus-within {
+      border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-warning);
       box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid);
     }
   }
@@ -227,6 +229,11 @@
 
   &.grouped {
     @include styles.grouped-control;
+
+    // Unlike other controls, input's padding is rendered by the inner input element and not by its wrapper.
+    &.grouped-validation-first {
+      padding-inline-start: awsui.$border-width-field;
+    }
   }
 }
 

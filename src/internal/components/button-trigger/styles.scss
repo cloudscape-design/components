@@ -127,7 +127,7 @@ $icon-offset: awsui.$space-xxxs;
     text-decoration: none;
   }
 
-  &:not(.in-filtering-token):not(.compact) {
+  &:not(.in-filtering-token):not(.compact):not(.grouped.with-error):not(.grouped.with-warning) {
     @include focus-visible.when-visible {
       @include styles.form-focus-element();
     }
@@ -145,6 +145,15 @@ $icon-offset: awsui.$space-xxxs;
     &.warning,
     &.warning:focus {
       @include styles.form-warning-control();
+    }
+
+    @include focus-visible.when-visible {
+      &.invalid {
+        border-color: awsui.$color-text-status-error;
+      }
+      &.warning {
+        border-color: awsui.$color-text-status-warning;
+      }
     }
   }
 

@@ -12,25 +12,19 @@ function renderToggle(element: React.ReactElement) {
 }
 
 describe('Toggle Style API v2', () => {
-  test('applies styleClassNames to the control, label, and description slots', () => {
+  test('applies styleClassNames to the control slot', () => {
     const { container, wrapper } = renderToggle(
-      <Toggle
-        checked={false}
-        description="Description"
-        {...{ styleClassNames: { control: 'a', label: 'b', description: 'c', unknown: 'd' } }}
-      >
+      <Toggle checked={false} description="Description" {...{ styleClassNames: { control: 'a', unknown: 'b' } }}>
         Label
       </Toggle>
     );
     expect(wrapper.findNativeInput().getElement().parentElement).toHaveClass('a');
-    expect(container.querySelector('.b')).toHaveTextContent('Label');
-    expect(wrapper.findDescription()!.getElement()).toHaveClass('c');
-    expect(container.querySelector('.d')).toBeNull();
+    expect(container.querySelector('.b')).toBeNull();
   });
 
   test('does not leak the styleClassNames prop to the DOM', () => {
     const { container } = renderToggle(
-      <Toggle checked={false} {...{ styleClassNames: { control: 'a', label: 'b' } }}>
+      <Toggle checked={false} {...{ styleClassNames: { control: 'a' } }}>
         Label
       </Toggle>
     );

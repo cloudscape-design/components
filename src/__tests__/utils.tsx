@@ -18,6 +18,7 @@ export function getAllComponents(): string[] {
         name !== 'internal' &&
         name !== 'test-utils' &&
         name !== 'theming' &&
+        name !== 'styling' &&
         name !== 'contexts' &&
         name !== 'plugins' &&
         name !== 'i18n' &&

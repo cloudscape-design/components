@@ -104,9 +104,6 @@ const InternalActionCard = React.forwardRef(
       onClick: handleButtonClick,
       'aria-describedby': ariaDescribedby,
       'aria-disabled': disabled || undefined,
-      // The hover region is the whole card (see the root element); focusing
-      // the inner control also plays the motion.
-      'data-awsui-motion-trigger': 'focus',
     };
 
     // <a>-tag specific props
@@ -240,7 +237,9 @@ const InternalActionCard = React.forwardRef(
           baseProps.className
         )}
         aria-disabled={disabled || undefined}
-        data-awsui-motion-trigger="hover"
+        // Keyboard focus on the nested header or overlay button, which does not contain the icon,
+        // also plays the motion.
+        data-awsui-motion-trigger="hover delegated-focus"
       >
         {standaloneButton}
         {contentElement}

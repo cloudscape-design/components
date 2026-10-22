@@ -12,7 +12,7 @@
 
 $radio-size: awsui.$size-control;
 
-$_control-props: style-api.combine((color, background-color, border-color), style-api.$focus-ring);
+$_control-props: style-api.combine((fill-color, border-color, indicator-color), style-api.$focus-ring);
 $_control-tokens: style-api.resolve($_control-props, carrier);
 
 .radio-control {
@@ -32,17 +32,17 @@ $_control-tokens: style-api.resolve($_control-props, carrier);
 
 .styled-circle-border {
   stroke: style-api.value($_control-tokens, border-color, awsui.$color-border-control-default);
-  fill: style-api.value($_control-tokens, background-color, awsui.$color-background-control-default);
+  fill: style-api.value($_control-tokens, fill-color, awsui.$color-background-control-default);
   &.styled-circle-disabled,
   &.styled-circle-readonly {
-    fill: style-api.value($_control-tokens, background-color, awsui.$color-background-control-disabled);
+    fill: style-api.value($_control-tokens, fill-color, awsui.$color-background-control-disabled);
     stroke: style-api.value($_control-tokens, border-color, awsui.$color-background-control-disabled);
   }
 }
 
 .styled-circle-fill {
-  stroke: style-api.value($_control-tokens, background-color, awsui.$color-background-control-checked);
-  fill: style-api.value($_control-tokens, color, awsui.$color-foreground-control-default);
+  stroke: style-api.value($_control-tokens, fill-color, awsui.$color-background-control-checked);
+  fill: style-api.value($_control-tokens, indicator-color, awsui.$color-foreground-control-default);
   opacity: 0;
   @include styles.with-motion {
     transition: opacity awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
@@ -51,12 +51,12 @@ $_control-tokens: style-api.resolve($_control-props, carrier);
     opacity: 1;
   }
   &.styled-circle-disabled {
-    fill: style-api.value($_control-tokens, color, awsui.$color-foreground-control-disabled);
-    stroke: style-api.value($_control-tokens, background-color, awsui.$color-background-control-disabled);
+    fill: style-api.value($_control-tokens, indicator-color, awsui.$color-foreground-control-disabled);
+    stroke: style-api.value($_control-tokens, fill-color, awsui.$color-background-control-disabled);
   }
   &.styled-circle-readonly {
-    fill: style-api.value($_control-tokens, color, awsui.$color-foreground-control-read-only);
-    stroke: style-api.value($_control-tokens, background-color, awsui.$color-background-control-disabled);
+    fill: style-api.value($_control-tokens, indicator-color, awsui.$color-foreground-control-read-only);
+    stroke: style-api.value($_control-tokens, fill-color, awsui.$color-background-control-disabled);
   }
   @include motion.select;
 }

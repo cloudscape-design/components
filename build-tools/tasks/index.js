@@ -4,6 +4,7 @@ module.exports = {
   clean: require('./clean'),
   docs: require('./docs'),
   styleDocs: require('./style-docs'),
+  styleMixins: require('./style-mixins'),
   generateEnvironment: require('./generate-environment'),
   generateIcons: require('./generate-icons'),
   generateIndexFile: require('./generate-index-file'),

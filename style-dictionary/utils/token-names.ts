@@ -729,6 +729,7 @@ export type ColorsTokenName =
   | 'colorBorderDropdownItemHover'
   | 'colorBorderDropdownItemSelected'
   | 'colorBorderDropdownItemTop'
+  | 'colorBorderControlGroupDefault'
   | 'colorBorderEditableCellHover'
   | 'colorBorderInputDefault'
   | 'colorBorderInputDisabled'
@@ -1186,6 +1187,8 @@ export type SpacingTokenName =
   | 'spaceAlertMessageRight'
   | 'spaceAlertVertical'
   | 'spaceButtonFocusOutlineGutter'
+  | 'spaceButtonInlineLinkFocusOutlineGutter'
+  | 'spaceExpandToggleFocusOutlineGutter'
   | 'spaceButtonHorizontal'
   | 'spaceButtonVertical'
   | 'spaceTokenVertical'
@@ -1213,6 +1216,7 @@ export type SpacingTokenName =
   | 'spaceDialogSectionGap'
   | 'spaceCodeEditorStatusFocusOutlineGutter'
   | 'spaceContainerContentTop'
+  | 'spaceContainerContentVertical'
   | 'spaceContainerHeaderTop'
   | 'spaceContainerHeaderBottom'
   | 'spaceContainerHorizontal'
@@ -1256,6 +1260,7 @@ export type SpacingTokenName =
   | 'spaceTableHeaderToolsBottom'
   | 'spaceTableHeaderToolsFullPageBottom'
   | 'spaceTableHorizontal'
+  | 'spaceTableCellVertical'
   | 'spaceTileGutter'
   | 'spaceTreeViewIndentation'
   | 'spaceSideNavigationItemDefaultGap'
@@ -1338,6 +1343,6 @@ export type ColorScopeTokenName =
   | ColorSeverityTokenName
   | ColorPaletteTokenName;
 export type MotionScopeTokenName = MotionTokenName;
-export type DensityScopeTokenName = SizesTokenName | SpacingTokenName;
+export type DensityScopeTokenName = SizesTokenName | SpacingTokenName | TypographyTokenName;
 
 export type TokenName = GlobalScopeTokenName | ColorScopeTokenName | MotionScopeTokenName | DensityScopeTokenName;

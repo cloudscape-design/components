@@ -3,31 +3,35 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use '~components/styling/radio-button';
 @use '../style-api/palette' as palette;
 
 .radio-control {
-  --awsui-style-background-color: #{palette.$control-bg};
-  --awsui-style-border-color: #{palette.$border-accent};
-  --awsui-style-focus-ring-color: #{palette.$accent};
-  --awsui-style-focus-ring-width: 3px;
-  --awsui-style-focus-ring-radius: 50%;
-  --awsui-style-focus-ring-gutter-block: 4px;
-  --awsui-style-focus-ring-gutter-inline: 4px;
-}
+  @include radio-button.control(
+    $fill-color: palette.$control-bg,
+    $border-color: palette.$border-accent,
+    $focus-ring-color: palette.$accent,
+    $focus-ring-width: 3px,
+    $focus-ring-radius: 50%
+  );
 
-.radio-control-checked {
-  --awsui-style-background-color: #{palette.$control-bg-checked};
-  --awsui-style-color: #{palette.$control-fg};
-}
+  &-checked {
+    @include radio-button.control($fill-color: palette.$control-bg-checked, $indicator-color: palette.$control-fg);
+  }
 
-.radio-control-readonly {
-  --awsui-style-background-color: #{palette.$surface-alt};
-  --awsui-style-border-color: #{palette.$border};
-  --awsui-style-color: #{palette.$text-muted};
-}
+  &.radio-control-readonly {
+    @include radio-button.control(
+      $fill-color: palette.$surface-alt,
+      $border-color: palette.$border,
+      $indicator-color: palette.$text-muted
+    );
+  }
 
-.radio-control-disabled {
-  --awsui-style-background-color: #{palette.$control-bg-disabled};
-  --awsui-style-border-color: #{palette.$border-disabled};
-  --awsui-style-color: #{palette.$control-fg-disabled};
+  &.radio-control-disabled {
+    @include radio-button.control(
+      $fill-color: palette.$control-bg-disabled,
+      $border-color: palette.$border-disabled,
+      $indicator-color: palette.$control-fg-disabled
+    );
+  }
 }
