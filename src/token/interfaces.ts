@@ -8,7 +8,8 @@ import { NonCancelableEventHandler } from '../types/events';
 export interface TokenProps extends BaseComponentProps {
   /** Slot for the label of the token as text or an element.
    *
-   * For `variant="inline"`, only plain text is supported, for example, strings or numbers.
+   * For `variant="inline"`, use plain text, for example, strings or numbers, or a single interactive
+   * element such as a popover trigger.
    */
   label: React.ReactNode;
 
@@ -19,7 +20,11 @@ export interface TokenProps extends BaseComponentProps {
    */
   ariaLabel?: string;
 
-  /** A label tag that provides additional guidance, shown next to the label. */
+  /** A label tag that provides additional guidance, shown next to the label.
+   *
+   * When `variant="inline"`, a long label tag is truncated. `tooltipContent` is what appears when the
+   * token is truncated, so include the label tag text in it.
+   */
   labelTag?: string;
 
   /** Further information about the token that appears below the label. */
@@ -39,7 +44,7 @@ export interface TokenProps extends BaseComponentProps {
   /**
    * Specifies the token's visual style and functionality.
    *
-   * For `inline` only label, icon and dismiss button are displayed.
+   * When set to `inline`, only label, label tag, icon and dismiss button are displayed. Description and tags are not.
    *
    * Defaults to `normal` if not specified.
    */
@@ -64,9 +69,7 @@ export interface TokenProps extends BaseComponentProps {
   onDismiss?: NonCancelableEventHandler;
 
   /**
-   * Content to display in the tooltip when `variant="inline"`. The tooltip appears when the token label is truncated due to insufficient space.
-   *
-   * Only applies to plain text labels.
+   * Content to display in the tooltip when `variant="inline"`. The tooltip appears when the token label or label tag is truncated due to insufficient space.
    */
   tooltipContent?: string;
 
