@@ -15,6 +15,7 @@ const permutations = createPermutations<TokenProps>([
   {
     label: ['token'],
     icon: [undefined, <Icon key="icon" name="settings" size="small" />],
+    labelTag: [undefined, 'label-tag'],
     onDismiss: [undefined, () => {}],
     readOnly: [false, true],
     variant: ['inline'],
@@ -22,6 +23,7 @@ const permutations = createPermutations<TokenProps>([
   {
     label: ['token'],
     icon: [undefined, <Icon key="icon" name="settings" size="small" />],
+    labelTag: [undefined, 'label-tag'],
     onDismiss: [undefined, () => {}],
     disabled: [true],
     variant: ['inline'],
@@ -74,6 +76,19 @@ const permutations = createPermutations<TokenProps>([
       </Popover>,
     ],
     ariaLabel: ['popover token'],
+    variant: ['inline'],
+  },
+  {
+    label: [
+      <Popover key="popover" content="Test" triggerType="text-inline">
+        a
+      </Popover>,
+      <Link key="link" variant="primary" href="#test">
+        a
+      </Link>,
+    ],
+    ariaLabel: ['short interactive token'],
+    onDismiss: [() => {}],
     variant: ['inline'],
   },
 ]);
