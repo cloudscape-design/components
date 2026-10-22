@@ -9,6 +9,7 @@ import Dropdown from '../dropdown/internal';
 import { useInternalI18n } from '../i18n/context.js';
 import { getBaseProps } from '../internal/base-component';
 import { getBreakpointValue } from '../internal/breakpoints';
+import { warnOnUnsupportedGroupedControlProps } from '../internal/components/control-group-styles/dev-warnings';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
 import { prepareOptions } from '../internal/components/option/utils/prepare-options.js';
@@ -84,6 +85,15 @@ const InternalSelect = React.forwardRef(
     const baseProps = getBaseProps(restProps);
     const formFieldContext = useFormFieldContext(restProps);
     const groupedControlProps = useGroupedControlContext();
+
+    warnOnUnsupportedGroupedControlProps({
+      isGrouped: !!groupedControlProps.position,
+      componentName: 'Select',
+      invalid: formFieldContext.invalid,
+      warning: formFieldContext.warning,
+      readOnly,
+      expandToViewport,
+    });
 
     // When grouped, the dropdown is portaled regardless of the public
     // `expandToViewport` prop so it escapes the control slot's stacking context

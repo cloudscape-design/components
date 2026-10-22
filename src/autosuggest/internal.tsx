@@ -11,6 +11,7 @@ import { OptionsLoadItemsDetail } from '../dropdown/interfaces';
 import { useInternalI18n } from '../i18n/context';
 import { BaseChangeDetail } from '../input/interfaces';
 import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
+import { warnOnUnsupportedGroupedControlProps } from '../internal/components/control-group-styles/dev-warnings';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
 import { useGroupedControlContext } from '../internal/context/control-group-context';
@@ -184,6 +185,16 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
 
   const formFieldContext = useFormFieldContext(restProps);
   const groupedControlProps = useGroupedControlContext();
+
+  warnOnUnsupportedGroupedControlProps({
+    isGrouped: !!groupedControlProps.position,
+    componentName: 'Autosuggest',
+    invalid: formFieldContext.invalid,
+    warning: formFieldContext.warning,
+    readOnly,
+    expandToViewport,
+  });
+
   // When grouped, the dropdown is portaled regardless of the public
   // `expandToViewport` prop so it escapes the control slot's stacking context
   // and paints over the group's inline label (which the focus ring stays under).

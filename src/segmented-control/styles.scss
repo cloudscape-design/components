@@ -72,8 +72,8 @@
   }
 
   // The focused inner segment option draws its own ring, so suppress the group's.
-  &.with-error,
-  &.with-warning {
+  &-with-error,
+  &-with-warning {
     &:focus-within {
       box-shadow: none;
     }

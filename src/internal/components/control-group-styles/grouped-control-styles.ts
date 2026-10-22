@@ -22,13 +22,12 @@ export function getGroupedControlClassNames(
   if (!position) {
     return '';
   }
-  // Only the leading (inline-start) controls draw the thick validation border
-  const isLeading = direction === 'vertical' || position === 'first' || position === 'only';
+  const isFirstInRow = direction === 'vertical' || position === 'first' || position === 'only';
   return clsx(
     styles.grouped,
     styles[`grouped-${direction}-${position}`],
     hasAction && styles['grouped-with-action'],
-    validation && (validation === 'error' ? styles['with-error'] : styles['with-warning']),
-    validation && isLeading && styles['grouped-validation-first']
+    validation && (validation === 'error' ? styles['grouped-with-error'] : styles['grouped-with-warning']),
+    isFirstInRow && styles['grouped-row-first']
   );
 }

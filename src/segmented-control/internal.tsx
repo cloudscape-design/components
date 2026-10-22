@@ -5,7 +5,6 @@ import clsx from 'clsx';
 
 import InternalFormField from '../form-field/internal';
 import { getBaseProps } from '../internal/base-component';
-import { getGroupedControlClassNames } from '../internal/components/control-group-styles/grouped-control-styles';
 import { useGroupedControlContext } from '../internal/context/control-group-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -58,7 +57,7 @@ export default function InternalSegmentedControl({
         style={style}
         groupedControlProps={groupedControlProps}
       />
-      <div className={clsx(styles.select, getGroupedControlClassNames(styles, groupedControlProps))}>
+      <div className={styles.select}>
         {ariaLabelledby && <InternalSelect {...selectProps} ariaLabelledby={ariaLabelledby} />}
         {!ariaLabelledby && label && (
           <InternalFormField label={label} stretch={true}>
