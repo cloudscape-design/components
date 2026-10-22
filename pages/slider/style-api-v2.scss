@@ -1,0 +1,56 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '@cloudscape-design/component-toolkit/styling' as styling;
+@use '../style-api/palette' as palette;
+
+.track {
+  @include styling.override {
+    background-color: palette.$surface-alt;
+  }
+}
+
+.range {
+  @include styling.override {
+    background-color: palette.$accent;
+  }
+}
+
+// The handle is the native <input type="range">, so its states are regular selectors.
+.handle {
+  --awsui-style-handle-color: #{palette.$accent};
+  --awsui-style-border-radius: 4px;
+
+  &:hover {
+    --awsui-style-handle-color: #{palette.$accent-hover};
+  }
+
+  &:is(:focus, :active) {
+    --awsui-style-handle-color: #{palette.$accent-active};
+  }
+
+  &:disabled,
+  &[aria-disabled='true'] {
+    --awsui-style-handle-color: #{palette.$control-bg-disabled};
+  }
+}
+
+// The track and range don't contain the input, so they take its state through :has() on the root slot.
+/* stylelint-disable selector-combinator-disallowed-list */
+.slider {
+  &:has(.handle:is(:focus, :active)) .range {
+    @include styling.override {
+      background-color: palette.$accent-active;
+    }
+  }
+
+  // After the focus rule: a read-only slider stays focusable, and both rules have the same specificity.
+  &:has(.handle:disabled, .handle[aria-disabled='true']) .range {
+    @include styling.override {
+      background-color: palette.$control-bg-disabled;
+    }
+  }
+}
+/* stylelint-enable selector-combinator-disallowed-list */

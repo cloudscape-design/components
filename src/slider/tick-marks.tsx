@@ -4,11 +4,13 @@ import React from 'react';
 import clsx from 'clsx';
 
 import customCssProps from '../internal/generated/custom-css-properties/index.js';
+import type { StyleClassNames } from './internal.js';
 import { getStepArray } from './utils.js';
 
 import styles from './styles.css.js';
 
 interface SliderTicksProps {
+  styleClassNames?: StyleClassNames;
   hideFillLine?: boolean;
   value: number;
   isActive: boolean;
@@ -26,7 +28,8 @@ interface SliderTickMarkProps extends SliderTicksProps {
 }
 
 function TickMark(props: SliderTickMarkProps) {
-  const { hideFillLine, value, isActive, invalid, warning, disabled, type, min, max, step, readOnly } = props;
+  const { hideFillLine, value, isActive, invalid, warning, disabled, type, min, max, step, readOnly, styleClassNames } =
+    props;
 
   const showWarning = warning && !invalid;
 
@@ -40,10 +43,12 @@ function TickMark(props: SliderTickMarkProps) {
     return step;
   };
 
+  const isFilled = !hideFillLine && value > getType();
+
   return (
     <div
-      className={clsx(styles.tick, {
-        [styles.filled]: !hideFillLine && value > getType(),
+      className={clsx(styles.tick, isFilled ? styleClassNames?.range : styleClassNames?.track, {
+        [styles.filled]: isFilled,
         [styles.active]: !hideFillLine && isActive && value > getType(),
         [styles.error]: invalid && !hideFillLine && value > getType(),
         [styles.warning]: showWarning && !hideFillLine && value > getType(),

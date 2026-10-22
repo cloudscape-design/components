@@ -5,8 +5,18 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/style-api' as style-api;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use './mixins.scss' as mixins;
+
+// Style API v2. The track and range (and the tick marks that represent them) are plain elements that
+// carry the consumer class, so consumers set their properties directly. The handle is drawn in the range
+// input's thumb pseudo-elements, so it needs tokens instead — see mixins.
+@include style-api.register(mixins.$handle-tokens);
+@include style-api.docs('root');
+@include style-api.docs('track', $properties: (background-color));
+@include style-api.docs('range', $properties: (background-color));
+@include style-api.docs('handle', mixins.$handle-tokens);
 
 .root {
   @include styles.styles-reset;
@@ -270,6 +280,7 @@
 }
 
 .thumb {
+  @include style-api.carriers(mixins.$handle-tokens);
   background: transparent;
   appearance: none;
   position: absolute;
