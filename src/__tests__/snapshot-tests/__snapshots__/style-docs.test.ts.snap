@@ -133,6 +133,76 @@ exports[`Style API docs definition for dropdown matches the snapshot: dropdown 1
 }
 `;
 
+exports[`Style API docs definition for input matches the snapshot: input 1`] = `
+{
+  "slots": [
+    {
+      "name": "root",
+      "properties": [
+        "background",
+        "border",
+        "border-radius",
+        "box-shadow",
+      ],
+      "propertyDescriptions": {
+        "box-shadow": "Also draws the focus ring under \`:focus-within\`.",
+      },
+      "tokenDescriptions": {},
+      "tokens": [],
+    },
+    {
+      "name": "input",
+      "properties": [
+        "color",
+        "padding",
+        "font-family",
+        "font-size",
+        "font-weight",
+      ],
+      "propertyDescriptions": {
+        "padding": "Replaces the inline padding reserved for the search icon and the clear button; include that room when styling search inputs.",
+      },
+      "tokenDescriptions": {},
+      "tokens": [
+        "placeholder-color",
+        "placeholder-font-size",
+        "placeholder-font-style",
+        "placeholder-font-weight",
+      ],
+    },
+    {
+      "name": "inlineLabel",
+      "properties": [
+        "color",
+        "background",
+        "font-family",
+        "font-size",
+        "font-weight",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
+    },
+    {
+      "name": "searchIcon",
+      "properties": [
+        "color",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
+    },
+    {
+      "forwardsTo": {
+        "component": "button",
+        "slot": "root",
+      },
+      "name": "clearButton",
+    },
+  ],
+}
+`;
+
 exports[`Style API docs definition for link matches the snapshot: link 1`] = `
 {
   "slots": [
@@ -205,6 +275,7 @@ exports[`Style API docs list of components with a Style API doc matches the snap
   "button",
   "checkbox",
   "dropdown",
+  "input",
   "link",
   "radio-button",
   "toggle",
