@@ -4,6 +4,10 @@ import clsx from 'clsx';
 
 import { GroupedControlContextProps } from '../../context/control-group-context';
 
+// STAYS INTERNAL: shared grouped-control styling helper used by the public ControlGroup
+// implementation and other grouped controls (input, segmented-control, button-trigger,
+// autosuggest-input). It is not part of the ControlGroup public surface.
+
 /**
  * Builds the shared grouped-control CSS classes for a consumer.
  *

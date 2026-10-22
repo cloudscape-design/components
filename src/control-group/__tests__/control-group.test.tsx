@@ -3,12 +3,12 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import FormField from '../../../../../lib/components/form-field';
-import ControlGroup from '../../../../../lib/components/internal/components/control-group';
-import { ResetGroupedControlContext } from '../../../../../lib/components/internal/context/control-group-context';
-import Select from '../../../../../lib/components/select';
-import createWrapper from '../../../../../lib/components/test-utils/dom';
-import ControlGroupWrapper from '../../../../../lib/components/test-utils/dom/control-group';
+import ControlGroup from '../../../lib/components/control-group';
+import FormField from '../../../lib/components/form-field';
+import { ResetGroupedControlContext } from '../../../lib/components/internal/context/control-group-context';
+import Select from '../../../lib/components/select';
+import createWrapper from '../../../lib/components/test-utils/dom';
+import ControlGroupWrapper from '../../../lib/components/test-utils/dom/control-group';
 import { DirectionProbe, PositionProbe } from './common';
 
 function findControlGroup(container: HTMLElement) {

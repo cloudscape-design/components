@@ -6,7 +6,7 @@ import { render } from '@testing-library/react';
 import ControlGroup from '../../../lib/components/control-group';
 import Input from '../../../lib/components/input';
 import ControlGroupWrapper from '../../../lib/components/test-utils/dom/control-group';
-import { PositionProbe } from '../../internal/components/control-group/__tests__/common';
+import { PositionProbe } from '../../control-group/__tests__/common';
 
 const noop = () => {};
 

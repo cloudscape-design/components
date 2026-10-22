@@ -38,7 +38,7 @@ import { getInputStylesCss } from '../../utils/input-styles';
 import { nodeBelongs } from '../../utils/node-belongs';
 import { processAttributes } from '../../utils/with-native-attributes';
 import ButtonTrigger from '../button-trigger';
-import { getGroupedControlClassNames } from '../control-group/grouped-control-styles';
+import { getGroupedControlClassNames } from '../control-group-styles/grouped-control-styles';
 import { InlineTokens, InlineTokensRef } from './inline-tokens';
 import { useTokenOverflow } from './use-token-overflow';
 

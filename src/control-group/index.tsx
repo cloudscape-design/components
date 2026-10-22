@@ -3,10 +3,10 @@
 'use client';
 import React from 'react';
 
-import InternalControlGroup from '../internal/components/control-group';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { ControlGroupProps } from './interfaces';
+import InternalControlGroup from './internal';
 
 export { ControlGroupProps };
 
