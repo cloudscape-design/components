@@ -273,4 +273,53 @@ describe('Control group', () => {
     expect(secondId).toBeTruthy();
     expect(firstId).not.toBe(secondId);
   });
+
+  test('controlId sets the id on the element with role="group"', () => {
+    const { getByRole } = render(
+      <ControlGroup controlId="my-control-id">
+        <input data-testid="alpha" />
+        <input data-testid="beta" />
+      </ControlGroup>
+    );
+
+    expect(getByRole('group').id).toBe('my-control-id');
+  });
+
+  describe('ARIA properties', () => {
+    test('ariaLabelledby sets aria-labelledby on the group', () => {
+      const { getByRole } = render(
+        <ControlGroup ariaLabelledby="external-label">
+          <input data-testid="alpha" />
+          <input data-testid="beta" />
+        </ControlGroup>
+      );
+
+      expect(getByRole('group').getAttribute('aria-labelledby')).toBe('external-label');
+    });
+
+    test('ariaDescribedby sets aria-describedby on the group', () => {
+      const { getByRole } = render(
+        <ControlGroup ariaDescribedby="external-description">
+          <input data-testid="alpha" />
+          <input data-testid="beta" />
+        </ControlGroup>
+      );
+
+      expect(getByRole('group').getAttribute('aria-describedby')).toBe('external-description');
+    });
+
+    test('merges ariaLabelledby with the inline label id on the group', () => {
+      const { container, getByRole } = render(
+        <ControlGroup inlineLabelText="Threshold" ariaLabelledby="external-label">
+          <input data-testid="alpha" />
+          <input data-testid="beta" />
+        </ControlGroup>
+      );
+
+      const inlineLabelId = findControlGroup(container)!.findInlineLabel()!.getElement().id;
+      const labelledby = getByRole('group').getAttribute('aria-labelledby')!.split(' ');
+      expect(labelledby).toContain('external-label');
+      expect(labelledby).toContain(inlineLabelId);
+    });
+  });
 });
