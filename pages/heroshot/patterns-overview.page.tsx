@@ -456,10 +456,14 @@ function ChartDrillDownPopover() {
             <PopoverArrow position="right-top" />
           </div>
           <div className={`${popoverStyles['container-body']} ${popoverStyles['container-body-size-small']}`}>
+            {/*
+             * No dismiss button: it would autofocus and trap focus inside the thumbnail, and this
+             * static preview has no working dismiss to release it again.
+             */}
             <PopoverBody
-              dismissButton={true}
-              dismissAriaLabel="Close"
-              onDismiss={noop}
+              dismissButton={false}
+              dismissAriaLabel={undefined}
+              onDismiss={undefined}
               header="September 23rd"
               variant="chart"
             >
