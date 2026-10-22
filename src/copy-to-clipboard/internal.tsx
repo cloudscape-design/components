@@ -9,14 +9,22 @@ import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useOneTheme } from '../internal/hooks/use-visual-mode';
-import InternalPopover from '../popover/internal';
+import InternalPopover, { StyleClassNames as PopoverStyleClassNames } from '../popover/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
 import { CopyToClipboardProps } from './interfaces';
 
 import styles from './styles.css.js';
 import testStyles from './test-classes/styles.css.js';
 
-interface InternalCopyToClipboardProps extends CopyToClipboardProps, InternalBaseComponentProps {}
+interface InternalCopyToClipboardProps extends CopyToClipboardProps, InternalBaseComponentProps {
+  styleClassNames?: StyleClassNames;
+}
+
+// Style API v2
+export interface StyleClassNames {
+  copyButton?: string;
+  statusPopover?: PopoverStyleClassNames;
+}
 
 type CopyStatus = 'success' | 'error';
 
@@ -72,6 +80,7 @@ export default function InternalCopyToClipboard({
   disabledReason,
   onCopySuccess,
   onCopyFailure,
+  styleClassNames,
   __internalRootRef,
   ...restProps
 }: InternalCopyToClipboardProps) {
@@ -139,6 +148,7 @@ export default function InternalCopyToClipboard({
       formAction="none"
       disabled={disabled}
       disabledReason={disabledReason}
+      styleClassNames={{ root: styleClassNames?.copyButton }}
     >
       {copyButtonText}
     </InternalButton>
@@ -166,6 +176,7 @@ export default function InternalCopyToClipboard({
       dismissButton={false}
       renderWithPortal={popoverRenderWithPortal}
       {...oneThemePopoverProps}
+      styleClassNames={styleClassNames?.statusPopover}
       content={
         isOneTheme ? (
           <span className={styles['popover-message']}>{statusText}</span>

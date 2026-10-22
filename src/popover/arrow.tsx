@@ -11,12 +11,20 @@ import styles from './styles.css.js';
 interface ArrowProps {
   position: InternalPosition | null;
   variant?: 'default' | 'info';
+  className?: string;
 }
 
-const Arrow = ({ position, variant }: ArrowProps) => {
+const Arrow = ({ position, variant, className }: ArrowProps) => {
   const isVisualRefresh = useVisualRefresh();
   return (
-    <div className={clsx(styles.arrow, styles[`arrow-position-${position}`], styles[`arrow-variant-${variant}`])}>
+    <div
+      className={clsx(
+        className,
+        styles.arrow,
+        styles[`arrow-position-${position}`],
+        styles[`arrow-variant-${variant}`]
+      )}
+    >
       <div className={styles['arrow-outer']} />
       <div className={clsx(styles['arrow-inner'], isVisualRefresh && styles.refresh)} />
     </div>
