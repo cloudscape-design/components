@@ -43,6 +43,8 @@ export interface ItemProps {
   ariaSetsize?: number;
   highlightType?: HighlightType['type'];
   withScrollbar?: boolean;
+  /** Hides the top divider of the first option in lists without a dropdown border above it (OptionList). */
+  hideTopDivider?: boolean;
   sticky?: boolean;
   renderOption?: SelectProps.SelectOptionItemRenderer | MultiselectProps.MultiselectOptionItemRenderer;
   parentProps?: ItemParentProps;
@@ -163,6 +165,7 @@ const Item = (
     ariaSetsize,
     highlightType,
     withScrollbar,
+    hideTopDivider,
     sticky,
     renderOption,
     parentProps,
@@ -311,6 +314,7 @@ const Item = (
         value={option.option.value}
         afterHeader={option.afterHeader}
         withScrollbar={withScrollbar}
+        hideTopDivider={hideTopDivider}
         sticky={sticky}
         {...baseProps}
       >
@@ -352,6 +356,7 @@ const Item = (
       ariaDescribedby={isDisabledWithReason ? descriptionId : ''}
       value={option.option.value}
       withScrollbar={withScrollbar}
+      hideTopDivider={hideTopDivider}
       sticky={sticky}
       {...baseProps}
     >

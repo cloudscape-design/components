@@ -1,6 +1,31 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import scrollToIndex from '../parts/scroll-to-index';
+import scrollToIndex, { scrollOptionIntoView } from '../parts/scroll-to-index';
+
+describe('scrollOptionIntoView', () => {
+  function createMenu(itemEl: Partial<HTMLElement> | null) {
+    const menuEl: Partial<HTMLElement> = {
+      querySelector: jest.fn(() => itemEl) as any,
+      scrollBy: jest.fn(),
+    };
+    return menuEl as HTMLElement;
+  }
+
+  it('scrolls the option into view through all scrollable ancestors', () => {
+    const itemEl = { scrollIntoView: jest.fn() };
+    const menuEl = createMenu(itemEl);
+    scrollOptionIntoView({ index: 3, menuEl });
+    expect(menuEl.querySelector).toHaveBeenCalledWith('[data-mouse-target="3"]');
+    expect(itemEl.scrollIntoView).toHaveBeenCalledWith({ block: 'nearest', inline: 'nearest' });
+    expect(menuEl.scrollBy).not.toHaveBeenCalled();
+  });
+
+  it('does nothing when the option is not rendered', () => {
+    const menuEl = createMenu(null);
+    expect(() => scrollOptionIntoView({ index: 3, menuEl })).not.toThrow();
+    expect(menuEl.scrollBy).not.toHaveBeenCalled();
+  });
+});
 
 describe('scroll-to-index', () => {
   function runWith({
