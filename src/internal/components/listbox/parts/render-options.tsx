@@ -10,7 +10,9 @@ import { VirtualItem } from '../../../vendor/react-virtual';
 import { DropdownOption } from '../../option/interfaces';
 import { NestedDropdownOption, unflattenOptions } from '../../option/utils/unflatten-options';
 import { HighlightType } from '../../options-list/utils/use-highlight-option';
+import { SelectionType } from '../selection/interfaces';
 import { getItemProps } from './get-item-props';
+import ListboxItem, { ItemParentProps as ListboxItemParentProps } from './item';
 import OptionGroup from './option-group';
 
 interface RenderOptionProps {
@@ -19,6 +21,11 @@ interface RenderOptionProps {
   filteringValue: string;
   highlightType: HighlightType;
   idPrefix: string;
+  /**
+   * When set, options render with the shared listbox item for this selection type. When omitted, the Select
+   * and Multiselect items are used, picked by `useInteractiveGroups`.
+   */
+  selectionType?: SelectionType;
   checkboxes?: boolean;
   hasDropdownStatus?: boolean;
   virtualItems?: VirtualItem[];
@@ -37,6 +44,7 @@ export const renderOptions = ({
   filteringValue,
   highlightType,
   idPrefix,
+  selectionType,
   checkboxes = false,
   hasDropdownStatus,
   virtualItems,
@@ -60,13 +68,17 @@ export const renderOptions = ({
     });
   };
 
-  const renderListItem = (props: any, index: number, parentProps?: ItemParentProps | MultiselectItemParentProps) => {
+  const renderListItem = (
+    props: any,
+    index: number,
+    parentProps?: ItemParentProps | MultiselectItemParentProps | ListboxItemParentProps
+  ) => {
     const virtualItem = virtualItems && virtualItems[index];
     const globalIndex = virtualItem ? virtualItem.index : index;
 
     const isLastItem = index === options.length - 1;
     const padBottom = !hasDropdownStatus && isLastItem;
-    const ListItem = useInteractiveGroups ? MultiselectItem : Item;
+    const ListItem = selectionType ? ListboxItem : useInteractiveGroups ? MultiselectItem : Item;
     const isSticky = firstOptionSticky && globalIndex === 0;
 
     return (
@@ -75,6 +87,7 @@ export const renderOptions = ({
         virtualIndex={virtualItem ? virtualItem.index : undefined}
         key={globalIndex}
         {...props}
+        {...(selectionType ? { selectionType } : {})}
         virtualPosition={virtualItem?.start}
         ref={isSticky && stickyOptionRef ? stickyOptionRef : virtualItem && virtualItem.measureRef}
         padBottom={padBottom}
