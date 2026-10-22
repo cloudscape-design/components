@@ -22,7 +22,7 @@ import { Direction, multiOptions, noop, operators, segments, suggestions } from 
 type ValidationState = 'none' | 'error' | 'warning';
 
 // The individual controls that can be individually disabled.
-type StatefulControl = 'input' | 'autosuggest' | 'autosuggestTokens' | 'select' | 'multiselect';
+type StatefulControl = 'input' | 'autosuggest' | 'autosuggest-tokens' | 'select' | 'multiselect';
 
 // Control kinds that can appear inside a group. The stateful ones can be disabled;
 // segmentedControl cannot.
@@ -34,7 +34,7 @@ type Disableable = StatefulControl | 'actionbutton';
 const disableableItems: ReadonlyArray<Disableable> = [
   'input',
   'autosuggest',
-  'autosuggestTokens',
+  'autosuggest-tokens',
   'select',
   'multiselect',
   'actionbutton',
@@ -89,7 +89,7 @@ function renderControl(kind: ControlKind, disabled: ReadonlySet<Disableable>) {
           {...stateProps('autosuggest', disabled)}
         />
       );
-    case 'autosuggestTokens':
+    case 'autosuggest-tokens':
       return (
         <Autosuggest
           ariaLabel="Metrics"
@@ -97,7 +97,7 @@ function renderControl(kind: ControlKind, disabled: ReadonlySet<Disableable>) {
           tokens={[{ value: 'CPUUtilization' }, { value: 'MemoryUtilization' }]}
           onChange={noop}
           options={suggestions}
-          {...stateProps('autosuggestTokens', disabled)}
+          {...stateProps('autosuggest-tokens', disabled)}
         />
       );
     case 'select':
@@ -171,7 +171,7 @@ const validationItems: ReadonlyArray<{ value: ValidationState; label: string }> 
 const statefulControls: ReadonlyArray<{ key: StatefulControl; label: string }> = [
   { key: 'input', label: 'Input' },
   { key: 'autosuggest', label: 'Autosuggest' },
-  { key: 'autosuggestTokens', label: 'Autosuggest (tokens)' },
+  { key: 'autosuggest-tokens', label: 'Autosuggest with inline tokens' },
   { key: 'select', label: 'Select' },
   { key: 'multiselect', label: 'Multiselect' },
 ];
@@ -245,11 +245,11 @@ const combinations: ReadonlyArray<ControlKind[]> = [
   ['input', 'segmentedControl'],
   ['select', 'multiselect'],
   ['autosuggest', 'select'],
-  ['input', 'autosuggestTokens'],
+  ['input', 'autosuggest-tokens'],
   ['input', 'select', 'multiselect'],
   ['input', 'segmentedControl', 'select'],
   ['select', 'autosuggest', 'multiselect'],
-  ['autosuggestTokens', 'select', 'multiselect'],
+  ['autosuggest-tokens', 'select', 'multiselect'],
 ];
 
 const permutations = createPermutations<{ controls: ControlKind[] }>([{ controls: combinations }]);

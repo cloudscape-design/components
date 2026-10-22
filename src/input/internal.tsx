@@ -157,7 +157,7 @@ function InternalInput(
   const hasSuffix = !!suffix;
   const hasAdornments = hasPrefix || hasSuffix;
 
-  const groupedControlClasses = getGroupedControlClassNames(styles, groupedControlProps);
+  const groupedControlClasses = getGroupedControlClassNames(styles, { ...groupedControlProps, disabled });
 
   // The field box owns the border, the native input owns the text padding. Custom properties
   // are set on both so each element resolves its own state tokens.

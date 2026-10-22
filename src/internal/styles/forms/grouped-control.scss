@@ -12,10 +12,37 @@ $grouped-control-border-radius: constants.$control-border-radius;
 
 @mixin grouped-control-base {
   @include styles.logical-radius($grouped-control-border-radius);
-  border-inline-start-color: awsui.$color-border-input-default;
-  border-inline-end-color: awsui.$color-border-input-default;
-  border-block-start-color: awsui.$color-border-input-default;
-  border-block-end-color: awsui.$color-border-input-default;
+  border-color: awsui.$color-border-control-group-default;
+  &:not(.grouped-with-error):not(.grouped-with-warning) {
+    &.grouped-disabled {
+      &.grouped-horizontal-first,
+      &.grouped-horizontal-middle,
+      &.grouped-horizontal-last,
+      &.grouped-horizontal-only {
+        border-block-color: transparent;
+      }
+      &.grouped-vertical-first,
+      &.grouped-vertical-only {
+        border-block-start-color: transparent;
+      }
+      &.grouped-vertical-last,
+      &.grouped-vertical-only {
+        border-block-end-color: transparent;
+      }
+      &.grouped-disabled.grouped-row-first {
+        border-inline-start-color: transparent;
+      }
+      &:not(.grouped-with-action) {
+        &.grouped-vertical-first,
+        &.grouped-vertical-middle,
+        &.grouped-vertical-only,
+        &.grouped-horizontal-last,
+        &.grouped-horizontal-only {
+          border-inline-end-color: transparent;
+        }
+      }
+    }
+  }
 }
 
 @mixin grouped-control-horizontal-first {
@@ -105,7 +132,11 @@ $grouped-control-border-radius: constants.$control-border-radius;
   }
 }
 
-@mixin grouped-control {
+@mixin grouped-control(
+  $validation-border-padding: calc(
+      #{constants.$invalid-control-left-border} + #{constants.$invalid-control-left-padding}
+    )
+) {
   @include grouped-control-base;
 
   &-horizontal {
@@ -137,15 +168,19 @@ $grouped-control-border-radius: constants.$control-border-radius;
     border-end-end-radius: 0;
   }
 
-  &.with-error {
+  &-with-error {
     @include grouped-control-status-edges(awsui.$color-text-status-error);
   }
-  &.with-warning {
+  &-with-warning {
     @include grouped-control-status-edges(awsui.$color-text-status-warning);
   }
 
-  &.with-error,
-  &.with-warning {
+  &-with-error,
+  &-with-warning {
+    &.grouped-row-first {
+      // Room for the validation thick border, which is rendered from the control group wrapper
+      padding-inline-start: $validation-border-padding;
+    }
     @include focus-visible.when-visible {
       @include mixins.windows-high-contrast-outline;
       box-shadow: foundation.$box-shadow-focused-light-invalid;
@@ -154,10 +189,5 @@ $grouped-control-border-radius: constants.$control-border-radius;
       @include mixins.windows-high-contrast-outline;
       box-shadow: foundation.$box-shadow-focused-light-invalid;
     }
-  }
-
-  &.grouped-validation-first {
-    // Room for the validation thick border, which is rendered from the control group wrapper
-    padding-inline-start: calc(#{constants.$invalid-control-left-border} + #{constants.$invalid-control-left-padding});
   }
 }
