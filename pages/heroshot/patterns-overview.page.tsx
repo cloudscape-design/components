@@ -890,14 +890,16 @@ function PatternPreview({ pattern }: { pattern: PatternDefinition }) {
       );
     case 'timestamps':
       return (
+        // The key label renders a `div`, so these wrappers cannot be `p` elements: React logs the
+        // invalid nesting as a console error, which fails the accessibility test run.
         <TextContent>
-          <p>
+          <div>
             <Box variant="awsui-key-label">{pattern.detail}</Box>5 hours ago by <Link href="#">plrs</Link>
-          </p>
+          </div>
           <br />
-          <p>
+          <div>
             <Box variant="awsui-key-label">Scan completed</Box>6 days ago
-          </p>
+          </div>
         </TextContent>
       );
     case 'wizard':
