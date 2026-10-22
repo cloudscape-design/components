@@ -1,17 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { forwardRef, useEffect, useRef, useState } from 'react';
+import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import {
-  getIsRtl,
-  getOffsetInlineStart,
+  getLogicalBoundingClientRect,
+  getScrollInlineStart,
   SingleTabStopNavigationAPI,
   SingleTabStopNavigationProvider,
   useMergeRefs,
   useSingleTabStopNavigation,
+  useStableCallback,
 } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
@@ -22,7 +23,7 @@ import { getAllFocusables } from '../internal/components/focus-lock/utils';
 import { hasModifierKeys, isPlainLeftClick } from '../internal/events';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import { usePrevious } from '../internal/hooks/use-previous';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useOneTheme, useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import { circleIndex } from '../internal/utils/circle-index';
 import { isHTMLElement } from '../internal/utils/dom';
@@ -41,7 +42,7 @@ import {
   onPaginationClick,
   scrollIntoView,
 } from './scroll-utils';
-import { getTabContainerStyles, getTabIndicatorStyles, getTabStyles } from './styles';
+import { getTabContainerStyles, getTabStyles } from './styles';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -109,9 +110,10 @@ export function TabHeaderBar({
   const i18n = useInternalI18n('tabs');
 
   const isVisualRefresh = useVisualRefresh();
+  const isOneTheme = useOneTheme();
 
-  const activeIndicatorRef = useRef<HTMLSpanElement>(null);
-  const indicatorMeasuredRef = useRef(false);
+  const [indicatorStyle, setIndicatorStyle] = useState<React.CSSProperties>({ opacity: 0 });
+  const previousIndicatorTabId = usePrevious(activeTabId);
   const headerContainerRefs = useRef<Map<string, HTMLElement>>(new Map());
 
   const containerObjectRef = useRef<HTMLDivElement>(null);
@@ -202,43 +204,55 @@ export function TabHeaderBar({
     }
   }, [activeTabId]);
 
-  useEffect(() => {
-    const indicator = activeIndicatorRef.current;
+  const activeTab = tabs.find(tab => tab.id === activeTabId);
+  const activeTabVisible = activeTab !== undefined && !activeTab.disabled;
+
+  const updateIndicator = ({ fromResize = false } = {}) => {
     const list = headerBarRef.current;
-    /* istanbul ignore if: refs are always attached when the effect runs */
-    if (!indicator || !list) {
-      return;
-    }
-    const activeTab = activeTabId ? tabs.find(tab => tab.id === activeTabId) : undefined;
-    const headerContainer = activeTabId ? headerContainerRefs.current.get(activeTabId) : undefined;
-    if (!headerContainer || !activeTab || activeTab.disabled) {
-      indicator.style.setProperty('--awsui-internal-style-tabs-active-indicator-opacity', '0');
+    const headerContainer = activeTabVisible ? headerContainerRefs.current.get(activeTab.id) : undefined;
+    if (!list || !headerContainer) {
+      setIndicatorStyle(prev => (prev.opacity === 0 ? prev : { ...prev, opacity: 0 }));
       return;
     }
 
-    const isRtl = getIsRtl(indicator);
-    const inlineOffset = getOffsetInlineStart(headerContainer);
-    const offset = (isRtl ? -1 : 1) * inlineOffset;
-    const width = headerContainer.offsetWidth - 1;
+    const headerRect = getLogicalBoundingClientRect(headerContainer);
+    const borderWidth = headerContainer.clientLeft;
+    const insetInlineStart = `${
+      headerRect.insetInlineStart -
+      getLogicalBoundingClientRect(list).insetInlineStart +
+      getScrollInlineStart(list) +
+      borderWidth
+    }px`;
+    const inlineSize = `${headerRect.inlineSize - 2 * borderWidth - 1}px`;
+    const animate = !fromResize && previousIndicatorTabId !== undefined && previousIndicatorTabId !== activeTabId;
 
-    const apply = () => {
-      indicator.style.setProperty('--awsui-internal-style-tabs-active-indicator-offset', `${offset}px`);
-      indicator.style.setProperty('--awsui-internal-style-tabs-active-indicator-scale', `${width}`);
-      indicator.style.setProperty('--awsui-internal-style-tabs-active-indicator-opacity', '1');
-    };
+    setIndicatorStyle(prev => {
+      const transition = animate ? undefined : 'none';
+      const sameGeometry =
+        prev.insetInlineStart === insetInlineStart && prev.inlineSize === inlineSize && prev.opacity === 1;
+      if (sameGeometry && (fromResize || prev.transition === transition)) {
+        return prev;
+      }
+      return { insetInlineStart, inlineSize, opacity: 1, ...(transition ? { transition } : {}) };
+    });
+  };
 
-    if (!indicatorMeasuredRef.current) {
-      const previousTransition = indicator.style.transition;
-      indicator.style.transition = 'none';
-      apply();
-
-      void indicator.offsetWidth;
-      indicator.style.transition = previousTransition;
-      indicatorMeasuredRef.current = true;
-    } else {
-      apply();
+  useLayoutEffect(() => {
+    if (isOneTheme) {
+      updateIndicator();
     }
-  }, [activeTabId, widthChange, tabs, style]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOneTheme, activeTabId, activeTabVisible]);
+
+  const onHeaderResize = useStableCallback(() => updateIndicator({ fromResize: true }));
+  useEffect(() => {
+    if (!isOneTheme || typeof ResizeObserver === 'undefined') {
+      return;
+    }
+    const observer = new ResizeObserver(onHeaderResize);
+    headerContainerRefs.current.forEach(element => observer.observe(element, { box: 'border-box' }));
+    return () => observer.disconnect();
+  }, [isOneTheme, tabs, onHeaderResize]);
 
   const onScroll = () => {
     if (headerBarRef.current) {
@@ -374,6 +388,7 @@ export function TabHeaderBar({
   }
 
   const TabList = hasActionOrDismissible ? 'div' : 'ul';
+  const Indicator = hasActionOrDismissible ? 'span' : 'li';
 
   return (
     <div className={classes}>
@@ -403,14 +418,16 @@ export function TabHeaderBar({
             aria-label={ariaLabel}
             aria-labelledby={ariaLabelledby}
             ref={headerBarRef as never}
-            style={getTabIndicatorStyles(style)}
+            style={isOneTheme ? getTabContainerStyles(style) : undefined}
             onScroll={onScroll}
             onKeyDown={onKeyDown}
             onFocus={onFocus}
             onBlur={onBlur}
           >
             {tabs.map(renderTabHeader)}
-            <span className={styles['tabs-active-indicator']} ref={activeIndicatorRef} aria-hidden="true" />
+            {isOneTheme && (
+              <Indicator className={styles['tabs-active-indicator']} style={indicatorStyle} aria-hidden="true" />
+            )}
           </TabList>
         </SingleTabStopNavigationProvider>
         {horizontalOverflow && (

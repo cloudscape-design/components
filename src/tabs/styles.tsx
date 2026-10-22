@@ -40,19 +40,10 @@ export function getTabContainerStyles(style: TabsProps['style']) {
   }
 
   return {
-    [customCssProps.styleTabsSeparatorColor]: style?.tabSeparator?.color,
-    [customCssProps.styleTabsSeparatorWidth]: style?.tabSeparator?.width,
-  };
-}
-
-export function getTabIndicatorStyles(style: TabsProps['style']) {
-  if (SYSTEM !== 'core') {
-    return undefined;
-  }
-
-  return {
     [customCssProps.styleTabsActiveIndicatorColor]: style?.tab?.activeIndicator?.color,
     [customCssProps.styleTabsActiveIndicatorWidth]: style?.tab?.activeIndicator?.width,
     [customCssProps.styleTabsActiveIndicatorBorderRadius]: style?.tab?.activeIndicator?.borderRadius,
+    [customCssProps.styleTabsSeparatorColor]: style?.tabSeparator?.color,
+    [customCssProps.styleTabsSeparatorWidth]: style?.tabSeparator?.width,
   };
 }
