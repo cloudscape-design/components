@@ -126,6 +126,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundSegmentDisabled: { light: 'transparent', dark: 'transparent' },
   colorBackgroundSegmentWrapper: { light: '{colorNeutral100}', dark: '{colorNeutral1000}' },
   colorBorderSegmentActive: '{colorBorderToggleButtonNormalPressed}',
+  colorBorderSegmentHover: '{colorBorderButtonNormalDefault}',
   colorTextSegmentActive: '{colorTextToggleButtonNormalPressed}',
   colorTextSegmentDefault: '{colorTextButtonNormalDefault}',
   colorTextSegmentHover: '{colorTextButtonNormalHover}',
