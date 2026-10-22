@@ -5,6 +5,10 @@
 
 @use '../internal/styles/tokens' as awsui;
 @use './motion';
+@use '../internal/styles/style-api' as style-api;
+
+@include style-api.docs-forward('copyButton', 'button', 'root');
+@include style-api.docs-forward('statusPopover', 'popover');
 
 .root {
   display: contents;

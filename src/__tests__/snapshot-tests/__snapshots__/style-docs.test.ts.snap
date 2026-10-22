@@ -8,9 +8,23 @@ exports[`Style API docs definition for alert matches the snapshot: alert 1`] = `
       "properties": [
         "color",
         "background",
-        "border",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
         "border-radius",
+        "border-start-start-radius",
+        "border-start-end-radius",
+        "border-end-start-radius",
+        "border-end-end-radius",
         "padding",
+        "padding-block",
+        "padding-inline",
       ],
       "propertyDescriptions": {},
       "tokenDescriptions": {},
@@ -48,9 +62,23 @@ exports[`Style API docs definition for badge matches the snapshot: badge 1`] = `
       "properties": [
         "color",
         "background",
-        "border",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
         "border-radius",
+        "border-start-start-radius",
+        "border-start-end-radius",
+        "border-end-start-radius",
+        "border-end-end-radius",
         "padding",
+        "padding-block",
+        "padding-inline",
         "font-family",
         "font-size",
         "font-weight",
@@ -71,9 +99,23 @@ exports[`Style API docs definition for button matches the snapshot: button 1`] =
       "properties": [
         "color",
         "background",
-        "border",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
         "border-radius",
+        "border-start-start-radius",
+        "border-start-end-radius",
+        "border-end-start-radius",
+        "border-end-end-radius",
         "padding",
+        "padding-block",
+        "padding-inline",
         "box-shadow",
       ],
       "propertyDescriptions": {},
@@ -109,14 +151,38 @@ exports[`Style API docs definition for checkbox matches the snapshot: checkbox 1
 }
 `;
 
+exports[`Style API docs definition for copy-to-clipboard matches the snapshot: copy-to-clipboard 1`] = `
+{
+  "slots": [
+    {
+      "forwardsTo": {
+        "component": "button",
+        "slot": "root",
+      },
+      "name": "copyButton",
+    },
+    {
+      "forwardsTo": {
+        "component": "popover",
+      },
+      "name": "statusPopover",
+    },
+  ],
+}
+`;
+
 exports[`Style API docs definition for dropdown matches the snapshot: dropdown 1`] = `
 {
   "slots": [
     {
-      "name": "dropdown",
+      "name": "container",
       "properties": [
         "background",
         "border-radius",
+        "border-start-start-radius",
+        "border-start-end-radius",
+        "border-end-start-radius",
+        "border-end-end-radius",
         "box-shadow",
       ],
       "propertyDescriptions": {},
@@ -152,6 +218,55 @@ exports[`Style API docs definition for link matches the snapshot: link 1`] = `
         "focus-ring-width",
         "focus-ring-radius",
       ],
+    },
+  ],
+}
+`;
+
+exports[`Style API docs definition for popover matches the snapshot: popover 1`] = `
+{
+  "slots": [
+    {
+      "name": "container",
+      "properties": [
+        "background",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
+        "border-radius",
+        "border-start-start-radius",
+        "border-start-end-radius",
+        "border-end-start-radius",
+        "border-end-end-radius",
+        "box-shadow",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
+    },
+    {
+      "name": "arrow",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [
+        "fill-color",
+        "border-color",
+        "border-width",
+      ],
+    },
+    {
+      "forwardsTo": {
+        "component": "button",
+        "slot": "root",
+      },
+      "name": "dismissButton",
     },
   ],
 }
@@ -198,15 +313,60 @@ exports[`Style API docs definition for toggle matches the snapshot: toggle 1`] =
 }
 `;
 
+exports[`Style API docs definition for tooltip matches the snapshot: tooltip 1`] = `
+{
+  "slots": [
+    {
+      "name": "container",
+      "properties": [
+        "background",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
+        "border-radius",
+        "border-start-start-radius",
+        "border-start-end-radius",
+        "border-end-start-radius",
+        "border-end-end-radius",
+        "box-shadow",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
+    },
+    {
+      "name": "arrow",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [
+        "fill-color",
+        "border-color",
+        "border-width",
+      ],
+    },
+  ],
+}
+`;
+
 exports[`Style API docs list of components with a Style API doc matches the snapshot 1`] = `
 [
   "alert",
   "badge",
   "button",
   "checkbox",
+  "copy-to-clipboard",
   "dropdown",
   "link",
+  "popover",
   "radio-button",
   "toggle",
+  "tooltip",
 ]
 `;
