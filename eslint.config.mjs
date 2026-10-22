@@ -201,6 +201,35 @@ export default tsEslint.config(
     },
   },
   {
+    // OptionList and the shared listbox engine sit below Select and Multiselect, so they must not depend on them at
+    // runtime. Type-only imports (e.g. the `renderOption` types) are allowed. The remaining listbox files join this
+    // rule when Select and Multiselect move onto the engine.
+    files: [
+      'src/option-list/**',
+      'src/internal/components/listbox/use-listbox.ts',
+      'src/internal/components/listbox/use-type-ahead.ts',
+      'src/internal/components/listbox/index.tsx',
+      'src/internal/components/listbox/parts/list.tsx',
+      'src/internal/components/listbox/parts/item.tsx',
+    ],
+    ignores: ['**/__tests__/**', '**/__integ__/**', '**/__motion__/**', '**/__a11y__/**'],
+    rules: {
+      '@typescript-eslint/no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['**/select/**', '**/multiselect/**'],
+              allowTypeImports: true,
+              message:
+                'OptionList and the listbox engine sit below Select and Multiselect. Import only types from them, or move the shared code down.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
     files: ['**/__tests__/**', '**/__integ__/**', '**/__motion__/**', '**/__a11y__/**'],
     ...jestPlugin.configs['flat/recommended'],
     rules: {

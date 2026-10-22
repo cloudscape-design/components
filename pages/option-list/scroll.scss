@@ -1,0 +1,15 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+// Scroll containers for the OptionList scrolling page. Applied to a wrapper div, or to the OptionList root.
+.fixed-height {
+  block-size: 240px;
+  overflow: auto;
+}
+
+.max-height {
+  max-block-size: 240px;
+  overflow: auto;
+}
