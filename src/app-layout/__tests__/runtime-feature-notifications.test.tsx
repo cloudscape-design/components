@@ -567,6 +567,23 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     expect(wrapper.findToolsToggle()).toBeTruthy();
   });
 
+  test('preserves feature notifications drawer content in the DOM after it is closed', () => {
+    featureNotifications.registerFeatureNotifications(featureNotificationsDefaults);
+    const { wrapper } = renderComponent(<AppLayout />);
+
+    expect(createWrapper().findList()).toBeNull();
+
+    wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)!.click();
+    const list = wrapper.findActiveDrawer()!.findList()!.getElement();
+
+    wrapper.findActiveDrawerCloseButton()!.click();
+    expect(wrapper.findActiveDrawer()).toBeNull();
+    expect(list).toBeInTheDocument();
+
+    wrapper.findDrawerTriggerById(featureNotificationsDefaults.id)!.click();
+    expect(wrapper.findActiveDrawer()!.findList()!.getElement()).toBe(list);
+  });
+
   test('usage metrics', () => {
     const sendPanoramaMetricSpy = jest.spyOn(metrics, 'logComponentUsed').mockImplementation(() => {});
 

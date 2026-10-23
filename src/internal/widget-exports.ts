@@ -4,7 +4,7 @@ export { PACKAGE_VERSION } from './environment';
 
 // Legacy widgetized parts
 export {
-  AppLayoutDrawerImplementation as AppLayoutDrawer,
+  AppLayoutDrawersImplementation as AppLayoutDrawer,
   AppLayoutGlobalDrawersImplementation as AppLayoutGlobalDrawers,
 } from '../app-layout/visual-refresh-toolbar/drawer';
 export { AppLayoutNavigationImplementation as AppLayoutNavigation } from '../app-layout/visual-refresh-toolbar/navigation';
