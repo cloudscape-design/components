@@ -298,6 +298,67 @@ describe('fallback customization with i18n', () => {
     expect(findHeader().getElement()).toHaveTextContent('Ooops, <Link>share feedback</Link>');
     expect(findDescription().getElement()).toHaveTextContent('Please, <Link>share feedback</Link>');
   });
+
+  test.each([
+    'Try again, <Feedback>a<Link>b</Link>c</Feedback>.',
+    'Try {name}, <Feedback>share feedback</Feedback>.',
+    'Try again, <Feedback>share feedback</Link>.',
+    'Try again, <Feedback>share feedback.',
+    'Try again, share feedback</Feedback>.',
+    '{hasFeedback, select, true {Try again, <Feedback>share feedback</Feedback>.}}',
+    '{hasFeedback, select, true {a} true {b} other {c}}',
+  ])('renders the raw description when it cannot be fully formatted: %s', descriptionText => {
+    renderWithErrorBoundary(<b>{{}}</b>, {
+      i18nStrings: { descriptionText, components: { Feedback: () => <>custom</> } },
+    });
+    expect(findDescription().getElement()).toHaveTextContent(descriptionText);
+  });
+
+  test('drops <Feedback> content when no Feedback component is provided', () => {
+    renderWithErrorBoundary(<b>{{}}</b>, {
+      i18nStrings: { descriptionText: 'Try again, <Feedback>share feedback</Feedback>.' },
+    });
+    expect(findDescription().getElement()).toHaveTextContent('Try again, .');
+    expect(findFeedbackAction()).toBe(null);
+  });
+
+  test('tolerates whitespace before the closing angle bracket of a <Feedback> tag', () => {
+    renderWithErrorBoundary(<b>{{}}</b>, {
+      i18nStrings: {
+        descriptionText: 'Try again, <Feedback >share feedback</Feedback >.',
+        components: { Feedback: ({ children }) => <a href="https://feed.back">{children}</a> },
+      },
+    });
+    expect(findDescription().getElement()).toHaveTextContent('Try again, share feedback.');
+    expect(findFeedbackAction()!.find('a')!.getElement()).toHaveTextContent('share feedback');
+  });
+
+  test.each([
+    [true, 'Try again, share feedback.'],
+    [false, 'Try again.'],
+  ])('resolves a hasFeedback select in i18n strings (Feedback provided: %s)', (provided, expected) => {
+    const Feedback = ({ children }: { children: React.ReactNode }) => <a href="https://feed.back">{children}</a>;
+    renderWithErrorBoundary(<b>{{}}</b>, {
+      i18nStrings: {
+        descriptionText:
+          '{hasFeedback, select, true {Try again, <Feedback>share feedback</Feedback>.} other {Try again.}}',
+        components: provided ? { Feedback } : undefined,
+      },
+    });
+    expect(findDescription().getElement()).toHaveTextContent(expected);
+  });
+
+  test.each([
+    ["It''s broken.", "It's broken."],
+    ["It's broken, '<Feedback>' isn''t a tag.", "It's broken, <Feedback> isn't a tag."],
+    ["Unterminated '{quote", 'Unterminated {quote'],
+    ["'{It''s quoted}'", "{It's quoted}"],
+  ])('applies ICU apostrophe quoting in i18n strings: %s', (descriptionText, expected) => {
+    renderWithErrorBoundary(<b>{{}}</b>, {
+      i18nStrings: { descriptionText, components: { Feedback: () => <>custom</> } },
+    });
+    expect(findDescription().getElement()).toHaveTextContent(expected);
+  });
 });
 
 describe('fallback customization with renderFallback', () => {

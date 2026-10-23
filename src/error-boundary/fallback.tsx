@@ -3,12 +3,12 @@
 
 import React from 'react';
 import clsx from 'clsx';
-import IntlMessageFormat from 'intl-messageformat';
 
 import InternalAlert from '../alert/internal';
 import InternalButton from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
+import { formatDescription } from './format-description';
 import { ErrorBoundaryProps } from './interfaces';
 import { canUseRefresh, refreshPage } from './utils';
 
@@ -75,10 +75,10 @@ function DefaultDescriptionContent({
 
   // This ensures that the description string provided via i18nStrings also supports the <Feedback> injection,
   // because the i18n() helper propagates the second argument as is, without applying intl-format to it.
-  // We wrap the format with try-catch to avoid intl errors caused by incorrectly referenced components.
+  // We wrap the format with try-catch to avoid errors caused by incorrectly referenced components.
   function safeFormat(descriptionText?: string) {
     try {
-      return descriptionText ? new IntlMessageFormat(descriptionText).format(formatArgs) : undefined;
+      return descriptionText ? formatDescription(descriptionText, formatArgs) : undefined;
     } catch {
       return descriptionText;
     }
