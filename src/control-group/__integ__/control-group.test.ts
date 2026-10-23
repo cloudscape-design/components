@@ -3,8 +3,8 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper from '../../../../../lib/components/test-utils/selectors';
-import ControlGroupWrapper from '../../../../../lib/components/test-utils/selectors/internal/control-group';
+import createWrapper from '../../../lib/components/test-utils/selectors';
+import ControlGroupWrapper from '../../../lib/components/test-utils/selectors/control-group';
 
 const wrapperSelector = '[data-testid="control-group-wrapper"]';
 

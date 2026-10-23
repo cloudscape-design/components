@@ -5,35 +5,37 @@ import clsx from 'clsx';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { InternalButton } from '../../../button/internal';
-import { getBaseProps } from '../../base-component';
+import { InternalButton } from '../button/internal';
+import { getBaseProps } from '../internal/base-component';
 import {
   GroupedControlContext,
   GroupedControlDirection,
   GroupedControlPosition,
-} from '../../context/control-group-context';
-import { FormFieldContext, useFormFieldContext } from '../../context/form-field-context';
-import { useFitsInline } from '../../hooks/use-fits-inline';
-import { flattenChildren } from '../../utils/flatten-children';
-import { joinStrings } from '../../utils/strings/join-strings';
+} from '../internal/context/control-group-context';
+import { FormFieldContext, useFormFieldContext } from '../internal/context/form-field-context';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useFitsInline } from '../internal/hooks/use-fits-inline';
+import { flattenChildren } from '../internal/utils/flatten-children';
+import { joinStrings } from '../internal/utils/strings/join-strings';
 import { ControlGroupProps } from './interfaces';
 
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
-export { ControlGroupProps };
-
-export default function ControlGroup({
+export default function InternalControlGroup({
   children,
   direction = 'auto',
   inlineLabelText,
   actionButton,
+  ariaLabelledby,
+  ariaDescribedby,
+  __internalRootRef,
   ...props
-}: ControlGroupProps) {
+}: ControlGroupProps & InternalBaseComponentProps) {
   const baseProps = getBaseProps(props);
   const labelId = useUniqueId('control-group-label');
 
-  const formFieldContext = useFormFieldContext({});
+  const formFieldContext = useFormFieldContext({ ariaLabelledby, ariaDescribedby });
   const isInvalid = !!formFieldContext.invalid;
   const isWarning = !!formFieldContext.warning && !isInvalid;
 
@@ -42,6 +44,11 @@ export default function ControlGroup({
   // Merge FormField's label id (first) with the internal inline label when present.
   const groupAriaLabelledby = joinStrings(formFieldContext.ariaLabelledby, inlineLabelText ? labelId : undefined);
   const groupAriaDescribedby = joinStrings(formFieldContext.ariaDescribedby);
+
+  // When an inline label is rendered, the native group must have an id so the
+  // label's htmlFor can reference it. Fall back to a generated id if none was provided.
+  const generatedControlId = useUniqueId('control-group');
+  const resolvedControlId = formFieldContext.controlId ?? (inlineLabelText ? generatedControlId : undefined);
 
   const flattenedChildren = flattenChildren(children, 'ControlGroup');
   const controlCount = flattenedChildren.length;
@@ -119,6 +126,7 @@ export default function ControlGroup({
             ? {}
             : {
                 role: 'group',
+                id: resolvedControlId,
                 'aria-labelledby': groupAriaLabelledby,
                 'aria-describedby': groupAriaDescribedby,
                 'aria-invalid': isInvalid ? 'true' : undefined,
@@ -135,6 +143,7 @@ export default function ControlGroup({
   const groupLayoutWrapper = (
     <div
       {...(inlineLabelText ? {} : baseProps)}
+      ref={inlineLabelText ? undefined : __internalRootRef}
       className={clsx(styles['group-layout-wrapper'], !inlineLabelText && rootClassnames)}
     >
       {renderGroupLayout(false)}
@@ -154,7 +163,7 @@ export default function ControlGroup({
 
   if (inlineLabelText) {
     return (
-      <div {...baseProps} className={clsx(...rootClassnames, styles['inline-label-wrapper'])}>
+      <div {...baseProps} ref={__internalRootRef} className={clsx(...rootClassnames, styles['inline-label-wrapper'])}>
         <label id={labelId} className={clsx(styles['inline-label'], testUtilStyles['inline-label'])}>
           {inlineLabelText}
         </label>

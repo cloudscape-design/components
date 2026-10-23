@@ -3,18 +3,12 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import FormField from '../../../../../lib/components/form-field';
-import ControlGroup from '../../../../../lib/components/internal/components/control-group';
-import { ResetGroupedControlContext } from '../../../../../lib/components/internal/context/control-group-context';
-import Select from '../../../../../lib/components/select';
-import createWrapper from '../../../../../lib/components/test-utils/dom';
-import ControlGroupWrapper from '../../../../../lib/components/test-utils/dom/internal/control-group';
+import ControlGroup from '../../../lib/components/control-group';
+import FormField from '../../../lib/components/form-field';
+import { ResetGroupedControlContext } from '../../../lib/components/internal/context/control-group-context';
+import Select from '../../../lib/components/select';
+import createWrapper from '../../../lib/components/test-utils/dom';
 import { DirectionProbe, PositionProbe } from './common';
-
-function findControlGroup(container: HTMLElement) {
-  const element = container.querySelector<HTMLElement>(`.${ControlGroupWrapper.rootSelector}`);
-  return element && new ControlGroupWrapper(element);
-}
 
 describe('Control group', () => {
   test('keeps focus on a control when the children are reordered', () => {
@@ -23,7 +17,7 @@ describe('Control group', () => {
 
     const { container, rerender } = render(<ControlGroup>{[alpha, beta]}</ControlGroup>);
 
-    const alphaInput = findControlGroup(container)!.findControls()[0].find('input')!.getElement();
+    const alphaInput = createWrapper(container).findControlGroup()!.findControls()[0].find('input')!.getElement();
     alphaInput.focus();
     expect(document.activeElement).toBe(alphaInput);
 
@@ -31,7 +25,7 @@ describe('Control group', () => {
     rerender(<ControlGroup>{[beta, alpha]}</ControlGroup>);
 
     // The same DOM node is still focused; it was moved, not remounted.
-    expect(findControlGroup(container)!.findControls()[1].find('input')!.getElement()).toBe(alphaInput);
+    expect(createWrapper(container).findControlGroup()!.findControls()[1].find('input')!.getElement()).toBe(alphaInput);
     expect(document.activeElement).toBe(alphaInput);
   });
 
@@ -43,7 +37,7 @@ describe('Control group', () => {
         </ControlGroup>
       );
 
-      expect(findControlGroup(container)!.findControls()[0].getElement()).toHaveTextContent('only');
+      expect(createWrapper(container).findControlGroup()!.findControls()[0].getElement()).toHaveTextContent('only');
     });
 
     test('exposes first / middle / last positions to each child in order', () => {
@@ -55,7 +49,7 @@ describe('Control group', () => {
         </ControlGroup>
       );
 
-      const controls = findControlGroup(container)!.findControls();
+      const controls = createWrapper(container).findControlGroup()!.findControls();
       expect(controls[0].getElement()).toHaveTextContent('first');
       expect(controls[1].getElement()).toHaveTextContent('middle');
       expect(controls[2].getElement()).toHaveTextContent('last');
@@ -72,7 +66,7 @@ describe('Control group', () => {
         </ControlGroup>
       );
 
-      expect(findControlGroup(container)!.findControls()[0].getElement()).toHaveTextContent('none');
+      expect(createWrapper(container).findControlGroup()!.findControls()[0].getElement()).toHaveTextContent('none');
     });
   });
 
@@ -84,7 +78,7 @@ describe('Control group', () => {
         </ControlGroup>
       );
 
-      const actionButton = findControlGroup(container)!.findActionButton();
+      const actionButton = createWrapper(container).findControlGroup()!.findActionButton();
       expect(actionButton).not.toBeNull();
       expect(actionButton!.getElement()).toHaveAccessibleName('Remove');
     });
@@ -96,7 +90,7 @@ describe('Control group', () => {
         </ControlGroup>
       );
 
-      expect(findControlGroup(container)!.findActionButton()).toBeNull();
+      expect(createWrapper(container).findControlGroup()!.findActionButton()).toBeNull();
     });
 
     test('calls onClick when the action button is clicked', () => {
@@ -107,7 +101,7 @@ describe('Control group', () => {
         </ControlGroup>
       );
 
-      const actionButton = findControlGroup(container)!.findActionButton()!;
+      const actionButton = createWrapper(container).findControlGroup()!.findActionButton()!;
       actionButton.click();
       expect(onClick).toHaveBeenCalledTimes(1);
     });
@@ -123,7 +117,7 @@ describe('Control group', () => {
         </ControlGroup>
       );
 
-      const controls = findControlGroup(container)!.findControls();
+      const controls = createWrapper(container).findControlGroup()!.findControls();
       expect(controls[0].getElement()).toHaveTextContent('vertical');
       expect(controls[1].getElement()).toHaveTextContent('vertical');
       expect(controls[2].getElement()).toHaveTextContent('vertical');
@@ -138,7 +132,7 @@ describe('Control group', () => {
         </ControlGroup>
       );
 
-      expect(findControlGroup(container)!.findControls()[0].getElement()).toHaveTextContent('vertical');
+      expect(createWrapper(container).findControlGroup()!.findControls()[0].getElement()).toHaveTextContent('vertical');
     });
   });
 
@@ -151,7 +145,7 @@ describe('Control group', () => {
     );
 
     const group = getByRole('group');
-    const label = findControlGroup(container)!.findInlineLabel()!.getElement();
+    const label = createWrapper(container).findControlGroup()!.findInlineLabel()!.getElement();
     expect(label).toHaveTextContent('Threshold');
     expect(label.id).toBeTruthy();
     expect(group.getAttribute('aria-labelledby')).toBe(label.id);
@@ -166,7 +160,7 @@ describe('Control group', () => {
     );
 
     expect(getByRole('group').getAttribute('aria-labelledby')).toBeNull();
-    expect(findControlGroup(container)!.findInlineLabel()).toBeNull();
+    expect(createWrapper(container).findControlGroup()!.findInlineLabel()).toBeNull();
   });
 
   describe('FormField validation association', () => {
@@ -231,7 +225,7 @@ describe('Control group', () => {
         inlineLabelText: 'Threshold',
       });
       const group = getByRole('group');
-      const inlineLabelId = findControlGroup(container)!.findInlineLabel()!.getElement().id;
+      const inlineLabelId = createWrapper(container).findControlGroup()!.findInlineLabel()!.getElement().id;
 
       const labelledby = group.getAttribute('aria-labelledby')!.split(' ');
       expect(labelledby).toContain(inlineLabelId);
@@ -272,5 +266,43 @@ describe('Control group', () => {
     expect(firstId).toBeTruthy();
     expect(secondId).toBeTruthy();
     expect(firstId).not.toBe(secondId);
+  });
+
+  describe('ARIA properties', () => {
+    test('ariaLabelledby sets aria-labelledby on the group', () => {
+      const { getByRole } = render(
+        <ControlGroup ariaLabelledby="external-label">
+          <input data-testid="alpha" />
+          <input data-testid="beta" />
+        </ControlGroup>
+      );
+
+      expect(getByRole('group').getAttribute('aria-labelledby')).toBe('external-label');
+    });
+
+    test('ariaDescribedby sets aria-describedby on the group', () => {
+      const { getByRole } = render(
+        <ControlGroup ariaDescribedby="external-description">
+          <input data-testid="alpha" />
+          <input data-testid="beta" />
+        </ControlGroup>
+      );
+
+      expect(getByRole('group').getAttribute('aria-describedby')).toBe('external-description');
+    });
+
+    test('merges ariaLabelledby with the inline label id on the group', () => {
+      const { container, getByRole } = render(
+        <ControlGroup inlineLabelText="Threshold" ariaLabelledby="external-label">
+          <input data-testid="alpha" />
+          <input data-testid="beta" />
+        </ControlGroup>
+      );
+
+      const inlineLabelId = createWrapper(container).findControlGroup()!.findInlineLabel()!.getElement().id;
+      const labelledby = getByRole('group').getAttribute('aria-labelledby')!.split(' ');
+      expect(labelledby).toContain('external-label');
+      expect(labelledby).toContain(inlineLabelId);
+    });
   });
 });
