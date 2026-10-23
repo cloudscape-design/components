@@ -434,66 +434,68 @@ const AutosuggestInput = React.forwardRef(
     };
 
     const tokenField = isTokenMode && (
-      <div
-        ref={mergedFieldRef}
-        className={clsx(
-          styles['token-field'],
-          formFieldContext.invalid && styles['token-field-invalid'],
-          formFieldContext.warning && !formFieldContext.invalid && styles['token-field-warning'],
-          disabled && styles['token-field-disabled'],
-          readOnly && !disabled && styles['token-field-readonly'],
-          getGroupedControlClassNames(styles, groupedControlProps)
-        )}
-        style={getInputStylesCss(style)}
-      >
-        <span ref={leadingIconRef} className={styles['token-field-icon']}>
-          <InternalIcon name="search" variant={disabled ? 'disabled' : 'subtle'} />
-        </span>
-        {tokenList.length > 0 && (
-          <InlineTokens
-            ref={inlineTokensRef}
-            tokens={tokenList}
-            visibleCount={visibleCount}
-            disabled={disabled}
-            readOnly={readOnly}
-            expandToViewport={expandToViewport}
-            overflowOpen={tokensOverflowOpen}
-            tokenDismissLabel={tokenDismissLabel}
-            tokenOverflowAriaLabel={tokenOverflowAriaLabel}
-            onOverflowOpenChange={isOpen => {
-              if (isOpen) {
-                closeDropdown();
-              }
-              setTokensOverflowOpen(isOpen);
-            }}
-            onDismiss={removeToken}
-            onFocusEnter={() => (preventOpenOnFocusRef.current = true)}
-            onNavigateToInput={() => {
-              setTokensOverflowOpen(false);
-              inputRef.current?.focus();
-            }}
-          />
-        )}
-        <div ref={inputWrapperRef} className={styles['token-input-wrapper']}>
-          <InternalInput
-            type="text"
-            {...sharedInputProps}
-            __noBorder={true}
-            {...(!disabled && !readOnly && value
-              ? {
-                  __endIcon: 'close' as const,
-                  __onEndIconClick: () => {
-                    inputRef.current?.focus();
-                    clearValue();
-                  },
+      <ResetGroupedControlContext>
+        <div
+          ref={mergedFieldRef}
+          className={clsx(
+            styles['token-field'],
+            formFieldContext.invalid && styles['token-field-invalid'],
+            formFieldContext.warning && !formFieldContext.invalid && styles['token-field-warning'],
+            disabled && styles['token-field-disabled'],
+            readOnly && !disabled && styles['token-field-readonly'],
+            getGroupedControlClassNames(styles, groupedControlProps)
+          )}
+          style={getInputStylesCss(style)}
+        >
+          <span ref={leadingIconRef} className={styles['token-field-icon']}>
+            <InternalIcon name="search" variant={disabled ? 'disabled' : 'subtle'} />
+          </span>
+          {tokenList.length > 0 && (
+            <InlineTokens
+              ref={inlineTokensRef}
+              tokens={tokenList}
+              visibleCount={visibleCount}
+              disabled={disabled}
+              readOnly={readOnly}
+              expandToViewport={expandToViewport}
+              overflowOpen={tokensOverflowOpen}
+              tokenDismissLabel={tokenDismissLabel}
+              tokenOverflowAriaLabel={tokenOverflowAriaLabel}
+              onOverflowOpenChange={isOpen => {
+                if (isOpen) {
+                  closeDropdown();
                 }
-              : {})}
-            {...formFieldContext}
-            invalid={false}
-            warning={false}
-          />
+                setTokensOverflowOpen(isOpen);
+              }}
+              onDismiss={removeToken}
+              onFocusEnter={() => (preventOpenOnFocusRef.current = true)}
+              onNavigateToInput={() => {
+                setTokensOverflowOpen(false);
+                inputRef.current?.focus();
+              }}
+            />
+          )}
+          <div ref={inputWrapperRef} className={styles['token-input-wrapper']}>
+            <InternalInput
+              type="text"
+              {...sharedInputProps}
+              __noBorder={true}
+              {...(!disabled && !readOnly && value
+                ? {
+                    __endIcon: 'close' as const,
+                    __onEndIconClick: () => {
+                      inputRef.current?.focus();
+                      clearValue();
+                    },
+                  }
+                : {})}
+              {...formFieldContext}
+              invalid={false}
+              warning={false}
+            />
+          </div>
         </div>
-      </div>
+      </ResetGroupedControlContext>
     );
 
     const dropdown = (
