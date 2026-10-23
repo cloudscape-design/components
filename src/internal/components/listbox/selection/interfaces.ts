@@ -27,6 +27,9 @@ export interface SelectionModel {
 
   /** For group headers and select-all. */
   getGroupState(option: DropdownOption): GroupState;
-  /** Returns the selection that results from the user choosing `option`. */
+  /**
+   * Returns the selection that results from the user choosing `option`.
+   * Does not check whether `option` is disabled, read-only or non-interactive; callers must do that first.
+   */
   getNextSelection(option: DropdownOption): ReadonlyArray<OptionDefinition>;
 }

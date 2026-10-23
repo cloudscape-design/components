@@ -1,17 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
+import { multiSelection } from '../internal/components/listbox/selection/multi-selection';
 import { useAnnouncement } from '../internal/components/listbox/use-announcement';
 import { checkOptionValueField } from '../internal/components/listbox/utils/check-option-value-field.js';
-import { findOptionIndex } from '../internal/components/listbox/utils/connect-options';
 import { DropdownOption } from '../internal/components/option/interfaces';
-import { isGroup } from '../internal/components/option/utils/filter-options';
 import { prepareOptions } from '../internal/components/option/utils/prepare-options';
 import { fireNonCancelableEvent } from '../internal/events';
 import { SomeRequired } from '../internal/types';
@@ -123,64 +122,28 @@ export function useMultiselect({
   const visibleOptions =
     enableSelectAll && filteredOptions.length ? [selectAllOption, ...filteredOptions] : filteredOptions;
 
-  // Includes visible and non-visible (filtered out) options
-  const allNonParentOptions = flatOptions.filter(item => item.type !== 'parent').map(option => option.option);
-
-  const filteredNonParentOptions = filteredOptions.filter(item => item.type !== 'parent').map(item => item.option);
-
-  const selectedValues = useMemo(() => new Set(selectedOptions.map(option => option.value)), [selectedOptions]);
-
+  const selection = multiSelection(selectedOptions, {
+    options: filteredOptions,
+    // Includes visible and non-visible (filtered out) options
+    allOptions: flatOptions,
+    interactiveGroups: useInteractiveGroups,
+  });
   const isSomeSelected = selectedOptions.length > 0;
-  const isAllVisibleSelectableSelected =
-    isSomeSelected && filteredNonParentOptions.every(option => option.disabled || selectedValues.has(option.value));
-  const isAllSelected = allNonParentOptions.every(option => selectedValues.has(option.value));
+  const isAllSelected = selection.getGroupState(selectAllOption).selected;
 
   const toggleAll = () => {
-    const filteredNonParentOptionValues = new Set(filteredNonParentOptions.map(option => option.value));
-    fireNonCancelableEvent(onChange, {
-      selectedOptions: isAllVisibleSelectableSelected
-        ? selectedOptions.filter(option => !filteredNonParentOptionValues.has(option.value))
-        : allNonParentOptions.filter(
-            ({ disabled, value }) =>
-              selectedValues.has(value) || (!disabled && filteredNonParentOptionValues.has(value))
-          ),
-    });
+    fireNonCancelableEvent(onChange, { selectedOptions: selection.getNextSelection(selectAllOption) });
   };
 
   const updateSelectedOption = useCallback(
     (option: OptionDefinition | OptionGroup) => {
       // switch between selection and deselection behavior, ignores disabled options to prevent
       // getting stuck on one behavior when an option is disabled and its state cannot be changed
-      const isAllChildrenSelected = (optionsArray: OptionDefinition[]) =>
-        optionsArray.every(item => findOptionIndex(selectedOptions, item) > -1 || item.disabled);
-      const intersection = (visibleOptions: OptionDefinition[], options: OptionDefinition[]) =>
-        visibleOptions.filter(item => findOptionIndex(options, item) > -1 && !item.disabled);
-      const union = (visibleOptions: OptionDefinition[], options: OptionDefinition[]) =>
-        visibleOptions.filter(item => findOptionIndex(options, item) === -1).concat(options);
-      const select = (options: OptionDefinition[], selectedOptions: OptionDefinition[]) => {
-        return union(selectedOptions, options);
-      };
-      const unselect = (options: OptionDefinition[], selectedOptions: OptionDefinition[]) => {
-        return selectedOptions.filter(option => findOptionIndex(options, option) === -1);
-      };
-      let newSelectedOptions = [...selectedOptions];
-
-      if (isGroup(option)) {
-        const visibleOptions = intersection([...option.options], filteredNonParentOptions);
-        newSelectedOptions = isAllChildrenSelected(visibleOptions)
-          ? unselect(visibleOptions, newSelectedOptions)
-          : select(visibleOptions, newSelectedOptions);
-      } else {
-        newSelectedOptions = isAllChildrenSelected([option])
-          ? unselect([option], newSelectedOptions)
-          : select([option], newSelectedOptions);
-      }
-
       fireNonCancelableEvent(onChange, {
-        selectedOptions: newSelectedOptions,
+        selectedOptions: selection.getNextSelection({ option }),
       });
     },
-    [selectedOptions, onChange, filteredNonParentOptions]
+    [selection, onChange]
   );
 
   const scrollToIndex = useRef<SelectListProps.SelectListRef>(null);
