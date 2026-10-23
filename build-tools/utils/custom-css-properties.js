@@ -59,6 +59,8 @@ const customCssPropertiesList = [
   // Modal Custom Properties
   'modalCustomWidth',
   'modalCustomHeight',
+  // Table Custom Properties
+  'tableExpandableLevel',
   // Spinner Custom Properties
   'spinnerRotatorFrom',
   'spinnerRotatorTo',
