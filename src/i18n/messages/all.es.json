@@ -63,9 +63,11 @@
     "i18nStrings.externalIconAriaLabel": "Se abre en una pestaña nueva"
   },
   "button-dropdown": {
+    "errorIconAriaLabel": "Error",
     "filteringResultsText": "{matchesCount} de {totalCount} elementos",
     "i18nStrings.filteringItemAriaDescription": "Siga escribiendo para filtrar los resultados.",
-    "noMatch": "No hay acciones coincidentes"
+    "noMatch": "No hay acciones coincidentes",
+    "recoveryText": "Reintentar"
   },
   "calendar": {
     "i18nStrings.currentMonthAriaLabel": "Mes actual",
