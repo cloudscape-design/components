@@ -22,12 +22,11 @@ export function getGroupedControlClassNames(
   if (!position) {
     return '';
   }
-  const isFirstInRow = direction === 'vertical' || position === 'first' || position === 'only';
   return clsx(
     styles.grouped,
+    styles[`grouped-${direction}`],
     styles[`grouped-${direction}-${position}`],
     hasAction && styles['grouped-with-action'],
-    validation && (validation === 'error' ? styles['grouped-with-error'] : styles['grouped-with-warning']),
-    isFirstInRow && styles['grouped-row-first']
+    validation && (validation === 'error' ? styles['grouped-with-error'] : styles['grouped-with-warning'])
   );
 }

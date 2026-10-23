@@ -104,10 +104,7 @@ $grouped-control-border-radius: constants.$control-border-radius;
 
 @mixin grouped-control-disabled {
   &:not(.grouped-with-error):not(.grouped-with-warning) {
-    &.grouped-horizontal-first,
-    &.grouped-horizontal-middle,
-    &.grouped-horizontal-last,
-    &.grouped-horizontal-only {
+    &.grouped-horizontal {
       border-block-color: transparent;
     }
     &.grouped-vertical-first,
@@ -118,13 +115,13 @@ $grouped-control-border-radius: constants.$control-border-radius;
     &.grouped-vertical-only {
       border-block-end-color: transparent;
     }
-    &.grouped-row-first {
+    &.grouped-horizontal-first,
+    &.grouped-horizontal-only,
+    &.grouped-vertical {
       border-inline-start-color: transparent;
     }
     &:not(.grouped-with-action) {
-      &.grouped-vertical-first,
-      &.grouped-vertical-middle,
-      &.grouped-vertical-only,
+      &.grouped-vertical,
       &.grouped-horizontal-last,
       &.grouped-horizontal-only {
         border-inline-end-color: transparent;
@@ -178,7 +175,9 @@ $grouped-control-border-radius: constants.$control-border-radius;
 
   &-with-error,
   &-with-warning {
-    &.grouped-row-first {
+    &.grouped-horizontal-first,
+    &.grouped-horizontal-only,
+    &.grouped-vertical {
       // Room for the validation thick border, which is rendered from the control group wrapper
       padding-inline-start: $validation-border-padding;
     }
