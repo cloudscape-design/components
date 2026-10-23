@@ -3,7 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import styles from './styles.css.js';
+import styles from '../../../../select/parts/styles.css.js';
 
 interface OptionGroupProps {
   children: React.ReactNode;

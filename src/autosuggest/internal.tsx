@@ -14,11 +14,11 @@ import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/au
 import { warnOnUnsupportedGroupedControlProps } from '../internal/components/control-group-styles/dev-warnings';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
+import { checkOptionValueField } from '../internal/components/listbox/utils/check-option-value-field';
 import { useGroupedControlContext } from '../internal/context/control-group-context';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { checkOptionValueField } from '../select/utils/check-option-value-field';
 import { BaseKeyDetail, NonCancelableCustomEvent } from '../types/events';
 import { useAutosuggestTokenI18n } from './i18n-utils';
 import { AutosuggestItem, AutosuggestProps } from './interfaces';

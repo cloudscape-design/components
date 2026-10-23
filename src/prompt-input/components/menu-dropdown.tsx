@@ -5,8 +5,8 @@ import React, { useEffect, useRef } from 'react';
 
 import PlainList from '../../autosuggest/plain-list';
 import VirtualList from '../../autosuggest/virtual-list';
+import { useAnnouncement } from '../../internal/components/listbox/use-announcement';
 import InternalLiveRegion, { InternalLiveRegionRef } from '../../live-region/internal';
-import { useAnnouncement } from '../../select/utils/use-announcement';
 import { MenuItemsHandlers, MenuItemsState } from '../core/menu-state';
 import { PromptInputProps } from '../interfaces';
 

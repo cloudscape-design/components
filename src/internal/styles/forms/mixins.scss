@@ -242,7 +242,7 @@
     var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default)
   );
   @include input-hover-background-styles();
-  box-shadow: var(#{custom-props.$styleBoxShadowHover}, #{custom-props.$styleBoxShadowDefault});
+  box-shadow: var(#{custom-props.$styleBoxShadowHover}, var(#{custom-props.$styleBoxShadowDefault}));
 }
 
 @mixin input-readonly-styles {

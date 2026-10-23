@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { useAnnouncement } from '../select/utils/use-announcement';
+import { useAnnouncement } from '../internal/components/listbox/use-announcement';
 import { AutosuggestProps } from './interfaces';
 import { AutosuggestItemsHandlers, AutosuggestItemsState } from './options-controller';
 import PlainList from './plain-list';
