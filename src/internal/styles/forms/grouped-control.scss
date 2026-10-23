@@ -115,7 +115,9 @@ $grouped-control-border-radius: constants.$control-border-radius;
     &.grouped-vertical-only {
       border-block-end-color: transparent;
     }
-    &.grouped-row-first {
+    &.grouped-horizontal-first,
+    &.grouped-horizontal-only,
+    &.grouped-vertical {
       border-inline-start-color: transparent;
     }
     &:not(.grouped-with-action) {
@@ -173,7 +175,9 @@ $grouped-control-border-radius: constants.$control-border-radius;
 
   &-with-error,
   &-with-warning {
-    &.grouped-row-first {
+    &.grouped-horizontal-first,
+    &.grouped-horizontal-only,
+    &.grouped-vertical {
       // Room for the validation thick border, which is rendered from the control group wrapper
       padding-inline-start: $validation-border-padding;
     }
