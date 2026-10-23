@@ -8,6 +8,7 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { InternalDropdownProps } from '../../dropdown/internal';
 import { ButtonTriggerProps } from '../../internal/components/button-trigger';
 import { GroupState, SelectionModel } from '../../internal/components/listbox/selection/interfaces';
+import { singleSelection } from '../../internal/components/listbox/selection/single-selection';
 import { connectOptionsByValue } from '../../internal/components/listbox/utils/connect-options';
 import { DropdownOption } from '../../internal/components/option/interfaces';
 import { isGroup, isGroupInteractive, isInteractive } from '../../internal/components/option/utils/filter-options';
@@ -21,7 +22,7 @@ import useForwardFocus from '../../internal/hooks/forward-focus';
 import { usePrevious } from '../../internal/hooks/use-previous';
 import { DropdownStatusProps } from '../../types/dropdown-status';
 import { NonCancelableEventHandler } from '../../types/events';
-import { OptionDefinition, OptionGroup } from '../../types/option';
+import { OptionDefinition } from '../../types/option';
 import { SelectProps } from '../interfaces';
 import { FilterProps } from '../parts/filter';
 import { ItemProps } from '../parts/item';
@@ -43,7 +44,7 @@ interface UseSelectProps {
   setFilteringValue?: (filteringText: string) => void;
   useInteractiveGroups?: boolean;
   statusType: DropdownStatusProps.StatusType;
-  /** When provided, group and select-all checkbox state come from it. Select doesn't pass one. */
+  /** Source of group and select-all state. Defaults to single selection over `selectedOptions`. */
   selection?: SelectionModel;
   toggleAll?: () => void;
   dropdownRole?: SelectProps.DropdownRole;
@@ -67,7 +68,7 @@ export function useSelect({
   setFilteringValue,
   useInteractiveGroups = false,
   statusType,
-  selection,
+  selection = singleSelection(selectedOptions),
   toggleAll,
   dropdownRole,
 }: UseSelectProps) {
@@ -84,12 +85,6 @@ export function useSelect({
   const activeRef = hasFilter ? filterRef : menuRef;
   const __selectedOptions = connectOptionsByValue(options, selectedOptions);
   const __selectedOptionsSet = new Set(__selectedOptions);
-  const __selectedValuesSet = selectedOptions.reduce((selectedValuesSet: Set<string>, item: OptionDefinition) => {
-    if (item.value) {
-      selectedValuesSet.add(item.value);
-    }
-    return selectedValuesSet;
-  }, new Set<string>());
   const [
     { highlightType, highlightedOption, highlightedIndex },
     {
@@ -271,23 +266,8 @@ export function useSelect({
     }
     return menuProps;
   };
-  const getOptionGroupState = (group: OptionGroup): GroupState => {
-    const totalSelected = group.options.filter(item => !!item.value && __selectedValuesSet.has(item.value)).length;
-    const hasSelected = totalSelected > 0;
-    const allSelected = totalSelected === group.options.length;
-    return {
-      selected: hasSelected && allSelected && useInteractiveGroups,
-      indeterminate: hasSelected && !allSelected,
-    };
-  };
-
   // Only called for group rows and select-all.
-  const getGroupState = (option: DropdownOption): GroupState => {
-    if (selection) {
-      return selection.getGroupState(option);
-    }
-    return isGroup(option.option) ? getOptionGroupState(option.option) : { selected: false, indeterminate: false };
-  };
+  const getGroupState = (option: DropdownOption): GroupState => selection.getGroupState(option);
 
   const getOptionProps = (option: DropdownOption, index: number) => {
     const isSelectAll = option.type === 'select-all';

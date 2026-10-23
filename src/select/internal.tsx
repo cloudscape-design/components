@@ -11,6 +11,7 @@ import { getBaseProps } from '../internal/base-component';
 import { getBreakpointValue } from '../internal/breakpoints';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
+import { singleSelection } from '../internal/components/listbox/selection/single-selection';
 import { useAnnouncement } from '../internal/components/listbox/use-announcement';
 import { checkOptionValueField } from '../internal/components/listbox/utils/check-option-value-field';
 import { prepareOptions } from '../internal/components/option/utils/prepare-options.js';
@@ -129,6 +130,7 @@ const InternalSelect = React.forwardRef(
     const controlId = formFieldContext.controlId ?? selfControlId;
 
     const scrollToIndex = useRef<SelectListProps.SelectListRef>(null);
+    const selectedOptions = selectedOption ? [selectedOption] : [];
     const {
       isOpen,
       highlightType,
@@ -145,7 +147,8 @@ const InternalSelect = React.forwardRef(
       focusActiveRef,
       closeDropdown,
     } = useSelect({
-      selectedOptions: selectedOption ? [selectedOption] : [],
+      selectedOptions,
+      selection: singleSelection(selectedOptions),
       updateSelectedOption: option => fireNonCancelableEvent(onChange, { selectedOption: option }),
       options: filteredOptions,
       filteringType,
