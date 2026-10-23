@@ -6,7 +6,9 @@ import { BaseComponentProps } from '../types/base-component';
 import { CancelableEventHandler } from '../types/events';
 import { FormFieldControlProps } from '../types/form-field';
 
-export interface ControlGroupProps extends BaseComponentProps, FormFieldControlProps {
+export interface ControlGroupProps
+  extends BaseComponentProps,
+    Pick<FormFieldControlProps, 'ariaLabelledby' | 'ariaDescribedby'> {
   children?: React.ReactNode;
   /**
    * The axis along which the controls are laid out (`horizontal`, `vertical` or `auto`).

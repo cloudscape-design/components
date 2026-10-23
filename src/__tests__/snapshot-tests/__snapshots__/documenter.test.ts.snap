@@ -11087,16 +11087,6 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     {
-      "description": "Specifies the ID of the native form element. You can use it to relate
-a label element's \`for\` attribute to this control.
-
-It defaults to an automatically generated ID that
-is provided by its parent form field component.",
-      "name": "controlId",
-      "optional": true,
-      "type": "string",
-    },
-    {
       "defaultValue": "'auto'",
       "description": "The axis along which the controls are laid out (\`horizontal\`, \`vertical\` or \`auto\`).
 When set to \`auto\` (default), the component decides the direction based on whether it

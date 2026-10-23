@@ -274,17 +274,6 @@ describe('Control group', () => {
     expect(firstId).not.toBe(secondId);
   });
 
-  test('controlId sets the id on the element with role="group"', () => {
-    const { getByRole } = render(
-      <ControlGroup controlId="my-control-id">
-        <input data-testid="alpha" />
-        <input data-testid="beta" />
-      </ControlGroup>
-    );
-
-    expect(getByRole('group').id).toBe('my-control-id');
-  });
-
   describe('ARIA properties', () => {
     test('ariaLabelledby sets aria-labelledby on the group', () => {
       const { getByRole } = render(
