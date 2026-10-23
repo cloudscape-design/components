@@ -28,7 +28,6 @@ export default function ControlGroup({
   direction = 'auto',
   inlineLabelText,
   actionButton,
-  controlId,
   ariaLabelledby,
   ariaDescribedby,
   ...props
@@ -36,7 +35,7 @@ export default function ControlGroup({
   const baseProps = getBaseProps(props);
   const labelId = useUniqueId('control-group-label');
 
-  const formFieldContext = useFormFieldContext({ ariaLabelledby, ariaDescribedby, controlId });
+  const formFieldContext = useFormFieldContext({ ariaLabelledby, ariaDescribedby });
   const isInvalid = !!formFieldContext.invalid;
   const isWarning = !!formFieldContext.warning && !isInvalid;
 
