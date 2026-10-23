@@ -55,11 +55,6 @@ $input-tokens: style-api.resolve(
     @content;
     opacity: 1;
   }
-
-  &:-moz-placeholder {
-    @content;
-    opacity: 1;
-  }
 }
 
 .root {
