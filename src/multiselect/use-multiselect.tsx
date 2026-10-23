@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
@@ -128,23 +128,15 @@ export function useMultiselect({
     allOptions: flatOptions,
     interactiveGroups: useInteractiveGroups,
   });
-  const isSomeSelected = selectedOptions.length > 0;
-  const isAllSelected = selection.getGroupState(selectAllOption).selected;
 
   const toggleAll = () => {
     fireNonCancelableEvent(onChange, { selectedOptions: selection.getNextSelection(selectAllOption) });
   };
 
-  const updateSelectedOption = useCallback(
-    (option: OptionDefinition | OptionGroup) => {
-      // switch between selection and deselection behavior, ignores disabled options to prevent
-      // getting stuck on one behavior when an option is disabled and its state cannot be changed
-      fireNonCancelableEvent(onChange, {
-        selectedOptions: selection.getNextSelection({ option }),
-      });
-    },
-    [selection, onChange]
-  );
+  // Whether choosing an option selects or deselects it (disabled options included) is decided by the model.
+  const updateSelectedOption = (option: OptionDefinition | OptionGroup) => {
+    fireNonCancelableEvent(onChange, { selectedOptions: selection.getNextSelection({ option }) });
+  };
 
   const scrollToIndex = useRef<SelectListProps.SelectListRef>(null);
   const {
@@ -175,8 +167,7 @@ export function useMultiselect({
     useInteractiveGroups,
     statusType,
     embedded,
-    isAllSelected,
-    isSomeSelected,
+    selection,
     toggleAll,
     dropdownRole,
   });
