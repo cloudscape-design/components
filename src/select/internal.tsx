@@ -9,7 +9,6 @@ import Dropdown from '../dropdown/internal';
 import { useInternalI18n } from '../i18n/context.js';
 import { getBaseProps } from '../internal/base-component';
 import { getBreakpointValue } from '../internal/breakpoints';
-import { warnOnUnsupportedGroupedControlProps } from '../internal/components/control-group-styles/dev-warnings';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
 import { useAnnouncement } from '../internal/components/listbox/use-announcement';
@@ -18,6 +17,7 @@ import { prepareOptions } from '../internal/components/option/utils/prepare-opti
 import { ResetGroupedControlContext, useGroupedControlContext } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
+import { warnOnUnsupportedGroupedControlProps } from '../internal/grouped-control/dev-warnings';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { SomeRequired } from '../internal/types';

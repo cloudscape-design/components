@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { isDevelopment } from '../../is-development';
+import { isDevelopment } from '../is-development';
 
 export interface GroupedControlWarningsProps {
   /**
