@@ -46,11 +46,15 @@ export default function GridColumnLayout({
 
   const [breakpoint, ref] = useContainerBreakpoints(COLUMN_TRIGGERS);
 
+  // Counts above MAX_GRID_COLUMNS are routed to the CSS grid renderer, so the fallback should be
+  // unreachable. It degrades to a full-width stack rather than to columns with no width at all.
+  const gridDefinition = repeat(COLUMN_DEFS[columns] ?? COLUMN_DEFS[1]!, flattenedChildren.length);
+
   return (
     <InternalGrid
       ref={ref}
       disableGutters={true}
-      gridDefinition={repeat(COLUMN_DEFS[columns] ?? {}, flattenedChildren.length)}
+      gridDefinition={gridDefinition}
       className={clsx(styles.grid, styles[`grid-columns-${columns}`], styles[`grid-variant-${variant}`], {
         [styles['grid-horizontal-borders']]: shouldHaveHorizontalBorders,
         [styles['grid-vertical-borders']]: shouldHaveVerticalBorders,
