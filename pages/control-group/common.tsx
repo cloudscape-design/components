@@ -64,6 +64,7 @@ export const autosuggest = (
 
 export const autosuggestTokens = (
   <Autosuggest
+    data-testid="autosuggest-tokens"
     ariaLabel="Metrics"
     value=""
     tokens={[{ value: 'CPUUtilization' }, { value: 'MemoryUtilization' }]}
