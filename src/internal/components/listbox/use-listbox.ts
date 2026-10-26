@@ -7,6 +7,7 @@ import { useStableCallback, useUniqueId } from '@cloudscape-design/component-too
 import type { SelectProps } from '../../../select/interfaces';
 import { BaseKeyDetail, CancelableEventHandler } from '../../../types/events';
 import { OptionDefinition, OptionGroup } from '../../../types/option';
+import { KeyCode } from '../../keycode';
 import { DropdownOption } from '../option/interfaces';
 import { isGroup, isGroupInteractive, isInteractive } from '../option/utils/filter-options';
 import { OptionsListProps } from '../options-list';
@@ -197,7 +198,16 @@ export function useListbox({
     closeDropdown: onEscape,
   };
   // When the list has focus, Space always chooses. In an input, Space types unless an option is keyboard-highlighted.
-  const listKeyDownHandler = useMenuKeyboard({ ...navigation, preventNativeSpace: true });
+  const menuKeyDownHandler = useMenuKeyboard({ ...navigation, preventNativeSpace: true });
+  const listKeyDownHandler: CancelableEventHandler<BaseKeyDetail> = event => {
+    // The focused list sits inside a scroll container or the page, so the browser's own Home/End scrolling would
+    // also scroll that container to its top or bottom, racing the scroll that brings the highlighted option into
+    // view. Arrow keys are already prevented by the shared handler.
+    if (event.detail.keyCode === KeyCode.home || event.detail.keyCode === KeyCode.end) {
+      event.preventDefault();
+    }
+    menuKeyDownHandler(event);
+  };
   const inputKeyDownHandler = useMenuKeyboard({
     ...navigation,
     preventNativeSpace: !!highlightedOption && highlightType.type === 'keyboard',
