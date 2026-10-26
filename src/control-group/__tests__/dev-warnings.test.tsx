@@ -34,7 +34,7 @@ describe('Grouped control dev warnings', () => {
       render(<ControlGroup>{control}</ControlGroup>);
       expect(warnOnce).toHaveBeenCalledWith(
         componentName,
-        'The `invalid` prop is ignored on controls inside a control group. Set the validation state on the control group instead.'
+        'The `invalid` prop is ignored on controls inside a control group. Set the validation state on the control group instead by wrapping it in a form field.'
       );
     });
 
@@ -57,7 +57,7 @@ describe('Grouped control dev warnings', () => {
       render(<ControlGroup>{control}</ControlGroup>);
       expect(warnOnce).toHaveBeenCalledWith(
         componentName,
-        'The `warning` prop is ignored on controls inside a control group. Set the validation state on the control group instead.'
+        'The `warning` prop is ignored on controls inside a control group. Set the validation state on the control group instead by wrapping it in a form field.'
       );
     });
 
