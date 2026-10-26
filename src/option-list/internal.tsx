@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import clsx from 'clsx';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -13,19 +13,56 @@ import { singleSelection } from '../internal/components/listbox/selection/single
 import { useListbox } from '../internal/components/listbox/use-listbox';
 import { checkOptionValueField } from '../internal/components/listbox/utils/check-option-value-field';
 import { DropdownOption } from '../internal/components/option/interfaces';
+import { isGroup } from '../internal/components/option/utils/filter-options';
+import { flattenOptions } from '../internal/components/option/utils/flatten-options';
 import { fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
-import { OptionDefinition } from '../types/option';
+import type { SelectProps } from '../select/interfaces';
+import { OptionDefinition, OptionGroup } from '../types/option';
 import { OptionListProps } from './interfaces';
 
 import styles from './styles.css.js';
 import testClasses from './test-classes/styles.css.js';
 
 type InternalOptionListProps = OptionListProps & InternalBaseComponentProps;
+type InternalOption = OptionDefinition | OptionGroup;
 
-const EMPTY_SELECTION: ReadonlyArray<OptionDefinition> = [];
+const EMPTY_SELECTION: ReadonlyArray<OptionListProps.Option> = [];
+
+const isOptionGroup = (
+  option: OptionListProps.Option | OptionListProps.OptionGroup
+): option is OptionListProps.OptionGroup => isGroup(option as InternalOption);
+
+/**
+ * Converts the public options to the options the shared list renders: the `icon` slot becomes the custom icon of
+ * the shared option renderer. `originals` maps each converted option back to the consumer's object, so events and
+ * `renderOption` receive the consumer's options.
+ */
+function toInternalOptions(options: OptionListProps.Options) {
+  const originals = new Map<InternalOption, OptionListProps.Option>();
+  const convert = ({ icon, ...option }: OptionListProps.Option): OptionDefinition => {
+    const internal: OptionDefinition & { __customIcon?: React.ReactNode } = { ...option, __customIcon: icon };
+    return internal;
+  };
+  const internalOptions = options.map<InternalOption>(option => {
+    if (!isOptionGroup(option)) {
+      const internal = convert(option);
+      originals.set(internal, option);
+      return internal;
+    }
+    const children = option.options.map(child => {
+      const internal = convert(child);
+      originals.set(internal, child);
+      return internal;
+    });
+    const group: OptionGroup = { ...convert(option), options: children };
+    originals.set(group, option);
+    return group;
+  });
+  return { internalOptions, originals };
+}
 
 const InternalOptionList = React.forwardRef(
   (
@@ -37,18 +74,27 @@ const InternalOptionList = React.forwardRef(
       ariaLabel,
       ariaLabelledby,
       ariaDescribedby,
+      renderOption,
       i18nStrings,
       __internalRootRef,
       ...restProps
     }: InternalOptionListProps,
     ref: React.Ref<OptionListProps.Ref>
   ) => {
-    checkOptionValueField('OptionList', 'options', options);
-
     const baseProps = getBaseProps(restProps);
     const i18n = useInternalI18n('select');
 
-    const values = options.map(option => option.value);
+    const { listOptions, parentMap, originals, leafIndexes } = useMemo(() => {
+      const { internalOptions, originals } = toInternalOptions(options);
+      const { flatOptions, parentMap } = flattenOptions(internalOptions);
+      const leafIndexes = new Map<DropdownOption, number>();
+      flatOptions.filter(option => option.type !== 'parent').forEach((option, index) => leafIndexes.set(option, index));
+      return { listOptions: flatOptions, parentMap, originals, leafIndexes };
+    }, [options]);
+
+    const leafOptions = listOptions.filter(option => option.type !== 'parent').map(option => option.option);
+    checkOptionValueField('OptionList', 'options', leafOptions);
+    const values = leafOptions.map(option => option.value);
     if (new Set(values).size !== values.length) {
       warnOnce('OptionList', 'Every option must have a unique `value`. The component may work incorrectly.');
     }
@@ -60,26 +106,43 @@ const InternalOptionList = React.forwardRef(
       { componentName: 'OptionList', controlledProp: 'selectedOptions', changeHandler: 'onChange' }
     );
 
-    const listOptions = useMemo(
-      () => options.map<DropdownOption>(option => ({ option, disabled: option.disabled })),
-      [options]
-    );
-
     const selection =
       selectionType === 'multi'
-        ? multiSelection(selectedOptions, { options: listOptions })
+        ? multiSelection(selectedOptions, { options: listOptions, interactiveGroups: true })
         : singleSelection(selectedOptions);
 
     const controller = useListbox({
       options: listOptions,
       selection,
       onChange: next => {
-        setSelectedOptions(next);
-        fireNonCancelableEvent(onChange, { selectedOptions: next });
+        const nextSelectedOptions = next.map(option => originals.get(option) ?? option);
+        setSelectedOptions(nextSelectedOptions);
+        fireNonCancelableEvent(onChange, { selectedOptions: nextSelectedOptions });
       },
+      getParent: option => parentMap.get(option)?.option as OptionGroup | undefined,
       i18nStrings: { selectedAriaLabel: i18n('selectedAriaLabel', i18nStrings?.selectedAriaLabel) },
     });
     useForwardFocus(ref, controller.listRef);
+
+    const toOriginal = useCallback(
+      <T,>(option: T): T => (originals.get(option as InternalOption) as T | undefined) ?? option,
+      [originals]
+    );
+    const renderOriginalOption = useMemo<SelectProps.SelectOptionItemRenderer | undefined>(() => {
+      if (!renderOption) {
+        return undefined;
+      }
+      return ({ item, filterText }) => {
+        if (item.type === 'item') {
+          const parent = item.parent && { ...item.parent, option: toOriginal(item.parent.option) };
+          return renderOption({ item: { ...item, option: toOriginal(item.option), parent }, filterText });
+        }
+        return renderOption({
+          item: { ...item, option: toOriginal(item.option) } as SelectProps.SelectItem,
+          filterText,
+        });
+      };
+    }, [renderOption, toOriginal]);
 
     // The root, not the list, clears the highlight when the pointer leaves, so the leave covers the whole component.
     const { onMouseLeave } = controller.getListProps();
@@ -95,19 +158,20 @@ const InternalOptionList = React.forwardRef(
         <Listbox
           controller={controller}
           options={listOptions}
-          // OptionList's listbox is never its own scroll container, so the highlighted option is scrolled into
-          // view through all scrollable ancestors.
-          scrollStrategy="nearest"
+          renderOption={renderOriginalOption}
           listProps={{ onMouseLeave: undefined, ariaLabel, ariaLabelledby, ariaDescribedby }}
-          getOptionProps={(option, index) => ({
-            ...controller.getOptionProps(option, index),
-            // Inline, there is no dropdown border above the list, so the first item has no top divider.
-            hideTopDivider: index === 0,
-            className: testClasses.option,
-            // 1-based option position, used by test-utils.
-            'data-option-index': index + 1,
-            'data-value': option.option.value,
-          })}
+          getOptionProps={(option, index) => {
+            const leafIndex = leafIndexes.get(option);
+            return {
+              ...controller.getOptionProps(option, index),
+              // Inline, there is no dropdown border above the list, so the first item has no top divider.
+              hideTopDivider: index === 0,
+              className: leafIndex === undefined ? testClasses['group-header'] : testClasses.option,
+              // 1-based option position, used by test-utils. Group headers are not counted.
+              'data-option-index': leafIndex === undefined ? undefined : leafIndex + 1,
+              'data-value': option.option.value,
+            };
+          }}
         />
       </div>
     );

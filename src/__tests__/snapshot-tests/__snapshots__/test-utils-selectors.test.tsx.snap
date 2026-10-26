@@ -516,6 +516,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_root_efqlv",
   ],
   "option-list": [
+    "awsui_group-header_1kbcw",
     "awsui_option_1kbcw",
     "awsui_root_1kbcw",
   ],

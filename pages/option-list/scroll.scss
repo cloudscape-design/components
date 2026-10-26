@@ -3,13 +3,13 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-// Scroll containers for the OptionList scrolling page. Applied to a wrapper div, or to the OptionList root.
+// A scroll container for the list. Applied to a wrapper div, or to the OptionList root.
 .fixed-height {
   block-size: 240px;
   overflow: auto;
 }
 
-.max-height {
-  max-block-size: 240px;
+// Lets the list scroll inside the Dropdown content instead of overflowing it.
+.dropdown-content {
   overflow: auto;
 }

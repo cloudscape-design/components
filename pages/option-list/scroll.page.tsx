@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
+import Button, { ButtonProps } from '~components/button';
+import Dropdown from '~components/dropdown';
 import FormField from '~components/form-field';
 import Header from '~components/header';
 import OptionList, { OptionListProps } from '~components/option-list';
@@ -15,83 +17,108 @@ import styles from './scroll.scss';
 
 /**
  * Where the scrolling happens:
- * - `page`: no container, the page scrolls.
- * - `wrapper-fixed`: a wrapper div with a fixed height and `overflow: auto`.
- * - `wrapper-max`: a wrapper div with a max height and `overflow: auto`.
+ * - `wrapper`: a wrapper div with a fixed height and `overflow: auto`.
  * - `root`: the same fixed-height class passed to OptionList's `className`, so its root scrolls.
+ * - `page`: no container, the page scrolls.
+ * - `dropdown`: the list is the content of a Dropdown opened by a button.
  */
-type Container = 'page' | 'wrapper-fixed' | 'wrapper-max' | 'root';
-
-/**
- * Which options are selected when the list renders. `several` selects the option near the end first and option 3
- * second, so selection order differs from list order (relevant to which option focus entry highlights in multi).
- */
-type Preselected = 'none' | 'first' | 'middle' | 'near-end' | 'last' | 'several';
+type Container = 'wrapper' | 'root' | 'page' | 'dropdown';
+type Preselected = 'none' | 'near-end';
 
 type PageContext = React.Context<
   AppContextType<{
     container?: Container;
+    expandToViewport?: boolean;
     selectionType?: OptionListProps.SelectionType;
-    optionCount?: number;
     preselected?: Preselected;
   }>
 >;
 
-const getPreselectedOptions = (
-  options: OptionListProps.Options,
-  preselected: Preselected
-): ReadonlyArray<OptionListProps.Option> => {
-  const nearEnd = options[Math.floor(options.length * 0.8)];
-  switch (preselected) {
-    case 'first':
-      return [options[0]];
-    case 'middle':
-      return [options[Math.floor(options.length / 2)]];
-    case 'near-end':
-      return [nearEnd];
-    case 'last':
-      return [options[options.length - 1]];
-    case 'several':
-      return [nearEnd, options[2]];
-    default:
-      return [];
-  }
-};
+const options: OptionListProps.Option[] = Array.from({ length: 100 }, (_, index) => ({
+  value: `option-${index + 1}`,
+  label: `Option ${index + 1}`,
+}));
 
-const containerClassName: Record<Exclude<Container, 'page'>, string> = {
-  'wrapper-fixed': styles['fixed-height'],
-  'wrapper-max': styles['max-height'],
-  root: styles['fixed-height'],
-};
+function DropdownOptionList({
+  expandToViewport,
+  list,
+  listRef,
+}: {
+  expandToViewport: boolean;
+  list: (props: { onChange: () => void }) => React.ReactNode;
+  listRef: React.RefObject<OptionListProps.Ref>;
+}) {
+  const [open, setOpen] = useState(false);
+  const triggerRef = useRef<ButtonProps.Ref>(null);
 
-const createOptions = (count: number): OptionListProps.Options =>
-  Array.from({ length: count }, (_, index) => ({ value: `option-${index + 1}`, label: `Option ${index + 1}` }));
+  // Move focus into the list once the Dropdown has rendered its content.
+  useEffect(() => {
+    if (open) {
+      listRef.current?.focus();
+    }
+  }, [open, listRef]);
+
+  const close = (returnFocus: boolean) => {
+    setOpen(false);
+    if (returnFocus) {
+      triggerRef.current?.focus();
+    }
+  };
+
+  return (
+    <Dropdown
+      open={open}
+      onOutsideClick={() => close(false)}
+      onEscape={() => close(true)}
+      minWidth={320}
+      expandToViewport={expandToViewport}
+      trigger={
+        <Button
+          id="dropdown-trigger"
+          ref={triggerRef}
+          ariaExpanded={open}
+          ariaHaspopup="listbox"
+          iconName="caret-down-filled"
+          iconAlign="right"
+          onClick={() => setOpen(!open)}
+        >
+          Choose an option
+        </Button>
+      }
+      content={<div className={styles['dropdown-content']}>{list({ onChange: () => close(true) })}</div>}
+    />
+  );
+}
 
 function ConfiguredOptionList({
   container,
+  expandToViewport,
   selectionType,
-  options,
   preselected,
 }: {
   container: Container;
+  expandToViewport: boolean;
   selectionType: OptionListProps.SelectionType;
-  options: OptionListProps.Options;
   preselected: Preselected;
 }) {
-  // The initial selection checks that focus entry scrolls to the selected option.
-  const [selectedOptions, setSelectedOptions] = useState<ReadonlyArray<OptionListProps.Option>>(() =>
-    getPreselectedOptions(options, preselected)
+  const [selectedOptions, setSelectedOptions] = useState<ReadonlyArray<OptionListProps.Option>>(
+    preselected === 'near-end' ? [options[80]] : []
   );
+  const listRef = useRef<OptionListProps.Ref>(null);
 
-  const list = (
+  const list = ({ onChange }: { onChange?: () => void } = {}) => (
     <OptionList
+      ref={listRef}
       data-testid="option-list"
-      className={container === 'root' ? containerClassName.root : undefined}
+      className={container === 'root' ? styles['fixed-height'] : undefined}
       ariaLabelledby="option-list-heading"
       selectionType={selectionType}
       options={options}
       selectedOptions={selectedOptions}
-      onChange={({ detail }) => setSelectedOptions(detail.selectedOptions)}
+      onChange={({ detail }) => {
+        setSelectedOptions(detail.selectedOptions);
+        onChange?.();
+      }}
     />
   );
 
@@ -101,12 +128,14 @@ function ConfiguredOptionList({
       <Header variant="h2" id="option-list-heading">
         Long list
       </Header>
-      {container === 'page' || container === 'root' ? (
-        list
-      ) : (
-        <div id="scroll-container" className={containerClassName[container]}>
-          {list}
+      {container === 'wrapper' && (
+        <div id="scroll-container" className={styles['fixed-height']}>
+          {list()}
         </div>
+      )}
+      {(container === 'root' || container === 'page') && list()}
+      {container === 'dropdown' && (
+        <DropdownOptionList expandToViewport={expandToViewport} list={list} listRef={listRef} />
       )}
       <div data-testid="selected-value">
         Selected: {selectedOptions.map(option => option.value).join(', ') || 'none'}
@@ -117,11 +146,10 @@ function ConfiguredOptionList({
 
 export default function OptionListScrollPage() {
   const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
-  const container = urlParams.container ?? 'wrapper-fixed';
+  const container = urlParams.container ?? 'wrapper';
+  const expandToViewport = urlParams.expandToViewport ?? false;
   const selectionType = urlParams.selectionType ?? 'single';
-  const optionCount = Number(urlParams.optionCount ?? 100);
   const preselected = urlParams.preselected ?? 'none';
-  const options = createOptions(optionCount);
 
   return (
     <SimplePage
@@ -133,10 +161,20 @@ export default function OptionListScrollPage() {
               selectedId={container}
               onChange={({ detail }) => setUrlParams({ container: detail.selectedId as Container })}
               options={[
-                { id: 'page', text: 'Page' },
-                { id: 'wrapper-fixed', text: 'Wrapper, fixed height' },
-                { id: 'wrapper-max', text: 'Wrapper, max height' },
+                { id: 'wrapper', text: 'Wrapper' },
                 { id: 'root', text: 'OptionList className' },
+                { id: 'page', text: 'Page' },
+                { id: 'dropdown', text: 'Dropdown' },
+              ]}
+            />
+          </FormField>
+          <FormField label="Expand to viewport (Dropdown only)">
+            <SegmentedControl
+              selectedId={`${expandToViewport}`}
+              onChange={({ detail }) => setUrlParams({ expandToViewport: detail.selectedId === 'true' })}
+              options={[
+                { id: 'false', text: 'No' },
+                { id: 'true', text: 'Yes' },
               ]}
             />
           </FormField>
@@ -152,31 +190,13 @@ export default function OptionListScrollPage() {
               ]}
             />
           </FormField>
-          <FormField label="Number of options">
-            <SegmentedControl
-              selectedId={`${optionCount}`}
-              onChange={({ detail }) => setUrlParams({ optionCount: Number(detail.selectedId) })}
-              options={[
-                { id: '10', text: '10' },
-                { id: '100', text: '100' },
-                { id: '1000', text: '1000' },
-              ]}
-            />
-          </FormField>
-          <FormField
-            label="Already selected"
-            description="Several selects the option near the end first, then option 3. Single selection uses only the first."
-          >
+          <FormField label="Already selected">
             <SegmentedControl
               selectedId={preselected}
               onChange={({ detail }) => setUrlParams({ preselected: detail.selectedId as Preselected })}
               options={[
                 { id: 'none', text: 'None' },
-                { id: 'first', text: 'First' },
-                { id: 'middle', text: 'Middle' },
-                { id: 'near-end', text: 'Near end' },
-                { id: 'last', text: 'Last' },
-                { id: 'several', text: 'Several' },
+                { id: 'near-end', text: 'Option 81' },
               ]}
             />
           </FormField>
@@ -187,10 +207,10 @@ export default function OptionListScrollPage() {
       <div style={{ maxInlineSize: 520 }}>
         {/* Remount on every configuration change so the initial selection follows the settings. */}
         <ConfiguredOptionList
-          key={`${container}-${selectionType}-${optionCount}-${preselected}`}
+          key={`${container}-${expandToViewport}-${selectionType}-${preselected}`}
           container={container}
+          expandToViewport={expandToViewport}
           selectionType={selectionType}
-          options={options}
           preselected={preselected}
         />
       </div>

@@ -23,11 +23,10 @@ import styles from './styles.css.js';
 
 export interface ItemProps {
   index: number;
-  virtualIndex?: number;
   option: DropdownOption;
   /**
    * `single` renders a check mark on the selected option. `multi` renders a checkbox on every option
-   * (including group headers and select-all) and supports the indeterminate state.
+   * (including group headers) and supports the indeterminate state.
    */
   selectionType?: SelectionType;
   highlighted?: boolean;
@@ -51,7 +50,6 @@ export interface ItemProps {
 
 export interface ItemParentProps {
   index: number;
-  virtualIndex?: number;
   option: DropdownOption;
   disabled: boolean;
   indeterminate?: boolean;
@@ -61,7 +59,6 @@ export interface ItemParentProps {
 
 interface RenderItemProps {
   index: number;
-  virtualIndex?: number;
   option: DropdownOption;
   disabled: boolean;
   selected: boolean;
@@ -72,14 +69,14 @@ interface RenderItemProps {
 
 const toSingleGroupItem = (props: ItemParentProps): SelectProps.SelectOptionGroupItem => ({
   type: 'group',
-  index: props.virtualIndex ?? props.index,
+  index: props.index,
   option: props.option.option as OptionGroup,
   disabled: props.disabled,
 });
 
 const toMultiGroupItem = (props: ItemParentProps): MultiselectProps.MultiselectOptionGroupItem => ({
   type: 'group',
-  index: props.virtualIndex ?? props.index,
+  index: props.index,
   option: props.option.option as OptionGroup,
   indeterminate: props.indeterminate ?? false,
   selected: props.selected ?? false,
@@ -93,20 +90,17 @@ function toRenderItem(
   selectionType: SelectionType,
   props: RenderItemProps
 ): SelectProps.SelectItem | MultiselectProps.MultiselectItem {
-  const { option, index, virtualIndex, disabled, selected, highlighted, indeterminate, parentProps } = props;
+  const { option, index, disabled, selected, highlighted, indeterminate, parentProps } = props;
   const isMulti = selectionType === 'multi';
 
   if (option.type === 'parent') {
     return isMulti
-      ? toMultiGroupItem({ option, index, virtualIndex, disabled, highlighted, selected, indeterminate })
-      : toSingleGroupItem({ option, index, virtualIndex, disabled });
-  }
-  if (isMulti && option.type === 'select-all') {
-    return { type: 'select-all', option: option.option as OptionDefinition, indeterminate, selected, highlighted };
+      ? toMultiGroupItem({ option, index, disabled, highlighted, selected, indeterminate })
+      : toSingleGroupItem({ option, index, disabled });
   }
   return {
     type: 'item',
-    index: virtualIndex ?? index,
+    index,
     option: option.option as OptionDefinition,
     selected,
     highlighted,
@@ -122,7 +116,6 @@ function toRenderItem(
 const Item = (
   {
     index,
-    virtualIndex,
     option,
     selectionType = 'single',
     highlighted,
@@ -151,12 +144,9 @@ const Item = (
 
   const isParent = option.type === 'parent';
   const isChild = option.type === 'child';
-  const isSelectAll = option.type === 'select-all';
   const wrappedOption: OptionDefinition = option.option;
   const disabled = option.disabled || wrappedOption.disabled;
-  // Multi selection also reads the reason from the list option (used by select-all).
-  const reason = isMulti ? option.disabledReason || wrappedOption.disabledReason : wrappedOption.disabledReason;
-  const disabledReason = disabled && reason ? reason : '';
+  const disabledReason = disabled && wrappedOption.disabledReason ? wrappedOption.disabledReason : '';
   const isDisabledWithReason = !!disabledReason;
   const internalRef = useRef<HTMLDivElement>(null);
   const mergedRef = useMergeRefs(ref, internalRef);
@@ -171,7 +161,6 @@ const Item = (
         item: toRenderItem(selectionType, {
           option,
           index,
-          virtualIndex,
           disabled: !!disabled,
           highlighted: !!highlighted,
           selected: !!selected,
@@ -238,19 +227,13 @@ const Item = (
         ariaSelected={mixed ? undefined : Boolean(selected)}
         ariaChecked={mixed ? 'mixed' : Boolean(selected)}
         disabled={disabled}
-        isSelectAll={isSelectAll}
         useInteractiveGroups={true}
-        afterHeader={option.afterHeader}
         {...baseProps}
       >
         <div className={styles.item}>
           {!renderResult && (
             <div className={styles.checkbox}>
-              <CheckboxIcon
-                checked={selected}
-                indeterminate={(isParent || isSelectAll) && indeterminate}
-                disabled={disabled}
-              />
+              <CheckboxIcon checked={selected} indeterminate={isParent && indeterminate} disabled={disabled} />
             </div>
           )}
           {optionContent}
