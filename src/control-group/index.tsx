@@ -12,7 +12,11 @@ export { ControlGroupProps };
 
 export default function ControlGroup({ direction = 'auto', ...props }: ControlGroupProps) {
   const baseComponentProps = useBaseComponent('ControlGroup', {
-    props: { direction, inlineLabelText: props.inlineLabelText, actionButton: !!props.actionButton },
+    props: { direction },
+    metadata: {
+      hasInlineLabel: Boolean(props.inlineLabelText),
+      hasActionButton: Boolean(props.actionButton),
+    },
   });
   return <InternalControlGroup direction={direction} {...props} {...baseComponentProps} />;
 }
