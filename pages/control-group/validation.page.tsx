@@ -3,6 +3,7 @@
 import React from 'react';
 
 import Autosuggest from '~components/autosuggest';
+import Box from '~components/box';
 import Checkbox from '~components/checkbox';
 import FormField from '~components/form-field';
 import Input from '~components/input';
@@ -272,22 +273,24 @@ export default function ControlGroupValidationSettings() {
       i18n={{}}
       settings={<SettingsPanel settings={settings} setSettings={setSettings} />}
     >
-      <PermutationsView
-        permutations={permutations}
-        render={({ controls }) => (
-          <FormField errorText={errorText} warningText={warningText}>
-            <ControlGroup
-              direction={settings.direction}
-              inlineLabelText={settings.label ? 'Label' : undefined}
-              actionButton={settings.actionButton ? action : undefined}
-            >
-              {controls.map((kind, index) => (
-                <React.Fragment key={index}>{renderControl(kind, settings.disabled)}</React.Fragment>
-              ))}
-            </ControlGroup>
-          </FormField>
-        )}
-      />
+      <Box padding="xs">
+        <PermutationsView
+          permutations={permutations}
+          render={({ controls }) => (
+            <FormField errorText={errorText} warningText={warningText}>
+              <ControlGroup
+                direction={settings.direction}
+                inlineLabelText={settings.label ? 'Label' : undefined}
+                actionButton={settings.actionButton ? action : undefined}
+              >
+                {controls.map((kind, index) => (
+                  <React.Fragment key={index}>{renderControl(kind, settings.disabled)}</React.Fragment>
+                ))}
+              </ControlGroup>
+            </FormField>
+          )}
+        />
+      </Box>
     </PermutationsPage>
   );
 }
