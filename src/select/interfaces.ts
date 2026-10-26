@@ -190,7 +190,7 @@ export interface BaseSelectProps
    * We recommend you use discretion, and don't enable this property unless necessary
    * because fixed positioning results in a slight, visible lag when scrolling complex pages.
    *
-   * When the component is rendered in a control group, the dropdown will be rendered using this portal-based method regardless of this property.
+   * When the component is rendered in a control group, the dropdown will be rendered expanded to the viewport regardless of this property.
    */
   expandToViewport?: boolean;
 }
