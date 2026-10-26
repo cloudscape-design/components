@@ -5,8 +5,9 @@ import { TestSuite, Wrapper } from '../types';
 // Scoped to the screenshot area: the settings panel above it also contains native inputs.
 const firstInput = (wrapper: Wrapper) => wrapper.find('.screenshot-area').findInput().findNativeInput().toSelector();
 
-const autosuggestInput = (wrapper: Wrapper, testId: string) =>
-  wrapper.findAutosuggest(`[data-testid="${testId}"]`).findNativeInput().toSelector();
+// The first autosuggest in the screenshot area (a plain one, without inline tokens).
+const firstAutosuggest = (wrapper: Wrapper) =>
+  wrapper.find('.screenshot-area').findAutosuggest().findNativeInput().toSelector();
 
 const suite: TestSuite = {
   description: 'Control group',
@@ -106,15 +107,21 @@ const suite: TestSuite = {
                   screenshotType: 'screenshotArea',
                   queryParams,
                   setup: async ({ page, wrapper }) => {
-                    await page.click(autosuggestInput(wrapper, 'autosuggest'));
+                    await page.click(firstAutosuggest(wrapper));
                   },
                 },
                 {
-                  description: 'Permutations - focus on autosuggest with inline tokens',
-                  path: 'control-group/permutations',
+                  description: 'focus on autosuggest with inline tokens',
+                  path: 'control-group/validation',
                   screenshotType: 'screenshotArea',
+                  queryParams,
                   setup: async ({ page, wrapper }) => {
-                    await page.click(autosuggestInput(wrapper, 'autosuggest-tokens'));
+                    // From the first autosuggest, tab past its select, the next input and the two token dismiss
+                    // buttons to reach the input of the autosuggest with inline tokens.
+                    await page.click(firstAutosuggest(wrapper));
+                    for (let i = 0; i < 5; i++) {
+                      await page.keys(['Tab']);
+                    }
                   },
                 },
               ],
