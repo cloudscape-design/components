@@ -108,11 +108,11 @@ describe('Token', () => {
       expect(onDismiss).toHaveBeenCalledTimes(1);
     });
 
-    test('is a hover-motion trigger and its close icon carries the motion target', () => {
+    test('is a hover-motion trigger and target', () => {
       const wrapper = renderToken({ label: 'Test token', onDismiss: jest.fn() });
       const dismiss = wrapper.findDismiss()!.getElement();
       expect(dismiss).toHaveAttribute('data-awsui-motion-trigger', 'hover');
-      expect(dismiss.querySelector('[data-awsui-motion-target]')).toBeTruthy();
+      expect(dismiss).toHaveAttribute('data-awsui-motion-target');
     });
 
     test('shows for inline readonly tokens', () => {

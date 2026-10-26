@@ -11,54 +11,51 @@
 @use './constants' as constants;
 @use './mixins.scss' as mixins;
 @use '../internal/styles/utils/theming' as theming;
+@use '../internal/styles/style-api' as style-api;
 
 .root {
   @include styles.styles-reset;
 }
 
 .dismiss-button {
+  // The button's icon is absolutely positioned, so without this the button shrinks below the icon width.
+  flex-shrink: 0;
   align-self: flex-start;
   margin-block-end: 0;
   margin-inline-start: awsui.$space-xxs;
-  border-block: awsui.$border-width-field solid transparent;
-  border-inline: awsui.$border-width-field solid transparent;
-  padding-block: 0;
-  padding-inline: awsui.$space-xxs;
-  color: var(#{custom-props.$tokenStyleDismissColorDefault}, awsui.$color-text-button-inline-icon-default);
-  background-color: transparent;
-  cursor: pointer;
-
-  #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
-    var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
-    var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
-
-  @include focus-visible.when-visible {
-    @include styles.focus-highlight(
-      $gutter: 0px,
-      $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
-      $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
-    );
-  }
-
-  &:focus {
-    outline: none;
-    text-decoration: none;
-  }
-
-  &:hover {
-    color: var(#{custom-props.$tokenStyleDismissColorHover}, awsui.$color-text-button-inline-icon-hover);
-  }
 
   &-inline {
     // Extra space keeps the dismiss button clear of small interactive labels (WCAG target spacing).
     margin-inline-start: calc(#{awsui.$space-xxs} + #{awsui.$border-width-field});
-    padding-inline: 0;
     display: flex;
     align-items: center;
     align-self: center;
   }
+}
 
-  &:not(&-inline) {
+// Keeps the token geometry on top of the button's inline-icon variant, which has no border, no focus ring gutter
+// in visual refresh only, and horizontal padding. The token box ancestor gives the selector enough specificity.
+:is(.token-box, .token-box-inline) > .dismiss-button.dismiss-button {
+  border-block: awsui.$border-width-field solid transparent;
+  border-inline: awsui.$border-width-field solid transparent;
+
+  @include styles.reset-v1-button-styles;
+
+  @include focus-visible.when-visible {
+    @include style-api.focus-highlight(
+      $gutter-block: 0px,
+      $gutter-inline: 0px,
+      $radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
+      $width: var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width),
+      $color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused)
+    );
+  }
+
+  &.dismiss-button-inline {
+    padding-inline: 0;
+  }
+
+  &:not(.dismiss-button-inline) {
     @include theming.one-theme-only {
       padding-block-start: 1px;
     }
@@ -127,10 +124,6 @@
 .token-box-readonly {
   border-color: var(#{custom-props.$tokenStyleBorderColorReadOnly}, awsui.$color-border-input-disabled);
   background: var(#{custom-props.$tokenStyleBackgroundReadOnly}, awsui.$color-background-container-content);
-
-  > .dismiss-button {
-    color: var(#{custom-props.$tokenStyleDismissColorReadOnly}, awsui.$color-text-button-inline-icon-disabled);
-  }
 }
 
 .token-box-disabled {
@@ -138,9 +131,4 @@
   border-color: var(#{custom-props.$tokenStyleBorderColorDisabled}, awsui.$color-border-control-disabled);
   background: var(#{custom-props.$tokenStyleBackgroundDisabled}, awsui.$color-background-container-content);
   color: awsui.$color-text-disabled;
-
-  // stylelint-disable-next-line no-descending-specificity
-  > .dismiss-button {
-    color: var(#{custom-props.$tokenStyleDismissColorDisabled}, awsui.$color-text-button-inline-icon-disabled);
-  }
 }

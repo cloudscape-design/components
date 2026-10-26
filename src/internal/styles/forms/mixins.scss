@@ -410,3 +410,31 @@ $inline-label-border-radius: 2px;
     awsui.$color-background-input-disabled
   );
 }
+
+// Resets the generic v1 style properties that the button reads. They inherit, so a button nested in another
+// styled component picks them up; the button's own v1 style is set inline and still applies.
+@mixin reset-v1-button-styles {
+  @each $property
+    in (
+      custom-props.$styleBackgroundActive,
+      custom-props.$styleBackgroundDefault,
+      custom-props.$styleBackgroundDisabled,
+      custom-props.$styleBackgroundHover,
+      custom-props.$styleBorderColorActive,
+      custom-props.$styleBorderColorDefault,
+      custom-props.$styleBorderColorDisabled,
+      custom-props.$styleBorderColorHover,
+      custom-props.$styleBoxShadowActive,
+      custom-props.$styleBoxShadowDefault,
+      custom-props.$styleBoxShadowDisabled,
+      custom-props.$styleBoxShadowFocus,
+      custom-props.$styleBoxShadowHover,
+      custom-props.$styleColorActive,
+      custom-props.$styleColorDefault,
+      custom-props.$styleColorDisabled,
+      custom-props.$styleColorHover
+    )
+  {
+    #{$property}: initial;
+  }
+}

@@ -207,6 +207,7 @@ function InternalToken({
           />
           {onDismiss && (
             <DismissButton
+              style={restProps.style}
               disabled={disabled}
               dismissLabel={dismissLabel}
               onDismiss={onDismiss}
