@@ -7,12 +7,32 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/foundation' as foundation;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../internal/styles/style-api' as style-api;
+
+// The placeholder tokens are read by the ::placeholder pseudo-element of the native textarea, which does not
+// inherit the non-inheriting public tokens: they are re-anchored as carriers on the textarea itself.
+$tokens: style-api.resolve(
+  (placeholder-color, placeholder-font-size, placeholder-font-style, placeholder-font-weight),
+  carrier
+);
+@include style-api.register($tokens);
+@include style-api.docs(
+  'textarea',
+  $tokens,
+  $properties: (color, background, border, border-radius, box-shadow, padding, font-family, font-size, font-weight),
+  $descriptions: (
+    properties: (
+      box-shadow: 'Also draws the focus ring under `:focus`.',
+    )
+  )
+);
 
 .root {
   /* used for test-utils */
 }
 
 .textarea {
+  @include style-api.carriers($tokens);
   @include styles.styles-reset;
   // Matches browsers' default for textarea; overridden by the resize modifiers below
   resize: both;
@@ -70,13 +90,13 @@
     );
     color: var(
       #{custom-props.$styleColorHover},
-      var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-body-default)
+      var(#{custom-props.$styleColorDefault}, awsui.$color-text-body-default)
     );
     background-color: var(
       #{custom-props.$styleBackgroundHover},
       var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
     );
-    box-shadow: var(#{custom-props.$styleBoxShadowHover}, #{custom-props.$styleBoxShadowDefault});
+    box-shadow: var(#{custom-props.$styleBoxShadowHover}, var(#{custom-props.$styleBoxShadowDefault}));
   }
 
   &.textarea-readonly {
@@ -99,10 +119,18 @@
 
   &::placeholder {
     @include styles.form-placeholder(
-      $color: var(#{custom-props.$stylePlaceholderColor}, awsui.$color-text-input-placeholder),
-      $font-size: var(#{custom-props.$stylePlaceholderFontSize}),
-      $font-style: var(#{custom-props.$stylePlaceholderFontStyle}, italic),
-      $font-weight: var(#{custom-props.$stylePlaceholderFontWeight})
+      $color: style-api.value(
+          $tokens,
+          placeholder-color,
+          var(#{custom-props.$stylePlaceholderColor}, #{awsui.$color-text-input-placeholder})
+        ),
+      $font-size: style-api.value($tokens, placeholder-font-size, var(#{custom-props.$stylePlaceholderFontSize})),
+      $font-style: style-api.value(
+          $tokens,
+          placeholder-font-style,
+          var(#{custom-props.$stylePlaceholderFontStyle}, italic)
+        ),
+      $font-weight: style-api.value($tokens, placeholder-font-weight, var(#{custom-props.$stylePlaceholderFontWeight}))
     );
     opacity: 1;
   }
@@ -112,7 +140,10 @@
       $border-color: var(#{custom-props.$styleBorderColorFocus}, awsui.$color-border-input-focused),
       $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
     );
-    color: var(#{custom-props.$styleColorFocus}, awsui.$color-text-body-default);
+    color: var(
+      #{custom-props.$styleColorFocus},
+      var(#{custom-props.$styleColorDefault}, awsui.$color-text-body-default)
+    );
     background-color: var(#{custom-props.$styleBackgroundFocus}, awsui.$color-background-input-default);
   }
 
@@ -130,7 +161,9 @@
     );
     box-shadow: var(#{custom-props.$styleBoxShadowDisabled});
     &::placeholder {
-      @include styles.form-placeholder-disabled;
+      @include styles.form-placeholder-disabled(
+        $color: style-api.value($tokens, placeholder-color, awsui.$color-text-input-placeholder-disabled)
+      );
       opacity: 1;
     }
   }
