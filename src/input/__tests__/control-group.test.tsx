@@ -3,10 +3,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { createWrapper } from '@cloudscape-design/test-utils-core/dom';
-
 import ControlGroup from '../../../lib/components/control-group';
 import Input from '../../../lib/components/input';
+import createWrapper from '../../../lib/components/test-utils/dom';
 import { PositionProbe } from '../../control-group/__tests__/common';
 
 const noop = () => {};
