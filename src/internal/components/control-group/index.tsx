@@ -28,12 +28,14 @@ export default function ControlGroup({
   direction = 'auto',
   inlineLabelText,
   actionButton,
+  ariaLabelledby,
+  ariaDescribedby,
   ...props
 }: ControlGroupProps) {
   const baseProps = getBaseProps(props);
   const labelId = useUniqueId('control-group-label');
 
-  const formFieldContext = useFormFieldContext({});
+  const formFieldContext = useFormFieldContext({ ariaLabelledby, ariaDescribedby });
   const isInvalid = !!formFieldContext.invalid;
   const isWarning = !!formFieldContext.warning && !isInvalid;
 
@@ -42,6 +44,11 @@ export default function ControlGroup({
   // Merge FormField's label id (first) with the internal inline label when present.
   const groupAriaLabelledby = joinStrings(formFieldContext.ariaLabelledby, inlineLabelText ? labelId : undefined);
   const groupAriaDescribedby = joinStrings(formFieldContext.ariaDescribedby);
+
+  // When an inline label is rendered, the native group must have an id so the
+  // label's htmlFor can reference it. Fall back to a generated id if none was provided.
+  const generatedControlId = useUniqueId('control-group');
+  const resolvedControlId = formFieldContext.controlId ?? (inlineLabelText ? generatedControlId : undefined);
 
   const flattenedChildren = flattenChildren(children, 'ControlGroup');
   const controlCount = flattenedChildren.length;
@@ -119,6 +126,7 @@ export default function ControlGroup({
             ? {}
             : {
                 role: 'group',
+                id: resolvedControlId,
                 'aria-labelledby': groupAriaLabelledby,
                 'aria-describedby': groupAriaDescribedby,
                 'aria-invalid': isInvalid ? 'true' : undefined,
