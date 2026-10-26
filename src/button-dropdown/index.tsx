@@ -12,6 +12,7 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { GeneratedAnalyticsMetadataButtonDropdownComponent } from './analytics-metadata/interfaces';
 import { ButtonDropdownProps } from './interfaces';
 import InternalButtonDropdown from './internal';
+import { StyleClassNames } from './internal-interfaces';
 import { hasCheckboxItems, hasDisabledReasonItems } from './utils/utils';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
@@ -77,6 +78,7 @@ const ButtonDropdown = React.forwardRef(
       <InternalButtonDropdown
         {...baseProps}
         {...baseComponentProps}
+        styleClassNames={(props as { styleClassNames?: StyleClassNames }).styleClassNames}
         renderItem={renderItem}
         ref={ref}
         items={items}

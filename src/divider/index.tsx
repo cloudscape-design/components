@@ -7,7 +7,7 @@ import { getBaseProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { DividerProps } from './interfaces';
-import InternalDivider from './internal';
+import InternalDivider, { StyleClassNames } from './internal';
 
 export { DividerProps };
 
@@ -21,6 +21,7 @@ export default function Divider({ orientation = 'horizontal', children, nativeAt
       {...baseComponentProps}
       orientation={orientation}
       nativeAttributes={nativeAttributes}
+      styleClassNames={(rest as { styleClassNames?: StyleClassNames }).styleClassNames}
     >
       {children}
     </InternalDivider>

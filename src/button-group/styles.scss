@@ -4,6 +4,13 @@
 */
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
+@use '../internal/styles/style-api' as style-api;
+
+$divider-tokens: style-api.resolve((line-color, line-width), carrier);
+@include style-api.register($divider-tokens);
+@include style-api.docs('divider', $divider-tokens);
+@include style-api.docs-forward('item', 'button', 'root');
+@include style-api.docs-forward('dropdown', 'dropdown', 'container');
 
 .root {
   @include styles.styles-reset;
@@ -23,7 +30,9 @@
 }
 
 .divider {
-  background-color: awsui.$color-border-divider-default;
-  inline-size: awsui.$border-divider-section-width;
+  @include style-api.carriers($divider-tokens);
+  border-inline-start: style-api.value($divider-tokens, line-width, awsui.$border-divider-section-width) solid
+    style-api.value($divider-tokens, line-color, awsui.$color-border-divider-default);
+  inline-size: 0;
   margin-block: awsui.$space-static-xs;
 }

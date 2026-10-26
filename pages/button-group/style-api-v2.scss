@@ -1,0 +1,41 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~components/styling/button';
+@use '~components/styling/button-group';
+@use '~components/styling/dropdown';
+@use '../style-api/palette' as palette;
+
+.item {
+  @include button.root($color: palette.$accent, $border-radius: 4px, $focus-ring-color: palette.$accent);
+
+  &:hover {
+    @include button.root($background: palette.$subtle, $color: palette.$accent-hover);
+  }
+
+  &[aria-pressed='true'] {
+    @include button.root($background: palette.$accent, $color: palette.$text-on-accent);
+  }
+}
+
+.item-info {
+  @include button.root($color: palette.$info, $border-radius: 4px, $focus-ring-color: palette.$info);
+
+  &:hover {
+    @include button.root($background: palette.$subtle, $color: palette.$info);
+  }
+
+  &[aria-pressed='true'] {
+    @include button.root($background: palette.$info, $color: palette.$text-on-accent);
+  }
+}
+
+.divider {
+  @include button-group.divider($line-color: palette.$border, $line-width: 2px);
+}
+
+.menu-info {
+  @include dropdown.container($background: palette.$surface-alt, $border-radius: 4px, $outline-color: palette.$info);
+}

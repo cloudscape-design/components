@@ -58,7 +58,7 @@ export interface InternalDropdownProps
 
 // Style API v2
 export interface StyleClassNames {
-  dropdown?: string;
+  container?: string;
 }
 
 import styles from './styles.css.js';
@@ -190,7 +190,7 @@ const TransitionContent = ({
     >
       <div
         className={clsx(
-          styleClassNames?.dropdown,
+          styleClassNames?.container,
           styles['dropdown-content-wrapper'],
           !header && !content && styles['is-empty'],
           isRefresh && styles.refresh
