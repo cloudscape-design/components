@@ -5,9 +5,9 @@ import React from 'react';
 import Icon from '~components/icon';
 import OptionList, { OptionListProps } from '~components/option-list';
 
+import { PermutationsPage } from '../app/templates';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
-import ScreenshotArea from '../utils/screenshot-area';
 
 const plain: OptionListProps.Option[] = [
   { value: '1', label: 'Reduce cost' },
@@ -52,18 +52,15 @@ const permutations = createPermutations<OptionListProps & { width: number }>([
 
 export default function OptionListPermutationsPage() {
   return (
-    <>
-      <h1>OptionList permutations</h1>
-      <ScreenshotArea disableAnimations={true}>
-        <PermutationsView
-          permutations={permutations}
-          render={({ width, ...props }) => (
-            <div style={{ inlineSize: width }}>
-              <OptionList {...props} ariaLabel="Goals" onChange={() => {}} />
-            </div>
-          )}
-        />
-      </ScreenshotArea>
-    </>
+    <PermutationsPage title="OptionList permutations" screenshotArea={{ disableAnimations: true }}>
+      <PermutationsView
+        permutations={permutations}
+        render={({ width, ...props }) => (
+          <div style={{ inlineSize: width }}>
+            <OptionList {...props} ariaLabel="Goals" onChange={() => {}} />
+          </div>
+        )}
+      />
+    </PermutationsPage>
   );
 }
