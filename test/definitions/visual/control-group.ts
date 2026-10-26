@@ -62,8 +62,8 @@ const suite: TestSuite = {
             const queryParams: Record<string, string> = {
               controlGroupDirection: direction,
               label: 'true',
-              disabledControls,
-              ...(groupValidationState ? { groupValidationState } : {}),
+              disabled: disabledControls,
+              ...(groupValidationState ? { group: groupValidationState } : {}),
               ...(actionButton ? { actionButton: 'true' } : {}),
             };
             return {

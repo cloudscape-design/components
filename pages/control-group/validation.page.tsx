@@ -28,14 +28,14 @@ type StatefulControl = 'input' | 'autosuggest' | 'select' | 'multiselect';
 // segmentedControl cannot.
 type ControlKind = StatefulControl | 'segmentedControl';
 
-// Things that can appear in the `disabledControls` list: the stateful controls plus the action button.
+// Things that can appear in the `disabled` list: the stateful controls plus the action button.
 type Disableable = StatefulControl | 'actionbutton';
 
 const disableableItems: ReadonlyArray<Disableable> = ['input', 'autosuggest', 'select', 'multiselect', 'actionbutton'];
 
 interface ControlGroupValidationSettings {
   // The group-as-a-unit validation, applied through the surrounding FormField.
-  groupValidationState: ValidationState;
+  group: ValidationState;
   // The set of controls (and the action button) rendered in their disabled state.
   disabled: ReadonlySet<Disableable>;
   direction: Direction;
@@ -108,14 +108,14 @@ function renderControl(kind: ControlKind, disabled: ReadonlySet<Disableable>) {
   }
 }
 
-type ParamName = 'groupValidationState' | 'disabledControls' | 'controlGroupDirection' | 'label' | 'actionButton';
+type ParamName = 'group' | 'disabled' | 'controlGroupDirection' | 'label' | 'actionButton';
 
 function useControlGroupValidationSettings() {
   const { urlParams, setUrlParams } = useAppContext<ParamName>();
 
   const settings: ControlGroupValidationSettings = {
-    groupValidationState: parseValidationState(urlParams.groupValidationState),
-    disabled: parseDisabled(urlParams.disabledControls),
+    group: parseValidationState(urlParams.group),
+    disabled: parseDisabled(urlParams.disabled),
     direction: parseDirection(urlParams.controlGroupDirection),
     label: urlParams.label === true,
     actionButton: urlParams.actionButton === true,
@@ -123,8 +123,8 @@ function useControlGroupValidationSettings() {
 
   const setSettings = (next: Partial<ControlGroupValidationSettings>) =>
     setUrlParams({
-      ...(next.groupValidationState !== undefined && { groupValidationState: next.groupValidationState }),
-      ...(next.disabled !== undefined && { disabledControls: serializeDisabled(next.disabled) }),
+      ...(next.group !== undefined && { group: next.group }),
+      ...(next.disabled !== undefined && { disabled: serializeDisabled(next.disabled) }),
       ...(next.direction !== undefined && { controlGroupDirection: next.direction }),
       ...(next.label !== undefined && { label: next.label }),
       ...(next.actionButton !== undefined && { actionButton: next.actionButton }),
@@ -169,8 +169,8 @@ function SettingsPanel({
     <SpaceBetween size="xxl" direction="horizontal">
       <FormField label="Validation state">
         <RadioGroup
-          value={settings.groupValidationState}
-          onChange={({ detail }) => setSettings({ groupValidationState: parseValidationState(detail.value) })}
+          value={settings.group}
+          onChange={({ detail }) => setSettings({ group: parseValidationState(detail.value) })}
           items={validationItems}
         />
       </FormField>
@@ -237,8 +237,8 @@ const permutations = createPermutations<{ controls: ControlKind[] }>([{ controls
 export default function ControlGroupValidationSettings() {
   const { settings, setSettings } = useControlGroupValidationSettings();
 
-  const errorText = settings.groupValidationState === 'error' ? 'This value is required' : undefined;
-  const warningText = settings.groupValidationState === 'warning' ? 'Double-check this value' : undefined;
+  const errorText = settings.group === 'error' ? 'This value is required' : undefined;
+  const warningText = settings.group === 'warning' ? 'Double-check this value' : undefined;
 
   const action: ControlGroupProps['actionButton'] = {
     iconName: 'remove',
