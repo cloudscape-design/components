@@ -116,10 +116,11 @@ const suite: TestSuite = {
                   screenshotType: 'screenshotArea',
                   queryParams,
                   setup: async ({ page, wrapper }) => {
-                    // From the first autosuggest, tab past its select, the next input and the two token dismiss
-                    // buttons to reach the input of the autosuggest with inline tokens.
+                    // From the first autosuggest, tab past its select (and action button, if any), the next input
+                    // and the two token dismiss buttons to reach the input of the autosuggest with inline tokens.
                     await page.click(firstAutosuggest(wrapper));
-                    for (let i = 0; i < 5; i++) {
+                    const tabCount = actionButton ? 6 : 5;
+                    for (let i = 0; i < tabCount; i++) {
                       await page.keys(['Tab']);
                     }
                   },
