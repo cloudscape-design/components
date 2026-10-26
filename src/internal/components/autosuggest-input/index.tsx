@@ -29,6 +29,7 @@ import { getBreakpointValue } from '../../breakpoints';
 import { ResetGroupedControlContext, useGroupedControlContext } from '../../context/control-group-context';
 import { useFormFieldContext } from '../../context/form-field-context';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../../events';
+import { getGroupedControlClassNames } from '../../grouped-control/grouped-control-styles';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
 import { useIMEComposition } from '../../hooks/use-ime-composition';
 import { useListFocusController } from '../../hooks/use-list-focus-controller';
@@ -38,7 +39,6 @@ import { getInputStylesCss } from '../../utils/input-styles';
 import { nodeBelongs } from '../../utils/node-belongs';
 import { processAttributes } from '../../utils/with-native-attributes';
 import ButtonTrigger from '../button-trigger';
-import { getGroupedControlClassNames } from '../control-group/grouped-control-styles';
 import { InlineTokens, InlineTokensRef } from './inline-tokens';
 import { useTokenOverflow } from './use-token-overflow';
 

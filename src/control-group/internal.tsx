@@ -5,33 +5,33 @@ import clsx from 'clsx';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { InternalButton } from '../../../button/internal';
-import { getBaseProps } from '../../base-component';
+import { InternalButton } from '../button/internal';
+import { getBaseProps } from '../internal/base-component';
 import {
   GroupedControlContext,
   GroupedControlDirection,
   GroupedControlPosition,
-} from '../../context/control-group-context';
-import { FormFieldContext, useFormFieldContext } from '../../context/form-field-context';
-import { useFitsInline } from '../../hooks/use-fits-inline';
-import { flattenChildren } from '../../utils/flatten-children';
-import { joinStrings } from '../../utils/strings/join-strings';
+} from '../internal/context/control-group-context';
+import { FormFieldContext, useFormFieldContext } from '../internal/context/form-field-context';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useFitsInline } from '../internal/hooks/use-fits-inline';
+import { flattenChildren } from '../internal/utils/flatten-children';
+import { joinStrings } from '../internal/utils/strings/join-strings';
 import { ControlGroupProps } from './interfaces';
 
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
-export { ControlGroupProps };
-
-export default function ControlGroup({
+export default function InternalControlGroup({
   children,
   direction = 'auto',
   inlineLabelText,
   actionButton,
   ariaLabelledby,
   ariaDescribedby,
+  __internalRootRef,
   ...props
-}: ControlGroupProps) {
+}: ControlGroupProps & InternalBaseComponentProps) {
   const baseProps = getBaseProps(props);
   const labelId = useUniqueId('control-group-label');
 
@@ -143,6 +143,7 @@ export default function ControlGroup({
   const groupLayoutWrapper = (
     <div
       {...(inlineLabelText ? {} : baseProps)}
+      ref={inlineLabelText ? undefined : __internalRootRef}
       className={clsx(styles['group-layout-wrapper'], !inlineLabelText && rootClassnames)}
     >
       {renderGroupLayout(false)}
@@ -162,7 +163,7 @@ export default function ControlGroup({
 
   if (inlineLabelText) {
     return (
-      <div {...baseProps} className={clsx(...rootClassnames, styles['inline-label-wrapper'])}>
+      <div {...baseProps} ref={__internalRootRef} className={clsx(...rootClassnames, styles['inline-label-wrapper'])}>
         <label id={labelId} className={clsx(styles['inline-label'], testUtilStyles['inline-label'])}>
           {inlineLabelText}
         </label>

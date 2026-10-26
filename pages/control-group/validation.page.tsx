@@ -4,9 +4,9 @@ import React from 'react';
 
 import Autosuggest from '~components/autosuggest';
 import Checkbox from '~components/checkbox';
+import ControlGroup, { ControlGroupProps } from '~components/control-group';
 import FormField from '~components/form-field';
 import Input from '~components/input';
-import ControlGroup, { ControlGroupProps } from '~components/internal/components/control-group';
 import Multiselect from '~components/multiselect';
 import RadioGroup from '~components/radio-group';
 import SegmentedControl from '~components/segmented-control';

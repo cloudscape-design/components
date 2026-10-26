@@ -4,7 +4,7 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 
 import ButtonWrapper from '../button';
 
-import testUtilStyles from '../../../internal/components/control-group/test-classes/styles.selectors.js';
+import testUtilStyles from '../../../control-group/test-classes/styles.selectors.js';
 
 export default class ControlGroupWrapper extends ComponentWrapper {
   static rootSelector: string = testUtilStyles.root;

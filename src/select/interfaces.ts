@@ -178,6 +178,21 @@ export interface BaseSelectProps
    * Adds `aria-describedby` to the dropdown's listbox/dialog content.
    */
   dropdownAriaDescribedby?: string;
+
+  /**
+   * By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+   * Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
+   * [React Portals](https://reactjs.org/docs/portals.html).
+   *
+   * Set this property if the dropdown would otherwise be constrained by a scrollable container,
+   * for example inside table and split view layouts.
+   *
+   * We recommend you use discretion, and don't enable this property unless necessary
+   * because fixed positioning results in a slight, visible lag when scrolling complex pages.
+   *
+   * When the component is rendered in a control group, the dropdown will be rendered expanded to the viewport regardless of this property.
+   */
+  expandToViewport?: boolean;
 }
 
 export interface SelectProps extends BaseSelectProps {

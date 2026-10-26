@@ -1,11 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ButtonProps } from '../../../button/interfaces';
-import { IconProps } from '../../../icon/interfaces';
-import { BaseComponentProps } from '../../../types/base-component';
-import { FormFieldControlProps } from '../../../types/form-field';
-import { GroupedControlDirection } from '../../context/control-group-context';
-import { CancelableEventHandler } from '../../events';
+import { ButtonProps } from '../button/interfaces';
+import { IconProps } from '../icon/interfaces';
+import { BaseComponentProps } from '../types/base-component';
+import { CancelableEventHandler } from '../types/events';
+import { FormFieldControlProps } from '../types/form-field';
 
 export interface ControlGroupProps
   extends BaseComponentProps,
@@ -28,7 +27,7 @@ export interface ControlGroupProps
 export namespace ControlGroupProps {
   // `'auto'` exists only for the control group but not for the inner grouped controls,
   // which receive a definite value (`horizontal` or `vertical`).
-  export type ControlGroupDirection = GroupedControlDirection | 'auto';
+  export type ControlGroupDirection = 'horizontal' | 'vertical' | 'auto';
 
   export interface ActionButton {
     /**
