@@ -41,9 +41,9 @@ describe('ColumnLayout component', () => {
     });
 
     [5, 6, 12].forEach(columnCount => {
-      it(`uses the CSS grid renderer for ${columnCount} columns`, () => {
+      it(`renders ${columnCount} columns through FlexibleColumnLayout`, () => {
         const { container } = render(<ColumnLayout columns={columnCount} />);
-        // The 12-column renderer cannot express these counts, so it must not be used.
+        // Above 4 columns, GridColumnLayout must not be used: findGrid() targets its root.
         expect(createWrapper(container).findGrid()).toBeNull();
         expect(container.querySelector(`.${cssGridStyles['css-grid']}`)).not.toBeNull();
       });
