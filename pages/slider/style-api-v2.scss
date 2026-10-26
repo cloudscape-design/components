@@ -1,0 +1,41 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+/* stylelint-disable selector-combinator-disallowed-list */
+
+@use '~components/styling/slider';
+@use '../style-api/palette' as palette;
+
+.slider {
+  @include slider.root($track-color: palette.$surface-alt, $value-color: palette.$accent);
+}
+
+// The handle is the native <input type="range">, so its states are regular selectors.
+.handle {
+  @include slider.handle($fill-color: palette.$accent, $halo-color: palette.$genai, $border-radius: 4px);
+
+  &:hover {
+    @include slider.handle($fill-color: palette.$accent-hover);
+  }
+
+  &:is(:focus, :active) {
+    @include slider.handle($fill-color: palette.$accent-active);
+  }
+
+  &:disabled,
+  &[aria-disabled='true'] {
+    @include slider.handle($fill-color: palette.$control-bg-disabled, $halo-color: palette.$control-bg-disabled);
+  }
+}
+
+// The value fill follows the handle state through :has() on the root slot.
+.slider:has(.handle:is(:focus, :active)) {
+  @include slider.root($value-color: palette.$accent-active);
+}
+
+// After the focus rule: a read-only slider stays focusable, and both rules have the same specificity.
+.slider:has(.handle:disabled, .handle[aria-disabled='true']) {
+  @include slider.root($value-color: palette.$control-bg-disabled);
+}
