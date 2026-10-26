@@ -248,6 +248,37 @@ exports[`Style API docs definition for radio-button matches the snapshot: radio-
 }
 `;
 
+exports[`Style API docs definition for textarea matches the snapshot: textarea 1`] = `
+{
+  "slots": [
+    {
+      "name": "textarea",
+      "properties": [
+        "color",
+        "background",
+        "border",
+        "border-radius",
+        "box-shadow",
+        "padding",
+        "font-family",
+        "font-size",
+        "font-weight",
+      ],
+      "propertyDescriptions": {
+        "box-shadow": "Also draws the focus ring under \`:focus\`.",
+      },
+      "tokenDescriptions": {},
+      "tokens": [
+        "placeholder-color",
+        "placeholder-font-size",
+        "placeholder-font-style",
+        "placeholder-font-weight",
+      ],
+    },
+  ],
+}
+`;
+
 exports[`Style API docs definition for toggle matches the snapshot: toggle 1`] = `
 {
   "slots": [
@@ -278,6 +309,7 @@ exports[`Style API docs list of components with a Style API doc matches the snap
   "input",
   "link",
   "radio-button",
+  "textarea",
   "toggle",
 ]
 `;

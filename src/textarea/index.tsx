@@ -22,6 +22,11 @@ import styles from './styles.css.js';
 
 export { TextareaProps };
 
+// Style API v2
+interface StyleClassNames {
+  textarea?: string;
+}
+
 const Textarea = React.forwardRef(
   (
     {
@@ -64,6 +69,7 @@ const Textarea = React.forwardRef(
     const { ariaLabelledby, ariaDescribedby, controlId, invalid, warning } = useFormFieldContext(rest);
 
     const baseProps = getBaseProps(rest);
+    const { styleClassNames } = rest as { styleClassNames?: StyleClassNames };
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     useForwardFocus(ref, textareaRef);
@@ -77,7 +83,7 @@ const Textarea = React.forwardRef(
       name,
       placeholder,
       autoFocus,
-      className: clsx(styles.textarea, styles[`textarea-resize-${resize}`], {
+      className: clsx(styleClassNames?.textarea, styles.textarea, styles[`textarea-resize-${resize}`], {
         [styles['textarea-readonly']]: readOnly,
         [styles['textarea-invalid']]: invalid,
         [styles['textarea-warning']]: warning && !invalid,
