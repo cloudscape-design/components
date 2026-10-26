@@ -20,12 +20,10 @@ describe('singleSelection', () => {
   test('re-choosing the already selected option keeps it selected', () => {
     const list = flatten([{ value: '1' }, { value: '2' }]);
     const model = singleSelection([{ value: '2' }]);
-    // Single select has no toggle-off: choosing the selected option returns it, still selected.
     expect(model.getNextSelection(findByValue(list, '2'))).toEqual([{ value: '2' }]);
   });
 
   test('a selected child with an empty-string value is not counted as a group selection', () => {
-    // Baseline Select built `__selectedValuesSet` from `!!item.value`, so an empty-string value never counts.
     const list = flatten([{ label: 'Group', options: [{ value: '' }, { value: 'b' }] }]);
     const model = singleSelection([{ value: '' }]);
     expect(model.getGroupState(findGroup(list))).toEqual({ selected: false, indeterminate: false });

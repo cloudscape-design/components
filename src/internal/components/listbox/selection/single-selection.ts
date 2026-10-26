@@ -22,12 +22,8 @@ export function singleSelection(selectedOptions: ReadonlyArray<OptionDefinition>
         return { selected: false, indeterminate: false };
       }
       const children = option.option.options;
-      // Match the pre-refactor Select behaviour: a child with a falsy value is never counted, even when the
-      // selected value is also falsy (baseline `use-select.ts` built `__selectedValuesSet` from `!!item.value`).
-      const totalSelected =
-        selectedValue === undefined
-          ? 0
-          : children.filter(child => !!child.value && child.value === selectedValue).length;
+      // A child with a falsy value never counts as selected, even when the selected value is also falsy.
+      const totalSelected = children.filter(child => !!child.value && child.value === selectedValue).length;
       return { selected: false, indeterminate: totalSelected > 0 && totalSelected !== children.length };
     },
     getNextSelection: (option: DropdownOption) => [option.option as OptionDefinition],

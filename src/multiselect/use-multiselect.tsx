@@ -133,7 +133,6 @@ export function useMultiselect({
     fireNonCancelableEvent(onChange, { selectedOptions: selection.getNextSelection(selectAllOption) });
   };
 
-  // Whether choosing an option selects or deselects it (disabled options included) is decided by the model.
   const updateSelectedOption = (option: OptionDefinition | OptionGroup) => {
     fireNonCancelableEvent(onChange, { selectedOptions: selection.getNextSelection({ option }) });
   };

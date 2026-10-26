@@ -7,7 +7,7 @@ import { findOptionIndex } from '../utils/connect-options';
 import { GroupState, SelectionModel } from './interfaces';
 
 interface MultiSelectionConfig {
-  /** The options the user can currently see. Choosing a group toggles only its visible children. */
+  /** The options the user can currently see. Choosing a group toggles only its visible, enabled children. */
   options: ReadonlyArray<DropdownOption>;
   /**
    * All options, including the ones hidden by filtering. Select-all keeps hidden selected options and

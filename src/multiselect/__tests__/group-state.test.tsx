@@ -20,8 +20,9 @@ const createRenderOption = () =>
   jest.fn<React.ReactNode, [{ item: MultiselectProps.MultiselectItem }]>(() => <div>Custom</div>);
 
 const lastRenderedItem = (renderOption: ReturnType<typeof createRenderOption>, type: string) => {
-  const calls = renderOption.mock.calls.filter(([{ item }]) => item.type === type);
-  const item = calls[calls.length - 1][0].item;
+  const items = renderOption.mock.calls.map(([{ item }]) => item).filter(item => item.type === type);
+  expect(items.length).toBeGreaterThan(0);
+  const item = items[items.length - 1];
   return { selected: item.selected, indeterminate: item.type === 'item' ? undefined : item.indeterminate };
 };
 

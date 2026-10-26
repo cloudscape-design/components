@@ -7,7 +7,7 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { InternalDropdownProps } from '../../dropdown/internal';
 import { ButtonTriggerProps } from '../../internal/components/button-trigger';
-import { GroupState, SelectionModel } from '../../internal/components/listbox/selection/interfaces';
+import { SelectionModel } from '../../internal/components/listbox/selection/interfaces';
 import { singleSelection } from '../../internal/components/listbox/selection/single-selection';
 import { connectOptionsByValue } from '../../internal/components/listbox/utils/connect-options';
 import { DropdownOption } from '../../internal/components/option/interfaces';
@@ -266,25 +266,22 @@ export function useSelect({
     }
     return menuProps;
   };
-  // Only called for group rows and select-all.
-  const getGroupState = (option: DropdownOption): GroupState => selection.getGroupState(option);
-
   const getOptionProps = (option: DropdownOption, index: number) => {
     const isSelectAll = option.type === 'select-all';
     const highlighted = option === highlightedOption;
-    const groupState = isSelectAll || isGroup(option.option) ? getGroupState(option) : undefined;
+    const groupState = isSelectAll || isGroup(option.option) ? selection.getGroupState(option) : undefined;
     const selected = isSelectAll ? !!groupState?.selected : __selectedOptionsSet.has(option) || !!groupState?.selected;
-    // Neighbours stay gated on `isGroup`: select-all is never a selected neighbour, so the row below it
-    // doesn't get the previous-item-selected style.
+    // Only group neighbours use group state. Select-all never counts as a selected neighbour, so the row
+    // below it doesn't get the previous-item-selected style.
     const nextOption = options[index + 1];
     const isNextSelected =
       !!nextOption && isGroup(nextOption.option)
-        ? getGroupState(nextOption).selected
+        ? selection.getGroupState(nextOption).selected
         : __selectedOptionsSet.has(nextOption);
     const previousOption = options[index - 1];
     const isPreviousSelected =
       !!previousOption && isGroup(previousOption.option)
-        ? getGroupState(previousOption).selected
+        ? selection.getGroupState(previousOption).selected
         : __selectedOptionsSet.has(previousOption);
     const optionProps: any = {
       key: index,
@@ -350,7 +347,7 @@ export function useSelect({
 
   useForwardFocus(externalRef, triggerRef as React.RefObject<HTMLElement>);
   const highlightedGroupSelected =
-    !!highlightedOption && isGroup(highlightedOption.option) && getGroupState(highlightedOption).selected;
+    !!highlightedOption && isGroup(highlightedOption.option) && selection.getGroupState(highlightedOption).selected;
   const announceSelected =
     !!highlightedOption && (__selectedOptionsSet.has(highlightedOption) || highlightedGroupSelected);
 

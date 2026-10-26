@@ -6,6 +6,7 @@ import { render } from '@testing-library/react';
 import Select from '../../../lib/components/select';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { renderHook } from '../../__tests__/render-hook';
+import { SelectionModel } from '../../internal/components/listbox/selection/interfaces';
 import { singleSelection } from '../../internal/components/listbox/selection/single-selection';
 import { flattenOptions } from '../../internal/components/option/utils/flatten-options';
 import { OptionDefinition, OptionGroup } from '../../types/option';
@@ -19,13 +20,13 @@ const values = (...values: string[]) => values.map(value => ({ value }));
 const renderUseSelect = (
   options: ReadonlyArray<OptionDefinition | OptionGroup>,
   selectedOptions: ReadonlyArray<OptionDefinition>,
-  withSelection = true
+  selection?: SelectionModel
 ) => {
   const { flatOptions } = flattenOptions(options);
   const hook = renderHook(useSelect, {
     initialProps: {
       selectedOptions,
-      selection: withSelection ? singleSelection(selectedOptions) : undefined,
+      selection,
       updateSelectedOption: () => {},
       options: flatOptions,
       externalRef: createRef(),
@@ -43,7 +44,7 @@ const groupStates = (
   options: ReadonlyArray<OptionDefinition | OptionGroup>,
   selectedOptions: ReadonlyArray<OptionDefinition>
 ) => {
-  const { flatOptions, getOptionProps } = renderUseSelect(options, selectedOptions);
+  const { flatOptions, getOptionProps } = renderUseSelect(options, selectedOptions, singleSelection(selectedOptions));
   return flatOptions
     .map((option, index) => ({ option, props: getOptionProps(option, index) }))
     .filter(({ option }) => option.type === 'parent')
@@ -78,11 +79,11 @@ describe('useSelect group state with single selection', () => {
     ]);
   });
 
-  test('omitting selection gives the same option props as passing single selection', () => {
+  test('defaults to single selection over selectedOptions when no selection model is passed', () => {
     const options = [{ value: 'top' }, { label: 'Group', options: values('a', 'b', 'c') }];
     const selectedOptions = values('b');
-    const withModel = renderUseSelect(options, selectedOptions, true);
-    const withoutModel = renderUseSelect(options, selectedOptions, false);
+    const explicit = renderUseSelect(options, selectedOptions, singleSelection(selectedOptions));
+    const defaulted = renderUseSelect(options, selectedOptions);
     // Ids come from a per-hook unique id, so they're left out of the comparison.
     const propsWithoutId = ({ getOptionProps, flatOptions }: ReturnType<typeof renderUseSelect>) =>
       flatOptions.map((option, index) => {
@@ -90,7 +91,7 @@ describe('useSelect group state with single selection', () => {
         delete props.id;
         return props;
       });
-    expect(propsWithoutId(withoutModel)).toEqual(propsWithoutId(withModel));
+    expect(propsWithoutId(defaulted)).toEqual(propsWithoutId(explicit));
   });
 });
 

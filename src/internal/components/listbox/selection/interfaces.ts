@@ -11,8 +11,7 @@ export interface GroupState {
 }
 
 /**
- * Describes how a list selects options. Covers what the `useInteractiveGroups`, `checkboxes` and
- * `isMultiSelect` flags express today. Implementations are pure functions of their inputs.
+ * Describes how a list selects options. Implementations are pure functions of their inputs.
  */
 export interface SelectionModel {
   /** Drives aria-multiselectable and the row style. */
@@ -25,7 +24,7 @@ export interface SelectionModel {
    */
   selectedOptions: ReadonlyArray<OptionDefinition>;
 
-  /** For group headers and select-all. */
+  /** The checkbox state of a group header or select-all row. Other options are neither selected nor indeterminate. */
   getGroupState(option: DropdownOption): GroupState;
   /**
    * Returns the selection that results from the user choosing `option`.

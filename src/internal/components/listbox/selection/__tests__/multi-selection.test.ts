@@ -11,7 +11,7 @@ const findByValue = (list: ReadonlyArray<DropdownOption>, value: string | undefi
 const findGroup = (list: ReadonlyArray<DropdownOption>) => list.find(item => item.type === 'parent')!;
 const values = (options: ReadonlyArray<OptionDefinition>) => options.map(option => option.value).sort();
 
-// Select-all is not part of the flattened option lists; the list builds it separately and feeds it to the model.
+// Select-all is not part of the flattened options; the list adds it separately.
 const selectAll: DropdownOption = { type: 'select-all', option: { label: 'Select all' } };
 
 describe('multiSelection', () => {
@@ -36,7 +36,6 @@ describe('multiSelection', () => {
   test('toggling a group only toggles its enabled children', () => {
     const list = flatten([{ label: 'Group', options: [{ value: 'a' }, { value: 'b', disabled: true }] }]);
     const model = multiSelection([], { options: list, interactiveGroups: true });
-    // The disabled child 'b' is excluded from the toggle set.
     expect(values(model.getNextSelection(findGroup(list)))).toEqual(['a']);
   });
 
