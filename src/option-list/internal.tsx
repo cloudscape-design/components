@@ -82,7 +82,7 @@ const InternalOptionList = React.forwardRef(
     ref: React.Ref<OptionListProps.Ref>
   ) => {
     const baseProps = getBaseProps(restProps);
-    const i18n = useInternalI18n('select');
+    const i18n = useInternalI18n('option-list');
 
     const { listOptions, parentMap, originals, leafIndexes } = useMemo(() => {
       const { internalOptions, originals } = toInternalOptions(options);
@@ -120,7 +120,7 @@ const InternalOptionList = React.forwardRef(
         fireNonCancelableEvent(onChange, { selectedOptions: nextSelectedOptions });
       },
       getParent: option => parentMap.get(option)?.option as OptionGroup | undefined,
-      i18nStrings: { selectedAriaLabel: i18n('selectedAriaLabel', i18nStrings?.selectedAriaLabel) },
+      i18nStrings: { selectedAriaLabel: i18n('i18nStrings.selectedAriaLabel', i18nStrings?.selectedAriaLabel) },
     });
     useForwardFocus(ref, controller.listRef);
 

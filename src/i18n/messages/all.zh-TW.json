@@ -278,6 +278,9 @@
     "deselectAriaLabel": "移除 {option__label}",
     "i18nStrings.selectAllText": "選取全部"
   },
+  "option-list": {
+    "i18nStrings.selectedAriaLabel": "已選取"
+  },
   "pagination": {
     "ariaLabels.jumpToPageButtonLabel": "跳到頁面",
     "ariaLabels.nextPageLabel": "下一頁",
