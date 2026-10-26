@@ -4,60 +4,65 @@ import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/te
 import { escapeSelector } from '@cloudscape-design/test-utils-core/utils';
 
 import OptionWrapper from '../internal/option.js';
-import OptionsListWrapper from '../internal/options-list.js';
 
 import selectableItemsStyles from '../../../internal/components/selectable-item/styles.selectors.js';
 import styles from '../../../option-list/test-classes/styles.selectors.js';
 
 export class OptionListOptionWrapper extends ComponentWrapper {
   /**
-   * Returns the option content (label, description, icon).
-   */
-  findOption(): OptionWrapper | null {
-    return this.findComponent(`.${OptionWrapper.rootSelector}`, OptionWrapper);
-  }
-
-  /**
    * Returns the option label.
    */
   findLabel(): ElementWrapper | null {
-    return this.findOption()?.findLabel() ?? null;
+    return this.findOptionContent()?.findLabel() ?? null;
   }
 
   /**
    * Returns the option description.
    */
   findDescription(): ElementWrapper | null {
-    return this.findOption()?.findDescription() ?? null;
+    return this.findOptionContent()?.findDescription() ?? null;
   }
 
   /**
    * Returns the option label tag.
    */
   findLabelTag(): ElementWrapper | null {
-    return this.findOption()?.findLabelTag() ?? null;
+    return this.findOptionContent()?.findLabelTag() ?? null;
   }
 
   /**
    * Returns the option tags.
    */
   findTags(): Array<ElementWrapper> {
-    return this.findOption()?.findTags() ?? [];
+    return this.findOptionContent()?.findTags() ?? [];
   }
 
+  /**
+   * Returns `true` if the option is selected. A group header in multi selection is selected when all its options are selected.
+   */
   @usesDom
   isSelected(): boolean {
     return this.element.classList.contains(selectableItemsStyles.selected);
   }
 
+  /**
+   * Returns `true` if the option is highlighted.
+   */
   @usesDom
   isHighlighted(): boolean {
     return this.element.classList.contains(selectableItemsStyles.highlighted);
   }
 
+  /**
+   * Returns `true` if the option is disabled.
+   */
   @usesDom
   isDisabled(): boolean {
     return this.element.classList.contains(selectableItemsStyles.disabled);
+  }
+
+  private findOptionContent(): OptionWrapper | null {
+    return this.findComponent(`.${OptionWrapper.rootSelector}`, OptionWrapper);
   }
 }
 
@@ -65,21 +70,14 @@ export default class OptionListWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;
 
   /**
-   * Returns the container of the options. This element receives focus and handles keyboard navigation.
-   */
-  findOptionsContainer(): ElementWrapper {
-    return this.findByClassName(OptionsListWrapper.rootSelector)!;
-  }
-
-  /**
-   * Returns all options.
+   * Returns all options. Group headers are not included.
    */
   findOptions(): Array<OptionListOptionWrapper> {
     return this.findAllByClassName(styles.option).map(wrapper => new OptionListOptionWrapper(wrapper.getElement()));
   }
 
   /**
-   * Returns an option for a given index.
+   * Returns an option for a given index. Group headers are not counted.
    *
    * @param index 1-based index of the option to return.
    */
@@ -98,7 +96,7 @@ export default class OptionListWrapper extends ComponentWrapper {
   }
 
   /**
-   * Returns all selected options.
+   * Returns all selected options. Group headers are not included.
    */
   findSelectedOptions(): Array<OptionListOptionWrapper> {
     return this.findAll(`.${styles.option}.${selectableItemsStyles.selected}`).map(
@@ -107,9 +105,28 @@ export default class OptionListWrapper extends ComponentWrapper {
   }
 
   /**
-   * Returns the highlighted option.
+   * Returns the highlighted option. Group headers are not included.
    */
   findHighlightedOption(): OptionListOptionWrapper | null {
     return this.findComponent(`.${styles.option}.${selectableItemsStyles.highlighted}`, OptionListOptionWrapper);
+  }
+
+  /**
+   * Returns all option group headers.
+   */
+  findGroupHeaders(): Array<OptionListOptionWrapper> {
+    return this.findAllByClassName(styles['group-header']).map(
+      wrapper => new OptionListOptionWrapper(wrapper.getElement())
+    );
+  }
+
+  /**
+   * Returns an option group header for a given value.
+   *
+   * @param value The `value` of the option group.
+   */
+  findGroupHeaderByValue(value: string): OptionListOptionWrapper | null {
+    const escapedValue = escapeSelector(value);
+    return this.findComponent(`.${styles['group-header']}[data-value="${escapedValue}"]`, OptionListOptionWrapper);
   }
 }

@@ -1,13 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+
+import type { SelectProps } from '../select/interfaces';
 import { BaseComponentProps } from '../types/base-component';
 import { NonCancelableEventHandler } from '../types/events';
-import { OptionDefinition } from '../types/option';
 
 export interface OptionListProps extends BaseComponentProps {
   /**
-   * Specifies an array of options that are displayed inline as a list. Uses the same option objects as Select and Multiselect.
-   * Option groups are not supported.
+   * Specifies an array of options that are displayed inline as a list.
+   * You can group options into one level of option groups.
    *
    * #### Option
    * - `value` (string) - The returned value of the option when selected. Must be unique.
@@ -15,13 +17,18 @@ export interface OptionListProps extends BaseComponentProps {
    * - `lang` (string) - (Optional) The language of the option, provided as a BCP 47 language tag.
    * - `description` (string) - (Optional) Further information about the option that appears below the label.
    * - `disabled` (boolean) - (Optional) Determines whether the option is disabled. Users can't select or deselect a disabled option.
-   * - `disabledReason` (string) - (Optional) Displays a tooltip near the item when disabled. Use to provide additional context.
+   * - `disabledReason` (ReactNode) - (Optional) Displays a tooltip near the item when disabled. Use to provide additional context.
    * - `labelTag` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
    * - `tags` [string[]] - (Optional) A list of tags giving further guidance about the option.
-   * - `iconName` (string) - (Optional) Specifies the name of an [icon](/components/icon/) to display in the option.
-   * - `iconAriaLabel` (string) - (Optional) Specifies alternate text for the icon. We recommend that you provide this for accessibility.
-   * - `iconUrl` (string) - (Optional) URL of a custom icon.
-   * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
+   * - `icon` (ReactNode) - (Optional) An icon displayed in the option, such as an [icon component](/components/icon/).
+   *
+   * #### OptionGroup
+   * - `value` (string) - Used to locate option group in test utils.
+   * - `label` (string) - Option group text displayed to the user.
+   * - `disabled` (boolean) - (Optional) Determines whether the option group is disabled. Disables every option in the group.
+   * - `options` (Option[]) - The options in the group.
+   *
+   * In multi selection, choosing a group header selects or deselects all its enabled options.
    *
    * Options are the selection target. Do not render interactive elements such as buttons or links inside them.
    */
@@ -34,11 +41,8 @@ export interface OptionListProps extends BaseComponentProps {
   selectionType: OptionListProps.SelectionType;
 
   /**
-   * The selected options. Options are matched by `value`.
-   * In single selection, only the first option of the array is used.
-   *
-   * If you provide this property, you must also provide an `onChange` handler that updates it.
-   * If you don't, the component manages its selection internally.
+   * The selected options. Options are matched by `value`. In single selection, only the first option of the array is used.
+   * If you don't provide this property, the component manages its selection internally.
    */
   selectedOptions?: ReadonlyArray<OptionListProps.Option>;
 
@@ -49,12 +53,12 @@ export interface OptionListProps extends BaseComponentProps {
   onChange?: NonCancelableEventHandler<OptionListProps.ChangeDetail>;
 
   /**
-   * Adds an `aria-label` to the list. Use this when there is no visible label.
+   * Adds `aria-label` to the list. Use this when there is no visible label.
    */
   ariaLabel?: string;
 
   /**
-   * Adds `aria-labelledby` to the list. Use this to reference the visible question or heading.
+   * Adds `aria-labelledby` to the list. Use this to reference the visible label of the list.
    */
   ariaLabelledby?: string;
 
@@ -62,6 +66,11 @@ export interface OptionListProps extends BaseComponentProps {
    * Adds `aria-describedby` to the list.
    */
   ariaDescribedby?: string;
+
+  /**
+   * Specifies a render function to render custom options.
+   */
+  renderOption?: SelectProps.SelectOptionItemRenderer;
 
   /**
    * An object containing all the necessary localized strings required by the component.
@@ -73,8 +82,24 @@ export interface OptionListProps extends BaseComponentProps {
 
 export namespace OptionListProps {
   export type SelectionType = 'single' | 'multi';
-  export type Option = OptionDefinition;
-  export type Options = ReadonlyArray<Option>;
+
+  export interface Option {
+    value?: string;
+    label?: string;
+    lang?: string;
+    description?: string;
+    disabled?: boolean;
+    disabledReason?: React.ReactNode;
+    labelTag?: string;
+    tags?: ReadonlyArray<string>;
+    icon?: React.ReactNode;
+  }
+
+  export interface OptionGroup extends Option {
+    options: ReadonlyArray<Option>;
+  }
+
+  export type Options = ReadonlyArray<Option | OptionGroup>;
 
   export interface ChangeDetail {
     selectedOptions: ReadonlyArray<Option>;
