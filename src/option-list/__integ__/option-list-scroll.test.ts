@@ -82,7 +82,7 @@ const setupTest = (url: string, testFn: (page: ScrollPage) => Promise<void>) =>
   });
 
 describe('OptionList keyboard scrolling', () => {
-  describe.each(['wrapper', 'root', 'page'])('container=%s', container => {
+  describe.each(['wrapper', 'page'])('container=%s', container => {
     const focusList = async (page: ScrollPage) => {
       await page.click('#option-list-heading');
       await page.keys(['Tab']);

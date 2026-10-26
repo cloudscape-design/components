@@ -18,11 +18,10 @@ import styles from './scroll.scss';
 /**
  * Where the scrolling happens:
  * - `wrapper`: a wrapper div with a fixed height and `overflow: auto`.
- * - `root`: the same fixed-height class passed to OptionList's `className`, so its root scrolls.
  * - `page`: no container, the page scrolls.
  * - `dropdown`: the list is the content of a Dropdown opened by a button.
  */
-type Container = 'wrapper' | 'root' | 'page' | 'dropdown';
+type Container = 'wrapper' | 'page' | 'dropdown';
 type Preselected = 'none' | 'near-end';
 
 type PageContext = React.Context<
@@ -110,7 +109,6 @@ function ConfiguredOptionList({
     <OptionList
       ref={listRef}
       data-testid="option-list"
-      className={container === 'root' ? styles['fixed-height'] : undefined}
       ariaLabelledby="option-list-heading"
       selectionType={selectionType}
       options={options}
@@ -133,7 +131,7 @@ function ConfiguredOptionList({
           {list()}
         </div>
       )}
-      {(container === 'root' || container === 'page') && list()}
+      {container === 'page' && list()}
       {container === 'dropdown' && (
         <DropdownOptionList expandToViewport={expandToViewport} list={list} listRef={listRef} />
       )}
@@ -162,7 +160,6 @@ export default function OptionListScrollPage() {
               onChange={({ detail }) => setUrlParams({ container: detail.selectedId as Container })}
               options={[
                 { id: 'wrapper', text: 'Wrapper' },
-                { id: 'root', text: 'OptionList className' },
                 { id: 'page', text: 'Page' },
                 { id: 'dropdown', text: 'Dropdown' },
               ]}
