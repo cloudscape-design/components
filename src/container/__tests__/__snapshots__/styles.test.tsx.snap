@@ -50,7 +50,6 @@ exports[`getFooterStyles handles all possible style configurations 3`] = `
 
 exports[`getHeaderStyles handles all possible style configurations 1`] = `
 {
-  "borderRadius": undefined,
   "paddingBlock": undefined,
   "paddingInline": undefined,
 }
@@ -58,7 +57,6 @@ exports[`getHeaderStyles handles all possible style configurations 1`] = `
 
 exports[`getHeaderStyles handles all possible style configurations 2`] = `
 {
-  "borderRadius": undefined,
   "paddingBlock": undefined,
   "paddingInline": undefined,
 }
@@ -66,8 +64,8 @@ exports[`getHeaderStyles handles all possible style configurations 2`] = `
 
 exports[`getHeaderStyles handles all possible style configurations 3`] = `
 {
+  "--awsui-container-style-border-radius-ka4djm": "8px",
   "background": "transparent",
-  "borderRadius": "8px",
   "paddingBlock": "12px",
   "paddingInline": "20px",
 }
@@ -125,7 +123,6 @@ exports[`getRootStyles handles all possible style configurations 1`] = `
 {
   "background": undefined,
   "borderColor": undefined,
-  "borderRadius": undefined,
   "borderWidth": undefined,
   "boxShadow": undefined,
   "color": undefined,
@@ -136,7 +133,6 @@ exports[`getRootStyles handles all possible style configurations 2`] = `
 {
   "background": undefined,
   "borderColor": undefined,
-  "borderRadius": undefined,
   "borderWidth": undefined,
   "boxShadow": undefined,
   "color": undefined,
@@ -145,9 +141,9 @@ exports[`getRootStyles handles all possible style configurations 2`] = `
 
 exports[`getRootStyles handles all possible style configurations 3`] = `
 {
+  "--awsui-container-style-border-radius-ka4djm": "8px",
   "background": "#ffffff",
   "borderColor": "#e0e0e0",
-  "borderRadius": "8px",
   "borderWidth": "1px",
   "boxShadow": "0 1px 3px rgba(0,0,0,0.1)",
   "color": "#000000",

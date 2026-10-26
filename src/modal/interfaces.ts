@@ -57,6 +57,13 @@ export interface ModalProps extends BaseComponentProps, BaseModalProps {
    */
   position?: ModalProps.Position;
   /**
+   * Determines whether the close button is displayed in the header.
+   * When set to `true`, the close button isn't rendered, and the user resolves
+   * the modal by choosing one of the actions in the footer.
+   * ESC and clicks outside the modal still call `onDismiss`.
+   */
+  hideDismissButton?: boolean;
+  /**
    * Determines whether the modal is displayed on the screen. Modals are hidden by default.
    * Set this property to `true` to show them.
    */

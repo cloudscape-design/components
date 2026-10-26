@@ -505,6 +505,62 @@ const permutations = createPermutations<SideNavigationProps>([
       ],
     ],
   },
+  {
+    items: [
+      [
+        {
+          type: 'section-group',
+          title: 'Section group',
+          info: <Badge color="blue">New</Badge>,
+          items: [
+            {
+              type: 'section',
+              text: 'Section',
+              info: <Badge color="blue">New</Badge>,
+              items: [{ type: 'link', text: 'Page 1', href: '#/page-1' }],
+            },
+            {
+              type: 'expandable-link-group',
+              text: 'Expandable link group',
+              href: '#/expandable-link-group',
+              info: <Badge color="blue">New</Badge>,
+              items: [{ type: 'link', text: 'Page 2', href: '#/page-2' }],
+            },
+          ],
+        },
+        {
+          type: 'section',
+          text: 'A very very very very very very long section title',
+          info: <Badge color="blue">New</Badge>,
+          items: [{ type: 'link', text: 'Page 3', href: '#/page-3' }],
+        },
+      ],
+      [
+        { type: 'link', text: 'Home', href: '#/home', icon: <Icon name="settings" /> },
+        {
+          type: 'section-group',
+          title: 'Section group',
+          info: <Badge color="blue">New</Badge>,
+          items: [
+            {
+              type: 'section',
+              text: 'Section',
+              info: <Badge color="blue">New</Badge>,
+              items: [{ type: 'link', text: 'Page 1', href: '#/page-1', icon: <Icon name="folder" /> }],
+            },
+            {
+              type: 'expandable-link-group',
+              text: 'Expandable link group',
+              href: '#/expandable-link-group',
+              icon: <Icon name="folder" />,
+              info: <Badge color="blue">New</Badge>,
+              items: [{ type: 'link', text: 'Page 2', href: '#/page-2', icon: <Icon name="folder-open" /> }],
+            },
+          ],
+        },
+      ],
+    ],
+  },
 ]);
 
 export default function SideNavigationPermutations() {

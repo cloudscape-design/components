@@ -77,10 +77,12 @@ const tokens: StyleDictionary.ColorsDictionary = {
     dark: '{colorBackgroundControlDisabled}',
   },
   colorBackgroundToggleDefault: { light: '{colorNeutral650}', dark: '{colorNeutral500}' },
+  colorShadowToggleHandle: { light: 'transparent', dark: 'transparent' },
 
   // ── Input / form ──────────────────────────────────────────────────────────
   colorBackgroundInputDefault: { light: '{colorWhite}', dark: '{colorNeutral1000}' },
   colorBackgroundInputDisabled: { light: '{colorNeutral250}', dark: '{colorNeutral800}' },
+  colorBorderControlGroupDefault: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
   colorBorderInputDefault: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
   colorTextFormLabel: { light: '{colorNeutral850}', dark: '{colorNeutral350}' },
   colorTextFormSecondary: { light: '{colorNeutral600}', dark: '{colorNeutral500}' },
@@ -118,10 +120,15 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorItemSelected: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
 
   // ── Segmented control ─────────────────────────────────────────────────────
-  colorBackgroundSegmentActive: { light: '{colorNeutral800}', dark: '{colorNeutral300}' },
+  colorBackgroundSegmentActive: '{colorBackgroundToggleButtonNormalPressed}',
   colorBackgroundSegmentDefault: { light: 'transparent', dark: 'transparent' },
-  colorTextSegmentActive: { light: '{colorNeutral200}', dark: '{colorNeutral950}' },
-  colorTextSegmentDefault: { light: '{colorNeutral600}', dark: '{colorNeutral300}' },
+  colorBackgroundSegmentHover: { light: '{colorWhite}', dark: '{colorNeutral850}' },
+  colorBackgroundSegmentDisabled: { light: 'transparent', dark: 'transparent' },
+  colorBackgroundSegmentWrapper: { light: '{colorNeutral100}', dark: '{colorNeutral1000}' },
+  colorBorderSegmentActive: '{colorBorderToggleButtonNormalPressed}',
+  colorBorderSegmentHover: '{colorBorderButtonNormalDefault}',
+  colorTextSegmentActive: '{colorTextToggleButtonNormalPressed}',
+  colorTextSegmentDefault: '{colorTextButtonNormalDefault}',
   colorTextSegmentHover: '{colorTextButtonNormalHover}',
 
   // ── Slider / progress ─────────────────────────────────────────────────────
@@ -137,9 +144,9 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundBadgeRed: { light: '{colorError100}', dark: 'rgba(255, 61, 61, 0.2)' },
   colorBackgroundBadgeYellow: { light: '{colorWarning100}', dark: 'rgba(251, 211, 50, 0.2)' },
   colorBackgroundBadgeGrey: { light: '{colorNeutral250}', dark: '{colorNeutral700}' },
-  colorTextNotificationDefault: { light: '{colorNeutral800}', dark: '{colorNeutral100}' },
+  colorTextNotificationDefault: { light: '{colorNeutral800}', dark: '{colorNeutral250}' },
   colorTextNotificationYellow: { light: '{colorNeutral800}', dark: '{colorNeutral100}' },
-  colorTextNotificationLinkDefault: { light: '{colorNeutral900}', dark: '{colorNeutral50}' },
+  colorTextNotificationLinkDefault: { light: '{colorNeutral800}', dark: '{colorNeutral250}' },
   colorTextNotificationLinkHover: { light: '{colorNeutral950}', dark: '{colorWhite}' },
   colorBorderDividerNotification: { light: '{colorNeutral350}', dark: '{colorNeutral600}' },
   colorTextLinkInvertedDefault: '{colorNeutral100}',
@@ -204,7 +211,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundStatusIndicatorNeutral: { light: '{colorNeutral200}', dark: '{colorNeutral800}' },
 
   // ── Table ─────────────────────────────────────────────────────────────────
-  colorBackgroundCellShaded: { light: '{colorNeutral150}', dark: '{colorNeutral900}' },
+  colorBackgroundCellShaded: { light: '{colorNeutral200}', dark: '{colorNeutral900}' },
   colorBorderCellShaded: { light: '{colorNeutral300}', dark: '{colorNeutral700}' },
 
   // ── Breadcrumb ────────────────────────────────────────────────────────────

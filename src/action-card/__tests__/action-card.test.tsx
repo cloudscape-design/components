@@ -22,6 +22,19 @@ describe('ActionCard Component', () => {
       expect(button).toBeTruthy();
       expect(button).toHaveAttribute('type', 'button');
     });
+
+    test.each([{ header: 'Header' }, { ariaLabel: 'Label' }])(
+      'makes the root a delegated-focus motion trigger, since the button does not contain the icon (%o)',
+      props => {
+        const wrapper = renderActionCard({ ...props, icon: 'icon' });
+        const root = wrapper.getElement();
+        const button = root.querySelector('button')!;
+        const icon = root.querySelector('[data-awsui-motion-target]')!;
+
+        expect(root.getAttribute('data-awsui-motion-trigger')!.split(' ')).toEqual(['hover', 'delegated-focus']);
+        expect(button.contains(icon)).toBe(false);
+      }
+    );
   });
 
   describe('header', () => {

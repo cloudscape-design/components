@@ -62,6 +62,10 @@ export const colorChartsThresholdPositive: string;
 export const colorChartsThresholdInfo: string;
 export const colorChartsThresholdNeutral: string;
 
+// Status text colors
+export const colorTextStatusError: string;
+export const colorTextStatusWarning: string;
+
 // Spacing
 export const spaceXs: string;
 export const spaceXxs: string;

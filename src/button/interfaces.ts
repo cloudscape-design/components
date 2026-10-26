@@ -18,8 +18,10 @@ export interface BaseButtonProps {
   /**
    * Provides a reason why the button is disabled (only when `disabled` is `true`).
    * If provided, the button becomes focusable.
+   *
+   * Do not place interactive elements like links or buttons.
    */
-  disabledReason?: string;
+  disabledReason?: React.ReactNode;
   /**
    * Renders the button as being in a loading state. It takes precedence over the `disabled` if both are set to `true`.
    * It prevents users from clicking the button, but it can still be focused.
@@ -112,6 +114,10 @@ export interface BaseButtonProps {
    *
    * We do not support using this attribute to apply custom styling.
    *
+   * Pass a `ref` to access the native element for measurement, observation, or third-party integration.
+   * For actions such as focus or selection, use the component's explicit ref methods;
+   * operations performed directly on the native element may bypass the built-in component's behaviors.
+   *
    * @awsuiSystem core
    */
   nativeButtonAttributes?: NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>;
@@ -123,6 +129,10 @@ export interface BaseButtonProps {
    * - Event handlers will be chained, unless the default is prevented.
    *
    * We do not support using this attribute to apply custom styling.
+   *
+   * Pass a `ref` to access the native element for measurement, observation, or third-party integration.
+   * For actions such as focus or selection, use the component's explicit ref methods;
+   * operations performed directly on the native element may bypass the built-in component's behaviors.
    *
    * @awsuiSystem core
    */

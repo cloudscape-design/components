@@ -2,16 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { DropdownOption } from '../../internal/components/option/interfaces';
-import { NestedDropdownOption, unflattenOptions } from '../../internal/components/option/utils/unflatten-options';
-import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
-import { VirtualItem } from '../../internal/vendor/react-virtual';
-import { MultiselectProps } from '../../multiselect/interfaces';
-import { SelectProps } from '../interfaces';
-import Item, { ItemParentProps } from '../parts/item';
-import MultiselectItem, { MultiselectItemParentProps } from '../parts/multiselect-item';
-import OptionGroup from '../parts/option-group';
+import { MultiselectProps } from '../../../../multiselect/interfaces';
+import { SelectProps } from '../../../../select/interfaces';
+import Item, { ItemParentProps } from '../../../../select/parts/item';
+import MultiselectItem, { MultiselectItemParentProps } from '../../../../select/parts/multiselect-item';
+import { VirtualItem } from '../../../vendor/react-virtual';
+import { DropdownOption } from '../../option/interfaces';
+import { NestedDropdownOption, unflattenOptions } from '../../option/utils/unflatten-options';
+import { HighlightType } from '../../options-list/utils/use-highlight-option';
 import { getItemProps } from './get-item-props';
+import OptionGroup from './option-group';
 
 interface RenderOptionProps {
   options: ReadonlyArray<DropdownOption>;

@@ -15,7 +15,6 @@ interface StyledCheckboxProps {
   indeterminate?: boolean;
   disabled?: boolean;
   readOnly?: boolean;
-  highlightState?: boolean;
 }
 
 function StyledCheckbox({
@@ -24,11 +23,8 @@ function StyledCheckbox({
   indeterminate: initialIndeterminate,
   disabled,
   readOnly,
-  highlightState,
 }: StyledCheckboxProps) {
   const [state, setState] = useState({ checked: initialChecked, indeterminate: initialIndeterminate });
-  const isIndeterminate = highlightState && state.indeterminate;
-  const isChecked = highlightState && !state.indeterminate && state.checked;
   return (
     <Checkbox
       checked={state.checked}
@@ -41,20 +37,9 @@ function StyledCheckbox({
         styleClassNames: {
           control: clsx(
             styles['checkbox-control'],
+            (state.checked || state.indeterminate) && styles['checkbox-control-checked'],
             disabled && styles['checkbox-control-disabled'],
             readOnly && styles['checkbox-control-readonly']
-          ),
-          label: clsx(
-            styles['checkbox-label'],
-            disabled && styles['checkbox-label-disabled'],
-            isChecked && styles['checkbox-label-checked'],
-            isIndeterminate && styles['checkbox-label-indeterminate']
-          ),
-          description: clsx(
-            styles['checkbox-description'],
-            disabled && styles['checkbox-description-disabled'],
-            isChecked && styles['checkbox-description-checked'],
-            isIndeterminate && styles['checkbox-description-indeterminate']
           ),
         },
       }}
@@ -81,10 +66,6 @@ export default function () {
         <StyledCheckbox label="Indeterminate" checked={true} indeterminate={true} />
         <StyledCheckbox label="Indeterminate disabled" checked={true} indeterminate={true} disabled={true} />
         <StyledCheckbox label="Indeterminate read-only" checked={true} indeterminate={true} readOnly={true} />
-      </SpaceBetween>
-      <SpaceBetween size="m" direction="horizontal">
-        <StyledCheckbox label="Highlighted" checked={false} highlightState={true} />
-        <StyledCheckbox label="Highlighted indeterminate" checked={true} indeterminate={true} highlightState={true} />
       </SpaceBetween>
     </SimplePage>
   );

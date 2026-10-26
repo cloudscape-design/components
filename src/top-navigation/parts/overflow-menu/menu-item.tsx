@@ -34,11 +34,13 @@ const ListItem = ({ children, startIcon, endIcon }: ListItemProps) => {
   );
 };
 
-interface LinkItemProps extends ButtonItemProps, Pick<LinkProps, 'href' | 'external' | 'target' | 'rel'> {}
+interface LinkItemProps extends ButtonItemProps, Pick<LinkProps, 'href' | 'external' | 'target' | 'rel'> {
+  lang?: string;
+}
 
 const LinkItem = forwardRef(
   (
-    { children, external, href, target, rel, startIcon, endIcon, onClick, context, testId }: LinkItemProps,
+    { children, external, href, target, rel, lang, startIcon, endIcon, onClick, context, testId }: LinkItemProps,
     ref: React.Ref<HTMLAnchorElement & HTMLButtonElement>
   ) => {
     const anchorTarget = target ?? (external ? '_blank' : undefined);
@@ -59,6 +61,7 @@ const LinkItem = forwardRef(
         href={href}
         target={anchorTarget}
         rel={anchorRel}
+        lang={lang}
         data-awsui-motion-trigger="hover"
         {...(testId ? { 'data-testid': testId } : {})}
       >
@@ -276,6 +279,7 @@ function dropdownComponentFactory(
       startIcon={startIcon}
       href={isLink ? item.href : undefined}
       external={isLink ? item.external : undefined}
+      lang={item.lang}
       context="dropdown-menu"
       testId={item.id}
       onClick={event => onItemClick(event, item as ButtonDropdownProps.Item)}

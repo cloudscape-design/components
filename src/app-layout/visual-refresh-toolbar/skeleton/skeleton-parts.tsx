@@ -19,14 +19,16 @@ import styles from './styles.css.js';
 
 export const BeforeMainSlotSkeleton = React.forwardRef<HTMLElement, SkeletonPartProps>(
   ({ toolbarProps, appLayoutProps }, ref) => {
-    const hasNavigation = toolbarProps ? toolbarProps.hasNavigation : !!appLayoutProps.navigation;
+    const hasNavigation =
+      !!toolbarProps?.hasNavigation || (!!appLayoutProps.navigation && !appLayoutProps.navigationHide);
+    const navigationOpen = !!(toolbarProps?.navigationOpen ?? appLayoutProps.navigationOpen);
     return (
       <>
         {!!toolbarProps && (
           <ToolbarSkeletonStructure
             ref={ref}
             ariaLabels={toolbarProps.ariaLabels}
-            hasNavigation={hasNavigation}
+            hasNavigation={toolbarProps.hasNavigation}
             navigationOpen={toolbarProps.navigationOpen}
             ownBreadcrumbs={appLayoutProps.breadcrumbs}
           />
@@ -35,18 +37,16 @@ export const BeforeMainSlotSkeleton = React.forwardRef<HTMLElement, SkeletonPart
           <div
             className={clsx(
               styles.navigation,
-              !toolbarProps?.navigationOpen && !toolbarProps?.navigationCollapsible && styles['panel-hidden'],
-              !toolbarProps?.navigationOpen && toolbarProps?.navigationCollapsible && styles['navigation-collapsed'],
+              !navigationOpen && !toolbarProps?.navigationCollapsible && styles['panel-hidden'],
+              !navigationOpen && toolbarProps?.navigationCollapsible && styles['navigation-collapsed'],
               !!toolbarProps?.activeDrawerId && styles['unfocusable-mobile']
             )}
           >
             <div
               className={clsx(
                 navStyles['navigation-container'],
-                toolbarProps?.navigationOpen && navStyles['is-navigation-open'],
-                !toolbarProps?.navigationOpen &&
-                  toolbarProps?.navigationCollapsible &&
-                  navStyles['is-navigation-collapsed']
+                navigationOpen && navStyles['is-navigation-open'],
+                !navigationOpen && toolbarProps?.navigationCollapsible && navStyles['is-navigation-collapsed']
               )}
             >
               <nav className={navStyles.navigation}>

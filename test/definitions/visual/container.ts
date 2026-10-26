@@ -52,6 +52,11 @@ const suite: TestSuite = {
       path: 'container/style-custom',
       screenshotType: 'screenshotArea',
     },
+    {
+      description: 'stacked with custom border radii',
+      path: 'container/stacked-custom-radius',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 

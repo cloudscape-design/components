@@ -64,8 +64,10 @@ export interface ToggleButtonProps extends BaseComponentProps, Omit<BaseButtonPr
    * Provides a reason why the button is disabled (only when `disabled` is `true`).
    * If provided, the button becomes focusable.
    * Applicable only for the normal variant.
+   *
+   * Do not place interactive elements like links or buttons.
    */
-  disabledReason?: string;
+  disabledReason?: React.ReactNode;
 
   /**
    * Called when the user changes their selection.

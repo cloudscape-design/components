@@ -156,6 +156,8 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   @include styles.styles-reset;
   @include styles.control-border-radius-full();
   @include styles.font-body-m;
+  font-size: inherit;
+  font-weight: inherit;
   // Restore browsers' default resize values
   resize: none;
   // Restore default text cursor
@@ -394,4 +396,6 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   white-space: pre-wrap;
   // Inherit color from parent (textarea) for disabled/readonly states
   color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
 }
