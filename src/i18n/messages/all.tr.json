@@ -278,6 +278,9 @@
     "deselectAriaLabel": "{option__label} ögesini kaldır",
     "i18nStrings.selectAllText": "Tümünü seç"
   },
+  "option-list": {
+    "i18nStrings.selectedAriaLabel": "Seçili"
+  },
   "pagination": {
     "ariaLabels.jumpToPageButtonLabel": "Sayfaya atla",
     "ariaLabels.nextPageLabel": "Sonraki sayfa",

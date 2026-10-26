@@ -278,6 +278,9 @@
     "deselectAriaLabel": "{option__label} を削除",
     "i18nStrings.selectAllText": "すべて選択"
   },
+  "option-list": {
+    "i18nStrings.selectedAriaLabel": "選択済み"
+  },
   "pagination": {
     "ariaLabels.jumpToPageButtonLabel": "ページに移動",
     "ariaLabels.nextPageLabel": "次のページ",

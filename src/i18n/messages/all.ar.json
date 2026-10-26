@@ -255,6 +255,9 @@
     "deselectAriaLabel": "إزالة {option__label}",
     "i18nStrings.selectAllText": "حدد الكل"
   },
+  "option-list": {
+    "i18nStrings.selectedAriaLabel": "مُحدَّد"
+  },
   "pagination": {
     "ariaLabels.jumpToPageButtonLabel": "الانتقال إلى الصفحة",
     "ariaLabels.nextPageLabel": "الصفحة التالية",
