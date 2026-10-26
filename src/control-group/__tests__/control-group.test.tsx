@@ -269,7 +269,7 @@ describe('Control group', () => {
   });
 
   describe('ARIA properties', () => {
-    test('ariaLabelledby sets aria-labelledby on the group', () => {
+    test('ariaLabelledby sets aria-labelledby on the element with role="group"', () => {
       const { getByRole } = render(
         <ControlGroup ariaLabelledby="external-label">
           <input data-testid="alpha" />
@@ -280,7 +280,7 @@ describe('Control group', () => {
       expect(getByRole('group').getAttribute('aria-labelledby')).toBe('external-label');
     });
 
-    test('ariaDescribedby sets aria-describedby on the group', () => {
+    test('ariaDescribedby sets aria-describedby on the element with role="group"', () => {
       const { getByRole } = render(
         <ControlGroup ariaDescribedby="external-description">
           <input data-testid="alpha" />
@@ -291,7 +291,7 @@ describe('Control group', () => {
       expect(getByRole('group').getAttribute('aria-describedby')).toBe('external-description');
     });
 
-    test('merges ariaLabelledby with the inline label id on the group', () => {
+    test('combines ariaLabelledby and the inline label id when both inlineLabelText and ariaLabelledby are set', () => {
       const { container, getByRole } = render(
         <ControlGroup inlineLabelText="Threshold" ariaLabelledby="external-label">
           <input data-testid="alpha" />
@@ -300,9 +300,10 @@ describe('Control group', () => {
       );
 
       const inlineLabelId = createWrapper(container).findControlGroup()!.findInlineLabel()!.getElement().id;
-      const labelledby = getByRole('group').getAttribute('aria-labelledby')!.split(' ');
-      expect(labelledby).toContain('external-label');
-      expect(labelledby).toContain(inlineLabelId);
+      const labelledBy = getByRole('group').getAttribute('aria-labelledby')!;
+      const tokens = labelledBy.split(' ');
+      expect(tokens).toContain('external-label');
+      expect(tokens).toContain(inlineLabelId);
     });
   });
 });
