@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { act, fireEvent, render } from '@testing-library/react';
+import { act, createEvent, fireEvent, render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/component-toolkit/internal';
 
@@ -327,6 +327,21 @@ describe('OptionList', () => {
 
       pressKey(wrapper, 36 /* Home */);
       expect(listbox).toHaveAttribute('aria-activedescendant', optionId(1));
+    });
+
+    test('Home and End move the highlight without the browser scrolling the page', () => {
+      const { wrapper } = renderOptionList(<Stateful />);
+      const listbox = wrapper.findOptionsContainer().getElement();
+      fireEvent.focus(listbox);
+      for (const [keyCode, value] of [
+        [KeyCode.end, 'c'],
+        [KeyCode.home, 'a'],
+      ] as const) {
+        const event = createEvent.keyDown(listbox, { keyCode });
+        fireEvent(listbox, event);
+        expect(event.defaultPrevented).toBe(true);
+        expect(wrapper.findHighlightedOption()?.getElement().dataset.value).toBe(value);
+      }
     });
 
     test('Enter and Space select the highlighted option', () => {
