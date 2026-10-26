@@ -49,4 +49,4 @@ export type Action<T = void> =
   | { type: 'FOCUS' }
   | { type: 'BLUR' }
   | { type: 'RESET_TO_IDLE' }
-  | { type: 'CLEAR_CALLBACKS' };
+  | { type: 'CLEAR_CALLBACKS'; payload?: StateTransitionCallbacks<T>[] };
