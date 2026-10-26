@@ -354,6 +354,23 @@ describe('OptionList', () => {
       pressKey(listbox, KeyCode.down);
       expect(findTooltip()!.findContent()!.getElement()).toHaveTextContent('Needs a quota');
     });
+
+    test('Escape closes the disabled reason tooltip and keeps the highlight and selection', () => {
+      const onChange = jest.fn();
+      const { wrapper, listbox } = renderOptionList(
+        <Stateful options={withDisabled} initialSelected={['a']} onChange={onChange} />
+      );
+      const findTooltip = () => createWrapper().findTooltip();
+      fireEvent.focus(listbox);
+      pressKey(listbox, KeyCode.down);
+      expect(findTooltip()).not.toBeNull();
+
+      fireEvent.keyDown(listbox, { key: 'Escape', keyCode: KeyCode.escape });
+      expect(findTooltip()).toBeNull();
+      expect(highlightedValue(wrapper)).toBe('b');
+      expect(onChange).not.toHaveBeenCalled();
+      expect(selectedLabels(wrapper)).toEqual(['First']);
+    });
   });
 
   describe('keyboard', () => {
