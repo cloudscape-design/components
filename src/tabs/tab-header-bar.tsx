@@ -1,18 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { forwardRef, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import {
-  getLogicalBoundingClientRect,
-  getScrollInlineStart,
+  getIsRtl,
   SingleTabStopNavigationAPI,
   SingleTabStopNavigationProvider,
   useMergeRefs,
+  useResizeObserver,
   useSingleTabStopNavigation,
-  useStableCallback,
 } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
@@ -207,33 +206,31 @@ export function TabHeaderBar({
   const activeTab = tabs.find(tab => tab.id === activeTabId);
   const activeTabVisible = activeTab !== undefined && !activeTab.disabled;
 
-  const updateIndicator = ({ fromResize = false } = {}) => {
+  const updateIndicator = () => {
     const list = headerBarRef.current;
     const headerContainer = activeTabVisible ? headerContainerRefs.current.get(activeTab.id) : undefined;
     if (!list || !headerContainer) {
-      setIndicatorStyle(prev => (prev.opacity === 0 ? prev : { ...prev, opacity: 0 }));
+      setIndicatorStyle({ opacity: 0 });
       return;
     }
 
-    const headerRect = getLogicalBoundingClientRect(headerContainer);
     const borderWidth = headerContainer.clientLeft;
-    const insetInlineStart = `${
-      headerRect.insetInlineStart -
-      getLogicalBoundingClientRect(list).insetInlineStart +
-      getScrollInlineStart(list) +
-      borderWidth
-    }px`;
-    const inlineSize = `${headerRect.inlineSize - 2 * borderWidth - 1}px`;
-    const animate = !fromResize && previousIndicatorTabId !== undefined && previousIndicatorTabId !== activeTabId;
+    // Layout metrics ignore transforms (such as a Modal scaling in) and the scroll position.
+    // start = tabStart + border, width = tabWidth - 2 * border - 1 (as the per-tab :after)
+    const tabStart = getIsRtl(list)
+      ? list.clientWidth - headerContainer.offsetLeft - headerContainer.offsetWidth
+      : headerContainer.offsetLeft;
+    const insetInlineStart = `${tabStart + borderWidth}px`;
+    const inlineSize = `${headerContainer.offsetWidth - 2 * borderWidth - 1}px`;
+    const animate = previousIndicatorTabId !== undefined && previousIndicatorTabId !== activeTabId;
 
     setIndicatorStyle(prev => {
-      const transition = animate ? undefined : 'none';
       const sameGeometry =
         prev.insetInlineStart === insetInlineStart && prev.inlineSize === inlineSize && prev.opacity === 1;
-      if (sameGeometry && (fromResize || prev.transition === transition)) {
+      if (sameGeometry) {
         return prev;
       }
-      return { insetInlineStart, inlineSize, opacity: 1, ...(transition ? { transition } : {}) };
+      return { insetInlineStart, inlineSize, opacity: 1, transition: animate ? undefined : 'none' };
     });
   };
 
@@ -242,17 +239,17 @@ export function TabHeaderBar({
       updateIndicator();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOneTheme, activeTabId, activeTabVisible]);
+  }, [isOneTheme, activeTabId, activeTabVisible, tabs, widthChange]);
 
-  const onHeaderResize = useStableCallback(() => updateIndicator({ fromResize: true }));
-  useEffect(() => {
-    if (!isOneTheme || typeof ResizeObserver === 'undefined') {
-      return;
+  const getActiveHeaderContainer = useCallback(
+    () => (activeTabId !== undefined ? headerContainerRefs.current.get(activeTabId) : undefined) ?? null,
+    [activeTabId]
+  );
+  useResizeObserver(getActiveHeaderContainer, () => {
+    if (isOneTheme) {
+      updateIndicator();
     }
-    const observer = new ResizeObserver(onHeaderResize);
-    headerContainerRefs.current.forEach(element => observer.observe(element, { box: 'border-box' }));
-    return () => observer.disconnect();
-  }, [isOneTheme, tabs, onHeaderResize]);
+  });
 
   const onScroll = () => {
     if (headerBarRef.current) {
@@ -425,7 +422,7 @@ export function TabHeaderBar({
             onBlur={onBlur}
           >
             {tabs.map(renderTabHeader)}
-            {isOneTheme && (
+            {isOneTheme && activeTabVisible && (
               <Indicator className={styles['tabs-active-indicator']} style={indicatorStyle} aria-hidden="true" />
             )}
           </TabList>

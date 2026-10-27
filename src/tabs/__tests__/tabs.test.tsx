@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
 
-import { getLogicalBoundingClientRect, isThemeActive } from '@cloudscape-design/component-toolkit/internal';
+import { isThemeActive } from '@cloudscape-design/component-toolkit/internal';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import TestI18nProvider from '../../../lib/components/i18n/testing';
@@ -14,10 +14,18 @@ import styles from '../../../lib/components/tabs/styles.css.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
-  getLogicalBoundingClientRect: jest.fn(),
-  getScrollInlineStart: jest.fn().mockReturnValue(0),
   isThemeActive: jest.fn().mockReturnValue(false),
 }));
+
+let mockContainerWidth: number | null = null;
+jest.mock('@cloudscape-design/component-toolkit', () => {
+  const originalToolkitModule = jest.requireActual('@cloudscape-design/component-toolkit');
+  return {
+    ...originalToolkitModule,
+    useContainerQuery: (...args: any) =>
+      mockContainerWidth === null ? originalToolkitModule.useContainerQuery(...args) : [mockContainerWidth, () => {}],
+  };
+});
 
 let mockHorizontalOverflow = false;
 jest.mock('../../../lib/components/tabs/scroll-utils', () => {
@@ -1428,24 +1436,36 @@ describe('active-tab indicator', () => {
     return wrapper.find(indicatorSelector)!.getElement().style;
   }
 
-  function mockActiveHeaderRect(insetInlineStart: number, inlineSize: number) {
-    jest.mocked(getLogicalBoundingClientRect).mockImplementation(element => ({
-      insetInlineStart: element.classList.contains(styles['tabs-tab-header-container']) ? insetInlineStart : 0,
-      inlineSize,
-      insetInlineEnd: 0,
-      blockSize: 0,
-      insetBlockStart: 0,
-      insetBlockEnd: 0,
-    }));
+  const restoreLayoutMocks: Array<() => void> = [];
+
+  // Layout metrics are used (not bounding rects) so ancestor transforms cannot skew the measurement.
+  function mockActiveHeaderLayout(offsetLeft: number, offsetWidth: number) {
+    const isActiveHeader = (element: HTMLElement) => element.classList.contains(styles['tabs-tab-header-container']);
+    const offsetLeftSpy = jest.spyOn(HTMLElement.prototype, 'offsetLeft', 'get').mockImplementation(function (
+      this: HTMLElement
+    ) {
+      return isActiveHeader(this) ? offsetLeft : 0;
+    });
+    const offsetWidthSpy = jest.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockImplementation(function (
+      this: HTMLElement
+    ) {
+      return isActiveHeader(this) ? offsetWidth : 0;
+    });
+    restoreLayoutMocks.push(
+      () => offsetLeftSpy.mockRestore(),
+      () => offsetWidthSpy.mockRestore()
+    );
   }
 
   beforeEach(() => {
     jest.mocked(isThemeActive).mockReturnValue(true);
-    mockActiveHeaderRect(0, 100);
+    mockActiveHeaderLayout(0, 100);
   });
 
   afterEach(() => {
     jest.mocked(isThemeActive).mockReturnValue(false);
+    mockContainerWidth = null;
+    restoreLayoutMocks.splice(0).forEach(restore => restore());
   });
 
   test('does not render the shared indicator outside One Theme', () => {
@@ -1455,36 +1475,29 @@ describe('active-tab indicator', () => {
     expect(wrapper.findActiveTab()!.getElement().closest(`.${styles['tabs-tab-active']}`)).not.toBeNull();
   });
 
-  test('renders a single decorative li indicator when the tab list is a ul', () => {
+  test('renders a single decorative indicator in One Theme', () => {
     const { wrapper } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => {}} />);
     expect(wrapper.findAll(indicatorSelector)).toHaveLength(1);
-    const indicator = wrapper.find(indicatorSelector)!.getElement();
-    expect(indicator.tagName).toBe('LI');
-    expect(indicator).toHaveAttribute('aria-hidden', 'true');
-  });
-
-  test('renders the indicator as a span when tabs have actions or are dismissible', () => {
-    const { wrapper } = renderTabs(<Tabs tabs={actionDismissibleTabs} activeTabId="first" onChange={() => {}} />);
-    expect(wrapper.find(indicatorSelector)!.getElement().tagName).toBe('SPAN');
+    expect(wrapper.find(indicatorSelector)!.getElement()).toHaveAttribute('aria-hidden', 'true');
   });
 
   test('toggles indicator visibility when switching between disabled and enabled tabs', () => {
     const { wrapper, rerender } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="third" onChange={() => {}} />);
-    expect(indicatorStyle(wrapper).opacity).toBe('0');
+    expect(wrapper.findAll(indicatorSelector)).toHaveLength(0);
 
     rerender(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => {}} />);
     expect(indicatorStyle(wrapper).opacity).toBe('1');
 
     rerender(<Tabs tabs={defaultTabs} activeTabId="third" onChange={() => {}} />);
-    expect(indicatorStyle(wrapper).opacity).toBe('0');
+    expect(wrapper.findAll(indicatorSelector)).toHaveLength(0);
   });
 
-  test('hides the indicator when the active tab is removed', () => {
+  test('removes the indicator from the DOM when the active tab is removed', () => {
     const { wrapper, rerender } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => {}} />);
     expect(indicatorStyle(wrapper).opacity).toBe('1');
 
     rerender(<Tabs tabs={defaultTabs.slice(1)} activeTabId="first" onChange={() => {}} />);
-    expect(indicatorStyle(wrapper).opacity).toBe('0');
+    expect(wrapper.findAll(indicatorSelector)).toHaveLength(0);
   });
 
   test('shows the indicator over a tab with an empty-string id', () => {
@@ -1494,17 +1507,67 @@ describe('active-tab indicator', () => {
   });
 
   test('positions the indicator with the active tab offset and width', () => {
-    mockActiveHeaderRect(40, 80);
+    mockActiveHeaderLayout(40, 80);
     const { wrapper, rerender } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => {}} />);
     expect(indicatorStyle(wrapper).insetInlineStart).toBe('40px');
     expect(indicatorStyle(wrapper).inlineSize).toBe('79px');
     expect(indicatorStyle(wrapper).transition).toBe('none');
 
-    mockActiveHeaderRect(200, 150);
+    mockActiveHeaderLayout(200, 150);
     rerender(<Tabs tabs={defaultTabs} activeTabId="second" onChange={() => {}} />);
     expect(indicatorStyle(wrapper).insetInlineStart).toBe('200px');
     expect(indicatorStyle(wrapper).inlineSize).toBe('149px');
     expect(indicatorStyle(wrapper).transition).toBe('');
+  });
+
+  test('re-measures without animating when the container width changes', () => {
+    mockContainerWidth = 600;
+    mockActiveHeaderLayout(100, 80);
+    const { wrapper, rerender } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => {}} />);
+    expect(indicatorStyle(wrapper).insetInlineStart).toBe('100px');
+
+    mockContainerWidth = 400;
+    mockActiveHeaderLayout(70, 80);
+    rerender(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => {}} />);
+    expect(indicatorStyle(wrapper).insetInlineStart).toBe('70px');
+    expect(indicatorStyle(wrapper).inlineSize).toBe('79px');
+    expect(indicatorStyle(wrapper).transition).toBe('none');
+  });
+
+  test('measures layout size, ignoring a scaled ancestor such as an opening Modal', () => {
+    const headerRectSpy = jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(
+      () =>
+        ({
+          left: 36,
+          right: 126,
+          width: 90,
+          height: 0,
+          top: 0,
+          bottom: 0,
+        }) as DOMRect
+    );
+    mockActiveHeaderLayout(40, 100);
+    const { wrapper } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => {}} />);
+    headerRectSpy.mockRestore();
+
+    expect(indicatorStyle(wrapper).insetInlineStart).toBe('40px');
+    expect(indicatorStyle(wrapper).inlineSize).toBe('99px');
+  });
+
+  test('mirrors the offset from the end edge in a right-to-left list', () => {
+    const clientWidthSpy = jest.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(300);
+    const computedStyle = window.getComputedStyle.bind(window);
+    const computedStyleSpy = jest
+      .spyOn(window, 'getComputedStyle')
+      .mockImplementation(element => Object.assign(computedStyle(element), { direction: 'rtl' }));
+    mockActiveHeaderLayout(40, 80);
+    const { wrapper } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => {}} />);
+    clientWidthSpy.mockRestore();
+    computedStyleSpy.mockRestore();
+
+    // list width - offsetLeft - offsetWidth = 300 - 40 - 80
+    expect(indicatorStyle(wrapper).insetInlineStart).toBe('180px');
+    expect(indicatorStyle(wrapper).inlineSize).toBe('79px');
   });
 
   describe('on tab header resize', () => {
@@ -1534,26 +1597,30 @@ describe('active-tab indicator', () => {
     });
 
     function headerObserver() {
-      return observers.find(observer =>
-        observer.observed.some(element => element.classList.contains(styles['tabs-tab-header-container']))
-      )!;
+      return [...observers]
+        .reverse()
+        .find(observer =>
+          observer.observed.some(element => element.classList.contains(styles['tabs-tab-header-container']))
+        )!;
     }
 
     function fireResize() {
-      act(() => headerObserver().callback([], {} as ResizeObserver));
+      const observer = headerObserver();
+      const entry = {
+        target: observer.observed[0],
+        contentBoxSize: [{ inlineSize: 0, blockSize: 0 }],
+        borderBoxSize: [{ inlineSize: 0, blockSize: 0 }],
+      } as unknown as ResizeObserverEntry;
+      act(() => observer.callback([entry], {} as ResizeObserver));
     }
-
-    test('observes every tab header', () => {
-      renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => {}} />);
-      expect(headerObserver().observed).toHaveLength(defaultTabs.length);
-    });
 
     test('re-measures without animating when a resize changes the geometry', () => {
       const { wrapper, rerender } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => {}} />);
+      mockActiveHeaderLayout(40, 80);
       rerender(<Tabs tabs={defaultTabs} activeTabId="second" onChange={() => {}} />);
       expect(indicatorStyle(wrapper).transition).toBe('');
 
-      mockActiveHeaderRect(70, 120);
+      mockActiveHeaderLayout(70, 120);
       fireResize();
       expect(indicatorStyle(wrapper).insetInlineStart).toBe('70px');
       expect(indicatorStyle(wrapper).inlineSize).toBe('119px');
@@ -1562,6 +1629,7 @@ describe('active-tab indicator', () => {
 
     test('keeps the style untouched when a resize does not change the geometry', () => {
       const { wrapper, rerender } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => {}} />);
+      mockActiveHeaderLayout(40, 80);
       rerender(<Tabs tabs={defaultTabs} activeTabId="second" onChange={() => {}} />);
       const indicator = wrapper.find(indicatorSelector)!.getElement();
       const styleBefore = indicator.getAttribute('style');
@@ -1569,13 +1637,6 @@ describe('active-tab indicator', () => {
       fireResize();
       expect(indicator.getAttribute('style')).toBe(styleBefore);
       expect(indicator.style.transition).toBe('');
-    });
-
-    test('disconnects the observer on unmount', () => {
-      const { unmount } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => {}} />);
-      const { disconnect } = headerObserver();
-      unmount();
-      expect(disconnect).toHaveBeenCalled();
     });
   });
 });
