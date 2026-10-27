@@ -161,7 +161,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
-        "border-width-field-invalid-inline-start": {
+        "border-width-field-status-inline-start": {
           "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
           "$value": "4px",
         },
@@ -3868,7 +3868,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
-        "border-width-field-invalid-inline-start": {
+        "border-width-field-status-inline-start": {
           "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
           "$value": "4px",
         },
@@ -7575,7 +7575,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
-        "border-width-field-invalid-inline-start": {
+        "border-width-field-status-inline-start": {
           "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
           "$value": "4px",
         },
@@ -11282,7 +11282,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
-        "border-width-field-invalid-inline-start": {
+        "border-width-field-status-inline-start": {
           "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
           "$value": "4px",
         },
@@ -14989,7 +14989,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
-        "border-width-field-invalid-inline-start": {
+        "border-width-field-status-inline-start": {
           "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
           "$value": "4px",
         },
@@ -18696,7 +18696,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
-        "border-width-field-invalid-inline-start": {
+        "border-width-field-status-inline-start": {
           "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
           "$value": "4px",
         },
@@ -22403,7 +22403,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The border width of form fields.",
       "$value": "1px",
     },
-    "border-width-field-invalid-inline-start": {
+    "border-width-field-status-inline-start": {
       "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
       "$value": "4px",
     },
@@ -26115,7 +26115,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
-        "border-width-field-invalid-inline-start": {
+        "border-width-field-status-inline-start": {
           "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
           "$value": "8px",
         },
@@ -29822,7 +29822,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
-        "border-width-field-invalid-inline-start": {
+        "border-width-field-status-inline-start": {
           "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
           "$value": "8px",
         },
@@ -33529,7 +33529,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
-        "border-width-field-invalid-inline-start": {
+        "border-width-field-status-inline-start": {
           "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
           "$value": "8px",
         },
@@ -37236,7 +37236,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
-        "border-width-field-invalid-inline-start": {
+        "border-width-field-status-inline-start": {
           "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
           "$value": "8px",
         },
@@ -40943,7 +40943,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
-        "border-width-field-invalid-inline-start": {
+        "border-width-field-status-inline-start": {
           "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
           "$value": "8px",
         },
@@ -44650,7 +44650,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
-        "border-width-field-invalid-inline-start": {
+        "border-width-field-status-inline-start": {
           "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
           "$value": "8px",
         },
@@ -48357,7 +48357,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
-        "border-width-field-invalid-inline-start": {
+        "border-width-field-status-inline-start": {
           "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
           "$value": "8px",
         },
@@ -52064,7 +52064,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
-        "border-width-field-invalid-inline-start": {
+        "border-width-field-status-inline-start": {
           "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
           "$value": "8px",
         },
@@ -55771,7 +55771,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The border width of form fields.",
       "$value": "1px",
     },
-    "border-width-field-invalid-inline-start": {
+    "border-width-field-status-inline-start": {
       "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
       "$value": "8px",
     },

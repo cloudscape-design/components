@@ -9,7 +9,7 @@ const metadata: StyleDictionary.MetadataIndex = {
     description:
       'The default system divider width - used for dividers between sections of content such as key/value pairs and tabs, for both full width and inset dividers.',
   },
-  borderWidthFieldInvalidInlineStart: {
+  borderWidthFieldStatusInlineStart: {
     description: 'The inline-start border width of form fields and file tokens in invalid and warning states.',
     public: true,
     themeable: true,
