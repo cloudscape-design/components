@@ -14,6 +14,7 @@ import InternalDragHandleWrapper from '../../../lib/components/test-utils/dom/in
 import { fakeBoundingClientRect, firePointerdown, firePointermove, firePointerup } from './utils/resize-actions';
 
 import resizerStyles from '../../../lib/components/table/resizer/styles.css.js';
+import tableStyles from '../../../lib/components/table/styles.css.js';
 
 jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => ({
   ...jest.requireActual('../../../lib/components/internal/utils/scrollable-containers'),
@@ -697,5 +698,83 @@ describe('UAP buttons', () => {
     wrapper.findColumnResizer(1)!.click();
     findDragHandle().findVisibleDirectionButtonInlineEnd()!.click();
     await waitFor(() => expect(onChange).toHaveBeenCalledWith({ widths: [170] }));
+  });
+});
+
+describe('with column groups', () => {
+  const columnDefinitions: TableProps.ColumnDefinition<Item>[] = [
+    { id: 'id', header: 'Id', cell: item => item.id, width: 100 },
+    { id: 'description', header: 'Description', cell: item => item.description, width: 100, minWidth: 50 },
+  ];
+  const groupDefinitions: TableProps.GroupDefinition<Item>[] = [{ id: 'group', header: 'Group' }];
+  const columnDisplay: TableProps.ColumnDisplayProperties[] = [
+    {
+      type: 'group',
+      id: 'group',
+      visible: true,
+      children: [
+        { id: 'id', visible: true },
+        { id: 'description', visible: true },
+      ],
+    },
+  ];
+
+  let columnWidth = 100;
+  const originalBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
+  beforeEach(() => {
+    HTMLElement.prototype.getBoundingClientRect = function () {
+      const rect = originalBoundingClientRect.apply(this);
+      if (this.tagName === 'TH') {
+        rect.width = this.getAttribute('scope') === 'colgroup' ? columnWidth * 2 : columnWidth;
+      }
+      return rect;
+    };
+  });
+
+  afterEach(() => {
+    columnWidth = 100;
+    HTMLElement.prototype.getBoundingClientRect = originalBoundingClientRect;
+  });
+
+  test('uses the rightmost column min width for the group min width', () => {
+    const { wrapper } = renderTable(
+      <Table
+        {...defaultProps}
+        columnDefinitions={columnDefinitions}
+        groupDefinitions={groupDefinitions}
+        columnDisplay={columnDisplay}
+      />
+    );
+
+    expect(wrapper.find('th[scope="colgroup"] [role="slider"]')!.getElement()).toHaveAttribute('aria-valuemin', '150');
+  });
+
+  test('keeps sticky header columns in sync with the table when the container resizes', async () => {
+    const containerCallbacks: ((entry: ContainerQueryEntry) => void)[] = [];
+    jest.mocked(useResizeObserver).mockImplementation((target, cb) => {
+      const element = typeof target === 'function' ? target() : target?.current;
+      if (element?.classList.contains(tableStyles['wrapper-content-measure'])) {
+        containerCallbacks.push(cb);
+      }
+    });
+    const { wrapper } = renderTable(
+      <Table
+        {...defaultProps}
+        columnDefinitions={columnDefinitions}
+        groupDefinitions={groupDefinitions}
+        columnDisplay={columnDisplay}
+        stickyHeader={true}
+      />
+    );
+    const getStickyColWidths = () =>
+      wrapper
+        .findAllByClassName(tableStyles['header-secondary'])[0]
+        .findAll('col')
+        .map(col => col.getElement().style.width);
+    expect(getStickyColWidths()).toEqual(['100px', '100px']);
+
+    columnWidth = 150;
+    containerCallbacks.forEach(cb => cb({ contentBoxWidth: 1000 } as unknown as ContainerQueryEntry));
+    await waitFor(() => expect(getStickyColWidths()).toEqual(['150px', '150px']));
   });
 });

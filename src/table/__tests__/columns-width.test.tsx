@@ -57,7 +57,7 @@ test('useColumnWidths returns safe defaults without provider', () => {
     expect(() => ctx.updateColumn('x', 100)).not.toThrow();
     expect(() => ctx.updateGroup('x', 100)).not.toThrow();
     expect(() => ctx.setCell(false, 'x', null)).not.toThrow();
-    expect(() => ctx.setCol('x', null)).not.toThrow();
+    expect(() => ctx.setCol(false, 'x', null)).not.toThrow();
     return null;
   }
   render(<Bare />);

@@ -29,14 +29,21 @@ export function TableColGroup({
       {hasSelection && (
         <col
           style={sticky && selectionColumnId ? { width: getColumnStyles(true, selectionColumnId).width } : undefined}
+          ref={sticky && selectionColumnId ? node => setCol(true, selectionColumnId, node) : undefined}
         />
       )}
       {visibleColumnDefinitions.map((column, colIndex) => {
         const columnId = getColumnKey(column, colIndex);
         if (sticky) {
-          return <col key={String(columnId)} style={{ width: getColumnStyles(true, columnId).width }} />;
+          return (
+            <col
+              key={String(columnId)}
+              style={{ width: getColumnStyles(true, columnId).width }}
+              ref={node => setCol(true, columnId, node)}
+            />
+          );
         }
-        return <col key={columnId} data-column-id={String(columnId)} ref={node => setCol(columnId, node)} />;
+        return <col key={columnId} data-column-id={String(columnId)} ref={node => setCol(false, columnId, node)} />;
       })}
     </colgroup>
   );
