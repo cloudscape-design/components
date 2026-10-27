@@ -161,6 +161,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-field-status-inline-start": {
+          "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
+          "$value": "4px",
+        },
         "border-width-flashbar-inline-start": {
           "$description": "The inline-start border width of flash messages in flashbars.",
           "$value": "0px",
@@ -3863,6 +3867,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
+        },
+        "border-width-field-status-inline-start": {
+          "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
+          "$value": "4px",
         },
         "border-width-flashbar-inline-start": {
           "$description": "The inline-start border width of flash messages in flashbars.",
@@ -7567,6 +7575,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-field-status-inline-start": {
+          "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
+          "$value": "4px",
+        },
         "border-width-flashbar-inline-start": {
           "$description": "The inline-start border width of flash messages in flashbars.",
           "$value": "0px",
@@ -11269,6 +11281,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
+        },
+        "border-width-field-status-inline-start": {
+          "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
+          "$value": "4px",
         },
         "border-width-flashbar-inline-start": {
           "$description": "The inline-start border width of flash messages in flashbars.",
@@ -14973,6 +14989,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-field-status-inline-start": {
+          "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
+          "$value": "4px",
+        },
         "border-width-flashbar-inline-start": {
           "$description": "The inline-start border width of flash messages in flashbars.",
           "$value": "0px",
@@ -18676,6 +18696,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-field-status-inline-start": {
+          "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
+          "$value": "4px",
+        },
         "border-width-flashbar-inline-start": {
           "$description": "The inline-start border width of flash messages in flashbars.",
           "$value": "0px",
@@ -22378,6 +22402,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "border-width-field": {
       "$description": "The border width of form fields.",
       "$value": "1px",
+    },
+    "border-width-field-status-inline-start": {
+      "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
+      "$value": "4px",
     },
     "border-width-flashbar-inline-start": {
       "$description": "The inline-start border width of flash messages in flashbars.",
@@ -26087,6 +26115,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-field-status-inline-start": {
+          "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
+          "$value": "8px",
+        },
         "border-width-flashbar-inline-start": {
           "$description": "The inline-start border width of flash messages in flashbars.",
           "$value": "0px",
@@ -29789,6 +29821,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
+        },
+        "border-width-field-status-inline-start": {
+          "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
+          "$value": "8px",
         },
         "border-width-flashbar-inline-start": {
           "$description": "The inline-start border width of flash messages in flashbars.",
@@ -33493,6 +33529,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-field-status-inline-start": {
+          "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
+          "$value": "8px",
+        },
         "border-width-flashbar-inline-start": {
           "$description": "The inline-start border width of flash messages in flashbars.",
           "$value": "0px",
@@ -37195,6 +37235,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
+        },
+        "border-width-field-status-inline-start": {
+          "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
+          "$value": "8px",
         },
         "border-width-flashbar-inline-start": {
           "$description": "The inline-start border width of flash messages in flashbars.",
@@ -40899,6 +40943,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-field-status-inline-start": {
+          "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
+          "$value": "8px",
+        },
         "border-width-flashbar-inline-start": {
           "$description": "The inline-start border width of flash messages in flashbars.",
           "$value": "0px",
@@ -44601,6 +44649,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-field": {
           "$description": "The border width of form fields.",
           "$value": "1px",
+        },
+        "border-width-field-status-inline-start": {
+          "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
+          "$value": "8px",
         },
         "border-width-flashbar-inline-start": {
           "$description": "The inline-start border width of flash messages in flashbars.",
@@ -48305,6 +48357,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-field-status-inline-start": {
+          "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
+          "$value": "8px",
+        },
         "border-width-flashbar-inline-start": {
           "$description": "The inline-start border width of flash messages in flashbars.",
           "$value": "0px",
@@ -52008,6 +52064,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of form fields.",
           "$value": "1px",
         },
+        "border-width-field-status-inline-start": {
+          "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
+          "$value": "8px",
+        },
         "border-width-flashbar-inline-start": {
           "$description": "The inline-start border width of flash messages in flashbars.",
           "$value": "0px",
@@ -55710,6 +55770,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "border-width-field": {
       "$description": "The border width of form fields.",
       "$value": "1px",
+    },
+    "border-width-field-status-inline-start": {
+      "$description": "The inline-start border width of form fields and file tokens in invalid and warning states.",
+      "$value": "8px",
     },
     "border-width-flashbar-inline-start": {
       "$description": "The inline-start border width of flash messages in flashbars.",
