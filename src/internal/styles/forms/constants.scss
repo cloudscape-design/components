@@ -22,7 +22,7 @@ $control-padding-vertical: awsui.$space-field-vertical;
 $control-padding-horizontal: awsui.$space-field-horizontal;
 $control-padding: $control-padding-vertical $control-padding-horizontal;
 
-$invalid-control-left-border: awsui.$border-invalid-width;
+$invalid-control-left-border: awsui.$border-width-field-status-inline-start;
 $invalid-control-left-padding: calc(
   #{$control-padding-horizontal} - (#{$invalid-control-left-border} - #{awsui.$border-width-field})
 );

@@ -1046,7 +1046,7 @@ export type BordersTokenName =
   | 'borderDividerListWidth'
   | 'borderDividerSectionWidth'
   | 'borderDropdownVirtualOffsetWidth'
-  | 'borderInvalidWidth'
+  | 'borderWidthFieldStatusInlineStart'
   | 'borderItemWidth'
   | 'borderLineChartDashArray'
   | 'borderLineChartLineJoin'
