@@ -171,12 +171,15 @@ export function ColumnWidthsProvider({
   // Mirrors the current primary cell widths onto the sticky header copies.
   const syncStickyColumnWidths = useStableCallback(() => {
     for (const { id } of visibleColumns) {
-      const styles = getColumnStyles(true, id);
       const element = stickyCellsRef.current.get(id);
+      const colElement = stickyColsRef.current.get(id);
+      if (!element && !colElement) {
+        continue;
+      }
+      const styles = getColumnStyles(true, id);
       if (element) {
         setElementWidths(element, styles);
       }
-      const colElement = stickyColsRef.current.get(id);
       if (colElement) {
         setElementWidths(colElement, { width: styles.width });
       }
