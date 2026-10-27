@@ -24,8 +24,10 @@ function findMatchingOption(
   interactiveGroups?: boolean
 ) {
   const interactivityCheck = interactiveGroups ? isGroupInteractive : isInteractive;
+  // Match each option on its own content. Filtering the list as a whole would also return the group headers
+  // of matching children (and the children of matching groups), which become targets with interactive groups.
   const filter = (searchText: string) =>
-    filterOptions(options, searchText, true).filter(option => interactivityCheck(option));
+    options.filter(option => interactivityCheck(option) && filterOptions([option], searchText, true).length > 0);
   const matchingOptions = filter(searchText);
 
   if (matchingOptions.length === 1) {

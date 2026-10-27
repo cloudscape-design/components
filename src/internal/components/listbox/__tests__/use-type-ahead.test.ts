@@ -61,4 +61,59 @@ describe('useTypeAhead', () => {
 
     expect(highlightOption).not.toHaveBeenCalled();
   });
+
+  describe('with groups', () => {
+    const groupedOptions: DropdownOption[] = [
+      { type: 'parent', option: { label: 'Compute', options: [] } },
+      { type: 'child', option: { label: 'EC2', value: 'ec2' } },
+      { type: 'child', option: { label: 'Lambda', value: 'lambda' } },
+      { type: 'child', option: { label: 'Fargate', value: 'fargate' } },
+      { type: 'parent', option: { label: 'Storage', options: [] } },
+      { type: 'child', option: { label: 'S3', value: 's3' } },
+    ];
+    const renderGroupedHook = (highlightedOption: DropdownOption['option'] | null = null) =>
+      renderHook(useTypeAhead, {
+        initialProps: { ...initialProps, options: groupedOptions, highlightedOption, interactiveGroups: true },
+      });
+
+    test('with interactive groups, highlights the matching child rather than its non-matching group', () => {
+      const hook = renderGroupedHook();
+      act(() => {
+        hook.result.current({ key: 'e' } as React.KeyboardEvent);
+      });
+      expect(highlightOption).toHaveBeenCalledTimes(1);
+      expect(highlightOption).toHaveBeenCalledWith(groupedOptions[1]);
+    });
+
+    test('with interactive groups, highlights a group whose own label matches', () => {
+      const hook = renderGroupedHook();
+      act(() => {
+        hook.result.current({ key: 'c' } as React.KeyboardEvent);
+      });
+      expect(highlightOption).toHaveBeenCalledWith(groupedOptions[0]);
+    });
+
+    test('with interactive groups, does not cycle into children of a matching group when their own labels do not match', () => {
+      const hook = renderGroupedHook(groupedOptions[0].option);
+      act(() => {
+        hook.result.current({ key: 'c' } as React.KeyboardEvent);
+      });
+      act(() => {
+        hook.result.current({ key: 'c' } as React.KeyboardEvent);
+      });
+      // Only the Compute group itself starts with "c", so repeating the key keeps it highlighted.
+      expect(highlightOption).toHaveBeenCalledTimes(2);
+      expect(highlightOption).toHaveBeenLastCalledWith(groupedOptions[0]);
+    });
+
+    test('without interactive groups, does not highlight children of a group whose label matches', () => {
+      const hook = renderHook(useTypeAhead, {
+        initialProps: { ...initialProps, options: groupedOptions },
+      });
+      act(() => {
+        hook.result.current({ key: 'c' } as React.KeyboardEvent);
+      });
+      expect(highlightOption).not.toHaveBeenCalled();
+    });
+  });
 });
