@@ -9,6 +9,7 @@ import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-too
 
 import { useInternalComponentIcons } from '../../icon-provider/use-component-icons';
 import { ExpandToggleButton } from '../../internal/components/expand-toggle-button';
+import customCssProps from '../../internal/generated/custom-css-properties';
 import { InternalTableBodyCell } from '../../table-body-cell/internal';
 import { ColumnWidthStyle } from '../column-widths-utils';
 import { TableProps } from '../interfaces.js';
@@ -121,12 +122,17 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
     const { tabIndex: cellTabIndex } = useSingleTabStopNavigation(cellRefObject);
     const tableIcons = useInternalComponentIcons('table');
     const isEditingActive = isEditing && !isEditingDisabled;
+    const isExpandableColumnCell = level !== undefined && !isEditingActive;
 
     return (
       <InternalTableBodyCell
         ref={mergedRef}
         tag={tag}
-        style={{ ...resizableStyle, ...stickyStyles.style }}
+        style={{
+          ...resizableStyle,
+          ...stickyStyles.style,
+          ...(isExpandableColumnCell && { [customCssProps.tableExpandableLevel]: getIndentationLevel(level) }),
+        }}
         className={clsx(
           isSelected && styles['body-cell-selected'],
           isNextSelected && styles['body-cell-next-selected'],
@@ -142,8 +148,8 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           isEditing && !isEditingDisabled && styles['body-cell-edit-active'],
           isEditing && isEditingDisabled && styles['body-cell-edit-disabled-popover'],
           hasSuccessIcon && styles['body-cell-has-success'],
-          level !== undefined && !isEditingActive && styles['body-cell-expandable'],
-          level !== undefined && !isEditingActive && styles[`expandable-level-${getLevelClassSuffix(level)}`],
+          isExpandableColumnCell && styles['body-cell-expandable'],
+          isExpandableColumnCell && styles[`expandable-level-${getLevelClassSuffix(level)}`],
           tableVariant && styles[`table-variant-${tableVariant}`],
           stickyStyles.className
         )}
@@ -180,6 +186,13 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
   }
 );
 
+// Rows nested deeper than this are indented as much as this level.
+const maxIndentationLevel = 9;
+
+function getIndentationLevel(level: number) {
+  return 0 <= level && level <= maxIndentationLevel ? level : maxIndentationLevel;
+}
+
 function getLevelClassSuffix(level: number) {
-  return 0 <= level && level <= 9 ? level : 'next';
+  return 0 <= level && level <= maxIndentationLevel ? level : 'next';
 }
