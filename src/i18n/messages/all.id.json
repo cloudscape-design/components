@@ -138,7 +138,9 @@
     "wrapLinesPreference.label": "Bungkus baris"
   },
   "copy-to-clipboard": {
-    "i18nStrings.copyButtonText": "Salin"
+    "i18nStrings.copyButtonText": "Salin",
+    "i18nStrings.errorIconAriaLabel": "Kesalahan",
+    "i18nStrings.successIconAriaLabel": "Berhasil"
   },
   "date-picker": {
     "i18nStrings.openCalendarAriaLabel": "{selectedDate, select, none {Pilih tanggal} other {Pilih tanggal, tanggal yang dipilih adalah {selectedDate}}}"

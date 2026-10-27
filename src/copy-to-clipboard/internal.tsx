@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import InternalButton from '../button/internal';
+import { useInternalI18n } from '../i18n/context';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -70,6 +71,7 @@ export default function InternalCopyToClipboard({
   popoverRenderWithPortal,
   disabled,
   disabledReason,
+  i18nStrings,
   onCopySuccess,
   onCopyFailure,
   __internalRootRef,
@@ -78,6 +80,7 @@ export default function InternalCopyToClipboard({
   const [status, setStatus] = useState<CopyStatus>('success');
   const [statusText, setStatusText] = useState(copySuccessText);
   const isOneTheme = useOneTheme();
+  const i18n = useInternalI18n('copy-to-clipboard');
   const result = useTransientFlag(STATUS_ICON_VISIBLE_MS);
 
   useEffect(() => {
@@ -117,6 +120,15 @@ export default function InternalCopyToClipboard({
       .writeText(textToCopy)
       .then(() => reportResult('success'))
       .catch(() => reportResult('error'));
+  };
+
+  const statusIconI18nKey: Record<CopyStatus, 'i18nStrings.successIconAriaLabel' | 'i18nStrings.errorIconAriaLabel'> = {
+    success: 'i18nStrings.successIconAriaLabel',
+    error: 'i18nStrings.errorIconAriaLabel',
+  };
+  const statusIconI18nStringsKey: Record<CopyStatus, keyof CopyToClipboardProps.I18nStrings> = {
+    success: 'successIconAriaLabel',
+    error: 'errorIconAriaLabel',
   };
 
   const triggerVariant = (
@@ -170,7 +182,12 @@ export default function InternalCopyToClipboard({
         isOneTheme ? (
           <span className={styles['popover-message']}>{statusText}</span>
         ) : (
-          <InternalStatusIndicator type={status}>{statusText}</InternalStatusIndicator>
+          <InternalStatusIndicator
+            type={status}
+            iconAriaLabel={i18n(statusIconI18nKey[status], i18nStrings?.[statusIconI18nStringsKey[status]])}
+          >
+            {statusText}
+          </InternalStatusIndicator>
         )
       }
       __onOpen={onClick}

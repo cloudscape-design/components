@@ -3,6 +3,8 @@
 import React from 'react';
 
 import { Box, CopyToClipboard, SpaceBetween } from '~components';
+import I18nProvider from '~components/i18n';
+import messages from '~components/i18n/messages/all.en';
 
 import ScreenshotArea from '../utils/screenshot-area';
 
@@ -16,74 +18,76 @@ const sentence = paragraphs[0].split('.')[0];
 
 export default function DateInputScenario() {
   return (
-    <ScreenshotArea>
-      <Box>
-        <SpaceBetween size="l">
-          <h1>Copy to clipboard</h1>
+    <I18nProvider messages={[messages]} locale="en">
+      <ScreenshotArea>
+        <Box>
+          <SpaceBetween size="l">
+            <h1>Copy to clipboard</h1>
 
-          <div style={{ display: 'flex', gap: 16 }}>
-            <article>
-              {paragraphs.map((text, index) => (
-                <Box variant="p" key={index}>
-                  {text}
-                </Box>
-              ))}
-            </article>
+            <div style={{ display: 'flex', gap: 16 }}>
+              <article>
+                {paragraphs.map((text, index) => (
+                  <Box variant="p" key={index}>
+                    {text}
+                  </Box>
+                ))}
+              </article>
 
-            <CopyToClipboard
-              data-testid="copy-article"
-              copyButtonText="Copy"
-              textToCopy={paragraphs.join('\n\n')}
-              copySuccessText="Lorem ipsum article copied"
-              copyErrorText="Lorem ipsum article failed to copy"
-            />
-          </div>
-
-          <div style={{ display: 'flex', gap: 16 }}>
-            <Box variant="p">{paragraphs[0]}</Box>
-
-            <CopyToClipboard
-              data-testid="copy-paragraph"
-              variant="icon"
-              copyButtonAriaLabel="Copy lorem ipsum paragraph"
-              textToCopy={paragraphs[0]}
-              copySuccessText="Lorem ipsum paragraph copied"
-              copyErrorText="Lorem ipsum paragraph failed to copy"
-            />
-          </div>
-
-          <CopyToClipboard
-            data-testid="copy-sentence"
-            variant="inline"
-            copyButtonAriaLabel="Copy lorem ipsum sentence"
-            textToCopy={sentence}
-            copySuccessText="Lorem ipsum sentence copied"
-            copyErrorText="Lorem ipsum sentence failed to copy"
-          />
-
-          <CopyToClipboard
-            data-testid="copy-sentence"
-            variant="inline"
-            copyButtonAriaLabel="Copy lorem ipsum sentence"
-            textToCopy={sentence}
-            textToDisplay={'Custom text: copy the lorem ipsum sentence'}
-            copySuccessText="Lorem ipsum sentence copied"
-            copyErrorText="Lorem ipsum sentence failed to copy"
-          />
-
-          <div style={{ width: '150px' }}>
-            <div style={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
               <CopyToClipboard
-                variant="inline"
-                copyButtonAriaLabel="Copy lorem ipsum sentence"
-                textToCopy="Relatively long text that we don't want to wrap"
-                copySuccessText="Lorem ipsum sentence copied"
-                copyErrorText="Lorem ipsum sentence failed to copy"
+                data-testid="copy-article"
+                copyButtonText="Copy"
+                textToCopy={paragraphs.join('\n\n')}
+                copySuccessText="Lorem ipsum article copied"
+                copyErrorText="Lorem ipsum article failed to copy"
               />
             </div>
-          </div>
-        </SpaceBetween>
-      </Box>
-    </ScreenshotArea>
+
+            <div style={{ display: 'flex', gap: 16 }}>
+              <Box variant="p">{paragraphs[0]}</Box>
+
+              <CopyToClipboard
+                data-testid="copy-paragraph"
+                variant="icon"
+                copyButtonAriaLabel="Copy lorem ipsum paragraph"
+                textToCopy={paragraphs[0]}
+                copySuccessText="Lorem ipsum paragraph copied"
+                copyErrorText="Lorem ipsum paragraph failed to copy"
+              />
+            </div>
+
+            <CopyToClipboard
+              data-testid="copy-sentence"
+              variant="inline"
+              copyButtonAriaLabel="Copy lorem ipsum sentence"
+              textToCopy={sentence}
+              copySuccessText="Lorem ipsum sentence copied"
+              copyErrorText="Lorem ipsum sentence failed to copy"
+            />
+
+            <CopyToClipboard
+              data-testid="copy-sentence"
+              variant="inline"
+              copyButtonAriaLabel="Copy lorem ipsum sentence"
+              textToCopy={sentence}
+              textToDisplay={'Custom text: copy the lorem ipsum sentence'}
+              copySuccessText="Lorem ipsum sentence copied"
+              copyErrorText="Lorem ipsum sentence failed to copy"
+            />
+
+            <div style={{ width: '150px' }}>
+              <div style={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                <CopyToClipboard
+                  variant="inline"
+                  copyButtonAriaLabel="Copy lorem ipsum sentence"
+                  textToCopy="Relatively long text that we don't want to wrap"
+                  copySuccessText="Lorem ipsum sentence copied"
+                  copyErrorText="Lorem ipsum sentence failed to copy"
+                />
+              </div>
+            </div>
+          </SpaceBetween>
+        </Box>
+      </ScreenshotArea>
+    </I18nProvider>
   );
 }

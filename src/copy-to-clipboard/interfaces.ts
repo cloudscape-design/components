@@ -75,6 +75,12 @@ export interface CopyToClipboardProps extends BaseComponentProps {
   disabledReason?: React.ReactNode;
 
   /**
+   * An object containing all the necessary localization strings required by the component.
+   * @i18n
+   */
+  i18nStrings?: CopyToClipboardProps.I18nStrings;
+
+  /**
    * Called when the text is successfully copied to the clipboard.
    * The event `detail` contains the text that was copied.
    */
@@ -89,6 +95,20 @@ export interface CopyToClipboardProps extends BaseComponentProps {
 
 export namespace CopyToClipboardProps {
   export type Variant = 'button' | 'icon' | 'inline';
+
+  export interface I18nStrings {
+    /**
+     * Aria label for the success status icon shown in the popover after a successful copy.
+     * Defaults to "Success" when using the built-in i18n message bundles.
+     */
+    successIconAriaLabel?: string;
+
+    /**
+     * Aria label for the error status icon shown in the popover after a failed copy.
+     * Defaults to "Error" when using the built-in i18n message bundles.
+     */
+    errorIconAriaLabel?: string;
+  }
 
   export interface CopySuccessDetail {
     /** The text that was copied to the clipboard */

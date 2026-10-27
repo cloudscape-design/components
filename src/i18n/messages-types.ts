@@ -190,6 +190,8 @@ export interface I18nFormatArgTypes {
   }
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": never;
+    "i18nStrings.errorIconAriaLabel": never;
+    "i18nStrings.successIconAriaLabel": never;
   }
   "date-picker": {
     "i18nStrings.openCalendarAriaLabel": {
