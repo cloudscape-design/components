@@ -62,4 +62,15 @@ describe('Multiselect native search', () => {
     type('c');
     expect(getHighlightedLabel()).toBe('Compute');
   });
+
+  test('typing right after selecting with Space moves the highlight to the matching option', () => {
+    const { optionsContainer, type, onChange, getHighlightedLabel } = renderMultiselect();
+    // Highlight with the arrow keys so the type-ahead buffer is empty before Space is pressed.
+    optionsContainer.keydown(KeyCode.down);
+    expect(getHighlightedLabel()).toBe('EC2');
+    optionsContainer.keydown({ keyCode: KeyCode.space, key: ' ' });
+    expect(onChange.mock.calls[0][0].detail.selectedOptions).toEqual([{ label: 'EC2', value: 'ec2' }]);
+    type('g');
+    expect(getHighlightedLabel()).toBe('Glacier');
+  });
 });
