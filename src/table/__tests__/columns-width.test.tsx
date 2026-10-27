@@ -6,7 +6,11 @@ import { render } from '@testing-library/react';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import Table, { TableProps } from '../../../lib/components/table';
-import { ColumnWidthsProvider, useColumnWidths } from '../../../lib/components/table/use-column-widths';
+import {
+  ColumnWidthsProvider,
+  DEFAULT_COLUMN_WIDTH,
+  useColumnWidths,
+} from '../../../lib/components/table/use-column-widths';
 import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
 import { fakeBoundingClientRect, firePointerdown, firePointermove, firePointerup } from './utils/resize-actions';
 
@@ -54,6 +58,7 @@ test('useColumnWidths returns safe defaults without provider', () => {
     const ctx = useColumnWidths();
     expect(ctx.getColumnStyles(false, 'x')).toEqual({});
     expect(ctx.columnWidths).toEqual(new Map());
+    expect(ctx.getColumnMinWidth('x')).toBe(DEFAULT_COLUMN_WIDTH);
     expect(() => ctx.updateColumn('x', 100)).not.toThrow();
     expect(() => ctx.updateGroup('x', 100)).not.toThrow();
     expect(() => ctx.setCell(false, 'x', null)).not.toThrow();
