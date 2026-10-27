@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import type { SelectProps } from '../select/interfaces';
 import { BaseComponentProps } from '../types/base-component';
 import { NonCancelableEventHandler } from '../types/events';
 
@@ -70,7 +69,7 @@ export interface OptionListProps extends BaseComponentProps {
   /**
    * Specifies a render function to render custom options.
    */
-  renderOption?: SelectProps.SelectOptionItemRenderer;
+  renderOption?: OptionListProps.OptionItemRenderer;
 
   /**
    * An object containing all the necessary localized strings required by the component.
@@ -100,6 +99,44 @@ export namespace OptionListProps {
   }
 
   export type Options = ReadonlyArray<Option | OptionGroup>;
+
+  export interface OptionItem {
+    /** The item type. */
+    type: 'item';
+    /** The position of the item in the list, counting group headers. */
+    index: number;
+    /** The option, as provided in `options`. */
+    option: Option;
+    /** Whether the option is selected. */
+    selected: boolean;
+    /** Whether the option is highlighted. */
+    highlighted: boolean;
+    /** Whether the option is disabled. */
+    disabled: boolean;
+    /** The group header item of the group that contains the option, or `null` if the option isn't in a group. */
+    parent: OptionGroupItem | null;
+  }
+
+  export interface OptionGroupItem {
+    /** The item type. */
+    type: 'group';
+    /** The position of the item in the list, counting group headers. */
+    index: number;
+    /** The option group, as provided in `options`. */
+    option: OptionGroup;
+    /** Whether the group is disabled. In `OptionItem.parent`, whether the contained option is disabled. */
+    disabled: boolean;
+    /** Whether all options in the group are selected. Only provided in multi selection. */
+    selected?: boolean;
+    /** Whether some, but not all, options in the group are selected. Only provided in multi selection. */
+    indeterminate?: boolean;
+    /** Whether the group header is highlighted. Only provided in multi selection. */
+    highlighted?: boolean;
+  }
+
+  export type Item = OptionItem | OptionGroupItem;
+
+  export type OptionItemRenderer = (props: { item: Item }) => React.ReactNode | null;
 
   export interface ChangeDetail {
     selectedOptions: ReadonlyArray<Option>;

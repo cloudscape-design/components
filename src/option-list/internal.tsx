@@ -1,13 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import clsx from 'clsx';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
-import Listbox from '../internal/components/listbox';
+import Listbox, { ListboxProps } from '../internal/components/listbox';
 import { multiSelection } from '../internal/components/listbox/selection/multi-selection';
 import { singleSelection } from '../internal/components/listbox/selection/single-selection';
 import { useListbox } from '../internal/components/listbox/use-listbox';
@@ -19,7 +19,6 @@ import { fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
-import type { SelectProps } from '../select/interfaces';
 import { OptionDefinition, OptionGroup } from '../types/option';
 import { OptionListProps } from './interfaces';
 
@@ -28,6 +27,11 @@ import testClasses from './test-classes/styles.css.js';
 
 type InternalOptionListProps = OptionListProps & InternalBaseComponentProps;
 type InternalOption = OptionDefinition | OptionGroup;
+
+// The items the listbox passes to `renderOption`, before they are mapped back to the consumer's options.
+type ListboxRenderItem = Parameters<NonNullable<ListboxProps['renderOption']>>[0]['item'];
+type ListboxGroupItem = Extract<ListboxRenderItem, { type: 'group' }>;
+type ListboxRenderOption = (props: { item: ListboxRenderItem }) => React.ReactNode;
 
 const EMPTY_SELECTION: ReadonlyArray<OptionListProps.Option> = [];
 
@@ -124,25 +128,31 @@ const InternalOptionList = React.forwardRef(
     });
     useForwardFocus(ref, controller.listRef);
 
-    const toOriginal = useCallback(
-      <T,>(option: T): T => (originals.get(option as InternalOption) as T | undefined) ?? option,
-      [originals]
-    );
-    const renderOriginalOption = useMemo<SelectProps.SelectOptionItemRenderer | undefined>(() => {
+    const renderOriginalOption = useMemo<ListboxRenderOption | undefined>(() => {
       if (!renderOption) {
         return undefined;
       }
-      return ({ item, filterText }) => {
-        if (item.type === 'item') {
-          const parent = item.parent && { ...item.parent, option: toOriginal(item.parent.option) };
-          return renderOption({ item: { ...item, option: toOriginal(item.option), parent }, filterText });
-        }
-        return renderOption({
-          item: { ...item, option: toOriginal(item.option) } as SelectProps.SelectItem,
-          filterText,
-        });
+      const toOriginalOption = (option: OptionDefinition): OptionListProps.Option => originals.get(option) ?? option;
+      const toOriginalGroup = (group: OptionGroup): OptionListProps.OptionGroup => {
+        const original = originals.get(group);
+        return original && isOptionGroup(original) ? original : group;
       };
-    }, [renderOption, toOriginal]);
+      const toGroupItem = (item: ListboxGroupItem): OptionListProps.OptionGroupItem => ({
+        ...item,
+        option: toOriginalGroup(item.option),
+      });
+      return ({ item }) => {
+        if (item.type === 'item') {
+          const parent = item.parent && toGroupItem(item.parent);
+          return renderOption({ item: { ...item, option: toOriginalOption(item.option), parent } });
+        }
+        if (item.type === 'group') {
+          return renderOption({ item: toGroupItem(item) });
+        }
+        // The listbox renders only options and group headers; it has no trigger or select-all item.
+        return null;
+      };
+    }, [renderOption, originals]);
 
     // The root, not the list, clears the highlight when the pointer leaves, so the leave covers the whole component.
     const { onMouseLeave } = controller.getListProps();
