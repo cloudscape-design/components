@@ -62,6 +62,18 @@ describe('useTypeAhead', () => {
     expect(highlightOption).not.toHaveBeenCalled();
   });
 
+  test('ignores keys that were already handled by another handler', () => {
+    const hook = renderHook(useTypeAhead, { initialProps });
+    act(() => {
+      hook.result.current({ key: ' ', defaultPrevented: true } as React.KeyboardEvent);
+    });
+    expect(highlightOption).not.toHaveBeenCalled();
+    act(() => {
+      hook.result.current({ key: 'o' } as React.KeyboardEvent);
+    });
+    expect(highlightOption).toHaveBeenCalledWith(options[0]);
+  });
+
   describe('with groups', () => {
     const groupedOptions: DropdownOption[] = [
       { type: 'parent', option: { label: 'Compute', options: [] } },

@@ -80,7 +80,8 @@ export function useTypeAhead({
 
     const { key } = event;
 
-    if (!key || key.length !== 1) {
+    // Skip keys already handled elsewhere, e.g. Space selecting the highlighted option or opening the dropdown.
+    if (event.defaultPrevented || !key || key.length !== 1) {
       return;
     }
 
