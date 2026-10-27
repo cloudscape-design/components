@@ -8,6 +8,13 @@ import { SimplePage } from '../app/templates';
 
 import styles from './style-api-v2.scss';
 
+const styleClassNames = {
+  item: ({ item }: { item: ButtonGroupProps.Item }) =>
+    item.type === 'menu-dropdown' ? styles['item-info'] : styles.item,
+  divider: styles.divider,
+  dropdown: styles['menu-info'],
+};
+
 export default function () {
   const [pinned, setPinned] = useState(false);
   const items: ButtonGroupProps.ItemOrGroup[] = [
@@ -52,14 +59,7 @@ export default function () {
         ariaLabel="Actions"
         items={items}
         onItemClick={({ detail }) => detail.id === 'pin' && setPinned(!!detail.pressed)}
-        {...{
-          styleClassNames: {
-            item: ({ item }: { item: ButtonGroupProps.Item }) =>
-              item.type === 'menu-dropdown' ? styles['item-info'] : styles.item,
-            divider: styles.divider,
-            dropdown: styles['menu-info'],
-          },
-        }}
+        {...{ styleClassNames }}
       />
     </SimplePage>
   );
