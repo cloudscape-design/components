@@ -12,7 +12,7 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderDividerListWidth: '1px',
   borderDividerSectionWidth: '1px',
   borderDropdownVirtualOffsetWidth: '2px',
-  borderInvalidWidth: '8px',
+  borderWidthFieldInvalidInlineStart: '8px',
   borderItemWidth: '2px',
   borderLineChartDashArray: '3 5',
   borderLineChartLineJoin: 'round',

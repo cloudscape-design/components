@@ -14,7 +14,7 @@ const tokens: StyleDictionary.BordersDictionary = {
   borderControlInvalidFocusRingShadowSpread: '{borderControlFocusRingShadowSpread}',
   borderDividerSectionWidth: '1px',
   borderDropdownVirtualOffsetWidth: '0px',
-  borderInvalidWidth: '4px',
+  borderWidthFieldInvalidInlineStart: '4px',
   borderItemWidth: '1px',
   borderLineChartLineJoin: 'miter',
   borderPanelHeaderWidth: '0px',

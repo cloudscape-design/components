@@ -10,7 +10,7 @@
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 @mixin token-box-validation {
-  border-inline-start-width: awsui.$border-invalid-width;
+  border-inline-start-width: awsui.$border-width-field-invalid-inline-start;
 
   > .dismiss-button {
     color: awsui.$color-text-interactive-default;
