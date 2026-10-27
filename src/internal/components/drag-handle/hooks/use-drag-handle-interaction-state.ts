@@ -164,6 +164,12 @@ function interactionReducer<T = void>(
   action: Action<T>
 ): DragHandleInteractionState<T> {
   if (action.type === 'CLEAR_CALLBACKS') {
+    // Only clear when the batch we processed is still the one queued. If a newer action (e.g. a
+    // sub-millisecond POINTER_UP landing between the POINTER_MOVE passive effect flushing) has
+    // already queued a fresh batch, keep it so it is not discarded unprocessed.
+    if (action.payload && action.payload !== state.transitionCallbacks) {
+      return state;
+    }
     return {
       ...state,
       transitionCallbacks: undefined,
@@ -251,7 +257,9 @@ function useCallbackHandler<T = void>(
     });
 
     // Clean up callbacks to prevent re-execution on subsequent re-renders.
-    dispatch({ type: 'CLEAR_CALLBACKS' });
+    // Carry the exact batch we just processed so the reducer only clears it
+    // if a newer action has not already replaced it.
+    dispatch({ type: 'CLEAR_CALLBACKS', payload: pendingCallbacks });
   }, [pendingCallbacks, props, dispatch]);
 }
 

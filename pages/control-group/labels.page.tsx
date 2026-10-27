@@ -4,8 +4,8 @@ import React from 'react';
 
 import { SpaceBetween } from '~components';
 import Autosuggest, { AutosuggestProps } from '~components/autosuggest';
+import ControlGroup from '~components/control-group';
 import Input from '~components/input';
-import ControlGroup from '~components/internal/components/control-group';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
 import Select, { SelectProps } from '~components/select';
 

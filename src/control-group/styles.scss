@@ -3,10 +3,10 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../../styles' as styles;
-@use '../../styles/tokens' as awsui;
-@use '../../styles/forms/mixins' as forms;
-@use '../../styles/forms/constants' as constants;
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/forms/mixins' as forms;
+@use '../internal/styles/forms/constants' as constants;
 
 $margin-overlap: calc(-1 * #{awsui.$border-width-field});
 

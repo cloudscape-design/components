@@ -7,4 +7,6 @@
 $token-background: awsui.$color-background-item-selected;
 $token-border-color: awsui.$color-border-item-selected;
 $token-max-height-inline: 20px;
+// Keeps small interactive labels outside the dismiss button's WCAG 2.5.8 target spacing area.
+$token-min-label-width-inline: 12px;
 $icon-width: 16px;

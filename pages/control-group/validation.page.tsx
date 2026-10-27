@@ -4,9 +4,9 @@ import React from 'react';
 
 import Autosuggest from '~components/autosuggest';
 import Checkbox from '~components/checkbox';
+import ControlGroup, { ControlGroupProps } from '~components/control-group';
 import FormField from '~components/form-field';
 import Input from '~components/input';
-import ControlGroup, { ControlGroupProps } from '~components/internal/components/control-group';
 import Multiselect from '~components/multiselect';
 import RadioGroup from '~components/radio-group';
 import SegmentedControl from '~components/segmented-control';
@@ -22,7 +22,7 @@ import { Direction, multiOptions, noop, operators, segments, suggestions } from 
 type ValidationState = 'none' | 'error' | 'warning';
 
 // The individual controls that can be individually disabled.
-type StatefulControl = 'input' | 'autosuggest' | 'select' | 'multiselect';
+type StatefulControl = 'input' | 'autosuggest' | 'autosuggest-tokens' | 'select' | 'multiselect';
 
 // Control kinds that can appear inside a group. The stateful ones can be disabled;
 // segmentedControl cannot.
@@ -31,7 +31,14 @@ type ControlKind = StatefulControl | 'segmentedControl';
 // Things that can appear in the `disabled` list: the stateful controls plus the action button.
 type Disableable = StatefulControl | 'actionbutton';
 
-const disableableItems: ReadonlyArray<Disableable> = ['input', 'autosuggest', 'select', 'multiselect', 'actionbutton'];
+const disableableItems: ReadonlyArray<Disableable> = [
+  'input',
+  'autosuggest',
+  'autosuggest-tokens',
+  'select',
+  'multiselect',
+  'actionbutton',
+];
 
 interface ControlGroupValidationSettings {
   // The group-as-a-unit validation, applied through the surrounding FormField.
@@ -80,6 +87,17 @@ function renderControl(kind: ControlKind, disabled: ReadonlySet<Disableable>) {
           onChange={noop}
           options={suggestions}
           {...stateProps('autosuggest', disabled)}
+        />
+      );
+    case 'autosuggest-tokens':
+      return (
+        <Autosuggest
+          ariaLabel="Metrics"
+          value=""
+          tokens={[{ value: 'CPUUtilization' }, { value: 'MemoryUtilization' }]}
+          onChange={noop}
+          options={suggestions}
+          {...stateProps('autosuggest-tokens', disabled)}
         />
       );
     case 'select':
@@ -153,6 +171,7 @@ const validationItems: ReadonlyArray<{ value: ValidationState; label: string }> 
 const statefulControls: ReadonlyArray<{ key: StatefulControl; label: string }> = [
   { key: 'input', label: 'Input' },
   { key: 'autosuggest', label: 'Autosuggest' },
+  { key: 'autosuggest-tokens', label: 'Autosuggest with inline tokens' },
   { key: 'select', label: 'Select' },
   { key: 'multiselect', label: 'Multiselect' },
 ];
@@ -226,9 +245,11 @@ const combinations: ReadonlyArray<ControlKind[]> = [
   ['input', 'segmentedControl'],
   ['select', 'multiselect'],
   ['autosuggest', 'select'],
+  ['input', 'autosuggest-tokens'],
   ['input', 'select', 'multiselect'],
   ['input', 'segmentedControl', 'select'],
   ['select', 'autosuggest', 'multiselect'],
+  ['autosuggest-tokens', 'select', 'multiselect'],
 ];
 
 const permutations = createPermutations<{ controls: ControlKind[] }>([{ controls: combinations }]);

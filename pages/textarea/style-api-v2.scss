@@ -1,0 +1,87 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~components/styling/textarea';
+@use '../style-api/palette' as palette;
+
+// The native textarea is also the field box. One class per owned state (invalid, warning, disabled, read-only);
+// `:hover`, `:focus` and `:placeholder-shown` for the interaction states.
+@mixin field {
+  @include textarea.textarea(
+    $color: palette.$text,
+    $background: palette.$surface,
+    $border-width: 2px,
+    $border-radius: 12px,
+    $box-shadow: 0 2px 4px palette.$subtle,
+    $padding-block: 10px,
+    $padding-inline: 16px,
+    $font-family: monospace,
+    $font-size: 15px,
+    $font-weight: 600,
+    $placeholder-color: palette.$accent,
+    $placeholder-font-size: 13px,
+    $placeholder-font-style: normal,
+    $placeholder-font-weight: 400
+  );
+}
+
+.textarea {
+  @include field;
+  @include textarea.textarea($border-color: palette.$border);
+
+  &:hover {
+    @include textarea.textarea($background: palette.$surface-alt, $border-color: palette.$border-accent);
+  }
+
+  &:focus {
+    @include textarea.textarea(
+      $color: palette.$accent,
+      $border-color: palette.$accent,
+      $box-shadow: 0 0 0 3px palette.$accent-active
+    );
+  }
+
+  &:placeholder-shown {
+    @include textarea.textarea($padding-inline: 24px);
+  }
+}
+
+.textarea-invalid {
+  @include field;
+  @include textarea.textarea($background: palette.$error-surface, $border-color: palette.$error);
+
+  &:focus {
+    @include textarea.textarea($box-shadow: 0 0 0 3px palette.$error-hover);
+  }
+}
+
+.textarea-warning {
+  @include field;
+  @include textarea.textarea($background: palette.$warning-surface, $border-color: palette.$warning);
+
+  &:focus {
+    @include textarea.textarea($box-shadow: 0 0 0 3px palette.$warning);
+  }
+}
+
+.textarea-disabled {
+  @include field;
+  @include textarea.textarea(
+    $color: palette.$text-disabled,
+    $background: palette.$control-bg-disabled,
+    $border-color: palette.$border-disabled,
+    $box-shadow: none,
+    $placeholder-color: palette.$text-disabled
+  );
+}
+
+.textarea-readonly {
+  @include field;
+  @include textarea.textarea($background: palette.$surface-alt, $border-color: palette.$border);
+
+  &:focus {
+    @include textarea.textarea($border-color: palette.$accent, $box-shadow: 0 0 0 3px palette.$accent-active);
+  }
+}

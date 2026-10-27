@@ -11,10 +11,13 @@ import { getBaseProps } from '../internal/base-component';
 import { getBreakpointValue } from '../internal/breakpoints';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
+import { useAnnouncement } from '../internal/components/listbox/use-announcement';
+import { checkOptionValueField } from '../internal/components/listbox/utils/check-option-value-field';
 import { prepareOptions } from '../internal/components/option/utils/prepare-options.js';
 import { ResetGroupedControlContext, useGroupedControlContext } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
+import { warnOnUnsupportedGroupedControlProps } from '../internal/grouped-control/dev-warnings';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { SomeRequired } from '../internal/types';
@@ -26,9 +29,7 @@ import Filter from './parts/filter';
 import PlainList, { SelectListProps } from './parts/plain-list';
 import Trigger from './parts/trigger';
 import VirtualList from './parts/virtual-list';
-import { checkOptionValueField } from './utils/check-option-value-field';
 import { composeDropdownContent } from './utils/dropdown-customization';
-import { useAnnouncement } from './utils/use-announcement';
 import { useLoadItems } from './utils/use-load-items';
 import { useNativeSearch } from './utils/use-native-search';
 import { useSelect } from './utils/use-select';
@@ -84,6 +85,15 @@ const InternalSelect = React.forwardRef(
     const baseProps = getBaseProps(restProps);
     const formFieldContext = useFormFieldContext(restProps);
     const groupedControlProps = useGroupedControlContext();
+
+    warnOnUnsupportedGroupedControlProps({
+      isGrouped: !!groupedControlProps.position,
+      componentName: 'Select',
+      invalid: formFieldContext.invalid,
+      warning: formFieldContext.warning,
+      readOnly,
+      expandToViewport,
+    });
 
     // When grouped, the dropdown is portaled regardless of the public
     // `expandToViewport` prop so it escapes the control slot's stacking context

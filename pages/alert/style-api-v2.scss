@@ -3,8 +3,8 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../../lib/components/styling/alert';
-@use '../../lib/components/styling/button';
+@use '~components/styling/alert';
+@use '~components/styling/button';
 @use '../style-api/palette' as palette;
 
 .alert-genai {

@@ -485,6 +485,12 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
     column-gap: awsui.$space-xs;
   }
 
+  &-with-info {
+    display: flex;
+    align-items: flex-start;
+    column-gap: awsui.$space-xs;
+  }
+
   &.wrapper-container,
   &.wrapper-default {
     display: flex;
@@ -581,6 +587,11 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
 .header-content {
   min-block-size: 0;
   min-inline-size: 0;
+
+  &-with-info {
+    display: flex;
+    align-items: baseline;
+  }
 }
 
 // In the end-icon layout, header content elements must shrink without overflowing.

@@ -13,11 +13,12 @@ import { BaseChangeDetail } from '../input/interfaces';
 import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
+import { checkOptionValueField } from '../internal/components/listbox/utils/check-option-value-field';
 import { useGroupedControlContext } from '../internal/context/control-group-context';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
+import { warnOnUnsupportedGroupedControlProps } from '../internal/grouped-control/dev-warnings';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { checkOptionValueField } from '../select/utils/check-option-value-field';
 import { BaseKeyDetail, NonCancelableCustomEvent } from '../types/events';
 import { useAutosuggestTokenI18n } from './i18n-utils';
 import { AutosuggestItem, AutosuggestProps } from './interfaces';
@@ -184,6 +185,16 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
 
   const formFieldContext = useFormFieldContext(restProps);
   const groupedControlProps = useGroupedControlContext();
+
+  warnOnUnsupportedGroupedControlProps({
+    isGrouped: !!groupedControlProps.position,
+    componentName: 'Autosuggest',
+    invalid: formFieldContext.invalid,
+    warning: formFieldContext.warning,
+    readOnly,
+    expandToViewport,
+  });
+
   // When grouped, the dropdown is portaled regardless of the public
   // `expandToViewport` prop so it escapes the control slot's stacking context
   // and paints over the group's inline label (which the focus ring stays under).

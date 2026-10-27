@@ -5,11 +5,11 @@ import React, { forwardRef, useCallback, useImperativeHandle, useRef } from 'rea
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
+import { fallbackItemHeight } from '../../internal/components/listbox/parts/common';
+import { renderOptions } from '../../internal/components/listbox/parts/render-options';
+import customScrollToIndex from '../../internal/components/listbox/parts/scroll-to-index';
 import OptionsList from '../../internal/components/options-list';
 import { useVirtual } from '../../internal/hooks/use-virtual';
-import { renderOptions } from '../utils/render-options';
-import customScrollToIndex from '../utils/scroll-to-index';
-import { fallbackItemHeight } from './common';
 import { SelectListProps } from './plain-list';
 
 import styles from './styles.css.js';

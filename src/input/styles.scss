@@ -8,6 +8,40 @@
 @use '../internal/styles/foundation' as foundation;
 @use '../internal/styles/forms/mixins' as forms;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../internal/styles/style-api' as style-api;
+
+@include style-api.docs(
+  'root',
+  $properties: (background, border, border-radius, box-shadow),
+  $descriptions: (
+    properties: (
+      box-shadow: 'Also draws the focus ring under `:focus-within`.',
+    )
+  )
+);
+
+// The placeholder tokens are read by the ::placeholder pseudo-element of the native input, which does not
+// inherit the non-inheriting public tokens: they are re-anchored as carriers on the input itself.
+$input-tokens: style-api.resolve(
+  (placeholder-color, placeholder-font-size, placeholder-font-style, placeholder-font-weight),
+  carrier
+);
+@include style-api.register($input-tokens);
+@include style-api.docs(
+  'input',
+  $input-tokens,
+  $properties: (color, padding, font-family, font-size, font-weight),
+  $descriptions: (
+    properties: (
+      padding:
+        'Replaces the inline padding reserved for the search icon and the clear button; include that room when styling search inputs.',
+    )
+  )
+);
+
+@include style-api.docs('inlineLabel', $properties: (color, background, font-family, font-size, font-weight));
+@include style-api.docs('searchIcon', $properties: (color));
+@include style-api.docs-forward('clearButton', 'button', 'root');
 
 @mixin placeholder {
   &::-webkit-input-placeholder {
@@ -21,11 +55,6 @@
     @content;
     opacity: 1;
   }
-
-  &:-moz-placeholder {
-    @content;
-    opacity: 1;
-  }
 }
 
 .root {
@@ -35,6 +64,7 @@
 // The native input only renders text: the border, background, box-shadow and all state styles
 // live on the surrounding .input-field box.
 .input {
+  @include style-api.carriers($input-tokens);
   @include styles.styles-reset;
   flex: 1;
   min-inline-size: 0;
@@ -56,7 +86,7 @@
   &:hover {
     color: var(
       #{custom-props.$styleColorHover},
-      var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-body-default)
+      var(#{custom-props.$styleColorDefault}, awsui.$color-text-body-default)
     );
   }
 
@@ -69,10 +99,22 @@
 
   @include placeholder {
     @include styles.form-placeholder(
-      $color: var(#{custom-props.$stylePlaceholderColor}, awsui.$color-text-input-placeholder),
-      $font-size: var(#{custom-props.$stylePlaceholderFontSize}),
-      $font-style: var(#{custom-props.$stylePlaceholderFontStyle}, italic),
-      $font-weight: var(#{custom-props.$stylePlaceholderFontWeight})
+      $color: style-api.value(
+          $input-tokens,
+          placeholder-color,
+          var(#{custom-props.$stylePlaceholderColor}, #{awsui.$color-text-input-placeholder})
+        ),
+      $font-size: style-api.value($input-tokens, placeholder-font-size, var(#{custom-props.$stylePlaceholderFontSize})),
+      $font-style: style-api.value(
+          $input-tokens,
+          placeholder-font-style,
+          var(#{custom-props.$stylePlaceholderFontStyle}, italic)
+        ),
+      $font-weight: style-api.value(
+          $input-tokens,
+          placeholder-font-weight,
+          var(#{custom-props.$stylePlaceholderFontWeight})
+        )
     );
   }
 
@@ -86,7 +128,11 @@
     cursor: default;
     @include placeholder {
       @include styles.form-placeholder-disabled(
-        $color: var(#{custom-props.$stylePlaceholderColor}, awsui.$color-text-input-placeholder-disabled)
+        $color: style-api.value(
+            $input-tokens,
+            placeholder-color,
+            var(#{custom-props.$stylePlaceholderColor}, #{awsui.$color-text-input-placeholder-disabled})
+          )
       );
     }
   }
@@ -228,11 +274,11 @@
   }
 
   &.grouped {
-    @include styles.grouped-control;
-
-    // Unlike other controls, input's padding is rendered by the inner input element and not by its wrapper.
-    &.grouped-validation-first {
-      padding-inline-start: awsui.$border-width-field;
+    // Unlike other controls, input's padding is rendered by the inner input element and not by its wrapper,
+    // so we should not add extra space to the wrapper for the validation border.
+    @include styles.grouped-control($validation-border-padding: awsui.$border-width-field);
+    &.input-field-disabled {
+      @include styles.grouped-control-disabled;
     }
   }
 }
@@ -297,6 +343,12 @@
   pointer-events: none;
   inset-inline-start: styles.$control-icon-horizontal-offset;
   inset-block-start: styles.$control-icon-vertical-offset;
+  // The icon inside uses currentColor, so the span owns the subtle/disabled colors.
+  color: awsui.$color-text-icon-subtle;
+
+  &.input-icon-start-disabled {
+    color: awsui.$color-text-interactive-disabled;
+  }
 }
 
 .input-icon-end {

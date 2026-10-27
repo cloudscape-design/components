@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useEffect, useRef } from 'react';
 
-import defaultOptionDescription from '../../internal/components/option/option-announcer';
-import { OptionDefinition, OptionGroup } from '../../types/option';
-import { SelectProps } from '../interfaces';
+import { SelectProps } from '../../../select/interfaces';
+import { OptionDefinition, OptionGroup } from '../../../types/option';
+import defaultOptionDescription from '../option/option-announcer';
 
 interface OptionHolder {
   option?: OptionDefinition | OptionGroup;
