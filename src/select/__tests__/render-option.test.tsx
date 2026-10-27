@@ -167,6 +167,31 @@ describe('Select renderOption', () => {
       })
     );
   });
+  test('parent reflects the disabled state of the group, not of the option', () => {
+    const renderOption = jest.fn(() => <div>Custom</div>);
+    const wrapper = renderSelect({
+      options: [
+        {
+          label: 'Enabled group',
+          value: 'g1',
+          options: [
+            { label: 'Enabled child', value: 'c1' },
+            { label: 'Disabled child', value: 'c2', disabled: true },
+          ],
+        },
+        { label: 'Disabled group', value: 'g2', disabled: true, options: [{ label: 'Child', value: 'c3' }] },
+      ],
+      renderOption,
+    });
+    wrapper.openDropdown();
+    const items = renderOption.mock.calls.map(([{ item }]: any) => item);
+    const parentOf = (value: string) => items.find(item => item.type === 'item' && item.option.value === value).parent;
+
+    expect(parentOf('c1').disabled).toBe(false);
+    expect(parentOf('c2').disabled).toBe(false);
+    expect(parentOf('c3').disabled).toBe(true);
+  });
+
   test('allows selection with custom rendered options', () => {
     const onChange = jest.fn();
     const renderOption = jest.fn(props => <div>{props.item.option.value}</div>);

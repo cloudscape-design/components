@@ -96,7 +96,7 @@ const toSelectOptionItem = (props: {
           index: props.parentProps?.index,
           virtualIndex: props.parentProps?.virtualIndex,
           option: props.parentProps?.option,
-          disabled: props.disabled,
+          disabled: props.parentProps.disabled,
         })
       : null,
   };
@@ -137,7 +137,7 @@ const toMultiselectOptionItem = (props: {
           index: props.parentProps?.index,
           virtualIndex: props.parentProps?.virtualIndex,
           option: props.parentProps?.option,
-          disabled: props.disabled,
+          disabled: props.parentProps.disabled,
           highlighted: props.parentProps?.highlighted ?? false,
           indeterminate: props.parentProps?.indeterminate ?? false,
           selected: props.parentProps?.selected ?? false,

@@ -768,6 +768,33 @@ describe('OptionList', () => {
       }
     });
 
+    test.each(['single', 'multi'] as const)(
+      '%s: parent reflects the group state, not the disabled state of the option',
+      selectionType => {
+        const renderOption = jest.fn<React.ReactNode, [{ item: OptionListProps.Item }]>(() => null);
+        const options: OptionListProps.Options = [
+          {
+            value: 'compute',
+            label: 'Compute',
+            options: [
+              { value: 'ec2', label: 'EC2' },
+              { value: 'lambda', label: 'Lambda', disabled: true },
+            ],
+          },
+          { value: 'storage', label: 'Storage', disabled: true, options: [{ value: 's3', label: 'S3' }] },
+        ];
+        renderOptionList(<Stateful selectionType={selectionType} options={options} renderOption={renderOption} />);
+        const items = renderOption.mock.calls.map(([{ item }]) => item);
+        const parentOf = (value: string) =>
+          items.find(item => item.type === 'item' && item.option.value === value)! as OptionListProps.OptionItem;
+
+        expect(parentOf('ec2').parent!.disabled).toBe(false);
+        expect(parentOf('lambda').disabled).toBe(true);
+        expect(parentOf('lambda').parent!.disabled).toBe(false);
+        expect(parentOf('s3').parent!.disabled).toBe(true);
+      }
+    );
+
     test('multi: group header items include the checkbox state', () => {
       const renderOption = jest.fn(() => null);
       renderOptionList(
