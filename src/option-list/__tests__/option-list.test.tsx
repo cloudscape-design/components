@@ -685,6 +685,18 @@ describe('OptionList', () => {
         parent: { type: 'group', index: 0, option: compute, disabled: false },
       });
       expect(items.find(item => item.option === compute.options[0])!.option).toBe(compute.options[0]);
+
+      // Single selection leaves out the multi-selection group state, on group headers and on `parent`.
+      const groupItems = [
+        ...items.filter(item => item.type === 'group'),
+        ...items.flatMap(item => (item.type === 'item' && item.parent ? [item.parent] : [])),
+      ];
+      expect(groupItems.length).toBeGreaterThan(0);
+      for (const group of groupItems) {
+        expect(group).not.toHaveProperty('selected');
+        expect(group).not.toHaveProperty('indeterminate');
+        expect(group).not.toHaveProperty('highlighted');
+      }
     });
 
     test('multi: group header items include the checkbox state', () => {
@@ -708,6 +720,48 @@ describe('OptionList', () => {
           }),
         })
       );
+    });
+
+    test('multi: items carry the option icon and the group selection state', () => {
+      const icon = <span data-testid="custom-icon" />;
+      const iconOptions: OptionListProps.Options = [
+        {
+          value: 'compute',
+          label: 'Compute',
+          options: [
+            { value: 'ec2', label: 'EC2', icon },
+            { value: 'lambda', label: 'Lambda' },
+          ],
+        },
+      ];
+      const optionIcons: React.ReactNode[] = [];
+      const groupStates: Array<Pick<OptionListProps.OptionGroupItem, 'selected' | 'indeterminate' | 'highlighted'>> =
+        [];
+      const renderOption = jest.fn(({ item }: { item: OptionListProps.Item }) => {
+        if (item.type === 'item') {
+          optionIcons.push(item.option.icon);
+        } else {
+          groupStates.push({
+            selected: item.selected,
+            indeterminate: item.indeterminate,
+            highlighted: item.highlighted,
+          });
+        }
+        return null;
+      });
+      const { wrapper, listbox } = renderOptionList(
+        <Stateful selectionType="multi" options={iconOptions} initialSelected={['ec2']} renderOption={renderOption} />
+      );
+      expect(optionIcons).toContain(icon);
+      expect(groupStates[groupStates.length - 1]).toEqual({ selected: false, indeterminate: true, highlighted: false });
+
+      fireEvent.focus(listbox);
+      pressKey(listbox, KeyCode.home);
+      expect(wrapper.findGroupHeaderByValue('compute')!.isHighlighted()).toBe(true);
+      expect(groupStates[groupStates.length - 1]).toEqual({ selected: false, indeterminate: true, highlighted: true });
+
+      pressKey(listbox, KeyCode.enter);
+      expect(groupStates[groupStates.length - 1]).toEqual({ selected: true, indeterminate: false, highlighted: true });
     });
   });
 

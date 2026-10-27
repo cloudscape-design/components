@@ -31,8 +31,7 @@ const grouped: OptionListProps.Options = [
   { value: 'group-2', label: 'More goals', options: plain.slice(2) },
 ];
 
-const renderOption: OptionListProps['renderOption'] = ({ item }) =>
-  item.type === 'trigger' ? null : <strong>{item.option.label}</strong>;
+const renderOption: OptionListProps['renderOption'] = ({ item }) => <strong>{item.option.label}</strong>;
 
 const permutations = createPermutations<OptionListProps & { width: number }>([
   {
