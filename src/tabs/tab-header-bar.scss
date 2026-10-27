@@ -148,6 +148,7 @@ $label-horizontal-spacing: awsui.$space-xs;
 }
 
 .tabs-tab-header-container:not(.tabs-tab-disabled) {
+  // This is the underline for the currently selected tab.
   &:after {
     content: '';
     position: absolute;

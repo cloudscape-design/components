@@ -113,7 +113,7 @@ export function TabHeaderBar({
 
   const [indicatorStyle, setIndicatorStyle] = useState<React.CSSProperties>({ opacity: 0 });
   const previousIndicatorTabId = usePrevious(activeTabId);
-  const headerContainerRefs = useRef<Map<string, HTMLElement>>(new Map());
+  const activeHeaderContainerRef = useRef<HTMLElement | null>(null);
 
   const containerObjectRef = useRef<HTMLDivElement>(null);
   const documentRef = useRef<null | Document>(typeof document !== 'undefined' ? document : null);
@@ -208,7 +208,7 @@ export function TabHeaderBar({
 
   const updateIndicator = () => {
     const list = headerBarRef.current;
-    const headerContainer = activeTabVisible ? headerContainerRefs.current.get(activeTab.id) : undefined;
+    const headerContainer = activeTabVisible ? activeHeaderContainerRef.current : null;
     if (!list || !headerContainer) {
       setIndicatorStyle({ opacity: 0 });
       return;
@@ -242,7 +242,7 @@ export function TabHeaderBar({
   }, [isOneTheme, activeTabId, activeTabVisible, tabs, widthChange]);
 
   const getActiveHeaderContainer = useCallback(
-    () => (activeTabId !== undefined ? headerContainerRefs.current.get(activeTabId) : undefined) ?? null,
+    () => (activeTabId !== undefined ? activeHeaderContainerRef.current : null),
     [activeTabId]
   );
   useResizeObserver(getActiveHeaderContainer, () => {
@@ -589,10 +589,8 @@ export function TabHeaderBar({
       >
         <div
           ref={element => {
-            if (element) {
-              headerContainerRefs.current.set(tab.id, element);
-            } else {
-              headerContainerRefs.current.delete(tab.id);
+            if (tab.id === activeTabId) {
+              activeHeaderContainerRef.current = element;
             }
           }}
           className={tabHeaderContainerClasses}
