@@ -124,7 +124,7 @@ export namespace OptionListProps {
     index: number;
     /** The option group, as provided in `options`. */
     option: OptionGroup;
-    /** Whether the group is disabled. In `OptionItem.parent`, whether the contained option is disabled. */
+    /** Whether the group is disabled. */
     disabled: boolean;
     /** Whether all options in the group are selected. Only provided in multi selection. */
     selected?: boolean;

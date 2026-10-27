@@ -21159,25 +21159,7 @@ Options are the selection target. Do not render interactive elements such as but
       "type": "OptionListProps.Options",
     },
     {
-      "description": "Specifies a render function to render custom options. It receives an \`item\` object, either an option item or a group header item.
-
-#### OptionItem
-- \`type\` ('item') - The item type.
-- \`index\` (number) - The position of the item in the list, counting group headers.
-- \`option\` (Option) - The option, as provided in \`options\`.
-- \`selected\` (boolean) - Whether the option is selected.
-- \`highlighted\` (boolean) - Whether the option is highlighted.
-- \`disabled\` (boolean) - Whether the option is disabled.
-- \`parent\` (OptionGroupItem | null) - The group header item of the group that contains the option, or \`null\` if the option isn't in a group.
-
-#### OptionGroupItem
-- \`type\` ('group') - The item type.
-- \`index\` (number) - The position of the item in the list, counting group headers.
-- \`option\` (OptionGroup) - The option group, as provided in \`options\`.
-- \`disabled\` (boolean) - Whether the group is disabled. In \`parent\`, whether the contained option is disabled.
-- \`selected\` (boolean) - (Multi selection only) Whether all options in the group are selected.
-- \`indeterminate\` (boolean) - (Multi selection only) Whether some, but not all, options in the group are selected.
-- \`highlighted\` (boolean) - (Multi selection only) Whether the group header is highlighted.",
+      "description": "Specifies a render function to render custom options.",
       "inlineType": {
         "name": "OptionListProps.OptionItemRenderer",
         "parameters": [

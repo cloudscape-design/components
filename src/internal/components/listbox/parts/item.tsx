@@ -105,11 +105,7 @@ function toRenderItem(
     selected,
     highlighted,
     disabled,
-    parent: parentProps
-      ? isMulti
-        ? toMultiGroupItem({ ...parentProps, disabled })
-        : toSingleGroupItem({ ...parentProps, disabled })
-      : null,
+    parent: parentProps ? (isMulti ? toMultiGroupItem(parentProps) : toSingleGroupItem(parentProps)) : null,
   };
 }
 
