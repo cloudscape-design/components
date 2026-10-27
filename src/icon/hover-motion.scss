@@ -30,15 +30,19 @@ $_opted-in: 'svg[#{$_animated-attribute}]';
 
 // Opt-in attribute for which element triggers hover motion.
 $_trigger-attribute: 'data-awsui-motion-trigger';
-$_hover-trigger: '[#{$_trigger-attribute}~="hover"]#{$_enabled-only}';
+$_hover-trigger: '[#{$_trigger-attribute}~="hover"]';
 // A focus owner that plays the motion of icons inside it.
-$_focus-trigger: '[#{$_trigger-attribute}~="focus"]#{$_enabled-only}';
+$_focus-trigger: '[#{$_trigger-attribute}~="focus"]';
 // A trigger whose focus owner is nested and does not contain the icon (e.g. action card).
 // Matches `:focus-within` during keyboard interaction (the `useFocusVisible` body attribute that
 // focus rings use) instead of `:has(:focus-visible)`: a non-subject `:has()` is costly on every
 // style recalc and DOM insert. `:where(body... *)` keeps it independent of where the theme class is.
-$_delegated-focus-trigger: '[#{$_trigger-attribute}~="delegated-focus"]#{$_enabled-only}';
+$_delegated-focus-trigger: '[#{$_trigger-attribute}~="delegated-focus"]';
 $_keyboard-focus-within: ':focus-within:where(body[data-awsui-focus-visible="true"] *)';
+
+// Every trigger state in one selector, since a selector per state repeats the long prefix in
+// every rule. The arms have equal specificity, so the cascade is the same as separate selectors.
+$_active-trigger: ':is(#{$_hover-trigger}:is(:hover, :focus-visible), #{$_focus-trigger}:focus-visible, #{$_delegated-focus-trigger}#{$_keyboard-focus-within})#{$_enabled-only}';
 
 // Opt-in attribute for where the motion should be applied within a trigger region.
 $_target-attribute: 'data-awsui-motion-target';
@@ -1577,13 +1581,8 @@ $icon-hover-motion: (
   }
 }
 
-// Also fires on :focus-visible of the trigger, of a focus owner around the icon, or of a
-// focus owner nested inside a delegated-focus trigger.
 @mixin _on-hover-trigger($suffix) {
-  #{'#{$_hover-trigger}:hover #{$suffix}'},
-  #{'#{$_hover-trigger}:focus-visible #{$suffix}'},
-  #{'#{$_focus-trigger}:focus-visible #{$suffix}'},
-  #{'#{$_delegated-focus-trigger}#{$_keyboard-focus-within} #{$suffix}'} {
+  #{'#{$_active-trigger} #{$suffix}'} {
     @content;
   }
 }
@@ -1647,63 +1646,102 @@ $icon-hover-motion: (
   }
 }
 
+@function _rest-declarations($spec) {
+  $declarations: ();
+  @if map.get($spec, to) {
+    $declarations: map.merge(
+      $declarations,
+      (
+        transition-property: map.get($spec, property) or transform,
+        transition-duration: map.get($spec, duration),
+        transition-timing-function: map.get($spec, easing),
+      )
+    );
+  }
+  @if map.get($spec, base) {
+    $declarations: map.merge($declarations, map.get($spec, base));
+  }
+  @if map.get($spec, origin) {
+    $declarations: map.set($declarations, transform-origin, map.get($spec, origin));
+  }
+  @return $declarations;
+}
+
+@function _hover-declarations($spec) {
+  $animation: map.get($spec, animation);
+  @if not $animation {
+    @return map.get($spec, to) or ();
+  }
+
+  $declarations: (
+    animation-name: $animation,
+    animation-duration: map.get($spec, duration),
+    animation-timing-function: map.get($spec, easing),
+  );
+  $iterations: map.get($spec, iterations) or 1;
+  $fill: map.get($spec, fill) or none;
+  $delay: map.get($spec, delay) or 0s;
+  @if $iterations != 1 {
+    $declarations: map.set($declarations, animation-iteration-count, $iterations);
+  }
+  @if $fill != none {
+    $declarations: map.set($declarations, animation-fill-mode, $fill);
+  }
+  @if $delay != 0s {
+    $declarations: map.set($declarations, animation-delay, $delay);
+  }
+  @return $declarations;
+}
+
+// Appends `.name-$name` to the list stored under `$key`, creating the list if needed.
+@function _add-name($groups, $key, $name) {
+  $names: map.get($groups, $key) or ();
+  @return map.set($groups, $key, list.append($names, '.name-#{$name}', comma));
+}
+
+@function _names-selector($names) {
+  @if list.length($names) == 1 {
+    @return list.nth($names, 1);
+  }
+  @return ':is(#{$names})';
+}
+
+// Icons whose specs produce the same declarations on the same part share a rule, so each
+// distinct motion emits the long trigger and theme prefix once rather than once per icon.
+// An icon has a single name class, so merging rules across icons cannot change the cascade.
 @mixin per-icon-hover-motion {
+  $rest-groups: ();
+  $hover-groups: ();
+
   @each $name, $specs in $icon-hover-motion {
     @each $spec in _specs($specs) {
-      $part: map.get($spec, part);
-      $target: _target($part);
-      $to: map.get($spec, to);
-      $animation: map.get($spec, animation);
-      $duration: map.get($spec, duration);
-      $easing: map.get($spec, easing);
-      $base: map.get($spec, base);
-      $origin: map.get($spec, origin);
+      $target: _target(map.get($spec, part));
+      $rest: _rest-declarations($spec);
+      $hover: _hover-declarations($spec);
+      @if list.length($rest) > 0 {
+        $rest-groups: _add-name($rest-groups, ($target, $rest), $name);
+      }
+      @if list.length($hover) > 0 {
+        $hover-groups: _add-name($hover-groups, ($target, $hover), $name);
+      }
+    }
+  }
 
-      $property: map.get($spec, property) or transform;
-      $iterations: map.get($spec, iterations) or 1;
-      $fill: map.get($spec, fill) or none;
-      $delay: map.get($spec, delay) or 0s;
-
-      @if $to or $base or $origin {
-        .icon.name-#{$name} #{$target} {
-          @include with-motion {
-            @if $to {
-              transition-property: #{$property};
-              transition-duration: $duration;
-              transition-timing-function: $easing;
-            }
-            @if $base {
-              @each $property, $value in $base {
-                #{$property}: #{$value};
-              }
-            }
-            @if $origin {
-              transform-origin: $origin;
-            }
-          }
+  @each $key, $names in $rest-groups {
+    .icon#{_names-selector($names)} #{list.nth($key, 1)} {
+      @include with-motion {
+        @each $property, $value in list.nth($key, 2) {
+          #{$property}: #{$value};
         }
       }
+    }
+  }
 
-      @include _on-hover-trigger('.icon#{$_animating-icon}.name-#{$name} #{$target}') {
-        @include with-motion {
-          @if $animation {
-            animation-name: $animation;
-            animation-duration: $duration;
-            animation-timing-function: $easing;
-            @if $iterations != 1 {
-              animation-iteration-count: $iterations;
-            }
-            @if $fill != none {
-              animation-fill-mode: $fill;
-            }
-            @if $delay != 0s {
-              animation-delay: $delay;
-            }
-          } @else if $to {
-            @each $property, $value in $to {
-              #{$property}: #{$value};
-            }
-          }
+  @each $key, $names in $hover-groups {
+    @include _on-hover-trigger('.icon#{$_animating-icon}#{_names-selector($names)} #{list.nth($key, 1)}') {
+      @include with-motion {
+        @each $property, $value in list.nth($key, 2) {
+          #{$property}: #{$value};
         }
       }
     }
