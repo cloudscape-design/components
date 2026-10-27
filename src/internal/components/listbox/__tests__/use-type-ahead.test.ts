@@ -61,4 +61,51 @@ describe('useTypeAhead', () => {
 
     expect(highlightOption).not.toHaveBeenCalled();
   });
+
+  describe('with groups', () => {
+    const compute = { label: 'Compute', value: 'compute', options: [] };
+    const databases = { label: 'Databases', value: 'databases', options: [] };
+    const groupedOptions: DropdownOption[] = [
+      { type: 'parent', option: compute },
+      { type: 'child', option: { label: 'EC2', value: 'ec2' } },
+      { type: 'child', option: { label: 'Lambda', value: 'lambda' } },
+      { type: 'parent', option: databases, disabled: true },
+      { type: 'child', option: { label: 'Cassandra', value: 'cassandra' }, disabled: true },
+      { type: 'child', option: { label: 'DocumentDB', value: 'documentdb' }, disabled: true },
+      { option: { label: 'Cherry', value: 'cherry' } },
+    ];
+
+    // Feeds each highlighted option back into the hook, as the listbox does.
+    const renderGroupedHook = (interactiveGroups: boolean) => {
+      const highlightOption = jest.fn();
+      const props = { ...initialProps, options: groupedOptions, highlightOption, interactiveGroups };
+      const hook = renderHook(useTypeAhead, { initialProps: props });
+      const type = (key: string) => {
+        act(() => hook.result.current({ key } as React.KeyboardEvent));
+        const lastCall = highlightOption.mock.calls[highlightOption.mock.calls.length - 1];
+        hook.rerender({ ...props, highlightedOption: lastCall?.[0].option ?? null });
+      };
+      const highlightedLabels = () =>
+        highlightOption.mock.calls.map(([option]: [DropdownOption]) => option.option.label);
+      return { type, highlightedLabels };
+    };
+
+    test('interactive groups: highlights the option whose label matches, not its group', () => {
+      const { type, highlightedLabels } = renderGroupedHook(true);
+      type('e');
+      expect(highlightedLabels()).toEqual(['EC2']);
+    });
+
+    test('interactive groups: repeated key cycles only through matching options and skips disabled ones', () => {
+      const { type, highlightedLabels } = renderGroupedHook(true);
+      ['c', 'c', 'c'].forEach(type);
+      expect(highlightedLabels()).toEqual(['Compute', 'Cherry', 'Compute']);
+    });
+
+    test('non-interactive groups: skips the options of a group whose label matches', () => {
+      const { type, highlightedLabels } = renderGroupedHook(false);
+      type('c');
+      expect(highlightedLabels()).toEqual(['Cherry']);
+    });
+  });
 });

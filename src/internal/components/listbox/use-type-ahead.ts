@@ -25,7 +25,7 @@ function findMatchingOption(
 ) {
   const interactivityCheck = interactiveGroups ? isGroupInteractive : isInteractive;
   const filter = (searchText: string) =>
-    filterOptions(options, searchText, true).filter(option => interactivityCheck(option));
+    options.filter(option => interactivityCheck(option) && filterOptions([option], searchText, true).length > 0);
   const matchingOptions = filter(searchText);
 
   if (matchingOptions.length === 1) {
