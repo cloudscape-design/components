@@ -108,4 +108,14 @@ describe('useTypeAhead', () => {
       expect(highlightedLabels()).toEqual(['Cherry']);
     });
   });
+
+  test('ignores a key event that was already handled', () => {
+    const highlightOption = jest.fn();
+    const hook = renderHook(useTypeAhead, { initialProps: { ...initialProps, highlightOption } });
+    act(() => {
+      hook.result.current({ key: ' ', defaultPrevented: true } as React.KeyboardEvent);
+      hook.result.current({ key: 'o' } as React.KeyboardEvent);
+    });
+    expect(highlightOption).toHaveBeenCalledWith(options[0]);
+  });
 });

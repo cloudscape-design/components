@@ -78,7 +78,7 @@ export function useTypeAhead({
 
     const { key } = event;
 
-    if (!key || key.length !== 1) {
+    if (event.defaultPrevented || !key || key.length !== 1) {
       return;
     }
 

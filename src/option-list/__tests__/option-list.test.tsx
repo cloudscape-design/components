@@ -450,6 +450,16 @@ describe('OptionList', () => {
       expect(highlightedValue(wrapper)).toBe('c');
     });
 
+    test('type-ahead after Space selects moves the highlight to the matching option', () => {
+      const onChange = jest.fn();
+      const { wrapper, listbox } = renderOptionList(<Stateful selectionType="multi" onChange={onChange} />);
+      fireEvent.focus(listbox);
+      fireEvent.keyDown(listbox, { key: ' ', keyCode: KeyCode.space });
+      expect(onChange).toHaveBeenLastCalledWith(['a']);
+      fireEvent.keyDown(listbox, { key: 't' });
+      expect(highlightedValue(wrapper)).toBe('c');
+    });
+
     test('blur clears the highlight', () => {
       const { wrapper, listbox } = renderOptionList(<Stateful />);
       fireEvent.focus(listbox);
