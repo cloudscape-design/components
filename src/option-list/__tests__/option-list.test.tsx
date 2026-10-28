@@ -585,6 +585,36 @@ describe('OptionList', () => {
       expect(scrolledValues).toEqual(['1', 'special', '0', 'special']);
       expect(scrollIntoView).toHaveBeenCalledTimes(4);
     });
+
+    test('repeating a keyboard move that keeps the highlight scrolls it into view again', () => {
+      const { listbox } = renderLongList();
+      fireEvent.focus(listbox);
+      pressKey(listbox, KeyCode.end);
+      scrollIntoView.mockClear();
+      pressKey(listbox, KeyCode.end);
+      expect(scrollIntoView).toHaveBeenCalledTimes(1);
+      expect(lastScrolledValue()).toBe('special');
+    });
+
+    test('a keyboard highlight of the hovered option scrolls it into view', () => {
+      const { wrapper, listbox } = renderLongList();
+      fireEvent.mouseMove(wrapper.findOptionByValue('special')!.getElement());
+      expect(scrollIntoView).not.toHaveBeenCalled();
+      fireEvent.keyDown(listbox, { key: 's' });
+      expect(highlightedValue(wrapper)).toBe('special');
+      expect(scrollIntoView).toHaveBeenCalledTimes(1);
+      expect(lastScrolledValue()).toBe('special');
+    });
+
+    test('hovering after keyboard navigation does not scroll', () => {
+      const { wrapper, listbox } = renderLongList();
+      fireEvent.focus(listbox);
+      scrollIntoView.mockClear();
+      fireEvent.mouseMove(wrapper.findOptionByIndex(1)!.getElement());
+      fireEvent.mouseMove(wrapper.findOptionByIndex(5)!.getElement());
+      expect(highlightedValue(wrapper)).toBe('4');
+      expect(scrollIntoView).not.toHaveBeenCalled();
+    });
   });
 
   describe('option groups', () => {

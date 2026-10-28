@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
@@ -39,6 +39,8 @@ export interface UseListboxApi {
   listRef: React.RefObject<HTMLDivElement>;
   highlightedIndex: number;
   highlightType: HighlightType;
+  /** Changes on every keyboard highlight request, even one that keeps the highlighted index. */
+  scrollRequest: number;
   /** Live-region text for the highlighted option. */
   announcement: string;
 
@@ -88,6 +90,22 @@ export function useListbox({
   ] = useHighlightedOption({ options, isHighlightable });
   const highlightedOptionId = getOptionId(listId, highlightedIndex);
 
+  // Counts keyboard highlight requests. A request that keeps the highlighted index (End again after scrolling
+  // away, or a keyboard highlight of the hovered option) changes no highlight state, so this is what tells the
+  // list to scroll again. Mouse highlights don't count.
+  const [scrollRequest, setScrollRequest] = useState(0);
+  const requestScroll = () => setScrollRequest(count => count + 1);
+  const withScroll =
+    <Args extends unknown[]>(highlight: (...args: Args) => void) =>
+    (...args: Args) => {
+      highlight(...args);
+      requestScroll();
+    };
+  const moveHighlight = withScroll(moveHighlightWithKeyboard);
+  const highlightOption = withScroll(highlightOptionWithKeyboard);
+  const goHome = withScroll(goHomeWithKeyboard);
+  const goEnd = withScroll(goEndWithKeyboard);
+
   const selectOption = (option?: DropdownOption) => {
     const optionToSelect = option || highlightedOption;
     if (!optionToSelect || !interactivityCheck(optionToSelect)) {
@@ -102,21 +120,21 @@ export function useListbox({
         (!interactiveGroups && highlightedOption?.type === 'child' && highlightedIndex === 1) ||
         highlightedIndex === 0
       ) {
-        goEndWithKeyboard();
+        goEnd();
         return;
       }
-      moveHighlightWithKeyboard(-1);
+      moveHighlight(-1);
     },
     goDown: () => {
       if (highlightedIndex === options.length - 1) {
-        goHomeWithKeyboard();
+        goHome();
         return;
       }
-      moveHighlightWithKeyboard(1);
+      moveHighlight(1);
     },
     selectOption: () => selectOption(),
-    goHome: goHomeWithKeyboard,
-    goEnd: goEndWithKeyboard,
+    goHome,
+    goEnd,
     // When the list has focus, Space always chooses.
     preventNativeSpace: true,
   });
@@ -163,9 +181,9 @@ export function useListbox({
       // The first selected option in list order, not selection order, as the ARIA listbox pattern describes.
       const selectedOption = options.find(option => connectedSelectedSet.has(option));
       if (selectedOption) {
-        highlightOptionWithKeyboard(selectedOption);
+        highlightOption(selectedOption);
       } else {
-        goHomeWithKeyboard();
+        goHome();
       }
     },
     onBlur: () => {
@@ -217,7 +235,7 @@ export function useListbox({
   const onTypeAhead = useTypeAhead({
     isEnabled: true,
     options,
-    highlightOption: option => highlightOptionWithKeyboard(option),
+    highlightOption,
     highlightedOption: highlightedOption?.option,
     interactiveGroups,
   });
@@ -228,6 +246,7 @@ export function useListbox({
     listRef,
     highlightedIndex,
     highlightType,
+    scrollRequest,
     announcement,
     selectOption,
     getListProps,
