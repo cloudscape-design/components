@@ -192,6 +192,22 @@ describe('Select renderOption', () => {
     expect(parentOf('c3').disabled).toBe(true);
   });
 
+  test('keeps the disabled reason description for screen readers with custom content', () => {
+    const renderOption = jest.fn(() => <div>Custom</div>);
+    const wrapper = renderSelect({
+      options: [
+        { label: 'Enabled', value: '1' },
+        { label: 'Disabled', value: '2', disabled: true, disabledReason: 'Not available in this Region' },
+      ],
+      renderOption,
+    });
+    wrapper.openDropdown();
+    const option = wrapper.findDropdown().findOptionByValue('2')!.getElement().closest('[role=option]')!;
+    const describedBy = option.getAttribute('aria-describedby');
+    expect(describedBy).toBeTruthy();
+    expect(document.getElementById(describedBy!)).toHaveTextContent('Not available in this Region');
+  });
+
   test('allows selection with custom rendered options', () => {
     const onChange = jest.fn();
     const renderOption = jest.fn(props => <div>{props.item.option.value}</div>);
