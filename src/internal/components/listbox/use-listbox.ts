@@ -205,7 +205,9 @@ export function useListbox({
     onFocus: () => {
       const fromPointer = pointerDown.current;
       pointerDown.current = false;
-      if (fromPointer || highlightedOption) {
+      // Only focus caused by a click keeps the current highlight. A hover highlight from before the list had
+      // focus is replaced, so keyboard focus entry always starts on the selected option, or the first option.
+      if (fromPointer) {
         return;
       }
       // The first selected option in list order, not selection order, as the ARIA listbox pattern describes.
