@@ -273,10 +273,11 @@ const Item = (
     />
   );
 
-  const disabledReasonElement = !renderResult && isDisabledWithReason && (
+  const disabledReasonElement = isDisabledWithReason && (
     <>
+      {/* Stays mounted with custom content, so aria-describedby always points to an element. */}
       {descriptionEl}
-      {highlighted && canShowTooltip && (
+      {!renderResult && highlighted && canShowTooltip && (
         <Tooltip
           className={styles['disabled-reason-tooltip']}
           getTrack={() => internalRef.current}
