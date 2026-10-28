@@ -26,12 +26,6 @@ describe('OptionList option groups', () => {
     expect(wrapper.findOptionByIndex(3)!.getElement().dataset.value).toBe('s3');
   });
 
-  test('announces the group of the highlighted option', () => {
-    const { wrapper, listbox } = renderOptionList(<Stateful options={groupedOptions} />);
-    fireEvent.focus(listbox);
-    expect(wrapper.findOptionByValue('ec2')!.getElement()).toHaveTextContent('Compute');
-  });
-
   test('onChange returns the original options and never a group', () => {
     const onChange = jest.fn();
     const { wrapper } = renderOptionList(

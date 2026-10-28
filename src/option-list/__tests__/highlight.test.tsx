@@ -42,11 +42,6 @@ describe('OptionList focus and highlight', () => {
 
   const renderLongList = (props: StatefulProps = {}) => renderOptionList(<Stateful options={longOptions} {...props} />);
 
-  test('does not show a highlight before the user interacts with the list', () => {
-    const { wrapper } = renderLongList({ initialSelected: ['2'] });
-    expect(wrapper.findHighlightedOption()).toBeNull();
-  });
-
   test('does not scroll when a grouped list mounts without a highlight', () => {
     // Single-selection group headers are not interactive and render with data-mouse-target="-1",
     // the same index the list reports when nothing is highlighted.

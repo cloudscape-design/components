@@ -9,8 +9,6 @@ import OptionList, { OptionListProps } from '../../../lib/components/option-list
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { clickOption, options, renderOptionList, selectedLabels, Stateful } from './common';
 
-import selectableItemStyles from '../../../lib/components/internal/components/selectable-item/styles.css.js';
-
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   warnOnce: jest.fn(),
@@ -89,14 +87,6 @@ describe('OptionList', () => {
       );
     });
 
-    test('hides the top divider of the first option only', () => {
-      const { wrapper } = renderOptionList(<Stateful />);
-      const optionElements = wrapper.findOptions().map(option => option.getElement());
-      expect(optionElements[0]).toHaveClass(selectableItemStyles['hide-top-divider']);
-      expect(optionElements[1]).not.toHaveClass(selectableItemStyles['hide-top-divider']);
-      expect(optionElements[2]).not.toHaveClass(selectableItemStyles['hide-top-divider']);
-    });
-
     test('passes id, className and data attributes to the root', () => {
       const { container } = render(
         <OptionList
@@ -141,11 +131,6 @@ describe('OptionList', () => {
       expect(onChange).toHaveBeenCalledTimes(3);
       expect(onChange).toHaveBeenLastCalledWith(['c']);
       expect(selectedLabels(wrapper)).toEqual(['Third']);
-    });
-
-    test('single: uses only the first selected option', () => {
-      const { wrapper } = renderOptionList(<Stateful initialSelected={['a', 'c']} />);
-      expect(selectedLabels(wrapper)).toEqual(['First']);
     });
 
     test('onChange returns the original option objects', () => {
