@@ -1,20 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { forwardRef, Ref, useRef } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 
-import {
-  isThemeActive,
-  Theme,
-  useMergeRefs,
-  useSingleTabStopNavigation,
-} from '@cloudscape-design/component-toolkit/internal';
-import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
 
-import InternalIcon from '../icon/internal';
+import { InternalButton } from '../button/internal';
 import { fireNonCancelableEvent } from '../internal/events';
 import { NonCancelableEventHandler } from '../types/events';
-import { GeneratedAnalyticsMetadataTokenDismiss } from './analytics-metadata/interfaces';
+import { TokenProps } from './interfaces';
+import { getDismissButtonStyles } from './styles';
 
 import legacyTestingStyles from '../token-group/styles.css.js';
 import styles from './styles.css.js';
@@ -26,52 +21,37 @@ interface DismissButtonProps {
   onDismiss?: NonCancelableEventHandler;
   dismissLabel?: string;
   inline?: boolean;
+  style?: TokenProps['style'];
 }
 
-export default forwardRef(DismissButton);
-
-function DismissButton(
-  { disabled, dismissLabel, onDismiss, readOnly, inline }: DismissButtonProps,
-  ref: Ref<HTMLButtonElement>
-) {
+export default function DismissButton({
+  disabled,
+  dismissLabel,
+  onDismiss,
+  readOnly,
+  inline,
+  style,
+}: DismissButtonProps) {
   const isOneTheme = isThemeActive(Theme.OneTheme);
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const mergedRef = useMergeRefs(ref, buttonRef);
-  const { tabIndex } = useSingleTabStopNavigation(buttonRef);
-  const analyticsMetadata: GeneratedAnalyticsMetadataTokenDismiss = {
-    action: 'dismiss',
-    detail: {
-      label: { root: 'self' },
-    },
-  };
   return (
-    <button
-      ref={mergedRef}
-      type="button"
-      tabIndex={tabIndex}
+    <InternalButton
+      variant="inline-icon"
+      iconName="close"
+      __iconSize={isOneTheme ? 'x-small' : undefined}
+      formAction="none"
+      ariaLabel={dismissLabel}
+      __title=""
+      disabled={disabled || readOnly}
+      __focusable={true}
+      analyticsAction="dismiss"
       className={clsx(
         styles['dismiss-button'],
         legacyTestingStyles['dismiss-button'],
         testUtilStyles['dismiss-button'],
         inline && styles['dismiss-button-inline']
       )}
-      aria-disabled={disabled || readOnly ? true : undefined}
-      onClick={() => {
-        if (disabled || readOnly || !onDismiss) {
-          return;
-        }
-
-        fireNonCancelableEvent(onDismiss);
-      }}
-      aria-label={dismissLabel}
-      data-awsui-motion-trigger="hover"
-      {...(disabled || readOnly ? {} : getAnalyticsMetadataAttribute(analyticsMetadata))}
-    >
-      <InternalIcon
-        name="close"
-        size={isOneTheme ? 'x-small' : undefined}
-        nativeAttributes={{ 'data-awsui-motion-target': '' }}
-      />
-    </button>
+      style={getDismissButtonStyles(style, { disabled, readOnly })}
+      onClick={() => fireNonCancelableEvent(onDismiss)}
+    />
   );
 }
