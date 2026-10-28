@@ -72,6 +72,19 @@ export interface OptionListProps extends BaseComponentProps {
   renderOption?: OptionListProps.OptionItemRenderer;
 
   /**
+   * Overrides the element that is announced to screen readers
+   * when the highlighted option changes. By default, this announces
+   * the option's name and properties, and its selected state if
+   * the `selectedAriaLabel` property is defined.
+   * The highlighted option is provided, and its group (if groups
+   * are used and it differs from the group of the previously highlighted option).
+   *
+   * For more information, see the
+   * [accessibility guidelines](/components/select/?tabId=usage#accessibility-guidelines).
+   */
+  renderHighlightedAriaLive?: OptionListProps.ContainingOptionAndGroupString;
+
+  /**
    * An object containing all the necessary localized strings required by the component.
    * * `selectedAriaLabel` - Announced with the highlighted option when it is selected.
    * @i18n
@@ -124,6 +137,10 @@ export namespace OptionListProps {
   export type Item = OptionItem | OptionGroupItem;
 
   export type OptionItemRenderer = (props: { item: Item }) => React.ReactNode | null;
+
+  export interface ContainingOptionAndGroupString {
+    (option: Option, group?: OptionGroup): string;
+  }
 
   export interface ChangeDetail {
     selectedOptions: ReadonlyArray<Option>;

@@ -30,6 +30,8 @@ export interface UseListboxProps {
   onChange: (selectedOptions: ReadonlyArray<OptionDefinition>) => void;
   /** Returns the group of a child option, used by announcements. */
   getParent?: (option: DropdownOption) => OptionGroup | undefined;
+  /** Replaces the default live-region text for the highlighted option. */
+  renderHighlightedAriaLive?: (option: OptionDefinition, group?: OptionGroup) => string;
   i18nStrings?: { selectedAriaLabel?: string };
 }
 
@@ -70,6 +72,7 @@ export function useListbox({
   selection,
   onChange,
   getParent = noParent,
+  renderHighlightedAriaLive,
   i18nStrings,
 }: UseListboxProps): UseListboxApi {
   const { interactiveGroups, selectionType } = selection;
@@ -262,6 +265,7 @@ export function useListbox({
     highlightedOption,
     getParent,
     selectedAriaLabel: i18nStrings?.selectedAriaLabel,
+    renderHighlightedAriaLive,
   });
 
   const onTypeAhead = useTypeAhead({
