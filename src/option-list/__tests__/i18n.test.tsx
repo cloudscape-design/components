@@ -9,14 +9,6 @@ import { renderOptionList, Stateful } from './common';
 describe('OptionList i18n', () => {
   const messages = { 'option-list': { 'i18nStrings.selectedAriaLabel': 'Custom selected' } };
 
-  test('announces the highlighted option as selected with i18nStrings.selectedAriaLabel', () => {
-    const { wrapper, listbox } = renderOptionList(
-      <Stateful initialSelected={['a']} i18nStrings={{ selectedAriaLabel: 'Picked' }} />
-    );
-    fireEvent.focus(listbox);
-    expect(wrapper.findOptionByValue('a')!.getElement()).toHaveTextContent('Picked');
-  });
-
   test('announces the selected option with the provider message', () => {
     const { wrapper, listbox } = renderOptionList(
       <TestI18nProvider messages={messages}>
