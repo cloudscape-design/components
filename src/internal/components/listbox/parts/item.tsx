@@ -178,10 +178,12 @@ const Item = (
     />
   );
 
-  const disabledReasonContent = !renderResult && isDisabledWithReason && (
+  // The hidden description stays mounted for custom content too, so `aria-describedby` always points to an element
+  // and screen readers still announce the reason. The tooltip is only shown with the default content.
+  const disabledReasonContent = isDisabledWithReason && (
     <>
       {descriptionEl}
-      {highlighted && canShowTooltip && (
+      {!renderResult && highlighted && canShowTooltip && (
         <Tooltip
           className={styles['disabled-reason-tooltip']}
           getTrack={() => internalRef.current}

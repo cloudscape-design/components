@@ -342,6 +342,28 @@ describe('OptionList', () => {
       expect(document.getElementById(describedBy!)).toHaveTextContent('Not available in this Region');
     });
 
+    test.each<OptionListProps.SelectionType>(['single', 'multi'])(
+      'describes the disabled option with its disabled reason when renderOption is used (%s)',
+      selectionType => {
+        const { wrapper, listbox } = renderOptionList(
+          <Stateful
+            selectionType={selectionType}
+            options={withDisabled}
+            renderOption={({ item }) => <span>Custom {item.option.label}</span>}
+          />
+        );
+        const describedBy = wrapper.findOptionByValue('b')!.getElement().getAttribute('aria-describedby');
+        expect(describedBy).toBeTruthy();
+        expect(document.getElementById(describedBy!)).toHaveTextContent('Not available in this Region');
+
+        // Custom content owns the visible output, so the tooltip isn't shown.
+        fireEvent.focus(listbox);
+        pressKey(listbox, KeyCode.down);
+        expect(highlightedValue(wrapper)).toBe('b');
+        expect(createWrapper().findTooltip()).toBeNull();
+      }
+    );
+
     test('shows the disabled reason tooltip when a disabled option is highlighted with the keyboard', () => {
       const { listbox } = renderOptionList(
         <Stateful
