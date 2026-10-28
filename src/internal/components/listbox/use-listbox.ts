@@ -59,6 +59,12 @@ export interface UseListboxApi {
 
 const noParent = () => undefined;
 
+// Options are recreated when the consumer's options change, so they are matched by `value`, which must be unique.
+// Group headers are compared only with group headers, so a group and an option sharing a value don't match.
+// Without a value there is nothing stable to match by.
+const isSameOption = (a: DropdownOption, b: DropdownOption) =>
+  a.option.value !== undefined && a.option.value === b.option.value && (a.type === 'parent') === (b.type === 'parent');
+
 export function useListbox({
   options,
   selection,
@@ -88,7 +94,30 @@ export function useListbox({
       goEndWithKeyboard,
     },
   ] = useHighlightedOption({ options, isHighlightable });
-  const highlightedOptionId = getOptionId(listId, highlightedIndex);
+  const highlightedOptionId = highlightedOption ? getOptionId(listId, highlightedIndex) : undefined;
+
+  // The highlight is stored as an index, so when the options change it must follow the highlighted option to its
+  // new index, or be cleared when that option is gone. This runs during render (the "previous props" pattern), so a
+  // stale index is never committed. It keeps the highlight type and doesn't request a scroll.
+  const [previousOptions, setPreviousOptions] = useState(options);
+  if (previousOptions !== options) {
+    setPreviousOptions(options);
+    const previousHighlighted = previousOptions[highlightedIndex];
+    const nextIndex = previousHighlighted
+      ? options.findIndex(option => isSameOption(option, previousHighlighted) && isHighlightable(option))
+      : -1;
+    if (nextIndex === -1) {
+      if (highlightedIndex !== -1) {
+        resetHighlightWithKeyboard();
+      }
+    } else if (nextIndex !== highlightedIndex) {
+      if (highlightType.type === 'mouse') {
+        setHighlightedIndexWithMouse(nextIndex, highlightType.moveFocus);
+      } else {
+        highlightOptionWithKeyboard(options[nextIndex]);
+      }
+    }
+  }
 
   // Counts keyboard highlight requests. A request that keeps the highlighted index (End again after scrolling
   // away, or a keyboard highlight of the hovered option) changes no highlight state, so this is what tells the

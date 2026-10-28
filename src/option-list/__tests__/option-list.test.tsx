@@ -617,6 +617,94 @@ describe('OptionList', () => {
     });
   });
 
+  describe('highlight when options change', () => {
+    const originalScrollIntoView = HTMLElement.prototype.scrollIntoView;
+    const fruit = (value: string) => ({ value, label: value });
+    let scrollIntoView: jest.Mock;
+
+    beforeEach(() => {
+      scrollIntoView = HTMLElement.prototype.scrollIntoView = jest.fn();
+    });
+    afterEach(() => {
+      HTMLElement.prototype.scrollIntoView = originalScrollIntoView;
+    });
+
+    const activeDescendant = (listbox: HTMLElement) => {
+      const id = listbox.getAttribute('aria-activedescendant');
+      return id === null ? null : document.getElementById(id);
+    };
+
+    test('has no aria-activedescendant without a highlighted option', () => {
+      const { listbox } = renderOptionList(<Stateful />);
+      expect(listbox).not.toHaveAttribute('aria-activedescendant');
+      fireEvent.focus(listbox);
+      expect(listbox).toHaveAttribute('aria-activedescendant');
+      fireEvent.blur(listbox);
+      expect(listbox).not.toHaveAttribute('aria-activedescendant');
+    });
+
+    test('clears the highlight when the highlighted option is removed, and arrow keys still move it', () => {
+      const { wrapper, listbox, rerender } = renderOptionList(<Stateful />);
+      fireEvent.focus(listbox);
+      pressKey(listbox, KeyCode.end);
+      expect(highlightedValue(wrapper)).toBe('c');
+
+      rerender(<Stateful options={[options[0]]} />);
+      expect(wrapper.findHighlightedOption()).toBeNull();
+      expect(listbox).not.toHaveAttribute('aria-activedescendant');
+
+      pressKey(listbox, KeyCode.down);
+      expect(highlightedValue(wrapper)).toBe('a');
+      expect(activeDescendant(listbox)).toBe(wrapper.findOptionByValue('a')!.getElement());
+    });
+
+    test('keeps the keyboard highlight on the same option when options are reordered or inserted, without scrolling', () => {
+      const { wrapper, listbox, rerender } = renderOptionList(
+        <Stateful options={['apple', 'banana', 'cherry'].map(fruit)} />
+      );
+      fireEvent.focus(listbox);
+      pressKey(listbox, KeyCode.down);
+      expect(highlightedValue(wrapper)).toBe('banana');
+      scrollIntoView.mockClear();
+
+      rerender(<Stateful options={['date', 'cherry', 'banana', 'apple'].map(fruit)} />);
+      const banana = wrapper.findOptionByValue('banana')!.getElement();
+      expect(highlightedValue(wrapper)).toBe('banana');
+      expect(banana).toHaveClass(selectableItemStyles['is-keyboard']);
+      expect(activeDescendant(listbox)).toBe(banana);
+      expect(scrollIntoView).not.toHaveBeenCalled();
+
+      pressKey(listbox, KeyCode.down);
+      expect(highlightedValue(wrapper)).toBe('apple');
+    });
+
+    test('keeps the mouse highlight on the same option when options are reordered', () => {
+      const { wrapper, rerender } = renderOptionList(<Stateful options={['apple', 'banana', 'cherry'].map(fruit)} />);
+      fireEvent.mouseMove(wrapper.findOptionByValue('banana')!.getElement());
+
+      rerender(<Stateful options={['banana', 'apple', 'cherry'].map(fruit)} />);
+      expect(highlightedValue(wrapper)).toBe('banana');
+      expect(wrapper.findHighlightedOption()!.getElement()).not.toHaveClass(selectableItemStyles['is-keyboard']);
+      expect(scrollIntoView).not.toHaveBeenCalled();
+    });
+
+    test('multi: keeps a highlighted group header when groups are reordered', () => {
+      const { wrapper, listbox, rerender } = renderOptionList(
+        <Stateful selectionType="multi" options={groupedOptions} />
+      );
+      fireEvent.focus(listbox);
+      pressKey(listbox, KeyCode.end);
+      pressKey(listbox, KeyCode.up);
+      pressKey(listbox, KeyCode.up);
+      expect(wrapper.findGroupHeaderByValue('storage')!.isHighlighted()).toBe(true);
+
+      rerender(<Stateful selectionType="multi" options={[groupedOptions[1], groupedOptions[0]]} />);
+      expect(wrapper.findGroupHeaderByValue('storage')!.isHighlighted()).toBe(true);
+      expect(wrapper.findGroupHeaderByValue('compute')!.isHighlighted()).toBe(false);
+      expect(activeDescendant(listbox)).toContainElement(wrapper.findGroupHeaderByValue('storage')!.getElement());
+    });
+  });
+
   describe('option groups', () => {
     test('renders each group labelled by its header, and option finders skip the headers', () => {
       const { wrapper } = renderOptionList(<Stateful options={groupedOptions} />);
