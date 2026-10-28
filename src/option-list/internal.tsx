@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import clsx from 'clsx';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -45,8 +45,13 @@ const isOptionGroup = (
  * `renderOption` receive the consumer's options.
  */
 function toInternalOptions(options: OptionListProps.Options) {
-  const originals = new Map<InternalOption, OptionListProps.Option>();
-  const convert = ({ icon, ...option }: OptionListProps.Option): OptionDefinition => {
+  const originals = new Map<OptionDefinition, OptionListProps.Option>();
+  const originalGroups = new Map<OptionGroup, OptionListProps.OptionGroup>();
+  // Options and group headers. A group's `value` is optional; an option's is required by its type.
+  const convert = ({
+    icon,
+    ...option
+  }: Omit<OptionListProps.Option, 'value'> & { value?: string }): OptionDefinition => {
     const internal: OptionDefinition & { __customIcon?: React.ReactNode } = { ...option, __customIcon: icon };
     return internal;
   };
@@ -62,10 +67,10 @@ function toInternalOptions(options: OptionListProps.Options) {
       return internal;
     });
     const group: OptionGroup = { ...convert(option), options: children };
-    originals.set(group, option);
+    originalGroups.set(group, option);
     return group;
   });
-  return { internalOptions, originals };
+  return { internalOptions, originals, originalGroups };
 }
 
 const InternalOptionList = React.forwardRef(
@@ -88,12 +93,12 @@ const InternalOptionList = React.forwardRef(
     const baseProps = getBaseProps(restProps);
     const i18n = useInternalI18n('option-list');
 
-    const { listOptions, parentMap, originals, leafIndexes } = useMemo(() => {
-      const { internalOptions, originals } = toInternalOptions(options);
+    const { listOptions, parentMap, originals, originalGroups, leafIndexes } = useMemo(() => {
+      const { internalOptions, originals, originalGroups } = toInternalOptions(options);
       const { flatOptions, parentMap } = flattenOptions(internalOptions);
       const leafIndexes = new Map<DropdownOption, number>();
       flatOptions.filter(option => option.type !== 'parent').forEach((option, index) => leafIndexes.set(option, index));
-      return { listOptions: flatOptions, parentMap, originals, leafIndexes };
+      return { listOptions: flatOptions, parentMap, originals, originalGroups, leafIndexes };
     }, [options]);
 
     const leafOptions = listOptions.filter(option => option.type !== 'parent').map(option => option.option);
@@ -102,6 +107,13 @@ const InternalOptionList = React.forwardRef(
     if (new Set(values).size !== values.length) {
       warnOnce('OptionList', 'Every option must have a unique `value`. The component may work incorrectly.');
     }
+
+    // Maps an option the list returns back to the consumer's object. Options from `options` map to their originals;
+    // anything else already came from the consumer through `selectedOptions`.
+    const toPublicOption = useCallback(
+      (option: OptionDefinition): OptionListProps.Option => originals.get(option) ?? (option as OptionListProps.Option),
+      [originals]
+    );
 
     const [selectedOptions = EMPTY_SELECTION, setSelectedOptions] = useControllable(
       controlledSelectedOptions,
@@ -119,7 +131,7 @@ const InternalOptionList = React.forwardRef(
       options: listOptions,
       selection,
       onChange: next => {
-        const nextSelectedOptions = next.map(option => originals.get(option) ?? option);
+        const nextSelectedOptions = next.map(toPublicOption);
         setSelectedOptions(nextSelectedOptions);
         fireNonCancelableEvent(onChange, { selectedOptions: nextSelectedOptions });
       },
@@ -132,11 +144,8 @@ const InternalOptionList = React.forwardRef(
       if (!renderOption) {
         return undefined;
       }
-      const toOriginalOption = (option: OptionDefinition): OptionListProps.Option => originals.get(option) ?? option;
-      const toOriginalGroup = (group: OptionGroup): OptionListProps.OptionGroup => {
-        const original = originals.get(group);
-        return original && isOptionGroup(original) ? original : group;
-      };
+      const toOriginalGroup = (group: OptionGroup): OptionListProps.OptionGroup =>
+        originalGroups.get(group) ?? (group as OptionListProps.OptionGroup);
       const toGroupItem = (item: ListboxGroupItem): OptionListProps.OptionGroupItem => ({
         ...item,
         option: toOriginalGroup(item.option),
@@ -144,7 +153,7 @@ const InternalOptionList = React.forwardRef(
       return ({ item }) => {
         if (item.type === 'item') {
           const parent = item.parent && toGroupItem(item.parent);
-          return renderOption({ item: { ...item, option: toOriginalOption(item.option), parent } });
+          return renderOption({ item: { ...item, option: toPublicOption(item.option), parent } });
         }
         if (item.type === 'group') {
           return renderOption({ item: toGroupItem(item) });
@@ -152,7 +161,7 @@ const InternalOptionList = React.forwardRef(
         // The listbox renders only options and group headers; it has no trigger or select-all item.
         return null;
       };
-    }, [renderOption, originals]);
+    }, [renderOption, toPublicOption, originalGroups]);
 
     // The root, not the list, clears the highlight when the pointer leaves, so the leave covers the whole component.
     const { onMouseLeave } = controller.getListProps();

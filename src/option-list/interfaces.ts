@@ -22,7 +22,7 @@ export interface OptionListProps extends BaseComponentProps {
    * - `icon` (ReactNode) - (Optional) An icon displayed in the option, such as an [icon component](/components/icon/).
    *
    * #### OptionGroup
-   * - `value` (string) - Used to locate option group in test utils.
+   * - `value` (string) - (Optional) Used to locate option group in test utils.
    * - `label` (string) - Option group text displayed to the user.
    * - `disabled` (boolean) - (Optional) Determines whether the option group is disabled. Disables every option in the group.
    * - `options` (Option[]) - The options in the group.
@@ -83,7 +83,7 @@ export namespace OptionListProps {
   export type SelectionType = 'single' | 'multi';
 
   export interface Option {
-    value?: string;
+    value: string;
     label?: string;
     lang?: string;
     description?: string;
@@ -94,43 +94,30 @@ export namespace OptionListProps {
     icon?: React.ReactNode;
   }
 
-  export interface OptionGroup extends Option {
+  export interface OptionGroup extends Omit<Option, 'value'> {
+    value?: string;
     options: ReadonlyArray<Option>;
   }
 
   export type Options = ReadonlyArray<Option | OptionGroup>;
 
   export interface OptionItem {
-    /** The item type. */
     type: 'item';
-    /** The position of the item in the list, counting group headers. */
     index: number;
-    /** The option, as provided in `options`. */
     option: Option;
-    /** Whether the option is selected. */
     selected: boolean;
-    /** Whether the option is highlighted. */
     highlighted: boolean;
-    /** Whether the option is disabled. */
     disabled: boolean;
-    /** The group header item of the group that contains the option, or `null` if the option isn't in a group. */
     parent: OptionGroupItem | null;
   }
 
   export interface OptionGroupItem {
-    /** The item type. */
     type: 'group';
-    /** The position of the item in the list, counting group headers. */
     index: number;
-    /** The option group, as provided in `options`. */
     option: OptionGroup;
-    /** Whether the group is disabled. */
     disabled: boolean;
-    /** Whether all options in the group are selected. Only provided in multi selection. */
     selected?: boolean;
-    /** Whether some, but not all, options in the group are selected. Only provided in multi selection. */
     indeterminate?: boolean;
-    /** Whether the group header is highlighted. Only provided in multi selection. */
     highlighted?: boolean;
   }
 
@@ -147,9 +134,6 @@ export namespace OptionListProps {
   }
 
   export interface Ref {
-    /**
-     * Sets focus on the list.
-     */
     focus(): void;
   }
 }

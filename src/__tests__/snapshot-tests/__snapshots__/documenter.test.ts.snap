@@ -21069,7 +21069,6 @@ The event \`detail\` contains the new \`selectedOptions\`.",
   ],
   "functions": [
     {
-      "description": "Sets focus on the list.",
       "name": "focus",
       "parameters": [],
       "returnType": "void",
@@ -21146,7 +21145,7 @@ You can group options into one level of option groups.
 - \`icon\` (ReactNode) - (Optional) An icon displayed in the option, such as an [icon component](/components/icon/).
 
 #### OptionGroup
-- \`value\` (string) - Used to locate option group in test utils.
+- \`value\` (string) - (Optional) Used to locate option group in test utils.
 - \`label\` (string) - Option group text displayed to the user.
 - \`disabled\` (boolean) - (Optional) Determines whether the option group is disabled. Disables every option in the group.
 - \`options\` (Option[]) - The options in the group.
