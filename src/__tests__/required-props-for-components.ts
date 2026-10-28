@@ -86,8 +86,8 @@ const defaultProps: Record<string, Record<string, any>> = {
   },
   'tutorial-panel': {
     i18nStrings: {
-      stepTitle: () => '',
-      labelTotalSteps: () => '',
+      tutorialListDescription: '',
+      labelLearnMoreExternalIcon: '',
     },
     tutorials: [],
   },

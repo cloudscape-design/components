@@ -7,6 +7,8 @@ import {
   HotspotContext as HotspotContextType,
   hotspotContext as HotspotContext,
 } from '../../../lib/components/annotation-context/context';
+import { I18nProvider } from '../../../lib/components/i18n';
+import messages from '../../../lib/components/i18n/messages/all.en';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import TutorialPanel, { TutorialPanelProps } from '../../../lib/components/tutorial-panel';
 import { getTutorials, i18nStrings } from './data';
@@ -333,5 +335,64 @@ describe('URL sanitization', () => {
 
       HTMLElement.prototype.focus = originalFocus;
     });
+  });
+});
+
+describe('i18n', () => {
+  const requiredI18nStrings: TutorialPanelProps.I18nStrings = {
+    tutorialListDescription: 'DESCRIPTION',
+    labelLearnMoreExternalIcon: 'EXTERNAL_ICON',
+  };
+
+  function renderWithProvider(
+    props: Pick<TutorialPanelProps, 'i18nStrings'>,
+    contextProps?: Partial<HotspotContextType>
+  ) {
+    const tutorials = getTutorials();
+    const { container } = render(
+      <I18nProvider messages={[messages]} locale="en">
+        <HotspotContext.Provider value={getContext(contextProps)}>
+          <TutorialPanel tutorials={tutorials} downloadUrl="DOWNLOAD_URL" onFeedbackClick={() => {}} {...props} />
+        </HotspotContext.Provider>
+      </I18nProvider>
+    );
+    return { wrapper: createWrapper(container).findTutorialPanel()!, tutorials };
+  }
+
+  test('falls back to provider strings in the tutorial list', () => {
+    const { wrapper } = renderWithProvider({
+      i18nStrings: { ...requiredI18nStrings, tutorialListTitle: 'CUSTOM_TITLE' },
+    });
+
+    expect(wrapper.getElement()).toHaveTextContent('CUSTOM_TITLE');
+    expect(wrapper.findDownloadLink()!.getElement()).toHaveTextContent('Download PDF version');
+    expect(wrapper.findDownloadLink()!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Download PDF version of this tutorial'
+    );
+    const tutorial = wrapper.findTutorials()[0];
+    expect(tutorial.findLearnMoreLink()!.getElement()).toHaveTextContent('Learn more');
+    expect(tutorial.findStartButton()!.getElement()).toHaveTextContent('Start tutorial');
+  });
+
+  test('falls back to provider strings in the tutorial detail view', () => {
+    const tutorial = getTutorials()[0];
+    const { wrapper } = renderWithProvider({ i18nStrings: requiredI18nStrings }, { currentTutorial: tutorial });
+
+    const task = wrapper.findTaskList()[0];
+    expect(task.findTitle().getElement()).toHaveTextContent('Task 1: FIRST_TASK_TEST');
+    expect(task.findStepsTitle().getElement()).toHaveTextContent('Total steps: 1');
+    expect(task.findSteps()[0].getElement()).toHaveTextContent('Step 1: FIRST_STEP_TEST');
+    expect(wrapper.findDismissButton()!.getElement()).toHaveTextContent('Dismiss tutorial');
+  });
+
+  test('falls back to provider strings in the completion screen', () => {
+    const tutorial = { ...getTutorials()[0], completed: true };
+    const { wrapper } = renderWithProvider({ i18nStrings: requiredI18nStrings }, { currentTutorial: tutorial });
+
+    expect(wrapper.findCompletionScreenTitle()!.getElement()).toHaveTextContent(
+      'Congratulations! You completed the tutorial.'
+    );
+    expect(wrapper.findFeedbackLink()!.getElement()).toHaveTextContent('Feedback');
   });
 });
