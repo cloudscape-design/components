@@ -7,11 +7,37 @@ export interface I18nFormatArgTypes {
   "[charts]": {
     "errorText": never;
     "i18nStrings.chartAriaRoleDescription": never;
+    "i18nStrings.enterZoomModeButtonAriaLabel": never;
+    "i18nStrings.enterZoomModeButtonText": never;
+    "i18nStrings.exitZoomModeButtonAriaLabel": never;
+    "i18nStrings.exitZoomModeButtonText": never;
     "i18nStrings.filterLabel": never;
     "i18nStrings.filterPlaceholder": never;
     "i18nStrings.legendAriaLabel": never;
+    "i18nStrings.resetZoomButtonAriaLabel": never;
+    "i18nStrings.resetZoomButtonText": never;
     "i18nStrings.xAxisAriaRoleDescription": never;
     "i18nStrings.yAxisAriaRoleDescription": never;
+    "i18nStrings.zoomControlsAriaLabel": never;
+    "i18nStrings.zoomCursorAriaLabel": never;
+    "i18nStrings.zoomCursorNextButtonAriaLabel": never;
+    "i18nStrings.zoomCursorPreviousButtonAriaLabel": never;
+    "i18nStrings.zoomModeEnteredAnnouncementText": {
+      "value": string | number;
+    }
+    "i18nStrings.zoomModeExitedAnnouncementText": never;
+    "i18nStrings.zoomRangeChangeAnnouncementText": {
+      "startValue": string | number;
+      "endValue": string | number;
+    }
+    "i18nStrings.zoomResetAnnouncementText": never;
+    "i18nStrings.zoomSelectionAnnouncementText": {
+      "startValue": string | number;
+      "endValue": string | number;
+    }
+    "i18nStrings.zoomStartPointAnnouncementText": {
+      "value": string | number;
+    }
     "loadingText": never;
     "recoveryText": never;
   }
