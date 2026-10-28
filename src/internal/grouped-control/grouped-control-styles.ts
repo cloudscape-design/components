@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 
-import { GroupedControlContextProps } from '../../context/control-group-context';
+import { GroupedControlContextProps } from '../context/control-group-context';
 
 /**
  * Builds the shared grouped-control CSS classes for a consumer.

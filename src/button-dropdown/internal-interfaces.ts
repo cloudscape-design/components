@@ -94,9 +94,17 @@ type InternalItems = ReadonlyArray<InternalItemOrGroup>;
 
 export type InternalItemOrGroup = InternalItem | InternalCheckboxItem | InternalItemGroup;
 
+// Style API v2
+export interface StyleClassNames {
+  trigger?: string;
+  mainAction?: string;
+  dropdown?: string;
+}
+
 export interface InternalButtonDropdownProps
   extends Omit<ButtonDropdownProps, 'variant' | 'items'>,
     InternalBaseComponentProps {
+  styleClassNames?: StyleClassNames;
   customTriggerBuilder?: (props: CustomTriggerProps) => React.ReactNode;
   variant?: ButtonDropdownProps['variant'] | 'navigation';
   items: ReadonlyArray<InternalItemOrGroup>;
