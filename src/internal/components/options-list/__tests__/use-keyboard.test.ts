@@ -135,3 +135,36 @@ describe('useMenuKeyboard', () => {
     expect(menuKeys.space.preventDefault).toHaveBeenCalled();
   });
 });
+
+describe('useMenuKeyboard native Home and End', () => {
+  const homeEndKeys = (): any[] =>
+    [36, 35].map(keyCode => ({ detail: { keyCode }, preventDefault: jest.fn(), stopPropagation: jest.fn() }));
+
+  test('prevents the native Home and End action when preventNativeHomeEnd is enabled', () => {
+    const goHome = jest.fn();
+    const goEnd = jest.fn();
+    const hook = renderHook(useMenuKeyboard, {
+      initialProps: { ...menuInitialProps, goHome, goEnd, preventNativeHomeEnd: true },
+    });
+    const [home, end] = homeEndKeys();
+    act(() => hook.result.current(home));
+    act(() => hook.result.current(end));
+    expect(goHome).toHaveBeenCalled();
+    expect(goEnd).toHaveBeenCalled();
+    expect(home.preventDefault).toHaveBeenCalled();
+    expect(end.preventDefault).toHaveBeenCalled();
+  });
+
+  test('keeps the native Home and End action by default, for example to move the cursor in a filter input', () => {
+    const goHome = jest.fn();
+    const goEnd = jest.fn();
+    const hook = renderHook(useMenuKeyboard, { initialProps: { ...menuInitialProps, goHome, goEnd } });
+    const [home, end] = homeEndKeys();
+    act(() => hook.result.current(home));
+    act(() => hook.result.current(end));
+    expect(goHome).toHaveBeenCalled();
+    expect(goEnd).toHaveBeenCalled();
+    expect(home.preventDefault).not.toHaveBeenCalled();
+    expect(end.preventDefault).not.toHaveBeenCalled();
+  });
+});

@@ -170,6 +170,7 @@ export function useSelect({
       }
     },
     preventNativeSpace: !hasFilter || (highlightedOption && highlightType.type === 'keyboard'),
+    preventNativeHomeEnd: !hasFilter,
   });
 
   const triggerKeyDownHandler = useTriggerKeyboard({
