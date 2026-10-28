@@ -77,6 +77,29 @@ const suite: TestSuite = {
       screenshotType: 'permutations',
     },
     {
+      description: 'Validation styles are preserved on keyboard focus',
+      tests: [
+        {
+          description: 'invalid state',
+          path: 'select/validation-focus',
+          screenshotType: 'screenshotArea',
+          setup: async ({ page }) => {
+            await page.click('#focus-target');
+            await page.keys(['Tab']);
+          },
+        },
+        {
+          description: 'warning state',
+          path: 'select/validation-focus',
+          screenshotType: 'screenshotArea',
+          setup: async ({ page }) => {
+            await page.click('#focus-target');
+            await page.keys(['Tab', 'Tab']);
+          },
+        },
+      ],
+    },
+    {
       description: 'Long virtual list - navigate to last item',
       path: 'select/virtual-scroll',
       screenshotType: 'screenshotArea',
