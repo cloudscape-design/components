@@ -102,6 +102,7 @@ export function ColumnWidthsProvider({
   const cellsRef = useRef(new Map<PropertyKey, HTMLElement>());
   const stickyCellsRef = useRef(new Map<PropertyKey, HTMLElement>());
   const colsRef = useRef(new Map<PropertyKey, HTMLElement>());
+  // Only filled with column groups, where the sticky <col> widths take priority over the sticky cell widths.
   const stickyColsRef = useRef(new Map<PropertyKey, HTMLElement>());
   const hasColElements = useRef(false);
   const getCell = (columnId: PropertyKey): null | HTMLElement => cellsRef.current.get(columnId) ?? null;
