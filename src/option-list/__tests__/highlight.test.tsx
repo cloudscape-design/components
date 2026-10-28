@@ -142,22 +142,13 @@ describe('OptionList focus and highlight', () => {
     const { listbox } = renderLongList();
     fireEvent.focus(listbox);
     scrollIntoView.mockClear();
-    const scrolledValues = [KeyCode.down, KeyCode.end, KeyCode.home, KeyCode.up].map(keyCode => {
+    // The repeated End keeps the highlight in place and still scrolls it into view again.
+    const scrolledValues = [KeyCode.down, KeyCode.end, KeyCode.end, KeyCode.home, KeyCode.up].map(keyCode => {
       pressKey(listbox, keyCode);
       return lastScrolledValue();
     });
-    expect(scrolledValues).toEqual(['1', 'special', '0', 'special']);
-    expect(scrollIntoView).toHaveBeenCalledTimes(4);
-  });
-
-  test('repeating a keyboard move that keeps the highlight scrolls it into view again', () => {
-    const { listbox } = renderLongList();
-    fireEvent.focus(listbox);
-    pressKey(listbox, KeyCode.end);
-    scrollIntoView.mockClear();
-    pressKey(listbox, KeyCode.end);
-    expect(scrollIntoView).toHaveBeenCalledTimes(1);
-    expect(lastScrolledValue()).toBe('special');
+    expect(scrolledValues).toEqual(['1', 'special', 'special', '0', 'special']);
+    expect(scrollIntoView).toHaveBeenCalledTimes(5);
   });
 
   test('a keyboard highlight of the hovered option scrolls it into view', () => {

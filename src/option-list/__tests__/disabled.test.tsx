@@ -88,26 +88,19 @@ describe('OptionList disabled options', () => {
     }
   );
 
-  test('shows the disabled reason tooltip when a disabled option is highlighted with the keyboard', () => {
-    const { listbox } = renderOptionList(
+  test('Escape closes the disabled reason tooltip and keeps the highlight and selection', () => {
+    const onChange = jest.fn();
+    const { wrapper, listbox } = renderOptionList(
       <Stateful
         options={[options[0], { value: 'b', label: 'Second', disabled: true, disabledReason: <b>Needs a quota</b> }]}
+        initialSelected={['a']}
+        onChange={onChange}
       />
     );
     fireEvent.focus(listbox);
     expect(findTooltip()).toBeNull();
     pressKey(listbox, KeyCode.down);
     expect(findTooltip()!.findContent()!.getElement()).toHaveTextContent('Needs a quota');
-  });
-
-  test('Escape closes the disabled reason tooltip and keeps the highlight and selection', () => {
-    const onChange = jest.fn();
-    const { wrapper, listbox } = renderOptionList(
-      <Stateful options={withDisabled} initialSelected={['a']} onChange={onChange} />
-    );
-    fireEvent.focus(listbox);
-    pressKey(listbox, KeyCode.down);
-    expect(findTooltip()).not.toBeNull();
 
     fireEvent.keyDown(listbox, { key: 'Escape', keyCode: KeyCode.escape });
     expect(findTooltip()).toBeNull();

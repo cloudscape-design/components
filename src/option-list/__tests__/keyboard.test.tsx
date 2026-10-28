@@ -26,25 +26,16 @@ describe('OptionList keyboard', () => {
     pressKey(listbox, KeyCode.down);
     expect(listbox).toHaveAttribute('aria-activedescendant', optionId(1));
 
-    pressKey(listbox, KeyCode.end);
+    // Home and End also prevent the browser from scrolling the page.
+    const endEvent = createEvent.keyDown(listbox, { keyCode: KeyCode.end });
+    fireEvent(listbox, endEvent);
+    expect(endEvent.defaultPrevented).toBe(true);
     expect(listbox).toHaveAttribute('aria-activedescendant', optionId(3));
 
-    pressKey(listbox, KeyCode.home);
+    const homeEvent = createEvent.keyDown(listbox, { keyCode: KeyCode.home });
+    fireEvent(listbox, homeEvent);
+    expect(homeEvent.defaultPrevented).toBe(true);
     expect(listbox).toHaveAttribute('aria-activedescendant', optionId(1));
-  });
-
-  test('Home and End move the highlight without the browser scrolling the page', () => {
-    const { wrapper, listbox } = renderOptionList(<Stateful />);
-    fireEvent.focus(listbox);
-    for (const [keyCode, value] of [
-      [KeyCode.end, 'c'],
-      [KeyCode.home, 'a'],
-    ] as const) {
-      const event = createEvent.keyDown(listbox, { keyCode });
-      fireEvent(listbox, event);
-      expect(event.defaultPrevented).toBe(true);
-      expect(highlightedValue(wrapper)).toBe(value);
-    }
   });
 
   test('Enter and Space select the highlighted option', () => {
@@ -76,13 +67,6 @@ describe('OptionList keyboard', () => {
     pressKey(listbox, KeyCode.escape);
     expect(onParentKeyDown).toHaveBeenCalledWith(KeyCode.escape);
     expect(onChange).not.toHaveBeenCalled();
-  });
-
-  test('type-ahead highlights the matching option', () => {
-    const { wrapper, listbox } = renderOptionList(<Stateful />);
-    fireEvent.focus(listbox);
-    fireEvent.keyDown(listbox, { key: 't' });
-    expect(highlightedValue(wrapper)).toBe('c');
   });
 
   test('type-ahead after Space selects moves the highlight to the matching option', () => {
