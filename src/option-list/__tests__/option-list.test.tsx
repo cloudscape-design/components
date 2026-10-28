@@ -516,6 +516,17 @@ describe('OptionList', () => {
       expect(wrapper.findHighlightedOption()).toBeNull();
     });
 
+    test('does not scroll when a grouped list mounts without a highlight', () => {
+      // Single-selection group headers are not interactive and render with data-mouse-target="-1",
+      // the same index the list reports when nothing is highlighted.
+      const groupedOptions: OptionListProps.Options = [
+        { label: 'Group 1', options: [{ value: '1', label: 'Option 1' }] },
+        { label: 'Group 2', options: [{ value: '2', label: 'Option 2' }] },
+      ];
+      renderOptionList(<Stateful options={groupedOptions} />);
+      expect(scrollIntoView).not.toHaveBeenCalled();
+    });
+
     test('hovering highlights the option without scrolling, and leaving the list clears it', () => {
       const { wrapper } = renderLongList();
       fireEvent.mouseMove(wrapper.findOptionByIndex(5)!.getElement());
