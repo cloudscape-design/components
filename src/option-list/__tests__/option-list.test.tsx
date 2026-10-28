@@ -1077,6 +1077,39 @@ describe('OptionList', () => {
     expect(wrapper.findOptionByValue('a')!.getElement()).toHaveTextContent('Picked');
   });
 
+  describe('renderHighlightedAriaLive', () => {
+    test('announces the highlighted option with the custom text, for example with custom option content', () => {
+      const { wrapper, listbox } = renderOptionList(
+        <Stateful
+          options={[{ value: 'a' }, { value: 'b' }]}
+          renderOption={({ item }) => <span>{item.option.value === 'a' ? 'Production' : 'Staging'}</span>}
+          renderHighlightedAriaLive={option => (option.value === 'a' ? 'Production' : 'Staging')}
+        />
+      );
+      // The visible custom content is hidden from screen readers while highlighted, so only this text is announced.
+      const announcement = () =>
+        wrapper
+          .findHighlightedOption()!
+          .getElement()
+          .closest('[role="option"]')!
+          .querySelector(`.${selectableItemStyles['screenreader-content']}`)!.textContent;
+      fireEvent.focus(listbox);
+      expect(announcement()).toBe('Production');
+      pressKey(listbox, KeyCode.down);
+      expect(announcement()).toBe('Staging');
+    });
+
+    test('receives the consumer option objects and the group when it changes', () => {
+      const renderHighlightedAriaLive = jest.fn(() => 'announcement');
+      const [compute] = groupedOptions as OptionListProps.OptionGroup[];
+      const { listbox } = renderOptionList(
+        <Stateful options={groupedOptions} renderHighlightedAriaLive={renderHighlightedAriaLive} />
+      );
+      fireEvent.focus(listbox);
+      expect(renderHighlightedAriaLive).toHaveBeenLastCalledWith(compute.options[0], compute);
+    });
+  });
+
   describe('i18n provider', () => {
     const messages = { 'option-list': { 'i18nStrings.selectedAriaLabel': 'Custom selected' } };
 

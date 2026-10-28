@@ -84,6 +84,7 @@ const InternalOptionList = React.forwardRef(
       ariaLabelledby,
       ariaDescribedby,
       renderOption,
+      renderHighlightedAriaLive,
       i18nStrings,
       __internalRootRef,
       ...restProps
@@ -114,6 +115,11 @@ const InternalOptionList = React.forwardRef(
       (option: OptionDefinition): OptionListProps.Option => originals.get(option) ?? (option as OptionListProps.Option),
       [originals]
     );
+    const toPublicGroup = useCallback(
+      (group: OptionGroup): OptionListProps.OptionGroup =>
+        originalGroups.get(group) ?? (group as OptionListProps.OptionGroup),
+      [originalGroups]
+    );
 
     const [selectedOptions = EMPTY_SELECTION, setSelectedOptions] = useControllable(
       controlledSelectedOptions,
@@ -136,6 +142,10 @@ const InternalOptionList = React.forwardRef(
         fireNonCancelableEvent(onChange, { selectedOptions: nextSelectedOptions });
       },
       getParent: option => parentMap.get(option)?.option as OptionGroup | undefined,
+      // The consumer receives its own option and group objects, as with `renderOption`.
+      renderHighlightedAriaLive:
+        renderHighlightedAriaLive &&
+        ((option, group) => renderHighlightedAriaLive(toPublicOption(option), group && toPublicGroup(group))),
       i18nStrings: { selectedAriaLabel: i18n('i18nStrings.selectedAriaLabel', i18nStrings?.selectedAriaLabel) },
     });
     useForwardFocus(ref, controller.listRef);
@@ -144,11 +154,9 @@ const InternalOptionList = React.forwardRef(
       if (!renderOption) {
         return undefined;
       }
-      const toOriginalGroup = (group: OptionGroup): OptionListProps.OptionGroup =>
-        originalGroups.get(group) ?? (group as OptionListProps.OptionGroup);
       const toGroupItem = (item: ListboxGroupItem): OptionListProps.OptionGroupItem => ({
         ...item,
-        option: toOriginalGroup(item.option),
+        option: toPublicGroup(item.option),
       });
       return ({ item }) => {
         if (item.type === 'item') {
@@ -161,7 +169,7 @@ const InternalOptionList = React.forwardRef(
         // The listbox renders only options and group headers; it has no trigger or select-all item.
         return null;
       };
-    }, [renderOption, toPublicOption, originalGroups]);
+    }, [renderOption, toPublicOption, toPublicGroup]);
 
     // The root, not the list, clears the highlight when the pointer leaves, so the leave covers the whole component.
     const { onMouseLeave } = controller.getListProps();
