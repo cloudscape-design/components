@@ -706,6 +706,43 @@ describe('OptionList', () => {
   });
 
   describe('option groups', () => {
+    test('single: arrows wrap at the first and last options when the list starts and ends with an empty group', () => {
+      const { wrapper, listbox } = renderOptionList(
+        <Stateful
+          options={[
+            { value: 'g0', label: 'Empty start', options: [] },
+            { value: 'apple', label: 'Apple' },
+            { value: 'banana', label: 'Banana' },
+            { value: 'g1', label: 'Empty end', options: [] },
+          ]}
+        />
+      );
+      fireEvent.focus(listbox);
+      pressKey(listbox, KeyCode.end);
+      expect(highlightedValue(wrapper)).toBe('banana');
+      pressKey(listbox, KeyCode.down);
+      expect(highlightedValue(wrapper)).toBe('apple');
+      pressKey(listbox, KeyCode.up);
+      expect(highlightedValue(wrapper)).toBe('banana');
+    });
+
+    test('single: arrows still wrap when the list starts with a group that has options', () => {
+      const { wrapper, listbox } = renderOptionList(
+        <Stateful
+          options={[
+            { value: 'fruits', label: 'Fruits', options: [{ value: 'apple', label: 'Apple' }] },
+            { value: 'banana', label: 'Banana' },
+          ]}
+        />
+      );
+      fireEvent.focus(listbox);
+      expect(highlightedValue(wrapper)).toBe('apple');
+      pressKey(listbox, KeyCode.up);
+      expect(highlightedValue(wrapper)).toBe('banana');
+      pressKey(listbox, KeyCode.down);
+      expect(highlightedValue(wrapper)).toBe('apple');
+    });
+
     test('renders each group labelled by its header, and option finders skip the headers', () => {
       const { wrapper } = renderOptionList(<Stateful options={groupedOptions} />);
       expect(wrapper.findGroupHeaders().map(header => header.findLabel()!.getElement().textContent)).toEqual([

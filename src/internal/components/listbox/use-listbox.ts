@@ -124,6 +124,8 @@ export function useListbox({
   // list to scroll again. Mouse highlights don't count.
   const [scrollRequest, setScrollRequest] = useState(0);
   const requestScroll = () => setScrollRequest(count => count + 1);
+  // Keyboard navigation must use these wrapped setters, not the raw `*WithKeyboard` ones above: the scroll
+  // effect runs on `scrollRequest`, so a raw setter would move the highlight without scrolling it into view.
   const withScroll =
     <Args extends unknown[]>(highlight: (...args: Args) => void) =>
     (...args: Args) => {
@@ -144,18 +146,17 @@ export function useListbox({
   };
 
   const menuKeyDownHandler = useMenuKeyboard({
+    // Wrap at the first and last highlightable options, not the first and last rows: group headers aren't
+    // highlightable in single selection, and an empty group leaves a header at either end of the list.
     goUp: () => {
-      if (
-        (!interactiveGroups && highlightedOption?.type === 'child' && highlightedIndex === 1) ||
-        highlightedIndex === 0
-      ) {
+      if (highlightedIndex === options.findIndex(isHighlightable)) {
         goEnd();
         return;
       }
       moveHighlight(-1);
     },
     goDown: () => {
-      if (highlightedIndex === options.length - 1) {
+      if (!options.slice(highlightedIndex + 1).some(isHighlightable)) {
         goHome();
         return;
       }
