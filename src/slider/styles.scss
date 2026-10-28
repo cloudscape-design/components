@@ -233,7 +233,7 @@ $root-tokens: style-api.resolve((track-color, value-color), carrier);
     );
 
     &.readonly:not(.disabled) {
-      background: track-color(
+      background: value-color(
         var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-foreground-control-read-only)
       );
     }
@@ -246,13 +246,13 @@ $root-tokens: style-api.resolve((track-color, value-color), carrier);
   }
 
   &.error {
-    background: track-color(
+    background: value-color(
       var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-background-slider-range-error-default)
     );
   }
 
   &.warning {
-    background: track-color(
+    background: value-color(
       var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-background-slider-range-warning-default)
     );
   }
@@ -277,6 +277,12 @@ $root-tokens: style-api.resolve((track-color, value-color), carrier);
 
   &.readonly {
     background: track-color(
+      var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-background-control-disabled)
+    );
+  }
+
+  &.filled.disabled {
+    background: value-color(
       var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-background-control-disabled)
     );
   }
