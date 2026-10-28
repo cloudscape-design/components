@@ -203,6 +203,23 @@ describe('SideNavigation', () => {
       expect(wrapper.findItemByIndex(1)?.findSectionGroup()!.getElement()!.children[0]!.tagName).toBe('H3');
       expect(wrapper.find('h3')!.getElement()).toHaveTextContent('Section Group');
     });
+
+    it('has an additional info when "info" property is specified', () => {
+      const wrapper = renderSideNavigation({
+        items: [{ type: 'section-group', title: 'Section Group', info: <Badge>Additional info</Badge>, items: [] }],
+      });
+      expect(wrapper.findItemByIndex(1)!.findInfo()!.findBadge()!.getElement()).toHaveTextContent('Additional info');
+      expect(wrapper.find('h3')!.getElement()).toHaveTextContent('Section Group');
+      expect(wrapper.find('h3')!.getElement()).not.toHaveTextContent('Additional info');
+    });
+
+    it('does not render info when collapsed', () => {
+      const wrapper = renderSideNavigation({
+        collapsed: true,
+        items: [{ type: 'section-group', title: 'Section Group', info: <Badge>Additional info</Badge>, items: [] }],
+      });
+      expect(wrapper.findItemByIndex(1)!.findInfo()).toBeNull();
+    });
   });
 
   describe('Link', () => {
@@ -345,6 +362,45 @@ describe('SideNavigation', () => {
       });
 
       expect(wrapper.findItemByIndex(1)?.findSection()?.findHeader()?.getElement()).toHaveTextContent('Section');
+    });
+
+    it('has an additional info outside the expand button when "info" property is specified', () => {
+      const onChange = jest.fn();
+      const wrapper = renderSideNavigation({
+        onChange,
+        items: [
+          {
+            type: 'section',
+            text: 'Section',
+            info: <Badge>Additional info</Badge>,
+            items: [{ type: 'link', text: 'Page 1', href: '/something' }],
+          },
+        ],
+      });
+      const item = wrapper.findItemByIndex(1)!;
+      expect(item.findInfo()!.findBadge()!.getElement()).toHaveTextContent('Additional info');
+      expect(item.findSection()!.findExpandButton().getElement()).not.toHaveTextContent('Additional info');
+
+      item.findInfo()!.click();
+      expect(onChange).not.toHaveBeenCalled();
+
+      item.findSection()!.findExpandButton().click();
+      expect(onChange).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not render section info when collapsed', () => {
+      const wrapper = renderSideNavigation({
+        collapsed: true,
+        items: [
+          {
+            type: 'section',
+            text: 'Section',
+            info: <Badge>Additional info</Badge>,
+            items: [{ type: 'link', text: 'Page 1', href: '/something', icon: <span /> }],
+          },
+        ],
+      });
+      expect(wrapper.findItemByIndex(1)!.findSection()!.findHeader().find(`[class*="info"]`)).toBeNull();
     });
 
     it('has links', () => {
@@ -742,6 +798,41 @@ describe('SideNavigation', () => {
         ],
       });
       expect(wrapper.findItemByIndex(1)?.findLink()?.getElement()).toHaveTextContent('Expandable Link Group');
+    });
+
+    it('has an additional info when "info" property is specified', () => {
+      const wrapper = renderSideNavigation({
+        items: [
+          {
+            type: 'expandable-link-group',
+            text: 'Expandable Link Group',
+            href: '/page',
+            info: <Badge>Additional info</Badge>,
+            items: [{ type: 'link', text: 'Page 1', href: '/something' }],
+          },
+        ],
+      });
+      const item = wrapper.findItemByIndex(1)!;
+      expect(item.findInfo()!.findBadge()!.getElement()).toHaveTextContent('Additional info');
+      expect(item.findLink()!.getElement()).not.toHaveTextContent('Additional info');
+      expect(item.findExpandableLinkGroup()!.findExpandButton()!.getElement()).not.toHaveTextContent('Additional info');
+    });
+
+    it('does not render info when collapsed', () => {
+      const wrapper = renderSideNavigation({
+        collapsed: true,
+        items: [
+          {
+            type: 'expandable-link-group',
+            text: 'Expandable Link Group',
+            href: '/page',
+            icon: <span />,
+            info: <Badge>Additional info</Badge>,
+            items: [{ type: 'link', text: 'Page 1', href: '/something' }],
+          },
+        ],
+      });
+      expect(wrapper.findItemByIndex(1)!.findInfo()).toBeNull();
     });
 
     it('has specified href', () => {

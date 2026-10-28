@@ -13,6 +13,7 @@ import DropdownFooter from '../internal/components/dropdown-footer/index.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { ResetGroupedControlContext, useGroupedControlContext } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
+import { warnOnUnsupportedGroupedControlProps } from '../internal/grouped-control/dev-warnings';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { SomeRequired } from '../internal/types';
 import { getDropdownMinWidth } from '../internal/utils/get-dropdown-min-width';
@@ -56,7 +57,7 @@ const InternalMultiselect = React.forwardRef(
       tokenLimit,
       i18nStrings,
       virtualScroll,
-      inlineTokens = false,
+      inlineTokens,
       hideTokens,
       expandToViewport,
       tokenLimitShowFewerAriaLabel,
@@ -79,6 +80,16 @@ const InternalMultiselect = React.forwardRef(
     const i18n = useInternalI18n('multiselect');
 
     const isGrouped = !!groupedControlProps.position;
+
+    warnOnUnsupportedGroupedControlProps({
+      isGrouped,
+      componentName: 'Multiselect',
+      invalid: formFieldContext.invalid,
+      warning: formFieldContext.warning,
+      readOnly,
+      inlineTokens,
+      expandToViewport,
+    });
 
     // When rendered inside a control group, tokens are always shown inline in the
     // trigger regardless of the `inlineTokens` prop, since there is no room to

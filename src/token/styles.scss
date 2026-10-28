@@ -50,6 +50,8 @@
   }
 
   &-inline {
+    // Extra space keeps the dismiss button clear of small interactive labels (WCAG target spacing).
+    margin-inline-start: calc(#{awsui.$space-xxs} + #{awsui.$border-width-field});
     padding-inline: 0;
     display: flex;
     align-items: center;
@@ -91,8 +93,8 @@
   }
 }
 
-.token-option-inline {
-  max-block-size: constants.$token-max-height-inline;
+.token-option-inline-dismissible {
+  min-inline-size: constants.$token-min-label-width-inline;
 }
 
 .token-box {

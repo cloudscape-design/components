@@ -197,6 +197,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderDropdownItemSelected: '{colorBorderItemSelected}',
   colorBorderDropdownItemTop: 'transparent',
   colorBorderEditableCellHover: '{colorBorderDropdownItemHover}',
+  colorBorderControlGroupDefault: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
   colorBorderInputDefault: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
   colorBorderInputDisabled: '{colorBackgroundInputDisabled}',
   colorBorderInputFocused: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },

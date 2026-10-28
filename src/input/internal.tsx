@@ -14,10 +14,11 @@ import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
-import { getGroupedControlClassNames } from '../internal/components/control-group/grouped-control-styles';
 import { ResetGroupedControlContext, useGroupedControlContext } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
+import { warnOnUnsupportedGroupedControlProps } from '../internal/grouped-control/dev-warnings';
+import { getGroupedControlClassNames } from '../internal/grouped-control/grouped-control-styles';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { isDevelopment } from '../internal/is-development';
@@ -44,7 +45,6 @@ export interface InternalInputProps
     InternalBaseComponentProps {
   type?: InputProps['type'] | 'visualSearch';
   __startIcon?: IconProps['name'];
-  __startIconVariant?: IconProps['variant'];
   __onStartIconClick?: () => void;
 
   __endIcon?: IconProps['name'];
@@ -60,6 +60,16 @@ export interface InternalInputProps
   __injectAnalyticsComponentMetadata?: boolean;
   __skipNativeAttributesWarnings?: SkipWarnings;
   __fullWidth?: boolean;
+  styleClassNames?: StyleClassNames;
+}
+
+// Style API v2
+export interface StyleClassNames {
+  root?: string;
+  input?: string;
+  inlineLabel?: string;
+  searchIcon?: string;
+  clearButton?: string;
 }
 
 function InternalInput(
@@ -82,7 +92,6 @@ function InternalInput(
     __noBorder,
 
     __startIcon,
-    __startIconVariant = 'subtle',
     __onStartIconClick,
 
     ariaRequired,
@@ -104,6 +113,7 @@ function InternalInput(
     __skipNativeAttributesWarnings,
     __fullWidth,
     style,
+    styleClassNames,
     prefix,
     suffix,
     inlineLabelText,
@@ -153,6 +163,14 @@ function InternalInput(
   const generatedControlId = useUniqueId('input');
   const controlId = controlIdFromFormFieldContext ?? (inlineLabelText ? generatedControlId : undefined);
 
+  warnOnUnsupportedGroupedControlProps({
+    isGrouped: !!groupedControlProps.position,
+    componentName: 'Input',
+    invalid: invalid,
+    warning: warning,
+    readOnly,
+  });
+
   const hasPrefix = !!prefix;
   const hasSuffix = !!suffix;
   const hasAdornments = hasPrefix || hasSuffix;
@@ -177,6 +195,7 @@ function InternalInput(
     autoFocus,
     id: controlId,
     className: clsx(
+      styleClassNames?.input,
       styles.input,
       type && styles[`input-type-${type}`],
       __endIcon && styles['input-has-icon-end'],
@@ -275,6 +294,7 @@ function InternalInput(
         onClick={__onEndIconClick}
         ariaLabel={i18n('clearAriaLabel', clearAriaLabelOverride)}
         disabled={disabled}
+        styleClassNames={{ root: styleClassNames?.clearButton }}
       />
     </span>
   ) : null;
@@ -300,12 +320,20 @@ function InternalInput(
       dir={type === 'email' ? 'ltr' : undefined}
     >
       {__startIcon && (
-        <span onClick={__onStartIconClick} className={styles['input-icon-start']}>
-          <InternalIcon name={__startIcon} variant={disabled ? 'disabled' : readOnly ? 'subtle' : __startIconVariant} />
+        <span
+          onClick={__onStartIconClick}
+          className={clsx(
+            styleClassNames?.searchIcon,
+            styles['input-icon-start'],
+            disabled && styles['input-icon-start-disabled']
+          )}
+        >
+          <InternalIcon name={__startIcon} />
         </span>
       )}
       <div
         className={clsx(
+          styleClassNames?.root,
           styles['input-field'],
           invalid && styles['input-field-invalid'],
           warning && !invalid && styles['input-field-warning'],
@@ -353,7 +381,14 @@ function InternalInput(
         __fullWidth && styles['inline-label-wrapper-full-width']
       )}
     >
-      <label htmlFor={renderedId} className={clsx(styles['inline-label'], disabled && styles['inline-label-disabled'])}>
+      <label
+        htmlFor={renderedId}
+        className={clsx(
+          styleClassNames?.inlineLabel,
+          styles['inline-label'],
+          disabled && styles['inline-label-disabled']
+        )}
+      >
         {inlineLabelText}
       </label>
       <div

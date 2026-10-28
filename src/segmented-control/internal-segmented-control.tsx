@@ -3,9 +3,9 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
-import { getGroupedControlClassNames } from '../internal/components/control-group/grouped-control-styles';
 import { GroupedControlContextProps } from '../internal/context/control-group-context';
 import { fireNonCancelableEvent } from '../internal/events';
+import { getGroupedControlClassNames } from '../internal/grouped-control/grouped-control-styles';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import handleKey from '../internal/utils/handle-key';
@@ -57,11 +57,11 @@ export default function InternalSegmentedControl({
   const isGrouped = !!groupedControlProps?.position;
   const isGroupedVertical = isGrouped && groupedControlProps?.direction === 'vertical';
 
-  const groupedControlClassNames = isGrouped ? getGroupedControlClassNames(styles, groupedControlProps) : [];
+  const groupedControlClassNames = isGrouped ? getGroupedControlClassNames(styles, groupedControlProps) : '';
 
   return (
     <div
-      className={clsx(styles['segment-part'], styles[`segment-count-${options?.length}`], ...groupedControlClassNames, {
+      className={clsx(styles['segment-part'], styles[`segment-count-${options?.length}`], groupedControlClassNames, {
         [styles.refresh]: isVisualRefresh,
         [styles['grouped-vertical']]: isGroupedVertical,
       })}

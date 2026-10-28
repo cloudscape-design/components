@@ -10,6 +10,17 @@
 @use './constants' as constants;
 @use '../../generated/custom-css-properties/index.scss' as custom-props;
 
+// Use a special transparent outline only visible in Windows High Contrast Mode.
+// This mode removes all box shadows, se we can only use outline to display focus indicators.
+// When High Contrast Mode is activated, it will change all outline colors, even if they
+// are transparent.
+@mixin windows-high-contrast-outline($offset: 0) {
+  outline: 2px dotted transparent;
+  @if $offset != 0 {
+    outline-offset: $offset;
+  }
+}
+
 @mixin link-focus(
   $border-color: awsui.$color-border-item-focused,
   $border-radius: awsui.$border-radius-control-default-focus-ring,
@@ -33,9 +44,7 @@
   // content. Using a pseudo element does not take the width or height of the overflowing
   // children.
 
-  // Window High Contrast Mode
-  outline: 2px dotted transparent;
-  outline-offset: 2px;
+  @include windows-high-contrast-outline($offset: 2px);
   border-start-start-radius: $border-radius;
   border-start-end-radius: $border-radius;
   border-end-start-radius: $border-radius;
@@ -69,14 +78,8 @@
   }
 
   position: relative;
-  // Add a special outline for Window High Contrast Mode.
-  // This mode will remove all box shadows from the side and can only use outline
-  // do display focus indicators. We can use transparent outlines here because when
-  // High Contrast Mode is activated it will change all outline colors, even if they
-  // are transparent.
   & {
-    outline: 2px dotted transparent;
-    outline-offset: calc(#{$gutter-left} - 1px);
+    @include windows-high-contrast-outline(calc(#{$gutter-left} - 1px));
   }
 
   // Regular rounded outline for all other browsers and modes
@@ -102,9 +105,7 @@
 // Use for elements that have inline buttons without borders
 // like pagination, token list and expandable section
 @mixin focus-element-without-border($border-radius: constants.$control-border-radius) {
-  // Using a special transparent outline only visible in Windows High Contrast Mode.
-  // See focus-highlight above.
-  outline: 2px dotted transparent;
+  @include windows-high-contrast-outline;
   border-block: awsui.$border-width-button solid awsui.$color-border-item-focused;
   border-inline: awsui.$border-width-button solid awsui.$color-border-item-focused;
   border-start-start-radius: $border-radius;
@@ -120,9 +121,7 @@
   $border-color: awsui.$color-border-input-focused,
   $box-shadow: foundation.$box-shadow-focused-light
 ) {
-  // Using a special transparent outline only visible in Windows High Contrast Mode.
-  // See focus-highlight above.
-  outline: 2px dotted transparent;
+  @include windows-high-contrast-outline;
 
   border-block-color: $border-color;
   border-inline-color: $border-color;
@@ -230,16 +229,20 @@
   box-shadow: var(#{custom-props.$styleBoxShadowDefault});
 }
 
+@mixin input-hover-background-styles {
+  background-color: var(
+    #{custom-props.$styleBackgroundHover},
+    var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+  );
+}
+
 @mixin input-hover-styles {
   border-color: var(
     #{custom-props.$styleBorderColorHover},
     var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default)
   );
-  background-color: var(
-    #{custom-props.$styleBackgroundHover},
-    var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
-  );
-  box-shadow: var(#{custom-props.$styleBoxShadowHover}, #{custom-props.$styleBoxShadowDefault});
+  @include input-hover-background-styles();
+  box-shadow: var(#{custom-props.$styleBoxShadowHover}, var(#{custom-props.$styleBoxShadowDefault}));
 }
 
 @mixin input-readonly-styles {
@@ -335,10 +338,10 @@
     background-color: transparent;
     border-block: $border-width solid $border-color;
     border-inline: $border-width solid $border-color;
-    border-start-start-radius: $border-radius;
-    border-start-end-radius: $border-radius;
-    border-end-start-radius: $border-radius;
-    border-end-end-radius: $border-radius;
+    border-start-start-radius: inherit;
+    border-start-end-radius: inherit;
+    border-end-start-radius: inherit;
+    border-end-end-radius: inherit;
     pointer-events: none;
   }
 }

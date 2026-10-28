@@ -3,9 +3,10 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../../styles' as styles;
-@use '../../styles/tokens' as awsui;
-@use '../../styles/forms/mixins' as forms;
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/forms/mixins' as forms;
+@use '../internal/styles/forms/constants' as constants;
 
 $margin-overlap: calc(-1 * #{awsui.$border-width-field});
 
@@ -46,6 +47,9 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
 .controls {
   display: flex;
   align-items: stretch;
+  // Keep control borders above the action button's.
+  // This becomes especially relevant when controls render validation-style border colors.
+  z-index: 1;
 
   &-horizontal {
     flex-direction: row;
@@ -75,6 +79,47 @@ $margin-overlap: calc(-1 * #{awsui.$border-width-field});
     }
     &-vertical {
       margin-block-start: $margin-overlap;
+    }
+  }
+
+  &-validation {
+    position: relative;
+
+    // Thick validation border rendered by the wrapping `.control` instead of the grouped individual controls
+    // in order to prevent subtle visual artifacts where the horizontal and vertical borders of the controls meet.
+    &::before {
+      content: '';
+      position: absolute;
+      inset-block: 0;
+      inset-inline-start: 0;
+      box-sizing: border-box;
+      // Rneder the thick border as an actual border (rather than a background fill) so it works also in
+      // forced-colors mode: forced-colors recolors borders to the system palette whereas backgrounds get flattened
+      // to Canvas.
+      border-inline-start-style: solid;
+      border-inline-start-width: constants.$invalid-control-left-border;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    &.control-in-error::before {
+      border-inline-start-color: awsui.$color-text-status-error;
+    }
+    &.control-in-warning::before {
+      border-inline-start-color: awsui.$color-text-status-warning;
+    }
+
+    &.control-first-horizontal::before,
+    &.control-only-horizontal::before,
+    &.control-only-vertical::before {
+      border-start-start-radius: constants.$control-border-radius;
+      border-end-start-radius: constants.$control-border-radius;
+    }
+    &.control-first-vertical::before {
+      border-start-start-radius: constants.$control-border-radius;
+    }
+    &.control-last-vertical::before {
+      border-end-start-radius: constants.$control-border-radius;
     }
   }
 }

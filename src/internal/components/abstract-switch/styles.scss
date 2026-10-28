@@ -5,11 +5,7 @@
 
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
-@use '../../styles/style-api' as style-api;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
-
-// The owning component's label / description slot classes land on these elements themselves.
-$_text-tokens: style-api.resolve((color), public);
 
 .content,
 .description,
@@ -18,7 +14,7 @@ $_text-tokens: style-api.resolve((color), public);
 }
 
 .label {
-  color: style-api.value($_text-tokens, color, awsui.$color-text-form-default);
+  color: awsui.$color-text-form-default;
 }
 
 .outline {
@@ -55,9 +51,7 @@ $_text-tokens: style-api.resolve((color), public);
 }
 
 .description {
-  @include styles.form-control-description(
-    $color: style-api.value($_text-tokens, color, awsui.$color-text-form-secondary)
-  );
+  @include styles.form-control-description($color: awsui.$color-text-form-secondary);
   &-bottom-padding {
     padding-block-end: awsui.$space-scaled-xxs;
   }
@@ -67,7 +61,7 @@ $_text-tokens: style-api.resolve((color), public);
 .description {
   padding-inline-start: awsui.$space-xs;
   &-disabled {
-    color: style-api.value($_text-tokens, color, awsui.$color-text-control-disabled);
+    color: awsui.$color-text-control-disabled;
   }
 }
 

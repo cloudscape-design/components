@@ -10844,6 +10844,292 @@ Note that the secondary header will not have a high-contrast treatement, even if
 }
 `;
 
+exports[`Components definition for control-group matches the snapshot: control-group 1`] = `
+{
+  "dashCaseName": "control-group",
+  "events": [],
+  "functions": [],
+  "name": "ControlGroup",
+  "properties": [
+    {
+      "description": "Specifies an action button rendered next to the grouped controls.",
+      "inlineType": {
+        "name": "ControlGroupProps.ActionButton",
+        "properties": [
+          {
+            "name": "ariaDescribedby",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "ariaLabel",
+            "optional": false,
+            "type": "string",
+          },
+          {
+            "name": "disabled",
+            "optional": true,
+            "type": "boolean",
+          },
+          {
+            "name": "disabledReason",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "IconProps.Name",
+              "type": "union",
+              "values": [
+                "search",
+                "map",
+                "filter",
+                "key",
+                "file",
+                "pause",
+                "play",
+                "microphone",
+                "remove",
+                "copy",
+                "menu",
+                "script",
+                "close",
+                "status-pending",
+                "refresh",
+                "external",
+                "history",
+                "group",
+                "calendar",
+                "ellipsis",
+                "zoom-in",
+                "zoom-out",
+                "dot",
+                "security",
+                "download",
+                "edit",
+                "add-plus",
+                "anchor-link",
+                "angle-left-double",
+                "angle-left",
+                "angle-right-double",
+                "angle-right",
+                "angle-up",
+                "angle-down",
+                "announcement",
+                "arrow-left",
+                "arrow-right",
+                "arrow-up",
+                "arrow-down",
+                "at-symbol",
+                "audio-full",
+                "audio-half",
+                "audio-off",
+                "backward-10-seconds",
+                "bug",
+                "call",
+                "caret-down-filled",
+                "caret-down",
+                "caret-left-filled",
+                "caret-right-filled",
+                "caret-up-filled",
+                "caret-up",
+                "check",
+                "contact",
+                "closed-caption",
+                "closed-caption-unavailable",
+                "command-prompt",
+                "convert-code",
+                "delete-marker",
+                "drag-indicator",
+                "edit-gen-ai",
+                "envelope",
+                "exit-full-screen",
+                "expand",
+                "face-happy",
+                "face-happy-filled",
+                "face-neutral",
+                "face-neutral-filled",
+                "face-sad",
+                "face-sad-filled",
+                "file-open",
+                "flag",
+                "folder-open",
+                "folder",
+                "forward-10-seconds",
+                "full-screen",
+                "gen-ai",
+                "gen-ai-token",
+                "globe",
+                "grid-view",
+                "group-active",
+                "heart",
+                "heart-filled",
+                "insert-row",
+                "internal-link",
+                "keyboard",
+                "light-dark",
+                "list-view",
+                "location-pin",
+                "lock-private",
+                "microphone-off",
+                "mini-player",
+                "multiscreen",
+                "notification",
+                "redo",
+                "resize-area",
+                "search-gen-ai",
+                "settings",
+                "send",
+                "share",
+                "shrink",
+                "sign-out",
+                "side-bar",
+                "slash",
+                "slash-divider",
+                "star-filled",
+                "star-half",
+                "star",
+                "status-in-progress",
+                "status-info",
+                "status-negative",
+                "status-not-started",
+                "status-positive",
+                "status-stopped",
+                "status-warning",
+                "stop-circle",
+                "subtract-minus",
+                "suggestions",
+                "suggestions-gen-ai",
+                "support",
+                "thumbs-down-filled",
+                "thumbs-down",
+                "thumbs-up-filled",
+                "thumbs-up",
+                "ticket",
+                "transcript",
+                "treeview-collapse",
+                "treeview-expand",
+                "undo",
+                "unlocked",
+                "upload-download",
+                "upload",
+                "user-profile-active",
+                "user-profile",
+                "video-off",
+                "video-on",
+                "video-unavailable",
+                "video-camera-off",
+                "video-camera-on",
+                "video-camera-unavailable",
+                "view-full",
+                "view-horizontal",
+                "view-vertical",
+                "zoom-to-fit",
+              ],
+            },
+            "name": "iconName",
+            "optional": false,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "CancelableEventHandler<ClickDetail>",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": "CustomEvent<Detail>",
+                },
+              ],
+              "returnType": "void",
+              "type": "function",
+            },
+            "name": "onClick",
+            "optional": true,
+            "type": "CancelableEventHandler<ClickDetail>",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "actionButton",
+      "optional": true,
+      "type": "ControlGroupProps.ActionButton",
+    },
+    {
+      "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for each element that you want to use as a description
+and set the property to a string of each ID separated by spaces (for example, \`"id1 id2 id3"\`).",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds \`aria-labelledby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for the element you want to use as label and set the property to that ID.",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": "'auto'",
+      "description": "The axis along which the controls are laid out (\`horizontal\`, \`vertical\` or \`auto\`).
+When set to \`auto\` (default), the component decides the direction based on whether it
+fits in the padding box of its
+[containing block](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Display/Containing_block).",
+      "inlineType": {
+        "name": "ControlGroupProps.ControlGroupDirection",
+        "type": "union",
+        "values": [
+          "auto",
+          "horizontal",
+          "vertical",
+        ],
+      },
+      "name": "direction",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "name": "inlineLabelText",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "isDefault": true,
+      "name": "children",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Components definition for copy-to-clipboard matches the snapshot: copy-to-clipboard 1`] = `
 {
   "dashCaseName": "copy-to-clipboard",
@@ -15531,8 +15817,8 @@ for screen reader users.",
       "description": "The ID of the primary form control. You can use this to set the
 \`for\` attribute of a label for accessibility.
 
-If you don't set this property, the control group automatically sets
-the label to the ID of an inner form control (for example, an [input](/components/input) component).
+If you don't set this property, the form field automatically generates an ID
+and assigns it to the inner form control (for example, an [input](/components/input) component).
 This only works well if you're using a single control in the form field.",
       "name": "controlId",
       "optional": true,
@@ -20252,7 +20538,9 @@ Set this property if the dropdown would otherwise be constrained by a scrollable
 for example inside table and split view layouts.
 
 We recommend you use discretion, and don't enable this property unless necessary
-because fixed positioning results in a slight, visible lag when scrolling complex pages.",
+because fixed positioning results in a slight, visible lag when scrolling complex pages.
+
+When the component is rendered in a control group, the dropdown will be rendered expanded to the viewport regardless of this property.",
       "name": "expandToViewport",
       "optional": true,
       "type": "boolean",
@@ -20390,7 +20678,8 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
-      "description": "Shows tokens inside the trigger instead of below it.",
+      "description": "Shows tokens inside the trigger instead of below it.
+When the component is rendered inside a control group, the tokens are rendered inside the trigger regardless of this property.",
       "name": "inlineTokens",
       "optional": true,
       "type": "boolean",
@@ -26698,7 +26987,9 @@ Set this property if the dropdown would otherwise be constrained by a scrollable
 for example inside table and split view layouts.
 
 We recommend you use discretion, and don't enable this property unless necessary
-because fixed positioning results in a slight, visible lag when scrolling complex pages.",
+because fixed positioning results in a slight, visible lag when scrolling complex pages.
+
+When the component is rendered in a control group, the dropdown will be rendered expanded to the viewport regardless of this property.",
       "name": "expandToViewport",
       "optional": true,
       "type": "boolean",
@@ -27531,6 +27822,7 @@ Object that represents a section within the navigation.
 - \`type\`: \`'section'\`.
 - \`text\` (string) - Specifies the text to display as a title of the section.
 - \`defaultExpanded\` (boolean) - Determines whether the section should be expanded by default. Default value is \`true\`.
+- \`info\` (ReactNode) - Enables you to display content next to the section title.
 - \`items\` (array) - Specifies the content of the section. You can use any valid item from this list.
     Although there is no technical limitation to the nesting level,
     our UX recommendation is to use only one level.
@@ -27540,6 +27832,7 @@ Aggregates a set of items that are conceptually related to each other, and can b
 You can nest sections, links, link groups and expandable link groups within a section group depending on your information architecture needs.
 - \`type\`: \`'section-group'\`.
 - \`title\` (string) - Specifies the text to display as a title of the section group.
+- \`info\` (ReactNode) - Enables you to display content next to the section group title.
 - \`items\` (array) - Specifies the content of the section header group. You can use \`Section\`, \`Link\`, \`LinkGroup\`, \`ExpandableLinkGroup\`.
 
 #### LinkGroup
@@ -27562,6 +27855,7 @@ Object that represents an expandable group of links.
 - \`href\` (string) - Specifies the \`href\` of the group link.
 - \`defaultExpanded\` (boolean) - Specifies whether the group should be expanded by default.
    If not explicitly set, the group is collapsed by default, unless one of the nested links is active.
+- \`info\` (ReactNode) - Enables you to display content next to the group link.
 - \`items\` (array) - Specifies the content of the section. You can use any valid item from this list.
     Although there is no technical limitation to the nesting level,
     our UX recommendation is to use only one level.
@@ -33932,7 +34226,10 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
-      "description": "A label tag that provides additional guidance, shown next to the label.",
+      "description": "A label tag that provides additional guidance, shown next to the label.
+
+When \`variant="inline"\`, a long label tag is truncated. \`tooltipContent\` is what appears when the
+token is truncated, so include the label tag text in it.",
       "name": "labelTag",
       "optional": true,
       "type": "string",
@@ -34117,9 +34414,7 @@ Refer to the [style](/components/token/?tabId=style) tab for more details.",
       "type": "ReadonlyArray<string>",
     },
     {
-      "description": "Content to display in the tooltip when \`variant="inline"\`. The tooltip appears when the token label is truncated due to insufficient space.
-
-Only applies to plain text labels.",
+      "description": "Content to display in the tooltip when \`variant="inline"\`. The tooltip appears when the token label or label tag is truncated due to insufficient space.",
       "name": "tooltipContent",
       "optional": true,
       "type": "string",
@@ -34128,7 +34423,7 @@ Only applies to plain text labels.",
       "defaultValue": "'normal'",
       "description": "Specifies the token's visual style and functionality.
 
-For \`inline\` only label, icon and dismiss button are displayed.
+When set to \`inline\`, only label, label tag, icon and dismiss button are displayed. Description and tags are not.
 
 Defaults to \`normal\` if not specified.",
       "inlineType": {
@@ -34157,7 +34452,8 @@ When \`variant="inline"\`, icon size should be \`x-small\`.",
     {
       "description": "Slot for the label of the token as text or an element.
 
-For \`variant="inline"\`, only plain text is supported, for example, strings or numbers.",
+For \`variant="inline"\`, use plain text, for example, strings or numbers, or a single interactive
+element such as a popover trigger.",
       "isDefault": false,
       "name": "label",
     },
@@ -40924,6 +41220,48 @@ Note that, despite its typings, this may return null for group items since group
         },
       ],
       "name": "ContentLayoutWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the action button, or null if no action is set.",
+          "name": "findActionButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
+          "description": "Returns an array of the individual grouped controls.",
+          "name": "findControls",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "Array",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper<HTMLElement>",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the visible inline label element, or null if no label is set.",
+          "name": "findInlineLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+      ],
+      "name": "ControlGroupWrapper",
     },
     {
       "methods": [
@@ -52812,6 +53150,43 @@ Note that, despite its typings, this may return null for group items since group
         },
       ],
       "name": "ContentLayoutWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the action button, or null if no action is set.",
+          "name": "findActionButton",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ButtonWrapper",
+          },
+        },
+        {
+          "description": "Returns an array of the individual grouped controls.",
+          "name": "findControls",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "MultiElementWrapper",
+            "typeArguments": [
+              {
+                "name": "ElementWrapper",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the visible inline label element, or null if no label is set.",
+          "name": "findInlineLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "ControlGroupWrapper",
     },
     {
       "methods": [

@@ -15,6 +15,7 @@ export default function () {
       <SpaceBetween size="m" direction="horizontal">
         <Badge {...{ styleClassNames: { root: clsx(styles.badge, styles['badge-info-pill']) } }}>Info pill</Badge>
         <Badge {...{ styleClassNames: { root: clsx(styles.badge, styles['badge-error-square']) } }}>Error square</Badge>
+        <Badge {...{ styleClassNames: { root: clsx(styles.badge, styles['badge-label']) } }}>Label</Badge>
       </SpaceBetween>
     </SimplePage>
   );

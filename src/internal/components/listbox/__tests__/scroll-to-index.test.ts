@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import scrollToIndex from '../utils/scroll-to-index';
+import scrollToIndex from '../parts/scroll-to-index';
 
 describe('scroll-to-index', () => {
   function runWith({
