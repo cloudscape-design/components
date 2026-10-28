@@ -109,6 +109,50 @@ exports[`Style API docs definition for checkbox matches the snapshot: checkbox 1
 }
 `;
 
+exports[`Style API docs definition for container matches the snapshot: container 1`] = `
+{
+  "slots": [
+    {
+      "name": "root",
+      "properties": [
+        "background",
+        "border",
+        "box-shadow",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {
+        "border-radius": "Also rounds the header, footer and media corners. Adjoining corners of stacked containers stay square.",
+      },
+      "tokens": [
+        "border-radius",
+      ],
+    },
+    {
+      "description": "Rendered when \`header\` is set. The block-end border is the divider between the header and the content.",
+      "name": "header",
+      "properties": [
+        "background",
+        "border",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
+    },
+    {
+      "description": "Rendered when \`footer\` is set. The block-start border is the divider between the content and the footer.",
+      "name": "footer",
+      "properties": [
+        "background",
+        "border",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
+    },
+  ],
+}
+`;
+
 exports[`Style API docs definition for dropdown matches the snapshot: dropdown 1`] = `
 {
   "slots": [
@@ -305,6 +349,7 @@ exports[`Style API docs list of components with a Style API doc matches the snap
   "badge",
   "button",
   "checkbox",
+  "container",
   "dropdown",
   "input",
   "link",

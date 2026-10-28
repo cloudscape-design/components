@@ -51,6 +51,15 @@ export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>,
    * is necessary for components that use container as a root node internally so that their test-utils wrapper is not detached.
    */
   __contentKey?: string;
+
+  styleClassNames?: StyleClassNames;
+}
+
+// Style API v2
+export interface StyleClassNames {
+  root?: string;
+  header?: string;
+  footer?: string;
 }
 
 export const InternalContainerAsSubstep = React.forwardRef(
@@ -93,6 +102,7 @@ const InternalContainer = React.forwardRef(function InternalContainer(
     __funnelSubStepProps,
     __subStepRef,
     __contentKey,
+    styleClassNames,
     ...restProps
   }: InternalContainerProps,
   ref: React.Ref<ContainerProps.Ref>
@@ -158,6 +168,7 @@ const InternalContainer = React.forwardRef(function InternalContainer(
       {...baseProps}
       {...__funnelSubStepProps}
       className={clsx(
+        styleClassNames?.root,
         baseProps.className,
         styles.root,
         styles[`variant-${variant}`],
@@ -201,6 +212,7 @@ const InternalContainer = React.forwardRef(function InternalContainer(
                 <div
                   id={headerId}
                   className={clsx(
+                    styleClassNames?.header,
                     isRefresh && styles.refresh,
                     styles.header,
                     analyticsSelectors.header,
@@ -250,7 +262,7 @@ const InternalContainer = React.forwardRef(function InternalContainer(
           </div>
           {footer && (
             <div
-              className={clsx(styles.footer, {
+              className={clsx(styleClassNames?.footer, styles.footer, {
                 [styles['with-divider']]: !__disableFooterDivider,
                 [styles['with-paddings']]: !disableFooterPaddings,
               })}

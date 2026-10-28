@@ -8,8 +8,47 @@
 @use '../internal/styles/utils' as utils;
 @use './shared' as shared;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../internal/styles/style-api' as style-api;
+
+// The radius is also painted by the header, footer, media and fit-height wrapper corners, which cannot read the
+// root's non-inheriting public token: it is re-anchored as a carrier on the root.
+$tokens: style-api.resolve((border-radius), carrier);
+@include style-api.register($tokens);
+@include style-api.docs(
+  'root',
+  $tokens,
+  $properties: (background, border, box-shadow),
+  $descriptions: (
+    tokens: (
+      border-radius:
+        'Also rounds the header, footer and media corners. Adjoining corners of stacked containers stay square.',
+    )
+  )
+);
+@include style-api.docs(
+  'header',
+  $properties: (background, border),
+  $descriptions: (
+    slot: 'Rendered when `header` is set. The block-end border is the divider between the header and the content.'
+  )
+);
+@include style-api.docs(
+  'footer',
+  $properties: (background, border),
+  $descriptions: (
+    slot: 'Rendered when `footer` is set. The block-start border is the divider between the content and the footer.'
+  )
+);
+
+// Style API token, then the `style.root.borderRadius` custom property, then the design token.
+$border-radius: style-api.value(
+  $tokens,
+  border-radius,
+  var(#{custom-props.$containerStyleBorderRadius}, #{awsui.$border-radius-container})
+);
 
 .root {
+  @include style-api.carriers($tokens);
   @include styles.styles-reset;
   word-wrap: break-word;
   position: relative;
@@ -29,7 +68,7 @@
       background-color: awsui.$color-background-container-content;
       #{custom-props.$inlineLabelBackgroundColor}: awsui.$color-background-container-content;
       // Border and shadows are applied with ::before and ::after elements (respectively)
-      @include styles.container-style;
+      @include styles.container-style($border-radius);
     }
 
     // Meld container bottom corners into next adjoining container
@@ -95,8 +134,8 @@
   &-fit-height {
     block-size: 100%;
     overflow: hidden;
-    border-end-start-radius: awsui.$border-radius-container;
-    border-end-end-radius: awsui.$border-radius-container;
+    border-end-start-radius: $border-radius;
+    border-end-end-radius: $border-radius;
   }
 }
 
@@ -125,35 +164,36 @@
   // reduce border-radius size to fill the visual gap between the parent border and image
   &-top {
     max-block-size: 66%;
-    border-start-start-radius: calc(awsui.$border-radius-container - 1px);
-    border-start-end-radius: calc(awsui.$border-radius-container - 1px);
+    border-start-start-radius: calc(#{$border-radius} - 1px);
+    border-start-end-radius: calc(#{$border-radius} - 1px);
   }
 
   &-side {
     max-inline-size: 66%;
-    border-start-start-radius: calc(awsui.$border-radius-container - 1px);
-    border-end-start-radius: calc(awsui.$border-radius-container - 1px);
+    border-start-start-radius: calc(#{$border-radius} - 1px);
+    border-end-start-radius: calc(#{$border-radius} - 1px);
   }
 }
 
 .header {
   background-color: awsui.$color-background-container-header;
-  $border-radius: var(#{custom-props.$containerStyleBorderRadius}, #{awsui.$border-radius-container});
   border-start-start-radius: $border-radius;
   border-start-end-radius: $border-radius;
   &.header-full-page {
     background-color: awsui.$color-background-layout-main;
   }
 
-  // "embedded" variant is passed to container only from table variants "borderless" and "embedded"
-  &-variant-embedded.refresh:not(.header-sticky-enabled) {
+  // In visual refresh the header has the content's colour, so a header that is not sticky paints no background of
+  // its own and a background set on the root shows through. Full-page and cards headers are their own box.
+  &.refresh:not(.header-sticky-enabled):not(.header-full-page):not(.header-variant-cards) {
     background-color: transparent;
   }
 
   &.header-with-media {
     background: none;
     &:not(:empty) {
-      border-block-end: none;
+      // Width only, so the border keeps its solid style and a Style API border width draws the divider here too.
+      border-block-end-width: 0;
     }
   }
 
@@ -287,6 +327,15 @@
 }
 
 .footer {
+  // Keeps a footer background inside the rounded box; the header rounds the start corners the same way.
+  border-end-start-radius: $border-radius;
+  border-end-end-radius: $border-radius;
+  // The fit-height wrapper already clips to the box.
+  .content-wrapper-fit-height > & {
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+  }
+
   &.with-paddings {
     padding-block: awsui.$space-scaled-s;
     padding-inline: awsui.$space-container-horizontal;
@@ -295,4 +344,27 @@
   &.with-divider {
     @include shared.divider;
   }
+}
+
+// Header and footer corners follow the root's: square where the media sits and where two stacked containers adjoin.
+.root.with-top-media > .content-wrapper > .header {
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+}
+.root.with-side-media > .content-wrapper > .header {
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+}
+.root.with-side-media > .content-wrapper > .footer {
+  border-end-start-radius: 0;
+}
+.root.variant-stacked:not(:last-child) > .content-wrapper > .header,
+.root.variant-stacked:not(:last-child) > .content-wrapper > .footer,
+.root.variant-stacked:not(:last-child) > .content-wrapper-fit-height {
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+}
+.root.variant-stacked + .root.variant-stacked > .content-wrapper > .header {
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
 }
