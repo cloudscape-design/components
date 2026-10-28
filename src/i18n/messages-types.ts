@@ -634,6 +634,9 @@ export interface I18nFormatArgTypes {
     "i18nStrings.valuesSuggestionError": never;
     "i18nStrings.valuesSuggestionLoading": never;
   }
+  "toggle": {
+    "i18nStrings.loadingText": never;
+  }
   "token-group": {
     "i18nStrings.limitShowFewer": never;
     "i18nStrings.limitShowMore": never;

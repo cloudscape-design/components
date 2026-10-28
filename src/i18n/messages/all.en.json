@@ -476,6 +476,9 @@
     "i18nStrings.valuesSuggestionError": "Tag values could not be retrieved",
     "i18nStrings.valuesSuggestionLoading": "Loading tag values"
   },
+  "toggle": {
+    "i18nStrings.loadingText": "Loading"
+  },
   "token-group": {
     "i18nStrings.limitShowFewer": "Show fewer",
     "i18nStrings.limitShowMore": "Show more"

@@ -108,3 +108,27 @@ $control-tokens: style-api.resolve($control-props, carrier);
 
   @include motion.handle($handle-size, $handle-travel);
 }
+
+.toggle-handle-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  border-start-start-radius: 0.6 * styles.$base-size;
+  border-start-end-radius: 0.6 * styles.$base-size;
+  border-end-start-radius: 0.6 * styles.$base-size;
+  border-end-end-radius: 0.6 * styles.$base-size;
+  background: style-api.value($control-tokens, indicator-color, awsui.$color-foreground-control-disabled);
+  inline-size: $handle-size;
+  block-size: $handle-size;
+  inset-block-start: $handle-offset;
+  inset-inline-start: $handle-offset;
+
+  &-checked {
+    transform: translateX($handle-travel);
+
+    @include styles.with-direction('rtl') {
+      transform: translateX(-$handle-travel);
+    }
+  }
+}
