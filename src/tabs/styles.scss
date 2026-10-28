@@ -8,6 +8,7 @@
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 @use './tab-header-bar';
+@use './motion';
 
 .root {
   /* used in test-utils or tests */
