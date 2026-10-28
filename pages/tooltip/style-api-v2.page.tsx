@@ -14,7 +14,7 @@ export default function () {
     <SimplePage title="Tooltip - Style API v2" screenshotArea={{}}>
       <br />
       <span ref={triggerRef}>
-        <Button variant="icon" iconName="copy" />
+        <Button variant="icon" iconName="copy" ariaLabel="Copy" />
         <Tooltip
           content="ARN Copied"
           getTrack={() => triggerRef.current}
