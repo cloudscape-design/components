@@ -12,7 +12,7 @@
 $tokens: style-api.resolve((outline-color, outline-width), carrier);
 @include style-api.register($tokens);
 @include style-api.docs(
-  'dropdown',
+  'container',
   $tokens,
   $properties: (background, border-radius, box-shadow),
   $descriptions: (

@@ -20,6 +20,7 @@ const InternalButtonGroup = forwardRef(
   (
     {
       items = [],
+      styleClassNames,
       onItemClick,
       onFilesChange,
       onCopySuccess,
@@ -68,6 +69,7 @@ const InternalButtonGroup = forwardRef(
                 ref={element => (itemsRef.current[item.id] = element)}
                 position={position}
                 style={style}
+                styleClassNames={styleClassNames}
               />
             );
 
@@ -82,7 +84,7 @@ const InternalButtonGroup = forwardRef(
 
             return (
               <React.Fragment key={itemOrGroup.type === 'group' ? index : itemOrGroup.id}>
-                {shouldAddDivider && <div className={styles.divider} />}
+                {shouldAddDivider && <div className={clsx(styleClassNames?.divider, styles.divider)} />}
                 {itemOrGroup.type === 'group' ? (
                   <div key={index} role="group" aria-label={itemOrGroup.text} className={styles.group}>
                     {itemOrGroup.items.map((item, subIndex) => itemContent(item, `${index + 1},${subIndex + 1}`))}

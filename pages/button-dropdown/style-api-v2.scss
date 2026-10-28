@@ -1,0 +1,31 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~components/styling/button';
+@use '~components/styling/dropdown';
+@use '../style-api/palette' as palette;
+
+.trigger-brand {
+  @include button.root(
+    $background: palette.$accent,
+    $color: palette.$text-on-accent,
+    $border-color: palette.$accent,
+    $border-radius: 4px,
+    $focus-ring-color: palette.$accent
+  );
+
+  &:hover,
+  &:focus {
+    @include button.root($background: palette.$accent-hover, $border-color: palette.$accent-hover);
+  }
+
+  &:active {
+    @include button.root($background: palette.$accent-active, $border-color: palette.$accent-active);
+  }
+}
+
+.dropdown-brand {
+  @include dropdown.container($background: palette.$surface-alt, $border-radius: 4px, $outline-color: palette.$accent);
+}
