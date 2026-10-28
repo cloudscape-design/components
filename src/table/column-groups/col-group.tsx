@@ -21,15 +21,15 @@ export function TableColGroup({
   visibleColumnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<any>>;
   hasSelection: boolean;
   sticky?: boolean;
-  selectionColumnId?: PropertyKey;
+  selectionColumnId: PropertyKey;
 }) {
   const { getColumnStyles, setCol } = useColumnWidths();
   return (
     <colgroup>
       {hasSelection && (
         <col
-          style={sticky && selectionColumnId ? { width: getColumnStyles(true, selectionColumnId).width } : undefined}
-          ref={sticky && selectionColumnId ? node => setCol(true, selectionColumnId, node) : undefined}
+          style={sticky ? { width: getColumnStyles(true, selectionColumnId).width } : undefined}
+          ref={sticky ? node => setCol(true, selectionColumnId, node) : undefined}
         />
       )}
       {visibleColumnDefinitions.map((column, colIndex) => {
