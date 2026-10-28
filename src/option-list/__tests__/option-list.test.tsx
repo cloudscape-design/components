@@ -552,6 +552,28 @@ describe('OptionList', () => {
       expect(lastScrolledValue()).toBe('2');
     });
 
+    test('keyboard focus entry replaces a hover highlight with the selected option', () => {
+      const { wrapper, listbox } = renderLongList({ initialSelected: ['special'] });
+      // Hover while the list isn't focused, and keep the pointer over the list.
+      fireEvent.mouseMove(wrapper.findOptionByIndex(5)!.getElement());
+      expect(highlightedValue(wrapper)).toBe('4');
+
+      fireEvent.focus(listbox);
+      const highlighted = wrapper.findHighlightedOption()!;
+      expect(highlighted.getElement().dataset.value).toBe('special');
+      expect(highlighted.getElement()).toHaveClass(selectableItemStyles['is-keyboard']);
+      expect(lastScrolledValue()).toBe('special');
+    });
+
+    test('keyboard focus entry replaces a hover highlight with the first option when nothing is selected', () => {
+      const { wrapper, listbox } = renderLongList();
+      fireEvent.mouseMove(wrapper.findOptionByIndex(5)!.getElement());
+      fireEvent.focus(listbox);
+      expect(highlightedValue(wrapper)).toBe('0');
+      expect(wrapper.findHighlightedOption()!.getElement()).toHaveClass(selectableItemStyles['is-keyboard']);
+      expect(lastScrolledValue()).toBe('0');
+    });
+
     test('focus from a pointer adds no highlight and does not scroll', () => {
       const { wrapper, listbox } = renderLongList({ initialSelected: ['special'] });
       fireEvent.mouseDown(listbox);
