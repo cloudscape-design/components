@@ -277,10 +277,9 @@
   }
 }
 
-@mixin container-style {
-  // Custom radius from the container style API if set, otherwise the token. Stacked
-  // containers still flatten adjacent corners because those rules set a literal 0.
-  $radius: var(#{custom-props.$containerStyleBorderRadius}, #{awsui.$border-radius-container});
+// Custom radius from the container style API if set, otherwise the token. Stacked
+// containers still flatten adjacent corners because those rules set a literal 0.
+@mixin container-style($radius: var(#{custom-props.$containerStyleBorderRadius}, #{awsui.$border-radius-container})) {
   border-start-start-radius: $radius;
   border-start-end-radius: $radius;
   border-end-start-radius: $radius;
