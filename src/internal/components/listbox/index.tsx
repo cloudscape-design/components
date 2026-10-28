@@ -30,11 +30,12 @@ export default function Listbox({
   renderOption,
 }: ListboxProps) {
   const scrollToIndex = useRef<ListProps.ListRef>(null);
-  // Keyboard highlights, including the one added on focus entry, scroll into view. Mouse highlights don't
-  // (`List` checks `moveFocus`), and focus from a pointer adds no highlight.
+  // Every keyboard highlight request, including the one added on focus entry, scrolls into view, even when it
+  // keeps the highlighted index. Mouse highlights don't (`List` checks `moveFocus`), and focus from a pointer adds
+  // no highlight.
   useEffect(() => {
     scrollToIndex.current?.(controller.highlightedIndex);
-  }, [controller.highlightedIndex]);
+  }, [controller.highlightedIndex, controller.scrollRequest]);
 
   const mergedListProps = { ...controller.getListProps(), ...listProps };
 
