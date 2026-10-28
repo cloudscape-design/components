@@ -51,6 +51,7 @@ const InternalButtonDropdown = React.forwardRef(
       onItemClick,
       onItemFollow,
       customTriggerBuilder,
+      styleClassNames,
       expandToViewport,
       ariaLabel,
       iconName,
@@ -207,6 +208,7 @@ const InternalButtonDropdown = React.forwardRef(
           };
 
     const baseTriggerProps: InternalButtonProps = {
+      styleClassNames: { root: styleClassNames?.trigger },
       className: clsx(
         styles['trigger-button'],
         styles['test-utils-button-trigger'],
@@ -301,6 +303,7 @@ const InternalButtonDropdown = React.forwardRef(
           {...mainActionProps}
           {...mainActionIconProps}
           fullWidth={canBeFullWidth}
+          styleClassNames={{ root: styleClassNames?.mainAction }}
           className={clsx(
             styles['trigger-button'],
             hasNoText && styles['has-no-text'],
@@ -464,6 +467,7 @@ const InternalButtonDropdown = React.forwardRef(
         ref={__internalRootRef}
       >
         <Dropdown
+          styleClassNames={{ container: styleClassNames?.dropdown }}
           open={canBeOpened && isOpen}
           stretchTriggerHeight={variant === 'navigation'}
           minWidth={expandToViewport ? undefined : 'trigger'}

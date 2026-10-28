@@ -15,20 +15,20 @@ function renderDropdown(props: Record<string, unknown> = {}) {
 
 describe('Dropdown Style API v2', () => {
   test('applies styleClassNames to the panel', () => {
-    const { container } = renderDropdown({ styleClassNames: { dropdown: 'a', unknown: 'b' } });
+    const { container } = renderDropdown({ styleClassNames: { container: 'a', unknown: 'b' } });
     const panel = container.querySelector(panelSelector)!;
     expect(panel).toHaveClass('a');
     expect(container.querySelector('.b')).toBeFalsy();
   });
 
   test('applies styleClassNames to the panel when rendered in a portal', () => {
-    renderDropdown({ expandToViewport: true, styleClassNames: { dropdown: 'a' } });
+    renderDropdown({ expandToViewport: true, styleClassNames: { container: 'a' } });
     const panel = document.body.querySelector(panelSelector)!;
     expect(panel).toHaveClass('a');
   });
 
   test('does not leak the styleClassNames prop to the DOM', () => {
-    renderDropdown({ expandToViewport: true, styleClassNames: { dropdown: 'a' } });
+    renderDropdown({ expandToViewport: true, styleClassNames: { container: 'a' } });
     expect(document.body.querySelector('[styleClassNames]')).toBeNull();
   });
 });

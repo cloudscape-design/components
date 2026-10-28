@@ -19,9 +19,17 @@ export type InternalItem =
   | ButtonGroupProps.MenuDropdown
   | ButtonGroupProps.IconCopyToClipboard;
 
+// Style API v2
+export interface StyleClassNames {
+  divider?: string;
+  item?: string | ((args: { item: ButtonGroupProps.Item }) => string);
+  dropdown?: string;
+}
+
 export interface InternalButtonGroupProps
   extends SomeRequired<ButtonGroupProps, 'dropdownExpandToViewport'>,
     InternalBaseComponentProps {
+  styleClassNames?: StyleClassNames;
   style?: ButtonGroupProps.Style;
   items: ReadonlyArray<InternalItemOrGroup>;
 }
