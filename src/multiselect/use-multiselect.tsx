@@ -7,6 +7,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
+import { SelectListProps } from '../internal/components/listbox/parts/plain-list';
 import { multiSelection } from '../internal/components/listbox/selection/multi-selection';
 import { useAnnouncement } from '../internal/components/listbox/use-announcement';
 import { useTypeAhead } from '../internal/components/listbox/use-type-ahead';
@@ -17,7 +18,6 @@ import { fireNonCancelableEvent } from '../internal/events';
 import { useLoadItems } from '../internal/hooks/use-load-items';
 import { SomeRequired } from '../internal/types';
 import { joinStrings } from '../internal/utils/strings';
-import { SelectListProps } from '../select/parts/plain-list';
 import { useSelect } from '../select/utils/use-select';
 import { TokenGroupProps } from '../token-group/interfaces';
 import { DropdownStatusProps } from '../types/dropdown-status';

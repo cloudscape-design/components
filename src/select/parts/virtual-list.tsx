@@ -6,11 +6,11 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { fallbackItemHeight } from '../../internal/components/listbox/parts/common';
+import { SelectListProps } from '../../internal/components/listbox/parts/plain-list';
 import { renderOptions } from '../../internal/components/listbox/parts/render-options';
 import customScrollToIndex from '../../internal/components/listbox/parts/scroll-to-index';
 import OptionsList from '../../internal/components/options-list';
 import { useVirtual } from '../../internal/hooks/use-virtual';
-import { SelectListProps } from './plain-list';
 
 import styles from './styles.css.js';
 

@@ -5,8 +5,8 @@ import React, { useContext, useRef, useState } from 'react';
 import Box from '~components/box';
 import Button from '~components/button';
 import Dropdown from '~components/dropdown';
+import PlainList from '~components/internal/components/listbox/parts/plain-list';
 import { DropdownOption } from '~components/internal/components/option/interfaces';
-import PlainList from '~components/select/parts/plain-list';
 import VirtualList from '~components/select/parts/virtual-list';
 import SpaceBetween from '~components/space-between';
 
