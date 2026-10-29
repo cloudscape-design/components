@@ -17,7 +17,7 @@ import {
   InputKeyEvents,
   InputProps,
 } from '../../../input/interfaces';
-import InternalInput from '../../../input/internal';
+import InternalInput, { StyleClassNames as InputStyleClassNames } from '../../../input/internal';
 import InternalLiveRegion from '../../../live-region/internal';
 import InternalToken from '../../../token/internal';
 import { BaseComponentProps } from '../../../types/base-component';
@@ -69,6 +69,7 @@ interface AutosuggestInputProps
   tokenOverflowAriaLabel?: (hiddenCount: number) => string;
   tokenInsertedAnnouncement?: (value: string) => string;
   tokenDismissLabel?: (value: string) => string;
+  styleClassNames?: { input?: InputStyleClassNames; dropdown?: string };
 }
 
 interface AutosuggestInputFocusOptions {
@@ -121,6 +122,7 @@ const AutosuggestInput = React.forwardRef(
       tokenOverflowAriaLabel,
       tokenInsertedAnnouncement,
       tokenDismissLabel,
+      styleClassNames,
       __internalRootRef,
       ...restProps
     }: AutosuggestInputProps,
@@ -437,6 +439,7 @@ const AutosuggestInput = React.forwardRef(
 
     const dropdown = (
       <InternalDropdown
+        styleClassNames={{ container: styleClassNames?.dropdown }}
         minWidth={getDropdownMinWidth({ expandToViewport, triggerWidth, dropdownWidth })}
         maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
         contentKey={dropdownContentKey}
@@ -461,6 +464,7 @@ const AutosuggestInput = React.forwardRef(
             nativeInputAttributes={processAttributes(nativeAttributes, 'Autosuggest', nativeInputAttributes)}
             __skipNativeAttributesWarnings={Object.keys(nativeAttributes)}
             style={style}
+            styleClassNames={styleClassNames?.input}
             {...formFieldContext}
             __inlineContent={inlineTokens}
           />

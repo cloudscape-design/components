@@ -29,6 +29,14 @@
       color: awsui.$color-text-dropdown-group-label;
     }
   }
+  // Inside a trigger (Select `triggerVariant="option"`, inline Token) the option shows the selected value and
+  // takes the trigger's font and color, also when disabled, so a font or color set on the trigger reaches it.
+  &.in-trigger {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+  }
 }
 
 .content {
