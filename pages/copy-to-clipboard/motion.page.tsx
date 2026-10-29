@@ -37,7 +37,8 @@ export default function CopyToClipboardMotionPage() {
           Copy fails
         </Toggle>
       }
-      screenshotArea={{}}
+      // Extra space so the popovers around the first triggers are inside the screenshot area.
+      screenshotArea={{ style: { paddingBlockStart: 60, paddingInlineStart: 60 } }}
     >
       <SpaceBetween size="m">
         <CopyToClipboard
