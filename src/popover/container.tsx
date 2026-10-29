@@ -48,6 +48,7 @@ interface PopoverContainerProps {
   hideOnOverscroll?: boolean;
   hoverArea?: boolean;
   className?: string;
+  bodyClassName?: string;
 }
 
 export default function PopoverContainer({
@@ -70,6 +71,7 @@ export default function PopoverContainer({
   hideOnOverscroll,
   hoverArea,
   className,
+  bodyClassName,
 }: PopoverContainerProps) {
   const bodyRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -158,7 +160,7 @@ export default function PopoverContainer({
 
       <div
         ref={bodyRef}
-        className={clsx(styles['container-body'], styles[`container-body-size-${size}`], {
+        className={clsx(bodyClassName, styles['container-body'], styles[`container-body-size-${size}`], {
           [styles['fixed-width']]: fixedWidth,
           [styles[`container-body-variant-${variant}`]]: variant,
         })}
