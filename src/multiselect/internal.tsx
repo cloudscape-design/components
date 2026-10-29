@@ -254,8 +254,7 @@ const InternalMultiselect = React.forwardRef(
                 filteringValue={filteringValue}
                 ref={multiselectProps.scrollToIndex}
                 hasDropdownStatus={dropdownStatus.content !== null}
-                checkboxes={true}
-                useInteractiveGroups={true}
+                selectionType="multi"
                 screenReaderContent={multiselectProps.announcement}
                 highlightType={multiselectProps.highlightType}
                 firstOptionSticky={hasFilteredOptions && enableSelectAll}

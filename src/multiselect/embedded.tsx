@@ -83,8 +83,7 @@ const EmbeddedMultiselect = React.forwardRef(
           filteringValue={filteringText}
           ref={multiselectProps.scrollToIndex}
           hasDropdownStatus={status.content !== null}
-          checkboxes={true}
-          useInteractiveGroups={true}
+          selectionType="multi"
           screenReaderContent={multiselectProps.announcement}
           highlightType={multiselectProps.highlightType}
           isMultiSelect={true}

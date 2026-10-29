@@ -95,7 +95,7 @@ export default function MultiselectPage() {
                   filteringValue={''}
                   firstOptionSticky={true}
                   highlightType={{ type: 'mouse', moveFocus: false }}
-                  useInteractiveGroups={true}
+                  selectionType="multi"
                 />
               }
             />

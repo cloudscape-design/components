@@ -8,6 +8,7 @@ import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/
 import { fallbackItemHeight } from '../../internal/components/listbox/parts/common';
 import { renderOptions } from '../../internal/components/listbox/parts/render-options';
 import scrollToIndex from '../../internal/components/listbox/parts/scroll-to-index';
+import { SelectionType } from '../../internal/components/listbox/selection/interfaces';
 import { DropdownOption } from '../../internal/components/option/interfaces';
 import OptionsList from '../../internal/components/options-list';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
@@ -23,10 +24,9 @@ export interface SelectListProps {
   filteredOptions: ReadonlyArray<DropdownOption>;
   filteringValue: string;
   highlightType: HighlightType;
-  checkboxes?: boolean;
   hasDropdownStatus?: boolean;
   listBottom?: React.ReactNode;
-  useInteractiveGroups?: boolean;
+  selectionType?: SelectionType;
   screenReaderContent?: string;
   firstOptionSticky?: boolean;
   isMultiSelect?: boolean;
@@ -44,10 +44,9 @@ const PlainList = (
     filteredOptions,
     filteringValue,
     highlightType,
-    checkboxes,
     hasDropdownStatus,
     listBottom,
-    useInteractiveGroups,
+    selectionType,
     screenReaderContent,
     firstOptionSticky,
     isMultiSelect,
@@ -102,9 +101,8 @@ const PlainList = (
         filteringValue,
         idPrefix,
         highlightType,
-        checkboxes,
         hasDropdownStatus,
-        useInteractiveGroups,
+        selectionType,
         screenReaderContent,
         firstOptionSticky,
         stickyOptionRef,
