@@ -3,6 +3,8 @@
 import React from 'react';
 
 import { CopyToClipboard, CopyToClipboardProps, Popover } from '~components';
+import I18nProvider from '~components/i18n';
+import messages from '~components/i18n/messages/all.en';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
@@ -64,11 +66,11 @@ const permutations = createPermutations<CopyToClipboardProps>([
 
 export default function ButtonPermutations() {
   return (
-    <>
+    <I18nProvider messages={[messages]} locale="en">
       <h1>Button permutations</h1>
       <ScreenshotArea disableAnimations={true} style={{ maxWidth: 400 }}>
         <PermutationsView permutations={permutations} render={permutation => <CopyToClipboard {...permutation} />} />
       </ScreenshotArea>
-    </>
+    </I18nProvider>
   );
 }

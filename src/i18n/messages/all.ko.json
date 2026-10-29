@@ -154,7 +154,9 @@
     "wrapLinesPreference.label": "줄 바꿈"
   },
   "copy-to-clipboard": {
-    "i18nStrings.copyButtonText": "복사"
+    "i18nStrings.copyButtonText": "복사",
+    "i18nStrings.errorIconAriaLabel": "오류",
+    "i18nStrings.successIconAriaLabel": "성공"
   },
   "date-picker": {
     "i18nStrings.openCalendarAriaLabel": "{selectedDate, select, none {날짜 선택} other {날짜 선택, 선택된 날짜는 {selectedDate}입니다.}}"

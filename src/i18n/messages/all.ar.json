@@ -134,7 +134,9 @@
     "wrapLinesPreference.label": "ترحيل الكلمات من نهاية السطر"
   },
   "copy-to-clipboard": {
-    "i18nStrings.copyButtonText": "نسخ"
+    "i18nStrings.copyButtonText": "نسخ",
+    "i18nStrings.errorIconAriaLabel": "خطأ",
+    "i18nStrings.successIconAriaLabel": "نجاح"
   },
   "date-picker": {
     "i18nStrings.openCalendarAriaLabel": "{selectedDate, select, none {اختر التاريخ} other {اختر التاريخ، التاريخ المحدد هو {selectedDate}}}"

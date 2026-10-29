@@ -154,7 +154,9 @@
     "wrapLinesPreference.label": "换行"
   },
   "copy-to-clipboard": {
-    "i18nStrings.copyButtonText": "复制"
+    "i18nStrings.copyButtonText": "复制",
+    "i18nStrings.errorIconAriaLabel": "错误",
+    "i18nStrings.successIconAriaLabel": "成功"
   },
   "date-picker": {
     "i18nStrings.openCalendarAriaLabel": "{selectedDate, select, none {选择日期} other {选择日期，所选日期为 {selectedDate}}}"

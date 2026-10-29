@@ -154,7 +154,9 @@
     "wrapLinesPreference.label": "Ajustar líneas"
   },
   "copy-to-clipboard": {
-    "i18nStrings.copyButtonText": "Copiar"
+    "i18nStrings.copyButtonText": "Copiar",
+    "i18nStrings.errorIconAriaLabel": "Error",
+    "i18nStrings.successIconAriaLabel": "Éxito"
   },
   "date-picker": {
     "i18nStrings.openCalendarAriaLabel": "{selectedDate, select, none {Elegir fecha} other {Elegir fecha; la fecha seleccionada es {selectedDate}}}"

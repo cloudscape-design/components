@@ -32,6 +32,7 @@ export default function CopyToClipboardMotionPage() {
   return (
     <SimplePage
       title="Copy to clipboard motion"
+      i18n={{}}
       settings={
         <Toggle checked={copyFails} onChange={({ detail }) => setUrlParams({ copyFails: detail.checked })}>
           Copy fails

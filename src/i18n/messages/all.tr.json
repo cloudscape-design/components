@@ -154,7 +154,9 @@
     "wrapLinesPreference.label": "Satırları kaydır"
   },
   "copy-to-clipboard": {
-    "i18nStrings.copyButtonText": "Kopyala"
+    "i18nStrings.copyButtonText": "Kopyala",
+    "i18nStrings.errorIconAriaLabel": "Hata",
+    "i18nStrings.successIconAriaLabel": "Başarılı"
   },
   "date-picker": {
     "i18nStrings.openCalendarAriaLabel": "{selectedDate, select, none {Tarih seç} other {Tarih seç, seçilen tarih {selectedDate}}}"

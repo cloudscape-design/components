@@ -7,6 +7,8 @@ import { isThemeActive } from '@cloudscape-design/component-toolkit/internal';
 
 import CopyToClipboard from '../../../lib/components/copy-to-clipboard';
 import InternalCopyToClipboard from '../../../lib/components/copy-to-clipboard/internal';
+import I18nProvider from '../../../lib/components/i18n';
+import enMessages from '../../../lib/components/i18n/messages/all.en';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { KeyCode } from '../../internal/keycode';
 
@@ -532,6 +534,75 @@ describe('CopyToClipboard', () => {
       // Wait a bit to ensure no async callback is triggered
       await new Promise(resolve => setTimeout(resolve, 100));
       expect(onCopyFailure).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('status icon aria-label (i18nStrings)', () => {
+    async function clickAndGetStatusIcon(container: HTMLElement, popoverRenderWithPortal = false) {
+      const wrapper = createWrapper(container).findCopyToClipboard()!;
+      wrapper.findCopyButton().click();
+      await waitFor(() => expect(wrapper.findStatusText({ popoverRenderWithPortal })).not.toBeNull());
+      const content = wrapper.findStatusText({ popoverRenderWithPortal })!.getElement();
+      return content.querySelector('[role="img"]');
+    }
+
+    test('applies successIconAriaLabel from i18nStrings prop after a successful copy', async () => {
+      const { container } = render(
+        <CopyToClipboard
+          {...defaultProps}
+          i18nStrings={{ successIconAriaLabel: 'Copied!', errorIconAriaLabel: 'Failed!' }}
+        />
+      );
+      const icon = await clickAndGetStatusIcon(container);
+      expect(icon).toHaveAttribute('aria-label', 'Copied!');
+    });
+
+    test('applies errorIconAriaLabel from i18nStrings prop after a failed copy', async () => {
+      const { container } = render(
+        <CopyToClipboard
+          {...defaultProps}
+          textToCopy="Text to copy with error"
+          i18nStrings={{ successIconAriaLabel: 'Copied!', errorIconAriaLabel: 'Failed!' }}
+        />
+      );
+      const icon = await clickAndGetStatusIcon(container);
+      expect(icon).toHaveAttribute('aria-label', 'Failed!');
+    });
+
+    test('resolves successIconAriaLabel from i18n provider when i18nStrings prop is omitted', async () => {
+      const { container } = render(
+        <I18nProvider messages={[enMessages]} locale="en">
+          <CopyToClipboard {...defaultProps} />
+        </I18nProvider>
+      );
+      const icon = await clickAndGetStatusIcon(container);
+      expect(icon).toHaveAttribute('aria-label', 'Success');
+    });
+
+    test('resolves errorIconAriaLabel from i18n provider when i18nStrings prop is omitted', async () => {
+      const { container } = render(
+        <I18nProvider messages={[enMessages]} locale="en">
+          <CopyToClipboard {...defaultProps} textToCopy="Text to copy with error" />
+        </I18nProvider>
+      );
+      const icon = await clickAndGetStatusIcon(container);
+      expect(icon).toHaveAttribute('aria-label', 'Error');
+    });
+
+    test('i18nStrings prop takes precedence over i18n provider', async () => {
+      const { container } = render(
+        <I18nProvider messages={[enMessages]} locale="en">
+          <CopyToClipboard {...defaultProps} i18nStrings={{ successIconAriaLabel: 'Custom success' }} />
+        </I18nProvider>
+      );
+      const icon = await clickAndGetStatusIcon(container);
+      expect(icon).toHaveAttribute('aria-label', 'Custom success');
+    });
+
+    test('status icon has no aria-label when neither i18nStrings nor i18n provider is set', async () => {
+      const { container } = render(<CopyToClipboard {...defaultProps} />);
+      const icon = await clickAndGetStatusIcon(container);
+      expect(icon).toBeNull();
     });
   });
 

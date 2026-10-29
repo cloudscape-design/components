@@ -154,7 +154,9 @@
     "wrapLinesPreference.label": "折り返す"
   },
   "copy-to-clipboard": {
-    "i18nStrings.copyButtonText": "コピー"
+    "i18nStrings.copyButtonText": "コピー",
+    "i18nStrings.errorIconAriaLabel": "エラー",
+    "i18nStrings.successIconAriaLabel": "成功"
   },
   "date-picker": {
     "i18nStrings.openCalendarAriaLabel": "{selectedDate, select, none {日付を選択} other {日付を選択してください。選択された日付は {selectedDate} です}}"

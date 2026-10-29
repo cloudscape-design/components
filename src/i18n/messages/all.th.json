@@ -360,5 +360,10 @@
     "i18nStrings.skipToButtonLabel": "ข้ามไปที่ {task__title}",
     "i18nStrings.stepNumberLabel": "ขั้นตอน {stepNumber}",
     "i18nStrings.submitButtonLoadingAnnouncement": "กำลังส่งแบบฟอร์ม"
+  },
+  "copy-to-clipboard": {
+    "i18nStrings.copyButtonText": "คัดลอก",
+    "i18nStrings.errorIconAriaLabel": "ข้อผิดพลาด",
+    "i18nStrings.successIconAriaLabel": "สำเร็จ"
   }
 }
