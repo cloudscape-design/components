@@ -21,6 +21,7 @@ import { ContainerProps } from './interfaces';
 import { getContentStyles, getFooterStyles, getHeaderStyles, getMediaStyles, getRootStyles } from './style';
 import { StickyHeaderContext, useStickyHeader } from './use-sticky-header';
 
+import headerAnalyticsSelectors from '../header/analytics-metadata/styles.css.js';
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 import testStyles from './test-classes/styles.css.js';
@@ -53,6 +54,12 @@ export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>,
   __contentKey?: string;
 
   styleClassNames?: StyleClassNames;
+
+  /**
+   * Native attributes spread onto the container root, for ARIA that `getBaseProps` does not forward
+   * (it forwards only id/className/data-*).
+   */
+  __nativeAttributes?: React.HTMLAttributes<HTMLDivElement>;
 }
 
 // Style API v2
@@ -103,6 +110,7 @@ const InternalContainer = React.forwardRef(function InternalContainer(
     __subStepRef,
     __contentKey,
     styleClassNames,
+    __nativeAttributes,
     ...restProps
   }: InternalContainerProps,
   ref: React.Ref<ContainerProps.Ref>
@@ -167,6 +175,7 @@ const InternalContainer = React.forwardRef(function InternalContainer(
     <div
       {...baseProps}
       {...__funnelSubStepProps}
+      {...__nativeAttributes}
       className={clsx(
         styleClassNames?.root,
         baseProps.className,
@@ -182,7 +191,8 @@ const InternalContainer = React.forwardRef(function InternalContainer(
       ref={mergedRef}
       onBlur={onRootBlur}
       {...getAnalyticsLabelAttribute(
-        `.${analyticsSelectors.header} h1, .${analyticsSelectors.header} h2, .${analyticsSelectors.header} h3`
+        // heading-text covers Header titles rendered outside h1-h3 via headingTagOverride.
+        `.${analyticsSelectors.header} :is(h1, h2, h3, .${headerAnalyticsSelectors['heading-text']})`
       )}
       style={getRootStyles(style)}
     >

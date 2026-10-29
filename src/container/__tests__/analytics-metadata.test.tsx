@@ -73,6 +73,24 @@ describe('Container renders correct analytics metadata', () => {
       expect(getGeneratedAnalyticsMetadata(element)).toEqual(getMetadataContexts(label));
     });
   });
+
+  describe.each<HeaderProps.HeadingTag>(['h4', 'h6', 'div'])(
+    'With a Header component and headingTagOverride=%s',
+    tag => {
+      test('resolves the label from the header text', () => {
+        const label = 'Container header';
+        const element = renderContainer({
+          header: (
+            <Header counter="100" info="Info" headingTagOverride={tag}>
+              {label}
+            </Header>
+          ),
+        });
+        validateComponentNameAndLabels(element, labels);
+        expect(getGeneratedAnalyticsMetadata(element)).toEqual(getMetadataContexts(label));
+      });
+    }
+  );
 });
 
 test('Internal Container does not render "component" metadata', () => {

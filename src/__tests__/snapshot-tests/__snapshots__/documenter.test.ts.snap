@@ -14043,6 +14043,14 @@ slot (not with the deprecated \`header\`), and not with the navigation variant."
       "type": "string",
     },
     {
+      "description": "Visually hides the header text while keeping it available to assistive technology.
+Use with \`headerSecondaryContent\` to present a purely interactive header control.
+Use with the default or container variant.",
+      "name": "hideHeaderText",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
@@ -14099,6 +14107,12 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "The area next to the heading, used to display an Info link. Use with the container or stacked variants.",
       "isDefault": false,
       "name": "headerInfo",
+    },
+    {
+      "description": "Secondary content displayed next to the header text, such as an interactive control or supporting text.
+Use with the default or container variant.",
+      "isDefault": false,
+      "name": "headerSecondaryContent",
     },
     {
       "description": "The heading text. Use plain text. When using the container variant, you can use additional header props like \`headerDescription\` and \`headerCounter\` to display other elements in the header.",
@@ -16005,16 +16019,19 @@ exports[`Components definition for header matches the snapshot: header 1`] = `
     },
     {
       "description": "Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements)
-provided by the variant. Using this property does not change the visual appearance of the component.",
+provided by the variant. Set to \`div\` to render the title without heading semantics. Using this property does not
+change the visual appearance of the component.",
       "inlineType": {
         "name": "HeaderProps.HeadingTag",
         "type": "union",
         "values": [
+          "div",
           "h1",
           "h2",
           "h3",
           "h4",
           "h5",
+          "h6",
         ],
       },
       "name": "headingTagOverride",
