@@ -54,7 +54,8 @@ function dismissButton(
   ref?: React.Ref<ButtonProps.Ref>,
   id?: string,
   onDismissed?: (id?: string, persistenceConfig?: FlashbarProps.PersistenceConfig) => void,
-  persistenceConfig?: FlashbarProps.PersistenceConfig
+  persistenceConfig?: FlashbarProps.PersistenceConfig,
+  dismissButtonStyleClass?: string
 ) {
   return (
     <div
@@ -77,6 +78,7 @@ function dismissButton(
         formAction="none"
         ariaLabel={dismissLabel}
         style={getDismissButtonStyles(style, type)}
+        styleClassNames={{ root: dismissButtonStyleClass }}
       />
     </div>
   );
@@ -109,6 +111,13 @@ export function focusFlashById(element: HTMLElement | null, itemId: string) {
   focusContainer?.focus();
 }
 
+// Style API v2
+interface FlashStyleClassNames {
+  item?: string;
+  icon?: string;
+  dismissButton?: string;
+}
+
 interface FlashProps extends FlashbarProps.MessageDefinition {
   className: string;
   transitionState?: string;
@@ -116,6 +125,7 @@ interface FlashProps extends FlashbarProps.MessageDefinition {
   style?: FlashbarProps.Style;
   rootRef?: React.Ref<HTMLDivElement>;
   onDismissed?: (id?: string) => void;
+  styleClassNames?: FlashStyleClassNames;
 }
 
 export const Flash = React.forwardRef(
@@ -141,6 +151,7 @@ export const Flash = React.forwardRef(
       rootRef,
       onDismissed,
       persistenceConfig,
+      styleClassNames,
       ...props
     }: FlashProps,
     ref: React.Ref<HTMLDivElement>
@@ -213,6 +224,7 @@ export const Flash = React.forwardRef(
         ref={mergedRef}
         data-itemid={id}
         className={clsx(
+          styleClassNames?.item,
           styles.flash,
           styles[`flash-type-${effectiveType}`],
           className,
@@ -243,7 +255,7 @@ export const Flash = React.forwardRef(
             aria-labelledby={`${flashIconId} ${flashMessageId}`}
           >
             <div
-              className={clsx(styles['flash-icon'], styles['flash-text'])}
+              className={clsx(styleClassNames?.icon, styles['flash-icon'], styles['flash-text'])}
               id={flashIconId}
               style={getFlashIconStyles(style, effectiveType)}
             >
@@ -298,7 +310,8 @@ export const Flash = React.forwardRef(
             dismissButtonRefObject,
             id,
             onDismissed,
-            persistenceConfig
+            persistenceConfig,
+            styleClassNames?.dismissButton
           )}
         {ariaRole === 'status' && (
           <InternalLiveRegion sources={[statusIconAriaLabel, headerRefObject, contentRefObject]} />
