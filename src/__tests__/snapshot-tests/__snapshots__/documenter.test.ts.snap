@@ -35239,27 +35239,28 @@ exports[`Components definition for tutorial-panel matches the snapshot: tutorial
     },
     {
       "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
       "inlineType": {
         "name": "TutorialPanelProps.I18nStrings",
         "properties": [
           {
             "name": "completionScreenTitle",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           {
             "name": "dismissTutorialButtonText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           {
             "name": "feedbackLinkText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           {
             "name": "labelExitTutorial",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           {
@@ -35274,29 +35275,29 @@ exports[`Components definition for tutorial-panel matches the snapshot: tutorial
           },
           {
             "inlineType": {
-              "name": "{ pending: string; 'in-progress': string; success: string; }",
+              "name": "{ pending?: string | undefined; 'in-progress'?: string | undefined; success?: string | undefined; }",
               "properties": [
                 {
                   "name": "in-progress",
-                  "optional": false,
+                  "optional": true,
                   "type": "string",
                 },
                 {
                   "name": "pending",
-                  "optional": false,
+                  "optional": true,
                   "type": "string",
                 },
                 {
                   "name": "success",
-                  "optional": false,
+                  "optional": true,
                   "type": "string",
                 },
               ],
               "type": "object",
             },
             "name": "labelsTaskStatus",
-            "optional": false,
-            "type": "{ pending: string; 'in-progress': string; success: string; }",
+            "optional": true,
+            "type": "{ pending?: string | undefined; 'in-progress'?: string | undefined; success?: string | undefined; }",
           },
           {
             "inlineType": {
@@ -35311,8 +35312,8 @@ exports[`Components definition for tutorial-panel matches the snapshot: tutorial
               "type": "function",
             },
             "name": "labelTotalSteps",
-            "optional": false,
-            "type": "(totalStepCount: number) => string",
+            "optional": true,
+            "type": "((totalStepCount: number) => string)",
           },
           {
             "name": "labelTutorialListDownloadLink",
@@ -35321,22 +35322,22 @@ exports[`Components definition for tutorial-panel matches the snapshot: tutorial
           },
           {
             "name": "learnMoreLinkText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           {
             "name": "loadingText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           {
             "name": "restartTutorialButtonText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           {
             "name": "startTutorialButtonText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           {
@@ -35356,8 +35357,8 @@ exports[`Components definition for tutorial-panel matches the snapshot: tutorial
               "type": "function",
             },
             "name": "stepTitle",
-            "optional": false,
-            "type": "(stepIndex: number, stepTitle: string) => string",
+            "optional": true,
+            "type": "((stepIndex: number, stepTitle: string) => string)",
           },
           {
             "inlineType": {
@@ -35376,12 +35377,12 @@ exports[`Components definition for tutorial-panel matches the snapshot: tutorial
               "type": "function",
             },
             "name": "taskTitle",
-            "optional": false,
-            "type": "(taskIndex: number, taskTitle: string) => string",
+            "optional": true,
+            "type": "((taskIndex: number, taskTitle: string) => string)",
           },
           {
             "name": "tutorialCompletedText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           {
@@ -35391,12 +35392,12 @@ exports[`Components definition for tutorial-panel matches the snapshot: tutorial
           },
           {
             "name": "tutorialListDownloadLinkText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           {
             "name": "tutorialListTitle",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],
