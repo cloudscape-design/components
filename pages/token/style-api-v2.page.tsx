@@ -10,9 +10,9 @@ import { SimplePage } from '../app/templates';
 import styles from './style-api-v2.scss';
 
 const themed = { root: styles.root, dismissButton: styles.dismiss };
-const muted = {
-  root: clsx(styles.root, styles['root-muted']),
-  dismissButton: clsx(styles.dismiss, styles['dismiss-muted']),
+const disabled = {
+  root: clsx(styles.root, styles['root-disabled']),
+  dismissButton: clsx(styles.dismiss, styles['dismiss-disabled']),
 };
 
 export default function () {
@@ -36,12 +36,7 @@ export default function () {
           {
             type: 'pair',
             label: 'Disabled',
-            value: <Token label="Disabled" disabled={true} {...shared} {...{ styleClassNames: muted }} />,
-          },
-          {
-            type: 'pair',
-            label: 'Read-only',
-            value: <Token label="Read-only" readOnly={true} {...shared} {...{ styleClassNames: muted }} />,
+            value: <Token label="Disabled" disabled={true} {...shared} {...{ styleClassNames: disabled }} />,
           },
         ]}
       />

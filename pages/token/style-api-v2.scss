@@ -18,8 +18,8 @@
     $padding-inline: 8px 4px
   );
 
-  // Disabled and read-only are consumer state classes. The double class wins over the rule above.
-  &.root-muted {
+  // Disabled is consumer state class. The double class wins over the rule above.
+  &.root-disabled {
     @include token.root(
       $background: palette.$surface-alt,
       $color: palette.$text-disabled,
@@ -35,7 +35,7 @@
     @include button.root($color: palette.$genai-hover);
   }
 
-  &.dismiss-muted {
+  &.dismiss-disabled {
     @include button.root($color: palette.$text-disabled);
   }
 }
