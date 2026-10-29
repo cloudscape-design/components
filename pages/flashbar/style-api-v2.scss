@@ -1,0 +1,97 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~components/styling/flashbar';
+@use '~components/styling/button';
+@use '../style-api/palette' as palette;
+
+// Every item row and the focus-ring tokens in one class.
+@mixin item($accent, $background, $color: palette.$text) {
+  @include flashbar.item(
+    $color: $color,
+    $background: $background,
+    $border-color: $accent,
+    $border-width: 2px,
+    $border-style: solid,
+    $border-radius: 8px,
+    $box-shadow: 0 4px 12px palette.$subtle-active,
+    $padding-block: 12px,
+    $padding-inline: 20px,
+    $focus-ring-color: $accent,
+    $focus-ring-width: 3px,
+    $focus-ring-radius: 10px
+  );
+}
+
+.item {
+  @include item(palette.$genai, palette.$genai-surface, palette.$genai-text);
+}
+
+.icon {
+  @include flashbar.icon($color: palette.$genai);
+}
+
+.dismiss-button {
+  @include button.root($color: palette.$genai-text, $focus-ring-color: palette.$genai);
+
+  &:hover,
+  &:focus {
+    @include button.root($color: palette.$genai);
+  }
+}
+
+// One class per message type, resolved through the item callback.
+.item-success {
+  @include item(palette.$success, palette.$success-surface);
+}
+
+.item-error {
+  @include item(palette.$error, palette.$error-surface);
+}
+
+.item-warning {
+  @include item(palette.$warning, palette.$warning-surface);
+}
+
+.item-info {
+  @include item(palette.$info, palette.$info-surface);
+}
+
+.item-loading {
+  @include item(palette.$text-muted, palette.$surface-alt);
+}
+
+.notification-bar {
+  @include flashbar.notificationBar(
+    $color: palette.$genai-text,
+    $background: palette.$genai-surface,
+    $border-color: palette.$genai,
+    $border-width: 2px,
+    $border-style: solid,
+    $border-radius: 8px,
+    $box-shadow: 0 4px 12px palette.$subtle-active,
+    $padding-block: 6px,
+    $padding-inline: 24px,
+    $focus-ring-color: palette.$genai,
+    $focus-ring-width: 3px,
+    $focus-ring-radius: 10px
+  );
+
+  &:hover {
+    @include flashbar.notificationBar(
+      $color: palette.$text-on-accent,
+      $background: palette.$genai-hover,
+      $border-color: palette.$genai-hover
+    );
+  }
+
+  &:active {
+    @include flashbar.notificationBar(
+      $color: palette.$text-on-accent,
+      $background: palette.$genai-active,
+      $border-color: palette.$genai-active
+    );
+  }
+}

@@ -19,6 +19,7 @@ import { isRefObject } from './utils';
 import styles from './styles.css.js';
 
 export default function NonCollapsibleFlashbar({ items, i18nStrings, style, ...restProps }: InternalFlashbarProps) {
+  const { styleClassNames } = restProps;
   const visibleItems = useFlashbarVisibility(items);
 
   const { allItemsHaveId, baseProps, isReducedMotion, isVisualRefresh, mergedRef, flashRefs, handleFlashDismissed } =
@@ -45,6 +46,10 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, style, ...r
   const motionDisabled = isReducedMotion || !isVisualRefresh || !allItemsHaveId;
 
   const animateFlash = !isReducedMotion && isVisualRefresh;
+
+  // Style API v2
+  const getItemClass = (item: FlashbarProps.MessageDefinition) =>
+    typeof styleClassNames?.item === 'function' ? styleClassNames.item({ item }) : styleClassNames?.item;
 
   /**
    * If the flashbar is flat and motion is `enabled` then the adding and removing of items
@@ -132,6 +137,11 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, style, ...r
         i18nStrings={iconAriaLabels}
         style={style}
         onDismissed={handleFlashDismissed}
+        styleClassNames={{
+          item: getItemClass(item),
+          icon: styleClassNames?.icon,
+          dismissButton: styleClassNames?.dismissButton,
+        }}
         {...item}
       />
     );
