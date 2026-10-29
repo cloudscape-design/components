@@ -29,7 +29,7 @@ export function TableColGroup({
       {hasSelection && (
         <col
           style={sticky ? { width: getColumnStyles(true, selectionColumnId).width } : undefined}
-          ref={sticky ? node => setCol(true, selectionColumnId, node) : undefined}
+          ref={node => setCol(sticky, selectionColumnId, node)}
         />
       )}
       {visibleColumnDefinitions.map((column, colIndex) => {
