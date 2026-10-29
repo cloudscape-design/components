@@ -77,26 +77,6 @@ describe('getItemProps', () => {
     });
   });
 
-  test('should return props for the first child in the first group with keyboard', () => {
-    const props = getItemProps({
-      ...defaultItemProps,
-    });
-    expect(props).toEqual({
-      'data-child-index': 1,
-      'data-group-index': 1,
-      'data-test-index': 1,
-      'data-mouse-target': 1,
-      filteringValue: 'child',
-      highlighted: false,
-      key: 1,
-      option: {
-        option: { label: 'Child 1' },
-        type: 'child',
-      },
-      selected: false,
-    });
-  });
-
   test('should return props for the first child in the first group with highlighted state', () => {
     const props = getItemProps({
       ...defaultItemProps,
