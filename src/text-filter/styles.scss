@@ -5,6 +5,17 @@
 
 @use '../internal/styles/index' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/style-api' as style-api;
+
+@include style-api.docs-forward('input', 'input');
+@include style-api.docs(
+  'countText',
+  $properties: (color, font-family, font-size, font-weight),
+  $descriptions: (
+    slot:
+      'The results count rendered after the input. It is shown while `filteringText` and `countText` are set and the filter is not disabled.'
+  )
+);
 
 .root {
   @include styles.styles-reset;

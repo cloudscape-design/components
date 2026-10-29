@@ -8,9 +8,23 @@ exports[`Style API docs definition for alert matches the snapshot: alert 1`] = `
       "properties": [
         "color",
         "background",
-        "border",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
         "border-radius",
+        "border-start-start-radius",
+        "border-start-end-radius",
+        "border-end-start-radius",
+        "border-end-end-radius",
         "padding",
+        "padding-block",
+        "padding-inline",
       ],
       "propertyDescriptions": {},
       "tokenDescriptions": {},
@@ -48,9 +62,23 @@ exports[`Style API docs definition for badge matches the snapshot: badge 1`] = `
       "properties": [
         "color",
         "background",
-        "border",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
         "border-radius",
+        "border-start-start-radius",
+        "border-start-end-radius",
+        "border-end-start-radius",
+        "border-end-end-radius",
         "padding",
+        "padding-block",
+        "padding-inline",
         "font-family",
         "font-size",
         "font-weight",
@@ -71,9 +99,23 @@ exports[`Style API docs definition for button matches the snapshot: button 1`] =
       "properties": [
         "color",
         "background",
-        "border",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
         "border-radius",
+        "border-start-start-radius",
+        "border-start-end-radius",
+        "border-end-start-radius",
+        "border-end-end-radius",
         "padding",
+        "padding-block",
+        "padding-inline",
         "box-shadow",
       ],
       "propertyDescriptions": {},
@@ -83,6 +125,65 @@ exports[`Style API docs definition for button matches the snapshot: button 1`] =
         "focus-ring-width",
         "focus-ring-radius",
       ],
+    },
+  ],
+}
+`;
+
+exports[`Style API docs definition for button-dropdown matches the snapshot: button-dropdown 1`] = `
+{
+  "slots": [
+    {
+      "forwardsTo": {
+        "component": "button",
+        "slot": "root",
+      },
+      "name": "trigger",
+    },
+    {
+      "forwardsTo": {
+        "component": "button",
+        "slot": "root",
+      },
+      "name": "mainAction",
+    },
+    {
+      "forwardsTo": {
+        "component": "dropdown",
+        "slot": "container",
+      },
+      "name": "dropdown",
+    },
+  ],
+}
+`;
+
+exports[`Style API docs definition for button-group matches the snapshot: button-group 1`] = `
+{
+  "slots": [
+    {
+      "name": "divider",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [
+        "line-color",
+        "line-width",
+      ],
+    },
+    {
+      "forwardsTo": {
+        "component": "button",
+        "slot": "root",
+      },
+      "name": "item",
+    },
+    {
+      "forwardsTo": {
+        "component": "dropdown",
+        "slot": "container",
+      },
+      "name": "dropdown",
     },
   ],
 }
@@ -116,7 +217,15 @@ exports[`Style API docs definition for container matches the snapshot: container
       "name": "root",
       "properties": [
         "background",
-        "border",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
         "box-shadow",
       ],
       "propertyDescriptions": {},
@@ -132,7 +241,15 @@ exports[`Style API docs definition for container matches the snapshot: container
       "name": "header",
       "properties": [
         "background",
-        "border",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
       ],
       "propertyDescriptions": {},
       "tokenDescriptions": {},
@@ -143,7 +260,15 @@ exports[`Style API docs definition for container matches the snapshot: container
       "name": "footer",
       "properties": [
         "background",
-        "border",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
       ],
       "propertyDescriptions": {},
       "tokenDescriptions": {},
@@ -153,14 +278,48 @@ exports[`Style API docs definition for container matches the snapshot: container
 }
 `;
 
+exports[`Style API docs definition for date-input matches the snapshot: date-input 1`] = `
+{
+  "slots": [
+    {
+      "forwardsTo": {
+        "component": "input",
+      },
+      "name": "input",
+    },
+  ],
+}
+`;
+
+exports[`Style API docs definition for divider matches the snapshot: divider 1`] = `
+{
+  "slots": [
+    {
+      "name": "root",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [
+        "line-color",
+        "line-width",
+      ],
+    },
+  ],
+}
+`;
+
 exports[`Style API docs definition for dropdown matches the snapshot: dropdown 1`] = `
 {
   "slots": [
     {
-      "name": "dropdown",
+      "name": "container",
       "properties": [
         "background",
         "border-radius",
+        "border-start-start-radius",
+        "border-start-end-radius",
+        "border-end-start-radius",
+        "border-end-end-radius",
         "box-shadow",
       ],
       "propertyDescriptions": {},
@@ -184,8 +343,20 @@ exports[`Style API docs definition for input matches the snapshot: input 1`] = `
       "name": "root",
       "properties": [
         "background",
-        "border",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
         "border-radius",
+        "border-start-start-radius",
+        "border-start-end-radius",
+        "border-end-start-radius",
+        "border-end-end-radius",
         "box-shadow",
       ],
       "propertyDescriptions": {
@@ -199,6 +370,8 @@ exports[`Style API docs definition for input matches the snapshot: input 1`] = `
       "properties": [
         "color",
         "padding",
+        "padding-block",
+        "padding-inline",
         "font-family",
         "font-size",
         "font-weight",
@@ -292,6 +465,32 @@ exports[`Style API docs definition for radio-button matches the snapshot: radio-
 }
 `;
 
+exports[`Style API docs definition for text-filter matches the snapshot: text-filter 1`] = `
+{
+  "slots": [
+    {
+      "forwardsTo": {
+        "component": "input",
+      },
+      "name": "input",
+    },
+    {
+      "description": "The results count rendered after the input. It is shown while \`filteringText\` and \`countText\` are set and the filter is not disabled.",
+      "name": "countText",
+      "properties": [
+        "color",
+        "font-family",
+        "font-size",
+        "font-weight",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
+    },
+  ],
+}
+`;
+
 exports[`Style API docs definition for textarea matches the snapshot: textarea 1`] = `
 {
   "slots": [
@@ -300,10 +499,24 @@ exports[`Style API docs definition for textarea matches the snapshot: textarea 1
       "properties": [
         "color",
         "background",
-        "border",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
         "border-radius",
+        "border-start-start-radius",
+        "border-start-end-radius",
+        "border-end-start-radius",
+        "border-end-end-radius",
         "box-shadow",
         "padding",
+        "padding-block",
+        "padding-inline",
         "font-family",
         "font-size",
         "font-weight",
@@ -318,6 +531,19 @@ exports[`Style API docs definition for textarea matches the snapshot: textarea 1
         "placeholder-font-style",
         "placeholder-font-weight",
       ],
+    },
+  ],
+}
+`;
+
+exports[`Style API docs definition for time-input matches the snapshot: time-input 1`] = `
+{
+  "slots": [
+    {
+      "forwardsTo": {
+        "component": "input",
+      },
+      "name": "input",
     },
   ],
 }
@@ -348,13 +574,19 @@ exports[`Style API docs list of components with a Style API doc matches the snap
   "alert",
   "badge",
   "button",
+  "button-dropdown",
+  "button-group",
   "checkbox",
   "container",
+  "date-input",
+  "divider",
   "dropdown",
   "input",
   "link",
   "radio-button",
+  "text-filter",
   "textarea",
+  "time-input",
   "toggle",
 ]
 `;
