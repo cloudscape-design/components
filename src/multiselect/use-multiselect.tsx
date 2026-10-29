@@ -9,6 +9,7 @@ import { useInternalI18n } from '../i18n/context';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
 import { multiSelection } from '../internal/components/listbox/selection/multi-selection';
 import { useAnnouncement } from '../internal/components/listbox/use-announcement';
+import { useTypeAhead } from '../internal/components/listbox/use-type-ahead';
 import { checkOptionValueField } from '../internal/components/listbox/utils/check-option-value-field.js';
 import { DropdownOption } from '../internal/components/option/interfaces';
 import { prepareOptions } from '../internal/components/option/utils/prepare-options';
@@ -17,7 +18,6 @@ import { SomeRequired } from '../internal/types';
 import { joinStrings } from '../internal/utils/strings';
 import { SelectListProps } from '../select/parts/plain-list';
 import { useLoadItems } from '../select/utils/use-load-items';
-import { useNativeSearch } from '../select/utils/use-native-search';
 import { useSelect } from '../select/utils/use-select';
 import { TokenGroupProps } from '../token-group/interfaces';
 import { DropdownStatusProps } from '../types/dropdown-status';
@@ -171,12 +171,12 @@ export function useMultiselect({
     dropdownRole,
   });
 
-  const wrapperOnKeyDown = useNativeSearch({
+  const wrapperOnKeyDown = useTypeAhead({
     isEnabled: filteringType === 'none' && isOpen,
     options: visibleOptions,
     highlightOption: highlightOption,
     highlightedOption: highlightedOption?.option,
-    useInteractiveGroups,
+    interactiveGroups: useInteractiveGroups,
   });
 
   const isEmpty = !options || options.length === 0;
