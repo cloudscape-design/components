@@ -59,13 +59,13 @@ export function TableGroupHeaderCell({
   wrapLines,
 }: TableGroupHeaderCellProps) {
   const headerId = useUniqueId('table-group-header-');
-  const { columnWidths } = useColumnWidths();
+  const { columnWidths, getColumnMinWidth } = useColumnWidths();
 
   // Effective min = sum of non-rightmost children's current widths (fixed) + rightmost child's minWidth
   const lastChild = childColumnIds[childColumnIds.length - 1];
   const groupMinWidth = childColumnIds.reduce<number>((sum, id) => {
     if (id === lastChild) {
-      return sum + DEFAULT_COLUMN_WIDTH;
+      return sum + getColumnMinWidth(id);
     }
     return sum + (columnWidths.get(id) || DEFAULT_COLUMN_WIDTH);
   }, 0);
