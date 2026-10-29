@@ -39,12 +39,14 @@ function findMatchingOption(
     const matchingOptions = filter(searchText[0]);
 
     if (matchingOptions.length > 0) {
-      //handling OptionGroups when interactiveGroups is set
-      let active: number = isGroup(currentHighlight)
-        ? matchingOptions.map(({ option }) => option).indexOf(currentHighlight)
-        : matchingOptions
-            .map(({ option }) => (option as OptionDefinition).value)
-            .indexOf((currentHighlight as OptionDefinition).value);
+      // Find the highlight by identity first: with interactive groups, a group can share its option's value.
+      // Fall back to the value for a highlight that isn't one of the given objects, like Select's selectedOption.
+      let active = matchingOptions.findIndex(({ option }) => option === currentHighlight);
+      if (active === -1 && !isGroup(currentHighlight)) {
+        active = matchingOptions
+          .map(({ option }) => (option as OptionDefinition).value)
+          .indexOf((currentHighlight as OptionDefinition).value);
+      }
 
       // Pick the next thing (if something with this prefix wasn't selected
       // we'll end up with the first option)

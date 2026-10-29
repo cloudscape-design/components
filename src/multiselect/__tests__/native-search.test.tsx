@@ -63,6 +63,27 @@ describe('Multiselect native search', () => {
     expect(getHighlightedLabel()).toBe('Compute');
   });
 
+  test('repeating a character cycles to the next match when a group and its option share a value', () => {
+    const { type, getHighlightedLabel } = renderMultiselect({
+      options: [
+        {
+          label: 'Compute',
+          value: 'shared',
+          options: [
+            { label: 'Cloud', value: 'shared' },
+            { label: 'Cache', value: 'cache' },
+          ],
+        },
+      ],
+    });
+    type('c');
+    expect(getHighlightedLabel()).toBe('Compute');
+    type('c');
+    expect(getHighlightedLabel()).toBe('Cloud');
+    type('c');
+    expect(getHighlightedLabel()).toBe('Cache');
+  });
+
   test('typing right after selecting with Space moves the highlight to the matching option', () => {
     const { optionsContainer, type, onChange, getHighlightedLabel } = renderMultiselect();
     // Highlight with the arrow keys so the type-ahead buffer is empty before Space is pressed.

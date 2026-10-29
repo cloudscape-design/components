@@ -74,6 +74,19 @@ describe('useTypeAhead', () => {
     expect(highlightOption).toHaveBeenCalledWith(options[0]);
   });
 
+  test('cycles from a highlighted option that is an equal copy rather than the same object', () => {
+    const hook = renderHook(useTypeAhead, {
+      initialProps: { ...initialProps, highlightedOption: { label: 'option 1', value: 'option1' } },
+    });
+    act(() => {
+      hook.result.current({ key: 'o' } as React.KeyboardEvent);
+    });
+    act(() => {
+      hook.result.current({ key: 'o' } as React.KeyboardEvent);
+    });
+    expect(highlightOption).toHaveBeenLastCalledWith(options[1]);
+  });
+
   describe('with groups', () => {
     const groupedOptions: DropdownOption[] = [
       { type: 'parent', option: { label: 'Compute', options: [] } },
@@ -116,6 +129,29 @@ describe('useTypeAhead', () => {
       // Only the Compute group itself starts with "c", so repeating the key keeps it highlighted.
       expect(highlightOption).toHaveBeenCalledTimes(2);
       expect(highlightOption).toHaveBeenLastCalledWith(groupedOptions[0]);
+    });
+
+    test('with interactive groups, cycles from the highlighted option when its group has the same value', () => {
+      const sharedValueOptions: DropdownOption[] = [
+        { type: 'parent', option: { label: 'Compute', value: 'shared', options: [] } },
+        { type: 'child', option: { label: 'Cloud', value: 'shared' } },
+        { type: 'child', option: { label: 'Cache', value: 'cache' } },
+      ];
+      const hook = renderHook(useTypeAhead, {
+        initialProps: {
+          ...initialProps,
+          options: sharedValueOptions,
+          highlightedOption: sharedValueOptions[1].option,
+          interactiveGroups: true,
+        },
+      });
+      act(() => {
+        hook.result.current({ key: 'c' } as React.KeyboardEvent);
+      });
+      act(() => {
+        hook.result.current({ key: 'c' } as React.KeyboardEvent);
+      });
+      expect(highlightOption).toHaveBeenLastCalledWith(sharedValueOptions[2]);
     });
 
     test('without interactive groups, does not highlight children of a group whose label matches', () => {
