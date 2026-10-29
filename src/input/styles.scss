@@ -260,19 +260,6 @@ $input-tokens: style-api.resolve(
     border-end-end-radius: awsui.$border-radius-dropdown;
   }
 
-  // Nested so the grouped corner rules win over the field's own radius by specificity, not by source order.
-  &.input-field-no-border {
-    min-block-size: unset;
-    &,
-    &:hover,
-    &:focus-within {
-      border-block-width: 0;
-      border-inline-width: 0;
-      box-shadow: none;
-      background-color: transparent;
-    }
-  }
-
   &.grouped {
     // Unlike other controls, input's padding is rendered by the inner input element and not by its wrapper,
     // so we should not add extra space to the wrapper for the validation border.
@@ -316,11 +303,38 @@ $input-tokens: style-api.resolve(
   cursor: default;
 }
 
+// Starts the inline content one small gap after the start icon, which is offset from the outer border edge.
+$inline-content-icon-padding: calc(
+  #{styles.$control-icon-horizontal-offset} + #{awsui.$size-icon-normal} + #{awsui.$space-xxs} -
+    #{awsui.$border-width-field}
+);
+
+.input-inline-content {
+  display: flex;
+  align-items: center;
+  flex-shrink: 1;
+  min-inline-size: 0;
+  column-gap: awsui.$space-xxs;
+  padding-inline-start: styles.$control-padding-horizontal;
+  cursor: default;
+
+  &.input-inline-content-has-icon-start {
+    padding-inline-start: $inline-content-icon-padding;
+  }
+
+  // The inline content already clears the start icon; the input keeps room to type.
+  + .input {
+    padding-inline-start: styles.$control-padding-horizontal;
+    min-inline-size: 20%;
+  }
+}
+
 // The wider invalid/warning start border is absorbed by the first cell, so the content does not shift.
-// The first cell is the prefix when present, otherwise the native input.
+// The first cell is the prefix when present, then the inline content, otherwise the native input.
 .input-field-invalid,
 .input-field-warning {
   > .input-prefix,
+  > .input-inline-content:first-child,
   > .input:first-child {
     padding-inline-start: styles.$invalid-control-left-padding;
   }
@@ -329,6 +343,12 @@ $input-tokens: style-api.resolve(
     padding-inline-start: calc(
       #{styles.$control-icon-horizontal-padding} -
         (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field})
+    );
+  }
+
+  > .input-inline-content-has-icon-start:first-child {
+    padding-inline-start: calc(
+      #{$inline-content-icon-padding} - (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field})
     );
   }
 

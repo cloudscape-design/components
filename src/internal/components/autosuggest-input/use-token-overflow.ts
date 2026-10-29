@@ -13,9 +13,8 @@ interface UseTokenOverflowOptions {
   tokenContentKey: string;
   measureRef: React.RefObject<HTMLElement>;
   measureTriggerRef: React.RefObject<HTMLElement>;
-  fieldRef: React.RefObject<HTMLElement>;
-  leadingIconRef: React.RefObject<HTMLElement>;
-  inputWrapperRef: React.RefObject<HTMLElement>;
+  inlineContentRef: React.RefObject<HTMLElement>;
+  inputRef: React.RefObject<HTMLElement>;
   layoutKey: string;
 }
 
@@ -33,40 +32,35 @@ export function useTokenOverflow({
   tokenContentKey,
   measureRef,
   measureTriggerRef,
-  fieldRef,
-  leadingIconRef,
-  inputWrapperRef,
+  inlineContentRef,
+  inputRef,
   layoutKey,
 }: UseTokenOverflowOptions): UseTokenOverflowResult {
   const [containerWidth, containerRef] = useContainerQuery(entry => entry.borderBoxWidth);
   const [visibleCount, setVisibleCount] = useState(tokenCount);
 
   useLayoutEffect(() => {
-    const field = fieldRef.current;
+    const content = inlineContentRef.current;
+    const input = inputRef.current;
     const measure = measureRef.current;
-    if (!enabled || !field || !measure || !containerWidth) {
+    if (!enabled || !content || !input || !measure || !containerWidth) {
       setVisibleCount(tokenCount);
       return;
     }
     measure.inert = true;
 
-    const fieldStyle = getComputedStyle(field);
-    const paddingInline = parseFloat(fieldStyle.paddingInlineStart) + parseFloat(fieldStyle.paddingInlineEnd);
-    const borderInline =
-      (parseFloat(fieldStyle.borderInlineStartWidth) || 0) + (parseFloat(fieldStyle.borderInlineEndWidth) || 0);
-    const gap = parseFloat(fieldStyle.columnGap) || 0;
-    const contentWidth = containerWidth - paddingInline - borderInline;
-    const inputMinWidth = resolveLength(
-      inputWrapperRef.current ? getComputedStyle(inputWrapperRef.current).minInlineSize : '',
-      contentWidth
-    );
-    const iconWidth = leadingIconRef.current?.offsetWidth ?? 0;
+    // The inline content and the input share the field's content box, whatever the tokens currently take.
+    const fieldWidth = content.offsetWidth + input.offsetWidth;
+    const contentStyle = getComputedStyle(content);
+    const paddingInline = parseFloat(contentStyle.paddingInlineStart) + parseFloat(contentStyle.paddingInlineEnd);
+    const gap = parseFloat(contentStyle.columnGap) || 0;
+    const inputMinWidth = resolveLength(getComputedStyle(input).minInlineSize, fieldWidth);
     const triggerWidth = measureTriggerRef.current?.offsetWidth ?? 0;
     const tokenWidths = Array.from(measure.querySelectorAll<HTMLElement>(`.${styles['measurement-token']}`)).map(
       el => el.offsetWidth
     );
 
-    const budget = contentWidth - iconWidth - inputMinWidth - 2 * gap;
+    const budget = fieldWidth - paddingInline - inputMinWidth;
     const totalWidth = tokenWidths.reduce((sum, width) => sum + width + gap, -gap);
     setVisibleCount(
       totalWidth <= budget ? tokenWidths.length : countFittingFromEnd(tokenWidths, budget - triggerWidth - gap, gap)
@@ -77,11 +71,10 @@ export function useTokenOverflow({
     tokenContentKey,
     containerWidth,
     layoutKey,
-    fieldRef,
     measureRef,
     measureTriggerRef,
-    leadingIconRef,
-    inputWrapperRef,
+    inlineContentRef,
+    inputRef,
   ]);
 
   return { containerRef, visibleCount: Math.min(visibleCount, tokenCount) };
