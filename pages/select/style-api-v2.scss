@@ -1,0 +1,128 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~components/styling/select';
+@use '~components/styling/input';
+@use '~components/styling/dropdown';
+@use '../style-api/palette' as palette;
+
+// Trigger button, which is also the field box. One class per owned state (invalid, warning, disabled, read-only);
+// `:hover` and `:focus` for the interaction states. The inline end padding keeps the room the caret needs.
+@mixin field {
+  @include select.trigger(
+    $color: palette.$text,
+    $background: palette.$surface,
+    $border-width: 2px,
+    $border-radius: 12px,
+    $box-shadow: 0 2px 4px palette.$subtle,
+    $padding-block: 10px,
+    $padding-inline: 16px 40px,
+    $font-family: monospace,
+    $font-size: 15px,
+    $font-weight: 600,
+    $placeholder-color: palette.$accent
+  );
+}
+
+.trigger {
+  @include field;
+  @include select.trigger($border-color: palette.$border);
+
+  &:hover {
+    @include select.trigger($background: palette.$surface-alt, $border-color: palette.$border-accent);
+  }
+
+  &:focus {
+    @include select.trigger(
+      $color: palette.$accent,
+      $border-color: palette.$accent,
+      $box-shadow: 0 0 0 3px palette.$accent-active
+    );
+  }
+}
+
+.trigger-invalid {
+  @include field;
+  @include select.trigger($background: palette.$error-surface, $border-color: palette.$error);
+
+  &:focus {
+    @include select.trigger($box-shadow: 0 0 0 3px palette.$error-hover);
+  }
+}
+
+.trigger-warning {
+  @include field;
+  @include select.trigger($background: palette.$warning-surface, $border-color: palette.$warning);
+
+  &:focus {
+    @include select.trigger($box-shadow: 0 0 0 3px palette.$warning);
+  }
+}
+
+.trigger-disabled {
+  @include field;
+  @include select.trigger(
+    $color: palette.$text-disabled,
+    $background: palette.$control-bg-disabled,
+    $border-color: palette.$border-disabled,
+    $box-shadow: none,
+    $placeholder-color: palette.$text-disabled
+  );
+}
+
+.trigger-readonly {
+  @include field;
+  @include select.trigger($background: palette.$surface-alt, $border-color: palette.$border);
+
+  &:focus {
+    @include select.trigger($border-color: palette.$accent, $box-shadow: 0 0 0 3px palette.$accent-active);
+  }
+}
+
+// Inline label: the disabled state is a class.
+.inline-label {
+  @include select.inlineLabel(
+    $color: palette.$text-on-accent,
+    $background: palette.$accent,
+    $font-family: monospace,
+    $font-size: 11px,
+    $font-weight: 700
+  );
+}
+
+.inline-label-disabled {
+  @include select.inlineLabel($color: palette.$control-fg-disabled, $background: palette.$control-bg-disabled);
+}
+
+// Filter forwards to Input: the field box and the native input.
+.filter-root {
+  @include input.root($background: palette.$surface, $border-color: palette.$border, $border-width: 2px);
+
+  &:focus-within {
+    @include input.root($border-color: palette.$accent, $box-shadow: 0 0 0 3px palette.$accent-active);
+  }
+}
+
+.filter-input {
+  @include input.input(
+    $color: palette.$text,
+    $padding-inline: 40px,
+    $font-family: monospace,
+    $font-size: 15px,
+    $font-weight: 600,
+    $placeholder-color: palette.$accent
+  );
+}
+
+// Dropdown forwards to Dropdown.container.
+.dropdown {
+  @include dropdown.container(
+    $background: palette.$surface-alt,
+    $border-radius: 12px,
+    $box-shadow: 0 4px 12px palette.$subtle-active,
+    $outline-color: palette.$accent,
+    $outline-width: 2px
+  );
+}

@@ -5,8 +5,9 @@ import clsx from 'clsx';
 
 import { useMergeRefs, useResizeObserver, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import Dropdown from '../dropdown/internal';
+import Dropdown, { StyleClassNames as DropdownStyleClassNames } from '../dropdown/internal';
 import { useInternalI18n } from '../i18n/context.js';
+import { StyleClassNames as InputStyleClassNames } from '../input/internal';
 import { getBaseProps } from '../internal/base-component';
 import { getBreakpointValue } from '../internal/breakpoints';
 import DropdownFooter from '../internal/components/dropdown-footer';
@@ -39,6 +40,15 @@ import styles from './styles.css.js';
 
 export interface InternalSelectProps extends SomeRequired<SelectProps, 'options'>, InternalBaseComponentProps {
   __inFilteringToken?: 'root' | 'nested';
+  styleClassNames?: StyleClassNames;
+}
+
+// Style API v2
+export interface StyleClassNames {
+  trigger?: string;
+  inlineLabel?: string;
+  filter?: InputStyleClassNames;
+  dropdown?: DropdownStyleClassNames;
 }
 
 const InternalSelect = React.forwardRef(
@@ -79,6 +89,7 @@ const InternalSelect = React.forwardRef(
       renderDropdownFooter,
       dropdownRole,
       dropdownAriaDescribedby,
+      styleClassNames,
       ...restProps
     }: InternalSelectProps,
     externalRef: React.Ref<SelectProps.Ref>
@@ -197,6 +208,7 @@ const InternalSelect = React.forwardRef(
         ariaLabel={filteringAriaLabel}
         ariaRequired={ariaRequired}
         value={filteringValue}
+        styleClassNames={styleClassNames?.filter}
         {...getFilterProps()}
       />
     );
@@ -215,6 +227,7 @@ const InternalSelect = React.forwardRef(
         inFilteringToken={__inFilteringToken}
         groupedControlProps={groupedControlProps}
         inlineLabelText={inlineLabelText}
+        styleClassNames={{ trigger: styleClassNames?.trigger, inlineLabel: styleClassNames?.inlineLabel }}
         {...formFieldContext}
         controlId={controlId}
         ariaLabelledby={joinStrings(formFieldContext.ariaLabelledby, selectAriaLabelId)}
@@ -302,6 +315,7 @@ const InternalSelect = React.forwardRef(
         >
           <Dropdown
             {...dropdownProps}
+            styleClassNames={styleClassNames?.dropdown}
             ariaLabelledby={dropdownProps.ariaRole ? joinStrings(selectAriaLabelId, controlId) : undefined}
             ariaDescribedby={
               dropdownProps.ariaRole

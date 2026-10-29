@@ -8,7 +8,7 @@ import { useMergeRefs, useResizeObserver } from '@cloudscape-design/component-to
 
 import { AutosuggestProps } from '../../../autosuggest/interfaces';
 import { ExpandToViewport } from '../../../dropdown/interfaces';
-import InternalDropdown from '../../../dropdown/internal';
+import InternalDropdown, { StyleClassNames as DropdownStyleClassNames } from '../../../dropdown/internal';
 import InternalIcon from '../../../icon/internal';
 import {
   BaseChangeDetail,
@@ -18,7 +18,7 @@ import {
   InputKeyEvents,
   InputProps,
 } from '../../../input/interfaces';
-import InternalInput from '../../../input/internal';
+import InternalInput, { StyleClassNames as InputStyleClassNames } from '../../../input/internal';
 import InternalLiveRegion from '../../../live-region/internal';
 import InternalToken from '../../../token/internal';
 import { BaseComponentProps } from '../../../types/base-component';
@@ -72,6 +72,7 @@ interface AutosuggestInputProps
   tokenOverflowAriaLabel?: (hiddenCount: number) => string;
   tokenInsertedAnnouncement?: (value: string) => string;
   tokenDismissLabel?: (value: string) => string;
+  styleClassNames?: { input?: InputStyleClassNames; dropdown?: DropdownStyleClassNames };
 }
 
 interface AutosuggestInputFocusOptions {
@@ -124,6 +125,7 @@ const AutosuggestInput = React.forwardRef(
       tokenOverflowAriaLabel,
       tokenInsertedAnnouncement,
       tokenDismissLabel,
+      styleClassNames,
       __internalRootRef,
       ...restProps
     }: AutosuggestInputProps,
@@ -431,6 +433,7 @@ const AutosuggestInput = React.forwardRef(
       autoComplete: false,
       nativeInputAttributes: processAttributes(nativeAttributes, 'Autosuggest', nativeInputAttributes),
       __skipNativeAttributesWarnings: Object.keys(nativeAttributes),
+      styleClassNames: styleClassNames?.input,
     };
 
     const tokenField = isTokenMode && (
@@ -500,6 +503,7 @@ const AutosuggestInput = React.forwardRef(
 
     const dropdown = (
       <InternalDropdown
+        styleClassNames={styleClassNames?.dropdown}
         minWidth={getDropdownMinWidth({ expandToViewport, triggerWidth, dropdownWidth })}
         maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
         contentKey={dropdownContentKey}

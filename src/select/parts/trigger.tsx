@@ -32,6 +32,7 @@ export interface TriggerProps extends FormFieldValidationControlProps {
   selectedOptions?: ReadonlyArray<OptionDefinition>;
   renderOption?: SelectProps.SelectOptionItemRenderer;
   groupedControlProps?: GroupedControlContextProps;
+  styleClassNames?: { trigger?: string; inlineLabel?: string };
 }
 
 const Trigger = React.forwardRef(
@@ -54,6 +55,7 @@ const Trigger = React.forwardRef(
       readOnly,
       renderOption,
       groupedControlProps,
+      styleClassNames,
     }: TriggerProps,
     ref: React.Ref<HTMLButtonElement>
   ) => {
@@ -138,6 +140,7 @@ const Trigger = React.forwardRef(
         {...triggerProps}
         id={id}
         ref={mergedRef}
+        className={clsx(styleClassNames?.trigger, styles['trigger-button'])}
         pressed={!!isOpen}
         disabled={disabled}
         readOnly={readOnly}
@@ -160,6 +163,7 @@ const Trigger = React.forwardRef(
             <label
               htmlFor={controlId}
               className={clsx(
+                styleClassNames?.inlineLabel,
                 styles['inline-label'],
                 disabled && styles['inline-label-disabled'],
                 triggerVariant === 'tokens' && styles['inline-label-inline-tokens']

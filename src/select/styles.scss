@@ -4,6 +4,26 @@
 */
 
 @use '../internal/styles' as styles;
+@use '../internal/styles/style-api' as style-api;
+
+$trigger-tokens: style-api.resolve((placeholder-color), carrier);
+@include style-api.register($trigger-tokens);
+@include style-api.docs(
+  'trigger',
+  $trigger-tokens,
+  $properties: (color, background, border, border-radius, box-shadow, padding, font-family, font-size, font-weight),
+  $descriptions: (
+    slot:
+      'The trigger button, which is also the field box. Pass a different class for the states you control (`invalid`, `warning`, `disabled`, `readOnly`); use `:hover` and `:focus` for interaction states.',
+    properties: (
+      color: 'The placeholder is styled with `--awsui-style-placeholder-color`.',
+      box-shadow: 'Also draws the focus ring under `:focus`.',
+    )
+  )
+);
+@include style-api.docs('inlineLabel', $properties: (color, background, font-family, font-size, font-weight));
+@include style-api.docs-forward('filter', 'input');
+@include style-api.docs-forward('dropdown', 'dropdown');
 
 .root {
   @include styles.styles-reset;
