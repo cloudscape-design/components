@@ -2,9 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import Item, { ItemProps } from '~components/internal/components/listbox/parts/item';
 import { DropdownOption } from '~components/internal/components/option/interfaces';
-import Item from '~components/select/parts/item';
-import { ItemProps } from '~components/select/parts/item';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
@@ -100,7 +99,7 @@ const permutations = createPermutations<Omit<ItemProps, 'index'>>([
     highlighted: [false, true],
     selected: [false, true],
     highlightType: ['keyboard'],
-    hasCheckbox: [true],
+    selectionType: ['multi'],
   },
   {
     option: [options.complexOption],
@@ -126,21 +125,21 @@ const permutations = createPermutations<Omit<ItemProps, 'index'>>([
   },
   {
     option: [options.complexDisabledOptionWithCustomSvg],
-    hasCheckbox: [true],
+    selectionType: ['multi'],
   },
   {
     option: [options.simpleOption, options.complexOption],
     highlighted: [false, true],
     highlightType: ['keyboard'],
     selected: [true],
-    hasCheckbox: [false],
+    selectionType: ['single'],
   },
   {
     option: [options.complexOptionGroup],
     highlighted: [false],
     highlightType: ['keyboard'],
     selected: [true],
-    hasCheckbox: [false, true],
+    selectionType: ['single', 'multi'],
   },
 ]);
 

@@ -7,6 +7,7 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { InternalDropdownProps } from '../../dropdown/internal';
 import { ButtonTriggerProps } from '../../internal/components/button-trigger';
+import { ItemProps } from '../../internal/components/listbox/parts/item';
 import { SelectionModel } from '../../internal/components/listbox/selection/interfaces';
 import { singleSelection } from '../../internal/components/listbox/selection/single-selection';
 import { connectOptionsByValue } from '../../internal/components/listbox/utils/connect-options';
@@ -25,7 +26,6 @@ import { NonCancelableEventHandler } from '../../types/events';
 import { OptionDefinition } from '../../types/option';
 import { SelectProps } from '../interfaces';
 import { FilterProps } from '../parts/filter';
-import { ItemProps } from '../parts/item';
 
 export type MenuProps = Omit<OptionsListProps, 'children'> & { ref: React.RefObject<HTMLDivElement> };
 export type GetOptionProps = (option: DropdownOption, index: number) => ItemProps;
