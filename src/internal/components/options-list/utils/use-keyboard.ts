@@ -13,7 +13,8 @@ interface UseMenuKeyboard {
     selectOption: () => void;
     goHome: () => void;
     goEnd: () => void;
-    closeDropdown: () => void;
+    /** Escape handler. When omitted, Escape is not handled and keeps propagating. */
+    closeDropdown?: () => void;
     preventNativeSpace?: boolean;
   }): CancelableEventHandler<BaseKeyDetail>;
 }
@@ -44,8 +45,10 @@ export const useMenuKeyboard: UseMenuKeyboard = ({
         goEnd();
         break;
       case KeyCode.escape:
-        event.stopPropagation();
-        closeDropdown();
+        if (closeDropdown) {
+          event.stopPropagation();
+          closeDropdown();
+        }
         break;
       case KeyCode.enter:
         event.preventDefault();

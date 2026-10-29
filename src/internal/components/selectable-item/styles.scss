@@ -210,6 +210,12 @@ $neg-divider-w: calc(-1 * #{$divider-w});
     box-shadow: inset 0 $neg-divider-w 0 0 awsui.$color-border-dropdown-item-default;
   }
 
+  // Used by inline lists (Option List), where there is no dropdown border above the first item.
+  // Exclude highlighted/selected states to preserve their box-shadow.
+  &.hide-top-divider:not(.highlighted):not(.selected):not(.sticky) {
+    box-shadow: inset 0 $neg-divider-w 0 0 awsui.$color-border-dropdown-item-default;
+  }
+
   &.sticky {
     position: sticky;
     inset-block-start: 0;

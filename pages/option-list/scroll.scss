@@ -1,0 +1,15 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+// A scroll container for the list. Applied to a wrapper div.
+.fixed-height {
+  block-size: 240px;
+  overflow: auto;
+}
+
+// Lets the list scroll inside the Dropdown content instead of overflowing it.
+.dropdown-content {
+  overflow: auto;
+}

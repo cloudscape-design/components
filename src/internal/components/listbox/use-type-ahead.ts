@@ -1,0 +1,94 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useRef } from 'react';
+
+import type { OptionDefinition, OptionGroup } from '../../../types/option';
+import { useDebounceCallback } from '../../hooks/use-debounce-callback';
+import type { DropdownOption } from '../option/interfaces';
+import { filterOptions, isGroup, isGroupInteractive, isInteractive } from '../option/utils/filter-options';
+
+const isRepeatedChar = (str: string) => str.split('').every(c => c === str[0]);
+
+interface UseTypeAheadProps {
+  isEnabled: boolean;
+  options: ReadonlyArray<DropdownOption>;
+  highlightOption: (option: DropdownOption) => void;
+  highlightedOption: OptionDefinition | undefined | null;
+  interactiveGroups?: boolean;
+}
+
+function findMatchingOption(
+  options: ReadonlyArray<DropdownOption>,
+  searchText: string,
+  currentHighlight: OptionDefinition | OptionGroup | undefined | null,
+  interactiveGroups?: boolean
+) {
+  const interactivityCheck = interactiveGroups ? isGroupInteractive : isInteractive;
+  const filter = (searchText: string) =>
+    options.filter(option => interactivityCheck(option) && filterOptions([option], searchText, true).length > 0);
+  const matchingOptions = filter(searchText);
+
+  if (matchingOptions.length === 1) {
+    return matchingOptions[0];
+  }
+
+  // Hit the same char over and over, we assume they want to cycle through
+  if (currentHighlight && searchText.length > 1 && isRepeatedChar(searchText)) {
+    const matchingOptions = filter(searchText[0]);
+
+    if (matchingOptions.length > 0) {
+      //handling OptionGroups when interactiveGroups is set
+      let active: number = isGroup(currentHighlight)
+        ? matchingOptions.map(({ option }) => option).indexOf(currentHighlight)
+        : matchingOptions
+            .map(({ option }) => (option as OptionDefinition).value)
+            .indexOf((currentHighlight as OptionDefinition).value);
+
+      // Pick the next thing (if something with this prefix wasn't selected
+      // we'll end up with the first option)
+      active += 1;
+      active = active % matchingOptions.length;
+      return matchingOptions[active];
+    }
+  }
+
+  // We have multiple things that start with this prefix.  Based on the
+  // behavior of native select, this is considered after the repeated case
+  if (matchingOptions.length > 0) {
+    return matchingOptions[0];
+  }
+  return null;
+}
+
+export function useTypeAhead({
+  isEnabled,
+  options,
+  highlightOption,
+  highlightedOption,
+  interactiveGroups,
+}: UseTypeAheadProps) {
+  const value = useRef('');
+
+  const delayedResetValue = useDebounceCallback(() => (value.current = ''), 500);
+
+  return (event: React.KeyboardEvent) => {
+    if (!isEnabled) {
+      return;
+    }
+
+    const { key } = event;
+
+    if (event.defaultPrevented || !key || key.length !== 1) {
+      return;
+    }
+
+    delayedResetValue();
+    const newValue = value.current + key;
+    value.current = newValue;
+
+    const nextHighlight = findMatchingOption(options, newValue, highlightedOption, interactiveGroups);
+    if (nextHighlight) {
+      highlightOption(nextHighlight);
+    }
+  };
+}

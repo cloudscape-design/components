@@ -160,6 +160,9 @@
   "multiselect": {
     "deselectAriaLabel": "ลบ {option__label}"
   },
+  "option-list": {
+    "i18nStrings.selectedAriaLabel": "เลือกไว้"
+  },
   "pagination": {
     "ariaLabels.nextPageLabel": "หน้าถัดไป",
     "ariaLabels.pageLabel": "หน้า {pageNumber} จากทุกหน้า",

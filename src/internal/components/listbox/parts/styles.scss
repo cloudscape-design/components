@@ -1,0 +1,36 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../../styles' as styles;
+@use '../../../styles/tokens' as awsui;
+
+$checkbox-size: awsui.$size-control;
+
+.item {
+  display: flex;
+  align-items: center;
+
+  > .checkbox {
+    position: relative;
+    min-block-size: $checkbox-size;
+    min-inline-size: $checkbox-size;
+    block-size: $checkbox-size;
+    inline-size: $checkbox-size;
+    margin-inline-end: styles.$control-padding-horizontal;
+  }
+}
+
+.selected-icon {
+  color: awsui.$color-item-selected;
+  padding-inline-start: awsui.$space-xs;
+}
+
+.show-label-tag > .selected-icon {
+  padding-inline-start: awsui.$space-scaled-s;
+}
+
+.disabled-reason-tooltip {
+  /* used in test-utils or tests */
+}
