@@ -14,7 +14,7 @@ import { HighlightType } from '../../options-list/utils/use-highlight-option';
 import { SelectionType } from '../selection/interfaces';
 import { fallbackItemHeight } from './common';
 import { renderOptions } from './render-options';
-import scrollToIndex from './scroll-to-index';
+import scrollToIndex, { scrollOptionIntoView } from './scroll-to-index';
 
 import styles from '../../../../select/parts/styles.css.js';
 
@@ -31,6 +31,12 @@ export interface SelectListProps {
   firstOptionSticky?: boolean;
   isMultiSelect?: boolean;
   renderOption?: SelectProps.SelectOptionItemRenderer | MultiselectProps.MultiselectOptionItemRenderer;
+  /**
+   * How the highlighted option is scrolled into view. `menu` (default) scrolls only the list itself.
+   * `ancestors` scrolls through all scrollable ancestors, for a list that is not its own scroll container,
+   * such as in OptionList.
+   */
+  scrollStrategy?: 'menu' | 'ancestors';
 }
 
 export namespace SelectListProps {
@@ -51,6 +57,7 @@ const PlainList = (
     firstOptionSticky,
     isMultiSelect,
     renderOption,
+    scrollStrategy = 'menu',
   }: SelectListProps,
   ref: React.Ref<SelectListProps.SelectListRef>
 ) => {
@@ -79,10 +86,11 @@ const PlainList = (
     () => (index: number) => {
       const isSticky = firstOptionSticky && index === 0;
       if (highlightType.moveFocus && menuRef.current && !isSticky) {
-        scrollToIndex({ index, menuEl: menuRef.current });
+        const scroll = scrollStrategy === 'ancestors' ? scrollOptionIntoView : scrollToIndex;
+        scroll({ index, menuEl: menuRef.current });
       }
     },
-    [firstOptionSticky, highlightType.moveFocus, menuRef]
+    [firstOptionSticky, highlightType.moveFocus, menuRef, scrollStrategy]
   );
 
   const withScrollbar = !!width && width.inner < width.outer;

@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from 'react';
 
 import { DropdownOption } from '../option/interfaces';
 import { ItemProps } from './parts/item';
-import List, { ListProps } from './parts/list';
+import PlainList, { SelectListProps } from './parts/plain-list';
 import { GetOptionProps, ListElementProps, UseListboxApi } from './use-listbox';
 
 export interface ListboxProps {
@@ -29,9 +29,9 @@ export default function Listbox({
   getOptionProps = controller.getOptionProps,
   renderOption,
 }: ListboxProps) {
-  const scrollToIndex = useRef<ListProps.ListRef>(null);
+  const scrollToIndex = useRef<SelectListProps.SelectListRef>(null);
   // Every keyboard highlight request, including the one added on focus entry, scrolls into view, even when it
-  // keeps the highlighted index. Mouse highlights don't (`List` checks `moveFocus`), and focus from a pointer adds
+  // keeps the highlighted index. Mouse highlights don't (`PlainList` checks `moveFocus`), and focus from a pointer adds
   // no highlight. Index changes without a request, such as the highlight following its option when the options
   // change, don't scroll.
   useEffect(() => {
@@ -42,15 +42,18 @@ export default function Listbox({
   const mergedListProps = { ...controller.getListProps(), ...listProps };
 
   return (
-    <List
+    <PlainList
       ref={scrollToIndex}
-      listProps={mergedListProps}
+      menuProps={mergedListProps}
       getOptionProps={getOptionProps}
-      options={options}
+      filteredOptions={options}
+      filteringValue=""
       highlightType={controller.highlightType}
       selectionType={controller.selection.selectionType}
+      isMultiSelect={mergedListProps.isMultiSelect}
       screenReaderContent={controller.announcement}
       renderOption={renderOption}
+      scrollStrategy="ancestors"
     />
   );
 }
