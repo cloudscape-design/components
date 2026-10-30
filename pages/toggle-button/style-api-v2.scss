@@ -1,0 +1,50 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~components/styling/button';
+@use '../style-api/palette' as palette;
+
+.toggle {
+  @include button.root(
+    $background: palette.$surface,
+    $color: palette.$accent,
+    $border-color: palette.$accent,
+    $border-radius: 999px,
+    $focus-ring-color: palette.$accent,
+    $focus-ring-radius: 999px
+  );
+
+  &:hover {
+    @include button.root($background: palette.$subtle, $color: palette.$accent-hover);
+  }
+
+  &-pressed {
+    @include button.root($background: palette.$accent, $color: palette.$text-on-accent, $border-color: palette.$accent);
+
+    &:hover {
+      @include button.root(
+        $background: palette.$accent-hover,
+        $color: palette.$text-on-accent,
+        $border-color: palette.$accent-hover
+      );
+    }
+  }
+}
+
+.toggle-icon {
+  @include button.root($color: palette.$text-muted, $focus-ring-color: palette.$accent);
+
+  &:hover {
+    @include button.root($color: palette.$text);
+  }
+
+  &-pressed {
+    @include button.root($color: palette.$accent);
+
+    &:hover {
+      @include button.root($color: palette.$accent-hover);
+    }
+  }
+}
