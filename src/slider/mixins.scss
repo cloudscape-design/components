@@ -4,21 +4,42 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../internal/styles/style-api' as style-api;
+
+$handle-tokens: style-api.resolve((fill-color, halo-color, border-radius), carrier);
+
+@function fill-color($fallback) {
+  @return style-api.value($handle-tokens, fill-color, $fallback);
+}
+
+// The halo defaults to the fill color.
+@function halo-color($fallback) {
+  @return style-api.value($handle-tokens, halo-color, fill-color($fallback));
+}
 
 $thumb-size: awsui.$space-m;
 $thumb-readonly-size: awsui.$space-s;
 $border-radius-slider-thumb: 50%;
+$thumb-radius: style-api.value(
+  $handle-tokens,
+  border-radius,
+  var(#{custom-props.$styleSliderHandleBorderRadius}, $border-radius-slider-thumb)
+);
 
 @mixin base-thumb-styles {
   appearance: none;
-  background: var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-default);
-  border-color: var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-default);
+  background: fill-color(
+    var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-default)
+  );
+  border-color: fill-color(
+    var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-default)
+  );
   border-block-width: 2px;
   border-inline-width: 2px;
-  border-start-start-radius: var(#{custom-props.$styleSliderHandleBorderRadius}, $border-radius-slider-thumb);
-  border-start-end-radius: var(#{custom-props.$styleSliderHandleBorderRadius}, $border-radius-slider-thumb);
-  border-end-start-radius: var(#{custom-props.$styleSliderHandleBorderRadius}, $border-radius-slider-thumb);
-  border-end-end-radius: var(#{custom-props.$styleSliderHandleBorderRadius}, $border-radius-slider-thumb);
+  border-start-start-radius: $thumb-radius;
+  border-start-end-radius: $thumb-radius;
+  border-end-start-radius: $thumb-radius;
+  border-end-end-radius: $thumb-radius;
   box-shadow: none;
 
   cursor: pointer;
@@ -29,10 +50,13 @@ $border-radius-slider-thumb: 50%;
 }
 
 @mixin base-thumb-hover-styles {
-  background: var(#{custom-props.$styleSliderHandleBackgroundHover}, awsui.$color-background-slider-handle-default);
+  background: fill-color(
+    var(#{custom-props.$styleSliderHandleBackgroundHover}, awsui.$color-background-slider-handle-default)
+  );
   box-shadow:
     0px 0 0 2px awsui.$color-background-slider-handle-ring,
-    0 0 0 4px var(#{custom-props.$styleSliderHandleBackgroundHover}, awsui.$color-background-slider-handle-default);
+    0 0 0 4px
+      halo-color(var(#{custom-props.$styleSliderHandleBackgroundHover}, awsui.$color-background-slider-handle-default));
 }
 
 @mixin base-thumb-focus-styles {
@@ -40,10 +64,15 @@ $border-radius-slider-thumb: 50%;
   inline-size: 20px;
   box-shadow:
     0px 0 0 2px awsui.$color-background-slider-handle-ring,
-    0 0 0 4px var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-active);
-  background: var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-active);
+    0 0 0 4px
+      halo-color(var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-active));
+  background: fill-color(
+    var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-active)
+  );
 
-  border-color: var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-active);
+  border-color: fill-color(
+    var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-active)
+  );
   border-block-width: 2px;
   border-inline-width: 2px;
 }
@@ -53,10 +82,10 @@ $border-radius-slider-thumb: 50%;
   inline-size: $thumb-readonly-size;
   box-shadow:
     0px 0 0 2px awsui.$color-background-slider-handle-ring,
-    0 0 0 4px awsui.$color-foreground-control-read-only;
-  background: awsui.$color-foreground-control-read-only;
+    0 0 0 4px halo-color(awsui.$color-foreground-control-read-only);
+  background: fill-color(awsui.$color-foreground-control-read-only);
 
-  border-color: awsui.$color-background-slider-handle-active;
+  border-color: fill-color(awsui.$color-background-slider-handle-active);
   border-block-width: 2px;
   border-inline-width: 2px;
 }
@@ -64,8 +93,12 @@ $border-radius-slider-thumb: 50%;
 @mixin base-thumb-disabled-styles {
   block-size: $thumb-size;
   inline-size: $thumb-size;
-  background-color: var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-control-disabled);
-  border-color: var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-control-disabled);
+  background-color: fill-color(
+    var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-control-disabled)
+  );
+  border-color: fill-color(
+    var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-control-disabled)
+  );
   box-shadow: none;
   pointer-events: none;
 }
@@ -73,66 +106,72 @@ $border-radius-slider-thumb: 50%;
 @mixin base-thumb-readonly-styles {
   block-size: $thumb-readonly-size;
   inline-size: $thumb-readonly-size;
-  background-color: var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-foreground-control-read-only);
-  border-color: var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-foreground-control-read-only);
+  background-color: fill-color(
+    var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-foreground-control-read-only)
+  );
+  border-color: fill-color(
+    var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-foreground-control-read-only)
+  );
   box-shadow: none;
   pointer-events: none;
 }
 
 @mixin error-thumb-focus-styles {
-  background-color: var(
-    #{custom-props.$styleSliderHandleBackgroundActive},
-    awsui.$color-background-slider-handle-error-active
+  background-color: fill-color(
+    var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-error-active)
   );
   border-block-width: 2px;
   border-inline-width: 2px;
-  border-color: var(
-    #{custom-props.$styleSliderHandleBackgroundActive},
-    awsui.$color-background-slider-handle-error-active
+  border-color: fill-color(
+    var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-error-active)
   );
 
   box-shadow:
     0px 0 0 2px awsui.$color-background-slider-handle-ring,
     0 0 0 4px
-      var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-error-active);
+      halo-color(
+        var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-error-active)
+      );
 }
 
 @mixin warning-thumb-focus-styles {
-  background-color: var(
-    #{custom-props.$styleSliderHandleBackgroundActive},
-    awsui.$color-background-slider-handle-warning-active
+  background-color: fill-color(
+    var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-warning-active)
   );
   border-block-width: 2px;
   border-inline-width: 2px;
-  border-color: var(
-    #{custom-props.$styleSliderHandleBackgroundActive},
-    awsui.$color-background-slider-handle-warning-active
+  border-color: fill-color(
+    var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-warning-active)
   );
 
   box-shadow:
     0px 0 0 2px awsui.$color-background-slider-handle-ring,
     0 0 0 4px
-      var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-warning-active);
+      halo-color(
+        var(#{custom-props.$styleSliderHandleBackgroundActive}, awsui.$color-background-slider-handle-warning-active)
+      );
 }
 
 @mixin error-thumb-hover-styles {
-  background-color: var(
-    #{custom-props.$styleSliderHandleBackgroundDefault},
-    awsui.$color-background-slider-handle-error-active
+  background-color: fill-color(
+    var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-error-active)
   );
   box-shadow:
     0px 0 0 2px awsui.$color-background-slider-handle-ring,
     0 0 0 4px
-      var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-error-active);
+      halo-color(
+        var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-error-active)
+      );
 }
 
 @mixin warning-thumb-hover-styles {
-  background-color: var(
-    #{custom-props.$styleSliderHandleBackgroundDefault},
-    awsui.$color-background-slider-handle-warning-active
+  background-color: fill-color(
+    var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-warning-active)
   );
   box-shadow:
     0px 0 0 2px awsui.$color-background-slider-handle-ring,
     0 0 0 4px
-      var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-warning-active);
+      halo-color(
+        var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-warning-active)
+      );
 }

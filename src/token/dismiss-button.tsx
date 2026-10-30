@@ -16,6 +16,7 @@ import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
 interface DismissButtonProps {
+  styleClassName?: string;
   disabled?: boolean;
   readOnly?: boolean;
   onDismiss?: NonCancelableEventHandler;
@@ -25,6 +26,7 @@ interface DismissButtonProps {
 }
 
 export default function DismissButton({
+  styleClassName,
   disabled,
   dismissLabel,
   onDismiss,
@@ -51,6 +53,7 @@ export default function DismissButton({
         inline && styles['dismiss-button-inline']
       )}
       style={getDismissButtonStyles(style, { disabled, readOnly })}
+      styleClassNames={{ root: styleClassName }}
       onClick={() => fireNonCancelableEvent(onDismiss)}
     />
   );
