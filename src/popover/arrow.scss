@@ -5,6 +5,7 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/style-api' as style-api;
 @use './style-api' as popover-style-api;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 .arrow {
   @include style-api.carriers(popover-style-api.$arrow-tokens);
@@ -74,7 +75,12 @@
   &-inner {
     // The inner triangle is shifted by the border width plus up to 1px so that the uncovered part of the
     // outer triangle renders as the border; min() collapses the shift to 0 for a borderless popover.
-    $border-width: style-api.value(popover-style-api.$arrow-tokens, border-width, awsui.$border-width-popover);
+    $border-width: var(#{custom-props.$popoverArrowBorderWidth});
+    #{custom-props.$popoverArrowBorderWidth}: style-api.value(
+      popover-style-api.$arrow-tokens,
+      border-width,
+      awsui.$border-width-popover
+    );
     inset-block-start: calc(#{$border-width} + min(#{$border-width}, 1px));
 
     &::after {
