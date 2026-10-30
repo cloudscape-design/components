@@ -17,10 +17,9 @@ interface Geometry {
   container: number | null;
   token: number;
   trigger: number;
-  // Combined width of the inline content and the input, and how much of it the inline content takes.
-  field?: number;
-  contentShare?: number;
-  padding?: number;
+  // Combined width of the tokens and the input, and how much of it the tokens take.
+  available?: number;
+  tokensShare?: number;
   gap?: number;
   inputMinWidth?: string;
 }
@@ -29,19 +28,18 @@ function setGeometry({
   container,
   token,
   trigger,
-  field = container ?? 0,
-  contentShare = 0.5,
-  padding = 0,
+  available = container ?? 0,
+  tokensShare = 0.5,
   gap = 0,
   inputMinWidth = '0px',
 }: Geometry) {
   mockContainerWidth = container;
-  const contentWidth = Math.round(field * contentShare);
+  const tokensWidth = Math.round(available * tokensShare);
   jest.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockImplementation(function (this: HTMLElement) {
     if (this.classList.contains(styles['measurement-token'])) {
       return token;
     }
-    const widths = { trigger, content: contentWidth, input: field - contentWidth };
+    const widths = { trigger, tokens: tokensWidth, input: available - tokensWidth };
     return widths[this.dataset.part as keyof typeof widths] ?? 0;
   });
   const getComputedStyle = window.getComputedStyle;
@@ -49,11 +47,7 @@ function setGeometry({
     const style = getComputedStyle(element);
     const part = (element as HTMLElement).dataset.part;
     const overrides: Record<string, string> =
-      part === 'content'
-        ? { paddingInlineStart: `${padding}px`, paddingInlineEnd: `${padding}px`, columnGap: `${gap}px` }
-        : part === 'input'
-          ? { minInlineSize: inputMinWidth }
-          : {};
+      part === 'tokens' ? { columnGap: `${gap}px` } : part === 'input' ? { minInlineSize: inputMinWidth } : {};
     return new Proxy(style, { get: (target, prop: string) => overrides[prop] ?? (target as any)[prop] });
   });
 }
@@ -74,7 +68,7 @@ function Harness({
 }) {
   const measureRef = React.useRef<HTMLDivElement>(null);
   const measureTriggerRef = React.useRef<HTMLSpanElement>(null);
-  const inlineContentRef = React.useRef<HTMLDivElement>(null);
+  const tokensRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const { containerRef, visibleCount } = useTokenOverflow({
     enabled,
@@ -82,7 +76,7 @@ function Harness({
     tokenContentKey: String(tokenCount),
     measureRef,
     measureTriggerRef,
-    inlineContentRef,
+    tokensRef,
     inputRef,
     layoutKey,
   });
@@ -95,7 +89,7 @@ function Harness({
         <span ref={measureTriggerRef} data-part="trigger" />
       </div>
       <div>
-        <div ref={inlineContentRef} data-part="content" />
+        <div ref={tokensRef} data-part="tokens" />
         <input ref={inputRef} data-part="input" />
       </div>
       <output>{visibleCount}</output>
@@ -137,16 +131,16 @@ describe('useTokenOverflow', () => {
     expect(visibleCountFor({ tokenCount: 2 })).toBe(0);
   });
 
-  test('accounts for the inline content padding and gaps', () => {
-    setGeometry({ container: 320, token: 100, trigger: 30, padding: 10, gap: 4 });
+  test('accounts for the gaps between tokens', () => {
+    setGeometry({ container: 300, token: 100, trigger: 30, gap: 4 });
     expect(visibleCountFor({ tokenCount: 3 })).toBe(2);
   });
 
   test('does not depend on how the field is currently split between tokens and input', () => {
-    setGeometry({ container: 300, token: 100, trigger: 30, contentShare: 0 });
+    setGeometry({ container: 300, token: 100, trigger: 30, tokensShare: 0 });
     expect(visibleCountFor({ tokenCount: 3 })).toBe(3);
     jest.restoreAllMocks();
-    setGeometry({ container: 300, token: 100, trigger: 30, contentShare: 1 });
+    setGeometry({ container: 300, token: 100, trigger: 30, tokensShare: 1 });
     expect(visibleCountFor({ tokenCount: 3 })).toBe(3);
   });
 
@@ -155,7 +149,7 @@ describe('useTokenOverflow', () => {
     const { container, rerender } = render(<Harness tokenCount={3} layoutKey="valid" />);
     expect(container.querySelector('output')).toHaveTextContent('3');
     jest.restoreAllMocks();
-    setGeometry({ container: 300, token: 100, trigger: 30, padding: 10 });
+    setGeometry({ container: 300, token: 100, trigger: 30, available: 280 });
     rerender(<Harness tokenCount={3} layoutKey="invalid" />);
     expect(container.querySelector('output')).toHaveTextContent('2');
   });

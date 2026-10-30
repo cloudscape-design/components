@@ -311,12 +311,8 @@ $inline-content-icon-padding: calc(
 
 .input-inline-content {
   display: flex;
-  align-items: center;
-  flex-shrink: 1;
   min-inline-size: 0;
-  column-gap: awsui.$space-xxs;
   padding-inline-start: styles.$control-padding-horizontal;
-  cursor: default;
 
   &.input-inline-content-has-icon-start {
     padding-inline-start: $inline-content-icon-padding;

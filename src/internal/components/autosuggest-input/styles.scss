@@ -35,7 +35,11 @@
 }
 
 .inline-tokens {
-  display: contents;
+  display: flex;
+  align-items: center;
+  column-gap: awsui.$space-xxs;
+  min-inline-size: 0;
+  cursor: default;
 }
 
 .token-list-item {

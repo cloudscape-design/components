@@ -54,7 +54,6 @@ export interface InternalInputProps
 
   // Rendered inside the field, before the native input.
   __inlineContent?: React.ReactNode;
-  __inlineContentRef?: React.Ref<HTMLDivElement>;
 
   __onDelayedInput?: NonCancelableEventHandler<BaseChangeDetail>;
   __onBlurWithDetail?: NonCancelableEventHandler<{ relatedTarget: Node | null }>;
@@ -93,7 +92,6 @@ function InternalInput(
     spellcheck,
     __noBorderRadius,
     __inlineContent,
-    __inlineContentRef,
 
     __startIcon,
     __onStartIconClick,
@@ -361,7 +359,6 @@ function InternalInput(
         )}
         {__inlineContent && (
           <div
-            ref={__inlineContentRef}
             className={clsx(
               styles['input-inline-content'],
               __startIcon && styles['input-inline-content-has-icon-start']

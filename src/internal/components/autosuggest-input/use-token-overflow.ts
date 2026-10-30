@@ -13,7 +13,7 @@ interface UseTokenOverflowOptions {
   tokenContentKey: string;
   measureRef: React.RefObject<HTMLElement>;
   measureTriggerRef: React.RefObject<HTMLElement>;
-  inlineContentRef: React.RefObject<HTMLElement>;
+  tokensRef: React.RefObject<HTMLElement>;
   inputRef: React.RefObject<HTMLElement>;
   layoutKey: string;
 }
@@ -32,7 +32,7 @@ export function useTokenOverflow({
   tokenContentKey,
   measureRef,
   measureTriggerRef,
-  inlineContentRef,
+  tokensRef,
   inputRef,
   layoutKey,
 }: UseTokenOverflowOptions): UseTokenOverflowResult {
@@ -40,27 +40,25 @@ export function useTokenOverflow({
   const [visibleCount, setVisibleCount] = useState(tokenCount);
 
   useLayoutEffect(() => {
-    const content = inlineContentRef.current;
+    const tokens = tokensRef.current;
     const input = inputRef.current;
     const measure = measureRef.current;
-    if (!enabled || !content || !input || !measure || !containerWidth) {
+    if (!enabled || !tokens || !input || !measure || !containerWidth) {
       setVisibleCount(tokenCount);
       return;
     }
     measure.inert = true;
 
-    // The inline content and the input share the field's content box, whatever the tokens currently take.
-    const fieldWidth = content.offsetWidth + input.offsetWidth;
-    const contentStyle = getComputedStyle(content);
-    const paddingInline = parseFloat(contentStyle.paddingInlineStart) + parseFloat(contentStyle.paddingInlineEnd);
-    const gap = parseFloat(contentStyle.columnGap) || 0;
-    const inputMinWidth = resolveLength(getComputedStyle(input).minInlineSize, fieldWidth);
+    // The tokens and the input share the available space, whatever the tokens currently take.
+    const availableWidth = tokens.offsetWidth + input.offsetWidth;
+    const gap = parseFloat(getComputedStyle(tokens).columnGap) || 0;
+    const inputMinWidth = resolveLength(getComputedStyle(input).minInlineSize, containerWidth);
     const triggerWidth = measureTriggerRef.current?.offsetWidth ?? 0;
     const tokenWidths = Array.from(measure.querySelectorAll<HTMLElement>(`.${styles['measurement-token']}`)).map(
       el => el.offsetWidth
     );
 
-    const budget = fieldWidth - paddingInline - inputMinWidth;
+    const budget = availableWidth - inputMinWidth;
     const totalWidth = tokenWidths.reduce((sum, width) => sum + width + gap, -gap);
     setVisibleCount(
       totalWidth <= budget ? tokenWidths.length : countFittingFromEnd(tokenWidths, budget - triggerWidth - gap, gap)
@@ -73,7 +71,7 @@ export function useTokenOverflow({
     layoutKey,
     measureRef,
     measureTriggerRef,
-    inlineContentRef,
+    tokensRef,
     inputRef,
   ]);
 

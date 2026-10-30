@@ -141,7 +141,7 @@ const AutosuggestInput = React.forwardRef(
     const preventOpenOnFocusRef = useRef(false);
     const preventCloseOnBlurRef = useRef(false);
 
-    const inlineContentRef = useRef<HTMLDivElement>(null);
+    const inlineTokensRootRef = useRef<HTMLDivElement>(null);
     const measureRef = useRef<HTMLDivElement>(null);
     const measureTriggerRef = useRef<HTMLButtonElement>(null);
     const inlineTokensRef = useRef<InlineTokensRef>(null);
@@ -162,7 +162,7 @@ const AutosuggestInput = React.forwardRef(
       tokenContentKey: tokenList.map(token => `${token.value}::${token.icon ? 'icon' : 'no-icon'}`).join('\n'),
       measureRef,
       measureTriggerRef,
-      inlineContentRef,
+      tokensRef: inlineTokensRootRef,
       inputRef,
       layoutKey: [
         formFieldContext.invalid,
@@ -428,6 +428,7 @@ const AutosuggestInput = React.forwardRef(
     const inlineTokens = tokenList.length > 0 && (
       <InlineTokens
         ref={inlineTokensRef}
+        rootRef={inlineTokensRootRef}
         tokens={tokenList}
         visibleCount={visibleCount}
         disabled={disabled}
@@ -465,7 +466,6 @@ const AutosuggestInput = React.forwardRef(
             style={style}
             {...formFieldContext}
             __inlineContent={inlineTokens}
-            __inlineContentRef={inlineContentRef}
           />
         }
         onMouseDown={handleDropdownMouseDown}
