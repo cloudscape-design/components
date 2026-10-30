@@ -368,13 +368,15 @@ export default function ButtonDropdownAsyncLoadingPage() {
               {itemsSelect('Group B - items', groupBPreset, value => setUrlParams({ groupBItems: value }))}
             </>
           )}
-          <FormField label="Response delay">
-            <Select
-              selectedOption={DELAY_OPTIONS.find(o => o.value === String(delay)) ?? null}
-              onChange={e => setUrlParams({ delay: e.detail.selectedOption.value! })}
-              options={DELAY_OPTIONS}
-            />
-          </FormField>
+          {scenario !== 'flat' && scenario !== 'groups' && (
+            <FormField label="Response delay">
+              <Select
+                selectedOption={DELAY_OPTIONS.find(o => o.value === String(delay)) ?? null}
+                onChange={e => setUrlParams({ delay: e.detail.selectedOption.value! })}
+                options={DELAY_OPTIONS}
+              />
+            </FormField>
+          )}
           <Checkbox checked={expandToViewport} onChange={e => setUrlParams({ expandToViewport: e.detail.checked })}>
             Expand to viewport
           </Checkbox>
