@@ -43,6 +43,8 @@ export interface ItemProps {
   ariaSetsize?: number;
   highlightType?: HighlightType['type'];
   withScrollbar?: boolean;
+  /** Hides the top divider of the first option in lists without a dropdown border above it (OptionList). */
+  hideTopDivider?: boolean;
   sticky?: boolean;
   renderOption?: SelectProps.SelectOptionItemRenderer | MultiselectProps.MultiselectOptionItemRenderer;
   parentProps?: ItemParentProps;
@@ -94,7 +96,7 @@ const toSelectOptionItem = (props: {
           index: props.parentProps?.index,
           virtualIndex: props.parentProps?.virtualIndex,
           option: props.parentProps?.option,
-          disabled: props.disabled,
+          disabled: props.parentProps.disabled,
         })
       : null,
   };
@@ -135,7 +137,7 @@ const toMultiselectOptionItem = (props: {
           index: props.parentProps?.index,
           virtualIndex: props.parentProps?.virtualIndex,
           option: props.parentProps?.option,
-          disabled: props.disabled,
+          disabled: props.parentProps.disabled,
           highlighted: props.parentProps?.highlighted ?? false,
           indeterminate: props.parentProps?.indeterminate ?? false,
           selected: props.parentProps?.selected ?? false,
@@ -163,6 +165,7 @@ const Item = (
     ariaSetsize,
     highlightType,
     withScrollbar,
+    hideTopDivider,
     sticky,
     renderOption,
     parentProps,
@@ -270,10 +273,11 @@ const Item = (
     />
   );
 
-  const disabledReasonElement = !renderResult && isDisabledWithReason && (
+  const disabledReasonElement = isDisabledWithReason && (
     <>
+      {/* Stays mounted with custom content, so aria-describedby always points to an element. */}
       {descriptionEl}
-      {highlighted && canShowTooltip && (
+      {!renderResult && highlighted && canShowTooltip && (
         <Tooltip
           className={styles['disabled-reason-tooltip']}
           getTrack={() => internalRef.current}
@@ -311,6 +315,7 @@ const Item = (
         value={option.option.value}
         afterHeader={option.afterHeader}
         withScrollbar={withScrollbar}
+        hideTopDivider={hideTopDivider}
         sticky={sticky}
         {...baseProps}
       >
@@ -352,6 +357,7 @@ const Item = (
       ariaDescribedby={isDisabledWithReason ? descriptionId : ''}
       value={option.option.value}
       withScrollbar={withScrollbar}
+      hideTopDivider={hideTopDivider}
       sticky={sticky}
       {...baseProps}
     >

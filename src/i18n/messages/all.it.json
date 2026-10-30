@@ -280,6 +280,9 @@
     "deselectAriaLabel": "Rimuovi {option__label}",
     "i18nStrings.selectAllText": "Seleziona tutto"
   },
+  "option-list": {
+    "i18nStrings.selectedAriaLabel": "Selezionato"
+  },
   "pagination": {
     "ariaLabels.jumpToPageButtonLabel": "Vai alla pagina",
     "ariaLabels.nextPageLabel": "Pagina successiva",

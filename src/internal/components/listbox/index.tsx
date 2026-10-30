@@ -1,0 +1,56 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useEffect, useRef } from 'react';
+
+import { DropdownOption } from '../option/interfaces';
+import { ItemProps } from './parts/item';
+import List, { ListProps } from './parts/list';
+import { GetOptionProps, ListElementProps, UseListboxApi } from './use-listbox';
+
+export interface ListboxProps {
+  /** The controller returned by `useListbox`. */
+  controller: UseListboxApi;
+  /** The options the controller was created with (already flattened). */
+  options: ReadonlyArray<DropdownOption>;
+  /** Merged over the controller's list props, such as aria attributes. */
+  listProps?: Partial<ListElementProps>;
+  /** Overrides the controller's option props, for example to add test attributes. */
+  getOptionProps?: GetOptionProps;
+  renderOption?: ItemProps['renderOption'];
+}
+
+/**
+ * Renders the list for a `useListbox` controller and scrolls the highlighted option into view.
+ */
+export default function Listbox({
+  controller,
+  options,
+  listProps,
+  getOptionProps = controller.getOptionProps,
+  renderOption,
+}: ListboxProps) {
+  const scrollToIndex = useRef<ListProps.ListRef>(null);
+  // Every keyboard highlight request, including the one added on focus entry, scrolls into view, even when it
+  // keeps the highlighted index. Mouse highlights don't (`List` checks `moveFocus`), and focus from a pointer adds
+  // no highlight. Index changes without a request, such as the highlight following its option when the options
+  // change, don't scroll.
+  useEffect(() => {
+    scrollToIndex.current?.(controller.highlightedIndex);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [controller.scrollRequest]);
+
+  const mergedListProps = { ...controller.getListProps(), ...listProps };
+
+  return (
+    <List
+      ref={scrollToIndex}
+      listProps={mergedListProps}
+      getOptionProps={getOptionProps}
+      options={options}
+      highlightType={controller.highlightType}
+      selectionType={controller.selection.selectionType}
+      screenReaderContent={controller.announcement}
+      renderOption={renderOption}
+    />
+  );
+}

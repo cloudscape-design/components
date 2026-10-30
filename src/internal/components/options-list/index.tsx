@@ -16,7 +16,10 @@ import styles from './styles.css.js';
 
 export interface OptionsListProps extends BaseComponentProps {
   open?: boolean;
-  statusType: DropdownStatusProps.StatusType;
+  /**
+   * When the list opens with `pending` status, `onLoadMore` fires right away. Defaults to `finished`.
+   */
+  statusType?: DropdownStatusProps.StatusType;
   /**
    * Options list
    */
@@ -31,6 +34,7 @@ export interface OptionsListProps extends BaseComponentProps {
   onFocus?: NonCancelableEventHandler;
   onMouseUp?: (itemIndex: number) => void;
   onMouseMove?: (itemIndex: number) => void;
+  onMouseLeave?: () => void;
   position?: React.CSSProperties['position'];
   tagOverride?: 'div' | 'ul';
   role?: 'listbox' | 'list' | 'menu';
@@ -60,7 +64,7 @@ const getItemIndex = (containerRef: React.RefObject<HTMLElement>, event: React.M
 const OptionsList = (
   {
     open,
-    statusType,
+    statusType = 'finished',
     children,
     nativeAttributes = {},
     onKeyDown,
@@ -69,6 +73,7 @@ const OptionsList = (
     onLoadMore,
     onMouseUp,
     onMouseMove,
+    onMouseLeave,
     position = 'relative',
     role = 'listbox',
     tagOverride: Tag = 'div',
@@ -124,6 +129,7 @@ const OptionsList = (
       onKeyDown={event => fireKeyboardEvent(onKeyDown, event)}
       onMouseMove={event => onMouseMove?.(getItemIndex(menuRef, event))}
       onMouseUp={event => onMouseUp?.(getItemIndex(menuRef, event))}
+      onMouseLeave={onMouseLeave}
       onBlur={event => fireNonCancelableEvent(onBlur, { relatedTarget: event.relatedTarget })}
       onFocus={() => fireNonCancelableEvent(onFocus)}
       tabIndex={embedded ? 0 : -1}
