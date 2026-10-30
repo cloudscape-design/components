@@ -2,12 +2,12 @@
 
 exports[`getTokenRootStyles handles all possible style configurations 1`] = `
 {
-  "--awsui-token-style-background-default-ka4djm": "#eef2ff",
-  "--awsui-token-style-background-disabled-ka4djm": "#f1f5f9",
-  "--awsui-token-style-background-read-only-ka4djm": "#f8fafc",
-  "--awsui-token-style-border-color-default-ka4djm": "#c7d2fe",
-  "--awsui-token-style-border-color-disabled-ka4djm": "#e2e8f0",
-  "--awsui-token-style-border-color-read-only-ka4djm": "#cbd5e1",
+  "--awsui-token-style-background-default-8i8exb": "#eef2ff",
+  "--awsui-token-style-background-disabled-8i8exb": "#f1f5f9",
+  "--awsui-token-style-background-read-only-8i8exb": "#f8fafc",
+  "--awsui-token-style-border-color-default-8i8exb": "#c7d2fe",
+  "--awsui-token-style-border-color-disabled-8i8exb": "#e2e8f0",
+  "--awsui-token-style-border-color-read-only-8i8exb": "#cbd5e1",
   "borderRadius": "24px",
   "borderWidth": "2px",
   "paddingBlock": "4px",

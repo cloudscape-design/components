@@ -140,6 +140,7 @@ $border-radius: style-api.value(
 }
 
 .media {
+  #{custom-props.$containerBorderRadius}: #{$border-radius};
   overflow: hidden;
   flex-shrink: 0;
 
@@ -164,14 +165,14 @@ $border-radius: style-api.value(
   // reduce border-radius size to fill the visual gap between the parent border and image
   &-top {
     max-block-size: 66%;
-    border-start-start-radius: calc(#{$border-radius} - 1px);
-    border-start-end-radius: calc(#{$border-radius} - 1px);
+    border-start-start-radius: calc(var(#{custom-props.$containerBorderRadius}) - 1px);
+    border-start-end-radius: calc(var(#{custom-props.$containerBorderRadius}) - 1px);
   }
 
   &-side {
     max-inline-size: 66%;
-    border-start-start-radius: calc(#{$border-radius} - 1px);
-    border-end-start-radius: calc(#{$border-radius} - 1px);
+    border-start-start-radius: calc(var(#{custom-props.$containerBorderRadius}) - 1px);
+    border-end-start-radius: calc(var(#{custom-props.$containerBorderRadius}) - 1px);
   }
 }
 
