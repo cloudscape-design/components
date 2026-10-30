@@ -30,6 +30,16 @@ export interface ToggleProps extends BaseCheckboxProps {
   style?: ToggleProps.Style;
 
   /**
+   * Renders the toggle as being in a loading state. It takes precedence over the `disabled` property if both are set to `true`.
+   * It prevents users from changing the toggle value (pointer and keyboard), but the toggle can still be focused.
+   * The checked indicator is hidden while loading, and `onChange` will not fire while `loading` is true.
+   */
+  loading?: boolean;
+  /**
+   * An object containing all the necessary localized strings required by the component.
+   */
+  i18nStrings?: ToggleProps.I18nStrings;
+  /**
    * Attributes to add to the native `input` element.
    * Some attributes will be automatically combined with internal attribute values:
    * - `className` will be appended.
@@ -47,6 +57,14 @@ export interface ToggleProps extends BaseCheckboxProps {
 }
 
 export namespace ToggleProps {
+  export interface I18nStrings {
+    /**
+     * Text announced by screen readers when the toggle is in a loading state.
+     * Use a descriptive string that names the operation, for example "Saving preference" rather than a generic "Loading".
+     */
+    loadingText?: string;
+  }
+
   export interface Ref {
     /**
      * Sets input focus onto the UI control.
