@@ -8,8 +8,32 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/typography' as typography;
 @use '../internal/styles/foundation' as foundation;
+@use '../internal/styles/style-api' as style-api;
 @use './motion';
 @use './collapsible';
+
+// Style API v2. The focus-ring tokens are registered once here, for the item slot and the notificationBar slot
+// (collapsible.scss).
+$_item-tokens: style-api.resolve(style-api.$focus-ring, carrier);
+@include style-api.register($_item-tokens);
+@include style-api.docs(
+  'item',
+  $_item-tokens,
+  $properties: (color, background, border, border-radius, box-shadow, padding),
+  $descriptions: (
+    slot:
+      'One flash message: its box and focus ring. Accepts a class name, or a function of `{ item }` that returns one, so each `type` can take its own class.',
+    properties: (
+      box-shadow: 'Also replaces the shadow of the collapsed stack.',
+    )
+  )
+);
+@include style-api.docs(
+  'icon',
+  $properties: (color),
+  $descriptions: (slot: 'The status icon, or the spinner for `loading`.')
+);
+@include style-api.docs-forward('dismissButton', 'button', 'root');
 
 .flashbar {
   position: relative;
@@ -26,6 +50,7 @@
 }
 
 .flash {
+  @include style-api.carriers($_item-tokens);
   position: relative;
   display: flex;
   justify-content: flex-start;
@@ -41,10 +66,6 @@
   overflow-wrap: break-word;
   word-wrap: break-word;
   box-shadow: awsui.$shadow-flash-sticky;
-
-  #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
-    var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
-    var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
 }
 
 .initial-hidden {
@@ -83,10 +104,10 @@
     outline: none;
   }
   @include focus-visible.when-visible {
-    @include styles.focus-highlight(
-      $gutter: awsui.$space-button-focus-outline-gutter,
-      $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
-      $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
+    @include style-api.focus-highlight(
+      $radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
+      $width: var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width),
+      $color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused)
     );
   }
 }
