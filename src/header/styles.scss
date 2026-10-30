@@ -66,6 +66,7 @@
   max-inline-size: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
   inline-size: 100%;
   flex-wrap: wrap;
   column-gap: awsui.$space-xs;
