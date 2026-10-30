@@ -9,6 +9,7 @@
 @use '../container/shared' as container;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../internal/styles/typography/constants.scss' as constants;
+@use '../internal/components/sticky-header/mixins' as sticky-header;
 
 .root {
   @include styles.default-text-style;
@@ -164,8 +165,7 @@ filter search icon.
 }
 
 .header-secondary {
-  overflow: auto;
-  scrollbar-width: none; /* Firefox */
+  @include sticky-header.copy-scroller;
   box-sizing: border-box;
   inline-size: 100%;
   border-start-start-radius: 0;
@@ -186,9 +186,6 @@ filter search icon.
       border-start-start-radius: awsui.$border-radius-container;
       border-start-end-radius: awsui.$border-radius-container;
     }
-  }
-  &::-webkit-scrollbar {
-    display: none; /* Safari and Chrome */
   }
   &.table-has-header {
     border-block-start: awsui.$border-divider-list-width solid awsui.$color-border-container-divider;

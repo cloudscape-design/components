@@ -2,13 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
-import { getOverflowParents } from '../internal/utils/scrollable-containers';
+import { getOverflowParents } from '../../utils/scrollable-containers';
 
 /**
  * @param containerRef ref to surrounding container with sticky element
  * @param stickyRef ref to sticky element scrolled inside of containerRef
- * @param containerOffset offset between header and container
- *                        originating borders or paddings
  */
 export default function stickyScrolling(
   containerRef: React.MutableRefObject<HTMLElement | null>,
@@ -44,12 +42,9 @@ export default function stickyScrolling(
 }
 
 /**
- * Calculates the scrolling offset between container and
- * sticky element with container offset caused by border
- * or padding
+ * Calculates the scrolling offset between container and sticky element
  * @param container
  * @param sticky element inside of container
- * @param containerOffset caused by borders or paddings
  */
 export function calculateScrollingOffset(container: HTMLElement, sticky: HTMLElement) {
   const stickyRect = getLogicalBoundingClientRect(sticky);
