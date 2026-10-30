@@ -63,6 +63,11 @@ export function computeDomainY<T>(series: readonly AreaChartProps.Series<T>[], s
     return [];
   }
 
+  // Linear areas are filled from the zero baseline. This is consistent with the bar and line charts.
+  if (scaleType === 'linear') {
+    return [Math.min(min, 0), Math.max(max, 0)];
+  }
+
   // Log scales can't start from 0, so, if possible, start from 1.
   if (scaleType === 'log' && min === 0 && max > 1) {
     return [1, max];

@@ -13,17 +13,17 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderDividerDefault: '{colorNeutral750}',
   colorBackgroundPopover: '{colorNeutral800}',
 
-  colorTextButtonInlineIconDefault: '{colorIndigo400}',
-  colorTextButtonInlineIconHover: '{colorIndigo300}',
+  colorTextButtonInlineIconDefault: '{colorPrimary400}',
+  colorTextButtonInlineIconHover: '{colorPrimary300}',
 
   colorBackgroundDropdownItemDefault: '{colorNeutral800}',
   colorBackgroundDropdownItemHover: '{colorNeutral700}',
   colorBackgroundInputDefault: '{colorNeutral950}',
 
-  colorBorderItemFocused: '{colorIndigo500}',
-  colorBorderInputFocused: '{colorIndigo500}',
+  colorBorderItemFocused: '{colorPrimary500}',
+  colorBorderInputFocused: '{colorPrimary500}',
 
-  colorItemSelected: '{colorIndigo400}',
+  colorItemSelected: '{colorPrimary400}',
 };
 
 const vrDarkValues = pickState(vrParentTokens, 'dark');

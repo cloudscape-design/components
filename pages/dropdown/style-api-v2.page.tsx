@@ -28,7 +28,7 @@ function StyledDropdown({
       expandToViewport={expandToViewport}
       minWidth={240}
       content={content ?? <ListContent n={4} />}
-      {...{ styleClassNames: { dropdown: styleClassName } }}
+      {...{ styleClassNames: { container: styleClassName } }}
     />
   );
 }
@@ -47,7 +47,7 @@ export default function () {
             },
             {
               type: 'pair',
-              label: 'Borderless panel',
+              label: 'Borderless panel with custom shadow',
               value: <StyledDropdown styleClassName={styles['dropdown-borderless']} />,
             },
             {

@@ -12,7 +12,7 @@ interface InternalOptionDefinition extends OptionDefinition {
 export interface DropdownOption {
   type?: 'child' | 'parent' | 'select-all' | 'use-entered';
   disabled?: boolean;
-  disabledReason?: string;
+  disabledReason?: React.ReactNode;
   option: OptionDefinition | OptionGroup;
   afterHeader?: boolean;
 }
@@ -25,8 +25,10 @@ export interface OptionProps extends BaseComponentProps {
   selectedOption?: boolean;
   isGroupOption?: boolean;
   disableTitleTooltip?: boolean;
+  singleLineLabelContent?: boolean;
   labelContainerRef?: React.RefObject<HTMLSpanElement>;
   labelRef?: React.RefObject<HTMLSpanElement>;
+  labelTagRef?: React.RefObject<HTMLSpanElement>;
   labelId?: string;
   customContent?: ReactNode;
 }

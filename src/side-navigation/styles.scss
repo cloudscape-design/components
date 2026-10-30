@@ -333,8 +333,20 @@ $content-exit-clip-delay: $content-exit-duration;
   box-sizing: content-box;
 }
 
+// Icon layout: drop the navigation header's 1px alignment border so the icon lines up with plain links.
+// (The icon-less layout compensates for it via $expandable-icon-negative-margin.)
+.expandable-link-group--expand-icon-end > div:first-child {
+  border-inline-start-width: 0;
+}
+
+// Collapsed: shrink the header wrapper to the icon square.
+.expandable-link-group--collapsed > div:first-child {
+  padding-inline: 0;
+  margin-inline: 0;
+}
+
 // Targets the ExpandableSection header wrapper (first child div of the component root).
-.expandable-link-group--active > div:first-child {
+.expandable-link-group--active:not(.expandable-link-group--collapsed) > div:first-child {
   background-color: awsui.$color-background-side-navigation-item-active;
 }
 
@@ -370,11 +382,6 @@ $content-exit-clip-delay: $content-exit-duration;
         block-size $content-exit-motion,
         padding-block $content-exit-motion;
     }
-  }
-
-  > :first-child {
-    padding-inline: 0;
-    margin-inline: 0;
   }
 }
 
@@ -689,6 +696,10 @@ $content-exit-clip-delay: $content-exit-duration;
   }
 }
 
+.list-item--link-with-info > .link > .link-text-wrapper {
+  align-self: baseline;
+}
+
 // Shared text-fade for non-link labels (section headers, section-group titles).
 // Uses the same opacity timing as .link-text-wrapper for visual consistency.
 .label-text {
@@ -789,6 +800,11 @@ $content-exit-clip-delay: $content-exit-duration;
     &:hover {
       @include icon-layout-hover-background;
     }
+  }
+
+  > .list-item > .section--expand-icon-end-with-info > :first-child {
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: awsui.$space-xs;
   }
 
   // In collapsed mode, icon-layout section headers are zero-height; zero their inline offsets

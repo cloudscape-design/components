@@ -776,6 +776,55 @@ describe('Drag Handle Hooks', () => {
         fireEvent.keyDown(element, { key: 'Enter' });
         expect(onUapActionEndAction).toHaveBeenCalledTimes(1);
       });
+      test('should still fire onDndEnd when pointer up is delivered before the dnd-active callback returns (fast release)', () => {
+        const calls: string[] = [];
+        let lastInteraction: DragHandleInteractionState = { value: null };
+
+        const FastReleaseHost = React.forwardRef<
+          { processPointerDown: (event: PointerEvent) => void; processPointerMove: (event: PointerEvent) => void },
+          // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+          {}
+        >((_props, ref) => {
+          // A fresh props object is built every render, mirroring ItemContainer / TestComponent.
+          const firstActiveRef = React.useRef(true);
+
+          const { interaction, processPointerDown, processPointerMove, processPointerUp } =
+            useInternalDragHandleInteractionState({
+              onDndStartAction: () => calls.push('start'),
+              onDndActiveAction: () => {
+                calls.push('active');
+                // Simulate the sub-millisecond release: deliver POINTER_UP while the POINTER_MOVE
+                // batch is still being processed, the first time only.
+                if (firstActiveRef.current) {
+                  firstActiveRef.current = false;
+                  processPointerUp(createPointerEvent('pointerup'));
+                }
+              },
+              onDndEndAction: () => calls.push('end'),
+            });
+
+          lastInteraction = interaction;
+
+          useImperativeHandle(ref, () => ({ processPointerDown, processPointerMove }));
+          return <div />;
+        });
+
+        const ref = React.createRef<{
+          processPointerDown: (event: PointerEvent) => void;
+          processPointerMove: (event: PointerEvent) => void;
+        }>();
+        render(<FastReleaseHost ref={ref} />);
+
+        act(() => {
+          ref.current?.processPointerDown(createPointerEvent('pointerdown'));
+        });
+        act(() => {
+          ref.current?.processPointerMove(createPointerEvent('pointermove'));
+        });
+
+        expect(lastInteraction.value).toBe('dnd-end');
+        expect(calls).toEqual(['start', 'active', 'end']);
+      });
 
       test('should call multiple callbacks for complex transitions', () => {
         const onDndStartAction = jest.fn();

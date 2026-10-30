@@ -10,6 +10,17 @@
 @use './constants' as constants;
 @use '../../generated/custom-css-properties/index.scss' as custom-props;
 
+// Use a special transparent outline only visible in Windows High Contrast Mode.
+// This mode removes all box shadows, se we can only use outline to display focus indicators.
+// When High Contrast Mode is activated, it will change all outline colors, even if they
+// are transparent.
+@mixin windows-high-contrast-outline($offset: 0) {
+  outline: 2px dotted transparent;
+  @if $offset != 0 {
+    outline-offset: $offset;
+  }
+}
+
 @mixin link-focus(
   $border-color: awsui.$color-border-item-focused,
   $border-radius: awsui.$border-radius-control-default-focus-ring,
@@ -33,9 +44,7 @@
   // content. Using a pseudo element does not take the width or height of the overflowing
   // children.
 
-  // Window High Contrast Mode
-  outline: 2px dotted transparent;
-  outline-offset: 2px;
+  @include windows-high-contrast-outline($offset: 2px);
   border-start-start-radius: $border-radius;
   border-start-end-radius: $border-radius;
   border-end-start-radius: $border-radius;
@@ -69,14 +78,8 @@
   }
 
   position: relative;
-  // Add a special outline for Window High Contrast Mode.
-  // This mode will remove all box shadows from the side and can only use outline
-  // do display focus indicators. We can use transparent outlines here because when
-  // High Contrast Mode is activated it will change all outline colors, even if they
-  // are transparent.
   & {
-    outline: 2px dotted transparent;
-    outline-offset: calc(#{$gutter-left} - 1px);
+    @include windows-high-contrast-outline(calc(#{$gutter-left} - 1px));
   }
 
   // Regular rounded outline for all other browsers and modes
@@ -102,9 +105,7 @@
 // Use for elements that have inline buttons without borders
 // like pagination, token list and expandable section
 @mixin focus-element-without-border($border-radius: constants.$control-border-radius) {
-  // Using a special transparent outline only visible in Windows High Contrast Mode.
-  // See focus-highlight above.
-  outline: 2px dotted transparent;
+  @include windows-high-contrast-outline;
   border-block: awsui.$border-width-button solid awsui.$color-border-item-focused;
   border-inline: awsui.$border-width-button solid awsui.$color-border-item-focused;
   border-start-start-radius: $border-radius;
@@ -117,20 +118,13 @@
 // Use for form input elements, excluding buttons
 // or for elements that have a light border and light background
 @mixin form-focus-element(
-  $border-radius: constants.$control-border-radius,
   $border-color: awsui.$color-border-input-focused,
   $box-shadow: foundation.$box-shadow-focused-light
 ) {
-  // Using a special transparent outline only visible in Windows High Contrast Mode.
-  // See focus-highlight above.
-  outline: 2px dotted transparent;
+  @include windows-high-contrast-outline;
 
-  border-block: awsui.$border-width-field solid $border-color;
-  border-inline: awsui.$border-width-field solid $border-color;
-  border-start-start-radius: $border-radius;
-  border-start-end-radius: $border-radius;
-  border-end-start-radius: $border-radius;
-  border-end-end-radius: $border-radius;
+  border-block-color: $border-color;
+  border-inline-color: $border-color;
 
   box-shadow: $box-shadow;
 }
@@ -226,6 +220,51 @@
   @content;
 }
 
+@mixin input-default-styles {
+  background-color: var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default);
+  border-block: awsui.$border-width-field solid
+    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default);
+  border-inline: awsui.$border-width-field solid
+    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default);
+  box-shadow: var(#{custom-props.$styleBoxShadowDefault});
+}
+
+@mixin input-hover-background-styles {
+  background-color: var(
+    #{custom-props.$styleBackgroundHover},
+    var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+  );
+}
+
+@mixin input-hover-styles {
+  border-color: var(
+    #{custom-props.$styleBorderColorHover},
+    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default)
+  );
+  @include input-hover-background-styles();
+  box-shadow: var(#{custom-props.$styleBoxShadowHover}, var(#{custom-props.$styleBoxShadowDefault}));
+}
+
+@mixin input-readonly-styles {
+  @include form-readonly-element(
+    $background-color: var(
+        #{custom-props.$styleBackgroundReadonly},
+        var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+      ),
+    $border-color: var(
+        #{custom-props.$styleBorderColorReadonly},
+        var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-disabled)
+      )
+  );
+}
+
+@mixin input-focus-styles {
+  @include form-focus-element(
+    $border-color: var(#{custom-props.$styleBorderColorFocus}, awsui.$color-border-input-focused),
+    $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
+  );
+}
+
 @mixin label-info-link {
   margin-inline-start: typography.$base-size;
 }
@@ -238,11 +277,13 @@
   }
 }
 
-@mixin container-style {
-  border-start-start-radius: awsui.$border-radius-container;
-  border-start-end-radius: awsui.$border-radius-container;
-  border-end-start-radius: awsui.$border-radius-container;
-  border-end-end-radius: awsui.$border-radius-container;
+// Custom radius from the container style API if set, otherwise the token. Stacked
+// containers still flatten adjacent corners because those rules set a literal 0.
+@mixin container-style($radius: var(#{custom-props.$containerStyleBorderRadius}, #{awsui.$border-radius-container})) {
+  border-start-start-radius: $radius;
+  border-start-end-radius: $radius;
+  border-end-start-radius: $radius;
+  border-end-end-radius: $radius;
   box-sizing: border-box;
 
   &.refresh {
@@ -255,19 +296,19 @@
     // Reset border color to prevent it from flashing black during card selection animation
     border-color: transparent;
     border-block-start: awsui.$border-container-top-width solid awsui.$color-border-container-top;
-    border-start-start-radius: awsui.$border-radius-container;
-    border-start-end-radius: awsui.$border-radius-container;
-    border-end-start-radius: awsui.$border-radius-container;
-    border-end-end-radius: awsui.$border-radius-container;
+    border-start-start-radius: $radius;
+    border-start-end-radius: $radius;
+    border-end-start-radius: $radius;
+    border-end-end-radius: $radius;
     z-index: 1;
   }
 
   &:not(.refresh)::after {
     @include utils.base-pseudo-element;
-    border-start-start-radius: awsui.$border-radius-container;
-    border-start-end-radius: awsui.$border-radius-container;
-    border-end-start-radius: awsui.$border-radius-container;
-    border-end-end-radius: awsui.$border-radius-container;
+    border-start-start-radius: $radius;
+    border-start-end-radius: $radius;
+    border-end-start-radius: $radius;
+    border-end-end-radius: $radius;
     box-shadow: awsui.$shadow-container;
   }
 }
@@ -296,10 +337,10 @@
     background-color: transparent;
     border-block: $border-width solid $border-color;
     border-inline: $border-width solid $border-color;
-    border-start-start-radius: $border-radius;
-    border-start-end-radius: $border-radius;
-    border-end-start-radius: $border-radius;
-    border-end-end-radius: $border-radius;
+    border-start-start-radius: inherit;
+    border-start-end-radius: inherit;
+    border-end-start-radius: inherit;
+    border-end-end-radius: inherit;
     pointer-events: none;
   }
 }
@@ -355,10 +396,44 @@ $inline-label-border-radius: 2px;
   z-index: 1;
 }
 
+// Adjusts an inline label's vertical position so it does not overlap inline tokens.
+@mixin inline-label-inline-tokens {
+  padding-block-end: 0;
+  transform: translateY(-1.5px);
+}
+
 @mixin inline-label-disabled {
   background: linear-gradient(
     to bottom,
     var(#{custom-props.$inlineLabelBackgroundColor}, awsui.$color-background-layout-main),
     awsui.$color-background-input-disabled
   );
+}
+
+// Resets the generic v1 style properties that the button reads. They inherit, so a button nested in another
+// styled component picks them up; the button's own v1 style is set inline and still applies.
+@mixin reset-v1-button-styles {
+  @each $property
+    in (
+      custom-props.$styleBackgroundActive,
+      custom-props.$styleBackgroundDefault,
+      custom-props.$styleBackgroundDisabled,
+      custom-props.$styleBackgroundHover,
+      custom-props.$styleBorderColorActive,
+      custom-props.$styleBorderColorDefault,
+      custom-props.$styleBorderColorDisabled,
+      custom-props.$styleBorderColorHover,
+      custom-props.$styleBoxShadowActive,
+      custom-props.$styleBoxShadowDefault,
+      custom-props.$styleBoxShadowDisabled,
+      custom-props.$styleBoxShadowFocus,
+      custom-props.$styleBoxShadowHover,
+      custom-props.$styleColorActive,
+      custom-props.$styleColorDefault,
+      custom-props.$styleColorDisabled,
+      custom-props.$styleColorHover
+    )
+  {
+    #{$property}: initial;
+  }
 }

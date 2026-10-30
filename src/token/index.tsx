@@ -9,14 +9,17 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { GeneratedAnalyticsMetadataTokenComponent } from './analytics-metadata/interfaces';
 import { TokenProps } from './interfaces';
-import InternalToken from './internal';
+import InternalToken, { StyleClassNames } from './internal';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 
 export { TokenProps };
 
-export default function Token(props: TokenProps) {
-  const baseComponentProps = useBaseComponent('Token');
+export default function Token({ variant = 'normal', ...props }: TokenProps) {
+  const baseComponentProps = useBaseComponent('Token', {
+    props: { variant, readOnly: props.readOnly, disabled: props.disabled },
+    metadata: { hasIcon: Boolean(props.icon) },
+  });
 
   const componentAnalyticsMetadata: GeneratedAnalyticsMetadataTokenComponent = {
     name: 'awsui.Token',
@@ -26,6 +29,8 @@ export default function Token(props: TokenProps) {
   return (
     <InternalToken
       {...props}
+      variant={variant}
+      styleClassNames={(props as { styleClassNames?: StyleClassNames }).styleClassNames}
       {...baseComponentProps}
       {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
     />

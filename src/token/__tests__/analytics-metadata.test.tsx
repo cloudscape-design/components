@@ -65,8 +65,8 @@ describe('Token analytics metadata', () => {
     const wrapper = renderToken({ label: 'Test token', onDismiss });
 
     const dismissButton = wrapper.findDismiss()!.getElement();
-    const metadata = dismissButton.getAttribute('data-awsui-analytics');
-    expect(metadata).toBeTruthy();
+    const metadata = JSON.parse(dismissButton.getAttribute('data-awsui-analytics')!);
+    expect(metadata).toEqual({ action: 'dismiss', detail: { label: { root: 'self' } } });
   });
 
   test('does not add analytics metadata to dismiss button when disabled', () => {
@@ -74,8 +74,7 @@ describe('Token analytics metadata', () => {
     const wrapper = renderToken({ label: 'Test token', onDismiss, disabled: true });
 
     const dismissButton = wrapper.findDismiss()!.getElement();
-    const metadata = dismissButton.getAttribute('data-awsui-analytics');
-    expect(metadata).toBeFalsy();
+    expect(JSON.parse(dismissButton.getAttribute('data-awsui-analytics') ?? '{}')).toEqual({});
   });
 
   test('does not add analytics metadata to dismiss button when readOnly', () => {
@@ -83,7 +82,6 @@ describe('Token analytics metadata', () => {
     const wrapper = renderToken({ label: 'Test token', onDismiss, readOnly: true });
 
     const dismissButton = wrapper.findDismiss()!.getElement();
-    const metadata = dismissButton.getAttribute('data-awsui-analytics');
-    expect(metadata).toBeFalsy();
+    expect(JSON.parse(dismissButton.getAttribute('data-awsui-analytics') ?? '{}')).toEqual({});
   });
 });

@@ -12,17 +12,24 @@
   position: relative;
   display: inline-block;
   vertical-align: top;
+  box-sizing: border-box;
   &-flex-height {
     display: inline-flex;
     align-items: center;
   }
 
-  /* stylelint-disable-next-line selector-max-type */
+  // stylelint-disable selector-max-type
   > svg {
     // SVG is focusable by default
     // https://stackoverflow.com/questions/18646111/disable-onfocus-event-for-svg-element
     pointer-events: none;
   }
+
+  > svg,
+  > img {
+    vertical-align: top;
+  }
+  // stylelint-enable selector-max-type
 
   @include mixins.style-svg();
 

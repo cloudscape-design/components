@@ -46,10 +46,11 @@ interface LabelTagProps {
   labelTag?: string;
   highlightText?: string;
   triggerVariant: boolean;
+  labelTagRef?: React.RefObject<HTMLSpanElement>;
 }
-export const LabelTag = ({ labelTag, highlightText, triggerVariant }: LabelTagProps) =>
+export const LabelTag = ({ labelTag, highlightText, triggerVariant, labelTagRef }: LabelTagProps) =>
   labelTag ? (
-    <span className={clsx(styles['label-tag'], triggerVariant && styles['trigger-variant'])}>
+    <span ref={labelTagRef} className={clsx(styles['label-tag'], triggerVariant && styles['trigger-variant'])}>
       <HighlightMatch str={labelTag} highlightText={highlightText} />
     </span>
   ) : null;

@@ -8,21 +8,19 @@
 @use '../internal/styles/foundation' as foundation;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../internal/styles/style-api' as style-api;
+@use './motion' as motion;
 
 $toggle-width: 2.4 * styles.$base-size;
 $toggle-height: 1.6 * styles.$base-size;
 $handle-size: 1.2 * styles.$base-size;
 $handle-offset: 0.2 * styles.$base-size;
+$handle-travel: 0.8 * styles.$base-size;
 $shadow-color: awsui.$color-shadow-toggle-handle;
 
-$control-props: style-api.combine((color, background-color), style-api.$focus-ring);
+$control-props: style-api.combine((fill-color, indicator-color), style-api.$focus-ring);
 $control-tokens: style-api.resolve($control-props, carrier);
-$label-tokens: style-api.resolve((color), public);
-$description-tokens: style-api.resolve((color), public);
-@include style-api.register($control-tokens, $label-tokens, $description-tokens);
+@include style-api.register($control-tokens);
 @include style-api.docs('control', $control-tokens);
-@include style-api.docs('label', $label-tokens);
-@include style-api.docs('description', $description-tokens);
 
 .root {
   @include styles.styles-reset;
@@ -45,23 +43,24 @@ $description-tokens: style-api.resolve((color), public);
   // background colors in high-contrast/forced-color mode
   forced-color-adjust: none;
   @include styles.make-control-size($toggle-height, $toggle-width);
-  background: style-api.value($control-tokens, background-color, awsui.$color-background-toggle-default);
+  background: style-api.value($control-tokens, fill-color, awsui.$color-background-toggle-default);
   border-start-start-radius: 0.8 * styles.$base-size;
   border-start-end-radius: 0.8 * styles.$base-size;
   border-end-start-radius: 0.8 * styles.$base-size;
   border-end-end-radius: 0.8 * styles.$base-size;
   &-checked {
-    background: style-api.value($control-tokens, background-color, awsui.$color-background-control-checked);
+    background: style-api.value($control-tokens, fill-color, awsui.$color-background-control-checked);
   }
   &-disabled {
-    background: style-api.value($control-tokens, background-color, awsui.$color-background-control-disabled);
+    background: style-api.value($control-tokens, fill-color, awsui.$color-background-control-disabled);
     &.toggle-control-checked {
-      background: style-api.value($control-tokens, background-color, awsui.$color-background-toggle-checked-disabled);
+      background: style-api.value($control-tokens, fill-color, awsui.$color-background-toggle-checked-disabled);
     }
   }
   &-readonly {
-    background: style-api.value($control-tokens, background-color, awsui.$color-background-control-disabled);
+    background: style-api.value($control-tokens, fill-color, awsui.$color-background-control-disabled);
   }
+  @include motion.control;
 }
 
 .toggle-handle {
@@ -71,7 +70,7 @@ $description-tokens: style-api.resolve((color), public);
   border-start-end-radius: 0.6 * styles.$base-size;
   border-end-start-radius: 0.6 * styles.$base-size;
   border-end-end-radius: 0.6 * styles.$base-size;
-  background: style-api.value($control-tokens, color, awsui.$color-foreground-control-default);
+  background: style-api.value($control-tokens, indicator-color, awsui.$color-foreground-control-default);
   box-shadow: 1px 1px $shadow-color;
   inline-size: $handle-size;
   block-size: $handle-size;
@@ -88,22 +87,24 @@ $description-tokens: style-api.resolve((color), public);
   }
 
   &-checked {
-    transform: translateX(0.8 * styles.$base-size);
+    transform: translateX($handle-travel);
 
     @include styles.with-direction('rtl') {
-      transform: translateX(-0.8 * styles.$base-size);
+      transform: translateX(-$handle-travel);
     }
   }
 
   &-disabled {
-    background: style-api.value($control-tokens, color, awsui.$color-foreground-control-disabled);
+    background: style-api.value($control-tokens, indicator-color, awsui.$color-foreground-control-disabled);
     box-shadow: none;
   }
 
   &-readonly:not(&-disabled) {
     box-shadow: none;
     &.toggle-handle-checked {
-      background: style-api.value($control-tokens, color, awsui.$color-foreground-control-read-only);
+      background: style-api.value($control-tokens, indicator-color, awsui.$color-foreground-control-read-only);
     }
   }
+
+  @include motion.handle($handle-size, $handle-travel);
 }

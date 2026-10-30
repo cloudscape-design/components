@@ -18,7 +18,7 @@
 $surface: (color, background-color, border-color, border-width, border-radius);
 
 // Focus-outline tokens, shared by every focusable component (button, alert dismiss, ...).
-$focus-ring: (focus-ring-color, focus-ring-width, focus-ring-radius, focus-ring-gutter-block, focus-ring-gutter-inline);
+$focus-ring: (focus-ring-color, focus-ring-width, focus-ring-radius);
 
 // Carrier map for the focus-outline group: reads resolve to the inherited --awsui-internal-style-*
 // carriers (re-anchored by carriers() on the component root), so the ring below reaches ::before.
@@ -51,13 +51,13 @@ $_focus-ring-carriers: toolkit.resolve($focus-ring, carrier);
   }
 }
 
-@mixin docs($name, $map) {
+@mixin docs($name, $tokens: null, $properties: null, $descriptions: null) {
   @if enabled() {
-    @include toolkit.docs($name, $map);
+    @include toolkit.docs($name, $tokens, $properties, $descriptions);
   }
 }
 
-@mixin docs-forward($name, $component, $slot) {
+@mixin docs-forward($name, $component, $slot: null) {
   @if enabled() {
     @include toolkit.docs-forward($name, $component, $slot);
   }
@@ -74,8 +74,8 @@ $_focus-ring-carriers: toolkit.resolve($focus-ring, carrier);
   @if enabled() {
     @include forms.focus-highlight(
       $gutter: (
-        'vertical': var(#{toolkit.read($_focus-ring-carriers, focus-ring-gutter-block)}, #{$gutter-block}),
-        'horizontal': var(#{toolkit.read($_focus-ring-carriers, focus-ring-gutter-inline)}, #{$gutter-inline}),
+        'vertical': $gutter-block,
+        'horizontal': $gutter-inline,
       ),
       $border-radius: var(#{toolkit.read($_focus-ring-carriers, focus-ring-radius)}, #{$radius}),
       $box-shadow: 0 0 0 var(#{toolkit.read($_focus-ring-carriers, focus-ring-width)}, #{$width})

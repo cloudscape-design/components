@@ -34,6 +34,14 @@ Location: `src/<component-name>/__integ__/`
 
 Integration tests run in a real browser against test pages. Use `createWrapper` from `test-utils/selectors` (not `test-utils/dom` — selectors generate CSS selectors for browser tests, while dom wrappers operate on DOM nodes for unit tests).
 
+## Visual Regression Tests
+
+Location: `test/definitions/visual/`
+
+Create `test/definitions/visual/<component>.ts` exporting a `TestSuite`. The build picks it up automatically — the barrel (`lib/test-definitions/index.js`) is generated from the files in `test/definitions/visual`, with one export per file, so there is no index to update by hand.
+
+For how visual regression tests are run (CI only), see [RUNNING_TESTS.md](./RUNNING_TESTS.md#visual-regression-tests).
+
 ## Accessibility in Unit Tests
 
 Use the `toValidateA11y` Jest matcher to run axe and HTML validation on rendered components:

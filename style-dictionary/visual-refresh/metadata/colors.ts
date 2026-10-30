@@ -757,6 +757,12 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBorderControlGroupDefault: {
+    description:
+      'The default border color of control group action buttons that sit next to form inputs. Independent from the input border color.',
+    public: false,
+    themeable: false,
+  },
   colorBorderInputDefault: {
     description:
       'The default border color of form inputs. For example: input, textarea, autosuggest, datepicker, select, and multiselect.',

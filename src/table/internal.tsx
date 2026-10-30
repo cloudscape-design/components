@@ -655,7 +655,11 @@ const InternalTable = React.forwardRef(
                     })}
                   >
                     {resizableColumns && columnGroupsLayout && columnGroupsLayout.rows.length > 1 && (
-                      <TableColGroup visibleColumnDefinitions={visibleColumnDefinitions} hasSelection={hasSelection} />
+                      <TableColGroup
+                        visibleColumnDefinitions={visibleColumnDefinitions}
+                        hasSelection={hasSelection}
+                        selectionColumnId={selectionColumnId}
+                      />
                     )}
                     <Thead
                       ref={theadRef}

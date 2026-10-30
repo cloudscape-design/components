@@ -21,22 +21,29 @@ export function TableColGroup({
   visibleColumnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<any>>;
   hasSelection: boolean;
   sticky?: boolean;
-  selectionColumnId?: PropertyKey;
+  selectionColumnId: PropertyKey;
 }) {
   const { getColumnStyles, setCol } = useColumnWidths();
   return (
     <colgroup>
       {hasSelection && (
         <col
-          style={sticky && selectionColumnId ? { width: getColumnStyles(true, selectionColumnId).width } : undefined}
+          style={sticky ? { width: getColumnStyles(true, selectionColumnId).width } : undefined}
+          ref={node => setCol(sticky, selectionColumnId, node)}
         />
       )}
       {visibleColumnDefinitions.map((column, colIndex) => {
         const columnId = getColumnKey(column, colIndex);
         if (sticky) {
-          return <col key={String(columnId)} style={{ width: getColumnStyles(true, columnId).width }} />;
+          return (
+            <col
+              key={String(columnId)}
+              style={{ width: getColumnStyles(true, columnId).width }}
+              ref={node => setCol(true, columnId, node)}
+            />
+          );
         }
-        return <col key={columnId} data-column-id={String(columnId)} ref={node => setCol(columnId, node)} />;
+        return <col key={columnId} data-column-id={String(columnId)} ref={node => setCol(false, columnId, node)} />;
       })}
     </colgroup>
   );

@@ -30,7 +30,7 @@ export interface BaseSelectProps
    * - `lang` (string) - (Optional) The language of the option or group, provided as a BCP 47 language tag.
    * - `description` (string) - (Optional) Further information about the option or group that appears below the label.
    * - `disabled` (boolean) - (Optional) Determines whether the option or group is disabled.
-   * - `disabledReason` (string) - (Optional) Displays tooltip near the item when disabled. Use to provide additional context.
+   * - `disabledReason` (ReactNode) - (Optional) Displays tooltip near the item when disabled. Use to provide additional context. Do not place interactive elements like links or buttons.
    * - `labelTag` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
    * - `tags` [string[]] - (Optional) A list of tags giving further guidance about the option or group.
    * - `filteringTags` [string[]] - (Optional) A list of additional tags used for automatic filtering.
@@ -178,6 +178,21 @@ export interface BaseSelectProps
    * Adds `aria-describedby` to the dropdown's listbox/dialog content.
    */
   dropdownAriaDescribedby?: string;
+
+  /**
+   * By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
+   * Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
+   * [React Portals](https://reactjs.org/docs/portals.html).
+   *
+   * Set this property if the dropdown would otherwise be constrained by a scrollable container,
+   * for example inside table and split view layouts.
+   *
+   * We recommend you use discretion, and don't enable this property unless necessary
+   * because fixed positioning results in a slight, visible lag when scrolling complex pages.
+   *
+   * When the component is rendered in a control group, the dropdown will be rendered expanded to the viewport regardless of this property.
+   */
+  expandToViewport?: boolean;
 }
 
 export interface SelectProps extends BaseSelectProps {

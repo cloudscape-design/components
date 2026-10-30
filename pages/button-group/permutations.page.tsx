@@ -96,12 +96,8 @@ const add: ButtonGroupProps.Item = {
   text: 'Add',
 };
 
-const cut: ButtonGroupProps.Item = {
-  type: 'icon-button',
-  id: 'cut',
-  iconName: 'delete-marker',
-  text: 'Cut',
-};
+// A menu dropdown holds ButtonDropdown items, not ButtonGroup items.
+const cut = { id: 'cut', text: 'Cut', iconName: 'delete-marker' } as const;
 
 const remove: ButtonGroupProps.Item = {
   type: 'icon-button',

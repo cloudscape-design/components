@@ -24,6 +24,7 @@ import globalVars from '../../../internal/styles/global-vars';
 import { getSplitPanelDefaultSize } from '../../../split-panel/utils/size-utils';
 import { AppLayoutProps } from '../../interfaces';
 import { SplitPanelProviderProps } from '../../split-panel';
+import { isAppLayoutHideToolbarBreadcrumbsEnabled } from '../../utils/feature-flags';
 import { MIN_DRAWER_SIZE, OnChangeParams, useDrawers } from '../../utils/use-drawers';
 import { useAsyncFocusControl, useMultipleFocusControl } from '../../utils/use-focus-control';
 import { useGlobalScrollPadding } from '../../utils/use-global-scroll-padding';
@@ -695,7 +696,7 @@ export const useAppLayout = (
     splitPanelInternals,
     widgetizedState: {
       ...appLayoutInternals,
-      breadcrumbsExternallyOwned: hasBreadcrumbsConsumer,
+      hideBreadcrumbsInToolbar: hasBreadcrumbsConsumer || isAppLayoutHideToolbarBreadcrumbsEnabled(),
       reportOwnBreadcrumbsProps,
       aiDrawerExpandedMode: expandedDrawerId === activeAiDrawer?.id,
       isNested,

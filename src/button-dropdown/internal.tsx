@@ -10,10 +10,10 @@ import InternalBox from '../box/internal';
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton, InternalButtonProps } from '../button/internal';
 import Dropdown from '../dropdown/internal';
+import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel.js';
 import { getBaseProps } from '../internal/base-component';
-import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
 import OptionsList from '../internal/components/options-list';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
@@ -26,13 +26,16 @@ import {
   GeneratedAnalyticsMetadataButtonDropdownCollapse,
   GeneratedAnalyticsMetadataButtonDropdownExpand,
 } from './analytics-metadata/interfaces.js';
+import { getGroupStatusIds } from './category-elements/use-expandable-group-status';
 import ButtonDropdownFilter from './filter';
 import { ButtonDropdownProps } from './interfaces';
 import { InternalButtonDropdownProps, InternalItem } from './internal-interfaces';
 import ItemsList from './items-list';
+import StatusFooter from './status-footer';
 import { countLeafItems } from './utils/filter-items';
 import { useButtonDropdown } from './utils/use-button-dropdown';
-import { isLinkItem } from './utils/utils.js';
+import { useLoadItems } from './utils/use-load-items';
+import { isItemGroup, isLinkItem } from './utils/utils.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -51,6 +54,7 @@ const InternalButtonDropdown = React.forwardRef(
       onItemClick,
       onItemFollow,
       customTriggerBuilder,
+      styleClassNames,
       expandToViewport,
       ariaLabel,
       iconName,
@@ -76,6 +80,9 @@ const InternalButtonDropdown = React.forwardRef(
       filteringClearAriaLabel,
       filteringResultsText,
       noMatch,
+      onLoadItems,
+      asyncLoadingProps,
+      getExpandableItemsAsyncLoadingState,
       i18nStrings,
       compactTrigger,
       ariaDescribedby,
@@ -86,7 +93,7 @@ const InternalButtonDropdown = React.forwardRef(
     const isInRestrictedView = useMobile();
     const dropdownId = useUniqueId('dropdown');
     const menuId = useUniqueId('button-dropdown-menu');
-    const hasFiltering = filteringType === 'auto';
+    const hasFiltering = filteringType === 'auto' || filteringType === 'manual';
     for (const item of items) {
       if (isLinkItem(item)) {
         checkSafeUrl('ButtonDropdown', item.href);
@@ -110,6 +117,30 @@ const InternalButtonDropdown = React.forwardRef(
     const isVisualRefresh = useVisualRefresh();
     const isOneTheme = isThemeActive(Theme.OneTheme);
 
+    const i18n = useInternalI18n('button-dropdown');
+    const errorIconAriaLabel = i18n('errorIconAriaLabel', asyncLoadingProps?.errorIconAriaLabel);
+    const recoveryText = i18n('recoveryText', asyncLoadingProps?.recoveryText);
+
+    if (isDevelopment) {
+      if (asyncLoadingProps?.recoveryText && !onLoadItems) {
+        warnOnce('ButtonDropdown', '`onLoadItems` must be provided for `recoveryText` to be displayed.');
+      }
+    }
+
+    const statusType = asyncLoadingProps?.statusType ?? 'finished';
+
+    const { fireLoadItems, handleLoadMore, handleRecoveryClick, fireGroupLoadItems } = useLoadItems({
+      onLoadItems,
+      items,
+      statusType,
+    });
+
+    // Whether a recovery button is rendered anywhere in the dropdown. It is derived from the
+    // dropdown status below, which in turn depends on the hook output, so the hook reads the
+    // latest value through a ref instead of receiving it as an argument.
+    const hasRecoveryButtonRef = useRef(false);
+    const hasRootRecoveryButtonRef = useRef(false);
+
     const {
       isOpen,
       targetItem,
@@ -119,6 +150,7 @@ const InternalButtonDropdown = React.forwardRef(
       highlightItem,
       onKeyDown,
       onKeyUp,
+      onKeyDownCapture,
       onItemActivate,
       onGroupToggle,
       onDropdownFocusLeave,
@@ -130,6 +162,8 @@ const InternalButtonDropdown = React.forwardRef(
       setFilteringValue,
       filteredItems,
       isExpandable,
+      isHighlightPending,
+      expandedGroup,
     } = useButtonDropdown({
       items,
       onItemClick,
@@ -141,10 +175,34 @@ const InternalButtonDropdown = React.forwardRef(
       expandToViewport,
       hasExpandableGroups: expandableGroups,
       isInRestrictedView,
-      hasFiltering,
+      filteringType,
+      fireLoadItems,
+      onGroupExpand: group => {
+        if (!onLoadItems) {
+          return;
+        }
+        if (group.id) {
+          fireGroupLoadItems(group.id);
+        } else if (getExpandableItemsAsyncLoadingState) {
+          warnOnce('ButtonDropdown', 'Expandable groups need an `id` for `onLoadItems` to fire when they expand.');
+        }
+      },
+      hasRecoveryButton: () => hasRecoveryButtonRef.current,
+      hasRootRecoveryButton: () => hasRootRecoveryButtonRef.current,
+      // Enter on a failed group's status retries loading it. The highlight stays on the status,
+      // which then reads the loading text, and moves to the first item once the items arrive.
+      onPendingHighlightActivate: () => {
+        if (pendingGroupStatus === 'error' && expandedGroup?.id && hasGroupRecoveryButton) {
+          onGroupRecoveryClick?.(expandedGroup.id);
+        }
+      },
     });
 
     const filterRef = useRef<HTMLInputElement>(null);
+    const isOpenRef = useRef(isOpen);
+    isOpenRef.current = isOpen;
+    const filteringValueRef = useRef(filteringValue);
+    filteringValueRef.current = filteringValue;
 
     useEffect(() => {
       // Focus the filter input when it opens.
@@ -207,6 +265,7 @@ const InternalButtonDropdown = React.forwardRef(
           };
 
     const baseTriggerProps: InternalButtonProps = {
+      styleClassNames: { root: styleClassNames?.trigger },
       className: clsx(
         styles['trigger-button'],
         styles['test-utils-button-trigger'],
@@ -301,6 +360,7 @@ const InternalButtonDropdown = React.forwardRef(
           {...mainActionProps}
           {...mainActionIconProps}
           fullWidth={canBeFullWidth}
+          styleClassNames={{ root: styleClassNames?.mainAction }}
           className={clsx(
             styles['trigger-button'],
             hasNoText && styles['has-no-text'],
@@ -402,12 +462,72 @@ const InternalButtonDropdown = React.forwardRef(
     const matchesCount = useMemo(() => countLeafItems(filteredItems), [filteredItems]);
     const filteredText = isFiltered ? filteringResultsText?.(matchesCount, totalCount) : undefined;
 
+    // Only treat as "truly empty" (no data at all) when the user is not actively filtering.
+    // When filteringValue is set, zero items means "no match" not "empty".
+    // `empty` is only shown once loading has finished (unset statusType is normalized to `finished`),
+    // so a `pending` list with no items yet doesn't announce an empty result.
+    const isEmpty = statusType === 'finished' && (!items || items.length === 0) && !filteringValue;
+
+    const hasItems = filteredItems.length > 0;
+
     const dropdownStatus = useDropdownStatus({
-      statusType: 'finished',
+      statusType,
+      empty: asyncLoadingProps?.empty?.(),
+      loadingText: asyncLoadingProps?.loadingText?.(),
+      finishedText: asyncLoadingProps?.finishedText?.(),
+      errorText: asyncLoadingProps?.errorText?.(),
+      recoveryText,
+      errorIconAriaLabel,
+      isEmpty,
       isNoMatch,
       noMatch,
       filteringResultsText: filteredText,
+      hasRecoveryCallback: !!onLoadItems,
+      onRecoveryClick: () => {
+        handleRecoveryClick();
+        // The recovery button disappears once loading starts, so move focus back to the
+        // element that owns keyboard interaction to keep the dropdown open.
+        if (hasFiltering) {
+          filterRef.current?.focus();
+        } else {
+          triggerRef.current?.focus({ preventScroll: true });
+        }
+      },
     });
+
+    // Recovery inside an expanded group. In filtering mode the recovery button is reached with Tab
+    // from the filter input, so focus returns there; in menu mode the group keeps focus on its header.
+    const onGroupRecoveryClick = onLoadItems
+      ? (groupId: string) => {
+          handleRecoveryClick(groupId);
+          if (hasFiltering) {
+            filterRef.current?.focus();
+          }
+        }
+      : undefined;
+
+    // A recovery button inside an expanded group is rendered by the category element with the
+    // same conditions as the main status (error state, recovery text, onLoadItems callback).
+    const expandedGroupHasRecoveryButton =
+      !!recoveryText &&
+      !!onLoadItems &&
+      items.some(
+        item =>
+          isItemGroup(item) &&
+          !!item.id &&
+          isExpandable(item) &&
+          isExpanded(item) &&
+          getExpandableItemsAsyncLoadingState?.({ item }) === 'error'
+      );
+    const pendingGroupStatus =
+      hasFiltering && isHighlightPending && expandedGroup?.id
+        ? getExpandableItemsAsyncLoadingState?.({ item: expandedGroup })
+        : undefined;
+    // Same conditions under which the group renders its recovery button.
+    const hasGroupRecoveryButton = !!recoveryText && !!onLoadItems;
+
+    hasRecoveryButtonRef.current = dropdownStatus.hasRecoveryButton || expandedGroupHasRecoveryButton;
+    hasRootRecoveryButtonRef.current = !!dropdownStatus.hasRecoveryButton;
 
     // Only create a filteringDescription element if filtering is actually enabled,
     // not just if the string is provided.
@@ -418,13 +538,40 @@ const InternalButtonDropdown = React.forwardRef(
 
     const shouldLabelWithTrigger = !ariaLabel && !mainAction && variant !== 'icon' && variant !== 'inline-icon';
 
-    const highlightedItemId = targetItem && targetItem.id ? `${menuId}-${targetItem.id}` : undefined;
+    // While the highlight points into an expanded group whose items haven't arrived, it sits on
+    // the group's status instead: the Retry button when loading failed, otherwise the status
+    // text (for example "Loading"). Focus stays in the filter input the whole time.
+    let highlightedItemId: string | undefined;
+    if (targetItem) {
+      highlightedItemId = targetItem.id ? `${menuId}-${targetItem.id}` : undefined;
+    } else if (isHighlightPending && expandedGroup?.id) {
+      const groupId = expandedGroup.id;
+      const { statusId, recoveryButtonId } = getGroupStatusIds(menuId, groupId);
+      const groupStatus = pendingGroupStatus ?? 'finished';
+      const hasGroupStatusContent =
+        groupStatus === 'loading' ||
+        groupStatus === 'error' ||
+        (groupStatus === 'finished' &&
+          (!!asyncLoadingProps?.empty?.(groupId) || !!asyncLoadingProps?.finishedText?.(groupId)));
+      if (groupStatus === 'error' && hasGroupRecoveryButton) {
+        highlightedItemId = recoveryButtonId;
+      } else {
+        highlightedItemId = hasGroupStatusContent ? statusId : `${menuId}-${groupId}`;
+      }
+    }
 
     const filterElement = hasFiltering ? (
       <ButtonDropdownFilter
         ref={filterRef}
         value={filteringValue}
         onChange={event => setFilteringValue(event.detail.value)}
+        __onDelayedInput={event => {
+          // The input's debounce outlives a close/reopen or a filter reset, and the portalled input
+          // may already be unmounted. Only fire for the query that is still current.
+          if (isOpenRef.current && event.detail.value === filteringValueRef.current) {
+            fireLoadItems(event.detail.value);
+          }
+        }}
         placeholder={filteringPlaceholder}
         ariaLabel={filteringAriaLabel}
         clearAriaLabel={filteringClearAriaLabel}
@@ -451,6 +598,7 @@ const InternalButtonDropdown = React.forwardRef(
       <div
         {...baseProps}
         onKeyDown={onKeyDown}
+        onKeyDownCapture={onKeyDownCapture}
         onKeyUp={onKeyUp}
         onMouseDown={handleMouseEvent}
         onMouseMove={handleMouseEvent}
@@ -464,6 +612,7 @@ const InternalButtonDropdown = React.forwardRef(
         ref={__internalRootRef}
       >
         <Dropdown
+          styleClassNames={{ container: styleClassNames?.dropdown }}
           open={canBeOpened && isOpen}
           stretchTriggerHeight={variant === 'navigation'}
           minWidth={expandToViewport ? undefined : 'trigger'}
@@ -479,8 +628,13 @@ const InternalButtonDropdown = React.forwardRef(
           ariaRole={hasFiltering ? 'dialog' : undefined}
           ariaLabel={hasFiltering ? ariaLabel : undefined}
           footer={
-            dropdownStatus.content ? (
-              <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} hasItems={!isNoMatch} />
+            dropdownStatus.content && dropdownStatus.isSticky ? (
+              <StatusFooter
+                content={isOpen ? dropdownStatus.content : null}
+                id={footerId}
+                hasItems={hasItems}
+                scope="root"
+              />
             ) : null
           }
           content={
@@ -517,7 +671,8 @@ const InternalButtonDropdown = React.forwardRef(
                 ariaLabel={ariaLabel}
                 ariaLabelledby={hasHeader ? headerId : shouldLabelWithTrigger ? triggerId : undefined}
                 ariaDescribedby={dropdownStatus.content ? footerId : undefined}
-                statusType="finished"
+                statusType={statusType}
+                onLoadMore={handleLoadMore}
               >
                 <ItemsList
                   items={filteredItems}
@@ -540,7 +695,22 @@ const InternalButtonDropdown = React.forwardRef(
                   filteringEnabled={hasFiltering}
                   menuId={hasFiltering ? menuId : undefined}
                   filteringDescriptionId={filteringItemDescription ? filteringDescriptionId : undefined}
+                  asyncLoadingProps={asyncLoadingProps}
+                  getExpandableItemsAsyncLoadingState={getExpandableItemsAsyncLoadingState}
+                  onGroupRecoveryClick={onGroupRecoveryClick}
                 />
+                {dropdownStatus.content && !dropdownStatus.isSticky ? (
+                  // Non-sticky status (finished text) scrolls together with the items, like the
+                  // list bottom in Select, instead of covering the last item.
+                  <li role="menuitem" aria-disabled="true">
+                    <StatusFooter
+                      content={isOpen ? dropdownStatus.content : null}
+                      id={footerId}
+                      hasItems={hasItems}
+                      scope="root"
+                    />
+                  </li>
+                ) : null}
               </OptionsList>
               {filteringDescriptionEl}
             </>

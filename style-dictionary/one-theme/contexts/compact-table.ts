@@ -1,0 +1,37 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import merge from 'lodash/merge.js';
+
+import { expandDensityDictionary } from '../../utils/index.js';
+import { StyleDictionary } from '../../utils/interfaces.js';
+import { tokens as parentTokens } from '../spacing.js';
+
+const spacingTokens: StyleDictionary.SpacingDictionary = {
+  spaceScaledXxxs: '{spaceNone}',
+  spaceScaledXxs: '{spaceXxxs}',
+  spaceScaledXs: '{spaceXxs}',
+  spaceScaledS: '{spaceXs}',
+  spaceScaledM: '{spaceS}',
+  spaceScaledL: '{spaceS}',
+  spaceScaledXl: '{spaceL}',
+  spaceScaledXxl: '{spaceXl}',
+  spaceScaledXxxl: '{spaceXxl}',
+
+  spaceTableCellVertical: '2px',
+  spaceExpandToggleFocusOutlineGutter: '1px',
+  spaceButtonInlineLinkFocusOutlineGutter: '1px',
+};
+
+const sizeTokens: StyleDictionary.SizesDictionary = {
+  sizeVerticalInput: '26px',
+};
+
+const typographyTokens: StyleDictionary.DensityTypographyDictionary = {
+  fontSizeBodyM: '13px',
+};
+
+const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = expandDensityDictionary(
+  merge({}, parentTokens, { ...spacingTokens, ...sizeTokens, ...typographyTokens })
+);
+
+export { expandedTokens as tokens };

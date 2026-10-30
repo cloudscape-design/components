@@ -4,13 +4,12 @@ import { useRef } from 'react';
 
 import { fireNonCancelableEvent } from '../../internal/events';
 import { DropdownStatusProps } from '../../types/dropdown-status';
-import { OptionDefinition, OptionGroup } from '../../types/option';
 import { SelectProps } from '../interfaces';
 
 interface UseLoadItemsProps {
   onLoadItems: SelectProps['onLoadItems'];
-  options: ReadonlyArray<OptionDefinition | OptionGroup>;
-  statusType: DropdownStatusProps.StatusType;
+  options: ReadonlyArray<unknown>;
+  statusType: DropdownStatusProps.StatusType | undefined;
 }
 
 export const useLoadItems = ({ onLoadItems, options, statusType }: UseLoadItemsProps) => {

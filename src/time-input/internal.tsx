@@ -3,6 +3,7 @@
 import React, { Ref, useRef } from 'react';
 import clsx from 'clsx';
 
+import { StyleClassNames as InputStyleClassNames } from '../input/internal';
 import MaskedInput from '../internal/components/masked-input';
 import { MaskArgs } from '../internal/components/masked-input/utils/mask-format';
 import useForwardFocus from '../internal/hooks/forward-focus';
@@ -24,13 +25,19 @@ const getMaskArgs = (format: string, use24Hour: boolean): MaskArgs => {
   };
 };
 
-type InternalTimeInputProps = TimeInputProps & InternalBaseComponentProps;
+type InternalTimeInputProps = TimeInputProps & InternalBaseComponentProps & { styleClassNames?: StyleClassNames };
+
+// Style API v2
+interface StyleClassNames {
+  input?: InputStyleClassNames;
+}
 
 const InternalTimeInput = React.forwardRef(
   (
     { format = 'hh:mm:ss', use24Hour = true, autoComplete = true, __internalRootRef, ...props }: InternalTimeInputProps,
     ref: Ref<HTMLInputElement>
   ) => {
+    const { styleClassNames, ...restProps } = props;
     const inputRef = useRef<HTMLInputElement>(null);
     useForwardFocus(ref, inputRef);
 
@@ -38,13 +45,14 @@ const InternalTimeInput = React.forwardRef(
 
     return (
       <MaskedInput
-        {...props}
+        {...restProps}
         __internalRootRef={__internalRootRef}
         ref={inputRef}
         className={clsx(styles.root, props.className)}
         autoComplete={autoComplete}
         disableBrowserAutocorrect={true}
         mask={maskArgs}
+        styleClassNames={styleClassNames?.input}
       />
     );
   }

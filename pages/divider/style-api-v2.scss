@@ -1,0 +1,21 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~components/styling/divider';
+@use '../style-api/palette' as palette;
+
+.divider-brand {
+  @include divider.root($line-color: palette.$info, $line-width: 2px);
+}
+
+.divider-labelled {
+  @include divider.root($line-color: palette.$info);
+}
+
+// The label is consumer content, so it is styled directly.
+.label {
+  color: palette.$genai;
+  font-weight: 700;
+}

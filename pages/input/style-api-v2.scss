@@ -1,0 +1,140 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~components/styling/input';
+@use '~components/styling/button';
+@use '../style-api/palette' as palette;
+
+// Field box. One class per owned state (invalid, warning, disabled, read-only); `:hover` and `:focus-within`
+// for the interaction states. The color applies to the prefix and suffix only.
+@mixin field-box {
+  @include input.root(
+    $background: palette.$surface,
+    $border-width: 2px,
+    $border-radius: 12px,
+    $box-shadow: 0 2px 4px palette.$subtle
+  );
+}
+
+.input-root {
+  @include field-box;
+  @include input.root($border-color: palette.$border);
+
+  &:hover {
+    @include input.root($background: palette.$surface-alt, $border-color: palette.$border-accent);
+  }
+
+  &:focus-within {
+    @include input.root($border-color: palette.$accent, $box-shadow: 0 0 0 3px palette.$accent-active);
+  }
+}
+
+.input-root-invalid {
+  @include field-box;
+  @include input.root($background: palette.$error-surface, $border-color: palette.$error);
+
+  &:focus-within {
+    @include input.root($box-shadow: 0 0 0 3px palette.$error-hover);
+  }
+}
+
+.input-root-warning {
+  @include field-box;
+  @include input.root($background: palette.$warning-surface, $border-color: palette.$warning);
+
+  &:focus-within {
+    @include input.root($box-shadow: 0 0 0 3px palette.$warning);
+  }
+}
+
+.input-root-disabled {
+  @include field-box;
+  @include input.root(
+    $background: palette.$control-bg-disabled,
+    $border-color: palette.$border-disabled,
+    $box-shadow: none
+  );
+}
+
+.input-root-readonly {
+  @include field-box;
+  @include input.root($background: palette.$surface-alt, $border-color: palette.$border);
+
+  &:focus-within {
+    @include input.root($border-color: palette.$accent, $box-shadow: 0 0 0 3px palette.$accent-active);
+  }
+}
+
+// Native input. `:focus` and `:placeholder-shown` for the interaction states; a class each for disabled and read-only.
+.input-input {
+  @include input.input(
+    $color: palette.$text,
+    $padding-block: 10px,
+    $padding-inline: 16px,
+    $font-family: monospace,
+    $font-size: 15px,
+    $font-weight: 600,
+    $placeholder-color: palette.$accent,
+    $placeholder-font-size: 13px,
+    $placeholder-font-style: normal,
+    $placeholder-font-weight: 400
+  );
+
+  &:focus {
+    @include input.input($color: palette.$accent);
+  }
+
+  &:placeholder-shown {
+    @include input.input($padding-inline: 24px);
+  }
+}
+
+// Search inputs: the inline padding set above replaces the room the component reserves for the search icon
+// and the clear button, so it is set again with that room included.
+.input-input-search {
+  @include input.input($padding-inline: 40px);
+}
+
+.input-input-disabled {
+  @include input.input($color: palette.$text-disabled);
+}
+
+.input-input-readonly {
+  @include input.input($color: palette.$text);
+}
+
+// Inline label: the disabled state is a class.
+.input-inline-label {
+  @include input.inlineLabel(
+    $color: palette.$text-on-accent,
+    $background: palette.$accent,
+    $font-family: monospace,
+    $font-size: 11px,
+    $font-weight: 700
+  );
+}
+
+.input-inline-label-disabled {
+  @include input.inlineLabel($color: palette.$control-fg-disabled, $background: palette.$control-bg-disabled);
+}
+
+// Search icon: the disabled state is a class.
+.input-search-icon {
+  @include input.searchIcon($color: palette.$accent);
+}
+
+.input-search-icon-disabled {
+  @include input.searchIcon($color: palette.$text-disabled);
+}
+
+// Clear button forwards to Button.root.
+.input-clear-button {
+  @include button.root($color: palette.$accent, $focus-ring-color: palette.$accent);
+
+  &:hover,
+  &:focus {
+    @include button.root($color: palette.$accent-hover);
+  }
+}

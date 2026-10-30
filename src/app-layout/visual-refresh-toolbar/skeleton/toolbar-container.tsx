@@ -28,7 +28,7 @@ export function ToolbarContainer({ children, hasAiDrawer }: ToolbarContainerProp
 interface ToolbarBreadcrumbsSectionProps {
   ownBreadcrumbs: React.ReactNode;
   discoveredBreadcrumbs?: BreadcrumbGroupProps | null;
-  breadcrumbsExternallyOwned?: boolean;
+  hideBreadcrumbsInToolbar?: boolean;
   reportOwnBreadcrumbsProps?: BreadcrumbsSlotContextType['reportOwnBreadcrumbsProps'];
   includeTestUtils?: boolean;
 }
@@ -36,7 +36,7 @@ interface ToolbarBreadcrumbsSectionProps {
 export function ToolbarBreadcrumbsSection({
   ownBreadcrumbs,
   discoveredBreadcrumbs,
-  breadcrumbsExternallyOwned,
+  hideBreadcrumbsInToolbar,
   reportOwnBreadcrumbsProps,
   includeTestUtils = false,
 }: ToolbarBreadcrumbsSectionProps) {
@@ -44,10 +44,10 @@ export function ToolbarBreadcrumbsSection({
     <div
       className={clsx(
         toolbarStyles['universal-toolbar-breadcrumbs'],
-        breadcrumbsExternallyOwned && toolbarStyles['external-breadcrumbs'],
+        hideBreadcrumbsInToolbar && toolbarStyles['external-breadcrumbs'],
         includeTestUtils && testutilStyles.breadcrumbs
       )}
-      data-awsui-external-breadcrumbs={breadcrumbsExternallyOwned || undefined}
+      data-awsui-external-breadcrumbs={hideBreadcrumbsInToolbar || undefined}
     >
       <BreadcrumbsSlot
         ownBreadcrumbs={ownBreadcrumbs}

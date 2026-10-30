@@ -6,6 +6,7 @@ import clsx from 'clsx';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import { StyleClassNames as InputStyleClassNames } from '../input/internal';
 import MaskedInput from '../internal/components/masked-input';
 import { fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
@@ -23,7 +24,13 @@ import styles from './styles.css.js';
 type InternalDateInputProps = DateInputProps &
   InternalBaseComponentProps & {
     __injectAnalyticsComponentMetadata?: boolean;
+    styleClassNames?: StyleClassNames;
   };
+
+// Style API v2
+interface StyleClassNames {
+  input?: InputStyleClassNames;
+}
 
 const InternalDateInput = React.forwardRef(
   (
@@ -36,6 +43,7 @@ const InternalDateInput = React.forwardRef(
       locale,
       format = 'slashed',
       inputFormat = 'slashed',
+      styleClassNames,
       __internalRootRef,
       __injectAnalyticsComponentMetadata = false,
       ...props
@@ -105,6 +113,7 @@ const InternalDateInput = React.forwardRef(
         disableBrowserAutocorrect={true}
         showUnmaskedValue={usesLongLocalizedValue}
         autoComplete={false}
+        styleClassNames={styleClassNames?.input}
         __internalRootRef={__internalRootRef}
         {...(__injectAnalyticsComponentMetadata
           ? getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })

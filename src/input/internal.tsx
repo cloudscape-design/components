@@ -14,8 +14,11 @@ import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
+import { ResetGroupedControlContext, useGroupedControlContext } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
+import { warnOnUnsupportedGroupedControlProps } from '../internal/grouped-control/dev-warnings';
+import { getGroupedControlClassNames } from '../internal/grouped-control/grouped-control-styles';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { isDevelopment } from '../internal/is-development';
@@ -42,13 +45,13 @@ export interface InternalInputProps
     InternalBaseComponentProps {
   type?: InputProps['type'] | 'visualSearch';
   __startIcon?: IconProps['name'];
-  __startIconVariant?: IconProps['variant'];
   __onStartIconClick?: () => void;
 
   __endIcon?: IconProps['name'];
   __onEndIconClick?: () => void;
 
   __noBorderRadius?: boolean;
+  __noBorder?: boolean;
 
   __onDelayedInput?: NonCancelableEventHandler<BaseChangeDetail>;
   __onBlurWithDetail?: NonCancelableEventHandler<{ relatedTarget: Node | null }>;
@@ -57,6 +60,16 @@ export interface InternalInputProps
   __injectAnalyticsComponentMetadata?: boolean;
   __skipNativeAttributesWarnings?: SkipWarnings;
   __fullWidth?: boolean;
+  styleClassNames?: StyleClassNames;
+}
+
+// Style API v2
+export interface StyleClassNames {
+  root?: string;
+  input?: string;
+  inlineLabel?: string;
+  searchIcon?: string;
+  clearButton?: string;
 }
 
 function InternalInput(
@@ -76,9 +89,9 @@ function InternalInput(
     disableBrowserAutocorrect,
     spellcheck,
     __noBorderRadius,
+    __noBorder,
 
     __startIcon,
-    __startIconVariant = 'subtle',
     __onStartIconClick,
 
     ariaRequired,
@@ -100,6 +113,7 @@ function InternalInput(
     __skipNativeAttributesWarnings,
     __fullWidth,
     style,
+    styleClassNames,
     prefix,
     suffix,
     inlineLabelText,
@@ -108,6 +122,7 @@ function InternalInput(
   ref: Ref<HTMLInputElement>
 ) {
   const baseProps = getBaseProps(rest);
+  const groupedControlProps = useGroupedControlContext();
   const i18n = useInternalI18n('input');
   const fireDelayedInput = useDebounceCallback((value: string) => fireNonCancelableEvent(__onDelayedInput, { value }));
 
@@ -148,18 +163,25 @@ function InternalInput(
   const generatedControlId = useUniqueId('input');
   const controlId = controlIdFromFormFieldContext ?? (inlineLabelText ? generatedControlId : undefined);
 
+  warnOnUnsupportedGroupedControlProps({
+    isGrouped: !!groupedControlProps.position,
+    componentName: 'Input',
+    invalid: invalid,
+    warning: warning,
+    readOnly,
+  });
+
   const hasPrefix = !!prefix;
   const hasSuffix = !!suffix;
-  const hasPrefixOrSuffix = hasPrefix || hasSuffix;
+  const hasAdornments = hasPrefix || hasSuffix;
+
+  const groupedControlClasses = getGroupedControlClassNames(styles, groupedControlProps);
+
+  // The field box owns the border, the native input owns the text padding. Custom properties
+  // are set on both so each element resolves its own state tokens.
   const inputStyles = getInputStyles(style);
-  const nativeInputStyles =
-    hasPrefixOrSuffix && inputStyles
-      ? { ...inputStyles, borderRadius: undefined, borderWidth: undefined }
-      : inputStyles;
-  const adornedContainerStyles =
-    hasPrefixOrSuffix && inputStyles
-      ? { ...inputStyles, paddingBlock: undefined, paddingInline: undefined }
-      : undefined;
+  const nativeInputStyles = inputStyles && { ...inputStyles, borderRadius: undefined, borderWidth: undefined };
+  const fieldStyles = inputStyles && { ...inputStyles, paddingBlock: undefined, paddingInline: undefined };
 
   const attributes: React.InputHTMLAttributes<HTMLInputElement> = {
     'aria-label': ariaLabel,
@@ -173,16 +195,16 @@ function InternalInput(
     autoFocus,
     id: controlId,
     className: clsx(
+      styleClassNames?.input,
       styles.input,
       type && styles[`input-type-${type}`],
       __endIcon && styles['input-has-icon-end'],
       __startIcon && styles['input-has-icon-start'],
-      __noBorderRadius && styles['input-has-no-border-radius'],
-      hasPrefixOrSuffix && styles['input-adorned'],
       {
         [styles['input-readonly']]: readOnly,
-        [styles['input-invalid']]: invalid && !hasPrefixOrSuffix,
-        [styles['input-warning']]: warning && !invalid && !hasPrefixOrSuffix,
+        // With adornments the status color goes to the prefix/suffix only and the value keeps the default text color.
+        [styles['input-invalid']]: invalid && !hasAdornments,
+        [styles['input-warning']]: warning && !invalid && !hasAdornments,
       }
     ),
     autoComplete: convertAutoComplete(autoComplete),
@@ -272,6 +294,7 @@ function InternalInput(
         onClick={__onEndIconClick}
         ariaLabel={i18n('clearAriaLabel', clearAriaLabelOverride)}
         disabled={disabled}
+        styleClassNames={{ root: styleClassNames?.clearButton }}
       />
     </span>
   ) : null;
@@ -288,7 +311,7 @@ function InternalInput(
       : copyAnalyticsMetadataAttribute(rest)),
   };
 
-  const renderInputWithPrefixSuffix = (
+  const renderInputField = (
     extraProps: React.HTMLAttributes<HTMLDivElement> & { ref?: React.Ref<HTMLDivElement> } = {}
   ) => (
     <div
@@ -297,46 +320,55 @@ function InternalInput(
       dir={type === 'email' ? 'ltr' : undefined}
     >
       {__startIcon && (
-        <span onClick={__onStartIconClick} className={styles['input-icon-start']}>
-          <InternalIcon name={__startIcon} variant={disabled ? 'disabled' : readOnly ? 'subtle' : __startIconVariant} />
+        <span
+          onClick={__onStartIconClick}
+          className={clsx(
+            styleClassNames?.searchIcon,
+            styles['input-icon-start'],
+            disabled && styles['input-icon-start-disabled']
+          )}
+        >
+          <InternalIcon name={__startIcon} />
         </span>
       )}
-      {hasPrefixOrSuffix ? (
-        // [prefix][divider][input][divider][suffix] - one flex bar owns the border and focus ring.
-        <div
-          className={clsx(
-            styles['input-adorned-container'],
-            invalid && styles['input-adorned-container-invalid'],
-            warning && !invalid && styles['input-adorned-container-warning'],
-            disabled && styles['input-adorned-container-disabled'],
-            readOnly && !disabled && styles['input-adorned-container-readonly']
-          )}
-          aria-disabled={disabled || undefined}
-          style={adornedContainerStyles}
-        >
-          {hasPrefix && (
-            <>
-              <span className={styles['input-prefix']} aria-hidden="true">
-                <span className={styles['input-adornment-content']}>{prefix}</span>
+      <div
+        className={clsx(
+          styleClassNames?.root,
+          styles['input-field'],
+          invalid && styles['input-field-invalid'],
+          warning && !invalid && styles['input-field-warning'],
+          disabled && styles['input-field-disabled'],
+          readOnly && !disabled && styles['input-field-readonly'],
+          __noBorderRadius && styles['input-field-no-border-radius'],
+          __noBorder && styles['input-field-no-border'],
+          groupedControlClasses
+        )}
+        aria-disabled={disabled || undefined}
+        style={fieldStyles}
+      >
+        {hasPrefix && (
+          <>
+            <span className={styles['input-prefix']} aria-hidden="true">
+              <span className={styles['input-adornment-content']}>
+                <ResetGroupedControlContext>{prefix}</ResetGroupedControlContext>
               </span>
-              <span className={styles['input-adornment-divider']} />
-            </>
-          )}
-          {mainInput}
-          {hasSuffix && (
-            <>
-              <span className={styles['input-adornment-divider']} />
-              <span className={styles['input-suffix']} aria-hidden="true">
-                <span className={styles['input-adornment-content']}>{suffix}</span>
+            </span>
+            <span className={styles['input-adornment-divider']} />
+          </>
+        )}
+        {mainInput}
+        {hasSuffix && (
+          <>
+            <span className={styles['input-adornment-divider']} />
+            <span className={styles['input-suffix']} aria-hidden="true">
+              <span className={styles['input-adornment-content']}>
+                <ResetGroupedControlContext>{suffix}</ResetGroupedControlContext>
               </span>
-            </>
-          )}
-          {endIcon}
-        </div>
-      ) : (
-        mainInput
-      )}
-      {!hasPrefixOrSuffix && endIcon}
+            </span>
+          </>
+        )}
+      </div>
+      {endIcon}
     </div>
   );
 
@@ -349,7 +381,14 @@ function InternalInput(
         __fullWidth && styles['inline-label-wrapper-full-width']
       )}
     >
-      <label htmlFor={renderedId} className={clsx(styles['inline-label'], disabled && styles['inline-label-disabled'])}>
+      <label
+        htmlFor={renderedId}
+        className={clsx(
+          styleClassNames?.inlineLabel,
+          styles['inline-label'],
+          disabled && styles['inline-label-disabled']
+        )}
+      >
         {inlineLabelText}
       </label>
       <div
@@ -358,11 +397,11 @@ function InternalInput(
           __fullWidth && styles['inline-label-trigger-wrapper-full-width']
         )}
       >
-        {renderInputWithPrefixSuffix()}
+        {renderInputField()}
       </div>
     </div>
   ) : (
-    renderInputWithPrefixSuffix(rootProps)
+    renderInputField(rootProps)
   );
   return inputWithLabel;
 }
