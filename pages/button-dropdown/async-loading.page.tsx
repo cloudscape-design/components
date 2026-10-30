@@ -27,6 +27,7 @@ type PageContext = React.Context<
     groupAItems: string;
     groupBStatus: StatusType;
     groupBItems: string;
+    delay: string;
   }>
 >;
 
@@ -84,14 +85,16 @@ const groupSourceItems: Record<string, ButtonDropdownProps.Item[]> = {
 };
 
 // Long enough to inspect the loading state when testing by hand.
-const FETCH_DELAY_MS = 5000;
+const DEFAULT_DELAY_MS = 5000;
 
-function fetchGroupItems(groupId: string): Promise<ButtonDropdownProps.Item[]> {
+const DELAY_OPTIONS = [0, 500, 1000, 2000, 5000, 10000].map(ms => ({ value: String(ms), label: `${ms} ms` }));
+
+function fetchGroupItems(groupId: string, delay: number): Promise<ButtonDropdownProps.Item[]> {
   if (groupId === 'group-files') {
-    return new Promise(resolve => setTimeout(() => resolve(groupSourceItems['group-files']), FETCH_DELAY_MS));
+    return new Promise(resolve => setTimeout(() => resolve(groupSourceItems['group-files']), delay));
   }
   if (groupId === 'group-edit') {
-    return new Promise((_, reject) => setTimeout(() => reject(new Error('Server error')), FETCH_DELAY_MS));
+    return new Promise((_, reject) => setTimeout(() => reject(new Error('Server error')), delay));
   }
   return new Promise(() => {});
 }
@@ -104,6 +107,203 @@ const groupTexts: ButtonDropdownProps.AsyncLoadingProps = {
   finishedText: (gid?: string) => `End of ${gid ?? 'results'}`,
   empty: (gid?: string) => `No items in ${gid ?? 'group'}.`,
 };
+
+interface ScenarioProps {
+  expandToViewport: boolean;
+}
+
+interface DelayedScenarioProps extends ScenarioProps {
+  delay: number;
+}
+
+const onItemClick = (e: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => console.log('clicked', e.detail.id);
+const logLoadItems: NonCancelableEventHandler<ButtonDropdownProps.LoadItemsDetail> = ({ detail }) =>
+  console.log('onLoadItems', detail);
+
+function FlatScenario({
+  expandToViewport,
+  flatStatus,
+  flatItemsPreset,
+}: ScenarioProps & { flatStatus: StatusType; flatItemsPreset: string }) {
+  return (
+    <ButtonDropdown
+      expandToViewport={expandToViewport}
+      onItemClick={onItemClick}
+      items={itemsFromPreset(flatItemsPreset, ALL_ITEMS)}
+      asyncLoadingProps={{
+        statusType: flatStatus,
+        loadingText: () => 'Loading actions...',
+        errorText: () => 'Failed to load actions.',
+        recoveryText: 'Retry',
+        errorIconAriaLabel: 'Error',
+        finishedText: () => 'End of results',
+        empty: () => 'No actions found',
+      }}
+      onLoadItems={logLoadItems}
+    >
+      Actions
+    </ButtonDropdown>
+  );
+}
+
+function GroupsScenario({
+  expandToViewport,
+  groupAStatus,
+  groupAPreset,
+  groupBStatus,
+  groupBPreset,
+}: ScenarioProps & { groupAStatus: StatusType; groupAPreset: string; groupBStatus: StatusType; groupBPreset: string }) {
+  return (
+    <ButtonDropdown
+      expandToViewport={expandToViewport}
+      onItemClick={onItemClick}
+      items={
+        [
+          { id: 'group-a', text: 'Group A', items: itemsFromPreset(groupAPreset, GROUP_A_ITEMS) },
+          { id: 'group-b', text: 'Group B', items: itemsFromPreset(groupBPreset, GROUP_B_ITEMS) },
+        ] as ButtonDropdownProps.Items
+      }
+      expandableGroups={true}
+      asyncLoadingProps={groupTexts}
+      getExpandableItemsAsyncLoadingState={({ item }) => {
+        if (item.id === 'group-a') {
+          return groupAStatus;
+        }
+        if (item.id === 'group-b') {
+          return groupBStatus;
+        }
+        return null;
+      }}
+      onLoadItems={logLoadItems}
+    >
+      Instance actions
+    </ButtonDropdown>
+  );
+}
+
+function PaginatedScenario({ expandToViewport, delay }: DelayedScenarioProps) {
+  const {
+    items: paginatedItems,
+    status: paginatedStatus,
+    filteringText: paginatedFilteringText,
+    fetchItems,
+  } = useOptionsLoader<ButtonDropdownProps.Item>({ pageSize: 10, timeout: delay });
+  return (
+    <ButtonDropdown
+      expandToViewport={expandToViewport}
+      onItemClick={onItemClick}
+      items={paginatedItems as ButtonDropdownProps.Items}
+      filteringType="manual"
+      filteringPlaceholder="Filter actions"
+      asyncLoadingProps={{
+        statusType: paginatedStatus,
+        loadingText: () => 'Loading actions...',
+        errorText: () => 'Error fetching actions.',
+        recoveryText: 'Retry',
+        finishedText: () =>
+          paginatedFilteringText ? `End of "${paginatedFilteringText}" results` : 'End of all results',
+        empty: () => 'No actions found',
+      }}
+      filteringResultsText={(matchesCount, totalCount) =>
+        paginatedStatus === 'pending' ? `${matchesCount}+ results` : `${matchesCount} of ${totalCount}`
+      }
+      onLoadItems={({ detail: { firstPage, filteringText } }) => {
+        const normalized = filteringText.toLowerCase();
+        const filtered = flatSourceItems.filter(item => (item.text ?? '').toLowerCase().includes(normalized));
+        fetchItems({ firstPage, filteringText, sourceItems: filtered });
+      }}
+    >
+      Async actions
+    </ButtonDropdown>
+  );
+}
+
+function PerGroupScenario({ expandToViewport, delay }: DelayedScenarioProps) {
+  const [groupItems, setGroupItems] = useState<Record<string, ButtonDropdownProps.Item[]>>({});
+  const [groupStatuses, setGroupStatuses] = useState<Record<string, StatusType>>({});
+  const groupRequestIds = useRef<Record<string, number>>({});
+  return (
+    <ButtonDropdown
+      expandToViewport={expandToViewport}
+      onItemClick={onItemClick}
+      items={
+        [
+          { id: 'group-files', text: 'File (loads successfully)', items: groupItems['group-files'] ?? [] },
+          { id: 'group-edit', text: 'Edit (always errors)', items: groupItems['group-edit'] ?? [] },
+          { id: 'group-view', text: 'View (loading forever)', items: groupItems['group-view'] ?? [] },
+        ] as ButtonDropdownProps.Items
+      }
+      expandableGroups={true}
+      asyncLoadingProps={groupTexts}
+      getExpandableItemsAsyncLoadingState={({ item }) => (item.id ? (groupStatuses[item.id] ?? null) : null)}
+      onLoadItems={({ detail: { expandedGroupId, samePage } }) => {
+        if (!expandedGroupId) {
+          return;
+        }
+        if (!samePage) {
+          setGroupItems(prev => ({ ...prev, [expandedGroupId]: [] }));
+        }
+        const requestId = (groupRequestIds.current[expandedGroupId] ?? 0) + 1;
+        groupRequestIds.current[expandedGroupId] = requestId;
+        const isLatest = () => groupRequestIds.current[expandedGroupId] === requestId;
+        setGroupStatuses(prev => ({ ...prev, [expandedGroupId]: 'loading' }));
+        fetchGroupItems(expandedGroupId, delay)
+          .then(items => {
+            if (isLatest()) {
+              setGroupItems(prev => ({ ...prev, [expandedGroupId]: items }));
+              setGroupStatuses(prev => ({ ...prev, [expandedGroupId]: 'finished' }));
+            }
+          })
+          .catch(() => {
+            if (isLatest()) {
+              setGroupStatuses(prev => ({ ...prev, [expandedGroupId]: 'error' }));
+            }
+          });
+      }}
+    >
+      Instance actions
+    </ButtonDropdown>
+  );
+}
+
+function ErrorScenario({ expandToViewport, delay }: DelayedScenarioProps) {
+  const [errorStatus, setErrorStatus] = useState<StatusType>('error');
+  const [errorItems, setErrorItems] = useState<ButtonDropdownProps.Items>([]);
+  const errorRequestId = useRef(0);
+  return (
+    <ButtonDropdown
+      expandToViewport={expandToViewport}
+      onItemClick={onItemClick}
+      items={errorItems}
+      asyncLoadingProps={{
+        statusType: errorStatus,
+        loadingText: () => 'Loading actions...',
+        errorText: () => 'Error fetching actions.',
+        recoveryText: 'Retry',
+        errorIconAriaLabel: 'Error',
+        empty: () => 'No actions found',
+      }}
+      onLoadItems={({ detail: { samePage } }) => {
+        const requestId = ++errorRequestId.current;
+        if (samePage) {
+          setErrorStatus('loading');
+          setTimeout(() => {
+            if (requestId !== errorRequestId.current) {
+              return;
+            }
+            setErrorItems(flatSourceItems.slice(0, 8));
+            setErrorStatus('finished');
+          }, delay);
+        } else {
+          setErrorItems([]);
+          setErrorStatus('error');
+        }
+      }}
+    >
+      Actions (error)
+    </ButtonDropdown>
+  );
+}
 
 export default function ButtonDropdownAsyncLoadingPage() {
   // Page configuration lives in the URL so that every scenario and status/items combination is directly
@@ -118,30 +318,11 @@ export default function ButtonDropdownAsyncLoadingPage() {
       groupAItems: groupAPreset = 'none',
       groupBStatus = 'error',
       groupBItems: groupBPreset = 'none',
+      delay: delayParam = '',
     },
     setUrlParams,
   } = useContext(AppContext as PageContext);
-  const onItemClick = (e: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => console.log('clicked', e.detail.id);
-  const logLoadItems: NonCancelableEventHandler<ButtonDropdownProps.LoadItemsDetail> = ({ detail }) =>
-    console.log('onLoadItems', detail);
-
-  // Scenario "paginated"
-  const {
-    items: paginatedItems,
-    status: paginatedStatus,
-    filteringText: paginatedFilteringText,
-    fetchItems,
-  } = useOptionsLoader<ButtonDropdownProps.Item>({ pageSize: 10, timeout: FETCH_DELAY_MS });
-
-  // Scenario "per-group"
-  const [groupItems, setGroupItems] = useState<Record<string, ButtonDropdownProps.Item[]>>({});
-  const [groupStatuses, setGroupStatuses] = useState<Record<string, StatusType>>({});
-
-  // Scenario "error"
-  const [errorStatus, setErrorStatus] = useState<StatusType>('error');
-  const [errorItems, setErrorItems] = useState<ButtonDropdownProps.Items>([]);
-  const errorRequestId = useRef(0);
-
+  const delay = delayParam === '' ? DEFAULT_DELAY_MS : Math.max(0, Number(delayParam) || 0);
   const statusSelect = (label: string, value: StatusType, onChange: (value: StatusType) => void) => (
     <FormField label={label}>
       <Select
@@ -160,158 +341,6 @@ export default function ButtonDropdownAsyncLoadingPage() {
       />
     </FormField>
   );
-
-  const commonProps = { expandToViewport, onItemClick };
-
-  let content: React.ReactNode = null;
-  switch (scenario) {
-    case 'flat':
-      content = (
-        <ButtonDropdown
-          {...commonProps}
-          items={itemsFromPreset(flatItemsPreset, ALL_ITEMS)}
-          asyncLoadingProps={{
-            statusType: flatStatus,
-            loadingText: () => 'Loading actions...',
-            errorText: () => 'Failed to load actions.',
-            recoveryText: 'Retry',
-            errorIconAriaLabel: 'Error',
-            finishedText: () => 'End of results',
-            empty: () => 'No actions found',
-          }}
-          onLoadItems={logLoadItems}
-        >
-          Actions
-        </ButtonDropdown>
-      );
-      break;
-    case 'groups':
-      content = (
-        <ButtonDropdown
-          {...commonProps}
-          items={
-            [
-              { id: 'group-a', text: 'Group A', items: itemsFromPreset(groupAPreset, GROUP_A_ITEMS) },
-              { id: 'group-b', text: 'Group B', items: itemsFromPreset(groupBPreset, GROUP_B_ITEMS) },
-            ] as ButtonDropdownProps.Items
-          }
-          expandableGroups={true}
-          asyncLoadingProps={groupTexts}
-          getExpandableItemsAsyncLoadingState={({ item }) => {
-            if (item.id === 'group-a') {
-              return groupAStatus;
-            }
-            if (item.id === 'group-b') {
-              return groupBStatus;
-            }
-            return null;
-          }}
-          onLoadItems={logLoadItems}
-        >
-          Instance actions
-        </ButtonDropdown>
-      );
-      break;
-    case 'paginated':
-      content = (
-        <ButtonDropdown
-          {...commonProps}
-          items={paginatedItems as ButtonDropdownProps.Items}
-          filteringType="manual"
-          filteringPlaceholder="Filter actions"
-          asyncLoadingProps={{
-            statusType: paginatedStatus,
-            loadingText: () => 'Loading actions...',
-            errorText: () => 'Error fetching actions.',
-            recoveryText: 'Retry',
-            finishedText: () =>
-              paginatedFilteringText ? `End of "${paginatedFilteringText}" results` : 'End of all results',
-            empty: () => 'No actions found',
-          }}
-          filteringResultsText={(matchesCount, totalCount) =>
-            paginatedStatus === 'pending' ? `${matchesCount}+ results` : `${matchesCount} of ${totalCount}`
-          }
-          onLoadItems={({ detail: { firstPage, filteringText } }) => {
-            const normalized = filteringText.toLowerCase();
-            const filtered = flatSourceItems.filter(item => (item.text ?? '').toLowerCase().includes(normalized));
-            fetchItems({ firstPage, filteringText, sourceItems: filtered });
-          }}
-        >
-          Async actions
-        </ButtonDropdown>
-      );
-      break;
-    case 'per-group':
-      content = (
-        <ButtonDropdown
-          {...commonProps}
-          items={
-            [
-              { id: 'group-files', text: 'File (loads successfully)', items: groupItems['group-files'] ?? [] },
-              { id: 'group-edit', text: 'Edit (always errors)', items: groupItems['group-edit'] ?? [] },
-              { id: 'group-view', text: 'View (loading forever)', items: groupItems['group-view'] ?? [] },
-            ] as ButtonDropdownProps.Items
-          }
-          expandableGroups={true}
-          asyncLoadingProps={groupTexts}
-          getExpandableItemsAsyncLoadingState={({ item }) => (item.id ? (groupStatuses[item.id] ?? null) : null)}
-          onLoadItems={({ detail: { expandedGroupId, samePage } }) => {
-            if (!expandedGroupId) {
-              return;
-            }
-            if (!samePage) {
-              setGroupItems(prev => ({ ...prev, [expandedGroupId]: [] }));
-            }
-            setGroupStatuses(prev => ({ ...prev, [expandedGroupId]: 'loading' }));
-            fetchGroupItems(expandedGroupId)
-              .then(items => {
-                setGroupItems(prev => ({ ...prev, [expandedGroupId]: items }));
-                setGroupStatuses(prev => ({ ...prev, [expandedGroupId]: 'finished' }));
-              })
-              .catch(() => {
-                setGroupStatuses(prev => ({ ...prev, [expandedGroupId]: 'error' }));
-              });
-          }}
-        >
-          Instance actions
-        </ButtonDropdown>
-      );
-      break;
-    case 'error':
-      content = (
-        <ButtonDropdown
-          {...commonProps}
-          items={errorItems}
-          asyncLoadingProps={{
-            statusType: errorStatus,
-            loadingText: () => 'Loading actions...',
-            errorText: () => 'Error fetching actions.',
-            recoveryText: 'Retry',
-            errorIconAriaLabel: 'Error',
-            empty: () => 'No actions found',
-          }}
-          onLoadItems={({ detail: { samePage } }) => {
-            const requestId = ++errorRequestId.current;
-            if (samePage) {
-              setErrorStatus('loading');
-              setTimeout(() => {
-                if (requestId !== errorRequestId.current) {
-                  return;
-                }
-                setErrorItems(flatSourceItems.slice(0, 8));
-                setErrorStatus('finished');
-              }, FETCH_DELAY_MS);
-            } else {
-              setErrorItems([]);
-              setErrorStatus('error');
-            }
-          }}
-        >
-          Actions (error)
-        </ButtonDropdown>
-      );
-      break;
-  }
 
   return (
     <SimplePage
@@ -339,13 +368,34 @@ export default function ButtonDropdownAsyncLoadingPage() {
               {itemsSelect('Group B - items', groupBPreset, value => setUrlParams({ groupBItems: value }))}
             </>
           )}
+          <FormField label="Response delay">
+            <Select
+              selectedOption={DELAY_OPTIONS.find(o => o.value === String(delay)) ?? null}
+              onChange={e => setUrlParams({ delay: e.detail.selectedOption.value! })}
+              options={DELAY_OPTIONS}
+            />
+          </FormField>
           <Checkbox checked={expandToViewport} onChange={e => setUrlParams({ expandToViewport: e.detail.checked })}>
             Expand to viewport
           </Checkbox>
         </SpaceBetween>
       }
     >
-      {content}
+      {scenario === 'flat' && (
+        <FlatScenario expandToViewport={expandToViewport} flatStatus={flatStatus} flatItemsPreset={flatItemsPreset} />
+      )}
+      {scenario === 'groups' && (
+        <GroupsScenario
+          expandToViewport={expandToViewport}
+          groupAStatus={groupAStatus}
+          groupAPreset={groupAPreset}
+          groupBStatus={groupBStatus}
+          groupBPreset={groupBPreset}
+        />
+      )}
+      {scenario === 'paginated' && <PaginatedScenario expandToViewport={expandToViewport} delay={delay} />}
+      {scenario === 'per-group' && <PerGroupScenario expandToViewport={expandToViewport} delay={delay} />}
+      {scenario === 'error' && <ErrorScenario expandToViewport={expandToViewport} delay={delay} />}
     </SimplePage>
   );
 }
