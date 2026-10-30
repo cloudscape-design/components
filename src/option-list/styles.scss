@@ -4,8 +4,17 @@
 */
 
 @use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
 
 .root {
   @include styles.styles-reset;
   display: block;
+}
+
+// Wraps the `icon` slot the way the shared option wraps the built-in icon of Select and Multiselect options.
+.icon {
+  padding-inline-end: awsui.$space-xs;
+  align-content: center;
+  display: flex;
+  flex-shrink: 0;
 }

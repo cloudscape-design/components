@@ -9,6 +9,8 @@ import OptionList, { OptionListProps } from '../../../lib/components/option-list
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { clickOption, options, renderOptionList, selectedLabels, Stateful } from './common';
 
+import styles from '../../../lib/components/option-list/styles.selectors.js';
+
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   warnOnce: jest.fn(),
@@ -57,6 +59,19 @@ describe('OptionList', () => {
       expect(option.find('[data-testid="custom-icon"]')).not.toBeNull();
       expect(option.findLabelTag()!.getElement()).toHaveTextContent('128 GB');
       expect(option.findTags().map(tag => tag.getElement().textContent)).toEqual(['CPU-v2', '2 GB RAM']);
+    });
+
+    test('wraps the icon in the icon slot that spaces it from the content', () => {
+      const { wrapper } = renderOptionList(
+        <Stateful options={[{ value: 'a', label: 'First', icon: <span data-testid="custom-icon" /> }]} />
+      );
+      const icon = wrapper.findOptionByValue('a')!.find('[data-testid="custom-icon"]')!.getElement();
+      expect(icon.parentElement).toHaveClass(styles.icon);
+    });
+
+    test('renders no icon slot when the option has no icon', () => {
+      const { wrapper } = renderOptionList(<Stateful />);
+      expect(wrapper.findOptionByValue('a')!.find(`.${styles.icon}`)).toBeNull();
     });
 
     test('passes aria-labelledby and aria-describedby to the listbox', () => {

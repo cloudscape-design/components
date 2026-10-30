@@ -52,7 +52,11 @@ function toInternalOptions(options: OptionListProps.Options) {
     icon,
     ...option
   }: Omit<OptionListProps.Option, 'value'> & { value?: string }): OptionDefinition => {
-    const internal: OptionDefinition & { __customIcon?: React.ReactNode } = { ...option, __customIcon: icon };
+    // The shared option renders a custom icon as is, so the wrapper adds the spacing before the content.
+    const internal: OptionDefinition & { __customIcon?: React.ReactNode } = {
+      ...option,
+      __customIcon: icon && <span className={styles.icon}>{icon}</span>,
+    };
     return internal;
   };
   const internalOptions = options.map<InternalOption>(option => {
