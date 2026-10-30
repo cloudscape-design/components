@@ -3,10 +3,21 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import ColumnLayout, { ColumnLayoutProps } from '../../../lib/components/column-layout';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import styles from '../../../lib/components/column-layout/styles.css.js';
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  warnOnce: jest.fn(),
+}));
+
+afterEach(() => {
+  (warnOnce as jest.Mock).mockReset();
+});
 
 function renderColumnLayout(props: ColumnLayoutProps = {}) {
   const renderResult = render(<ColumnLayout {...props} />);
@@ -25,6 +36,28 @@ describe('ColumnLayout component', () => {
       it(`can have ${columnCount} columns`, () => {
         const wrapper = renderColumnLayout({ columns: columnCount as 2 | 3 | 4 });
         expect(wrapper.getElement()).toHaveClass(styles[`grid-columns-${columnCount}`]);
+      });
+    });
+
+    [1, 2, 3, 4].forEach(columnCount => {
+      it(`does not warn for ${columnCount} columns`, () => {
+        render(<ColumnLayout columns={columnCount} />);
+        expect(warnOnce).not.toHaveBeenCalled();
+      });
+    });
+
+    [5, 6, 10, 12].forEach(columnCount => {
+      it(`warns that ${columnCount} columns is unsupported without minColumnWidth`, () => {
+        render(<ColumnLayout columns={columnCount} />);
+        expect(warnOnce).toHaveBeenCalledWith(
+          'ColumnLayout',
+          expect.stringContaining(`\`columns\` (${columnCount}) is not supported without \`minColumnWidth\``)
+        );
+      });
+
+      it(`does not warn for ${columnCount} columns when minColumnWidth is set`, () => {
+        render(<ColumnLayout columns={columnCount} minColumnWidth={100} />);
+        expect(warnOnce).not.toHaveBeenCalled();
       });
     });
   });
