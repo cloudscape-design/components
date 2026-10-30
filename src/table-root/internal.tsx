@@ -3,13 +3,15 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useScrollSync } from '../internal/hooks/use-scroll-sync';
 import { TableContextProvider } from './context';
 import { computeGridTemplateColumns } from './grid-template-columns';
 import { TableRootProps } from './interfaces';
+import StickyHeaderSlot from './sticky-header-slot';
 
 import styles from './styles.css.js';
 
@@ -21,6 +23,8 @@ export default function InternalTableRoot({
   ariaLabel,
   ariaLabelledby,
   ariaDescribedby,
+  stickyHeader,
+  stickyHeaderOffset = 0,
   children,
   __internalRootRef,
   ...rest
@@ -31,6 +35,11 @@ export default function InternalTableRoot({
   // primitives compared by value, so it stays stable even when the caller passes a fresh columnLayout.
   const tableContext = useMemo(() => ({ isGrid, gridTemplateColumns }), [isGrid, gridTemplateColumns]);
   const baseProps = getBaseProps(rest);
+
+  // The shadow-copy sticky header pins outside the horizontal scroller. In grid mode the copy aligns
+  // columns by reusing the same grid template; in auto (native table-layout) mode column widths are
+  // content-derived, so the copy mirrors the measured header-cell widths under a fixed layout.
+  const isSticky = !!stickyHeader;
 
   // A wide table's horizontal scroller isn't keyboard-reachable on its own, so a read-only table with no
   // focusable cell content can't be scrolled by keyboard. When the content overflows, expose the scroller
@@ -56,6 +65,22 @@ export default function InternalTableRoot({
     }
   }, [isGrid, gridTemplateColumns, measureScrollable]);
 
+  const rootRef = useRef<HTMLDivElement>(null);
+  const mergedRootRef = useMergeRefs(rootRef, __internalRootRef);
+  const copyScrollerRef = useRef<HTMLDivElement>(null);
+  const realTableRef = useRef<HTMLElement | null>(null);
+  const realHeaderRef = useRef<HTMLElement | null>(null);
+
+  // The real <thead> belongs to a child component (TableHead) we can't ref directly, so derive it from
+  // the <table> in a callback ref (runs at commit) for the sticky slot's tuck to measure.
+  const setRealTable = useCallback((node: HTMLTableElement | null) => {
+    realTableRef.current = node;
+    realHeaderRef.current = node ? node.querySelector('thead') : null;
+  }, []);
+
+  // Cheap (no observer); the copy scroller mirrors the body's horizontal offset when the slot is mounted.
+  const handleScroll = useScrollSync([scrollerRef, copyScrollerRef]);
+
   // Set role="region" whenever scrollable (label passes through even if undefined), matching the
   // existing Table's getTableWrapperRoleProps rather than gating the role on a label.
   const scrollRegionProps = isScrollable
@@ -68,12 +93,36 @@ export default function InternalTableRoot({
     : {};
 
   return (
-    <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
+    <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={mergedRootRef}>
       {/* TableContext supplies this table's column layout to every part. */}
       <TableContextProvider value={tableContext}>
+        {isSticky && (
+          <StickyHeaderSlot
+            rootRef={rootRef}
+            realTableRef={realTableRef}
+            realHeaderRef={realHeaderRef}
+            tuckTargetRef={scrollerRef}
+            copyScrollerRef={copyScrollerRef}
+            onScroll={handleScroll}
+            offset={stickyHeaderOffset}
+            isGrid={isGrid}
+            headChild={React.Children.toArray(children)[0]}
+          />
+        )}
         {/* The page owns vertical scroll; this wrapper reintroduces an inline scroll viewport so a wide table scrolls horizontally instead of spilling out. */}
-        <div className={styles['body-scroller']} ref={scrollerRef} {...scrollRegionProps}>
+        <div
+          className={styles['body-scroller']}
+          ref={scrollerRef}
+          onScroll={isSticky ? handleScroll : undefined}
+          style={
+            isSticky
+              ? { scrollPaddingBlockStart: `calc(${stickyHeaderOffset}px + var(--sticky-header-height, 0px))` }
+              : undefined
+          }
+          {...scrollRegionProps}
+        >
           <table
+            ref={isSticky ? setRealTable : undefined}
             // Grid mode only: display:grid drops the table's implicit role. Auto mode keeps the
             // native role (an explicit role="table" there is redundant and flagged by a11y validators).
             role={isGrid ? 'table' : undefined}

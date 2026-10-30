@@ -1,0 +1,13 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use '../../styles/tokens' as awsui;
+
+// Elevation shown once a sticky header is stuck, matching the Container's embedded sticky-header treatment.
+@mixin stuck-elevation {
+  box-shadow: awsui.$shadow-sticky-embedded;
+}
+
+// z-index for a sticky-header slot: must clear the body's position:absolute windowed rows
+// (virtualization) while staying well below app-overlay layers.
+$slot-z-index: 800;
