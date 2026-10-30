@@ -3,6 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import { getBaseProps } from '../internal/base-component';
 import FlexibleColumnLayout from './flexible-column-layout';
 import GridColumnLayout from './grid-column-layout';
@@ -12,6 +14,12 @@ import styles from './styles.css.js';
 
 export const COLUMN_TRIGGERS = ['default', 'xxs', 'xs'] as const;
 export type ColumnLayoutBreakpoint = (typeof COLUMN_TRIGGERS)[number] | null;
+
+/**
+ * Highest `columns` value supported without `minColumnWidth`, as stated in the `columns` docs.
+ * The grid renderer's column definitions only cover 1 to 4.
+ */
+const MAX_SUPPORTED_COLUMNS = 4;
 
 /**
  * A responsive grid layout.
@@ -29,6 +37,16 @@ export default function ColumnLayout({
   ...restProps
 }: InternalColumnLayoutProps) {
   const baseProps = getBaseProps(restProps);
+
+  // this combination type-checks is outside the documented contract and renders
+  // unexpected behavior: the grid renderer has no column definition above
+  // MAX_SUPPORTED_COLUMNS
+  if (columns > MAX_SUPPORTED_COLUMNS && !minColumnWidth) {
+    warnOnce(
+      'ColumnLayout',
+      `\`columns\` (${columns}) is not supported without \`minColumnWidth\`: only up to ${MAX_SUPPORTED_COLUMNS} columns are supported, so the value is ignored and the columns are sized by their content instead. Set \`minColumnWidth\`, or use ${MAX_SUPPORTED_COLUMNS} columns or fewer.`
+    );
+  }
 
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles['column-layout'])} ref={__internalRootRef}>
