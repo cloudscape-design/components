@@ -393,6 +393,16 @@ const permutations = createPermutations<KeyValuePairsProps>([
       ],
     ],
   },
+  {
+    columns: [5, 6],
+    minColumnWidth: [undefined, 100],
+    items: [
+      Array.from({ length: 7 }, (_, i) => ({
+        label: `Label for key ${i + 1}`,
+        value: `Value ${i + 1}`,
+      })),
+    ],
+  },
 ]);
 
 export default function KeyValueScenario() {
