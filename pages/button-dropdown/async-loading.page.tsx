@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 
 import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
 import Checkbox from '~components/checkbox';
@@ -83,7 +83,7 @@ const groupSourceItems: Record<string, ButtonDropdownProps.Item[]> = {
   'group-files': Array.from({ length: 8 }, (_, i) => ({ id: `file-${i + 1}`, text: `File action ${i + 1}` })),
 };
 
-// Long enough to inspect the loading state and for integration tests to assert on it.
+// Long enough to inspect the loading state when testing by hand.
 const FETCH_DELAY_MS = 5000;
 
 function fetchGroupItems(groupId: string): Promise<ButtonDropdownProps.Item[]> {
@@ -140,6 +140,7 @@ export default function ButtonDropdownAsyncLoadingPage() {
   // Scenario "error"
   const [errorStatus, setErrorStatus] = useState<StatusType>('error');
   const [errorItems, setErrorItems] = useState<ButtonDropdownProps.Items>([]);
+  const errorRequestId = useRef(0);
 
   const statusSelect = (label: string, value: StatusType, onChange: (value: StatusType) => void) => (
     <FormField label={label}>
@@ -290,9 +291,13 @@ export default function ButtonDropdownAsyncLoadingPage() {
             empty: () => 'No actions found',
           }}
           onLoadItems={({ detail: { samePage } }) => {
+            const requestId = ++errorRequestId.current;
             if (samePage) {
               setErrorStatus('loading');
               setTimeout(() => {
+                if (requestId !== errorRequestId.current) {
+                  return;
+                }
                 setErrorItems(flatSourceItems.slice(0, 8));
                 setErrorStatus('finished');
               }, FETCH_DELAY_MS);
