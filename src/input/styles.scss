@@ -336,16 +336,16 @@ $inline-content-icon-padding: calc(
     padding-inline-start: styles.$invalid-control-left-padding;
   }
 
+  > .input-inline-content:first-child {
+    padding-inline-start: calc(
+      #{$inline-content-icon-padding} - (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field})
+    );
+  }
+
   > .input-has-icon-start:first-child {
     padding-inline-start: calc(
       #{styles.$control-icon-horizontal-padding} -
         (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field})
-    );
-  }
-
-  > .input-inline-content:first-child {
-    padding-inline-start: calc(
-      #{$inline-content-icon-padding} - (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field})
     );
   }
 
