@@ -79,9 +79,11 @@
     "i18nStrings.externalIconAriaLabel": "Wird in einer neuen Registerkarte geöffnet"
   },
   "button-dropdown": {
+    "errorIconAriaLabel": "Fehler",
     "filteringResultsText": "{matchesCount} von {totalCount} Artikeln",
     "i18nStrings.filteringItemAriaDescription": "Tippen Sie weiter, um die Ergebnisse zu filtern.",
-    "noMatch": "Keine übereinstimmenden Aktionen"
+    "noMatch": "Keine übereinstimmenden Aktionen",
+    "recoveryText": "Erneut versuchen"
   },
   "calendar": {
     "i18nStrings.currentMonthAriaLabel": "Aktueller Monat",

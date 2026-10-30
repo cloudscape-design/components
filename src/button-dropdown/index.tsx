@@ -50,6 +50,9 @@ const ButtonDropdown = React.forwardRef(
       filteringResultsText,
       noMatch,
       i18nStrings,
+      onLoadItems,
+      asyncLoadingProps,
+      getExpandableItemsAsyncLoadingState,
       ...props
     }: ButtonDropdownProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
@@ -116,6 +119,9 @@ const ButtonDropdown = React.forwardRef(
             i18nStrings?.filteringItemAriaDescription
           ),
         }}
+        onLoadItems={onLoadItems}
+        asyncLoadingProps={asyncLoadingProps}
+        getExpandableItemsAsyncLoadingState={getExpandableItemsAsyncLoadingState}
         {...getAnalyticsMetadataAttribute({
           component: analyticsComponentMetadata,
         })}
