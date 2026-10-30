@@ -2,33 +2,28 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
 
-import type { DropdownOption } from '../../internal/components/option/interfaces';
-import {
-  filterOptions,
-  isGroup,
-  isGroupInteractive,
-  isInteractive,
-} from '../../internal/components/option/utils/filter-options';
-import { useDebounceCallback } from '../../internal/hooks/use-debounce-callback';
-import type { OptionDefinition, OptionGroup } from '../../types/option';
+import type { OptionDefinition, OptionGroup } from '../../../types/option';
+import { useDebounceCallback } from '../../hooks/use-debounce-callback';
+import type { DropdownOption } from '../option/interfaces';
+import { filterOptions, isGroup, isGroupInteractive, isInteractive } from '../option/utils/filter-options';
 
 const isRepeatedChar = (str: string) => str.split('').every(c => c === str[0]);
 
-interface UseNativeSearchProps {
+interface UseTypeAheadProps {
   isEnabled: boolean;
   options: ReadonlyArray<DropdownOption>;
   highlightOption: (option: DropdownOption) => void;
   highlightedOption: OptionDefinition | undefined | null;
-  useInteractiveGroups?: boolean;
+  interactiveGroups?: boolean;
 }
 
 function findMatchingOption(
   options: ReadonlyArray<DropdownOption>,
   searchText: string,
   currentHighlight: OptionDefinition | OptionGroup | undefined | null,
-  useInteractiveGroups?: boolean
+  interactiveGroups?: boolean
 ) {
-  const interactivityCheck = useInteractiveGroups ? isGroupInteractive : isInteractive;
+  const interactivityCheck = interactiveGroups ? isGroupInteractive : isInteractive;
   const filter = (searchText: string) =>
     filterOptions(options, searchText, true).filter(option => interactivityCheck(option));
   const matchingOptions = filter(searchText);
@@ -42,7 +37,7 @@ function findMatchingOption(
     const matchingOptions = filter(searchText[0]);
 
     if (matchingOptions.length > 0) {
-      //handling OptionGroups when useInteractiveGroups is set
+      //handling OptionGroups when interactiveGroups is set
       let active: number = isGroup(currentHighlight)
         ? matchingOptions.map(({ option }) => option).indexOf(currentHighlight)
         : matchingOptions
@@ -65,13 +60,13 @@ function findMatchingOption(
   return null;
 }
 
-export function useNativeSearch({
+export function useTypeAhead({
   isEnabled,
   options,
   highlightOption,
   highlightedOption,
-  useInteractiveGroups,
-}: UseNativeSearchProps) {
+  interactiveGroups,
+}: UseTypeAheadProps) {
   const value = useRef('');
 
   const delayedResetValue = useDebounceCallback(() => (value.current = ''), 500);
@@ -91,7 +86,7 @@ export function useNativeSearch({
     const newValue = value.current + key;
     value.current = newValue;
 
-    const nextHighlight = findMatchingOption(options, newValue, highlightedOption, useInteractiveGroups);
+    const nextHighlight = findMatchingOption(options, newValue, highlightedOption, interactiveGroups);
     if (nextHighlight) {
       highlightOption(nextHighlight);
     }

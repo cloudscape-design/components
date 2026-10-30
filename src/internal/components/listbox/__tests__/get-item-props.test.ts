@@ -56,7 +56,6 @@ const defaultItemProps = {
   index: 1,
   getOptionProps: getOptionProps(false, false),
   filteringValue: 'child',
-  checkboxes: false,
 };
 
 describe('getItemProps', () => {
@@ -68,29 +67,6 @@ describe('getItemProps', () => {
       'data-test-index': 1,
       'data-mouse-target': 1,
       filteringValue: 'child',
-      hasCheckbox: false,
-      highlighted: false,
-      key: 1,
-      option: {
-        option: { label: 'Child 1' },
-        type: 'child',
-      },
-      selected: false,
-    });
-  });
-
-  test('should return props for the first child in the first group with checkboxes and keyboard', () => {
-    const props = getItemProps({
-      ...defaultItemProps,
-      checkboxes: true,
-    });
-    expect(props).toEqual({
-      'data-child-index': 1,
-      'data-group-index': 1,
-      'data-test-index': 1,
-      'data-mouse-target': 1,
-      filteringValue: 'child',
-      hasCheckbox: true,
       highlighted: false,
       key: 1,
       option: {
@@ -112,7 +88,6 @@ describe('getItemProps', () => {
       'data-test-index': 1,
       'data-mouse-target': 1,
       filteringValue: 'child',
-      hasCheckbox: false,
       highlighted: true,
       key: 1,
       option: {
@@ -136,7 +111,6 @@ describe('getItemProps', () => {
       'data-test-index': 1,
       'data-mouse-target': 1,
       filteringValue: 'child',
-      hasCheckbox: false,
       highlighted: false,
       key: 1,
       option: {
@@ -159,7 +133,6 @@ describe('getItemProps', () => {
       'data-mouse-target': 3,
       'data-test-index': 3,
       filteringValue: 'child',
-      hasCheckbox: false,
       highlighted: false,
       key: 3,
       option: {

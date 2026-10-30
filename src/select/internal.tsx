@@ -11,8 +11,10 @@ import { getBaseProps } from '../internal/base-component';
 import { getBreakpointValue } from '../internal/breakpoints';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
+import PlainList, { SelectListProps } from '../internal/components/listbox/parts/plain-list';
 import { singleSelection } from '../internal/components/listbox/selection/single-selection';
 import { useAnnouncement } from '../internal/components/listbox/use-announcement';
+import { useTypeAhead } from '../internal/components/listbox/use-type-ahead';
 import { checkOptionValueField } from '../internal/components/listbox/utils/check-option-value-field';
 import { prepareOptions } from '../internal/components/option/utils/prepare-options.js';
 import { ResetGroupedControlContext, useGroupedControlContext } from '../internal/context/control-group-context';
@@ -27,12 +29,10 @@ import { joinStrings } from '../internal/utils/strings/join-strings.js';
 import { OptionGroup } from '../types/option';
 import { SelectProps } from './interfaces';
 import Filter from './parts/filter';
-import PlainList, { SelectListProps } from './parts/plain-list';
 import Trigger from './parts/trigger';
 import VirtualList from './parts/virtual-list';
 import { composeDropdownContent } from './utils/dropdown-customization';
 import { useLoadItems } from './utils/use-load-items';
-import { useNativeSearch } from './utils/use-native-search';
 import { useSelect } from './utils/use-select';
 
 import styles from './styles.css.js';
@@ -171,7 +171,7 @@ const InternalSelect = React.forwardRef(
       dropdownRole,
     });
 
-    const handleNativeSearch = useNativeSearch({
+    const handleNativeSearch = useTypeAhead({
       isEnabled: filteringType === 'none' && !readOnly,
       options: filteredOptions,
       highlightOption: !isOpen ? selectOption : highlightOption,
