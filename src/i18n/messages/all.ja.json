@@ -79,9 +79,11 @@
     "i18nStrings.externalIconAriaLabel": "新しいタブで開く"
   },
   "button-dropdown": {
+    "errorIconAriaLabel": "エラー",
     "filteringResultsText": "{totalCount} 件のうち {matchesCount} 件の商品",
     "i18nStrings.filteringItemAriaDescription": "入力を続けると結果が絞り込まれます。",
-    "noMatch": "一致するアクションなし"
+    "noMatch": "一致するアクションなし",
+    "recoveryText": "再試行"
   },
   "calendar": {
     "i18nStrings.currentMonthAriaLabel": "当月",

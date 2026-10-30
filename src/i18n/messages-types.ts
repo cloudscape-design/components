@@ -115,12 +115,14 @@ export interface I18nFormatArgTypes {
     "i18nStrings.externalIconAriaLabel": never;
   }
   "button-dropdown": {
+    "errorIconAriaLabel": never;
     "filteringResultsText": {
       "matchesCount": string | number;
       "totalCount": string | number;
     }
     "i18nStrings.filteringItemAriaDescription": never;
     "noMatch": never;
+    "recoveryText": never;
   }
   "calendar": {
     "i18nStrings.currentMonthAriaLabel": never;
