@@ -6,8 +6,7 @@ import { BaseComponentProps } from '../types/base-component';
 
 export interface KeyValuePairsProps extends BaseComponentProps {
   /**
-   * Specifies the number of columns in each grid row. It defaults to 1. Up to 12 columns are
-   * supported, and higher values are treated as 12.
+   * Specifies the number of columns in each grid row. It defaults to 1.
    *
    * The number of columns is reduced as the available space narrows, based on `minColumnWidth`.
    */

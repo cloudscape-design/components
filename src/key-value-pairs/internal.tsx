@@ -48,7 +48,7 @@ const InternalKeyValuePairs = React.forwardRef(
       ariaLabelledby,
       minColumnWidth,
       ...rest
-    }: KeyValuePairsProps & Required<Pick<KeyValuePairsProps, 'columns'>>,
+    }: KeyValuePairsProps & Required<Pick<KeyValuePairsProps, 'columns' | 'minColumnWidth'>>,
     ref: React.Ref<HTMLDivElement>
   ) => {
     return (
