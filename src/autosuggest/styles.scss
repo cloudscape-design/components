@@ -3,6 +3,11 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use '../internal/styles/style-api' as style-api;
+
+@include style-api.docs-forward('input', 'input');
+@include style-api.docs-forward('dropdown', 'dropdown');
+
 .root {
   inline-size: 100%;
 }
