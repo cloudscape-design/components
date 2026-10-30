@@ -156,7 +156,7 @@ const AutosuggestInput = React.forwardRef(
     const [tokensOverflowOpen, setTokensOverflowOpen] = useState(false);
     const [announcement, setAnnouncement] = useState('');
 
-    const { containerRef, visibleCount } = useTokenOverflow({
+    const visibleCount = useTokenOverflow({
       enabled: isTokenMode,
       tokenCount: tokenList.length,
       tokenContentKey: tokenList.map(token => `${token.value}::${token.icon ? 'icon' : 'no-icon'}`).join('\n'),
@@ -164,6 +164,7 @@ const AutosuggestInput = React.forwardRef(
       measureTriggerRef,
       tokensRef: inlineTokensRootRef,
       inputRef,
+      fieldWidth: triggerWidth,
       layoutKey: [
         formFieldContext.invalid,
         formFieldContext.warning,
@@ -515,9 +516,7 @@ const AutosuggestInput = React.forwardRef(
                 {`+${tokenList.length}`}
               </ButtonTrigger>
             </div>
-            <div ref={containerRef} className={styles['token-field-container']}>
-              {dropdown}
-            </div>
+            {dropdown}
           </>
         ) : (
           dropdown

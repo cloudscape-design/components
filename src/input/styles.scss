@@ -177,7 +177,6 @@ $input-tokens: style-api.resolve(
   inline-size: 100%;
   box-sizing: border-box;
   cursor: text;
-  overflow: clip;
   color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-form-secondary);
   border-start-start-radius: styles.$control-border-radius;
   border-start-end-radius: styles.$control-border-radius;
@@ -192,6 +191,11 @@ $input-tokens: style-api.resolve(
       var(#{custom-props.$styleColorDefault}, awsui.$color-text-form-secondary)
     );
     @include styles.input-hover-styles;
+  }
+
+  // Inline content can open popovers (e.g. the token overflow dropdown) that must not be clipped.
+  &:not(.input-field-has-inline-content) {
+    overflow: clip;
   }
 
   &.input-field-readonly {
@@ -312,11 +316,9 @@ $inline-content-icon-padding: calc(
 .input-inline-content {
   display: flex;
   min-inline-size: 0;
-  padding-inline-start: styles.$control-padding-horizontal;
-
-  &.input-inline-content-has-icon-start {
-    padding-inline-start: $inline-content-icon-padding;
-  }
+  padding-inline-start: $inline-content-icon-padding;
+  // Inline content is not editable text, so it does not show the field's text cursor.
+  cursor: default;
 
   // The inline content already clears the start icon; the input keeps room to type.
   + .input {
@@ -330,7 +332,6 @@ $inline-content-icon-padding: calc(
 .input-field-invalid,
 .input-field-warning {
   > .input-prefix,
-  > .input-inline-content:first-child,
   > .input:first-child {
     padding-inline-start: styles.$invalid-control-left-padding;
   }
@@ -342,7 +343,7 @@ $inline-content-icon-padding: calc(
     );
   }
 
-  > .input-inline-content-has-icon-start:first-child {
+  > .input-inline-content:first-child {
     padding-inline-start: calc(
       #{$inline-content-icon-padding} - (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field})
     );

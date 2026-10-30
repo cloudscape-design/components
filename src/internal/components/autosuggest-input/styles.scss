@@ -19,11 +19,6 @@
   display: contents;
 }
 
-.token-field-container {
-  position: relative;
-  inline-size: 100%;
-}
-
 .token-list {
   @include styles.styles-reset-ul;
   display: flex;
@@ -39,7 +34,6 @@
   align-items: center;
   column-gap: awsui.$space-xxs;
   min-inline-size: 0;
-  cursor: default;
 }
 
 .token-list-item {

@@ -3,8 +3,6 @@
 
 import { useLayoutEffect, useState } from 'react';
 
-import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-
 import styles from './styles.css.js';
 
 interface UseTokenOverflowOptions {
@@ -15,12 +13,8 @@ interface UseTokenOverflowOptions {
   measureTriggerRef: React.RefObject<HTMLElement>;
   tokensRef: React.RefObject<HTMLElement>;
   inputRef: React.RefObject<HTMLElement>;
+  fieldWidth: number | null;
   layoutKey: string;
-}
-
-interface UseTokenOverflowResult {
-  containerRef: React.Ref<HTMLDivElement>;
-  visibleCount: number;
 }
 
 /**
@@ -34,16 +28,16 @@ export function useTokenOverflow({
   measureTriggerRef,
   tokensRef,
   inputRef,
+  fieldWidth,
   layoutKey,
-}: UseTokenOverflowOptions): UseTokenOverflowResult {
-  const [containerWidth, containerRef] = useContainerQuery(entry => entry.borderBoxWidth);
+}: UseTokenOverflowOptions): number {
   const [visibleCount, setVisibleCount] = useState(tokenCount);
 
   useLayoutEffect(() => {
     const tokens = tokensRef.current;
     const input = inputRef.current;
     const measure = measureRef.current;
-    if (!enabled || !tokens || !input || !measure || !containerWidth) {
+    if (!enabled || !tokens || !input || !measure || !fieldWidth) {
       setVisibleCount(tokenCount);
       return;
     }
@@ -52,7 +46,7 @@ export function useTokenOverflow({
     // The tokens and the input share the available space, whatever the tokens currently take.
     const availableWidth = tokens.offsetWidth + input.offsetWidth;
     const gap = parseFloat(getComputedStyle(tokens).columnGap) || 0;
-    const inputMinWidth = resolveLength(getComputedStyle(input).minInlineSize, containerWidth);
+    const inputMinWidth = resolveLength(getComputedStyle(input).minInlineSize, fieldWidth);
     const triggerWidth = measureTriggerRef.current?.offsetWidth ?? 0;
     const tokenWidths = Array.from(measure.querySelectorAll<HTMLElement>(`.${styles['measurement-token']}`)).map(
       el => el.offsetWidth
@@ -63,19 +57,9 @@ export function useTokenOverflow({
     setVisibleCount(
       totalWidth <= budget ? tokenWidths.length : countFittingFromEnd(tokenWidths, budget - triggerWidth - gap, gap)
     );
-  }, [
-    enabled,
-    tokenCount,
-    tokenContentKey,
-    containerWidth,
-    layoutKey,
-    measureRef,
-    measureTriggerRef,
-    tokensRef,
-    inputRef,
-  ]);
+  }, [enabled, tokenCount, tokenContentKey, fieldWidth, layoutKey, measureRef, measureTriggerRef, tokensRef, inputRef]);
 
-  return { containerRef, visibleCount: Math.min(visibleCount, tokenCount) };
+  return Math.min(visibleCount, tokenCount);
 }
 
 function countFittingFromEnd(widths: number[], budget: number, gap: number) {

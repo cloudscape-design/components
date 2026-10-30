@@ -52,7 +52,7 @@ export interface InternalInputProps
 
   __noBorderRadius?: boolean;
 
-  // Rendered inside the field, before the native input.
+  // Rendered inside the field, between the start icon and the native input.
   __inlineContent?: React.ReactNode;
 
   __onDelayedInput?: NonCancelableEventHandler<BaseChangeDetail>;
@@ -342,6 +342,7 @@ function InternalInput(
           disabled && styles['input-field-disabled'],
           readOnly && !disabled && styles['input-field-readonly'],
           __noBorderRadius && styles['input-field-no-border-radius'],
+          !!__inlineContent && styles['input-field-has-inline-content'],
           groupedControlClasses
         )}
         aria-disabled={disabled || undefined}
@@ -358,12 +359,7 @@ function InternalInput(
           </>
         )}
         {__inlineContent && (
-          <div
-            className={clsx(
-              styles['input-inline-content'],
-              __startIcon && styles['input-inline-content-has-icon-start']
-            )}
-          >
+          <div className={styles['input-inline-content']}>
             <ResetGroupedControlContext>{__inlineContent}</ResetGroupedControlContext>
           </div>
         )}
