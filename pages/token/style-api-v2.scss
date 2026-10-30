@@ -1,0 +1,41 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~components/styling/button';
+@use '~components/styling/token';
+@use '../style-api/palette' as palette;
+
+.root {
+  @include token.root(
+    $background: palette.$genai-surface,
+    $color: palette.$genai-text,
+    $border-color: palette.$genai,
+    $border-width: 2px,
+    $border-radius: 4px,
+    $padding-block: 4px,
+    $padding-inline: 8px 4px
+  );
+
+  // Disabled is consumer state class. The double class wins over the rule above.
+  &.root-disabled {
+    @include token.root(
+      $background: palette.$surface-alt,
+      $color: palette.$text-disabled,
+      $border-color: palette.$border-disabled
+    );
+  }
+}
+
+.dismiss {
+  @include button.root($color: palette.$genai, $focus-ring-color: palette.$genai, $focus-ring-radius: 4px);
+
+  &:hover {
+    @include button.root($color: palette.$genai-hover);
+  }
+
+  &.dismiss-disabled {
+    @include button.root($color: palette.$text-disabled);
+  }
+}
