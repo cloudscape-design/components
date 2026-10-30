@@ -96,7 +96,7 @@ const toSelectOptionItem = (props: {
           index: props.parentProps?.index,
           virtualIndex: props.parentProps?.virtualIndex,
           option: props.parentProps?.option,
-          disabled: props.parentProps.disabled,
+          disabled: props.disabled,
         })
       : null,
   };
@@ -137,7 +137,7 @@ const toMultiselectOptionItem = (props: {
           index: props.parentProps?.index,
           virtualIndex: props.parentProps?.virtualIndex,
           option: props.parentProps?.option,
-          disabled: props.parentProps.disabled,
+          disabled: props.disabled,
           highlighted: props.parentProps?.highlighted ?? false,
           indeterminate: props.parentProps?.indeterminate ?? false,
           selected: props.parentProps?.selected ?? false,
@@ -273,11 +273,10 @@ const Item = (
     />
   );
 
-  const disabledReasonElement = isDisabledWithReason && (
+  const disabledReasonElement = !renderResult && isDisabledWithReason && (
     <>
-      {/* Stays mounted with custom content, so aria-describedby always points to an element. */}
       {descriptionEl}
-      {!renderResult && highlighted && canShowTooltip && (
+      {highlighted && canShowTooltip && (
         <Tooltip
           className={styles['disabled-reason-tooltip']}
           getTrack={() => internalRef.current}

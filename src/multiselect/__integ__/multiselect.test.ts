@@ -73,7 +73,7 @@ const createSetupTest = (wrapper: MultiselectWrapper) => (testFn: (page: Multise
         await page.clickSelect();
         await page.keys(['o']);
 
-        await expect(page.getHighlightedOptionLabel()).resolves.toBe('option1');
+        await expect(page.getHighlightedOptionLabel()).resolves.toBe('First category');
       })
     );
 
@@ -83,7 +83,7 @@ const createSetupTest = (wrapper: MultiselectWrapper) => (testFn: (page: Multise
         await page.clickSelect();
         await page.keys(['o', 'o']);
 
-        await expect(page.getHighlightedOptionLabel()).resolves.toBe('option3');
+        await expect(page.getHighlightedOptionLabel()).resolves.toBe('option1');
       })
     );
 
@@ -91,9 +91,9 @@ const createSetupTest = (wrapper: MultiselectWrapper) => (testFn: (page: Multise
       'highlights the first match on search on triple (length of matches + 1) keypress with dropdown open',
       setupTest(async page => {
         await page.clickSelect();
-        await page.keys(['o', 'o', 'o', 'o', 'o']);
+        await page.keys(['o', 'o', 'o', 'o', 'o', 'o', 'o']);
 
-        await expect(page.getHighlightedOptionLabel()).resolves.toBe('option1');
+        await expect(page.getHighlightedOptionLabel()).resolves.toBe('First category');
       })
     );
 

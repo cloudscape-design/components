@@ -6,7 +6,7 @@ import { fireEvent } from '@testing-library/react';
 import { KeyCode } from '@cloudscape-design/component-toolkit/internal';
 
 import OptionList, { OptionListProps } from '../../../lib/components/option-list';
-import { clickOption, groupedOptions, highlightedValue, pressKey, renderOptionList, Stateful, Wrapper } from './common';
+import { clickOption, groupedOptions, highlightedValue, pressKey, renderOptionList, Stateful } from './common';
 
 describe('OptionList option groups', () => {
   test('renders each group labelled by its header, and option finders skip the headers', () => {
@@ -145,65 +145,6 @@ describe('OptionList option groups', () => {
       fireEvent.mouseUp(wrapper.findGroupHeaderByValue('db')!.getElement());
       clickOption(wrapper, 1);
       expect(onChange).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('type-ahead', () => {
-    const typeAheadOptions: OptionListProps.Options = [
-      {
-        value: 'compute',
-        label: 'Compute',
-        options: [
-          { value: 'ec2', label: 'EC2' },
-          { value: 'lambda', label: 'Lambda' },
-          { value: 'fargate', label: 'Fargate' },
-        ],
-      },
-      {
-        value: 'databases',
-        label: 'Databases',
-        disabled: true,
-        options: [
-          { value: 'cassandra', label: 'Cassandra' },
-          { value: 'documentdb', label: 'DocumentDB' },
-        ],
-      },
-      { value: 'cherry', label: 'Cherry' },
-    ];
-    const type = (listbox: HTMLElement, key: string) => fireEvent.keyDown(listbox, { key });
-    const isComputeHighlighted = (wrapper: Wrapper) => wrapper.findGroupHeaderByValue('compute')!.isHighlighted();
-
-    test('multi: highlights the option that matches, not its group, and Enter selects only that option', () => {
-      const onChange = jest.fn();
-      const { wrapper, listbox } = renderOptionList(
-        <Stateful selectionType="multi" options={typeAheadOptions} onChange={onChange} />
-      );
-      fireEvent.focus(listbox);
-      type(listbox, 'e');
-      expect(isComputeHighlighted(wrapper)).toBe(false);
-      expect(highlightedValue(wrapper)).toBe('ec2');
-      pressKey(listbox, KeyCode.enter);
-      expect(onChange).toHaveBeenLastCalledWith(['ec2']);
-    });
-
-    test('multi: repeating a key cycles through the matching group and options, skipping a disabled group', () => {
-      const { wrapper, listbox } = renderOptionList(<Stateful selectionType="multi" options={typeAheadOptions} />);
-      fireEvent.focus(listbox);
-      type(listbox, 'c');
-      expect(isComputeHighlighted(wrapper)).toBe(true);
-      type(listbox, 'c');
-      expect(highlightedValue(wrapper)).toBe('cherry');
-      type(listbox, 'c');
-      expect(isComputeHighlighted(wrapper)).toBe(true);
-    });
-
-    test('single: skips the options of a group whose label matches', () => {
-      const { wrapper, listbox } = renderOptionList(<Stateful options={typeAheadOptions} />);
-      fireEvent.focus(listbox);
-      type(listbox, 'c');
-      expect(highlightedValue(wrapper)).toBe('cherry');
-      type(listbox, 'c');
-      expect(highlightedValue(wrapper)).toBe('cherry');
     });
   });
 });

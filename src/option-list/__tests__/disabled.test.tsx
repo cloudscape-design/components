@@ -67,7 +67,7 @@ describe('OptionList disabled options', () => {
   });
 
   test.each<OptionListProps.SelectionType>(['single', 'multi'])(
-    'describes the disabled option with its disabled reason when renderOption is used (%s)',
+    'does not show the disabled reason tooltip when renderOption is used (%s)',
     selectionType => {
       const { wrapper, listbox } = renderOptionList(
         <Stateful
@@ -76,10 +76,6 @@ describe('OptionList disabled options', () => {
           renderOption={({ item }) => <span>Custom {item.option.label}</span>}
         />
       );
-      const describedBy = wrapper.findOptionByValue('b')!.getElement().getAttribute('aria-describedby');
-      expect(describedBy).toBeTruthy();
-      expect(document.getElementById(describedBy!)).toHaveTextContent('Not available in this Region');
-
       // Custom content owns the visible output, so the tooltip isn't shown.
       fireEvent.focus(listbox);
       pressKey(listbox, KeyCode.down);

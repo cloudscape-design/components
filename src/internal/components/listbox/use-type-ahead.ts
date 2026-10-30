@@ -24,10 +24,8 @@ function findMatchingOption(
   interactiveGroups?: boolean
 ) {
   const interactivityCheck = interactiveGroups ? isGroupInteractive : isInteractive;
-  // Match each option on its own content. Filtering the list as a whole would also return the group headers
-  // of matching children (and the children of matching groups), which become targets with interactive groups.
   const filter = (searchText: string) =>
-    options.filter(option => interactivityCheck(option) && filterOptions([option], searchText, true).length > 0);
+    filterOptions(options, searchText, true).filter(option => interactivityCheck(option));
   const matchingOptions = filter(searchText);
 
   if (matchingOptions.length === 1) {
@@ -80,8 +78,7 @@ export function useTypeAhead({
 
     const { key } = event;
 
-    // Skip keys already handled elsewhere, e.g. Space selecting the highlighted option or opening the dropdown.
-    if (event.defaultPrevented || !key || key.length !== 1) {
+    if (!key || key.length !== 1) {
       return;
     }
 

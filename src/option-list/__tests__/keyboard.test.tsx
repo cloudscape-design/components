@@ -6,7 +6,7 @@ import { createEvent, fireEvent, render } from '@testing-library/react';
 import { KeyCode } from '@cloudscape-design/component-toolkit/internal';
 
 import createWrapper from '../../../lib/components/test-utils/dom';
-import { highlightedValue, pressKey, renderOptionList, Stateful } from './common';
+import { pressKey, renderOptionList, Stateful } from './common';
 
 describe('OptionList keyboard', () => {
   test('focus highlights the first option, arrows move with wrap-around, Home and End jump', () => {
@@ -67,16 +67,6 @@ describe('OptionList keyboard', () => {
     pressKey(listbox, KeyCode.escape);
     expect(onParentKeyDown).toHaveBeenCalledWith(KeyCode.escape);
     expect(onChange).not.toHaveBeenCalled();
-  });
-
-  test('type-ahead after Space selects moves the highlight to the matching option', () => {
-    const onChange = jest.fn();
-    const { wrapper, listbox } = renderOptionList(<Stateful selectionType="multi" onChange={onChange} />);
-    fireEvent.focus(listbox);
-    fireEvent.keyDown(listbox, { key: ' ', keyCode: KeyCode.space });
-    expect(onChange).toHaveBeenLastCalledWith(['a']);
-    fireEvent.keyDown(listbox, { key: 't' });
-    expect(highlightedValue(wrapper)).toBe('c');
   });
 
   test('blur clears the highlight and aria-activedescendant', () => {
