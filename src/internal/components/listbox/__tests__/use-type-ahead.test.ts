@@ -61,4 +61,107 @@ describe('useTypeAhead', () => {
 
     expect(highlightOption).not.toHaveBeenCalled();
   });
+
+  test('ignores keys that were already handled by another handler', () => {
+    const hook = renderHook(useTypeAhead, { initialProps });
+    act(() => {
+      hook.result.current({ key: ' ', defaultPrevented: true } as React.KeyboardEvent);
+    });
+    expect(highlightOption).not.toHaveBeenCalled();
+    act(() => {
+      hook.result.current({ key: 'o' } as React.KeyboardEvent);
+    });
+    expect(highlightOption).toHaveBeenCalledWith(options[0]);
+  });
+
+  test('cycles from a highlighted option that is an equal copy rather than the same object', () => {
+    const hook = renderHook(useTypeAhead, {
+      initialProps: { ...initialProps, highlightedOption: { label: 'option 1', value: 'option1' } },
+    });
+    act(() => {
+      hook.result.current({ key: 'o' } as React.KeyboardEvent);
+    });
+    act(() => {
+      hook.result.current({ key: 'o' } as React.KeyboardEvent);
+    });
+    expect(highlightOption).toHaveBeenLastCalledWith(options[1]);
+  });
+
+  describe('with groups', () => {
+    const groupedOptions: DropdownOption[] = [
+      { type: 'parent', option: { label: 'Compute', options: [] } },
+      { type: 'child', option: { label: 'EC2', value: 'ec2' } },
+      { type: 'child', option: { label: 'Lambda', value: 'lambda' } },
+      { type: 'child', option: { label: 'Fargate', value: 'fargate' } },
+      { type: 'parent', option: { label: 'Storage', options: [] } },
+      { type: 'child', option: { label: 'S3', value: 's3' } },
+    ];
+    const renderGroupedHook = (highlightedOption: DropdownOption['option'] | null = null) =>
+      renderHook(useTypeAhead, {
+        initialProps: { ...initialProps, options: groupedOptions, highlightedOption, interactiveGroups: true },
+      });
+
+    test('with interactive groups, highlights the matching child rather than its non-matching group', () => {
+      const hook = renderGroupedHook();
+      act(() => {
+        hook.result.current({ key: 'e' } as React.KeyboardEvent);
+      });
+      expect(highlightOption).toHaveBeenCalledTimes(1);
+      expect(highlightOption).toHaveBeenCalledWith(groupedOptions[1]);
+    });
+
+    test('with interactive groups, highlights a group whose own label matches', () => {
+      const hook = renderGroupedHook();
+      act(() => {
+        hook.result.current({ key: 'c' } as React.KeyboardEvent);
+      });
+      expect(highlightOption).toHaveBeenCalledWith(groupedOptions[0]);
+    });
+
+    test('with interactive groups, does not cycle into children of a matching group when their own labels do not match', () => {
+      const hook = renderGroupedHook(groupedOptions[0].option);
+      act(() => {
+        hook.result.current({ key: 'c' } as React.KeyboardEvent);
+      });
+      act(() => {
+        hook.result.current({ key: 'c' } as React.KeyboardEvent);
+      });
+      // Only the Compute group itself starts with "c", so repeating the key keeps it highlighted.
+      expect(highlightOption).toHaveBeenCalledTimes(2);
+      expect(highlightOption).toHaveBeenLastCalledWith(groupedOptions[0]);
+    });
+
+    test('with interactive groups, cycles from the highlighted option when its group has the same value', () => {
+      const sharedValueOptions: DropdownOption[] = [
+        { type: 'parent', option: { label: 'Compute', value: 'shared', options: [] } },
+        { type: 'child', option: { label: 'Cloud', value: 'shared' } },
+        { type: 'child', option: { label: 'Cache', value: 'cache' } },
+      ];
+      const hook = renderHook(useTypeAhead, {
+        initialProps: {
+          ...initialProps,
+          options: sharedValueOptions,
+          highlightedOption: sharedValueOptions[1].option,
+          interactiveGroups: true,
+        },
+      });
+      act(() => {
+        hook.result.current({ key: 'c' } as React.KeyboardEvent);
+      });
+      act(() => {
+        hook.result.current({ key: 'c' } as React.KeyboardEvent);
+      });
+      expect(highlightOption).toHaveBeenLastCalledWith(sharedValueOptions[2]);
+    });
+
+    test('without interactive groups, does not highlight children of a group whose label matches', () => {
+      const hook = renderHook(useTypeAhead, {
+        initialProps: { ...initialProps, options: groupedOptions },
+      });
+      act(() => {
+        hook.result.current({ key: 'c' } as React.KeyboardEvent);
+      });
+      expect(highlightOption).not.toHaveBeenCalled();
+    });
+  });
 });

@@ -142,18 +142,17 @@ export function useSelect({
   };
 
   const activeKeyDownHandler = useMenuKeyboard({
+    // Wrap at the first and last highlightable options, not the first and last rows: group headers aren't
+    // highlightable without interactive groups, and an empty group leaves a header at either end of the list.
     goUp: () => {
-      if (
-        (!useInteractiveGroups && highlightedOption?.type === 'child' && highlightedIndex === 1) ||
-        highlightedIndex === 0
-      ) {
+      if (highlightedIndex === options.findIndex(isHighlightable)) {
         goEndWithKeyboard();
         return;
       }
       moveHighlightWithKeyboard(-1);
     },
     goDown: () => {
-      if (highlightedIndex === options.length - 1) {
+      if (!options.slice(highlightedIndex + 1).some(isHighlightable)) {
         goHomeWithKeyboard();
         return;
       }
@@ -170,6 +169,7 @@ export function useSelect({
       }
     },
     preventNativeSpace: !hasFilter || (highlightedOption && highlightType.type === 'keyboard'),
+    preventNativeHomeEnd: !hasFilter,
   });
 
   const triggerKeyDownHandler = useTriggerKeyboard({

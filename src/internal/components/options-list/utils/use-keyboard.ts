@@ -15,6 +15,9 @@ interface UseMenuKeyboard {
     goEnd: () => void;
     closeDropdown: () => void;
     preventNativeSpace?: boolean;
+    // Prevents the native Home and End action, which would also scroll the page or a scroll container.
+    // Leave it off when focus is in a text input, where Home and End move the cursor.
+    preventNativeHomeEnd?: boolean;
   }): CancelableEventHandler<BaseKeyDetail>;
 }
 
@@ -26,6 +29,7 @@ export const useMenuKeyboard: UseMenuKeyboard = ({
   goEnd,
   closeDropdown,
   preventNativeSpace = false,
+  preventNativeHomeEnd = false,
 }) => {
   return (event: CustomEvent<BaseKeyDetail>) => {
     switch (event.detail.keyCode) {
@@ -38,9 +42,15 @@ export const useMenuKeyboard: UseMenuKeyboard = ({
         goDown();
         break;
       case HOME:
+        if (preventNativeHomeEnd) {
+          event.preventDefault();
+        }
         goHome();
         break;
       case END:
+        if (preventNativeHomeEnd) {
+          event.preventDefault();
+        }
         goEnd();
         break;
       case KeyCode.escape:
