@@ -17,7 +17,7 @@ import { ExpandableSectionContainer } from './expandable-section-container';
 import { ExpandableSectionHeader } from './expandable-section-header';
 import { ExpandableSectionProps } from './interfaces';
 import { InternalVariant } from './internal-interfaces';
-import { variantSupportsDescription } from './utils';
+import { variantSupportsDescription, variantSupportsHeaderSecondaryContent } from './utils';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -63,6 +63,8 @@ export default function InternalExpandableSection({
   headerDescription,
   headerInfo,
   headerActions,
+  headerSecondaryContent,
+  hideHeaderText,
   headingTagOverride,
   disableContentPaddings,
   headerAriaLabel,
@@ -79,6 +81,7 @@ export default function InternalExpandableSection({
   const controlId = useUniqueId();
   const triggerControlId = `${controlId}-trigger`;
   const descriptionId = `${controlId}-description`;
+  const secondaryContentId = `${controlId}-secondary`;
 
   const baseProps = getBaseProps(props);
   const [expanded, setExpanded] = useControllable(controlledExpanded, onChange, defaultExpanded, {
@@ -138,12 +141,20 @@ export default function InternalExpandableSection({
   // Map stacked variant to container to avoid code duplication
   const baseVariant: InternalVariant = variant === 'stacked' ? 'container' : variant;
 
+  const headerTextHidden = hideHeaderText && variantSupportsHeaderSecondaryContent(baseVariant);
+
   return (
     <ExpandableSectionContainer
       {...props}
       expanded={expanded}
       className={clsx(baseProps.className, styles.root, analyticsSelectors.root)}
       variant={variant}
+      {...(headerTextHidden
+        ? {
+            role: 'region',
+            ...(headerAriaLabel ? { ariaLabel: headerAriaLabel } : { ariaLabelledby: triggerControlId }),
+          }
+        : {})}
       __injectAnalyticsComponentMetadata={__injectAnalyticsComponentMetadata}
       header={
         <ExpandableSectionHeader
@@ -163,6 +174,9 @@ export default function InternalExpandableSection({
           headerCounter={headerCounter}
           headerInfo={headerInfo}
           headerActions={headerActions}
+          headerSecondaryContent={headerSecondaryContent}
+          secondaryContentId={secondaryContentId}
+          hideHeaderText={hideHeaderText}
           headingTagOverride={headingTagOverride}
           expandIconPosition={__expandIconPosition}
           hideExpandIcon={__hideExpandIcon}

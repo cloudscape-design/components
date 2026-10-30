@@ -22,7 +22,8 @@ export interface HeaderProps extends BaseComponentProps {
   variant?: HeaderProps.Variant;
   /**
    * Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements)
-   * provided by the variant. Using this property does not change the visual appearance of the component.
+   * provided by the variant. Set to `div` to render the title without heading semantics. Using this property does not
+   * change the visual appearance of the component.
    */
   headingTagOverride?: HeaderProps.HeadingTag;
   /**
@@ -46,5 +47,5 @@ export interface HeaderProps extends BaseComponentProps {
 
 export namespace HeaderProps {
   export type Variant = 'h1' | 'h2' | 'h3' | 'awsui-h1-sticky';
-  export type HeadingTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5';
+  export type HeadingTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'div';
 }
