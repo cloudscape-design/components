@@ -4,6 +4,7 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import {
   SingleTabStopNavigationAPI,
   SingleTabStopNavigationProvider,
@@ -32,6 +33,7 @@ export interface InlineTokensProps {
   onDismiss: (index: number, source: 'inline' | 'overflow') => void;
   onFocusEnter: () => void;
   onNavigateToInput: () => void;
+  rootRef?: React.Ref<HTMLDivElement>;
 }
 
 export interface InlineTokensRef {
@@ -53,10 +55,12 @@ export const InlineTokens = forwardRef(
       onDismiss,
       onFocusEnter,
       onNavigateToInput,
+      rootRef: externalRootRef,
     }: InlineTokensProps,
     ref: React.Ref<InlineTokensRef>
   ) => {
     const rootRef = useRef<HTMLDivElement>(null);
+    const mergedRootRef = useMergeRefs(rootRef, externalRootRef);
     const navigationAPI = useRef<SingleTabStopNavigationAPI>(null);
     const lastFocusedRef = useRef<HTMLElement | null>(null);
 
@@ -125,7 +129,7 @@ export const InlineTokens = forwardRef(
     };
 
     return (
-      <div ref={rootRef} className={styles['inline-tokens']} onFocus={onFocus} onKeyDown={onKeyDown}>
+      <div ref={mergedRootRef} className={styles['inline-tokens']} onFocus={onFocus} onKeyDown={onKeyDown}>
         <SingleTabStopNavigationProvider
           ref={navigationAPI}
           navigationActive={true}

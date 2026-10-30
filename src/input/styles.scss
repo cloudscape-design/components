@@ -177,7 +177,6 @@ $input-tokens: style-api.resolve(
   inline-size: 100%;
   box-sizing: border-box;
   cursor: text;
-  overflow: clip;
   color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-form-secondary);
   border-start-start-radius: styles.$control-border-radius;
   border-start-end-radius: styles.$control-border-radius;
@@ -192,6 +191,11 @@ $input-tokens: style-api.resolve(
       var(#{custom-props.$styleColorDefault}, awsui.$color-text-form-secondary)
     );
     @include styles.input-hover-styles;
+  }
+
+  // Inline content can open popovers (e.g. the token overflow dropdown) that must not be clipped.
+  &:not(.input-field-has-inline-content) {
+    overflow: clip;
   }
 
   &.input-field-readonly {
@@ -260,19 +264,6 @@ $input-tokens: style-api.resolve(
     border-end-end-radius: awsui.$border-radius-dropdown;
   }
 
-  // Nested so the grouped corner rules win over the field's own radius by specificity, not by source order.
-  &.input-field-no-border {
-    min-block-size: unset;
-    &,
-    &:hover,
-    &:focus-within {
-      border-block-width: 0;
-      border-inline-width: 0;
-      box-shadow: none;
-      background-color: transparent;
-    }
-  }
-
   &.grouped {
     // Unlike other controls, input's padding is rendered by the inner input element and not by its wrapper,
     // so we should not add extra space to the wrapper for the validation border.
@@ -316,13 +307,39 @@ $input-tokens: style-api.resolve(
   cursor: default;
 }
 
+// Starts the inline content one small gap after the start icon, which is offset from the outer border edge.
+$inline-content-icon-padding: calc(
+  #{styles.$control-icon-horizontal-offset} + #{awsui.$size-icon-normal} + #{awsui.$space-xxs} -
+    #{awsui.$border-width-field}
+);
+
+.input-inline-content {
+  display: flex;
+  min-inline-size: 0;
+  padding-inline-start: $inline-content-icon-padding;
+  // Inline content is not editable text, so it does not show the field's text cursor.
+  cursor: default;
+
+  // The inline content already clears the start icon; the input keeps room to type.
+  + .input {
+    padding-inline-start: styles.$control-padding-horizontal;
+    min-inline-size: 20%;
+  }
+}
+
 // The wider invalid/warning start border is absorbed by the first cell, so the content does not shift.
-// The first cell is the prefix when present, otherwise the native input.
+// The first cell is the prefix when present, then the inline content, otherwise the native input.
 .input-field-invalid,
 .input-field-warning {
   > .input-prefix,
   > .input:first-child {
     padding-inline-start: styles.$invalid-control-left-padding;
+  }
+
+  > .input-inline-content:first-child {
+    padding-inline-start: calc(
+      #{$inline-content-icon-padding} - (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field})
+    );
   }
 
   > .input-has-icon-start:first-child {
