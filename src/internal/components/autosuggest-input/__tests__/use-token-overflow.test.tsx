@@ -7,29 +7,17 @@ import { useTokenOverflow } from '../../../../../lib/components/internal/compone
 
 import styles from '../../../../../lib/components/internal/components/autosuggest-input/styles.css.js';
 
-let mockFieldWidth: number | null = null;
-
 interface Geometry {
-  field: number | null;
   token: number;
   trigger: number;
   // Combined width of the tokens and the input, and how much of it the tokens take.
-  available?: number;
+  available: number;
   tokensShare?: number;
   gap?: number;
   inputMinWidth?: string;
 }
 
-function setGeometry({
-  field,
-  token,
-  trigger,
-  available = field ?? 0,
-  tokensShare = 0.5,
-  gap = 0,
-  inputMinWidth = '0px',
-}: Geometry) {
-  mockFieldWidth = field;
+function setGeometry({ token, trigger, available, tokensShare = 0.5, gap = 0, inputMinWidth = '0px' }: Geometry) {
   const tokensWidth = Math.round(available * tokensShare);
   jest.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockImplementation(function (this: HTMLElement) {
     if (this.classList.contains(styles['measurement-token'])) {
@@ -50,18 +38,16 @@ function setGeometry({
 
 afterEach(() => {
   jest.restoreAllMocks();
-  mockFieldWidth = null;
 });
 
-function Harness({
-  tokenCount,
-  enabled = true,
-  layoutKey = '',
-}: {
+interface HarnessProps {
   tokenCount: number;
+  fieldWidth: number | null;
   enabled?: boolean;
   layoutKey?: string;
-}) {
+}
+
+function Harness({ tokenCount, fieldWidth, enabled = true, layoutKey = '' }: HarnessProps) {
   const measureRef = React.useRef<HTMLDivElement>(null);
   const measureTriggerRef = React.useRef<HTMLSpanElement>(null);
   const tokensRef = React.useRef<HTMLDivElement>(null);
@@ -74,7 +60,7 @@ function Harness({
     measureTriggerRef,
     tokensRef,
     inputRef,
-    fieldWidth: mockFieldWidth,
+    fieldWidth,
     layoutKey,
   });
   return (
@@ -94,75 +80,75 @@ function Harness({
   );
 }
 
-const visibleCountFor = (props: { tokenCount: number; enabled?: boolean }) =>
+const visibleCountFor = (props: HarnessProps) =>
   Number(render(<Harness {...props} />).container.querySelector('output')!.textContent);
 
 describe('useTokenOverflow', () => {
   test('shows all tokens before the field is measured', () => {
-    setGeometry({ field: null, token: 100, trigger: 30 });
-    expect(visibleCountFor({ tokenCount: 5 })).toBe(5);
+    setGeometry({ available: 0, token: 100, trigger: 30 });
+    expect(visibleCountFor({ tokenCount: 5, fieldWidth: null })).toBe(5);
   });
 
   test('shows all tokens when disabled', () => {
-    setGeometry({ field: 50, token: 100, trigger: 30 });
-    expect(visibleCountFor({ tokenCount: 5, enabled: false })).toBe(5);
+    setGeometry({ available: 50, token: 100, trigger: 30 });
+    expect(visibleCountFor({ tokenCount: 5, fieldWidth: 50, enabled: false })).toBe(5);
   });
 
   test('shows all tokens when they fit', () => {
-    setGeometry({ field: 300, token: 100, trigger: 30 });
-    expect(visibleCountFor({ tokenCount: 3 })).toBe(3);
+    setGeometry({ available: 300, token: 100, trigger: 30 });
+    expect(visibleCountFor({ tokenCount: 3, fieldWidth: 300 })).toBe(3);
   });
 
   test('keeps the trailing tokens that fit next to the overflow trigger', () => {
-    setGeometry({ field: 240, token: 100, trigger: 30 });
-    expect(visibleCountFor({ tokenCount: 5 })).toBe(2);
+    setGeometry({ available: 240, token: 100, trigger: 30 });
+    expect(visibleCountFor({ tokenCount: 5, fieldWidth: 240 })).toBe(2);
   });
 
   test('never shows a partially visible token', () => {
-    setGeometry({ field: 229, token: 100, trigger: 30 });
-    expect(visibleCountFor({ tokenCount: 5 })).toBe(1);
+    setGeometry({ available: 229, token: 100, trigger: 30 });
+    expect(visibleCountFor({ tokenCount: 5, fieldWidth: 229 })).toBe(1);
   });
 
   test('hides all tokens when none fit next to the trigger', () => {
-    setGeometry({ field: 100, token: 100, trigger: 30 });
-    expect(visibleCountFor({ tokenCount: 2 })).toBe(0);
+    setGeometry({ available: 100, token: 100, trigger: 30 });
+    expect(visibleCountFor({ tokenCount: 2, fieldWidth: 100 })).toBe(0);
   });
 
   test('accounts for the gaps between tokens', () => {
-    setGeometry({ field: 300, token: 100, trigger: 30, gap: 4 });
-    expect(visibleCountFor({ tokenCount: 3 })).toBe(2);
+    setGeometry({ available: 300, token: 100, trigger: 30, gap: 4 });
+    expect(visibleCountFor({ tokenCount: 3, fieldWidth: 300 })).toBe(2);
   });
 
   test('does not depend on how the field is currently split between tokens and input', () => {
-    setGeometry({ field: 300, token: 100, trigger: 30, tokensShare: 0 });
-    expect(visibleCountFor({ tokenCount: 3 })).toBe(3);
+    setGeometry({ available: 300, token: 100, trigger: 30, tokensShare: 0 });
+    expect(visibleCountFor({ tokenCount: 3, fieldWidth: 300 })).toBe(3);
     jest.restoreAllMocks();
-    setGeometry({ field: 300, token: 100, trigger: 30, tokensShare: 1 });
-    expect(visibleCountFor({ tokenCount: 3 })).toBe(3);
+    setGeometry({ available: 300, token: 100, trigger: 30, tokensShare: 1 });
+    expect(visibleCountFor({ tokenCount: 3, fieldWidth: 300 })).toBe(3);
   });
 
   test('re-measures when the field layout changes', () => {
-    setGeometry({ field: 300, token: 100, trigger: 30 });
-    const { container, rerender } = render(<Harness tokenCount={3} layoutKey="valid" />);
+    setGeometry({ available: 300, token: 100, trigger: 30 });
+    const { container, rerender } = render(<Harness tokenCount={3} fieldWidth={300} layoutKey="valid" />);
     expect(container.querySelector('output')).toHaveTextContent('3');
     jest.restoreAllMocks();
-    setGeometry({ field: 300, token: 100, trigger: 30, available: 280 });
-    rerender(<Harness tokenCount={3} layoutKey="invalid" />);
+    setGeometry({ available: 280, token: 100, trigger: 30 });
+    rerender(<Harness tokenCount={3} fieldWidth={300} layoutKey="invalid" />);
     expect(container.querySelector('output')).toHaveTextContent('2');
   });
 
   test('shows all tokens while the field is hidden and re-measures when it is shown again', () => {
-    setGeometry({ field: 0, token: 0, trigger: 0 });
-    const { container, rerender } = render(<Harness tokenCount={5} />);
+    setGeometry({ available: 0, token: 0, trigger: 0 });
+    const { container, rerender } = render(<Harness tokenCount={5} fieldWidth={0} />);
     expect(container.querySelector('output')).toHaveTextContent('5');
     jest.restoreAllMocks();
-    setGeometry({ field: 240, token: 100, trigger: 30 });
-    rerender(<Harness tokenCount={5} />);
+    setGeometry({ available: 240, token: 100, trigger: 30 });
+    rerender(<Harness tokenCount={5} fieldWidth={240} />);
     expect(container.querySelector('output')).toHaveTextContent('2');
   });
 
   test('reserves the input minimum width defined in CSS', () => {
-    setGeometry({ field: 399, token: 100, trigger: 30, inputMinWidth: '25%' });
-    expect(visibleCountFor({ tokenCount: 3 })).toBe(2);
+    setGeometry({ available: 399, token: 100, trigger: 30, inputMinWidth: '25%' });
+    expect(visibleCountFor({ tokenCount: 3, fieldWidth: 399 })).toBe(2);
   });
 });
