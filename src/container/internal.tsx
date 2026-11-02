@@ -48,8 +48,9 @@ export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>,
   __subStepRef?: ReturnType<typeof useFunnelSubStep>['subStepRef'];
 
   /**
-   * React key attached to the content wrapper. It is used to force content re-mount but not container re-mount, which
-   * is necessary for components that use container as a root node internally so that their test-utils wrapper is not detached.
+   * React key attached to the content element. It is used to force content re-mount (and reset the content error boundary)
+   * without re-mounting the container root, header, or footer. Components that use container as a root node internally rely
+   * on this so that their test-utils wrapper is not detached and focus inside the header is preserved.
    */
   __contentKey?: string;
 
@@ -211,7 +212,6 @@ const InternalContainer = React.forwardRef(function InternalContainer(
       <div
         id={contentId}
         ref={__subStepRef}
-        key={__contentKey}
         className={clsx(styles['content-wrapper'], fitHeight && styles['content-wrapper-fit-height'])}
       >
         {/* We use a wrapper around the boundary to preserve container's paddings. */}
@@ -250,7 +250,7 @@ const InternalContainer = React.forwardRef(function InternalContainer(
               </StickyHeaderContext.Provider>
             </ContainerHeaderContextProvider>
           )}
-          <div className={clsx(styles.content, fitHeight && styles['content-fit-height'])}>
+          <div key={__contentKey} className={clsx(styles.content, fitHeight && styles['content-fit-height'])}>
             <div
               className={clsx(styles['content-inner'], testStyles['content-inner'], {
                 [styles['with-paddings']]: !disableContentPaddings,
