@@ -43,9 +43,18 @@
   padding-inline: 0;
 }
 
+.header-cell:not(.disable-paddings) > .header-cell-content {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 // VR-gated: the substrate is shared with the existing Table, which still supports non-VR mode.
-.header-cell.is-visual-refresh:first-child > .header-cell-content {
-  padding-inline-start: 0;
+// The text sits flush with the cell's start edge, but the padding/margin pair keeps room inside the
+// truncation clip so a focus ring on the first control isn't cut off.
+.header-cell.is-visual-refresh:first-child:not(.disable-paddings) > .header-cell-content {
+  padding-inline-start: awsui.$space-button-focus-outline-gutter;
+  margin-inline-start: calc(-1 * #{awsui.$space-button-focus-outline-gutter});
 }
 
 // Stretch to the row track, else an empty control header collapses to ~1px, leaving a stray divider stub.
