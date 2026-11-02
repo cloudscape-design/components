@@ -106,22 +106,26 @@ describe('KeyValuePairs', () => {
     });
   });
 
-  describe('warnOnce when columns property exceeds max', () => {
-    test.each([
-      { columns: 1, warnOnceMessage: false },
-      { columns: 2, warnOnceCalled: false },
-      {
-        columns: 3,
-        warnOnceCalled: false,
-      },
-      { columns: 4, warnOnceCalled: false },
-      {
-        columns: 5,
-        warnOnceCalled: true,
-      },
-    ])(`warnOnce called = $warnOnceCalled when columns is set to $columns`, ({ columns, warnOnceCalled }) => {
+  describe('columns property', () => {
+    test.each([1, 2, 3, 4, 5, 6, 12])('does not warn when columns is set to %i', columns => {
       renderKeyValuePairs(<KeyValuePairs items={[]} columns={columns} />);
-      expect(warnOnce).toHaveBeenCalledTimes(warnOnceCalled ? 1 : 0);
+      expect(warnOnce).not.toHaveBeenCalled();
+    });
+
+    // Asserts the resolved grid rather than the number of items, because every item renders either
+    // way
+    test.each([3, 6, 12])('lays out %i columns', columns => {
+      const { wrapper } = renderKeyValuePairs(
+        <KeyValuePairs
+          columns={columns}
+          items={Array.from({ length: columns }, (_, index) => ({
+            label: `Label ${index}`,
+            value: `Value ${index}`,
+          }))}
+        />
+      );
+
+      expect(wrapper.find('dl')!.getElement().style.gridTemplateColumns).toBe(`repeat(${columns}, minmax(0, 1fr))`);
     });
   });
 
