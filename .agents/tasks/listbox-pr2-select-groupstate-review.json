@@ -1,0 +1,8 @@
+{
+  "verdict": "APPROVED",
+  "findings": [
+    "Fallback default diverges for interactive groups (possible, non-blocking): a caller that omits `selection` and sets `useInteractiveGroups: true` now gets `selected: false` for a fully selected group (old code returned true). No caller does this today. Make `selection` required in a follow-up once use-select.test.ts can pass a model.",
+    "Equivalence test leans on the test seam (non-blocking): after the change, 'omitting selection gives the same option props as passing single selection' compares the default model with the same model passed explicitly. Remove it when `selection` becomes required."
+  ],
+  "reviewDoc": "/Users/amanabiy/Documents/components/.agents/tasks/listbox-pr2-select-groupstate-review.md"
+}

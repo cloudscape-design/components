@@ -1,0 +1,13 @@
+OptionList permutations: 40 icon rows
+  16x single wrapperGap=0 glyphGap=0 svgWidth=16 slot=awsui_icon_h11ix_17wxs_13
+  24x multi wrapperGap=0 glyphGap=0 svgWidth=16 slot=awsui_icon_h11ix_17wxs_13
+
+Select item permutations: 11 icon rows
+  6x multi wrapperGap=0 glyphGap=8 svgWidth=16 slot=awsui_icon_1p2cx_nby9z_147
+  5x single wrapperGap=0 glyphGap=8 svgWidth=16 slot=awsui_icon_1p2cx_nby9z_147
+
+Select dropdown (select/screenshot): 2 icon rows
+  2x single wrapperGap=0 glyphGap=8 svgWidth=16 slot=awsui_icon_1p2cx_nby9z_147
+
+Multiselect dropdown (multiselect/disabled-reason): 2 icon rows
+  2x multi wrapperGap=0 glyphGap=8 svgWidth=16 slot=awsui_icon_1p2cx_nby9z_147

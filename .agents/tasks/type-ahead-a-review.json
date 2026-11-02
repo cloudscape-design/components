@@ -1,0 +1,9 @@
+{
+  "verdict": "APPROVED",
+  "findings": [
+    "Single-selection group-name jump removed (confirmed, non-blocking): with non-interactive groups, typing a group's name no longer highlights that group's children. The test 'single: skips the options of a group whose label matches' pins this new behavior and is not a baseline. Confirm with the user that this is intended, and mention it in the PR description.",
+    "Unrelated simple.page.tsx edit in the worktree (confirmed, non-blocking): pages/option-list/simple.page.tsx has about 110 lines of preselection and focus-button settings that this step did not make. Leave it out of this fix's commit.",
+    "Select/Multiselect still have both bugs (confirmed, non-blocking, scope): src/select/utils/use-native-search.ts is unchanged. If the user wants them fixed there too, that needs a follow-up step."
+  ],
+  "reviewDoc": "/Users/amanabiy/Documents/components/.agents/tasks/type-ahead-a-review.md"
+}

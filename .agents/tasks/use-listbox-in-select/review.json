@@ -1,0 +1,8 @@
+{
+  "verdict": "APPROVED",
+  "findings": [
+    "Non-blocking: selected rows now come from selection.selectedOptions instead of the selectedOptions prop. The default singleSelection keeps only the first entry, so a future caller that passes several options or a mismatched selection would see different selected/open-highlight state. Current callers (Select with at most one option, Multiselect with multiSelection built from the same array) are unaffected, and the precondition is documented in the JSDoc.",
+    "Non-blocking, pre-existing: listbox parts (plain-list, item, option-group) still import select/parts/styles.css.js at runtime. This diff does not add it, and use-listbox.ts imports nothing from src/select."
+  ],
+  "reviewDoc": "/Users/amanabiy/Documents/components/.agents/tasks/use-listbox-in-select/review.md"
+}

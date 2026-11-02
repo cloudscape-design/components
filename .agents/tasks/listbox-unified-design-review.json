@@ -1,0 +1,21 @@
+{
+  "verdict": "APPROVED",
+  "findings": [
+    {
+      "severity": "LOW",
+      "issue": "FAILPROOF steps 1/4a/4b list only __tests__ files; 5f8b96389 also modifies src/multiselect/__integ__/multiselect.test.ts, so if step 5 (A) ever took FAILPROOF step 4 the status check would stop it (latent; all A tests fail on the parent, so it is not expected).",
+      "fix": "In FAILPROOF 4a, include '**/__integ__/**' alongside '**/__tests__/**' in the mod/staged-new/untracked-new lists so integ edits are saved, reset and restored with the test files."
+    },
+    {
+      "severity": "LOW",
+      "issue": "Spec section 3 'useSelect after' order lists useListboxCore first, but the core's arguments read hasFilter, a plain const declared later on the base (use-select.ts:89); tsc would flag TS2448.",
+      "fix": "State the order as: derived values (hasFilter, isDialog) and refs as today, then useListboxCore, useOpenState, closeDropdownIfNecessary, handleEscape, then the rest; the local isHighlightable and interactivityCheck are removed."
+    },
+    {
+      "severity": "LOW",
+      "issue": "Embedded Multiselect now prevents Home/End (intentional per the spec table and risk 11), but no test pins it; property-filter suites pass either way.",
+      "fix": "In step 10 add an EmbeddedMultiselect case to src/multiselect/__tests__/home-end.test.tsx asserting fireEvent.keyDown(list, { keyCode: END }) returns false (fails on the parent), or state in risk 11 that it is verified by code reading only."
+    }
+  ],
+  "reviewDoc": "/Users/amanabiy/Documents/components/.agents/tasks/listbox-unified-design-review.md"
+}

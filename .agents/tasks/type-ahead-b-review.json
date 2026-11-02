@@ -1,0 +1,8 @@
+{
+  "verdict": "APPROVED",
+  "findings": [
+    "Select group-label behaviour change undocumented (confirmed, non-blocking): typing a group label's prefix in Select no longer selects that group's first child. Call this out in the PR description as an intended side effect.",
+    "async-select scroll integ failure not confirmed on main (likely unrelated, non-blocking): the test uses only ArrowDown, which returns before any changed logic. Note it as pre-existing in the PR or rerun once on main."
+  ],
+  "reviewDoc": "/Users/amanabiy/Documents/components/.agents/tasks/type-ahead-b-review.md"
+}
