@@ -146,10 +146,10 @@ const AutosuggestInput = React.forwardRef(
     const measureTriggerRef = useRef<HTMLButtonElement>(null);
     const inlineTokensRef = useRef<InlineTokensRef>(null);
 
-    const [fieldWidth, setFieldWidth] = useState<number | null>(null);
+    const [triggerWidth, setTriggerWidth] = useState<number | null>(null);
     useResizeObserver(
       () => inputContainerRef.current,
-      entry => setFieldWidth(entry.borderBoxWidth)
+      entry => setTriggerWidth(entry.borderBoxWidth)
     );
 
     const [open, setOpen] = useState(false);
@@ -164,7 +164,7 @@ const AutosuggestInput = React.forwardRef(
       measureTriggerRef,
       tokensRef: inlineTokensRootRef,
       inputRef,
-      fieldWidth,
+      fieldWidth: triggerWidth,
       layoutKey: [
         formFieldContext.invalid,
         formFieldContext.warning,
@@ -455,7 +455,7 @@ const AutosuggestInput = React.forwardRef(
 
     const dropdown = (
       <InternalDropdown
-        minWidth={getDropdownMinWidth({ expandToViewport, triggerWidth: fieldWidth, dropdownWidth })}
+        minWidth={getDropdownMinWidth({ expandToViewport, triggerWidth, dropdownWidth })}
         maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
         contentKey={dropdownContentKey}
         onFocus={handleFocus}
