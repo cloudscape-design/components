@@ -11,6 +11,7 @@ import { ItemProps } from '../../internal/components/listbox/parts/item';
 import { SelectionModel } from '../../internal/components/listbox/selection/interfaces';
 import { singleSelection } from '../../internal/components/listbox/selection/single-selection';
 import { connectOptionsByValue } from '../../internal/components/listbox/utils/connect-options';
+import { getListboxNavigation } from '../../internal/components/listbox/utils/navigation';
 import {
   getListboxOptionProps,
   getListMouseHandlers,
@@ -149,24 +150,15 @@ export function useSelect({
   };
 
   const activeKeyDownHandler = useMenuKeyboard({
-    goUp: () => {
-      if (
-        (!useInteractiveGroups && highlightedOption?.type === 'child' && highlightedIndex === 1) ||
-        highlightedIndex === 0
-      ) {
-        goEndWithKeyboard();
-        return;
-      }
-      moveHighlightWithKeyboard(-1);
-    },
-    goDown: () => {
-      if (highlightedIndex === options.length - 1) {
-        goHomeWithKeyboard();
-        return;
-      }
-
-      moveHighlightWithKeyboard(1);
-    },
+    ...getListboxNavigation({
+      options,
+      highlightedIndex,
+      highlightedOption,
+      interactiveGroups: useInteractiveGroups,
+      moveHighlight: moveHighlightWithKeyboard,
+      goHome: goHomeWithKeyboard,
+      goEnd: goEndWithKeyboard,
+    }),
     selectOption,
     goHome: goHomeWithKeyboard,
     goEnd: goEndWithKeyboard,
