@@ -37,11 +37,13 @@ export function useTokenOverflow({
     const tokens = tokensRef.current;
     const input = inputRef.current;
     const measure = measureRef.current;
+    if (measure) {
+      measure.inert = true;
+    }
     if (!enabled || !tokens || !input || !measure || !fieldWidth) {
       setVisibleCount(tokenCount);
       return;
     }
-    measure.inert = true;
 
     // The tokens and the input share the available space, whatever the tokens currently take.
     const availableWidth = tokens.offsetWidth + input.offsetWidth;

@@ -65,14 +65,14 @@ function Harness({ tokenCount, fieldWidth, enabled = true, layoutKey = '' }: Har
   });
   return (
     <div>
-      <div ref={measureRef}>
+      <div ref={measureRef} data-testid="measure">
         {Array.from({ length: tokenCount }, (_, i) => (
           <span key={i} className={styles['measurement-token']} />
         ))}
         <span ref={measureTriggerRef} data-part="trigger" />
       </div>
       <div>
-        <div ref={tokensRef} data-part="tokens" />
+        {tokenCount > 0 && <div ref={tokensRef} data-part="tokens" />}
         <input ref={inputRef} data-part="input" />
       </div>
       <output>{visibleCount}</output>
@@ -145,6 +145,12 @@ describe('useTokenOverflow', () => {
     setGeometry({ available: 240, token: 100, trigger: 30 });
     rerender(<Harness tokenCount={5} fieldWidth={240} />);
     expect(container.querySelector('output')).toHaveTextContent('2');
+  });
+
+  test('makes the measurement copy inert even when there are no tokens', () => {
+    setGeometry({ available: 300, token: 100, trigger: 30 });
+    const { getByTestId } = render(<Harness tokenCount={0} fieldWidth={300} />);
+    expect(getByTestId('measure').inert).toBe(true);
   });
 
   test('reserves the input minimum width defined in CSS', () => {
