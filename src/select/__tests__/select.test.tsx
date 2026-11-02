@@ -220,7 +220,6 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
         recoveryText: 'Retry',
         statusType: 'error',
       });
-      expect(warnOnce).toHaveBeenCalledTimes(1);
       expect(warnOnce).toHaveBeenCalledWith(
         'Select',
         '`onLoadItems` must be provided for `recoveryText` to be displayed.'

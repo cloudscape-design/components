@@ -151,6 +151,16 @@ describe('useTokenOverflow', () => {
     expect(container.querySelector('output')).toHaveTextContent('2');
   });
 
+  test('shows all tokens while the field is hidden and re-measures when it is shown again', () => {
+    setGeometry({ field: 0, token: 0, trigger: 0 });
+    const { container, rerender } = render(<Harness tokenCount={5} />);
+    expect(container.querySelector('output')).toHaveTextContent('5');
+    jest.restoreAllMocks();
+    setGeometry({ field: 240, token: 100, trigger: 30 });
+    rerender(<Harness tokenCount={5} />);
+    expect(container.querySelector('output')).toHaveTextContent('2');
+  });
+
   test('reserves the input minimum width defined in CSS', () => {
     setGeometry({ field: 399, token: 100, trigger: 30, inputMinWidth: '25%' });
     expect(visibleCountFor({ tokenCount: 3 })).toBe(2);
