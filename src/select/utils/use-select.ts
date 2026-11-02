@@ -11,8 +11,15 @@ import { ItemProps } from '../../internal/components/listbox/parts/item';
 import { SelectionModel } from '../../internal/components/listbox/selection/interfaces';
 import { singleSelection } from '../../internal/components/listbox/selection/single-selection';
 import { connectOptionsByValue } from '../../internal/components/listbox/utils/connect-options';
+import {
+  getListboxOptionProps,
+  getListMouseHandlers,
+  getSelectableOption,
+  isAnnouncedSelected,
+  isHighlightable as isHighlightableOption,
+} from '../../internal/components/listbox/utils/option-props';
 import { DropdownOption } from '../../internal/components/option/interfaces';
-import { isGroup, isGroupInteractive, isInteractive } from '../../internal/components/option/utils/filter-options';
+import { isGroupInteractive, isInteractive } from '../../internal/components/option/utils/filter-options';
 import { OptionsListProps } from '../../internal/components/options-list';
 import { useHighlightedOption } from '../../internal/components/options-list/utils/use-highlight-option';
 import { getOptionId } from '../../internal/components/options-list/utils/use-ids';
@@ -74,7 +81,7 @@ export function useSelect({
 }: UseSelectProps) {
   const interactivityCheck = useInteractiveGroups ? isGroupInteractive : isInteractive;
 
-  const isHighlightable = (option?: DropdownOption) => !!option && (useInteractiveGroups || option.type !== 'parent');
+  const isHighlightable = (option?: DropdownOption) => isHighlightableOption(option, useInteractiveGroups);
 
   const filterRef = useRef<HTMLInputElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -129,8 +136,8 @@ export function useSelect({
   };
 
   const selectOption = (option?: DropdownOption) => {
-    const optionToSelect = option || highlightedOption;
-    if (!optionToSelect || !interactivityCheck(optionToSelect)) {
+    const optionToSelect = getSelectableOption(option, highlightedOption, interactivityCheck);
+    if (!optionToSelect) {
       return;
     }
     if (optionToSelect.type === 'select-all' && toggleAll) {
@@ -236,16 +243,7 @@ export function useSelect({
       id: menuId,
       ref: menuRef,
       open: isOpen,
-      onMouseUp: itemIndex => {
-        if (itemIndex > -1) {
-          selectOption(options[itemIndex]);
-        }
-      },
-      onMouseMove: itemIndex => {
-        if (itemIndex > -1) {
-          setHighlightedIndexWithMouse(itemIndex);
-        }
-      },
+      ...getListMouseHandlers({ options, selectOption, setHighlightedIndexWithMouse }),
       statusType,
     };
     if (!hasFilter) {
@@ -266,37 +264,15 @@ export function useSelect({
     }
     return menuProps;
   };
-  const getOptionProps = (option: DropdownOption, index: number) => {
-    const isSelectAll = option.type === 'select-all';
-    const highlighted = option === highlightedOption;
-    const groupState = isSelectAll || isGroup(option.option) ? selection.getGroupState(option) : undefined;
-    const selected = isSelectAll ? !!groupState?.selected : __selectedOptionsSet.has(option) || !!groupState?.selected;
-    // Only group neighbours use group state. Select-all never counts as a selected neighbour, so the row
-    // below it doesn't get the previous-item-selected style.
-    const nextOption = options[index + 1];
-    const isNextSelected =
-      !!nextOption && isGroup(nextOption.option)
-        ? selection.getGroupState(nextOption).selected
-        : __selectedOptionsSet.has(nextOption);
-    const previousOption = options[index - 1];
-    const isPreviousSelected =
-      !!previousOption && isGroup(previousOption.option)
-        ? selection.getGroupState(previousOption).selected
-        : __selectedOptionsSet.has(previousOption);
-    const optionProps: any = {
-      key: index,
-      option,
-      highlighted,
-      selected,
-      isNextSelected,
-      isPreviousSelected,
-      indeterminate: !!groupState?.indeterminate,
-      ['data-mouse-target']: isHighlightable(option) ? index : -1,
-      id: getOptionId(menuId, index),
-    };
-
-    return optionProps;
-  };
+  const getOptionProps = (option: DropdownOption, index: number) =>
+    getListboxOptionProps(option, index, {
+      options,
+      selectedSet: __selectedOptionsSet,
+      selection,
+      highlightedOption,
+      interactiveGroups: useInteractiveGroups,
+      listId: menuId,
+    });
 
   const prevOpen = usePrevious<boolean>(isOpen);
   useEffect(() => {
@@ -346,10 +322,7 @@ export function useSelect({
   }, [isOpen, activeRef, embedded, focusActiveRef]);
 
   useForwardFocus(externalRef, triggerRef as React.RefObject<HTMLElement>);
-  const highlightedGroupSelected =
-    !!highlightedOption && isGroup(highlightedOption.option) && selection.getGroupState(highlightedOption).selected;
-  const announceSelected =
-    !!highlightedOption && (__selectedOptionsSet.has(highlightedOption) || highlightedGroupSelected);
+  const announceSelected = isAnnouncedSelected(highlightedOption, __selectedOptionsSet, selection);
 
   // Closes the dropdown and returns focus to the trigger, matching the normal close behavior.
   // Exposed to the public dropdown-customization render props via `DropdownContentProps.closeDropdown`.
