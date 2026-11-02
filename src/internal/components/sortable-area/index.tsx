@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useEffect, useRef } from 'react';
-import { DndContext, DragOverlay } from '@dnd-kit/core';
+import { AutoScrollOptions, DndContext, DragOverlay, TraversalOrder } from '@dnd-kit/core';
 import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import clsx from 'clsx';
@@ -10,6 +10,8 @@ import clsx from 'clsx';
 import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
 import { fireNonCancelableEvent } from '../../events';
+import { isElement, isHTMLElement } from '../../utils/dom';
+import { getFirstScrollableParent } from '../../utils/scrollable-containers';
 import { joinStrings } from '../../utils/strings';
 import { SortableAreaProps } from './interfaces';
 import { EventName } from './keyboard-sensor/utilities/events';
@@ -37,10 +39,12 @@ export default function SortableArea<Item>({
   const isDragging = activeItemId !== null;
   const announcements = useLiveAnnouncements({ items, itemDefinition, isDragging, ...i18nStrings });
   const portalContainer = usePortalContainer();
+  const { autoScroll, setAutoScrollBoundary } = useScopedAutoScroll();
   return (
     <DndContext
       sensors={sensors}
       collisionDetection={collisionDetection}
+      autoScroll={autoScroll}
       accessibility={{
         announcements,
         restoreFocus: false,
@@ -49,8 +53,12 @@ export default function SortableArea<Item>({
           : undefined,
         container: portalContainer ?? undefined,
       }}
-      onDragStart={({ active }) => setActiveItemId(active.id)}
+      onDragStart={({ active, activatorEvent }) => {
+        setAutoScrollBoundary(activatorEvent.target);
+        setActiveItemId(active.id);
+      }}
       onDragEnd={event => {
+        setAutoScrollBoundary(null);
         setActiveItemId(null);
         const { active, over } = event;
         if (over && active.id !== over.id) {
@@ -60,7 +68,10 @@ export default function SortableArea<Item>({
           fireNonCancelableEvent(onItemsChange, { items: arrayMove([...items], oldIndex, newIndex), movedItem });
         }
       }}
-      onDragCancel={() => setActiveItemId(null)}
+      onDragCancel={() => {
+        setAutoScrollBoundary(null);
+        setActiveItemId(null);
+      }}
     >
       <SortableContext
         disabled={disableReorder}
@@ -108,6 +119,26 @@ export default function SortableArea<Item>({
       </Portal>
     </DndContext>
   );
+}
+
+// dnd-kit auto-scrolls every scrollable ancestor up to the first fixed-position element, outermost first by default
+// (https://github.com/clauderic/dnd-kit/issues/1893). Restrict it to the sortable area's nearest scroll container so
+// that dragging inside e.g. a sticky drawer does not scroll unrelated outer containers. Without a scrollable ancestor,
+// all containers (including the window) remain eligible.
+function useScopedAutoScroll() {
+  const boundaryRef = useRef<HTMLElement | null>(null);
+  const autoScroll: AutoScrollOptions = {
+    order: TraversalOrder.ReversedTreeOrder,
+    canScroll: element => !boundaryRef.current || boundaryRef.current.contains(element),
+  };
+  const setAutoScrollBoundary = (dragStartTarget: EventTarget | null) => {
+    let element = isElement(dragStartTarget) ? dragStartTarget : null;
+    while (element && !isHTMLElement(element)) {
+      element = element.parentElement;
+    }
+    boundaryRef.current = element ? (getFirstScrollableParent(element) ?? null) : null;
+  };
+  return { autoScroll, setAutoScrollBoundary };
 }
 
 function usePortalContainer() {
