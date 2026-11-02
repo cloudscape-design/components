@@ -408,24 +408,6 @@ const AutosuggestInput = React.forwardRef(
       }
     };
 
-    const sharedInputProps = {
-      value,
-      onChange: (event: { detail: BaseChangeDetail }) => handleChange(event.detail.value),
-      __onDelayedInput: (event: { detail: BaseChangeDetail }) => handleDelayedInput(event.detail.value),
-      onKeyDown: handleKeyDown,
-      onKeyUp,
-      disabled,
-      disableBrowserAutocorrect,
-      readOnly,
-      ariaRequired,
-      clearAriaLabel,
-      ref: inputRef,
-      __internalRootRef: mergedContainerRef,
-      autoComplete: false,
-      nativeInputAttributes: processAttributes(nativeAttributes, 'Autosuggest', nativeInputAttributes),
-      __skipNativeAttributesWarnings: Object.keys(nativeAttributes),
-    };
-
     const inlineTokens = tokenList.length > 0 && (
       <InlineTokens
         ref={inlineTokensRef}
@@ -463,7 +445,21 @@ const AutosuggestInput = React.forwardRef(
         trigger={
           <InternalInput
             type="visualSearch"
-            {...sharedInputProps}
+            value={value}
+            onChange={event => handleChange(event.detail.value)}
+            __onDelayedInput={event => handleDelayedInput(event.detail.value)}
+            onKeyDown={handleKeyDown}
+            onKeyUp={onKeyUp}
+            disabled={disabled}
+            disableBrowserAutocorrect={disableBrowserAutocorrect}
+            readOnly={readOnly}
+            ariaRequired={ariaRequired}
+            clearAriaLabel={clearAriaLabel}
+            ref={inputRef}
+            __internalRootRef={mergedContainerRef}
+            autoComplete={false}
+            nativeInputAttributes={processAttributes(nativeAttributes, 'Autosuggest', nativeInputAttributes)}
+            __skipNativeAttributesWarnings={Object.keys(nativeAttributes)}
             style={style}
             {...formFieldContext}
             __inlineContent={inlineTokens}
