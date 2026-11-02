@@ -13,6 +13,9 @@
 @use '../internal/styles/utils/theming' as theming;
 @use '../internal/styles/style-api' as style-api;
 
+@include style-api.docs('root', $properties: (background, color, border, border-radius, padding));
+@include style-api.docs-forward('dismissButton', 'button', 'root');
+
 .root {
   @include styles.styles-reset;
 }

@@ -81,6 +81,22 @@ describe('Expandable section renders correct analytics metadata', () => {
       );
     });
   });
+  test.each(['container', 'stacked'])(
+    '%s variant resolves the label from header text when hideHeaderText hides the title',
+    variant => {
+      const wrapper = renderExpandableSection({
+        headerText: 'header',
+        children: 'content',
+        variant: variant as ExpandableSectionProps['variant'],
+        hideHeaderText: true,
+      });
+      // The title renders as a div (not h1/h2/h3) when hidden, so the label must resolve from the
+      // header-text marker class instead of the heading element.
+      expect(getGeneratedAnalyticsMetadata(wrapper.findExpandButton()!.getElement())).toEqual(
+        getExpandMetadata('header', variant, false)
+      );
+    }
+  );
   test.each(['container', 'stacked'])('%s variant with additional properties', variant => {
     const wrapper = renderExpandableSection({
       headerText: 'header',

@@ -26,9 +26,24 @@ interface ProgressProps {
   ariaLabelledby?: string;
   ariaDescribedby?: string;
   style?: ProgressBarProps.Style;
+  styleClassNames?: StyleClassNames;
 }
 
-export const Progress = ({ value, isInFlash, ariaLabel, ariaLabelledby, ariaDescribedby, style }: ProgressProps) => {
+// Style API v2
+export interface StyleClassNames {
+  root?: string;
+  percentage?: string;
+}
+
+export const Progress = ({
+  value,
+  isInFlash,
+  ariaLabel,
+  ariaLabelledby,
+  ariaDescribedby,
+  style,
+  styleClassNames,
+}: ProgressProps) => {
   const roundedValue = Math.round(value);
   const progressValue = clamp(roundedValue, 0, MAX_VALUE);
 
@@ -56,14 +71,12 @@ export const Progress = ({ value, isInFlash, ariaLabel, ariaLabelledby, ariaDesc
         }}
       />
       <span aria-hidden="true" className={styles['percentage-container']}>
-        <InternalBox
-          className={styles.percentage}
-          variant="small"
-          color={isInFlash ? 'inherit' : undefined}
-          nativeAttributes={progressPercentageStyles ? { style: progressPercentageStyles } : undefined}
+        <small
+          className={clsx(styleClassNames?.percentage, styles.percentage, isInFlash && styles['percentage-flash'])}
+          style={progressPercentageStyles}
         >
           {`${progressValue}%`}
-        </InternalBox>
+        </small>
       </span>
     </div>
   );

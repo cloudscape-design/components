@@ -112,10 +112,16 @@ jobs:
           MAX_ATTEMPTS=10
           DELAY=15
 
+          # Every PR deploys to the same environment, so filter by the commit under test.
+          if [ -z "$SHA" ]; then
+            echo "::error::No commit SHA provided; cannot resolve the PR deployment"
+            exit 1
+          fi
+
           for attempt in $(seq 1 $MAX_ATTEMPTS); do
-            echo "Attempt ${attempt}/${MAX_ATTEMPTS}: looking for deployment with environment '${DEPLOY_ENV}'..."
+            echo "Attempt ${attempt}/${MAX_ATTEMPTS}: looking for deployment with environment '${DEPLOY_ENV}' and sha '${SHA}'..."
             DEPLOY_ID=$(gh api \
-              "repos/${REPO}/deployments?environment=${DEPLOY_ENV}&per_page=5" \
+              "repos/${REPO}/deployments?environment=${DEPLOY_ENV}&sha=${SHA}&per_page=5" \
               --jq '.[0].id // empty' 2>/dev/null || true)
             NEW_URL=""
             if [ -n "$DEPLOY_ID" ]; then
@@ -139,6 +145,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
+          SHA: ${{ inputs.commit-sha }}
 
       - name: Start baseline server
         run: npx --yes serve --no-clipboard --listen 8080 pages/lib/static-visual-baseline &

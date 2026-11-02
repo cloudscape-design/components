@@ -13,10 +13,10 @@ import { checkOptionValueField } from '../internal/components/listbox/utils/chec
 import { DropdownOption } from '../internal/components/option/interfaces';
 import { prepareOptions } from '../internal/components/option/utils/prepare-options';
 import { fireNonCancelableEvent } from '../internal/events';
+import { useLoadItems } from '../internal/hooks/use-load-items';
 import { SomeRequired } from '../internal/types';
 import { joinStrings } from '../internal/utils/strings';
 import { SelectListProps } from '../select/parts/plain-list';
-import { useLoadItems } from '../select/utils/use-load-items';
 import { useNativeSearch } from '../select/utils/use-native-search';
 import { useSelect } from '../select/utils/use-select';
 import { TokenGroupProps } from '../token-group/interfaces';
@@ -103,7 +103,7 @@ export function useMultiselect({
 
   const { handleLoadMore, handleRecoveryClick, fireLoadItems } = useLoadItems({
     onLoadItems,
-    options,
+    isEmpty: options.length === 0,
     statusType,
   });
   const useInteractiveGroups = true;

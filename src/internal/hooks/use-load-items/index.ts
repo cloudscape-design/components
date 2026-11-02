@@ -2,17 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useRef } from 'react';
 
-import { fireNonCancelableEvent } from '../../internal/events';
-import { DropdownStatusProps } from '../../types/dropdown-status';
-import { SelectProps } from '../interfaces';
+import { OptionsLoadItemsDetail } from '../../../dropdown/interfaces';
+import { DropdownStatusProps } from '../../../types/dropdown-status';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
 
 interface UseLoadItemsProps {
-  onLoadItems: SelectProps['onLoadItems'];
-  options: ReadonlyArray<unknown>;
+  onLoadItems: NonCancelableEventHandler<OptionsLoadItemsDetail> | undefined;
+  isEmpty: boolean;
   statusType: DropdownStatusProps.StatusType | undefined;
 }
 
-export const useLoadItems = ({ onLoadItems, options, statusType }: UseLoadItemsProps) => {
+export const useLoadItems = ({ onLoadItems, isEmpty, statusType }: UseLoadItemsProps) => {
   const prevFilteringText = useRef<string | undefined>(undefined);
 
   const fireLoadItems = (filteringText: string) => {
@@ -24,10 +24,9 @@ export const useLoadItems = ({ onLoadItems, options, statusType }: UseLoadItemsP
   };
 
   const handleLoadMore = () => {
-    const firstPage = options.length === 0;
     if (statusType === 'pending') {
       fireNonCancelableEvent(onLoadItems, {
-        firstPage,
+        firstPage: isEmpty,
         samePage: false,
         filteringText: prevFilteringText.current || '',
       });

@@ -12,6 +12,10 @@ export function variantSupportsActions(variant: InternalVariant) {
   return variantIsOneOf(variant, ['container', 'compact', 'default', 'inline']);
 }
 
+export function variantSupportsHeaderSecondaryContent(variant: InternalVariant) {
+  return variantIsOneOf(variant, ['container', 'default']);
+}
+
 export function variantSupportsInfoLink(variant: InternalVariant) {
   return variantIsOneOf(variant, ['container', 'compact']);
 }

@@ -6,20 +6,47 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../internal/styles/style-api' as style-api;
 @use './motion';
 
-$progress-height: var(#{custom-props.$progressBarHeight}, 0.4 * styles.$base-size);
-$progress-border-radius: var(#{custom-props.$progressBarBorderRadius}, 10px);
-$progress-background-color: var(
-  #{custom-props.$progressBarBackgroundColor},
-  awsui.$color-background-progress-bar-default
+$progress-bar-tokens: style-api.resolve((track-color, value-color, bar-block-size, bar-border-radius), carrier);
+@include style-api.register($progress-bar-tokens);
+@include style-api.docs('root', $progress-bar-tokens);
+@include style-api.docs('percentage', $properties: (color, font-family, font-size, font-weight));
+
+$progress-height: style-api.value(
+  $progress-bar-tokens,
+  bar-block-size,
+  var(#{custom-props.$progressBarHeight}, 0.4 * styles.$base-size)
 );
-$progress-value-background-color: var(
-  #{custom-props.$progressValueBackgroundColor},
-  awsui.$color-background-progress-bar-value-default
+$progress-border-radius: style-api.value(
+  $progress-bar-tokens,
+  bar-border-radius,
+  var(#{custom-props.$progressBarBorderRadius}, 10px)
+);
+$progress-background-color: style-api.value(
+  $progress-bar-tokens,
+  track-color,
+  var(#{custom-props.$progressBarBackgroundColor}, awsui.$color-background-progress-bar-default)
+);
+$progress-value-background-color: style-api.value(
+  $progress-bar-tokens,
+  value-color,
+  var(#{custom-props.$progressValueBackgroundColor}, awsui.$color-background-progress-bar-value-default)
+);
+$progress-flash-background-color: style-api.value(
+  $progress-bar-tokens,
+  track-color,
+  var(#{custom-props.$progressBarBackgroundColor}, awsui.$color-background-progress-bar-flash)
+);
+$progress-flash-value-background-color: style-api.value(
+  $progress-bar-tokens,
+  value-color,
+  var(#{custom-props.$progressValueBackgroundColor}, awsui.$color-background-progress-bar-value-flash)
 );
 
 .root {
+  @include style-api.carriers($progress-bar-tokens);
   @include styles.styles-reset;
 }
 
@@ -79,7 +106,19 @@ $progress-value-background-color: var(
 }
 
 .percentage {
-  /* used in test-utils */
+  display: inline-block;
+  font-family: awsui.$font-family-base;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+  line-height: awsui.$line-height-body-s;
+  letter-spacing: awsui.$letter-spacing-body-s;
+  color: awsui.$color-text-small;
+  font-size: awsui.$font-size-body-s;
+  font-weight: styles.$font-weight-normal;
+
+  &.percentage-flash {
+    color: currentColor;
+  }
 }
 
 @mixin general-progress-background-style {
@@ -131,22 +170,16 @@ $progress-value-background-color: var(
   }
 
   &.progress-flash {
-    background-color: var(#{custom-props.$progressBarBackgroundColor}, awsui.$color-background-progress-bar-flash);
+    background-color: $progress-flash-background-color;
 
     &::-webkit-progress-bar {
-      background-color: var(#{custom-props.$progressBarBackgroundColor}, awsui.$color-background-progress-bar-flash);
+      background-color: $progress-flash-background-color;
     }
     &::-webkit-progress-value {
-      background-color: var(
-        #{custom-props.$progressValueBackgroundColor},
-        awsui.$color-background-progress-bar-value-flash
-      );
+      background-color: $progress-flash-value-background-color;
     }
     &::-moz-progress-bar {
-      background-color: var(
-        #{custom-props.$progressValueBackgroundColor},
-        awsui.$color-background-progress-bar-value-flash
-      );
+      background-color: $progress-flash-value-background-color;
     }
   }
 }

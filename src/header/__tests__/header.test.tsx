@@ -62,6 +62,18 @@ test('supports title tag name override', () => {
   expect(wrapper.getElement()).toHaveClass(styles['root-variant-h2']);
 });
 
+test('supports overriding the title tag with h6', () => {
+  const { wrapper } = renderHeader(<Header headingTagOverride="h6">title</Header>);
+  expect(wrapper.find('h2')).toBeNull();
+  expect(wrapper.find('h6')!.getElement()).toHaveTextContent('title');
+});
+
+test('renders the title without heading semantics when overridden to div', () => {
+  const { wrapper } = renderHeader(<Header headingTagOverride="div">title</Header>);
+  expect(wrapper.find('h1,h2,h3,h4,h5,h6')).toBeNull();
+  expect(wrapper.findHeadingText().getElement()).toHaveTextContent('title');
+});
+
 test('renders h1 variant', () => {
   const { wrapper } = renderHeader(<Header variant="h1">title</Header>);
   expect(wrapper.find('h1')!.getElement()).toHaveTextContent('title');

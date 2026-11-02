@@ -1,20 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { act, renderHook } from '../../__tests__/render-hook';
-import { useLoadItems } from '../utils/use-load-items';
+import { act, renderHook } from '../../../../__tests__/render-hook';
+import { useLoadItems } from '../index';
 
-const options = [
-  {
-    value: '1',
-  },
-];
-
-describe('useLoadItems with statusType=pending and non empty options', () => {
+describe('useLoadItems with statusType=pending and non empty items', () => {
   const onLoadItems = jest.fn();
   const hook = renderHook(useLoadItems, {
     initialProps: {
       onLoadItems,
-      options,
+      isEmpty: false,
       statusType: 'pending',
     },
   });
@@ -46,12 +40,12 @@ describe('useLoadItems with statusType=pending and non empty options', () => {
   });
 });
 
-describe('useLoadItems with statusType=pending and empty options', () => {
+describe('useLoadItems with statusType=pending and empty items', () => {
   const onLoadItems = jest.fn();
   const hook = renderHook(useLoadItems, {
     initialProps: {
       onLoadItems,
-      options: [],
+      isEmpty: true,
       statusType: 'pending',
     },
   });
@@ -71,7 +65,7 @@ describe('useLoadItems with statusType=finished', () => {
   const hook = renderHook(useLoadItems, {
     initialProps: {
       onLoadItems,
-      options: [],
+      isEmpty: true,
       statusType: 'finished',
     },
   });

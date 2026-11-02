@@ -21,6 +21,7 @@ import { fireNonCancelableEvent } from '../internal/events';
 import { warnOnUnsupportedGroupedControlProps } from '../internal/grouped-control/dev-warnings';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useLoadItems } from '../internal/hooks/use-load-items';
 import { SomeRequired } from '../internal/types';
 import { getDropdownMinWidth } from '../internal/utils/get-dropdown-min-width';
 import { joinStrings } from '../internal/utils/strings/join-strings.js';
@@ -31,7 +32,6 @@ import PlainList, { SelectListProps } from './parts/plain-list';
 import Trigger from './parts/trigger';
 import VirtualList from './parts/virtual-list';
 import { composeDropdownContent } from './utils/dropdown-customization';
-import { useLoadItems } from './utils/use-load-items';
 import { useNativeSearch } from './utils/use-native-search';
 import { useSelect } from './utils/use-select';
 
@@ -112,7 +112,7 @@ const InternalSelect = React.forwardRef(
 
     const { handleLoadMore, handleRecoveryClick, fireLoadItems } = useLoadItems({
       onLoadItems,
-      options,
+      isEmpty: options.length === 0,
       statusType,
     });
 

@@ -3,6 +3,7 @@
 'use client';
 import React from 'react';
 
+import { StyleClassNames } from '../button/internal';
 import { getBaseProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
@@ -67,6 +68,7 @@ const ToggleButton = React.forwardRef(
         pressedIconSvg={pressedIconSvg}
         pressed={pressed}
         nativeButtonAttributes={nativeButtonAttributes}
+        styleClassNames={(props as { styleClassNames?: StyleClassNames }).styleClassNames}
         onChange={onChange}
       >
         {children}
