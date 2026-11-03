@@ -133,7 +133,7 @@ const InternalSelect = React.forwardRef(
     const [triggerWidth, setTriggerWidth] = useState<number | null>(null);
     useResizeObserver(
       () => triggerRef.current,
-      entry => entry.borderBoxWidth > 0 && setTriggerWidth(entry.borderBoxWidth)
+      entry => setTriggerWidth(entry.borderBoxWidth)
     );
 
     const selfControlId = useUniqueId('trigger');
