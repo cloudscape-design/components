@@ -7,7 +7,7 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { InternalDropdownProps } from '../../dropdown/internal';
 import { ButtonTriggerProps } from '../../internal/components/button-trigger';
-import { ItemProps } from '../../internal/components/listbox/parts/item';
+import { ListElementProps } from '../../internal/components/listbox/interfaces';
 import { SelectionModel } from '../../internal/components/listbox/selection/interfaces';
 import { singleSelection } from '../../internal/components/listbox/selection/single-selection';
 import { connectOptionsByValue } from '../../internal/components/listbox/utils/connect-options';
@@ -21,7 +21,6 @@ import {
 } from '../../internal/components/listbox/utils/option-props';
 import { DropdownOption } from '../../internal/components/option/interfaces';
 import { isGroupInteractive, isInteractive } from '../../internal/components/option/utils/filter-options';
-import { OptionsListProps } from '../../internal/components/options-list';
 import { useHighlightedOption } from '../../internal/components/options-list/utils/use-highlight-option';
 import { getOptionId } from '../../internal/components/options-list/utils/use-ids';
 import { useMenuKeyboard, useTriggerKeyboard } from '../../internal/components/options-list/utils/use-keyboard';
@@ -34,9 +33,6 @@ import { NonCancelableEventHandler } from '../../types/events';
 import { OptionDefinition } from '../../types/option';
 import { SelectProps } from '../interfaces';
 import { FilterProps } from '../parts/filter';
-
-export type MenuProps = Omit<OptionsListProps, 'children'> & { ref: React.RefObject<HTMLDivElement> };
-export type GetOptionProps = (option: DropdownOption, index: number) => ItemProps;
 
 interface UseSelectProps {
   selectedOptions: ReadonlyArray<OptionDefinition>;
@@ -231,7 +227,7 @@ export function useSelect({
   };
 
   const getMenuProps = () => {
-    const menuProps: MenuProps = {
+    const menuProps: ListElementProps = {
       id: menuId,
       ref: menuRef,
       open: isOpen,
