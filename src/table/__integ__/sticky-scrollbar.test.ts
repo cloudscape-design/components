@@ -5,7 +5,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
 
-import scrollbarStyles from '../../../lib/components/table/sticky-scrollbar/styles.selectors.js';
+import scrollbarStyles from '../../../lib/components/internal/components/sticky-scrollbar/styles.selectors.js';
 
 const scrollbarSelector = `.${scrollbarStyles['sticky-scrollbar-visible']}`;
 

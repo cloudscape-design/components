@@ -6,6 +6,7 @@
 @use '../internal/styles/index' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/components/sticky-scrollbar/mixins' as sticky-scrollbar;
 
 .root {
   @include styles.styles-reset;
@@ -16,8 +17,10 @@
   background: awsui.$color-background-container-content;
 }
 
+// Its scrollbar is hidden in favour of the sticky scrollbar, which stays reachable however tall the body is.
 .body-scroller {
   overflow-x: auto;
+  @include sticky-scrollbar.hidden-scrollbar;
   @include focus-visible.when-visible {
     @include styles.container-focus();
   }

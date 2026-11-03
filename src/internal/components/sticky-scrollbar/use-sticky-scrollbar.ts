@@ -1,13 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { RefObject, useEffect, useState } from 'react';
+import { RefObject, useEffect, useRef, useState } from 'react';
 
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
-import globalVars from '../../internal/styles/global-vars';
-import { browserScrollbarSize } from '../../internal/utils/browser-scrollbar-size';
-import { getContainingBlock } from '../../internal/utils/dom';
-import { getOverflowParents } from '../../internal/utils/scrollable-containers';
+import globalVars from '../../styles/global-vars';
+import { browserScrollbarSize } from '../../utils/browser-scrollbar-size';
+import { getContainingBlock } from '../../utils/dom';
+import { getOverflowParents } from '../../utils/scrollable-containers';
 
 import styles from './styles.css.js';
 
@@ -16,13 +16,14 @@ export const updatePosition = (
   wrapperEl: HTMLElement | null,
   scrollbarEl: HTMLElement | null,
   scrollbarContentEl: HTMLElement | null,
-  inScrollableContainer: boolean
+  inScrollableContainer: boolean,
+  getContentInlineSize: (tableEl: HTMLElement) => number = tableEl => getLogicalBoundingClientRect(tableEl).inlineSize
 ) => {
   if (!tableEl || !scrollbarEl || !wrapperEl) {
     return;
   }
 
-  const { inlineSize: tableInlineSize } = getLogicalBoundingClientRect(tableEl);
+  const tableInlineSize = getContentInlineSize(tableEl);
   const { inlineSize: wrapperInlineSize } = getLogicalBoundingClientRect(wrapperEl);
 
   // using 15 px as a height of transparent scrollbar on mac
@@ -53,10 +54,8 @@ export const updatePosition = (
   }
 
   if (tableEl && wrapperEl && scrollbarContentEl && scrollbarEl) {
-    const wrapperElRect = getLogicalBoundingClientRect(wrapperEl);
-    const tableElRect = getLogicalBoundingClientRect(tableEl);
-    scrollbarEl.style.inlineSize = `${wrapperElRect.inlineSize}px`;
-    scrollbarContentEl.style.inlineSize = `${tableElRect.inlineSize}px`;
+    scrollbarEl.style.inlineSize = `${wrapperInlineSize}px`;
+    scrollbarContentEl.style.inlineSize = `${tableInlineSize}px`;
 
     // when using sticky scrollbars in containers
     // we agreed to ignore dynamic bottom calculations for footer overlap
@@ -66,14 +65,24 @@ export const updatePosition = (
   }
 };
 
+export interface StickyScrollbarContentOptions {
+  // Measures the scrollable content's width; defaults to the table's width.
+  getContentInlineSize?: (tableEl: HTMLElement) => number;
+  // Re-measures when this changes, for content that changes width without resizing the table or wrapper.
+  contentKey?: unknown;
+}
+
 export function useStickyScrollbar(
   scrollbarRef: RefObject<HTMLDivElement>,
   scrollbarContentRef: RefObject<HTMLDivElement>,
   tableRef: RefObject<HTMLTableElement>,
   wrapperRef: RefObject<HTMLDivElement>,
-  offsetScrollbar: boolean
+  offsetScrollbar: boolean,
+  { getContentInlineSize, contentKey }: StickyScrollbarContentOptions = {}
 ) {
   const [inScrollableContainer, setInScrollableContainer] = useState(false);
+  const getContentInlineSizeRef = useRef(getContentInlineSize);
+  getContentInlineSizeRef.current = getContentInlineSize;
 
   const wrapperEl = wrapperRef.current;
   useEffect(() => {
@@ -92,7 +101,8 @@ export function useStickyScrollbar(
             wrapperRef.current,
             scrollbarRef.current,
             scrollbarContentRef.current,
-            inScrollableContainer
+            inScrollableContainer,
+            getContentInlineSizeRef.current
           );
         }
       });
@@ -106,7 +116,8 @@ export function useStickyScrollbar(
     }
   }, [scrollbarContentRef, scrollbarRef, tableRef, wrapperRef, inScrollableContainer, offsetScrollbar]);
 
-  // Update scrollbar position when window resizes (vertically).
+  // Update scrollbar position when window resizes (vertically), or when the content changes width without
+  // resizing either observed element.
   useEffect(() => {
     const resizeHandler = () => {
       updatePosition(
@@ -114,7 +125,8 @@ export function useStickyScrollbar(
         wrapperRef.current,
         scrollbarRef.current,
         scrollbarContentRef.current,
-        inScrollableContainer
+        inScrollableContainer,
+        getContentInlineSizeRef.current
       );
     };
     resizeHandler();
@@ -122,5 +134,5 @@ export function useStickyScrollbar(
     return () => {
       window.removeEventListener('resize', resizeHandler);
     };
-  }, [tableRef, wrapperRef, scrollbarRef, scrollbarContentRef, inScrollableContainer]);
+  }, [tableRef, wrapperRef, scrollbarRef, scrollbarContentRef, inScrollableContainer, contentKey]);
 }

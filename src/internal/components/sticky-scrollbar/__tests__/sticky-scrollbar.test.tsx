@@ -4,12 +4,12 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { browserScrollbarSize } from '../../../../lib/components/internal/utils/browser-scrollbar-size';
-import { StickyScrollbar } from '../../../../lib/components/table/sticky-scrollbar';
+import { StickyScrollbar } from '../../../../../lib/components/internal/components/sticky-scrollbar';
+import { browserScrollbarSize } from '../../../../../lib/components/internal/utils/browser-scrollbar-size';
 
-import styles from '../../../../lib/components/table/sticky-scrollbar/styles.css.js';
+import styles from '../../../../../lib/components/internal/components/sticky-scrollbar/styles.css.js';
 
-jest.mock('../../../../lib/components/internal/utils/browser-scrollbar-size');
+jest.mock('../../../../../lib/components/internal/utils/browser-scrollbar-size');
 const browserScrollbarSizeMock = jest.mocked(browserScrollbarSize);
 
 it('adds an offset if the scrollbar is an overlay', () => {

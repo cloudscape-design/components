@@ -6,7 +6,9 @@ import clsx from 'clsx';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
+import { StickyScrollbar } from '../internal/components/sticky-scrollbar';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useScrollSync } from '../internal/hooks/use-scroll-sync';
 import { TableContextProvider } from './context';
 import { computeGridTemplateColumns } from './grid-template-columns';
 import { TableRootProps } from './interfaces';
@@ -56,6 +58,20 @@ export default function InternalTableRoot({
     }
   }, [isGrid, gridTemplateColumns, measureScrollable]);
 
+  const tableRef = useRef<HTMLTableElement>(null);
+  const scrollbarRef = useRef<HTMLDivElement>(null);
+  const handleScroll = useScrollSync([scrollerRef, scrollbarRef]);
+  // In grid layout the rows overflow the table element, so the scroller, not the table, measures the
+  // scrollable width. scrollWidth is rounded to a whole pixel, so content that fits a fractional-width
+  // scroller reports the scroller's own width instead, using the same tolerance as measureScrollable.
+  const getScrollerContentInlineSize = useCallback(() => {
+    const node = scrollerRef.current;
+    if (!node) {
+      return 0;
+    }
+    return node.scrollWidth - node.clientWidth > 1 ? node.scrollWidth : node.getBoundingClientRect().width;
+  }, []);
+
   // Set role="region" whenever scrollable (label passes through even if undefined), matching the
   // existing Table's getTableWrapperRoleProps rather than gating the role on a label.
   const scrollRegionProps = isScrollable
@@ -72,8 +88,9 @@ export default function InternalTableRoot({
       {/* TableContext supplies this table's column layout to every part. */}
       <TableContextProvider value={tableContext}>
         {/* The page owns vertical scroll; this wrapper reintroduces an inline scroll viewport so a wide table scrolls horizontally instead of spilling out. */}
-        <div className={styles['body-scroller']} ref={scrollerRef} {...scrollRegionProps}>
+        <div className={styles['body-scroller']} ref={scrollerRef} onScroll={handleScroll} {...scrollRegionProps}>
           <table
+            ref={tableRef}
             // Grid mode only: display:grid drops the table's implicit role. Auto mode keeps the
             // native role (an explicit role="table" there is redundant and flagged by a11y validators).
             role={isGrid ? 'table' : undefined}
@@ -86,6 +103,14 @@ export default function InternalTableRoot({
             {children}
           </table>
         </div>
+        <StickyScrollbar
+          ref={scrollbarRef}
+          wrapperRef={scrollerRef}
+          tableRef={tableRef}
+          onScroll={handleScroll}
+          getContentInlineSize={getScrollerContentInlineSize}
+          contentKey={gridTemplateColumns}
+        />
       </TableContextProvider>
     </div>
   );
