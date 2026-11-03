@@ -8,6 +8,7 @@ import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import ErrorBoundary from '../../../lib/components/error-boundary';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import Tabs, { TabsProps } from '../../../lib/components/tabs';
 import createWrapper, { TabsWrapper } from '../../../lib/components/test-utils/dom';
 
@@ -1679,5 +1680,26 @@ describe('active-tab indicator', () => {
       expect(indicator.getAttribute('style')).toBe(styleBefore);
       expect(indicator.style.transition).toBe('');
     });
+  });
+});
+
+describe('style.tab', () => {
+  test('applies the tab box styles to the tab container and the inline padding to the tab link', () => {
+    const { wrapper } = renderTabs(
+      <Tabs
+        tabs={[{ id: 'first', label: 'First tab' }]}
+        style={{ tab: { paddingBlock: '10px', paddingInline: '14px', borderRadius: '6px' } }}
+      />
+    );
+    const container = wrapper.findTabHeaderContentByIndex(1)!.getElement();
+    const link = wrapper.findTabLinkByIndex(1)!.getElement();
+    expect(container.style.getPropertyValue(customCssProps.styleTabsPaddingBlockStart)).toBe('10px');
+    expect(container.style.getPropertyValue(customCssProps.styleTabsPaddingBlockEnd)).toBe('10px');
+    expect(container.style.paddingBlock).toBeFalsy();
+    expect(container.style.borderRadius).toBe('6px');
+    expect(container.style.paddingInline).toBeFalsy();
+    expect(link.style.paddingInline).toBe('14px');
+    expect(link.style.paddingBlock).toBeFalsy();
+    expect(link.style.borderRadius).toBeFalsy();
   });
 });

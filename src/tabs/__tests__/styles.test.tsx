@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { getTabContainerStyles, getTabStyles } from '../styles';
+import { getTabContainerStyles, getTabStyles, getTabTriggerStyles, splitBlockValue } from '../styles';
 
 // Mock the environment module
 jest.mock('../../internal/environment', () => ({
@@ -63,6 +63,7 @@ describe('getTabStyles', () => {
   test('transforms tab styles to CSS properties', () => {
     expect(getTabStyles(testStyles)).toMatchSnapshot();
     expect(getTabContainerStyles(testStyles)).toMatchSnapshot();
+    expect(getTabTriggerStyles(testStyles)).toMatchSnapshot();
   });
 
   test('returns undefined when SYSTEM is not core', async () => {
@@ -71,11 +72,33 @@ describe('getTabStyles', () => {
       SYSTEM: 'visual-refresh',
     }));
 
-    const { getTabStyles: getTabStylesNonCore, getTabContainerStyles: getTabContainerStylesNonCore } = await import(
-      '../styles'
-    );
+    const {
+      getTabStyles: getTabStylesNonCore,
+      getTabContainerStyles: getTabContainerStylesNonCore,
+      getTabTriggerStyles: getTabTriggerStylesNonCore,
+    } = await import('../styles');
 
     expect(getTabStylesNonCore(testStyles)).toBeUndefined();
     expect(getTabContainerStylesNonCore(testStyles)).toBeUndefined();
+    expect(getTabTriggerStylesNonCore(testStyles)).toBeUndefined();
+  });
+});
+
+describe('splitBlockValue', () => {
+  test('uses one value for both sides', () => {
+    expect(splitBlockValue('4px')).toEqual(['4px', '4px']);
+  });
+
+  test('splits two values into start and end', () => {
+    expect(splitBlockValue('4px 8px')).toEqual(['4px', '8px']);
+  });
+
+  test('keeps function values intact', () => {
+    expect(splitBlockValue('calc(1rem - 1px) var(--gap, 2px)')).toEqual(['calc(1rem - 1px)', 'var(--gap, 2px)']);
+  });
+
+  test('returns undefined for no value', () => {
+    expect(splitBlockValue(undefined)).toEqual([undefined, undefined]);
+    expect(splitBlockValue('')).toEqual([undefined, undefined]);
   });
 });
