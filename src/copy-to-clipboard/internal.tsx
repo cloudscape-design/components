@@ -34,11 +34,6 @@ function useTransientFlag(durationMs: number) {
   const [active, setActive] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout>>();
 
-  const clear = useCallback(() => {
-    clearTimeout(timerRef.current);
-    setActive(false);
-  }, []);
-
   const trigger = useCallback(() => {
     clearTimeout(timerRef.current);
     setActive(true);
@@ -47,7 +42,7 @@ function useTransientFlag(durationMs: number) {
 
   useEffect(() => () => clearTimeout(timerRef.current), []);
 
-  return { active, trigger, clear };
+  return { active, trigger };
 }
 
 /**
@@ -154,17 +149,6 @@ export default function InternalCopyToClipboard({
     </InternalButton>
   );
 
-  const oneThemePopoverProps = isOneTheme
-    ? {
-        __visible: result.active,
-        __onVisibleChange: ({ detail }: { detail: { visible: boolean } }) => {
-          if (!detail.visible) {
-            result.clear();
-          }
-        },
-      }
-    : {};
-
   const trigger = disabled ? (
     button
   ) : (
@@ -175,7 +159,6 @@ export default function InternalCopyToClipboard({
       triggerType="custom"
       dismissButton={false}
       renderWithPortal={popoverRenderWithPortal}
-      {...oneThemePopoverProps}
       styleClassNames={styleClassNames?.statusPopover}
       content={
         isOneTheme ? (
