@@ -330,7 +330,7 @@ const CardItem = <T,>({
       })}
     >
       <InternalItemCard
-        fullHeight={true}
+        fitHeight={true}
         highlighted={selectable && selected}
         header={
           <div className={styles['card-header']}>
