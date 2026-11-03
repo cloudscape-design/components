@@ -174,7 +174,7 @@ export class KeyboardAndUAPSensor implements SensorInstance {
   }
 
   private detach() {
-    this.props.event.target?.removeEventListener(EventName.Blur, this.handleCancel);
+    this.props.event.target?.removeEventListener(EventName.Blur, this.handleEnd);
 
     this.listeners.removeAll();
     this.windowListeners.removeAll();
