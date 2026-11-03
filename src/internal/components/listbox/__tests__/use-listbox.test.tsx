@@ -238,6 +238,31 @@ describe('useListbox', () => {
     });
   });
 
+  describe('activeDescendantId', () => {
+    test('is the id of the highlighted row, and undefined when nothing is highlighted', () => {
+      const { hook } = renderListbox();
+      expect(hook.result.current.activeDescendantId).toBeUndefined();
+
+      act(() => hook.result.current.mouseHandlers.onMouseMove(3));
+      expect(hook.result.current.activeDescendantId).toBe(getOptionId(hook.result.current.listId, 3));
+    });
+  });
+
+  describe('scrollToIndex', () => {
+    test('is called with the highlighted index when the highlight changes', () => {
+      const { hook, keyDown } = renderListbox();
+      const scrollToIndex = jest.fn();
+      (hook.result.current.scrollToIndex as { current: unknown }).current = scrollToIndex;
+
+      keyDown(KeyCode.down);
+      expect(scrollToIndex).toHaveBeenLastCalledWith(1);
+
+      act(() => hook.result.current.mouseHandlers.onMouseMove(4));
+      expect(scrollToIndex).toHaveBeenLastCalledWith(4);
+      expect(scrollToIndex).toHaveBeenCalledTimes(2);
+    });
+  });
+
   describe('announceSelected', () => {
     test('is true only when the highlighted option is selected', () => {
       const { hook } = renderListbox({

@@ -8,12 +8,10 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { InternalDropdownProps } from '../../dropdown/internal';
 import { ButtonTriggerProps } from '../../internal/components/button-trigger';
 import { ListElementProps } from '../../internal/components/listbox/interfaces';
-import { SelectListProps } from '../../internal/components/listbox/parts/plain-list';
 import { SelectionModel } from '../../internal/components/listbox/selection/interfaces';
 import { singleSelection } from '../../internal/components/listbox/selection/single-selection';
 import { useListbox } from '../../internal/components/listbox/use-listbox';
 import { DropdownOption } from '../../internal/components/option/interfaces';
-import { getOptionId } from '../../internal/components/options-list/utils/use-ids';
 import { useTriggerKeyboard } from '../../internal/components/options-list/utils/use-keyboard';
 import { useOpenState } from '../../internal/components/options-list/utils/use-open-state';
 import { fireNonCancelableEvent } from '../../internal/events';
@@ -142,7 +140,6 @@ export function useSelect({
 
   const hasSelectedOption = __selectedOptions.length > 0;
   const dialogId = useUniqueId('dialog');
-  const highlightedOptionId = getOptionId(menuId, highlightedIndex);
 
   const closeDropdownIfNecessary = () => {
     if (!keepOpen) {
@@ -210,7 +207,7 @@ export function useSelect({
         fireLoadItems(event.detail.value);
       },
       nativeInputAttributes: {
-        'aria-activedescendant': highlightedOptionId,
+        'aria-activedescendant': listbox.activeDescendantId,
         ['aria-owns']: menuId,
         ['aria-controls']: menuId,
       },
@@ -228,7 +225,7 @@ export function useSelect({
     if (!hasFilter) {
       menuProps.onKeyDown = listbox.onKeyDown;
       menuProps.nativeAttributes = {
-        'aria-activedescendant': highlightedOptionId,
+        'aria-activedescendant': listbox.activeDescendantId,
       };
     }
     if (embedded) {
@@ -307,12 +304,6 @@ export function useSelect({
     }
   }, [closeDropdown]);
 
-  // Keeps the highlighted option scrolled into view in the list passed `ref={scrollToIndex}`.
-  const scrollToIndex = useRef<SelectListProps.SelectListRef>(null);
-  useEffect(() => {
-    scrollToIndex.current?.(highlightedIndex);
-  }, [highlightedIndex]);
-
   return {
     isOpen,
     highlightedOption,
@@ -327,7 +318,7 @@ export function useSelect({
     selectOption: listbox.selectOption,
     announceSelected: listbox.announceSelected,
     announcement: listbox.announcement,
-    scrollToIndex,
+    scrollToIndex: listbox.scrollToIndex,
     closeDropdown: closeDropdownAndRefocus,
     dialogId,
     focusActiveRef,

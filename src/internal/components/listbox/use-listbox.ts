@@ -1,5 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { RefObject, useEffect, useRef } from 'react';
+
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { SelectProps } from '../../../select/interfaces';
@@ -12,7 +14,9 @@ import {
   HighlightType,
   useHighlightedOption,
 } from '../options-list/utils/use-highlight-option';
+import { getOptionId } from '../options-list/utils/use-ids';
 import { useMenuKeyboard } from '../options-list/utils/use-keyboard';
+import { SelectListProps } from './parts/plain-list';
 import { SelectionModel } from './selection/interfaces';
 import { useAnnouncement } from './use-announcement';
 import { connectOptionsByValue } from './utils/connect-options';
@@ -58,6 +62,10 @@ export interface UseListboxApi {
   highlightedIndex: number;
   highlightType: HighlightType;
   highlightedOption: DropdownOption | undefined;
+  /** Id of the highlighted row, for `aria-activedescendant`; undefined when nothing is highlighted. */
+  activeDescendantId: string | undefined;
+  /** Pass as `ref` to the list; it is called with `highlightedIndex` whenever the highlight changes. */
+  scrollToIndex: RefObject<SelectListProps.SelectListRef>;
   /** `selectedOptions` connected to rendered rows, in selection order. */
   selectedOptions: ReadonlyArray<DropdownOption>;
   /** Raw highlight setters from `useHighlightedOption`. */
@@ -78,8 +86,9 @@ export interface UseListboxApi {
 
 /**
  * List state shared by all list components: highlight, keyboard navigation, the choose guard, mouse handlers,
- * row props and the live region announcement. Focus, open state, filter, scrolling, type-ahead and the
- * highlight on open stay with the callers, because they differ per component.
+ * row props, scrolling the highlighted row into view, the active descendant and the live region announcement.
+ * Focus, open state, filter, type-ahead and the highlight on open stay with the callers, because they differ
+ * per component.
  */
 export function useListbox({
   options,
@@ -152,11 +161,21 @@ export function useListbox({
     renderHighlightedAriaLive,
   });
 
+  const activeDescendantId = getOptionId(listId, highlightedIndex);
+
+  // Keeps the highlighted option scrolled into view in the list passed `ref={scrollToIndex}`.
+  const scrollToIndex = useRef<SelectListProps.SelectListRef>(null);
+  useEffect(() => {
+    scrollToIndex.current?.(highlightedIndex);
+  }, [highlightedIndex]);
+
   return {
     listId,
     highlightedIndex,
     highlightType,
     highlightedOption,
+    activeDescendantId,
+    scrollToIndex,
     selectedOptions,
     highlight,
     selectOption,
