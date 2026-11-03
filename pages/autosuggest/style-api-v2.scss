@@ -1,0 +1,46 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~components/styling/input';
+@use '~components/styling/button';
+@use '~components/styling/dropdown';
+@use '../style-api/palette' as palette;
+
+// The field is a search input: the inline padding replaces the room the component reserves for the search icon
+// and the clear button, so it is set with that room included, in every state. Added to the shared input class.
+.input-input-search,
+.input-input-search:placeholder-shown {
+  @include input.input($padding-inline: 40px);
+}
+
+// Search icon (Input.searchIcon): the disabled state is a class.
+.input-search-icon {
+  @include input.searchIcon($color: palette.$accent);
+}
+
+.input-search-icon-disabled {
+  @include input.searchIcon($color: palette.$text-disabled);
+}
+
+// Clear button (Input.clearButton) forwards to Button.root.
+.input-clear-button {
+  @include button.root($color: palette.$accent, $focus-ring-color: palette.$accent);
+
+  &:hover,
+  &:focus {
+    @include button.root($color: palette.$accent-hover);
+  }
+}
+
+// Dropdown forwards to Dropdown.container.
+.dropdown {
+  @include dropdown.container(
+    $background: palette.$surface-alt,
+    $border-radius: 12px,
+    $box-shadow: 0 4px 12px palette.$subtle-active,
+    $outline-color: palette.$accent,
+    $outline-width: 2px
+  );
+}
