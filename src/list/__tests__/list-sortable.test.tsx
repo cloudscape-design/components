@@ -184,6 +184,74 @@ describe('List - Sortable', () => {
     await expectAnnouncement('Item moved from position 1 to position 2 of 3');
   });
 
+  describe('repeated keyboard drags', () => {
+    const fiveItems: Item[] = [...defaultItems, { id: 'item4', content: 'Item 4' }, { id: 'item5', content: 'Item 5' }];
+
+    const nextTick = () => act(() => new Promise(resolve => setTimeout(resolve, 0)));
+
+    async function keyboardDrag(handle: HTMLElement, direction: 'ArrowDown' | 'ArrowUp') {
+      pressKey(handle, 'Space');
+      await nextTick();
+      pressKey(handle, direction);
+      await nextTick();
+      pressKey(handle, 'Space');
+      await nextTick();
+    }
+
+    function renderWithTrackedHandle() {
+      const { wrapper, onSortingChange } = renderSortableList({ items: fiveItems });
+      const handle = wrapper.findItemById('item1')!.findDragHandle()!.getElement();
+      const addListener = jest.spyOn(handle, 'addEventListener');
+      const removeListener = jest.spyOn(handle, 'removeEventListener');
+      const blurListeners = (spy: jest.SpyInstance) =>
+        spy.mock.calls.filter(([type]) => type === 'blur').map(([, listener]) => listener);
+      return {
+        handle,
+        onSortingChange,
+        addedBlurListeners: () => blurListeners(addListener),
+        removedBlurListeners: () => blurListeners(removeListener),
+      };
+    }
+
+    test('removes the drag handle blur listener after each drop', async () => {
+      const { handle, addedBlurListeners, removedBlurListeners } = renderWithTrackedHandle();
+      handle.focus();
+
+      await keyboardDrag(handle, 'ArrowDown');
+      await keyboardDrag(handle, 'ArrowDown');
+      await keyboardDrag(handle, 'ArrowUp');
+
+      expect(addedBlurListeners()).toHaveLength(3);
+      expect(removedBlurListeners()).toEqual(addedBlurListeners());
+    });
+
+    test('fires onSortingChange once per drop, including a later drag ended by blur', async () => {
+      const { handle, onSortingChange } = renderWithTrackedHandle();
+      handle.focus();
+
+      await keyboardDrag(handle, 'ArrowDown');
+      await keyboardDrag(handle, 'ArrowDown');
+      expect(onSortingChange).toHaveBeenCalledTimes(2);
+      onSortingChange.mockClear();
+
+      pressKey(handle, 'Space');
+      await nextTick();
+      pressKey(handle, 'ArrowDown');
+      await nextTick();
+      fireEvent.blur(handle);
+      await nextTick();
+
+      expect(onSortingChange).toHaveBeenCalledTimes(1);
+      expect(onSortingChange.mock.calls[0][0].detail.items.map((item: Item) => item.id)).toEqual([
+        'item2',
+        'item3',
+        'item4',
+        'item1',
+        'item5',
+      ]);
+    });
+  });
+
   test('non-primary pointer events do not activate UAP', () => {
     const { wrapper } = renderSortableList();
     const dragHandle = wrapper.findItemByIndex(1)!.findDragHandle()!;
