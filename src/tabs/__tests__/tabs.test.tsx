@@ -6,6 +6,7 @@ import { act, fireEvent, render } from '@testing-library/react';
 import { isThemeActive } from '@cloudscape-design/component-toolkit/internal';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
+import ErrorBoundary from '../../../lib/components/error-boundary';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import Tabs, { TabsProps } from '../../../lib/components/tabs';
 import createWrapper, { TabsWrapper } from '../../../lib/components/test-utils/dom';
@@ -594,27 +595,30 @@ describe('Tabs', () => {
       expect(wrapper.findActiveTab()!.getElement()).toHaveTextContent('First tab');
     });
 
-    test('activates the next enabled tab on right and left arrow key press', () => {
-      const wrapper = renderTabs(<Tabs tabs={defaultTabs} />).wrapper;
+    test.each<TabsProps['variant']>(['default', 'container', 'stacked'])(
+      'activates the next enabled tab on right and left arrow key press (variant=%s)',
+      variant => {
+        const wrapper = renderTabs(<Tabs tabs={defaultTabs} variant={variant} />).wrapper;
 
-      wrapper.findActiveTab()!.getElement().focus();
+        wrapper.findActiveTab()!.getElement().focus();
 
-      pressRight(wrapper);
-      expect(wrapper.findActiveTab()!.getElement()).toHaveTextContent('Second tab');
-      expect(wrapper.findActiveTab()!.getElement()).toHaveFocus();
+        pressRight(wrapper);
+        expect(wrapper.findActiveTab()!.getElement()).toHaveTextContent('Second tab');
+        expect(wrapper.findActiveTab()!.getElement()).toHaveFocus();
 
-      pressRight(wrapper);
-      expect(wrapper.findActiveTab()!.getElement()).toHaveTextContent('Fourth tab');
-      expect(wrapper.findActiveTab()!.getElement()).toHaveFocus();
+        pressRight(wrapper);
+        expect(wrapper.findActiveTab()!.getElement()).toHaveTextContent('Fourth tab');
+        expect(wrapper.findActiveTab()!.getElement()).toHaveFocus();
 
-      pressLeft(wrapper);
-      expect(wrapper.findActiveTab()!.getElement()).toHaveTextContent('Second tab');
-      expect(wrapper.findActiveTab()!.getElement()).toHaveFocus();
+        pressLeft(wrapper);
+        expect(wrapper.findActiveTab()!.getElement()).toHaveTextContent('Second tab');
+        expect(wrapper.findActiveTab()!.getElement()).toHaveFocus();
 
-      pressLeft(wrapper);
-      expect(wrapper.findActiveTab()!.getElement()).toHaveTextContent('First tab');
-      expect(wrapper.findActiveTab()!.getElement()).toHaveFocus();
-    });
+        pressLeft(wrapper);
+        expect(wrapper.findActiveTab()!.getElement()).toHaveTextContent('First tab');
+        expect(wrapper.findActiveTab()!.getElement()).toHaveFocus();
+      }
+    );
 
     test('activates the last/first enabled tab on end/home key press', () => {
       const wrapper = renderTabs(<Tabs tabs={defaultTabs} />).wrapper;
@@ -878,6 +882,43 @@ describe('Tabs', () => {
       const tabContents2 = tabs2.findAllByClassName(styles['tabs-content-wrapper']);
       expect(tabContents2[0]!.getElement()).not.toHaveClass(styles['with-paddings']);
     });
+  });
+
+  describe('Error boundary', () => {
+    let consoleErrorSpy: jest.SpyInstance;
+    beforeEach(() => {
+      consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+    });
+    afterEach(() => {
+      consoleErrorSpy.mockRestore();
+    });
+
+    test.each<TabsProps['variant']>(['container', 'stacked'])(
+      'resets content error boundary on tab change (variant=%s)',
+      variant => {
+        const Broken = () => <div>{{}}</div>;
+        const tabs: TabsProps.Tab[] = [
+          { id: 'broken', label: 'Broken', content: <Broken /> },
+          { id: 'ok', label: 'OK', content: 'OK content' },
+        ];
+        const { container } = render(
+          <ErrorBoundary onError={() => void 0}>
+            <Tabs variant={variant} tabs={tabs} />
+          </ErrorBoundary>
+        );
+        const wrapper = createWrapper(container);
+        expect(wrapper.findErrorBoundary()).not.toBeNull();
+        expect(wrapper.findTabs()!.findActiveTab()!.getElement()).toHaveTextContent('Broken');
+
+        wrapper.findTabs()!.findActiveTab()!.getElement().focus();
+        pressRight(wrapper.findTabs()!);
+
+        expect(wrapper.findErrorBoundary()).toBeNull();
+        expect(wrapper.findTabs()!.findActiveTab()!.getElement()).toHaveTextContent('OK');
+        expect(wrapper.findTabs()!.findActiveTab()!.getElement()).toHaveFocus();
+        expect(wrapper.findTabs()!.findTabContent()!.getElement()).toHaveTextContent('OK content');
+      }
+    );
   });
 
   describe('URL sanitization', () => {
