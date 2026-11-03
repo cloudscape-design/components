@@ -39,6 +39,7 @@ const tokens: StyleDictionary.DensityTypographyDictionary = {
   fontWayfindingLinkActiveWeight: '600',
   fontWeightLinkSecondary: 'inherit',
   fontDecorationLineLinkSecondary: 'underline',
+  fontDecorationLineButtonInlineLink: 'underline',
 
   // ── Alerts / flashbars ────────────────────────────────────────────────────
   fontWeightAlertHeader: '500',

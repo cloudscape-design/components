@@ -267,6 +267,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: false,
   },
+  fontDecorationLineButtonInlineLink: {
+    description: 'The text decoration line of the inline-link button variant. For example: underline, none.',
+    themeable: true,
+    public: false,
+  },
   fontDecorationLineLinkSecondary: {
     description: 'The text decoration line of secondary links. For example: underline, none.',
     themeable: false,
