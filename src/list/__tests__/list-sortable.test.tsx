@@ -1,12 +1,27 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import { AutoScrollOptions, TraversalOrder } from '@dnd-kit/core';
 import { act, fireEvent, render } from '@testing-library/react';
 
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import List, { ListProps } from '../../../lib/components/list';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import InternalDragHandleWrapper from '../../../lib/components/test-utils/dom/internal/drag-handle';
+
+const mockDndContextAutoScroll: { current: AutoScrollOptions | undefined } = { current: undefined };
+
+jest.mock('@dnd-kit/core', () => {
+  const actual = jest.requireActual('@dnd-kit/core');
+  const { createElement } = jest.requireActual('react');
+  return {
+    ...actual,
+    DndContext: (props: { autoScroll?: AutoScrollOptions }) => {
+      mockDndContextAutoScroll.current = props.autoScroll;
+      return createElement(actual.DndContext, props);
+    },
+  };
+});
 
 interface Item {
   id: string;
@@ -245,5 +260,88 @@ describe('List - Sortable', () => {
 
     dragHandle.click({ button: 1 });
     expect(dragWrapper.findVisibleDirectionButtonBlockEnd()).toBeFalsy();
+  });
+
+  describe('auto-scroll', () => {
+    const interact = (action: () => void) =>
+      act(async () => {
+        action();
+        await new Promise(resolve => setTimeout(resolve, 0));
+      });
+    const canAutoScroll = (element: Element) => mockDndContextAutoScroll.current!.canScroll!(element);
+
+    function renderInScrollContainers({ innerScrolls }: { innerScrolls: boolean }) {
+      const { container } = render(
+        <div data-testid="outer" style={{ overflowY: 'auto' }}>
+          <div data-testid="inner" style={{ overflowY: 'auto' }}>
+            <ControlledList
+              items={defaultItems}
+              renderItem={item => ({ id: item.id, content: item.content })}
+              sortable={true}
+            />
+          </div>
+        </div>
+      );
+      const outer = container.querySelector<HTMLElement>('[data-testid="outer"]')!;
+      const inner = container.querySelector<HTMLElement>('[data-testid="inner"]')!;
+      // jsdom has no layout, so make the containers overflow explicitly.
+      const overflowing = innerScrolls ? [outer, inner] : [];
+      for (const element of overflowing) {
+        Object.defineProperty(element, 'scrollHeight', { configurable: true, value: 1000 });
+        Object.defineProperty(element, 'clientHeight', { configurable: true, value: 100 });
+      }
+      const list = createWrapper(container).findList()!;
+      const item = list.findItemById('item1')!.getElement();
+      const handle = list.findItemById('item1')!.findDragHandle()!.getElement();
+      return { outer, inner, item, handle };
+    }
+
+    test('checks the innermost scroll container first', () => {
+      renderInScrollContainers({ innerScrolls: true });
+      expect(mockDndContextAutoScroll.current!.order).toBe(TraversalOrder.ReversedTreeOrder);
+    });
+
+    test('only auto-scrolls the nearest scroll container and its descendants while dragging', async () => {
+      const { outer, inner, item, handle } = renderInScrollContainers({ innerScrolls: true });
+
+      await interact(() => pressKey(handle, 'Space'));
+
+      expect(canAutoScroll(inner)).toBe(true);
+      expect(canAutoScroll(item)).toBe(true);
+      expect(canAutoScroll(outer)).toBe(false);
+      expect(canAutoScroll(document.documentElement)).toBe(false);
+
+      await interact(() => pressKey(handle, 'Space'));
+
+      expect(canAutoScroll(outer)).toBe(true);
+      expect(canAutoScroll(document.documentElement)).toBe(true);
+    });
+
+    test('keeps every container eligible for auto-scroll when the list has no scrollable ancestor', async () => {
+      const { outer, inner, handle } = renderInScrollContainers({ innerScrolls: false });
+
+      await interact(() => pressKey(handle, 'Space'));
+
+      expect(canAutoScroll(inner)).toBe(true);
+      expect(canAutoScroll(outer)).toBe(true);
+      expect(canAutoScroll(document.documentElement)).toBe(true);
+
+      await interact(() => pressKey(handle, 'Escape'));
+    });
+
+    test('limits auto-scroll when the drag starts on the drag handle icon and stops limiting it on cancel', async () => {
+      const { outer, inner, handle } = renderInScrollContainers({ innerScrolls: true });
+      const icon = handle.querySelector('svg')!;
+      expect(icon).not.toBeNull();
+
+      await interact(() => fireEvent.click(icon));
+
+      expect(canAutoScroll(inner)).toBe(true);
+      expect(canAutoScroll(outer)).toBe(false);
+
+      await interact(() => pressKey(handle, 'Escape'));
+
+      expect(canAutoScroll(outer)).toBe(true);
+    });
   });
 });
