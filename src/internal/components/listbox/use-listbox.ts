@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
+import { SelectProps } from '../../../select/interfaces';
 import { BaseKeyDetail, CancelableEventHandler } from '../../../types/events';
-import { OptionDefinition } from '../../../types/option';
+import { OptionDefinition, OptionGroup } from '../../../types/option';
 import { DropdownOption } from '../option/interfaces';
 import { isGroupInteractive, isInteractive } from '../option/utils/filter-options';
 import {
@@ -13,6 +14,7 @@ import {
 } from '../options-list/utils/use-highlight-option';
 import { useMenuKeyboard } from '../options-list/utils/use-keyboard';
 import { SelectionModel } from './selection/interfaces';
+import { useAnnouncement } from './use-announcement';
 import { connectOptionsByValue } from './utils/connect-options';
 import { getListboxNavigation } from './utils/navigation';
 import {
@@ -42,6 +44,12 @@ export interface UseListboxProps {
   spaceSelects: 'always' | 'keyboard-highlight';
   /** Called when Escape is pressed. */
   onEscape: () => void;
+  /** Group of the option, announced with the highlighted option. */
+  getParent: (option: DropdownOption) => undefined | OptionGroup;
+  /** Added to the announcement when the highlighted option is selected. */
+  selectedAriaLabel?: string;
+  /** Custom announcement for the highlighted option. */
+  renderHighlightedAriaLive?: SelectProps.ContainingOptionAndGroupString;
 }
 
 export interface UseListboxApi {
@@ -64,11 +72,13 @@ export interface UseListboxApi {
   getOptionProps(option: DropdownOption, index: number): ReturnType<typeof getListboxOptionProps>;
   /** Whether the live region announces the highlighted option as selected. */
   announceSelected: boolean;
+  /** Live region text for the highlighted option. */
+  announcement: string;
 }
 
 /**
  * List state shared by all list components: highlight, keyboard navigation, the choose guard, mouse handlers,
- * row props and the selected-announcement flag. Focus, open state, filter, scrolling, type-ahead and the
+ * row props and the live region announcement. Focus, open state, filter, scrolling, type-ahead and the
  * highlight on open stay with the callers, because they differ per component.
  */
 export function useListbox({
@@ -79,6 +89,9 @@ export function useListbox({
   onSelect,
   spaceSelects,
   onEscape,
+  getParent,
+  selectedAriaLabel,
+  renderHighlightedAriaLive,
 }: UseListboxProps): UseListboxApi {
   const listId = useUniqueId('option-list');
   const selectedOptions = connectOptionsByValue(options, selectedOptionsProp);
@@ -131,6 +144,13 @@ export function useListbox({
     });
 
   const announceSelected = isAnnouncedSelected(highlightedOption, selectedSet, selection);
+  const announcement = useAnnouncement({
+    announceSelected,
+    highlightedOption,
+    getParent,
+    selectedAriaLabel,
+    renderHighlightedAriaLive,
+  });
 
   return {
     listId,
@@ -144,5 +164,6 @@ export function useListbox({
     mouseHandlers,
     getOptionProps,
     announceSelected,
+    announcement,
   };
 }

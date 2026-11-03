@@ -8,6 +8,7 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { InternalDropdownProps } from '../../dropdown/internal';
 import { ButtonTriggerProps } from '../../internal/components/button-trigger';
 import { ListElementProps } from '../../internal/components/listbox/interfaces';
+import { SelectListProps } from '../../internal/components/listbox/parts/plain-list';
 import { SelectionModel } from '../../internal/components/listbox/selection/interfaces';
 import { singleSelection } from '../../internal/components/listbox/selection/single-selection';
 import { useListbox } from '../../internal/components/listbox/use-listbox';
@@ -20,7 +21,7 @@ import useForwardFocus from '../../internal/hooks/forward-focus';
 import { usePrevious } from '../../internal/hooks/use-previous';
 import { DropdownStatusProps } from '../../types/dropdown-status';
 import { NonCancelableEventHandler } from '../../types/events';
-import { OptionDefinition } from '../../types/option';
+import { OptionDefinition, OptionGroup } from '../../types/option';
 import { SelectProps } from '../interfaces';
 import { FilterProps } from '../parts/filter';
 
@@ -45,6 +46,10 @@ interface UseSelectProps {
   selection?: SelectionModel;
   toggleAll?: () => void;
   dropdownRole?: SelectProps.DropdownRole;
+  /** Group of the option, announced with the highlighted option. Defaults to no group. */
+  getParent?: (option: DropdownOption) => undefined | OptionGroup;
+  selectedAriaLabel?: string;
+  renderHighlightedAriaLive?: SelectProps.ContainingOptionAndGroupString;
 }
 
 export interface SelectTriggerProps extends ButtonTriggerProps {
@@ -68,6 +73,9 @@ export function useSelect({
   selection = singleSelection(selectedOptions),
   toggleAll,
   dropdownRole,
+  getParent = () => undefined,
+  selectedAriaLabel,
+  renderHighlightedAriaLive,
 }: UseSelectProps) {
   const filterRef = useRef<HTMLInputElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -95,6 +103,9 @@ export function useSelect({
     // With a filter input, Space types into it unless an option has a keyboard highlight.
     spaceSelects: hasFilter ? 'keyboard-highlight' : 'always',
     onEscape: () => handleEscape(),
+    getParent,
+    selectedAriaLabel,
+    renderHighlightedAriaLive,
   });
   const {
     listId: menuId,
@@ -296,6 +307,12 @@ export function useSelect({
     }
   }, [closeDropdown]);
 
+  // Keeps the highlighted option scrolled into view in the list passed `ref={scrollToIndex}`.
+  const scrollToIndex = useRef<SelectListProps.SelectListRef>(null);
+  useEffect(() => {
+    scrollToIndex.current?.(highlightedIndex);
+  }, [highlightedIndex]);
+
   return {
     isOpen,
     highlightedOption,
@@ -309,6 +326,8 @@ export function useSelect({
     highlightOption: highlightOptionWithKeyboard,
     selectOption: listbox.selectOption,
     announceSelected: listbox.announceSelected,
+    announcement: listbox.announcement,
+    scrollToIndex,
     closeDropdown: closeDropdownAndRefocus,
     dialogId,
     focusActiveRef,

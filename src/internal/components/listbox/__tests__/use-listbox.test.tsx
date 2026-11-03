@@ -52,6 +52,7 @@ function renderListbox(props: Partial<UseListboxProps> = {}) {
       interactiveGroups: false,
       onSelect,
       spaceSelects: 'always',
+      getParent: () => undefined,
       ...props,
     } as UseListboxProps,
   });
@@ -249,6 +250,23 @@ describe('useListbox', () => {
 
       act(() => hook.result.current.mouseHandlers.onMouseMove(4));
       expect(hook.result.current.announceSelected).toBe(false);
+    });
+  });
+
+  describe('announcement', () => {
+    test('announces the highlighted option, with selectedAriaLabel when it is selected', () => {
+      const { hook } = renderListbox({
+        selectedOptions: [{ value: 'c' }],
+        selection: singleSelection([{ value: 'c' }]),
+        selectedAriaLabel: 'Selected',
+      });
+      expect(hook.result.current.announcement).toBe('');
+
+      act(() => hook.result.current.mouseHandlers.onMouseMove(3));
+      expect(hook.result.current.announcement).toBe('Selected C');
+
+      act(() => hook.result.current.mouseHandlers.onMouseMove(4));
+      expect(hook.result.current.announcement).toBe('D');
     });
   });
 });
