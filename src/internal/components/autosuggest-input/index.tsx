@@ -9,7 +9,6 @@ import { useMergeRefs, useResizeObserver } from '@cloudscape-design/component-to
 import { AutosuggestProps } from '../../../autosuggest/interfaces';
 import { ExpandToViewport } from '../../../dropdown/interfaces';
 import InternalDropdown from '../../../dropdown/internal';
-import InternalIcon from '../../../icon/internal';
 import {
   BaseChangeDetail,
   BaseInputProps,
@@ -29,13 +28,11 @@ import { getBreakpointValue } from '../../breakpoints';
 import { ResetGroupedControlContext, useGroupedControlContext } from '../../context/control-group-context';
 import { useFormFieldContext } from '../../context/form-field-context';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../../events';
-import { getGroupedControlClassNames } from '../../grouped-control/grouped-control-styles';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
 import { useIMEComposition } from '../../hooks/use-ime-composition';
 import { useListFocusController } from '../../hooks/use-list-focus-controller';
 import { KeyCode } from '../../keycode';
 import { getDropdownMinWidth } from '../../utils/get-dropdown-min-width';
-import { getInputStylesCss } from '../../utils/input-styles';
 import { nodeBelongs } from '../../utils/node-belongs';
 import { processAttributes } from '../../utils/with-native-attributes';
 import ButtonTrigger from '../button-trigger';
@@ -144,32 +141,30 @@ const AutosuggestInput = React.forwardRef(
     const preventOpenOnFocusRef = useRef(false);
     const preventCloseOnBlurRef = useRef(false);
 
-    const fieldRef = useRef<HTMLDivElement>(null);
-    const leadingIconRef = useRef<HTMLSpanElement>(null);
-    const inputWrapperRef = useRef<HTMLDivElement>(null);
+    const inlineTokensRootRef = useRef<HTMLDivElement>(null);
     const measureRef = useRef<HTMLDivElement>(null);
     const measureTriggerRef = useRef<HTMLButtonElement>(null);
     const inlineTokensRef = useRef<InlineTokensRef>(null);
 
     const [triggerWidth, setTriggerWidth] = useState<number | null>(null);
     useResizeObserver(
-      () => (isTokenMode ? fieldRef.current : inputContainerRef.current),
-      entry => entry.borderBoxWidth > 0 && setTriggerWidth(entry.borderBoxWidth)
+      () => inputContainerRef.current,
+      entry => setTriggerWidth(entry.borderBoxWidth)
     );
 
     const [open, setOpen] = useState(false);
     const [tokensOverflowOpen, setTokensOverflowOpen] = useState(false);
     const [announcement, setAnnouncement] = useState('');
 
-    const { containerRef, visibleCount } = useTokenOverflow({
+    const visibleCount = useTokenOverflow({
       enabled: isTokenMode,
       tokenCount: tokenList.length,
       tokenContentKey: tokenList.map(token => `${token.value}::${token.icon ? 'icon' : 'no-icon'}`).join('\n'),
       measureRef,
       measureTriggerRef,
-      fieldRef,
-      leadingIconRef,
-      inputWrapperRef,
+      tokensRef: inlineTokensRootRef,
+      inputRef,
+      fieldWidth: triggerWidth,
       layoutKey: [
         formFieldContext.invalid,
         formFieldContext.warning,
@@ -194,14 +189,14 @@ const AutosuggestInput = React.forwardRef(
       showMoreSelector: `.${styles['token-overflow-trigger']}`,
       fallbackSelector: 'input',
     });
-    const mergedFieldRef = useMergeRefs(fieldRef, focusControllerRef);
+    const mergedContainerRef = useMergeRefs(inputContainerRef, focusControllerRef);
 
     useEffect(() => {
       if (!tokensOverflowOpen || (hiddenCount > 0 && !disabled)) {
         return;
       }
       setTokensOverflowOpen(false);
-      if (!disabled && !nodeBelongs(fieldRef.current, document.activeElement)) {
+      if (!disabled && !nodeBelongs(inputContainerRef.current, document.activeElement)) {
         setNextFocusTokenIndex(0);
       }
     }, [tokensOverflowOpen, hiddenCount, disabled]);
@@ -372,7 +367,6 @@ const AutosuggestInput = React.forwardRef(
       'aria-owns': open ? ariaControls : undefined,
       'aria-label': ariaLabel,
       'aria-activedescendant': ariaActivedescendant,
-      ...(isTokenMode && formFieldContext.invalid ? { 'aria-invalid': 'true' as const } : {}),
     };
 
     // Closes dropdown when outside click is detected.
@@ -386,8 +380,7 @@ const AutosuggestInput = React.forwardRef(
         if (
           !nodeBelongs(inputContainerRef.current, event.target) &&
           !nodeBelongs(dropdownContentRef.current, event.target) &&
-          !nodeBelongs(dropdownFooterRef.current, event.target) &&
-          !nodeBelongs(fieldRef.current, event.target)
+          !nodeBelongs(dropdownFooterRef.current, event.target)
         ) {
           closeDropdown();
         }
@@ -415,87 +408,31 @@ const AutosuggestInput = React.forwardRef(
       }
     };
 
-    const sharedInputProps = {
-      value,
-      onChange: (event: { detail: BaseChangeDetail }) => handleChange(event.detail.value),
-      __onDelayedInput: (event: { detail: BaseChangeDetail }) => handleDelayedInput(event.detail.value),
-      onKeyDown: handleKeyDown,
-      onKeyUp,
-      disabled,
-      disableBrowserAutocorrect,
-      readOnly,
-      ariaRequired,
-      clearAriaLabel,
-      ref: inputRef,
-      __internalRootRef: inputContainerRef,
-      autoComplete: false,
-      nativeInputAttributes: processAttributes(nativeAttributes, 'Autosuggest', nativeInputAttributes),
-      __skipNativeAttributesWarnings: Object.keys(nativeAttributes),
-    };
-
-    const tokenField = isTokenMode && (
-      <ResetGroupedControlContext>
-        <div
-          ref={mergedFieldRef}
-          className={clsx(
-            styles['token-field'],
-            formFieldContext.invalid && styles['token-field-invalid'],
-            formFieldContext.warning && !formFieldContext.invalid && styles['token-field-warning'],
-            disabled && styles['token-field-disabled'],
-            readOnly && !disabled && styles['token-field-readonly'],
-            getGroupedControlClassNames(styles, groupedControlProps)
-          )}
-          style={getInputStylesCss(style)}
-        >
-          <span ref={leadingIconRef} className={styles['token-field-icon']}>
-            <InternalIcon name="search" variant={disabled ? 'disabled' : 'subtle'} />
-          </span>
-          {tokenList.length > 0 && (
-            <InlineTokens
-              ref={inlineTokensRef}
-              tokens={tokenList}
-              visibleCount={visibleCount}
-              disabled={disabled}
-              readOnly={readOnly}
-              expandToViewport={expandToViewport}
-              overflowOpen={tokensOverflowOpen}
-              tokenDismissLabel={tokenDismissLabel}
-              tokenOverflowAriaLabel={tokenOverflowAriaLabel}
-              onOverflowOpenChange={isOpen => {
-                if (isOpen) {
-                  closeDropdown();
-                }
-                setTokensOverflowOpen(isOpen);
-              }}
-              onDismiss={removeToken}
-              onFocusEnter={() => (preventOpenOnFocusRef.current = true)}
-              onNavigateToInput={() => {
-                setTokensOverflowOpen(false);
-                inputRef.current?.focus();
-              }}
-            />
-          )}
-          <div ref={inputWrapperRef} className={styles['token-input-wrapper']}>
-            <InternalInput
-              type="text"
-              {...sharedInputProps}
-              __noBorder={true}
-              {...(!disabled && !readOnly && value
-                ? {
-                    __endIcon: 'close' as const,
-                    __onEndIconClick: () => {
-                      inputRef.current?.focus();
-                      clearValue();
-                    },
-                  }
-                : {})}
-              {...formFieldContext}
-              invalid={false}
-              warning={false}
-            />
-          </div>
-        </div>
-      </ResetGroupedControlContext>
+    const inlineTokens = tokenList.length > 0 && (
+      <InlineTokens
+        ref={inlineTokensRef}
+        rootRef={inlineTokensRootRef}
+        tokens={tokenList}
+        visibleCount={visibleCount}
+        disabled={disabled}
+        readOnly={readOnly}
+        expandToViewport={expandToViewport}
+        overflowOpen={tokensOverflowOpen}
+        tokenDismissLabel={tokenDismissLabel}
+        tokenOverflowAriaLabel={tokenOverflowAriaLabel}
+        onOverflowOpenChange={isOpen => {
+          if (isOpen) {
+            closeDropdown();
+          }
+          setTokensOverflowOpen(isOpen);
+        }}
+        onDismiss={removeToken}
+        onFocusEnter={() => (preventOpenOnFocusRef.current = true)}
+        onNavigateToInput={() => {
+          setTokensOverflowOpen(false);
+          inputRef.current?.focus();
+        }}
+      />
     );
 
     const dropdown = (
@@ -506,7 +443,27 @@ const AutosuggestInput = React.forwardRef(
         onFocus={handleFocus}
         onBlur={handleBlur}
         trigger={
-          tokenField || <InternalInput type="visualSearch" {...sharedInputProps} style={style} {...formFieldContext} />
+          <InternalInput
+            type="visualSearch"
+            value={value}
+            onChange={event => handleChange(event.detail.value)}
+            __onDelayedInput={event => handleDelayedInput(event.detail.value)}
+            onKeyDown={handleKeyDown}
+            onKeyUp={onKeyUp}
+            disabled={disabled}
+            disableBrowserAutocorrect={disableBrowserAutocorrect}
+            readOnly={readOnly}
+            ariaRequired={ariaRequired}
+            clearAriaLabel={clearAriaLabel}
+            ref={inputRef}
+            __internalRootRef={mergedContainerRef}
+            autoComplete={false}
+            nativeInputAttributes={processAttributes(nativeAttributes, 'Autosuggest', nativeInputAttributes)}
+            __skipNativeAttributesWarnings={Object.keys(nativeAttributes)}
+            style={style}
+            {...formFieldContext}
+            __inlineContent={inlineTokens}
+          />
         }
         onMouseDown={handleDropdownMouseDown}
         open={open && (!!dropdownContent || !!dropdownFooter)}
@@ -555,9 +512,7 @@ const AutosuggestInput = React.forwardRef(
                 {`+${tokenList.length}`}
               </ButtonTrigger>
             </div>
-            <div ref={containerRef} className={styles['token-field-container']}>
-              {dropdown}
-            </div>
+            {dropdown}
           </>
         ) : (
           dropdown
