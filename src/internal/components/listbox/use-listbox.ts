@@ -1,0 +1,148 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
+import { BaseKeyDetail, CancelableEventHandler } from '../../../types/events';
+import { OptionDefinition } from '../../../types/option';
+import { DropdownOption } from '../option/interfaces';
+import { isGroupInteractive, isInteractive } from '../option/utils/filter-options';
+import {
+  HighlightedOptionHandlers,
+  HighlightType,
+  useHighlightedOption,
+} from '../options-list/utils/use-highlight-option';
+import { useMenuKeyboard } from '../options-list/utils/use-keyboard';
+import { SelectionModel } from './selection/interfaces';
+import { connectOptionsByValue } from './utils/connect-options';
+import { getListboxNavigation } from './utils/navigation';
+import {
+  getListboxOptionProps,
+  getListMouseHandlers,
+  getSelectableOption,
+  isAnnouncedSelected,
+  isHighlightable,
+} from './utils/option-props';
+
+export interface UseListboxProps {
+  /** Rendered options in list order (flattened, filtered, including select-all). */
+  options: ReadonlyArray<DropdownOption>;
+  /** Selected options, matched to the rendered rows by value. */
+  selectedOptions: ReadonlyArray<OptionDefinition>;
+  /** Group and select-all state. */
+  selection: SelectionModel;
+  /** Whether group headers (and select-all) can be highlighted and chosen. */
+  interactiveGroups: boolean;
+  /** Called with the interactive option the user chose (Enter, Space, mouse up, or `selectOption`). */
+  onSelect: (option: DropdownOption) => void;
+  /**
+   * 'always': Space always chooses the highlighted option.
+   * 'keyboard-highlight': Space chooses only while an option has a keyboard highlight, so it still types into a
+   * filter input.
+   */
+  spaceSelects: 'always' | 'keyboard-highlight';
+  /** Called when Escape is pressed. */
+  onEscape: () => void;
+}
+
+export interface UseListboxApi {
+  /** Id of the list element; row ids are `getOptionId(listId, index)`. */
+  listId: string;
+  highlightedIndex: number;
+  highlightType: HighlightType;
+  highlightedOption: DropdownOption | undefined;
+  /** `selectedOptions` connected to rendered rows, in selection order. */
+  selectedOptions: ReadonlyArray<DropdownOption>;
+  /** Raw highlight setters from `useHighlightedOption`. */
+  highlight: HighlightedOptionHandlers<DropdownOption>;
+  /** Chooses `option`, or the highlighted option when omitted. Ignores non-interactive options. */
+  selectOption(option?: DropdownOption): void;
+  /** Keydown handler for the element that has focus (list or filter input). */
+  onKeyDown: CancelableEventHandler<BaseKeyDetail>;
+  /** `onMouseUp` / `onMouseMove` for the list element. */
+  mouseHandlers: ReturnType<typeof getListMouseHandlers>;
+  /** Props for the row at `index`. */
+  getOptionProps(option: DropdownOption, index: number): ReturnType<typeof getListboxOptionProps>;
+  /** Whether the live region announces the highlighted option as selected. */
+  announceSelected: boolean;
+}
+
+/**
+ * List state shared by all list components: highlight, keyboard navigation, the choose guard, mouse handlers,
+ * row props and the selected-announcement flag. Focus, open state, filter, scrolling, type-ahead and the
+ * highlight on open stay with the callers, because they differ per component.
+ */
+export function useListbox({
+  options,
+  selectedOptions: selectedOptionsProp,
+  selection,
+  interactiveGroups,
+  onSelect,
+  spaceSelects,
+  onEscape,
+}: UseListboxProps): UseListboxApi {
+  const listId = useUniqueId('option-list');
+  const selectedOptions = connectOptionsByValue(options, selectedOptionsProp);
+  const selectedSet = new Set(selectedOptions);
+  const [{ highlightType, highlightedOption, highlightedIndex }, highlight] = useHighlightedOption({
+    options,
+    isHighlightable: (option?: DropdownOption) => isHighlightable(option, interactiveGroups),
+  });
+
+  const interactivityCheck = interactiveGroups ? isGroupInteractive : isInteractive;
+  const selectOption = (option?: DropdownOption) => {
+    const optionToSelect = getSelectableOption(option, highlightedOption, interactivityCheck);
+    if (optionToSelect) {
+      onSelect(optionToSelect);
+    }
+  };
+
+  const onKeyDown = useMenuKeyboard({
+    ...getListboxNavigation({
+      options,
+      highlightedIndex,
+      highlightedOption,
+      interactiveGroups,
+      moveHighlight: highlight.moveHighlightWithKeyboard,
+      goHome: highlight.goHomeWithKeyboard,
+      goEnd: highlight.goEndWithKeyboard,
+    }),
+    selectOption,
+    goHome: highlight.goHomeWithKeyboard,
+    goEnd: highlight.goEndWithKeyboard,
+    closeDropdown: onEscape,
+    // With 'keyboard-highlight', Space chooses only while an option has a keyboard highlight, and types otherwise.
+    preventNativeSpace: spaceSelects === 'always' || (!!highlightedOption && highlightType.type === 'keyboard'),
+  });
+
+  const mouseHandlers = getListMouseHandlers({
+    options,
+    selectOption,
+    setHighlightedIndexWithMouse: highlight.setHighlightedIndexWithMouse,
+  });
+
+  const getOptionProps = (option: DropdownOption, index: number) =>
+    getListboxOptionProps(option, index, {
+      options,
+      selectedSet,
+      selection,
+      highlightedOption,
+      interactiveGroups,
+      listId,
+    });
+
+  const announceSelected = isAnnouncedSelected(highlightedOption, selectedSet, selection);
+
+  return {
+    listId,
+    highlightedIndex,
+    highlightType,
+    highlightedOption,
+    selectedOptions,
+    highlight,
+    selectOption,
+    onKeyDown,
+    mouseHandlers,
+    getOptionProps,
+    announceSelected,
+  };
+}

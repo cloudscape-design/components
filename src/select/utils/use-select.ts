@@ -10,20 +10,10 @@ import { ButtonTriggerProps } from '../../internal/components/button-trigger';
 import { ListElementProps } from '../../internal/components/listbox/interfaces';
 import { SelectionModel } from '../../internal/components/listbox/selection/interfaces';
 import { singleSelection } from '../../internal/components/listbox/selection/single-selection';
-import { connectOptionsByValue } from '../../internal/components/listbox/utils/connect-options';
-import { getListboxNavigation } from '../../internal/components/listbox/utils/navigation';
-import {
-  getListboxOptionProps,
-  getListMouseHandlers,
-  getSelectableOption,
-  isAnnouncedSelected,
-  isHighlightable as isHighlightableOption,
-} from '../../internal/components/listbox/utils/option-props';
+import { useListbox } from '../../internal/components/listbox/use-listbox';
 import { DropdownOption } from '../../internal/components/option/interfaces';
-import { isGroupInteractive, isInteractive } from '../../internal/components/option/utils/filter-options';
-import { useHighlightedOption } from '../../internal/components/options-list/utils/use-highlight-option';
 import { getOptionId } from '../../internal/components/options-list/utils/use-ids';
-import { useMenuKeyboard, useTriggerKeyboard } from '../../internal/components/options-list/utils/use-keyboard';
+import { useTriggerKeyboard } from '../../internal/components/options-list/utils/use-keyboard';
 import { useOpenState } from '../../internal/components/options-list/utils/use-open-state';
 import { fireNonCancelableEvent } from '../../internal/events';
 import useForwardFocus from '../../internal/hooks/forward-focus';
@@ -48,7 +38,10 @@ interface UseSelectProps {
   setFilteringValue?: (filteringText: string) => void;
   useInteractiveGroups?: boolean;
   statusType: DropdownStatusProps.StatusType;
-  /** Source of group and select-all state. Defaults to single selection over `selectedOptions`. */
+  /**
+   * Source of group and select-all state, built from `selectedOptions`.
+   * Defaults to single selection over `selectedOptions`.
+   */
   selection?: SelectionModel;
   toggleAll?: () => void;
   dropdownRole?: SelectProps.DropdownRole;
@@ -76,10 +69,6 @@ export function useSelect({
   toggleAll,
   dropdownRole,
 }: UseSelectProps) {
-  const interactivityCheck = useInteractiveGroups ? isGroupInteractive : isInteractive;
-
-  const isHighlightable = (option?: DropdownOption) => isHighlightableOption(option, useInteractiveGroups);
-
   const filterRef = useRef<HTMLInputElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -87,20 +76,40 @@ export function useSelect({
   // Filtering always renders a dialog; `dropdownRole` can additionally force dialog semantics without a filter.
   const isDialog = hasFilter || dropdownRole === 'dialog';
   const activeRef = hasFilter ? filterRef : menuRef;
-  const __selectedOptions = connectOptionsByValue(options, selectedOptions);
-  const __selectedOptionsSet = new Set(__selectedOptions);
-  const [
-    { highlightType, highlightedOption, highlightedIndex },
-    {
-      moveHighlightWithKeyboard,
+
+  // `onSelect` and `onEscape` run only on user events, after `closeDropdownIfNecessary` and `handleEscape` below
+  // are declared.
+  const listbox = useListbox({
+    options,
+    selectedOptions,
+    selection,
+    interactiveGroups: useInteractiveGroups,
+    onSelect: option => {
+      if (option.type === 'select-all' && toggleAll) {
+        toggleAll();
+      } else {
+        updateSelectedOption(option.option);
+      }
+      closeDropdownIfNecessary();
+    },
+    // With a filter input, Space types into it unless an option has a keyboard highlight.
+    spaceSelects: hasFilter ? 'keyboard-highlight' : 'always',
+    onEscape: () => handleEscape(),
+  });
+  const {
+    listId: menuId,
+    highlightType,
+    highlightedOption,
+    highlightedIndex,
+    selectedOptions: __selectedOptions,
+    highlight: {
       resetHighlightWithKeyboard,
       setHighlightedIndexWithMouse,
       highlightOptionWithKeyboard,
       highlightFirstOptionWithMouse,
       goHomeWithKeyboard,
-      goEndWithKeyboard,
     },
-  ] = useHighlightedOption({ options: options, isHighlightable });
+  } = listbox;
 
   const { isOpen, openDropdown, closeDropdown, toggleDropdown, openedWithKeyboard } = useOpenState({
     defaultOpen: embedded,
@@ -121,7 +130,6 @@ export function useSelect({
   };
 
   const hasSelectedOption = __selectedOptions.length > 0;
-  const menuId = useUniqueId('option-list');
   const dialogId = useUniqueId('dialog');
   const highlightedOptionId = getOptionId(menuId, highlightedIndex);
 
@@ -132,40 +140,12 @@ export function useSelect({
     }
   };
 
-  const selectOption = (option?: DropdownOption) => {
-    const optionToSelect = getSelectableOption(option, highlightedOption, interactivityCheck);
-    if (!optionToSelect) {
-      return;
+  const handleEscape = () => {
+    if (!embedded) {
+      triggerRef.current?.focus();
+      closeDropdown();
     }
-    if (optionToSelect.type === 'select-all' && toggleAll) {
-      toggleAll();
-    } else {
-      updateSelectedOption(optionToSelect.option);
-    }
-    closeDropdownIfNecessary();
   };
-
-  const activeKeyDownHandler = useMenuKeyboard({
-    ...getListboxNavigation({
-      options,
-      highlightedIndex,
-      highlightedOption,
-      interactiveGroups: useInteractiveGroups,
-      moveHighlight: moveHighlightWithKeyboard,
-      goHome: goHomeWithKeyboard,
-      goEnd: goEndWithKeyboard,
-    }),
-    selectOption,
-    goHome: goHomeWithKeyboard,
-    goEnd: goEndWithKeyboard,
-    closeDropdown: () => {
-      if (!embedded) {
-        triggerRef.current?.focus();
-        closeDropdown();
-      }
-    },
-    preventNativeSpace: !hasFilter || (highlightedOption && highlightType.type === 'keyboard'),
-  });
 
   const triggerKeyDownHandler = useTriggerKeyboard({
     openDropdown: () => openDropdown(true),
@@ -210,7 +190,7 @@ export function useSelect({
 
     return {
       ref: filterRef,
-      onKeyDown: activeKeyDownHandler,
+      onKeyDown: listbox.onKeyDown,
       onChange: event => {
         setFilteringValue(event.detail.value);
         resetHighlightWithKeyboard();
@@ -231,11 +211,11 @@ export function useSelect({
       id: menuId,
       ref: menuRef,
       open: isOpen,
-      ...getListMouseHandlers({ options, selectOption, setHighlightedIndexWithMouse }),
+      ...listbox.mouseHandlers,
       statusType,
     };
     if (!hasFilter) {
-      menuProps.onKeyDown = activeKeyDownHandler;
+      menuProps.onKeyDown = listbox.onKeyDown;
       menuProps.nativeAttributes = {
         'aria-activedescendant': highlightedOptionId,
       };
@@ -252,15 +232,6 @@ export function useSelect({
     }
     return menuProps;
   };
-  const getOptionProps = (option: DropdownOption, index: number) =>
-    getListboxOptionProps(option, index, {
-      options,
-      selectedSet: __selectedOptionsSet,
-      selection,
-      highlightedOption,
-      interactiveGroups: useInteractiveGroups,
-      listId: menuId,
-    });
 
   const prevOpen = usePrevious<boolean>(isOpen);
   useEffect(() => {
@@ -310,7 +281,6 @@ export function useSelect({
   }, [isOpen, activeRef, embedded, focusActiveRef]);
 
   useForwardFocus(externalRef, triggerRef as React.RefObject<HTMLElement>);
-  const announceSelected = isAnnouncedSelected(highlightedOption, __selectedOptionsSet, selection);
 
   // Closes the dropdown and returns focus to the trigger, matching the normal close behavior.
   // Exposed to the public dropdown-customization render props via `DropdownContentProps.closeDropdown`.
@@ -335,10 +305,10 @@ export function useSelect({
     getDropdownProps,
     getMenuProps,
     getFilterProps,
-    getOptionProps,
+    getOptionProps: listbox.getOptionProps,
     highlightOption: highlightOptionWithKeyboard,
-    selectOption,
-    announceSelected,
+    selectOption: listbox.selectOption,
+    announceSelected: listbox.announceSelected,
     closeDropdown: closeDropdownAndRefocus,
     dialogId,
     focusActiveRef,
