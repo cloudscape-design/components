@@ -111,10 +111,11 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
             componentName="Toggle"
             nativeAttributes={nativeInputAttributes}
             ref={checkboxRef}
-            type="switch"
+            type="checkbox"
             checked={checked}
             name={name}
             aria-disabled={readOnly && !disabled ? 'true' : undefined}
+            aria-role="switch"
             onFocus={() => fireNonCancelableEvent(onFocus)}
             onBlur={() => fireNonCancelableEvent(onBlur)}
             // empty handler to suppress React controllability warning
