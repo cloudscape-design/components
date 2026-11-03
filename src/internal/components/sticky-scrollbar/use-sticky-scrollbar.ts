@@ -11,19 +11,21 @@ import { getOverflowParents } from '../../utils/scrollable-containers';
 
 import styles from './styles.css.js';
 
+type ContentInlineSizeGetter = (tableEl: HTMLElement, wrapperEl: HTMLElement) => number;
+
 export const updatePosition = (
   tableEl: HTMLElement | null,
   wrapperEl: HTMLElement | null,
   scrollbarEl: HTMLElement | null,
   scrollbarContentEl: HTMLElement | null,
   inScrollableContainer: boolean,
-  getContentInlineSize: (tableEl: HTMLElement) => number = tableEl => getLogicalBoundingClientRect(tableEl).inlineSize
+  getContentInlineSize: ContentInlineSizeGetter = tableEl => getLogicalBoundingClientRect(tableEl).inlineSize
 ) => {
   if (!tableEl || !scrollbarEl || !wrapperEl) {
     return;
   }
 
-  const tableInlineSize = getContentInlineSize(tableEl);
+  const tableInlineSize = getContentInlineSize(tableEl, wrapperEl);
   const { inlineSize: wrapperInlineSize } = getLogicalBoundingClientRect(wrapperEl);
 
   // using 15 px as a height of transparent scrollbar on mac
@@ -67,7 +69,7 @@ export const updatePosition = (
 
 export interface StickyScrollbarContentOptions {
   // Measures the scrollable content's width; defaults to the table's width.
-  getContentInlineSize?: (tableEl: HTMLElement) => number;
+  getContentInlineSize?: ContentInlineSizeGetter;
   // Re-measures when this changes, for content that changes width without resizing the table or wrapper.
   contentKey?: unknown;
 }
@@ -78,7 +80,7 @@ export function useStickyScrollbar(
   tableRef: RefObject<HTMLTableElement>,
   wrapperRef: RefObject<HTMLDivElement>,
   offsetScrollbar: boolean,
-  { getContentInlineSize, contentKey }: StickyScrollbarContentOptions = {}
+  { getContentInlineSize, contentKey }: StickyScrollbarContentOptions
 ) {
   const [inScrollableContainer, setInScrollableContainer] = useState(false);
   const getContentInlineSizeRef = useRef(getContentInlineSize);

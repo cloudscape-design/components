@@ -17,6 +17,15 @@ import styles from './styles.css.js';
 
 export interface InternalTableRootProps extends TableRootProps, InternalBaseComponentProps {}
 
+// In grid layout the rows overflow the table element, so the scroller, not the table, measures the
+// scrollable width. scrollWidth is rounded to a whole pixel, so content that fits a fractional-width
+// scroller reports the scroller's own width instead, using the same tolerance as measureScrollable.
+function getScrollerContentInlineSize(_table: HTMLElement, scroller: HTMLElement) {
+  return scroller.scrollWidth - scroller.clientWidth > 1
+    ? scroller.scrollWidth
+    : scroller.getBoundingClientRect().width;
+}
+
 export default function InternalTableRoot({
   columnLayout = { type: 'auto' },
   ariaRowcount,
@@ -61,16 +70,6 @@ export default function InternalTableRoot({
   const tableRef = useRef<HTMLTableElement>(null);
   const scrollbarRef = useRef<HTMLDivElement>(null);
   const handleScroll = useScrollSync([scrollerRef, scrollbarRef]);
-  // In grid layout the rows overflow the table element, so the scroller, not the table, measures the
-  // scrollable width. scrollWidth is rounded to a whole pixel, so content that fits a fractional-width
-  // scroller reports the scroller's own width instead, using the same tolerance as measureScrollable.
-  const getScrollerContentInlineSize = useCallback(() => {
-    const node = scrollerRef.current;
-    if (!node) {
-      return 0;
-    }
-    return node.scrollWidth - node.clientWidth > 1 ? node.scrollWidth : node.getBoundingClientRect().width;
-  }, []);
 
   // Set role="region" whenever scrollable (label passes through even if undefined), matching the
   // existing Table's getTableWrapperRoleProps rather than gating the role on a label.
