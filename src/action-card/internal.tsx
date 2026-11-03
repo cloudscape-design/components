@@ -36,6 +36,7 @@ const InternalActionCard = React.forwardRef(
       disabled,
       disableHeaderPaddings,
       disableContentPaddings,
+      fitHeight,
       icon,
       iconVerticalAlignment,
       variant,
@@ -229,6 +230,7 @@ const InternalActionCard = React.forwardRef(
         className={clsx(
           styles.root,
           styles[`variant-${variant}`],
+          fitHeight && styles['fit-height'],
           disabled && styles.disabled,
           disabled && testStyles.disabled,
           !!icon && styles['has-icon'],
