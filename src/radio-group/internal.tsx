@@ -7,7 +7,7 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { getBaseProps } from '../internal/base-component';
-import RadioButton from '../internal/components/radio-button';
+import RadioButton, { StyleClassNames as RadioButtonStyleClassNames } from '../internal/components/radio-button';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import useRadioGroupForwardFocus from '../internal/hooks/forward-focus/radio-group';
@@ -19,7 +19,15 @@ import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
-type InternalRadioGroupProps = RadioGroupProps & InternalBaseComponentProps;
+type InternalRadioGroupProps = RadioGroupProps &
+  InternalBaseComponentProps & {
+    styleClassNames?: StyleClassNames;
+  };
+
+// Style API v2
+export interface StyleClassNames {
+  radioButton?: RadioButtonStyleClassNames;
+}
 
 const InternalRadioGroup = React.forwardRef(
   (
@@ -35,6 +43,7 @@ const InternalRadioGroup = React.forwardRef(
       __internalRootRef,
       style,
       direction,
+      styleClassNames,
       ...props
     }: InternalRadioGroupProps,
     ref: React.Ref<RadioGroupProps.Ref>
@@ -83,6 +92,7 @@ const InternalRadioGroup = React.forwardRef(
               controlId={item.controlId}
               readOnly={readOnly}
               style={style}
+              styleClassNames={styleClassNames?.radioButton}
               {...getAnalyticsMetadataAttribute(
                 !item.disabled && !readOnly
                   ? {
