@@ -50,7 +50,7 @@ function WideTable({ label, testId }: { label: string; testId: string }) {
 
 export default function TableStickyScrollbarPage() {
   return (
-    <SimplePage title="Table atomics — sticky scrollbar">
+    <SimplePage title="Table atomics — sticky scrollbar" screenshotArea={{}}>
       <SpaceBetween size="l">
         <h2>Inside a fixed-height container</h2>
         <div className={styles['scroll-container']} data-testid="scroll-container">
