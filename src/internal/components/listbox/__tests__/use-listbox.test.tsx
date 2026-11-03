@@ -248,6 +248,27 @@ describe('useListbox', () => {
     });
   });
 
+  describe('getListProps', () => {
+    test('returns the id, list ref and mouse handlers without keyboard props', () => {
+      const { hook } = renderListbox();
+      const { listId, listRef, mouseHandlers, getListProps } = hook.result.current;
+      expect(getListProps({ withKeyboard: false })).toEqual({ id: listId, ref: listRef, ...mouseHandlers });
+    });
+
+    test('adds onKeyDown and aria-activedescendant with withKeyboard', () => {
+      const { hook } = renderListbox();
+      act(() => hook.result.current.mouseHandlers.onMouseMove(3));
+      const { listId, listRef, mouseHandlers, onKeyDown, getListProps } = hook.result.current;
+      expect(getListProps({ withKeyboard: true })).toEqual({
+        id: listId,
+        ref: listRef,
+        ...mouseHandlers,
+        onKeyDown,
+        nativeAttributes: { 'aria-activedescendant': getOptionId(listId, 3) },
+      });
+    });
+  });
+
   describe('scrollToIndex', () => {
     test('is called with the highlighted index when the highlight changes', () => {
       const { hook, keyDown } = renderListbox();

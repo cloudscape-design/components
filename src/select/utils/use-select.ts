@@ -77,11 +77,9 @@ export function useSelect({
 }: UseSelectProps) {
   const filterRef = useRef<HTMLInputElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
   const hasFilter = filteringType !== 'none' && !embedded;
   // Filtering always renders a dialog; `dropdownRole` can additionally force dialog semantics without a filter.
   const isDialog = hasFilter || dropdownRole === 'dialog';
-  const activeRef = hasFilter ? filterRef : menuRef;
 
   // `onSelect` and `onEscape` run only on user events, after `closeDropdownIfNecessary` and `handleEscape` below
   // are declared.
@@ -105,6 +103,7 @@ export function useSelect({
     selectedAriaLabel,
     renderHighlightedAriaLive,
   });
+  const activeRef = hasFilter ? filterRef : listbox.listRef;
   const {
     listId: menuId,
     highlightType,
@@ -216,18 +215,10 @@ export function useSelect({
 
   const getMenuProps = () => {
     const menuProps: ListElementProps = {
-      id: menuId,
-      ref: menuRef,
+      ...listbox.getListProps({ withKeyboard: !hasFilter }),
       open: isOpen,
-      ...listbox.mouseHandlers,
       statusType,
     };
-    if (!hasFilter) {
-      menuProps.onKeyDown = listbox.onKeyDown;
-      menuProps.nativeAttributes = {
-        'aria-activedescendant': listbox.activeDescendantId,
-      };
-    }
     if (embedded) {
       menuProps.onFocus = () => {
         if (!highlightedOption) {

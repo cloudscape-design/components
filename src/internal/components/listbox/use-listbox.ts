@@ -16,6 +16,7 @@ import {
 } from '../options-list/utils/use-highlight-option';
 import { getOptionId } from '../options-list/utils/use-ids';
 import { useMenuKeyboard } from '../options-list/utils/use-keyboard';
+import { ListElementProps } from './interfaces';
 import { SelectListProps } from './parts/plain-list';
 import { SelectionModel } from './selection/interfaces';
 import { useAnnouncement } from './use-announcement';
@@ -56,6 +57,10 @@ export interface UseListboxProps {
   renderHighlightedAriaLive?: SelectProps.ContainingOptionAndGroupString;
 }
 
+export type BaseListProps = Pick<
+  ListElementProps,
+  'id' | 'ref' | 'onMouseUp' | 'onMouseMove' | 'onKeyDown' | 'nativeAttributes'
+>;
 export interface UseListboxApi {
   /** Id of the list element; row ids are `getOptionId(listId, index)`. */
   listId: string;
@@ -76,6 +81,13 @@ export interface UseListboxApi {
   onKeyDown: CancelableEventHandler<BaseKeyDetail>;
   /** `onMouseUp` / `onMouseMove` for the list element. */
   mouseHandlers: ReturnType<typeof getListMouseHandlers>;
+  /** Ref of the list element, also set by `getListProps`. */
+  listRef: RefObject<HTMLDivElement>;
+  /**
+   * Base props for the list element: id, ref and mouse handlers. With `withKeyboard`, also `onKeyDown` and
+   * `aria-activedescendant`, for a list that has focus itself (not through a filter input).
+   */
+  getListProps(options: { withKeyboard: boolean }): BaseListProps;
   /** Props for the row at `index`. */
   getOptionProps(option: DropdownOption, index: number): ReturnType<typeof getListboxOptionProps>;
   /** Whether the live region announces the highlighted option as selected. */
@@ -169,6 +181,16 @@ export function useListbox({
     scrollToIndex.current?.(highlightedIndex);
   }, [highlightedIndex]);
 
+  const listRef = useRef<HTMLDivElement>(null);
+  const getListProps = ({ withKeyboard }: { withKeyboard: boolean }) => {
+    const listProps: BaseListProps = { id: listId, ref: listRef, ...mouseHandlers };
+    if (withKeyboard) {
+      listProps.onKeyDown = onKeyDown;
+      listProps.nativeAttributes = { 'aria-activedescendant': activeDescendantId };
+    }
+    return listProps;
+  };
+
   return {
     listId,
     highlightedIndex,
@@ -181,6 +203,8 @@ export function useListbox({
     selectOption,
     onKeyDown,
     mouseHandlers,
+    listRef,
+    getListProps,
     getOptionProps,
     announceSelected,
     announcement,
