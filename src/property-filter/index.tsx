@@ -62,6 +62,7 @@ const PropertyFilter = React.forwardRef(
         hasCustomForms,
         hasEnumTokens,
         hasCustomFormatters,
+        hasAsyncLoading: Boolean(rest.onLoadItems),
       },
     });
 
