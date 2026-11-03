@@ -7,6 +7,7 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/foundation' as foundation;
+@use '../internal/styles/utils/theming';
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use './constants' as constants;
@@ -211,6 +212,11 @@ $tokens: style-api.resolve(style-api.$focus-ring, carrier);
   }
 
   &.variant-inline-link {
+    @include theming.one-theme-only {
+      text-decoration-line: underline;
+      text-underline-offset: 3.5px;
+    }
+
     > .icon-left {
       inset-inline-start: 0;
       margin-inline-end: awsui.$space-xs;
