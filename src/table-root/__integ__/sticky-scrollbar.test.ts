@@ -22,6 +22,7 @@ describe('TableRoot sticky scrollbar', () => {
   test(
     'stays at the bottom of the viewport while the page-scrolled table continues below it',
     setupTest(async page => {
+      await page.waitForVisible(scrollbar('page-table'));
       await page.windowScrollTo({ top: 600 });
       await page.waitForAssertion(async () => {
         const { bottom } = await page.getBoundingBox(scrollbar('page-table'));
@@ -34,16 +35,20 @@ describe('TableRoot sticky scrollbar', () => {
   test(
     'stays at the bottom of a fixed-height container',
     setupTest(async page => {
+      await page.waitForVisible(scrollbar('container-table'));
       await page.elementScrollTo('[data-testid="scroll-container"]', { top: 300 });
-      const { bottom: containerBottom } = await page.getBoundingBox('[data-testid="scroll-container"]');
-      const { bottom: scrollbarBottom } = await page.getBoundingBox(scrollbar('container-table'));
-      expect(scrollbarBottom).toBe(containerBottom);
+      await page.waitForAssertion(async () => {
+        const { bottom: containerBottom } = await page.getBoundingBox('[data-testid="scroll-container"]');
+        const { bottom: scrollbarBottom } = await page.getBoundingBox(scrollbar('container-table'));
+        expect(scrollbarBottom).toBe(containerBottom);
+      });
     })
   );
 
   test(
     'scrolls the table horizontally',
     setupTest(async page => {
+      await page.waitForVisible(scrollbar('container-table'));
       await page.elementScrollTo(scrollbar('container-table'), { left: 200 });
       await page.waitForAssertion(async () => {
         await expect(page.getElementScroll(scroller('container-table'))).resolves.toEqual({ left: 200, top: 0 });
@@ -54,7 +59,7 @@ describe('TableRoot sticky scrollbar', () => {
   test(
     'is hidden when the table fits',
     setupTest(async page => {
-      await expect(page.isExisting(scrollbar('page-table'))).resolves.toBe(true);
+      await page.waitForVisible(scrollbar('page-table'));
       await page.setWindowSize({ width: 2400, height: 600 });
       await page.waitForAssertion(async () => {
         await expect(page.isExisting(scrollbar('page-table'))).resolves.toBe(false);

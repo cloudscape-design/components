@@ -27,17 +27,20 @@ describe('Sticky scrollbar', () => {
   test(
     `is visible, when the table is in view, but it's bottom is not`,
     setupTest(async page => {
-      await expect(page.isExisting(scrollbarWrapper.toSelector())).resolves.toEqual(true);
+      await page.waitForVisible(scrollbarWrapper.toSelector());
     })
   );
 
   test(
     'scrollbarWidth is equal to tableWidth',
     setupTest(async page => {
-      const { width: scrollbarWidth } = await page.getBoundingBox(scrollbarWrapper.toSelector());
-      const { width: tableWidth } = await page.getBoundingBox(tableWrapper.toSelector());
-      const borderOffset = 2;
-      expect(scrollbarWidth).toEqual(tableWidth - borderOffset);
+      await page.waitForVisible(scrollbarWrapper.toSelector());
+      await page.waitForAssertion(async () => {
+        const { width: scrollbarWidth } = await page.getBoundingBox(scrollbarWrapper.toSelector());
+        const { width: tableWidth } = await page.getBoundingBox(tableWrapper.toSelector());
+        const borderOffset = 2;
+        expect(scrollbarWidth).toEqual(tableWidth - borderOffset);
+      });
     })
   );
 
@@ -56,29 +59,35 @@ describe('Sticky scrollbar', () => {
   test(
     'is hidden, when page is resized and table fits into the screen',
     setupTest(async page => {
+      await page.waitForVisible(scrollbarWrapper.toSelector());
       await page.setWindowSize({ width: 1600, height: 400 });
-      await expect(page.isExisting(scrollbarWrapper.toSelector())).resolves.toEqual(false);
+      await page.waitForAssertion(() => expect(page.isExisting(scrollbarWrapper.toSelector())).resolves.toEqual(false));
     })
   );
   test(
     'appears when screen is resized',
     setupTest(async page => {
       await page.setWindowSize({ width: 1600, height: 400 });
-      await expect(page.isExisting(scrollbarWrapper.toSelector())).resolves.toEqual(false);
+      await page.waitForAssertion(() => expect(page.isExisting(scrollbarWrapper.toSelector())).resolves.toEqual(false));
       await page.setWindowSize({ width: 600, height: 400 });
-      await expect(page.isExisting(scrollbarWrapper.toSelector())).resolves.toEqual(true);
+      await page.waitForVisible(scrollbarWrapper.toSelector());
     })
   );
   test(
     'scrollbar position updates when window resizes',
     setupTest(async page => {
       await page.setWindowSize({ width: 600, height: 600 });
-      const { bottom: bottom1 } = await page.getBoundingBox(scrollbarWrapper.toSelector());
-      expect(bottom1).toEqual((await page.getViewportSize()).height);
+      await page.waitForVisible(scrollbarWrapper.toSelector());
+      await page.waitForAssertion(async () => {
+        const { bottom } = await page.getBoundingBox(scrollbarWrapper.toSelector());
+        expect(bottom).toEqual((await page.getViewportSize()).height);
+      });
 
       await page.setWindowSize({ width: 600, height: 400 });
-      const { bottom: bottom2 } = await page.getBoundingBox(scrollbarWrapper.toSelector());
-      expect(bottom1 - bottom2).toBe(200);
+      await page.waitForAssertion(async () => {
+        const { bottom } = await page.getBoundingBox(scrollbarWrapper.toSelector());
+        expect(bottom).toEqual((await page.getViewportSize()).height);
+      });
     })
   );
 });
