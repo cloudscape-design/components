@@ -22,6 +22,7 @@ import { getBaseProps } from '../internal/base-component';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { FormFieldContext, useFormFieldContext } from '../internal/context/form-field-context';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
+import { FieldLabelContext } from '../internal/field-registry';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { joinStrings } from '../internal/utils/strings';
@@ -270,7 +271,9 @@ export default function InternalFormField({
               ...contextValuesWithoutControlId,
             }}
           >
-            {children && <div className={styles.control}>{children}</div>}
+            <FieldLabelContext.Provider value={label}>
+              {children && <div className={styles.control}>{children}</div>}
+            </FieldLabelContext.Provider>
           </FormFieldContext.Provider>
 
           {secondaryControl && (

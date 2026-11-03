@@ -10,6 +10,7 @@ import { getBaseProps } from '../internal/base-component';
 import RadioButton from '../internal/components/radio-button';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
+import { useFieldRegistration } from '../internal/field-registry';
 import useRadioGroupForwardFocus from '../internal/hooks/forward-focus/radio-group';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { GeneratedAnalyticsMetadataRadioGroupSelect } from './analytics-metadata/interfaces';
@@ -40,6 +41,23 @@ const InternalRadioGroup = React.forwardRef(
     ref: React.Ref<RadioGroupProps.Ref>
   ) => {
     const { ariaDescribedby, ariaLabelledby } = useFormFieldContext(props);
+
+    useFieldRegistration({
+      label: typeof ariaLabel === 'string' ? ariaLabel : undefined,
+      type: 'radio',
+      value: value ?? null,
+      options: items as ReadonlyArray<{ label?: string; value?: string }>,
+      setValue: next => {
+        const wanted = String(next).toLowerCase();
+        const match = (items ?? []).find(
+          i => i.value?.toLowerCase() === wanted || String(i.label ?? '').toLowerCase() === wanted
+        );
+        if (match) {
+          fireNonCancelableEvent(onChange, { value: match.value });
+        }
+      },
+    });
+
     const baseProps = getBaseProps(props);
     const generatedName = useUniqueId('awsui-radio-');
 

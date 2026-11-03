@@ -12,6 +12,7 @@ import { getBaseProps } from '../internal/base-component';
 import AbstractSwitch from '../internal/components/abstract-switch';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
+import { useFieldRegistration } from '../internal/field-registry';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import WithNativeAttributes from '../internal/utils/with-native-attributes';
@@ -56,6 +57,16 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
     ref
   ) => {
     const { ariaDescribedby, ariaLabelledby } = useFormFieldContext(rest);
+
+    useFieldRegistration({
+      name: controlId ?? name,
+      label: typeof ariaLabel === 'string' ? ariaLabel : undefined,
+      type: 'toggle',
+      value: !!checked,
+      disabled,
+      setValue: next => fireNonCancelableEvent(onChange, { checked: Boolean(next) }),
+    });
+
     const baseProps = getBaseProps(rest);
     const checkboxRef = useRef<HTMLInputElement>(null);
 

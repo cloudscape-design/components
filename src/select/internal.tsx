@@ -18,6 +18,7 @@ import { prepareOptions } from '../internal/components/option/utils/prepare-opti
 import { ResetGroupedControlContext, useGroupedControlContext } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
+import { useFieldRegistration } from '../internal/field-registry';
 import { warnOnUnsupportedGroupedControlProps } from '../internal/grouped-control/dev-warnings';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -138,6 +139,27 @@ const InternalSelect = React.forwardRef(
 
     const selfControlId = useUniqueId('trigger');
     const controlId = formFieldContext.controlId ?? selfControlId;
+
+    // Self-register with the field registry (no-op when no host registry exists).
+    // setValue resolves a scalar/label to an option and fires Select's own
+    // onChange — so the { value, label } option shape is produced by Select.
+    useFieldRegistration({
+      name: controlId,
+      label: typeof ariaLabel === 'string' ? ariaLabel : undefined,
+      type: 'select',
+      value: selectedOption?.value,
+      options: options as ReadonlyArray<{ label?: string; value?: string }>,
+      disabled,
+      setValue: next => {
+        const wanted = String(next).toLowerCase();
+        const match = (options as ReadonlyArray<{ label?: string; value?: string }>).find(
+          o => o.value?.toLowerCase() === wanted || o.label?.toLowerCase() === wanted
+        );
+        if (match) {
+          fireNonCancelableEvent(onChange, { selectedOption: match as any });
+        }
+      },
+    });
 
     const scrollToIndex = useRef<SelectListProps.SelectListRef>(null);
     const selectedOptions = selectedOption ? [selectedOption] : [];

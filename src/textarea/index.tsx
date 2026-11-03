@@ -10,6 +10,7 @@ import { convertAutoComplete } from '../input/utils';
 import { getBaseProps } from '../internal/base-component';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
+import { useFieldRegistration } from '../internal/field-registry';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
@@ -67,6 +68,15 @@ const Textarea = React.forwardRef(
       },
     });
     const { ariaLabelledby, ariaDescribedby, controlId, invalid, warning } = useFormFieldContext(rest);
+
+    useFieldRegistration({
+      name: controlId,
+      label: typeof ariaLabel === 'string' ? ariaLabel : undefined,
+      type: 'textarea',
+      value: value ?? '',
+      disabled,
+      setValue: next => fireNonCancelableEvent(onChange, { value: String(next ?? '') }),
+    });
 
     const baseProps = getBaseProps(rest);
     const { styleClassNames } = rest as { styleClassNames?: StyleClassNames };
