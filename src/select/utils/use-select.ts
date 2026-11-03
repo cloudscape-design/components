@@ -8,7 +8,6 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { InternalDropdownProps } from '../../dropdown/internal';
 import { ButtonTriggerProps } from '../../internal/components/button-trigger';
 import { ListElementProps } from '../../internal/components/listbox/interfaces';
-import { SelectListProps } from '../../internal/components/listbox/parts/plain-list';
 import { SelectionModel } from '../../internal/components/listbox/selection/interfaces';
 import { singleSelection } from '../../internal/components/listbox/selection/single-selection';
 import { useListbox } from '../../internal/components/listbox/use-listbox';
@@ -285,12 +284,6 @@ export function useSelect({
       trigger?.focus();
     }
   }, [closeDropdown]);
-
-  // Keeps the highlighted option scrolled into view in the list passed `ref={scrollToIndex}`.
-  const scrollToIndex = useRef<SelectListProps.SelectListRef>(null);
-  useEffect(() => {
-    scrollToIndex.current?.(highlightedIndex);
-  }, [highlightedIndex]);
 
   return {
     isOpen,
