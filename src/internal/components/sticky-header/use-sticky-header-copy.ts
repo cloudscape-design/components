@@ -4,19 +4,26 @@ import { RefObject, useCallback, useLayoutEffect } from 'react';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
-import { useMobile } from '../internal/hooks/use-mobile';
+import { useMobile } from '../../hooks/use-mobile';
 import stickyScrolling, { calculateScrollingOffset, scrollUpBy } from './sticky-scrolling';
 
-export const useStickyHeader = (
-  tableRef: RefObject<HTMLElement>,
-  theadRef: RefObject<HTMLElement>,
-  secondaryTheadRef: RefObject<HTMLElement>,
-  secondaryTableRef: RefObject<HTMLElement>,
-  tableWrapperRef: RefObject<HTMLElement>
-) => {
+interface StickyHeaderCopyProps {
+  tableRef: RefObject<HTMLElement>;
+  theadRef: RefObject<HTMLElement>;
+  secondaryTheadRef: RefObject<HTMLElement>;
+  secondaryTableRef: RefObject<HTMLElement>;
+  tableWrapperRef: RefObject<HTMLElement>;
+}
+
+export function useStickyHeaderCopy({
+  tableRef,
+  theadRef,
+  secondaryTheadRef,
+  secondaryTableRef,
+  tableWrapperRef,
+}: StickyHeaderCopyProps) {
   const isMobile = useMobile();
-  // Sync the sizes of the column header copies in the sticky header with the originals
-  const syncColumnHeaderWidths = useCallback(() => {
+  const hideHeaderUnderCopy = useCallback(() => {
     if (
       tableRef.current &&
       theadRef.current &&
@@ -30,9 +37,9 @@ export const useStickyHeader = (
     }
   }, [theadRef, secondaryTheadRef, secondaryTableRef, tableWrapperRef, tableRef]);
   useLayoutEffect(() => {
-    syncColumnHeaderWidths();
+    hideHeaderUnderCopy();
   });
-  useResizeObserver(theadRef, syncColumnHeaderWidths);
+  useResizeObserver(theadRef, hideHeaderUnderCopy);
   const scrollToTop = () => {
     if (!isMobile && theadRef.current && secondaryTheadRef.current && tableWrapperRef.current) {
       const scrollDist = calculateScrollingOffset(theadRef.current, secondaryTheadRef.current);
@@ -48,4 +55,4 @@ export const useStickyHeader = (
     }
   };
   return { scrollToRow, scrollToTop };
-};
+}
