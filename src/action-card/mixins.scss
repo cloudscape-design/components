@@ -3,7 +3,13 @@
 
 @use 'sass:map';
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/style-api' as style-api;
 @use './constants' as constants;
+
+// Border tokens stay public: as carriers they would inherit into nested components that read the same carrier name.
+$border-tokens: style-api.resolve((border-color, border-width), public);
+$carrier-tokens: style-api.resolve((border-radius, focus-ring-color, focus-ring-width, focus-ring-radius), carrier);
+$tokens: map.merge($border-tokens, $carrier-tokens);
 
 $variant-border-radius: (
   'embedded': awsui.$border-radius-action-card-embedded,
@@ -29,7 +35,15 @@ $variant-padding-inline: (
 
 @mixin state-border-radius($variant: 'default', $state: 'default') {
   $token: map.get($variant-border-radius, $variant);
-  @include border-radius-all($token);
+  @include border-radius-all(style-api.value($carrier-tokens, border-radius, $token));
+}
+
+@mixin inherit-border-tokens {
+  @if style-api.enabled() {
+    @each $token, $property in $border-tokens {
+      #{$property}: inherit;
+    }
+  }
 }
 
 @mixin state-border-radius-all-variants($state: 'default') {
@@ -55,9 +69,9 @@ $variant-padding-inline: (
   }
 
   &:after {
-    border-color: map.get($s, 'border-color');
-    border-block-width: map.get($s, 'border-width');
-    border-inline-width: map.get($s, 'border-width');
+    border-color: style-api.value($border-tokens, border-color, map.get($s, 'border-color'));
+    border-block-width: style-api.value($border-tokens, border-width, map.get($s, 'border-width'));
+    border-inline-width: style-api.value($border-tokens, border-width, map.get($s, 'border-width'));
   }
 
   > .icon,
