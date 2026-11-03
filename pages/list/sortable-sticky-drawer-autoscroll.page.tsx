@@ -81,6 +81,7 @@ export default function SortableListAutoScrollPage() {
   return (
     <SimplePage
       title="Sortable list auto-scroll"
+      screenshotArea={{}}
       settings={
         <SegmentedControl
           label="Layout"
