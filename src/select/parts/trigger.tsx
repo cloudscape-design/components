@@ -11,7 +11,7 @@ import { GroupedControlContextProps } from '../../internal/context/control-group
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { joinStrings } from '../../internal/utils/strings';
 import { MultiselectProps } from '../../multiselect/interfaces';
-import InternalToken from '../../token/internal';
+import InternalToken, { StyleClassNames as TokenStyleClassNames } from '../../token/internal';
 import { FormFieldValidationControlProps } from '../../types/form-field';
 import { OptionDefinition } from '../../types/option';
 import { SelectProps } from '../interfaces';
@@ -32,7 +32,7 @@ export interface TriggerProps extends FormFieldValidationControlProps {
   selectedOptions?: ReadonlyArray<OptionDefinition>;
   renderOption?: SelectProps.SelectOptionItemRenderer;
   groupedControlProps?: GroupedControlContextProps;
-  styleClassNames?: { trigger?: string; inlineLabel?: string };
+  styleClassNames?: { trigger?: string; inlineLabel?: string; token?: TokenStyleClassNames };
 }
 
 const Trigger = React.forwardRef(
@@ -80,7 +80,13 @@ const Trigger = React.forwardRef(
           >
             <span className={styles['inline-token-list']}>
               {selectedOptions.map(({ label }, i) => (
-                <InternalToken key={i} label={label} variant="inline" disabled={disabled} />
+                <InternalToken
+                  key={i}
+                  label={label}
+                  variant="inline"
+                  disabled={disabled}
+                  styleClassNames={styleClassNames?.token}
+                />
               ))}
             </span>
             <span className={styles['inline-token-counter']} id={triggerContentId}>

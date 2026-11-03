@@ -1,0 +1,165 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~components/styling/multiselect';
+@use '~components/styling/input';
+@use '~components/styling/dropdown';
+@use '~components/styling/token';
+@use '~components/styling/button';
+@use '../style-api/palette' as palette;
+
+// Trigger button, which is also the field box. One class per owned state (invalid, warning, disabled, read-only);
+// `:hover` and `:focus` for the interaction states. The inline end padding keeps the room the caret needs.
+@mixin field {
+  @include multiselect.trigger(
+    $color: palette.$text,
+    $background: palette.$surface,
+    $border-width: 2px,
+    $border-radius: 12px,
+    $box-shadow: 0 2px 4px palette.$subtle,
+    $padding-block: 10px,
+    $padding-inline: 16px 40px,
+    $font-family: monospace,
+    $font-size: 15px,
+    $font-weight: 600,
+    $placeholder-color: palette.$accent
+  );
+}
+
+.trigger {
+  @include field;
+  @include multiselect.trigger($border-color: palette.$border);
+
+  &:hover {
+    @include multiselect.trigger($background: palette.$surface-alt, $border-color: palette.$border-accent);
+  }
+
+  &:focus {
+    @include multiselect.trigger(
+      $color: palette.$accent,
+      $border-color: palette.$accent,
+      $box-shadow: 0 0 0 3px palette.$accent-active
+    );
+  }
+}
+
+.trigger-invalid {
+  @include field;
+  @include multiselect.trigger($background: palette.$error-surface, $border-color: palette.$error);
+
+  &:focus {
+    @include multiselect.trigger($box-shadow: 0 0 0 3px palette.$error-hover);
+  }
+}
+
+.trigger-warning {
+  @include field;
+  @include multiselect.trigger($background: palette.$warning-surface, $border-color: palette.$warning);
+
+  &:focus {
+    @include multiselect.trigger($box-shadow: 0 0 0 3px palette.$warning);
+  }
+}
+
+.trigger-disabled {
+  @include field;
+  @include multiselect.trigger(
+    $color: palette.$text-disabled,
+    $background: palette.$control-bg-disabled,
+    $border-color: palette.$border-disabled,
+    $box-shadow: none,
+    $placeholder-color: palette.$text-disabled
+  );
+}
+
+.trigger-readonly {
+  @include field;
+  @include multiselect.trigger($background: palette.$surface-alt, $border-color: palette.$border);
+
+  &:focus {
+    @include multiselect.trigger($border-color: palette.$accent, $box-shadow: 0 0 0 3px palette.$accent-active);
+  }
+}
+
+// Inline label: the disabled state is a class.
+.inline-label {
+  @include multiselect.inlineLabel(
+    $color: palette.$text-on-accent,
+    $background: palette.$accent,
+    $font-family: monospace,
+    $font-size: 11px,
+    $font-weight: 700
+  );
+}
+
+.inline-label-disabled {
+  @include multiselect.inlineLabel($color: palette.$control-fg-disabled, $background: palette.$control-bg-disabled);
+}
+
+// Filter forwards to Input. The field box and the native input use the shared input-field classes; the inline
+// padding keeps the room the search icon needs, in every state.
+.filter-input-search,
+.filter-input-search:placeholder-shown {
+  @include input.input($padding-inline: 40px);
+}
+
+.filter-search-icon {
+  @include input.searchIcon($color: palette.$accent);
+}
+
+// Dropdown forwards to Dropdown.container.
+.dropdown {
+  @include dropdown.container(
+    $background: palette.$surface-alt,
+    $border-radius: 12px,
+    $box-shadow: 0 4px 12px palette.$subtle-active,
+    $outline-color: palette.$accent,
+    $outline-width: 2px
+  );
+}
+
+// Token forwards to Token.root: one class for the tokens below the trigger, one for the inline tokens (no padding
+// change, so the trigger keeps its height). The disabled state is a class and comes last so it wins.
+.token {
+  @include token.root(
+    $background: palette.$surface-alt,
+    $color: palette.$accent,
+    $border-color: palette.$accent,
+    $border-width: 2px,
+    $border-radius: 12px,
+    $padding-block: 4px,
+    $padding-inline: 10px 4px
+  );
+}
+
+.token-inline {
+  @include token.root(
+    $background: palette.$surface-alt,
+    $color: palette.$accent,
+    $border-color: palette.$accent,
+    $border-radius: 8px
+  );
+}
+
+.token-disabled {
+  @include token.root(
+    $background: palette.$control-bg-disabled,
+    $color: palette.$text-disabled,
+    $border-color: palette.$border-disabled
+  );
+}
+
+// Token dismiss button forwards to Button.root; disabled and read-only tokens share one class.
+.token-dismiss {
+  @include button.root($color: palette.$accent, $focus-ring-color: palette.$accent, $focus-ring-radius: 4px);
+
+  &:hover {
+    @include button.root($color: palette.$accent-hover);
+  }
+}
+
+.token-dismiss-disabled {
+  @include button.root($color: palette.$text-disabled);
+}
