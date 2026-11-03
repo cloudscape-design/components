@@ -51,7 +51,12 @@ export function getFooterStyles(style: ItemCardProps.Style | undefined) {
   const hasDivider = style?.footer?.divider?.borderColor || style?.footer?.divider?.borderWidth;
 
   return {
-    ...(hasDivider && { borderBlockStartStyle: 'solid' as const }),
+    // All three longhands: the footer presets a zero-width transparent border.
+    ...(hasDivider && {
+      borderBlockStartStyle: 'solid' as const,
+      borderBlockStartWidth: 'medium',
+      borderBlockStartColor: 'currentcolor',
+    }),
     ...(style?.footer?.divider?.borderColor && { borderBlockStartColor: style.footer.divider.borderColor }),
     ...(style?.footer?.divider?.borderWidth && { borderBlockStartWidth: style.footer.divider.borderWidth }),
     ...(style?.footer?.root?.paddingBlock && { paddingBlock: style.footer.root.paddingBlock }),

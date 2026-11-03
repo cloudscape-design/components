@@ -1,0 +1,37 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~components/styling/item-card';
+@use '../style-api/palette' as palette;
+
+.cell {
+  inline-size: 260px;
+}
+
+.root {
+  @include item-card.root(
+    $background: palette.$surface,
+    $box-shadow: 0 4px 12px palette.$subtle-active,
+    $border-color: palette.$border-accent,
+    $border-width: 2px,
+    $border-radius: 24px
+  );
+}
+
+.header {
+  @include item-card.header($background: palette.$genai-surface, $border-color: palette.$genai, $border-width: 2px);
+}
+
+.footer {
+  @include item-card.footer($background: palette.$info-surface, $border-color: palette.$info, $border-width: 3px);
+}
+
+.header-background {
+  @include item-card.header($background: palette.$genai-surface);
+}
+
+.footer-background {
+  @include item-card.footer($background: palette.$info-surface);
+}
