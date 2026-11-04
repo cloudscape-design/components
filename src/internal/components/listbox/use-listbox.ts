@@ -142,7 +142,7 @@ export function useListbox({
     selectOption,
     goHome: highlight.goHomeWithKeyboard,
     goEnd: highlight.goEndWithKeyboard,
-    closeDropdown: onEscape,
+    onEscape,
     // With 'keyboard-highlight', Space chooses only while an option has a keyboard highlight, and types otherwise.
     preventNativeSpace: spaceSelects === 'always' || (!!highlightedOption && highlightType.type === 'keyboard'),
   });
