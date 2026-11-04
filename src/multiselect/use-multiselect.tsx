@@ -13,6 +13,7 @@ import { checkOptionValueField } from '../internal/components/listbox/utils/chec
 import { DropdownOption } from '../internal/components/option/interfaces';
 import { prepareOptions } from '../internal/components/option/utils/prepare-options';
 import { fireNonCancelableEvent } from '../internal/events';
+import { useFieldRegistration } from '../internal/field-registry';
 import { useLoadItems } from '../internal/hooks/use-load-items';
 import { SomeRequired } from '../internal/types';
 import { joinStrings } from '../internal/utils/strings';
@@ -127,6 +128,31 @@ export function useMultiselect({
     // Includes visible and non-visible (filtered out) options
     allOptions: flatOptions,
     interactiveGroups: useInteractiveGroups,
+  });
+
+  const allNonParentOptions = flatOptions.filter(item => item.type !== 'parent').map(option => option.option);
+
+  // Self-register with the field registry (no-op when no host registry exists).
+  // setValue accepts an array (or a single value) of option values or labels and
+  // fires Multiselect's own onChange, so the array-of-option-objects shape is
+  // produced here rather than guessed by the caller.
+  useFieldRegistration({
+    name: controlId,
+    type: 'multiselect',
+    value: selectedOptions.map(option => option.value),
+    options: allNonParentOptions as ReadonlyArray<{ label?: string; value?: string }>,
+    disabled,
+    setValue: next => {
+      const wanted = (Array.isArray(next) ? next : [next]).map(item => String(item).toLowerCase());
+      const matches = wanted.map(item =>
+        allNonParentOptions.find(option => option.value?.toLowerCase() === item || option.label?.toLowerCase() === item)
+      );
+      if (matches.some(match => !match)) {
+        return false;
+      }
+      fireNonCancelableEvent(onChange, { selectedOptions: matches as ReadonlyArray<OptionDefinition> });
+      return true;
+    },
   });
 
   const toggleAll = () => {

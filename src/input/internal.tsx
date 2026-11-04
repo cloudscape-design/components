@@ -17,6 +17,7 @@ import { getBaseProps } from '../internal/base-component';
 import { ResetGroupedControlContext, useGroupedControlContext } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
+import { useFieldRegistration } from '../internal/field-registry';
 import { warnOnUnsupportedGroupedControlProps } from '../internal/grouped-control/dev-warnings';
 import { getGroupedControlClassNames } from '../internal/grouped-control/grouped-control-styles';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -172,6 +173,21 @@ function InternalInput(
     warning: warning,
     readOnly,
   });
+
+  // Self-register with the field registry (no-op when no host registry exists).
+  const agentFieldName = controlId ?? name;
+  useFieldRegistration(
+    agentFieldName
+      ? {
+          name: agentFieldName,
+          label: typeof ariaLabel === 'string' ? ariaLabel : undefined,
+          type: 'input',
+          value: value ?? '',
+          disabled,
+          setValue: next => handleChange(String(next ?? '')),
+        }
+      : null
+  );
 
   const hasPrefix = !!prefix;
   const hasSuffix = !!suffix;
