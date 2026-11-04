@@ -22,8 +22,9 @@ interface HeroshotProps {
   /** Caption rendered above the frame, outside of the captured area. */
   label?: string;
   /**
-   * Vertical placement of the content inside the frame. Content is centered by default; use `start`
-   * only when it is taller than the frame, so the crop keeps the top instead of cutting both ends.
+   * Vertical placement of the content inside the frame. Content is centered by default, and content
+   * taller than the frame is already top-aligned automatically, so `start` is only needed to anchor
+   * content that fits — for example a trigger whose dropdown hangs below it and needs the room.
    */
   align?: 'center' | 'start';
   /** Inset between the frame edges and the content. Set to 0 for compositions that bleed to the edges. */
@@ -100,7 +101,10 @@ export function Heroshot({
           outline: `1px dashed ${colorBorderDividerDefault}`,
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: align === 'center' ? 'center' : 'flex-start',
+          // `safe` makes the centering degrade to `start` as soon as the content is taller than the
+          // frame, so an overflowing preview keeps its top (and the frame's top padding) and is
+          // cropped at the bottom only, instead of being clipped at both ends.
+          justifyContent: align === 'center' ? 'safe center' : 'flex-start',
           alignItems: stretch ? 'stretch' : 'center',
         }}
       >

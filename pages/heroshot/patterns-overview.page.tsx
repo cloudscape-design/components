@@ -84,9 +84,11 @@ type PreviewKind =
   | 'command'
   | 'create'
   | 'dashboard'
+  | 'dashboard-item'
   | 'details'
   | 'edit'
   | 'empty'
+  | 'error-page'
   | 'feedback'
   | 'filter'
   | 'form'
@@ -138,7 +140,7 @@ const patterns: ReadonlyArray<PatternDefinition> = [
   { id: 'aws-tagging-widget', title: 'AWS Tagging widget', kind: 'tag-suggest', detail: 'some-ta' },
   { id: 'chart-metric-drill-down', title: 'Chart metric drill down', kind: 'chart', detail: 'Requests by status' },
   { id: 'cloudshell-commands', title: 'CloudShell commands', kind: 'command', detail: 'aws ec2 describe-instances' },
-  { id: 'dashboard-items', title: 'Dashboard items', kind: 'dashboard', detail: 'Resource health' },
+  { id: 'dashboard-items', title: 'Dashboard items', kind: 'dashboard-item', detail: 'Resource health' },
   { id: 'defaults', title: 'Defaults', kind: 'form', detail: 'Recommended settings applied' },
   { id: 'density-settings', title: 'Density settings', kind: 'selection', detail: 'Comfortable' },
   {
@@ -150,7 +152,7 @@ const patterns: ReadonlyArray<PatternDefinition> = [
   { id: 'edit-resource', title: 'Edit resource', kind: 'edit', detail: 'Resource name' },
   { id: 'empty-states', title: 'Empty states', kind: 'empty', detail: 'No resources yet' },
   { id: 'error-messages', title: 'Error messages', kind: 'access', detail: 'Correct the highlighted fields.' },
-  { id: 'error-pages', title: 'Error pages', kind: 'empty', detail: 'Page not found' },
+  { id: 'error-pages', title: 'Error pages', kind: 'error-page', detail: 'Page not found' },
   { id: 'errors', title: 'Errors', kind: 'access', detail: 'The resource could not be loaded.' },
   {
     id: 'feedback-mechanisms',
@@ -564,6 +566,43 @@ function RunCommandModal() {
   );
 }
 
+// A single static dashboard item, which is what the pattern is about: a self-contained container whose
+// header carries the title and the item's actions in an icon dropdown, and whose content area
+// visualises one thing — here a chart. The previous preview reused the page-level dashboard header, so
+// it read as a dashboard page rather than as an item on one.
+function DashboardItem({ detail }: { detail: string }) {
+  return (
+    <Container
+      header={
+        <Header
+          variant="h2"
+          actions={
+            <ButtonDropdown
+              variant="icon"
+              ariaLabel="Item actions"
+              items={[
+                { id: 'preferences', text: 'Preferences' },
+                { id: 'remove', text: 'Remove' },
+              ]}
+            />
+          }
+        >
+          {detail}
+        </Header>
+      }
+    >
+      <BarChart
+        height={60}
+        hideFilter={true}
+        hideLegend={true}
+        xScaleType="categorical"
+        yDomain={[0, 20]}
+        series={[{ title: 'Healthy', type: 'bar', data: healthSeries }]}
+      />
+    </Container>
+  );
+}
+
 function PatternPreview({ pattern }: { pattern: PatternDefinition }) {
   switch (pattern.kind) {
     case 'access':
@@ -582,30 +621,23 @@ function PatternPreview({ pattern }: { pattern: PatternDefinition }) {
           <KeyValuePairs items={[{ label: pattern.detail, value: '1234-5678-9012' }]} />
         </Container>
       );
+    // The pattern is about the action buttons themselves, so the preview shows only them: the grouped
+    // secondary actions and the primary one, without the container and header they would sit in.
     case 'actions':
       return (
-        <Container
-          header={
-            <Header
-              variant="h2"
-              actions={
-                <SpaceBetween direction="horizontal" size="xs">
-                  <ButtonDropdown
-                    items={[
-                      { id: 'edit', text: 'Edit' },
-                      { id: 'delete', text: 'Delete' },
-                    ]}
-                  >
-                    Actions
-                  </ButtonDropdown>
-                  <Button variant="primary">{pattern.id === 'one-click-delete' ? 'Delete' : 'Create'}</Button>
-                </SpaceBetween>
-              }
+        <div style={{ blockSize: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <SpaceBetween direction="horizontal" size="xs">
+            <ButtonDropdown
+              items={[
+                { id: 'edit', text: 'Edit' },
+                { id: 'delete', text: 'Delete' },
+              ]}
             >
-              {pattern.detail}
-            </Header>
-          }
-        />
+              Actions
+            </ButtonDropdown>
+            <Button variant="primary">{pattern.id === 'one-click-delete' ? 'Delete' : 'Create'}</Button>
+          </SpaceBetween>
+        </div>
       );
     case 'announcement':
       return (
@@ -649,6 +681,8 @@ function PatternPreview({ pattern }: { pattern: PatternDefinition }) {
           </ColumnLayout>
         </ContentLayout>
       );
+    case 'dashboard-item':
+      return <DashboardItem detail={pattern.detail} />;
     case 'details':
       return (
         <Container header={<Header variant="h2">{pattern.detail}</Header>}>
@@ -686,6 +720,19 @@ function PatternPreview({ pattern }: { pattern: PatternDefinition }) {
           }
         />
       );
+    // An error page fills the page rather than a collection's empty slot, so unlike the `empty` preview
+    // it is shown without a table around it: just the message and the way out of it.
+    case 'error-page':
+      return (
+        <div style={{ blockSize: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Box textAlign="center">
+            <SpaceBetween size="xs">
+              <b>{pattern.detail}</b>
+              <Button>Create resource</Button>
+            </SpaceBetween>
+          </Box>
+        </div>
+      );
     case 'feedback':
       return <Flashbar items={[{ type: 'success', content: pattern.detail, id: 'success' }]} />;
     case 'filter':
@@ -715,24 +762,28 @@ function PatternPreview({ pattern }: { pattern: PatternDefinition }) {
           columnDefinitions={resourceColumns}
         />
       );
-    case 'form':
-      return (
-        <Container header={<Header variant="h2">{pattern.title}</Header>}>
-          <FormField
-            label="Resource name"
-            description={pattern.id === 'defaults' ? pattern.detail : undefined}
-            errorText={
-              pattern.id === 'validation' || pattern.id === 'inclusive-language-validation' ? pattern.detail : undefined
-            }
-          >
-            <Input
-              value={pattern.id === 'disabled-and-read-only-states' ? 'Organization default' : 'resource-name'}
-              disabled={pattern.id === 'disabled-and-read-only-states'}
-              onChange={noop}
-            />
-          </FormField>
-        </Container>
+    case 'form': {
+      const field = (
+        <FormField
+          label="Resource name"
+          description={pattern.id === 'defaults' ? pattern.detail : undefined}
+          errorText={
+            pattern.id === 'validation' || pattern.id === 'inclusive-language-validation' ? pattern.detail : undefined
+          }
+        >
+          <Input
+            value={pattern.id === 'disabled-and-read-only-states' ? 'Organization default' : 'resource-name'}
+            disabled={pattern.id === 'disabled-and-read-only-states'}
+            onChange={noop}
+          />
+        </FormField>
       );
+      return FORM_WITHOUT_CONTAINER.has(pattern.id) ? (
+        field
+      ) : (
+        <Container header={<Header variant="h2">{pattern.title}</Header>}>{field}</Container>
+      );
+    }
     case 'help':
       return (
         <Container header={<Header variant="h2">{pattern.title}</Header>}>
@@ -833,33 +884,39 @@ function PatternPreview({ pattern }: { pattern: PatternDefinition }) {
           </div>
         </div>
       );
-    case 'selection':
-      return (
-        <Container header={<Header variant="h2">{pattern.title}</Header>}>
-          {pattern.id === 'selection-in-forms' || pattern.id === 'density-settings' ? (
-            <Tiles
-              value="selected"
-              columns={2}
-              onChange={noop}
-              items={[
-                { value: 'selected', label: pattern.detail },
-                { value: 'alternative', label: 'Alternative' },
-              ]}
-            />
-          ) : pattern.id.includes('iam') ? (
-            <RadioGroup
-              value="existing"
-              onChange={noop}
-              items={[
-                { value: 'existing', label: pattern.detail },
-                { value: 'new', label: 'Create a new role' },
-              ]}
-            />
-          ) : (
-            <Select selectedOption={{ label: pattern.detail, value: 'selected' }} options={[]} onChange={noop} />
-          )}
-        </Container>
+    case 'selection': {
+      const control =
+        pattern.id === 'selection-in-forms' || pattern.id === 'density-settings' ? (
+          <Tiles
+            value="selected"
+            columns={2}
+            onChange={noop}
+            items={[
+              { value: 'selected', label: pattern.detail },
+              { value: 'alternative', label: 'Alternative' },
+            ]}
+          />
+        ) : pattern.id.includes('iam') ? (
+          <RadioGroup
+            value="existing"
+            onChange={noop}
+            items={[
+              { value: 'existing', label: pattern.detail },
+              { value: 'new', label: 'Create a new role' },
+            ]}
+          />
+        ) : (
+          <Select selectedOption={{ label: pattern.detail, value: 'selected' }} options={[]} onChange={noop} />
+        );
+      // These two are about choosing a value while filling in a form, so the control is shown as a
+      // labelled form field. The rest stand in for a whole section of a page, so they keep the
+      // container and its heading.
+      return SELECTION_AS_FORM_FIELD.has(pattern.id) ? (
+        <FormField label={pattern.title}>{control}</FormField>
+      ) : (
+        <Container header={<Header variant="h2">{pattern.title}</Header>}>{control}</Container>
       );
+    }
     case 'status':
       return (
         <Container header={<Header variant="h2">{pattern.title}</Header>}>
@@ -930,10 +987,18 @@ function PatternPreview({ pattern }: { pattern: PatternDefinition }) {
 
 const noop = () => {};
 
-// Kinds laid out from the top of the frame rather than centered in it: the wizard because it is taller
-// than the frame, the access denied alert because its crop is meant to fall on the bottom edge, and the
-// tag suggestions because its dropdown hangs below the input and needs the room underneath.
-const TOP_ANCHORED_KINDS = new Set<PreviewKind>(['access-denied', 'tag-suggest', 'wizard']);
+// Kinds laid out from the top of the frame rather than centered in it. Previews taller than the frame
+// are already top-aligned by the frame itself, so this is only for content that fits but still has to
+// sit at the top: the tag suggestions, whose dropdown hangs below the input and needs the room underneath.
+const TOP_ANCHORED_KINDS = new Set<PreviewKind>(['tag-suggest']);
+
+// Selection previews shown as a labelled form field instead of inside a container with a heading.
+const SELECTION_AS_FORM_FIELD = new Set(['aws-regions', 'selection-in-forms']);
+
+// Form previews about the state of the field itself — its prefilled value, or its disabled styling —
+// so they are shown as a bare field. The rest read as a validation state within a section of a page
+// and keep the container and heading around it.
+const FORM_WITHOUT_CONTAINER = new Set(['defaults', 'disabled-and-read-only-states']);
 
 // Kinds that only read as themselves above the frame width are laid out larger and scaled down.
 // Both sizes keep the 346:170 frame ratio so that the scaled content fills the frame without letterboxing.
@@ -948,6 +1013,12 @@ const CONTENT_SIZES: Partial<Record<PreviewKind, { width: number; height: number
   // The ratio matches the padded content box (314x138), not the frame, so that the scaled tabs fill
   // the full width instead of being letterboxed by the height constraint.
   tabs: { width: 420, height: 185 },
+  // Two fields and the strength meter are a little taller than the frame at full size, so they are laid
+  // out slightly larger and scaled down (~0.85) to fit whole instead of having the second field cropped.
+  password: { width: 370, height: 163 },
+  // Likewise for the dashboard item: scaled down (~0.8) so its container closes inside the frame
+  // instead of having its bottom edge cropped away.
+  'dashboard-item': { width: 390, height: 171 },
 };
 
 // Kinds whose content bleeds to the frame edges and so supplies its own insets.
@@ -957,6 +1028,15 @@ interface Resource {
   name: string;
   status: string;
 }
+
+// Enough bars that the dashboard item's chart reads as a trend rather than as a single value.
+const healthSeries = [
+  { x: 'Mon', y: 12 },
+  { x: 'Tue', y: 15 },
+  { x: 'Wed', y: 11 },
+  { x: 'Thu', y: 17 },
+  { x: 'Fri', y: 14 },
+];
 
 const resources: Resource[] = [
   { name: 'production-api', status: 'Running' },
