@@ -601,7 +601,7 @@ describe('CopyToClipboard', () => {
       expect(hasClass(styles['icon-swap-copied'])).toBe(true);
     });
 
-    test('hands back to the copy glyph and dismisses the popover after the status icon duration', async () => {
+    test('hands back to the copy glyph after the status icon duration and keeps the popover open', async () => {
       const { wrapper, hasClass, copy } = renderCopyToClipboard();
       await copy();
       expect(hasClass(styles['icon-swap-copied'])).toBe(true);
@@ -612,7 +612,7 @@ describe('CopyToClipboard', () => {
 
       act(() => jest.advanceTimersByTime(1));
       expect(hasClass(styles['icon-swap-copied'])).toBe(false);
-      expect(wrapper.findStatusText()).toBeNull();
+      expect(wrapper.findStatusText()).not.toBeNull();
     });
 
     test('restarts the status icon timer without replaying the swap on rapid re-click', async () => {
@@ -704,16 +704,17 @@ describe('CopyToClipboard', () => {
       expect(() => act(() => jest.advanceTimersByTime(1500))).not.toThrow();
     });
 
-    test('hands back immediately and cancels the status icon timer when the popover is closed with Escape', async () => {
+    test('closes the popover with Escape while the status icon finishes its own hold', async () => {
       const { wrapper, hasClass, copy } = renderCopyToClipboard();
       await copy();
       expect(wrapper.findStatusText()).not.toBeNull();
 
       act(() => wrapper.findCopyButton().keydown(KeyCode.escape));
       expect(wrapper.findStatusText()).toBeNull();
-      expect(hasClass(styles['icon-swap-copied'])).toBe(false);
+      expect(hasClass(styles['icon-swap-copied'])).toBe(true);
 
       act(() => jest.advanceTimersByTime(1500));
+      expect(hasClass(styles['icon-swap-copied'])).toBe(false);
       expect(wrapper.findStatusText()).toBeNull();
     });
   });
