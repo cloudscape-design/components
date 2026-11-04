@@ -692,6 +692,17 @@ $icon-hover-motion: (
       ),
     ),
   ),
+  'view-vertical-start': (
+    (
+      part: 'awsui-icon-panel',
+      animation: icon-panel-slide-left,
+      duration: 600ms,
+      easing: cubic-bezier(0.65, 0, 0.35, 1),
+      base: (
+        transform-box: fill-box,
+      ),
+    ),
+  ),
   'zoom-in': (
     (
       part: 'awsui-icon-arm',
@@ -1917,6 +1928,16 @@ $icon-hover-motion: (
       }
       45% {
         transform: translateX(300%);
+      }
+    }
+
+    @keyframes icon-panel-slide-left {
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+      45% {
+        transform: translateX(-300%);
       }
     }
 
