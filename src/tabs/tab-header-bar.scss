@@ -12,6 +12,18 @@
 $separator-color: awsui.$color-border-tabs-divider;
 $label-horizontal-spacing: awsui.$space-xs;
 
+// Block padding of the tab box. The direct children of the tab box cancel it with negative
+// block margins, so the trigger, the action and the dismiss button keep their size and position.
+// The trigger repeats the same padding inside itself, so its box, focus ring and click area cover
+// the whole tab. A v1 style.tab.paddingBlock replaces all of them through two custom properties.
+$tab-padding-block-start: var(#{custom-props.$styleTabsPaddingBlockStart}, calc(#{awsui.$space-scaled-s} - 2px));
+$tab-padding-block-end: var(#{custom-props.$styleTabsPaddingBlockEnd}, calc(#{awsui.$space-scaled-s} - 1px));
+$tab-padding-block-refresh-start: var(
+  #{custom-props.$styleTabsPaddingBlockStart},
+  calc(#{awsui.$space-static-xs} - 1px)
+);
+$tab-padding-block-refresh-end: var(#{custom-props.$styleTabsPaddingBlockEnd}, calc(#{awsui.$space-static-xs} - 1px));
+
 .tabs-header {
   margin-block: 0;
   margin-inline: 0;
@@ -107,18 +119,58 @@ $label-horizontal-spacing: awsui.$space-xs;
 .tabs-tab-header-container {
   position: relative;
 
-  border-block: awsui.$border-divider-section-width solid transparent;
-  border-inline: awsui.$border-divider-section-width solid transparent;
+  border-block: awsui.$border-divider-section-width solid var(#{custom-props.$styleBorderColorDefault}, transparent);
+  border-inline: awsui.$border-divider-section-width solid var(#{custom-props.$styleBorderColorDefault}, transparent);
 
+  padding-block-start: $tab-padding-block-start;
+  padding-block-end: $tab-padding-block-end;
   padding-inline: $label-horizontal-spacing;
   display: flex;
   align-items: stretch;
+
+  font-size: awsui.$font-size-tabs;
+  line-height: awsui.$line-height-tabs;
+  font-weight: awsui.$font-weight-tabs;
+  color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-interactive-default);
+  background-color: var(#{custom-props.$styleBackgroundDefault}, transparent);
 
   & > .tabs-tab-dismiss,
   & > .tabs-tab-action {
     position: relative;
     display: flex;
     align-items: center;
+    margin-block-start: calc(-1 * #{$tab-padding-block-start});
+    margin-block-end: calc(-1 * #{$tab-padding-block-end});
+    // The colour and font of the tab apply to its label only.
+    @include styles.default-text-style;
+
+    // The tab's style.tab custom properties apply to the tab only, not to the buttons inside it.
+    #{custom-props.$styleBackgroundDefault}: initial;
+    #{custom-props.$styleBackgroundHover}: initial;
+    #{custom-props.$styleBackgroundActive}: initial;
+    #{custom-props.$styleBackgroundDisabled}: initial;
+    #{custom-props.$styleBorderColorDefault}: initial;
+    #{custom-props.$styleBorderColorHover}: initial;
+    #{custom-props.$styleBorderColorActive}: initial;
+    #{custom-props.$styleBorderColorDisabled}: initial;
+    #{custom-props.$styleColorDefault}: initial;
+    #{custom-props.$styleColorHover}: initial;
+    #{custom-props.$styleColorActive}: initial;
+    #{custom-props.$styleColorDisabled}: initial;
+    #{custom-props.$styleFocusRingBorderColor}: initial;
+    #{custom-props.$styleFocusRingBorderRadius}: initial;
+    #{custom-props.$styleFocusRingBorderWidth}: initial;
+  }
+
+  &.refresh {
+    padding-block-start: $tab-padding-block-refresh-start;
+    padding-block-end: $tab-padding-block-refresh-end;
+
+    & > .tabs-tab-dismiss,
+    & > .tabs-tab-action {
+      margin-block-start: calc(-1 * #{$tab-padding-block-refresh-start});
+      margin-block-end: calc(-1 * #{$tab-padding-block-refresh-end});
+    }
   }
 
   &.refresh > span:first-of-type {
@@ -210,41 +262,32 @@ $label-horizontal-spacing: awsui.$space-xs;
   align-items: stretch;
   text-decoration: none;
   cursor: pointer;
-  padding-block-start: calc(#{awsui.$space-scaled-s} - 2px);
-  padding-block-end: calc(#{awsui.$space-scaled-s} - 1px);
+  padding-block-start: $tab-padding-block-start;
+  padding-block-end: $tab-padding-block-end;
 
   padding-inline: 0;
-  margin-block-start: 1px;
-  border-block: awsui.$border-divider-section-width solid var(#{custom-props.$styleBorderColorDefault}, transparent);
-  border-inline: awsui.$border-divider-section-width solid var(#{custom-props.$styleBorderColorDefault}, transparent);
+  margin-block-start: calc(1px - #{$tab-padding-block-start});
+  margin-block-end: calc(-1 * #{$tab-padding-block-end});
+  border-block: awsui.$border-divider-section-width solid transparent;
+  border-inline: awsui.$border-divider-section-width solid transparent;
 
-  font-size: awsui.$font-size-tabs;
-  line-height: awsui.$line-height-tabs;
-  font-weight: awsui.$font-weight-tabs;
-  color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-interactive-default);
-  background-color: var(#{custom-props.$styleBackgroundDefault}, transparent);
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  color: inherit;
+  background-color: transparent;
 
   padding-inline-start: calc(#{awsui.$space-xxs} - 1px);
   padding-inline-end: awsui.$space-xxs;
   @include styles.font-smoothing;
 
   &.refresh {
-    padding-block-start: calc(awsui.$space-static-xs - 1px);
-    padding-block-end: calc(awsui.$space-static-xs - 1px);
+    padding-block-start: $tab-padding-block-refresh-start;
+    padding-block-end: $tab-padding-block-refresh-end;
 
-    margin-block-start: 0;
-  }
-
-  &:hover {
-    color: var(#{custom-props.$styleColorHover}, awsui.$color-text-accent);
-    border-color: var(
-      #{custom-props.$styleBorderColorHover},
-      var(#{custom-props.$styleBorderColorDefault}, transparent)
-    );
-    background-color: var(
-      #{custom-props.$styleBackgroundHover},
-      var(#{custom-props.$styleBackgroundDefault}, transparent)
-    );
+    margin-block-start: calc(-1 * #{$tab-padding-block-refresh-start});
+    margin-block-end: calc(-1 * #{$tab-padding-block-refresh-end});
   }
 
   &:focus {
@@ -285,24 +328,48 @@ $label-horizontal-spacing: awsui.$space-xs;
   }
 }
 
+.tabs-tab-header-container:not(.tabs-tab-active):not(.tabs-tab-disabled):has(> .tabs-tab-link:hover) {
+  color: var(#{custom-props.$styleColorHover}, awsui.$color-text-accent);
+  border-color: var(#{custom-props.$styleBorderColorHover}, var(#{custom-props.$styleBorderColorDefault}, transparent));
+  background-color: var(
+    #{custom-props.$styleBackgroundHover},
+    var(#{custom-props.$styleBackgroundDefault}, transparent)
+  );
+}
+
 .tabs-tab-disabled {
   &,
   &:hover {
     cursor: default;
-    color: var(#{custom-props.$styleColorDisabled}, awsui.$color-text-interactive-disabled);
-    border-color: var(#{custom-props.$styleBorderColorDisabled}, transparent);
-    background-color: var(#{custom-props.$styleBackgroundDisabled}, transparent);
-    font-weight: awsui.$font-weight-tabs-disabled;
   }
 }
 
-.tabs-tab-active:not(.tabs-tab-disabled) {
+.tabs-tab-header-container.tabs-tab-disabled {
+  color: var(#{custom-props.$styleColorDisabled}, awsui.$color-text-interactive-disabled);
+  border-color: var(#{custom-props.$styleBorderColorDisabled}, transparent);
+  background-color: var(#{custom-props.$styleBackgroundDisabled}, transparent);
+  font-weight: awsui.$font-weight-tabs-disabled;
+}
+
+.tabs-tab-header-container.tabs-tab-active:not(.tabs-tab-disabled) {
   color: var(#{custom-props.$styleColorActive}, awsui.$color-text-accent);
   border-color: var(#{custom-props.$styleBorderColorActive}, transparent);
   background-color: var(#{custom-props.$styleBackgroundActive}, transparent);
   &:after {
     opacity: 1;
   }
+}
+
+// Plain content in the action keeps the disabled colour and weight of the tab.
+.tabs-tab-header-container.tabs-tab-disabled > .tabs-tab-action,
+.tabs-tab-header-container.tabs-tab-disabled > .tabs-tab-dismiss {
+  color: awsui.$color-text-interactive-disabled;
+  font-weight: awsui.$font-weight-tabs-disabled;
+}
+
+.tabs-tab-header-container > .tabs-tab-action.tabs-tab-active,
+.tabs-tab-header-container.tabs-tab-active:not(.tabs-tab-disabled) > .tabs-tab-dismiss {
+  color: awsui.$color-text-accent;
 }
 
 .tabs-header-with-divider {

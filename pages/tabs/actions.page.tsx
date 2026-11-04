@@ -214,6 +214,31 @@ export default function TabsDemoPage() {
             i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
           />
         </div>
+        <div>
+          <h2>Disabled tabs with text action or dismissible</h2>
+          <Tabs
+            tabs={[
+              { id: 'first', label: 'Enabled tab', content: <p>First tab content</p> },
+              {
+                id: 'disabled-action',
+                label: 'Disabled with action',
+                disabled: true,
+                // Marked as disabled so that axe skips color contrast on the disabled text.
+                action: <span aria-disabled="true">Text action</span>,
+                content: <p>Second tab content</p>,
+              },
+              {
+                id: 'disabled-dismiss',
+                label: 'Disabled with dismiss',
+                disabled: true,
+                dismissible: true,
+                dismissLabel: 'Dismiss disabled tab',
+                content: <p>Third tab content</p>,
+              },
+            ]}
+            i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
+          />
+        </div>
       </SpaceBetween>
     </>
   );

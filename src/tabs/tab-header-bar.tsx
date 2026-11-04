@@ -41,7 +41,7 @@ import {
   onPaginationClick,
   scrollIntoView,
 } from './scroll-utils';
-import { getTabContainerStyles, getTabStyles } from './styles';
+import { getTabContainerStyles, getTabStyles, getTabTriggerStyles } from './styles';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -596,7 +596,7 @@ export function TabHeaderBar({
           className={tabHeaderContainerClasses}
           {...tabHeaderContainerAriaProps}
           {...getAnalyticsMetadataAttribute({ component: analyticsComponentMetadataInnerContext })}
-          style={getTabContainerStyles(style)}
+          style={{ ...getTabContainerStyles(style), ...getTabStyles(style) }}
         >
           <TabTrigger
             ref={setElement}
@@ -679,7 +679,7 @@ const TabTrigger = forwardRef(
       ...(isDisabledWithReason ? handlers : {}),
       ref: mergedRef,
       tabIndex: tabIndex,
-      style: { ...elementProps.style, ...getTabStyles(style) },
+      style: { ...elementProps.style, ...getTabTriggerStyles(style) },
       ...(tab.disabled || tab.id === activeTabId ? {} : getAnalyticsMetadataAttribute(analyticsSelectMetadata)),
     };
 
