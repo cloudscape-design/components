@@ -280,6 +280,9 @@
     "deselectAriaLabel": "Hapus {option__label}",
     "i18nStrings.selectAllText": "Pilih semua"
   },
+  "option-list": {
+    "i18nStrings.selectedAriaLabel": "Dipilih"
+  },
   "pagination": {
     "ariaLabels.jumpToPageButtonLabel": "Langsung ke halaman",
     "ariaLabels.nextPageLabel": "Halaman berikutnya",
