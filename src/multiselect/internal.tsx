@@ -269,7 +269,7 @@ const InternalMultiselect = React.forwardRef(
                     <DropdownFooter content={multiselectProps.isOpen ? dropdownStatus.content : null} id={footerId} />
                   ) : null
                 }
-                menuProps={{ ...multiselectProps.getMenuProps(), ariaRequired }}
+                listProps={{ ...multiselectProps.getMenuProps(), ariaRequired }}
                 getOptionProps={multiselectProps.getOptionProps}
                 filteredOptions={multiselectProps.filteredOptions}
                 filteringValue={filteringValue}

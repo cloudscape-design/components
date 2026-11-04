@@ -330,7 +330,7 @@ const InternalSelect = React.forwardRef(
                   ) : null
                 }
                 renderOption={renderOption}
-                menuProps={menuProps}
+                listProps={menuProps}
                 getOptionProps={getOptionProps}
                 filteredOptions={filteredOptions}
                 filteringValue={filteringValue}

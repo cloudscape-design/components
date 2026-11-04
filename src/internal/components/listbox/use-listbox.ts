@@ -16,8 +16,7 @@ import {
 } from '../options-list/utils/use-highlight-option';
 import { getOptionId } from '../options-list/utils/use-ids';
 import { useMenuKeyboard } from '../options-list/utils/use-keyboard';
-import { ListElementProps } from './interfaces';
-import { SelectListProps } from './parts/plain-list';
+import { ListElementProps, ScrollToIndexRef } from './interfaces';
 import { SelectionModel } from './selection/interfaces';
 import { useAnnouncement } from './use-announcement';
 import { connectOptionsByValue } from './utils/connect-options';
@@ -67,10 +66,10 @@ export interface UseListboxApi {
   highlightedIndex: number;
   highlightType: HighlightType;
   highlightedOption: DropdownOption | undefined;
-  /** Id of the highlighted row, for `aria-activedescendant`; undefined when nothing is highlighted. */
+  /** Id of the highlighted row, for `aria-activedescendant`; undefined when `highlightedIndex` is -1. */
   activeDescendantId: string | undefined;
-  /** Pass as `ref` to the list; it is called with `highlightedIndex` whenever the highlight changes. */
-  scrollToIndex: RefObject<SelectListProps.SelectListRef>;
+  /** Pass as `ref` to the list; it is called with `highlightedIndex` whenever the highlighted index changes. */
+  scrollToIndex: RefObject<ScrollToIndexRef>;
   /** `selectedOptions` connected to rendered rows, in selection order. */
   selectedOptions: ReadonlyArray<DropdownOption>;
   /** Raw highlight setters from `useHighlightedOption`. */
@@ -176,7 +175,7 @@ export function useListbox({
   const activeDescendantId = getOptionId(listId, highlightedIndex);
 
   // Keeps the highlighted option scrolled into view in the list passed `ref={scrollToIndex}`.
-  const scrollToIndex = useRef<SelectListProps.SelectListRef>(null);
+  const scrollToIndex = useRef<ScrollToIndexRef>(null);
   useEffect(() => {
     scrollToIndex.current?.(highlightedIndex);
   }, [highlightedIndex]);

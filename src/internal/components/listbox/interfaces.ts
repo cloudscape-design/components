@@ -11,3 +11,6 @@ export type ListElementProps = Omit<OptionsListProps, 'children'> & { ref: React
 
 /** Props for the row at `index`. */
 export type GetOptionProps = (option: DropdownOption, index: number) => ItemProps;
+
+/** Ref of a list component (`PlainList`, `VirtualList`): scrolls the row at `index` into view. */
+export type ScrollToIndexRef = (index: number) => void;

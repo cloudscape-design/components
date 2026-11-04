@@ -10,7 +10,7 @@ import { SelectProps } from '../../../../select/interfaces';
 import { DropdownOption } from '../../option/interfaces';
 import OptionsList from '../../options-list';
 import { HighlightType } from '../../options-list/utils/use-highlight-option';
-import { GetOptionProps, ListElementProps } from '../interfaces';
+import { GetOptionProps, ListElementProps, ScrollToIndexRef } from '../interfaces';
 import { SelectionType } from '../selection/interfaces';
 import { fallbackItemHeight } from './common';
 import { renderOptions } from './render-options';
@@ -18,8 +18,8 @@ import scrollToIndex from './scroll-to-index';
 
 import styles from '../../../../select/parts/styles.css.js';
 
-export interface SelectListProps {
-  menuProps: ListElementProps;
+export interface ListProps {
+  listProps: ListElementProps;
   getOptionProps: GetOptionProps;
   filteredOptions: ReadonlyArray<DropdownOption>;
   filteringValue: string;
@@ -33,13 +33,10 @@ export interface SelectListProps {
   renderOption?: SelectProps.SelectOptionItemRenderer | MultiselectProps.MultiselectOptionItemRenderer;
 }
 
-export namespace SelectListProps {
-  export type SelectListRef = (index: number) => void;
-}
 
 const PlainList = (
   {
-    menuProps,
+    listProps,
     getOptionProps,
     filteredOptions,
     filteringValue,
@@ -51,8 +48,8 @@ const PlainList = (
     firstOptionSticky,
     isMultiSelect,
     renderOption,
-  }: SelectListProps,
-  ref: React.Ref<SelectListProps.SelectListRef>
+  }: ListProps,
+  ref: React.Ref<ScrollToIndexRef>
 ) => {
   const idPrefix = useUniqueId('select-list-');
   const stickyOptionRef = useRef<HTMLDivElement>(null);
@@ -70,7 +67,7 @@ const PlainList = (
     return { inner: rect.contentBoxWidth, outer: rect.borderBoxWidth };
   });
 
-  const menuRef = menuProps.ref;
+  const menuRef = listProps.ref;
 
   const mergedRef = useMergeRefs(menuMeasureRef, menuRef);
 
@@ -89,7 +86,7 @@ const PlainList = (
 
   return (
     <OptionsList
-      {...menuProps}
+      {...listProps}
       ref={mergedRef}
       stickyItemBlockSize={stickyOptionBlockSize}
       isMultiSelect={isMultiSelect}
