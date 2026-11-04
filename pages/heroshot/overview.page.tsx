@@ -134,10 +134,12 @@ export default function HeroshotOverviewPage() {
           </Alert>
         </Heroshot>
 
-        <Heroshot id="anchor-navigation" label="AnchorNavigation" stretch={true}>
-          <div style={{ transform: `translateX(100px)` }}>
-            <AnchorNavigation activeHref="#overview" anchors={anchors} />
-          </div>
+        {/*
+          Not stretched: the navigation sizes to its own labels and the frame centers it, instead of
+          filling the frame width and needing a hardcoded offset to look placed.
+        */}
+        <Heroshot id="anchor-navigation" label="AnchorNavigation">
+          <AnchorNavigation activeHref="#overview" anchors={anchors} />
         </Heroshot>
 
         <Heroshot id="annotation-context" label="AnnotationContext" padding={0} contentSize={ANNOTATION_CONTENT_SIZE}>
@@ -180,10 +182,15 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot id="attribute-editor" label="AttributeEditor" align="start" stretch={true}>
+        <Heroshot id="attribute-editor" label="AttributeEditor" stretch={true} contentSize={ATTRIBUTE_EDITOR_SIZE}>
           <AttributeEditor
             addButtonText="Add tag"
             removeButtonText="Remove"
+            // At the frame width the component would pick its narrowest layout and stack the key over
+            // the value, which is tall enough that the add button falls outside the frame. This is the
+            // same side-by-side layout it uses from the `xs` breakpoint up, pinned so that the whole
+            // row — including both buttons — fits the frame at full size and needs no scaling.
+            gridLayout={[{ rows: [[1, 1]], removeButton: { ownRow: true } }]}
             items={[{ key: 'Environment', value: 'Production' }]}
             definition={[
               { label: 'Key', control: item => <Input value={item.key} readOnly={true} onChange={noop} /> },
@@ -650,8 +657,8 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot id="modal" label="Modal" padding={0} contentSize={OVERLAY_CONTENT_SIZE}>
-          <IframeWrapper id="heroshot-modal" size={OVERLAY_CONTENT_SIZE} AppComponent={ModalHeroshot} />
+        <Heroshot id="modal" label="Modal" padding={0} contentSize={MODAL_CONTENT_SIZE}>
+          <IframeWrapper id="heroshot-modal" size={MODAL_CONTENT_SIZE} AppComponent={ModalHeroshot} />
         </Heroshot>
 
         <Heroshot id="multiselect" label="Multiselect" stretch={true}>
@@ -1267,6 +1274,18 @@ const previewTutorialPanelStrings = {
 const ANNOTATION_CONTENT_SIZE = { width: 350, height: 172 };
 const HOTSPOT_CONTENT_SIZE = { width: 300, height: 147 };
 const OVERLAY_CONTENT_SIZE = { width: 800, height: 393 };
+/**
+ * Narrower viewport than {@link OVERLAY_CONTENT_SIZE}, so the modal — whose own width is capped by its
+ * `medium` size rather than by the viewport — is scaled down less and reads larger in the frame. Keeps
+ * the 346:170 frame ratio so nothing is letterboxed.
+ */
+const MODAL_CONTENT_SIZE = { width: 700, height: 344 };
+/**
+ * Even in its side-by-side layout the editor is a little taller than the frame, so it is laid out
+ * slightly larger and scaled down (~0.75) to fit whole — the add button included — rather than having
+ * its bottom row cropped.
+ */
+const ATTRIBUTE_EDITOR_SIZE = { width: 420, height: 185 };
 
 const customSettingsIcon = (
   <svg viewBox="0 0 16 16" focusable={false}>
@@ -1366,17 +1385,43 @@ function useUnlockedGalleryScroll() {
   }, []);
 }
 
+/**
+ * Shows the delete-with-simple-confirmation pattern: the consequence spelled out in the body, the
+ * wider impact in an info alert, and the destructive action as the primary button in the footer.
+ */
 function ModalHeroshot() {
   useUnlockedGalleryScroll();
 
   return (
     <Modal
       visible={true}
-      header="Delete instance"
+      header="Delete distributions"
       closeAriaLabel="Close modal"
-      footer={<Button variant="primary">Delete</Button>}
+      footer={
+        <Box float="right">
+          <SpaceBetween size="xs" direction="horizontal">
+            <Button variant="link">Cancel</Button>
+            <Button variant="primary">Delete</Button>
+          </SpaceBetween>
+        </Box>
+      }
     >
-      This action cannot be undone.
+      <SpaceBetween size="m">
+        <Box variant="span">
+          Permanently delete{' '}
+          <Box variant="span" fontWeight="bold">
+            5 distributions
+          </Box>
+          ? You can&apos;t undo this action.
+        </Box>
+        <Alert type="info">
+          Proceeding with this action will delete the distributions with all their content and can affect related
+          resources.{' '}
+          <Link external={true} href="#">
+            Learn more
+          </Link>
+        </Alert>
+      </SpaceBetween>
     </Modal>
   );
 }
