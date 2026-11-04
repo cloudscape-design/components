@@ -58,7 +58,7 @@ export interface UseListboxProps {
 
 export type BaseListProps = Pick<
   ListElementProps,
-  'id' | 'ref' | 'onMouseUp' | 'onMouseMove' | 'onKeyDown' | 'nativeAttributes'
+  'id' | 'ref' | 'onMouseUp' | 'onMouseMove' | 'onKeyDown' | 'onFocus' | 'onBlur' | 'nativeAttributes'
 >;
 export interface UseListboxApi {
   /** Id of the list element; row ids are `getOptionId(listId, index)`. */
@@ -84,9 +84,13 @@ export interface UseListboxApi {
   listRef: RefObject<HTMLDivElement>;
   /**
    * Base props for the list element: id, ref and mouse handlers. With `withKeyboard`, also `onKeyDown` and
-   * `aria-activedescendant`, for a list that has focus itself (not through a filter input).
+   * `aria-activedescendant`, for a list that has focus itself (not through a filter input). With `embedded`, also
+   * `onFocus` and `onBlur`, for an embedded list: an always visible list that is a tab stop. Focus highlights the
+   * first option if nothing is highlighted, and blur clears the highlight. A hover highlight is kept on focus, so a
+   * click selects the hovered option. Moving focus to the selected option is a follow-up.
+   * Callers that add native attributes spread `nativeAttributes`.
    */
-  getListProps(options: { withKeyboard: boolean }): BaseListProps;
+  getListProps(options: { withKeyboard: boolean; embedded?: boolean }): BaseListProps;
   /** Props for the row at `index`. */
   getOptionProps(option: DropdownOption, index: number): ReturnType<typeof getListboxOptionProps>;
   /** Whether the live region announces the highlighted option as selected. */
@@ -98,8 +102,8 @@ export interface UseListboxApi {
 /**
  * List state shared by all list components: highlight, keyboard navigation, the choose guard, mouse handlers,
  * row props, scrolling the highlighted row into view, the active descendant and the live region announcement.
- * Focus, open state, filter, type-ahead and the highlight on open stay with the callers, because they differ
- * per component.
+ * Focus handling of an embedded list is shared through `getListProps({ embedded })`. Open state, filter,
+ * type-ahead and the highlight on open stay with the callers, because they differ per component.
  */
 export function useListbox({
   options,
@@ -181,11 +185,21 @@ export function useListbox({
   }, [highlightedIndex]);
 
   const listRef = useRef<HTMLDivElement>(null);
-  const getListProps = ({ withKeyboard }: { withKeyboard: boolean }) => {
+  const getListProps = ({ withKeyboard, embedded }: { withKeyboard: boolean; embedded?: boolean }) => {
     const listProps: BaseListProps = { id: listId, ref: listRef, ...mouseHandlers };
     if (withKeyboard) {
       listProps.onKeyDown = onKeyDown;
       listProps.nativeAttributes = { 'aria-activedescendant': activeDescendantId };
+    }
+    if (embedded) {
+      listProps.onFocus = () => {
+        if (!highlightedOption) {
+          highlight.goHomeWithKeyboard();
+        }
+      };
+      listProps.onBlur = () => {
+        highlight.resetHighlightWithKeyboard();
+      };
     }
     return listProps;
   };

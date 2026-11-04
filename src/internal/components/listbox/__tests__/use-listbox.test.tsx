@@ -28,6 +28,9 @@ const createKeyEvent = (keyCode: number): CustomEvent<BaseKeyDetail> =>
     },
   });
 
+const focusEvent = () => createCustomEvent({ detail: {} });
+const blurEvent = () => createCustomEvent({ detail: { relatedTarget: null } });
+
 // Flattened: 0 group header, 1 child a, 2 disabled child b, 3 option c, 4 option d.
 const { flatOptions } = flattenOptions([
   {
@@ -265,6 +268,35 @@ describe('useListbox', () => {
         ...mouseHandlers,
         onKeyDown,
         nativeAttributes: { 'aria-activedescendant': getOptionId(listId, 3) },
+      });
+    });
+
+    describe('embedded', () => {
+      const getProps = (hook: ReturnType<typeof renderListbox>['hook']) =>
+        hook.result.current.getListProps({ withKeyboard: true, embedded: true });
+
+      test('adds onFocus and onBlur only with embedded', () => {
+        const { hook } = renderListbox();
+        const withoutEmbedded = hook.result.current.getListProps({ withKeyboard: true });
+        expect(withoutEmbedded.onFocus).toBeUndefined();
+        expect(withoutEmbedded.onBlur).toBeUndefined();
+      });
+
+      test('focus without a highlight highlights the first option with keyboard, and blur resets it', () => {
+        const { hook } = renderListbox();
+        act(() => getProps(hook).onFocus!(focusEvent()));
+        expect(hook.result.current.highlightedIndex).toBe(1);
+        expect(hook.result.current.highlightType.type).toBe('keyboard');
+
+        act(() => getProps(hook).onBlur!(blurEvent()));
+        expect(hook.result.current.highlightedIndex).toBe(-1);
+      });
+
+      test('focus keeps an existing highlight', () => {
+        const { hook } = renderListbox();
+        act(() => hook.result.current.mouseHandlers.onMouseMove(3));
+        act(() => getProps(hook).onFocus!(focusEvent()));
+        expect(hook.result.current.highlightedIndex).toBe(3);
       });
     });
   });

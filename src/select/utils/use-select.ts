@@ -215,20 +215,10 @@ export function useSelect({
 
   const getMenuProps = () => {
     const menuProps: ListElementProps = {
-      ...listbox.getListProps({ withKeyboard: !hasFilter }),
+      ...listbox.getListProps({ withKeyboard: !hasFilter, embedded }),
       open: isOpen,
       statusType,
     };
-    if (embedded) {
-      menuProps.onFocus = () => {
-        if (!highlightedOption) {
-          goHomeWithKeyboard();
-        }
-      };
-      menuProps.onBlur = () => {
-        resetHighlightWithKeyboard();
-      };
-    }
     return menuProps;
   };
 
