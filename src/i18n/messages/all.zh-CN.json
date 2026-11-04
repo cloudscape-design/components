@@ -281,7 +281,7 @@
     "i18nStrings.selectAllText": "选择全部"
   },
   "option-list": {
-    "i18nStrings.selectedAriaLabel": "已选定"
+    "i18nStrings.selectedAriaLabel": "已选中"
   },
   "pagination": {
     "ariaLabels.jumpToPageButtonLabel": "跳转到页面",
