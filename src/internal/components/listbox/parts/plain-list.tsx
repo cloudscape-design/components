@@ -33,7 +33,6 @@ export interface ListProps {
   renderOption?: SelectProps.SelectOptionItemRenderer | MultiselectProps.MultiselectOptionItemRenderer;
 }
 
-
 const PlainList = (
   {
     listProps,

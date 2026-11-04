@@ -5,8 +5,8 @@ import React, { forwardRef, useCallback, useImperativeHandle, useRef } from 'rea
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { fallbackItemHeight } from '../../internal/components/listbox/parts/common';
 import { ScrollToIndexRef } from '../../internal/components/listbox/interfaces';
+import { fallbackItemHeight } from '../../internal/components/listbox/parts/common';
 import { ListProps } from '../../internal/components/listbox/parts/plain-list';
 import { renderOptions } from '../../internal/components/listbox/parts/render-options';
 import customScrollToIndex from '../../internal/components/listbox/parts/scroll-to-index';
