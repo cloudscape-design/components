@@ -46,8 +46,8 @@ export interface UseListboxProps {
    * filter input.
    */
   spaceSelects: 'always' | 'keyboard-highlight';
-  /** Called when Escape is pressed. */
-  onEscape: () => void;
+  /** Called when Escape is pressed. When omitted, Escape is not handled and keeps propagating. */
+  onEscape?: () => void;
   /** Group of the option, announced with the highlighted option. */
   getParent: (option: DropdownOption) => undefined | OptionGroup;
   /** Added to the announcement when the highlighted option is selected. */

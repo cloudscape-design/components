@@ -1,5 +1,22 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { scrollElementIntoView } from '../../../utils/scrollable-containers';
+
+/**
+ * Scrolls the option at the given index into view through all its scrollable ancestors.
+ * Used when the list is not its own scroll container, such as in OptionList.
+ */
+export function scrollOptionIntoView({ index, menuEl }: { index: number; menuEl: HTMLElement }) {
+  // -1 means nothing is highlighted. Non-interactive rows such as single-selection group headers also
+  // render with data-mouse-target="-1", so looking it up would scroll to one of them.
+  if (index < 0) {
+    return;
+  }
+  const item = menuEl.querySelector<HTMLElement>(`[data-mouse-target="${index}"]`);
+  if (item) {
+    scrollElementIntoView(item);
+  }
+}
 
 export default function ({ index, menuEl }: { index: number; menuEl: HTMLElement }) {
   const item = menuEl.querySelector<HTMLElement>(`[data-mouse-target="${index}"]`);
