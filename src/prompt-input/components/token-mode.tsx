@@ -57,6 +57,7 @@ interface TokenModeProps {
 
   maxMenuHeight?: number;
   menuStyle?: PromptInputMenuStyle;
+  styleClassNames?: { menu?: string };
 }
 
 const MENU_MIN_WIDTH = 300;
@@ -81,6 +82,7 @@ export default function TokenMode({
   menuDropdownStatus,
   maxMenuHeight,
   menuStyle,
+  styleClassNames,
   handleInput,
   handleLoadMore,
   editableElementAttributes,
@@ -122,6 +124,7 @@ export default function TokenMode({
           minWidth={MENU_MIN_WIDTH}
           maxHeight={maxMenuHeight}
           expandToViewport={true}
+          styleClassNames={{ container: styleClassNames?.menu }}
           style={
             menuStyle
               ? ({
