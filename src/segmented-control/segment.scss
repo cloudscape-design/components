@@ -8,7 +8,15 @@
 @use '../internal/styles/foundation' as foundation;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../internal/styles/utils/theming' as theming;
+@use '../internal/styles/style-api' as style-api;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+// Style API v2. The root radius is a carrier so the segments can derive their own radius from it; the segment
+// focus ring and the divider (the ::after of the segment) read carriers re-anchored on the segment.
+$root-tokens: style-api.resolve((border-radius), carrier);
+$segment-tokens: style-api.resolve(style-api.$focus-ring, carrier);
+$divider-tokens: style-api.resolve((color, width), carrier);
+@include style-api.register($segment-tokens, $divider-tokens);
 
 $default-background: var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-segment-default);
 $default-color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-segment-default);
@@ -23,9 +31,12 @@ $segment-border-width: var(#{$segment-border-width-prop}, 0);
 $segment-gap: awsui.$space-static-xxs;
 $segment-divider-width: 1px;
 $one-theme-segment-gap: calc(#{$segment-gap} - #{$segment-divider-width});
-$segment-radius: calc(awsui.$border-radius-button - (#{awsui.$border-width-field} + #{awsui.$border-width-button}));
+$root-radius: style-api.value($root-tokens, border-radius, awsui.$border-radius-button);
+$segment-radius: calc($root-radius - (#{awsui.$border-width-field} + #{awsui.$border-width-button}));
 
 .segment {
+  @include style-api.carriers($segment-tokens);
+  @include style-api.carriers($divider-tokens);
   @include styles.font-body-m;
   @include styles.text-flex-wrapping;
   @include styles.font-button;
@@ -69,13 +80,25 @@ $segment-radius: calc(awsui.$border-radius-button - (#{awsui.$border-width-field
   }
 
   #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
-    var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
-    var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
+    style-api.value(
+      $segment-tokens,
+      focus-ring-width,
+      var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
+    )
+    style-api.value(
+      $segment-tokens,
+      focus-ring-color,
+      var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused)
+    );
 
   @include focus-visible.when-visible {
     @include styles.focus-highlight(
       $gutter: awsui.$space-segmented-control-focus-outline-gutter,
-      $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
+      $border-radius: style-api.value(
+          $segment-tokens,
+          focus-ring-radius,
+          var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring)
+        ),
       $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow}),
       $z-index: 1 // Prevents adjacent segments from overlapping the focus ring
     );
@@ -87,8 +110,8 @@ $segment-radius: calc(awsui.$border-radius-button - (#{awsui.$border-width-field
     inset-inline-end: calc(-1 * ($segment-gap + $segment-divider-width));
     block-size: calc(100% - (($segment-gap + awsui.$space-static-xxxs) * 2));
     min-block-size: calc(awsui.$line-height-body-m - $segment-gap * 2);
-    inline-size: $segment-divider-width;
-    background: awsui.$color-border-segment-divider;
+    inline-size: style-api.value($divider-tokens, width, $segment-divider-width);
+    background: style-api.value($divider-tokens, color, awsui.$color-border-segment-divider);
     z-index: 1;
   }
   &:not(.refresh):not(:last-child)::after {
