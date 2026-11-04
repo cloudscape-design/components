@@ -281,7 +281,7 @@
     "i18nStrings.selectAllText": "Selecionar tudo"
   },
   "option-list": {
-    "i18nStrings.selectedAriaLabel": "Selecionado"
+    "i18nStrings.selectedAriaLabel": "Selecionados"
   },
   "pagination": {
     "ariaLabels.jumpToPageButtonLabel": "Ir para a página",
