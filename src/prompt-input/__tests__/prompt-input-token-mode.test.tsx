@@ -5241,20 +5241,22 @@ describe('token mode misc', () => {
     });
     // Verify reference is rendered
     expect(getValue(wrapper)).toContain('Alice');
-    expect(observeSpy).toHaveBeenCalled();
-    // Unmount — this should disconnect the ResizeObserver
+    // At least two observers per mount: one for root width (useWidthChange), one for the text element content box.
+    // Token components add more via the toolkit; the exact count is not part of this test's contract.
+    expect(observeSpy.mock.calls.length).toBeGreaterThanOrEqual(2);
+    // Unmount: this should disconnect all ResizeObservers
     const { unmount } = render(<div />, { container });
     unmount();
-    expect(disconnectSpy).toHaveBeenCalled();
+    expect(disconnectSpy.mock.calls.length).toBeGreaterThanOrEqual(2);
     window.ResizeObserver = originalResizeObserver;
   });
 
   test('ResizeObserver triggers height adjustment without error', () => {
     const originalResizeObserver = window.ResizeObserver;
-    let resizeCallback: () => void = () => {};
+    const resizeCallbacks: (() => void)[] = [];
     const MockResizeObserver = jest.fn(cb => ({
       observe: () => {
-        resizeCallback = cb;
+        resizeCallbacks.push(cb);
       },
       unobserve: jest.fn(),
       disconnect: jest.fn(),
@@ -5267,7 +5269,7 @@ describe('token mode misc', () => {
       ref.current!.focus();
     });
     act(() => {
-      resizeCallback();
+      resizeCallbacks.forEach(cb => cb());
     });
     // The component should still render correctly and preserve content after resize
     expect(getValue(wrapper)).toBe('hello');
