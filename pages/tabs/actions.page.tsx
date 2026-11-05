@@ -214,6 +214,31 @@ export default function TabsDemoPage() {
             i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
           />
         </div>
+        <div>
+          <h2>Disabled tabs with text action or dismissible</h2>
+          <Tabs
+            tabs={[
+              { id: 'first', label: 'Enabled tab', content: <p>First tab content</p> },
+              {
+                id: 'disabled-action',
+                label: 'Disabled with action',
+                disabled: true,
+                // Text inside a disabled tab is part of an inactive component, so it is exempt from contrast (WCAG 1.4.3).
+                action: <span aria-disabled="true">Text action</span>,
+                content: <p>Second tab content</p>,
+              },
+              {
+                id: 'disabled-dismiss',
+                label: 'Disabled with dismiss',
+                disabled: true,
+                dismissible: true,
+                dismissLabel: 'Dismiss disabled tab',
+                content: <p>Third tab content</p>,
+              },
+            ]}
+            i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
+          />
+        </div>
       </SpaceBetween>
     </>
   );

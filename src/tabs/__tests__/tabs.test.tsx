@@ -7,6 +7,7 @@ import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import ErrorBoundary from '../../../lib/components/error-boundary';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import Tabs, { TabsProps } from '../../../lib/components/tabs';
 import createWrapper, { TabsWrapper } from '../../../lib/components/test-utils/dom';
 
@@ -1451,5 +1452,81 @@ describe('Tabs', () => {
   test('renders actions', () => {
     const wrapper = renderTabs(<Tabs tabs={defaultTabs} actions={<div>Actions content</div>} />).wrapper;
     expect(wrapper.findActions()!.getElement()).toHaveTextContent('Actions content');
+  });
+});
+
+describe('style.tab', () => {
+  const tabs: TabsProps.Tab[] = [{ id: 'first', label: 'First tab' }];
+
+  function renderStyledTab(style: TabsProps.Style) {
+    const { wrapper } = renderTabs(<Tabs tabs={tabs} style={style} />);
+    return {
+      container: wrapper.findTabHeaderContentByIndex(1)!.getElement(),
+      link: wrapper.findTabLinkByIndex(1)!.getElement(),
+    };
+  }
+
+  test('applies the tab box and font styles to the tab link, not to the tab container', () => {
+    const { container, link } = renderStyledTab({
+      tab: {
+        paddingBlock: '10px',
+        paddingInline: '14px',
+        borderRadius: '6px',
+        borderWidth: '2px',
+        fontSize: '18px',
+        fontWeight: '700',
+        backgroundColor: { default: 'rgb(1, 2, 3)' },
+        borderColor: { default: 'rgb(4, 5, 6)' },
+        color: { default: 'rgb(7, 8, 9)' },
+      },
+    });
+
+    expect(link.style.paddingBlock).toBe('10px');
+    expect(link.style.paddingInline).toBe('14px');
+    expect(link.style.borderRadius).toBe('6px');
+    expect(link.style.borderWidth).toBe('2px');
+    expect(link.style.fontSize).toBe('18px');
+    expect(link.style.fontWeight).toBe('700');
+    expect(link.style.getPropertyValue(customCssProps.styleBackgroundDefault)).toBe('rgb(1, 2, 3)');
+    expect(link.style.getPropertyValue(customCssProps.styleBorderColorDefault)).toBe('rgb(4, 5, 6)');
+    expect(link.style.getPropertyValue(customCssProps.styleColorDefault)).toBe('rgb(7, 8, 9)');
+
+    expect(container.style.paddingBlock).toBeFalsy();
+    expect(container.style.paddingInline).toBeFalsy();
+    expect(container.style.borderRadius).toBeFalsy();
+    expect(container.style.borderWidth).toBeFalsy();
+    expect(container.style.fontSize).toBeFalsy();
+    expect(container.style.fontWeight).toBeFalsy();
+    expect(container.style.getPropertyValue(customCssProps.styleBackgroundDefault)).toBe('');
+    expect(container.style.getPropertyValue(customCssProps.styleBorderColorDefault)).toBe('');
+    expect(container.style.getPropertyValue(customCssProps.styleColorDefault)).toBe('');
+  });
+
+  test.each(['4px 8px', 'var(--tab-padding, 4px 8px)'])('passes paddingBlock "%s" to the tab link unchanged', value => {
+    const { container, link } = renderStyledTab({ tab: { paddingBlock: value } });
+    expect(link.getAttribute('style')).toContain(`padding-block: ${value}`);
+    expect(container.getAttribute('style') ?? '').not.toContain('padding');
+  });
+
+  test('applies only the indicator and separator styles to the tab container', () => {
+    const { container, link } = renderStyledTab({
+      tab: { activeIndicator: { color: 'rgb(1, 2, 3)', width: '3px', borderRadius: '2px' } },
+      tabSeparator: { color: 'rgb(4, 5, 6)', width: '2px' },
+    });
+
+    const containerProperties = Array.from(container.style).sort();
+    expect(containerProperties).toEqual(
+      [
+        customCssProps.styleTabsActiveIndicatorBorderRadius,
+        customCssProps.styleTabsActiveIndicatorColor,
+        customCssProps.styleTabsActiveIndicatorWidth,
+        customCssProps.styleTabsSeparatorColor,
+        customCssProps.styleTabsSeparatorWidth,
+      ].sort()
+    );
+    expect(container.style.getPropertyValue(customCssProps.styleTabsActiveIndicatorColor)).toBe('rgb(1, 2, 3)');
+    expect(container.style.getPropertyValue(customCssProps.styleTabsSeparatorWidth)).toBe('2px');
+    expect(link.style.getPropertyValue(customCssProps.styleTabsActiveIndicatorColor)).toBe('');
+    expect(link.style.getPropertyValue(customCssProps.styleTabsSeparatorColor)).toBe('');
   });
 });

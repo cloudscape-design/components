@@ -113,11 +113,17 @@ $label-horizontal-spacing: awsui.$space-xs;
   display: flex;
   align-items: stretch;
 
+  font-size: awsui.$font-size-tabs;
+  line-height: awsui.$line-height-tabs;
+  font-weight: awsui.$font-weight-tabs;
+  color: awsui.$color-text-interactive-default;
+
   & > .tabs-tab-dismiss,
   & > .tabs-tab-action {
     position: relative;
     display: flex;
     align-items: center;
+    @include styles.default-text-style;
   }
 
   &.refresh > span:first-of-type {
@@ -196,10 +202,12 @@ $label-horizontal-spacing: awsui.$space-xs;
   border-block: awsui.$border-divider-section-width solid var(#{custom-props.$styleBorderColorDefault}, transparent);
   border-inline: awsui.$border-divider-section-width solid var(#{custom-props.$styleBorderColorDefault}, transparent);
 
-  font-size: awsui.$font-size-tabs;
-  line-height: awsui.$line-height-tabs;
-  font-weight: awsui.$font-weight-tabs;
-  color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-interactive-default);
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  // Without a v1 color the value is invalid and the trigger inherits the color of the tab.
+  color: var(#{custom-props.$styleColorDefault});
   background-color: var(#{custom-props.$styleBackgroundDefault}, transparent);
 
   padding-inline-start: calc(#{awsui.$space-xxs} - 1px);
@@ -214,7 +222,7 @@ $label-horizontal-spacing: awsui.$space-xs;
   }
 
   &:hover {
-    color: var(#{custom-props.$styleColorHover}, awsui.$color-text-accent);
+    color: var(#{custom-props.$styleColorHover});
     border-color: var(
       #{custom-props.$styleBorderColorHover},
       var(#{custom-props.$styleBorderColorDefault}, transparent)
@@ -263,24 +271,47 @@ $label-horizontal-spacing: awsui.$space-xs;
   }
 }
 
+.tabs-tab-header-container:not(.tabs-tab-active):not(.tabs-tab-disabled):has(> .tabs-tab-link:hover) {
+  color: awsui.$color-text-accent;
+}
+
 .tabs-tab-disabled {
   &,
   &:hover {
     cursor: default;
-    color: var(#{custom-props.$styleColorDisabled}, awsui.$color-text-interactive-disabled);
-    border-color: var(#{custom-props.$styleBorderColorDisabled}, transparent);
-    background-color: var(#{custom-props.$styleBackgroundDisabled}, transparent);
-    font-weight: awsui.$font-weight-tabs-disabled;
   }
 }
 
-.tabs-tab-active:not(.tabs-tab-disabled) {
-  color: var(#{custom-props.$styleColorActive}, awsui.$color-text-accent);
-  border-color: var(#{custom-props.$styleBorderColorActive}, transparent);
-  background-color: var(#{custom-props.$styleBackgroundActive}, transparent);
+.tabs-tab-header-container.tabs-tab-disabled {
+  color: awsui.$color-text-interactive-disabled;
+  font-weight: awsui.$font-weight-tabs-disabled;
+}
+
+// v1 style.tab paints the trigger. Without a v1 color the value is invalid and the trigger inherits the tab color.
+.tabs-tab-link.tabs-tab-disabled {
+  &,
+  &:hover {
+    color: var(#{custom-props.$styleColorDisabled});
+    border-color: var(#{custom-props.$styleBorderColorDisabled}, transparent);
+    background-color: var(#{custom-props.$styleBackgroundDisabled}, transparent);
+  }
+}
+
+.tabs-tab-header-container.tabs-tab-active:not(.tabs-tab-disabled) {
+  color: awsui.$color-text-accent;
   &:after {
     opacity: 1;
   }
+}
+
+.tabs-tab-link.tabs-tab-active:not(.tabs-tab-disabled) {
+  color: var(#{custom-props.$styleColorActive});
+  border-color: var(#{custom-props.$styleBorderColorActive}, transparent);
+  background-color: var(#{custom-props.$styleBackgroundActive}, transparent);
+}
+
+.tabs-tab-header-container > .tabs-tab-action.tabs-tab-active {
+  color: awsui.$color-text-accent;
 }
 
 .tabs-header-with-divider {
@@ -289,4 +320,16 @@ $label-horizontal-spacing: awsui.$space-xs;
 
 .tabs-tab-focusable {
   /* used to manage focusable logic */
+}
+
+// The tab's color and font apply to its label only. Plain content in the action and dismiss
+// keeps the disabled color and weight of a disabled tab and the accent color of an active tab.
+.tabs-tab-header-container.tabs-tab-disabled > .tabs-tab-action,
+.tabs-tab-header-container.tabs-tab-disabled > .tabs-tab-dismiss {
+  color: awsui.$color-text-interactive-disabled;
+  font-weight: awsui.$font-weight-tabs-disabled;
+}
+
+.tabs-tab-header-container.tabs-tab-active:not(.tabs-tab-disabled) > .tabs-tab-dismiss {
+  color: awsui.$color-text-accent;
 }
