@@ -65,7 +65,9 @@ export interface CodeEditorProps extends BaseComponentProps, FormFieldControlPro
    * }
    * ```
    *
-   * You can use any theme provided by Ace.
+   * You can use any theme provided by Ace. Additionally, you can set `theme` to
+   * `'cloudscape'` to use the opt-in Cloudscape theme, whose colors are derived
+   * from Cloudscape design tokens and adapt automatically to the active visual mode.
    */
   preferences?: Partial<CodeEditorProps.Preferences>;
 
@@ -132,7 +134,13 @@ type BuiltInLanguage = (typeof AceModes)[number]['value'];
 
 export namespace CodeEditorProps {
   export type Language = LiteralUnion<BuiltInLanguage, string>;
-  export type Theme = (typeof LightThemes)[number]['value'] | (typeof DarkThemes)[number]['value'];
+  export type BuiltInTheme = (typeof LightThemes)[number]['value'] | (typeof DarkThemes)[number]['value'];
+  /**
+   * The opt-in Cloudscape theme. Its colors are derived from Cloudscape design
+   * tokens and adapt automatically to the active light/dark visual mode.
+   */
+  export type CloudscapeTheme = 'cloudscape';
+  export type Theme = BuiltInTheme | CloudscapeTheme;
 
   export interface AvailableThemes {
     light: ReadonlyArray<string>;

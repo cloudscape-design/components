@@ -1,0 +1,124 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+/*
+ WIP (v0): Cloudscape-aligned Ace theme.
+
+ All colors are driven by Cloudscape design tokens. Because these tokens resolve
+ to CSS custom properties that change with the active visual mode, this single
+ theme automatically adapts to both light and dark mode. The `.ace-cloudscape`
+ class is applied by Ace when the `cloudscape` theme is selected (see
+ `cloudscape-theme.ts`).
+
+ Syntax colors use the Cloudscape charts palette because it provides a set of
+ perceptually distinct, visual-mode-aware hues. This is a first-cut mapping;
+ a dedicated code-editor syntax token set is tracked as follow-up work.
+*/
+
+@use '../internal/styles/tokens' as awsui;
+
+/* stylelint-disable selector-combinator-disallowed-list, @cloudscape-design/no-implicit-descendant */
+
+.code-editor :global .ace_editor.ace-cloudscape {
+  background-color: awsui.$color-background-container-content;
+  color: awsui.$color-text-body-default;
+
+  .ace_gutter {
+    background-color: awsui.$color-background-code-editor-gutter-default;
+    color: awsui.$color-text-code-editor-gutter-default;
+  }
+
+  .ace_print-margin {
+    inline-size: 1px;
+    background-color: awsui.$color-border-divider-default;
+  }
+
+  .ace_cursor {
+    color: awsui.$color-text-body-default;
+  }
+
+  .ace_marker-layer .ace_selection {
+    background: awsui.$color-background-item-selected;
+  }
+
+  .ace_marker-layer .ace_selected-word {
+    border-block: 1px solid awsui.$color-border-item-focused;
+    border-inline: 1px solid awsui.$color-border-item-focused;
+  }
+
+  // Keep the active-line border adaptive across visual modes (the shared
+  // ace-editor.scss active-line border relies on the `ace_dark` marker class,
+  // which this token-driven theme does not set).
+  .ace_marker-layer > .ace_active-line {
+    border-block-start: 1px solid awsui.$color-border-divider-default;
+    border-block-end: 1px solid awsui.$color-border-divider-default;
+  }
+
+  .ace_indent-guide {
+    border-inline-end: 1px solid awsui.$color-border-divider-default;
+  }
+
+  /* Syntax tokens */
+  .ace_comment {
+    color: awsui.$color-text-body-secondary;
+    font-style: italic;
+  }
+
+  .ace_keyword,
+  .ace_storage,
+  .ace_meta {
+    color: awsui.$color-charts-purple-700;
+  }
+
+  .ace_keyword.ace_operator,
+  .ace_punctuation,
+  .ace_punctuation.ace_operator {
+    color: awsui.$color-text-body-secondary;
+  }
+
+  .ace_string,
+  .ace_string.ace_regexp {
+    color: awsui.$color-charts-green-700;
+  }
+
+  .ace_constant,
+  .ace_constant.ace_numeric,
+  .ace_constant.ace_language,
+  .ace_constant.ace_character,
+  .ace_constant.ace_other {
+    color: awsui.$color-charts-orange-700;
+  }
+
+  .ace_support.ace_function,
+  .ace_entity.ace_name.ace_function {
+    color: awsui.$color-charts-blue-1-700;
+  }
+
+  .ace_variable {
+    color: awsui.$color-text-body-default;
+  }
+
+  .ace_support.ace_type,
+  .ace_support.ace_class,
+  .ace_storage.ace_type,
+  .ace_entity.ace_name.ace_class {
+    color: awsui.$color-charts-teal-700;
+  }
+
+  .ace_entity.ace_name.ace_tag,
+  .ace_meta.ace_tag {
+    color: awsui.$color-charts-red-700;
+  }
+
+  .ace_entity.ace_other.ace_attribute-name {
+    color: awsui.$color-charts-blue-2-700;
+  }
+
+  .ace_invalid {
+    color: awsui.$color-text-status-error;
+  }
+}
+
+/* stylelint-enable selector-combinator-disallowed-list, @cloudscape-design/no-implicit-descendant */
