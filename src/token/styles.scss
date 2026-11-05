@@ -39,6 +39,7 @@
 // Keeps the token geometry on top of the button's inline-icon variant, which has no border, no focus ring gutter
 // in visual refresh only, and horizontal padding. The token box ancestor gives the selector enough specificity.
 :is(.token-box, .token-box-inline) > .dismiss-button.dismiss-button {
+  display: flex;
   border-block: awsui.$border-width-field solid transparent;
   border-inline: awsui.$border-width-field solid transparent;
 
