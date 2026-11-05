@@ -1,0 +1,128 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~components/styling/checkbox';
+@use '~components/styling/radio-button';
+@use '~components/styling/table';
+@use '../style-api/palette' as palette;
+
+$selected-surface: light-dark(hsl(265, 100%, 98.5%), hsl(265, 40%, 13%));
+$instance-surface: light-dark(hsl(45, 90%, 88%), hsl(45, 60%, 18%));
+$instance-text: light-dark(hsl(35, 80%, 20%), hsl(45, 90%, 85%));
+$network-surface: light-dark(hsl(200, 60%, 93%), hsl(200, 45%, 18%));
+$network-text: light-dark(hsl(200, 80%, 22%), hsl(200, 70%, 88%));
+$nested-surface: light-dark(hsl(220, 30%, 96.5%), hsl(220, 20%, 18%));
+$transitioning-surface: light-dark(hsl(0, 0%, 96.5%), hsl(0, 0%, 21%));
+
+.table {
+  @include table.root(
+    $selected-row-outline-color: palette.$genai,
+    $selected-row-outline-radius: 4px,
+    $sticky-header-shadow: (
+      0 1px 0 0 palette.$text,
+      0 16px 16px -12px rgba(0, 7, 22, 0.1),
+    )
+  );
+}
+
+// The color also applies to hovered and sorted cells.
+@mixin header-cell($background, $color) {
+  @include table.headerCell(
+    $background: $background,
+    $color: $color,
+    $font-weight: 800,
+    $letter-spacing: 0.02em,
+    $border-color: $color,
+    $divider-color: $color,
+    $focus-ring-color: palette.$genai,
+    $focus-ring-width: 3px,
+    $focus-ring-radius: 6px
+  );
+}
+
+.cell {
+  @include table.cell($focus-ring-color: palette.$genai, $focus-ring-width: 3px, $focus-ring-radius: 6px);
+}
+
+.header-cell {
+  @include header-cell(palette.$subtle, $instance-text);
+}
+
+.instance-header-cell {
+  @include header-cell($instance-surface, $instance-text);
+}
+
+.network-header-cell {
+  @include header-cell($network-surface, $network-text);
+}
+
+.sorting-indicator {
+  @include table.sortingIndicator($color: palette.$genai);
+}
+
+.row {
+  @include table.row($divider-color: palette.$border);
+}
+
+.row-selected {
+  @include table.row($background-color: $selected-surface);
+}
+
+.row-nested {
+  @include table.row($background-color: $nested-surface);
+}
+
+@each $status,
+  $surface
+    in (
+      running: palette.$success-surface,
+      transitioning: $transitioning-surface,
+      stopped: palette.$warning-surface,
+      terminated: palette.$error-surface
+    )
+{
+  .status-#{$status}-row {
+    @include table.row($background-color: $surface);
+  }
+
+  .status-#{$status}-cell {
+    @include table.cell($background-color: $surface);
+  }
+}
+
+// Control looks come from the row and selection header cell classes, as a consumer would write them.
+/* stylelint-disable selector-combinator-disallowed-list */
+.checkbox {
+  @include checkbox.control($border-color: palette.$genai, $focus-ring-color: palette.$genai);
+}
+
+.row-selected .checkbox,
+.select-all-selected .checkbox {
+  @include checkbox.control(
+    $fill-color: palette.$genai,
+    $border-color: palette.$genai,
+    $indicator-color: palette.$genai-surface
+  );
+}
+
+.row-disabled .checkbox {
+  @include checkbox.control($fill-color: palette.$control-bg-disabled, $border-color: palette.$border-disabled);
+}
+
+.radio {
+  @include radio-button.control($border-color: palette.$genai, $focus-ring-color: palette.$genai);
+}
+
+.row-selected .radio {
+  @include radio-button.control(
+    $fill-color: palette.$genai,
+    $border-color: palette.$genai,
+    $indicator-color: palette.$genai-surface
+  );
+}
+
+.row-disabled .radio {
+  @include radio-button.control($fill-color: palette.$control-bg-disabled, $border-color: palette.$border-disabled);
+}
