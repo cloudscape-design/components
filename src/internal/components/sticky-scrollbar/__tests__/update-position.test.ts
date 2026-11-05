@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import globalVars from '../../../../lib/components/internal/styles/global-vars';
-import { updatePosition } from '../../../../lib/components/table/sticky-scrollbar/use-sticky-scrollbar';
+import { updatePosition } from '../../../../../lib/components/internal/components/sticky-scrollbar/use-sticky-scrollbar';
+import globalVars from '../../../../../lib/components/internal/styles/global-vars';
 
 describe('updatePosition', () => {
   function setupElements() {
@@ -29,5 +29,12 @@ describe('updatePosition', () => {
     expect(scrollbar.style.insetBlockEnd).toBe(`var(${globalVars.stickyVerticalBottomOffset}, 0px)`);
     expect(scrollbar.style.inlineSize).toBe('600px');
     expect(scrollbarContent.style.inlineSize).toBe('800px');
+  });
+
+  test('sizes the content from a custom measurement when one is given', () => {
+    const { scrollbar, scrollbarContent, table, wrapper } = setupElements();
+    updatePosition(table, wrapper, scrollbar, scrollbarContent, true, () => 1200);
+    expect(scrollbar.style.inlineSize).toBe('600px');
+    expect(scrollbarContent.style.inlineSize).toBe('1200px');
   });
 });
