@@ -1,0 +1,20 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~components/styling/tooltip';
+@use '../style-api/palette' as palette;
+
+.tooltip-info {
+  @include tooltip.container(
+    $background: palette.$info-surface,
+    $border-color: palette.$info-surface,
+    $border-radius: 8px,
+    $box-shadow: 0px 4px 20px 1px palette.$info
+  );
+}
+
+.tooltip-info-arrow {
+  @include tooltip.arrow($fill-color: palette.$info-surface, $border-color: palette.$info-surface);
+}

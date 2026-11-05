@@ -1,0 +1,33 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~components/styling/progress-bar';
+@use '../style-api/palette' as palette;
+
+.bar-brand {
+  @include progress-bar.root(
+    $track-color: palette.$subtle,
+    $value-color: palette.$accent,
+    $bar-border-radius: 2px,
+    $bar-block-size: 8px
+  );
+}
+
+.bar-genai {
+  @include progress-bar.root(
+    $track-color: palette.$genai-surface,
+    $value-color: palette.$genai,
+    $bar-border-radius: 0,
+    $bar-block-size: 12px
+  );
+}
+
+.percentage-brand {
+  @include progress-bar.percentage($color: palette.$accent, $font-size: 14px, $font-weight: 700);
+}
+
+.percentage-genai {
+  @include progress-bar.percentage($color: palette.$genai-text, $font-size: 16px, $font-weight: 600);
+}

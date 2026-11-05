@@ -3,7 +3,7 @@
  SPDX-License-Identifier: Apache-2.0
 */
 @use '../internal/styles/tokens' as awsui;
-@use '../internal/styles' as styles;
+@use '../internal/styles/style-api' as style-api;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 .root {
@@ -31,16 +31,11 @@
   @include focus-visible.when-visible-unfocused {
     &.force-focus-outline {
       &-icon {
-        @include styles.focus-highlight(
-          (
-            'vertical': awsui.$space-button-icon-focus-outline-gutter-vertical,
-            'horizontal': awsui.$space-button-focus-outline-gutter,
-          )
-        );
+        @include style-api.focus-highlight($gutter-block: awsui.$space-button-icon-focus-outline-gutter-vertical);
       }
 
       &-button {
-        @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+        @include style-api.focus-highlight;
       }
     }
   }

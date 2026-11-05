@@ -57,7 +57,7 @@ $_focus-ring-carriers: toolkit.resolve($focus-ring, carrier);
   }
 }
 
-@mixin docs-forward($name, $component, $slot) {
+@mixin docs-forward($name, $component, $slot: null) {
   @if enabled() {
     @include toolkit.docs-forward($name, $component, $slot);
   }

@@ -27,7 +27,7 @@ interface TaskProps {
   currentTaskIndex: number;
   expanded: boolean;
   onToggleExpand: (step: number) => void;
-  i18nStrings: TutorialPanelProps['i18nStrings'];
+  i18nStrings: TutorialPanelProps.I18nStrings;
 }
 
 export function Task({ task, taskIndex, currentTaskIndex, expanded, onToggleExpand, i18nStrings }: TaskProps) {
@@ -44,7 +44,7 @@ export function Task({ task, taskIndex, currentTaskIndex, expanded, onToggleExpa
           <InternalStatusIndicator
             __size="inherit"
             type={statusIndicatorType}
-            iconAriaLabel={i18nStrings.labelsTaskStatus[statusIndicatorType]}
+            iconAriaLabel={i18nStrings.labelsTaskStatus?.[statusIndicatorType]}
             className={styles['task-title--status']}
           />
 
@@ -54,7 +54,7 @@ export function Task({ task, taskIndex, currentTaskIndex, expanded, onToggleExpa
             fontSize="heading-s"
             color={taskIndex < currentTaskIndex ? 'text-status-success' : 'text-status-inactive'}
           >
-            {i18nStrings.taskTitle(taskIndex, task.title)}
+            {i18nStrings.taskTitle?.(taskIndex, task.title)}
           </InternalBox>
         </div>
 
@@ -62,14 +62,14 @@ export function Task({ task, taskIndex, currentTaskIndex, expanded, onToggleExpa
           <InternalExpandableSection
             header={
               <span className={styles['expandable-section-header']}>
-                {i18nStrings.labelTotalSteps(task.steps.length)}
+                {i18nStrings.labelTotalSteps?.(task.steps.length)}
               </span>
             }
             expanded={expanded}
             onChange={onExpandChange}
             headerAriaLabel={joinStrings(
-              i18nStrings.taskTitle(taskIndex, task.title),
-              i18nStrings.labelTotalSteps(task.steps.length)
+              i18nStrings.taskTitle?.(taskIndex, task.title),
+              i18nStrings.labelTotalSteps?.(task.steps.length)
             )}
           >
             <ol className={styles['step-list']}>
@@ -81,7 +81,7 @@ export function Task({ task, taskIndex, currentTaskIndex, expanded, onToggleExpa
                     padding={{ left: 'l' }}
                     className={styles['step-title']}
                   >
-                    {i18nStrings.stepTitle(stepIndex, step.title)}
+                    {i18nStrings.stepTitle?.(stepIndex, step.title)}
                   </InternalBox>
                 </li>
               ))}

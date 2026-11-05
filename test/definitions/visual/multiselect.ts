@@ -17,6 +17,29 @@ const suite: TestSuite = {
       screenshotType: 'permutations',
     },
     {
+      description: 'Validation styles are preserved on keyboard focus',
+      tests: [
+        {
+          description: 'invalid state',
+          path: 'multiselect/validation-focus',
+          screenshotType: 'screenshotArea',
+          setup: async ({ page }) => {
+            await page.click('#focus-target');
+            await page.keys(['Tab']);
+          },
+        },
+        {
+          description: 'warning state',
+          path: 'multiselect/validation-focus',
+          screenshotType: 'screenshotArea',
+          setup: async ({ page }) => {
+            await page.click('#focus-target');
+            await page.keys(['Tab', 'Tab']);
+          },
+        },
+      ],
+    },
+    {
       description: 'Prop permutation: expandToViewport x virtualScroll x filteringType',
       tests: [true, false].flatMap(virtualScroll =>
         [true, false].flatMap(expandToViewport =>

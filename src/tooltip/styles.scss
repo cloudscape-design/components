@@ -5,6 +5,11 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/style-api' as style-api;
+@use '../popover/style-api' as popover-style-api;
+
+@include style-api.docs('container', $properties: popover-style-api.$container-properties);
+@include style-api.docs('arrow', popover-style-api.$arrow-tokens);
 
 .root {
   @include styles.with-motion {

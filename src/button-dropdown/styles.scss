@@ -6,6 +6,11 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/utils/theming';
+@use '../internal/styles/style-api' as style-api;
+
+@include style-api.docs-forward('trigger', 'button', 'root');
+@include style-api.docs-forward('mainAction', 'button', 'root');
+@include style-api.docs-forward('dropdown', 'dropdown', 'container');
 
 $dropdown-trigger-icon-offset: 2px;
 

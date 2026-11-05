@@ -25,10 +25,6 @@ $block-gap: cell-base.$divider-block-gap;
   inline-size: $handle-width;
   overflow: hidden;
   z-index: 10;
-
-  th:last-child > &:has(.divider-interactive).is-borderless {
-    inset-inline-end: 0;
-  }
 }
 
 .resizer-button-wrapper {
@@ -84,6 +80,10 @@ th:not([data-rightmost]) > .divider,
 
 .divider-active {
   /* used in test-utils */
+}
+
+.resizer-wrapper.is-borderless.is-last {
+  inset-inline-end: 0;
 }
 
 .resizer-wrapper.visual-refresh.is-borderless.is-last {

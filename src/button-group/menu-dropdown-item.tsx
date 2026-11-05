@@ -16,6 +16,8 @@ import { ButtonGroupProps } from './interfaces';
 import testUtilStyles from './test-classes/styles.css.js';
 
 interface MenuDropdownItemProps {
+  styleClassName?: string;
+  dropdownClassName?: string;
   item: ButtonGroupProps.MenuDropdown;
   showTooltip: boolean;
   onTooltipDismiss: () => void;
@@ -26,7 +28,16 @@ interface MenuDropdownItemProps {
 
 const MenuDropdownItem = React.forwardRef(
   (
-    { item, showTooltip, onItemClick, onTooltipDismiss, expandToViewport, position }: MenuDropdownItemProps,
+    {
+      styleClassName,
+      dropdownClassName,
+      item,
+      showTooltip,
+      onItemClick,
+      onTooltipDismiss,
+      expandToViewport,
+      position,
+    }: MenuDropdownItemProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
   ) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
@@ -39,6 +50,7 @@ const MenuDropdownItem = React.forwardRef(
       <ButtonDropdown
         ref={ref}
         variant="icon"
+        styleClassNames={{ dropdown: dropdownClassName }}
         items={item.items}
         onItemClick={onClickHandler}
         expandToViewport={expandToViewport}
@@ -59,6 +71,7 @@ const MenuDropdownItem = React.forwardRef(
             )}
             <InternalButton
               ref={triggerRef}
+              styleClassNames={{ root: styleClassName }}
               variant="icon"
               ariaLabel={ariaLabel}
               data-itemid={item.id}

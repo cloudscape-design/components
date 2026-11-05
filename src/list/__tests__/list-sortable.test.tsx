@@ -1,12 +1,27 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import { AutoScrollOptions, TraversalOrder } from '@dnd-kit/core';
+import { act, fireEvent, render } from '@testing-library/react';
 
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import List, { ListProps } from '../../../lib/components/list';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import InternalDragHandleWrapper from '../../../lib/components/test-utils/dom/internal/drag-handle';
+
+const mockDndContextAutoScroll: { current: AutoScrollOptions | undefined } = { current: undefined };
+
+jest.mock('@dnd-kit/core', () => {
+  const actual = jest.requireActual('@dnd-kit/core');
+  const { createElement } = jest.requireActual('react');
+  return {
+    ...actual,
+    DndContext: (props: { autoScroll?: AutoScrollOptions }) => {
+      mockDndContextAutoScroll.current = props.autoScroll;
+      return createElement(actual.DndContext, props);
+    },
+  };
+});
 
 interface Item {
   id: string;
@@ -169,6 +184,74 @@ describe('List - Sortable', () => {
     await expectAnnouncement('Item moved from position 1 to position 2 of 3');
   });
 
+  describe('repeated keyboard drags', () => {
+    const fiveItems: Item[] = [...defaultItems, { id: 'item4', content: 'Item 4' }, { id: 'item5', content: 'Item 5' }];
+
+    const nextTick = () => act(() => new Promise(resolve => setTimeout(resolve, 0)));
+
+    async function keyboardDrag(handle: HTMLElement, direction: 'ArrowDown' | 'ArrowUp') {
+      pressKey(handle, 'Space');
+      await nextTick();
+      pressKey(handle, direction);
+      await nextTick();
+      pressKey(handle, 'Space');
+      await nextTick();
+    }
+
+    function renderWithTrackedHandle() {
+      const { wrapper, onSortingChange } = renderSortableList({ items: fiveItems });
+      const handle = wrapper.findItemById('item1')!.findDragHandle()!.getElement();
+      const addListener = jest.spyOn(handle, 'addEventListener');
+      const removeListener = jest.spyOn(handle, 'removeEventListener');
+      const blurListeners = (spy: jest.SpyInstance) =>
+        spy.mock.calls.filter(([type]) => type === 'blur').map(([, listener]) => listener);
+      return {
+        handle,
+        onSortingChange,
+        addedBlurListeners: () => blurListeners(addListener),
+        removedBlurListeners: () => blurListeners(removeListener),
+      };
+    }
+
+    test('removes the drag handle blur listener after each drop', async () => {
+      const { handle, addedBlurListeners, removedBlurListeners } = renderWithTrackedHandle();
+      handle.focus();
+
+      await keyboardDrag(handle, 'ArrowDown');
+      await keyboardDrag(handle, 'ArrowDown');
+      await keyboardDrag(handle, 'ArrowUp');
+
+      expect(addedBlurListeners()).toHaveLength(3);
+      expect(removedBlurListeners()).toEqual(addedBlurListeners());
+    });
+
+    test('fires onSortingChange once per drop, including a later drag ended by blur', async () => {
+      const { handle, onSortingChange } = renderWithTrackedHandle();
+      handle.focus();
+
+      await keyboardDrag(handle, 'ArrowDown');
+      await keyboardDrag(handle, 'ArrowDown');
+      expect(onSortingChange).toHaveBeenCalledTimes(2);
+      onSortingChange.mockClear();
+
+      pressKey(handle, 'Space');
+      await nextTick();
+      pressKey(handle, 'ArrowDown');
+      await nextTick();
+      fireEvent.blur(handle);
+      await nextTick();
+
+      expect(onSortingChange).toHaveBeenCalledTimes(1);
+      expect(onSortingChange.mock.calls[0][0].detail.items.map((item: Item) => item.id)).toEqual([
+        'item2',
+        'item3',
+        'item4',
+        'item1',
+        'item5',
+      ]);
+    });
+  });
+
   test('non-primary pointer events do not activate UAP', () => {
     const { wrapper } = renderSortableList();
     const dragHandle = wrapper.findItemByIndex(1)!.findDragHandle()!;
@@ -177,5 +260,88 @@ describe('List - Sortable', () => {
 
     dragHandle.click({ button: 1 });
     expect(dragWrapper.findVisibleDirectionButtonBlockEnd()).toBeFalsy();
+  });
+
+  describe('auto-scroll', () => {
+    const interact = (action: () => void) =>
+      act(async () => {
+        action();
+        await new Promise(resolve => setTimeout(resolve, 0));
+      });
+    const canAutoScroll = (element: Element) => mockDndContextAutoScroll.current!.canScroll!(element);
+
+    function renderInScrollContainers({ innerScrolls }: { innerScrolls: boolean }) {
+      const { container } = render(
+        <div data-testid="outer" style={{ overflowY: 'auto' }}>
+          <div data-testid="inner" style={{ overflowY: 'auto' }}>
+            <ControlledList
+              items={defaultItems}
+              renderItem={item => ({ id: item.id, content: item.content })}
+              sortable={true}
+            />
+          </div>
+        </div>
+      );
+      const outer = container.querySelector<HTMLElement>('[data-testid="outer"]')!;
+      const inner = container.querySelector<HTMLElement>('[data-testid="inner"]')!;
+      // jsdom has no layout, so make the containers overflow explicitly.
+      const overflowing = innerScrolls ? [outer, inner] : [];
+      for (const element of overflowing) {
+        Object.defineProperty(element, 'scrollHeight', { configurable: true, value: 1000 });
+        Object.defineProperty(element, 'clientHeight', { configurable: true, value: 100 });
+      }
+      const list = createWrapper(container).findList()!;
+      const item = list.findItemById('item1')!.getElement();
+      const handle = list.findItemById('item1')!.findDragHandle()!.getElement();
+      return { outer, inner, item, handle };
+    }
+
+    test('checks the innermost scroll container first', () => {
+      renderInScrollContainers({ innerScrolls: true });
+      expect(mockDndContextAutoScroll.current!.order).toBe(TraversalOrder.ReversedTreeOrder);
+    });
+
+    test('only auto-scrolls the nearest scroll container and its descendants while dragging', async () => {
+      const { outer, inner, item, handle } = renderInScrollContainers({ innerScrolls: true });
+
+      await interact(() => pressKey(handle, 'Space'));
+
+      expect(canAutoScroll(inner)).toBe(true);
+      expect(canAutoScroll(item)).toBe(true);
+      expect(canAutoScroll(outer)).toBe(false);
+      expect(canAutoScroll(document.documentElement)).toBe(false);
+
+      await interact(() => pressKey(handle, 'Space'));
+
+      expect(canAutoScroll(outer)).toBe(true);
+      expect(canAutoScroll(document.documentElement)).toBe(true);
+    });
+
+    test('keeps every container eligible for auto-scroll when the list has no scrollable ancestor', async () => {
+      const { outer, inner, handle } = renderInScrollContainers({ innerScrolls: false });
+
+      await interact(() => pressKey(handle, 'Space'));
+
+      expect(canAutoScroll(inner)).toBe(true);
+      expect(canAutoScroll(outer)).toBe(true);
+      expect(canAutoScroll(document.documentElement)).toBe(true);
+
+      await interact(() => pressKey(handle, 'Escape'));
+    });
+
+    test('limits auto-scroll when the drag starts on the drag handle icon and stops limiting it on cancel', async () => {
+      const { outer, inner, handle } = renderInScrollContainers({ innerScrolls: true });
+      const icon = handle.querySelector('svg')!;
+      expect(icon).not.toBeNull();
+
+      await interact(() => fireEvent.click(icon));
+
+      expect(canAutoScroll(inner)).toBe(true);
+      expect(canAutoScroll(outer)).toBe(false);
+
+      await interact(() => pressKey(handle, 'Escape'));
+
+      expect(canAutoScroll(outer)).toBe(true);
+    });
   });
 });

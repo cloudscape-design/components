@@ -1,0 +1,97 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
+import { useInternalI18n } from '../../i18n/context';
+import { DropdownStatusResult, useDropdownStatus } from '../../internal/components/dropdown-status';
+import { ButtonDropdownProps } from '../interfaces';
+import { CategoryProps } from '../internal-interfaces';
+
+type UseExpandableGroupStatusProps = Pick<
+  CategoryProps,
+  | 'item'
+  | 'asyncLoadingProps'
+  | 'getExpandableItemsAsyncLoadingState'
+  | 'onGroupRecoveryClick'
+  | 'filteringEnabled'
+  | 'menuId'
+> & {
+  // Focused after the recovery action in menu (non-filtering) mode, where focus sits on the group header.
+  triggerRef: React.RefObject<HTMLElement>;
+};
+
+/**
+ * Ids of a group's status element and its recovery button. `menuId` is only set in filtering
+ * mode, where the filter input points at these elements through `aria-activedescendant`.
+ */
+export function getGroupStatusIds(menuId: string, groupId: string) {
+  return {
+    statusId: `status-${menuId}-${groupId}`,
+    recoveryButtonId: `recovery-${menuId}-${groupId}`,
+  };
+}
+
+interface ExpandableGroupStatus {
+  status: DropdownStatusResult;
+  footerId: string;
+  hasGroupItems: boolean;
+}
+
+/**
+ * Derives the async loading status UI of an expandable group from `getExpandableItemsAsyncLoadingState`.
+ * Shared by the desktop (fly-out) and mobile (inline) expandable category elements so both render the
+ * same loading, error, empty, and finished states.
+ */
+export function useExpandableGroupStatus({
+  item,
+  asyncLoadingProps,
+  getExpandableItemsAsyncLoadingState,
+  onGroupRecoveryClick,
+  filteringEnabled,
+  menuId,
+  triggerRef,
+}: UseExpandableGroupStatusProps): ExpandableGroupStatus {
+  const groupId = item.id;
+  const uniqueFooterId = useUniqueId('awsui-button-dropdown__group-footer');
+  // In filtering mode the root references the status and the recovery button through
+  // `aria-activedescendant`, so their ids must be derivable from the menu and group ids.
+  const statusIds = menuId && groupId ? getGroupStatusIds(menuId, groupId) : undefined;
+  const footerId = statusIds?.statusId ?? uniqueFooterId;
+  const hasGroupItems = !!item.items && item.items.length > 0;
+
+  // A null or undefined status is treated as `finished`, as documented.
+  const statusType: ButtonDropdownProps.AsyncLoadingStatusType =
+    (groupId ? getExpandableItemsAsyncLoadingState?.({ item }) : undefined) ?? 'finished';
+
+  const i18n = useInternalI18n('button-dropdown');
+  const recoveryText = i18n('recoveryText', asyncLoadingProps?.recoveryText);
+  const errorIconAriaLabel = i18n('errorIconAriaLabel', asyncLoadingProps?.errorIconAriaLabel);
+
+  const status = useDropdownStatus({
+    statusType,
+    empty: asyncLoadingProps?.empty?.(groupId),
+    loadingText: asyncLoadingProps?.loadingText?.(groupId),
+    finishedText: asyncLoadingProps?.finishedText?.(groupId),
+    errorText: asyncLoadingProps?.errorText?.(groupId),
+    recoveryText,
+    errorIconAriaLabel,
+    isEmpty: statusType === 'finished' && !hasGroupItems,
+    isNoMatch: false,
+    hasRecoveryCallback: !!onGroupRecoveryClick,
+    recoveryButtonId: statusIds?.recoveryButtonId,
+    onRecoveryClick: () => {
+      if (groupId) {
+        onGroupRecoveryClick?.(groupId);
+      }
+      // The recovery button disappears once loading starts. In menu mode keep focus on the group
+      // header so the dropdown stays open; in filtering mode the root moves focus back to the filter.
+      if (!filteringEnabled) {
+        triggerRef.current?.focus();
+      }
+    },
+  });
+
+  return { status, footerId, hasGroupItems };
+}

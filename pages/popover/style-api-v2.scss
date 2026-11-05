@@ -1,0 +1,42 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~components/styling/popover';
+@use '~components/styling/button';
+@use '../style-api/palette' as palette;
+
+.popover-brand {
+  @include popover.container(
+    $background: palette.$genai-surface,
+    $border-color: palette.$genai,
+    $border-width: 3px,
+    $border-radius: 8px
+  );
+}
+
+.popover-brand-arrow {
+  @include popover.arrow($fill-color: palette.$genai-surface, $border-color: palette.$genai, $border-width: 3px);
+}
+
+.popover-borderless {
+  @include popover.container(
+    $background: palette.$info-surface,
+    $border-width: 0px,
+    $border-radius: 4px,
+    $box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2)
+  );
+}
+
+.popover-borderless-arrow {
+  @include popover.arrow($fill-color: palette.$info, $border-width: 0px);
+}
+
+.popover-brand-dismiss {
+  @include button.root($color: palette.$genai, $focus-ring-color: palette.$genai);
+
+  &:hover {
+    @include button.root($color: palette.$genai-hover);
+  }
+}

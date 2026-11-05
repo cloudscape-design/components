@@ -21,6 +21,7 @@ import { ContainerProps } from './interfaces';
 import { getContentStyles, getFooterStyles, getHeaderStyles, getMediaStyles, getRootStyles } from './style';
 import { StickyHeaderContext, useStickyHeader } from './use-sticky-header';
 
+import headerAnalyticsSelectors from '../header/analytics-metadata/styles.css.js';
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 import testStyles from './test-classes/styles.css.js';
@@ -47,10 +48,26 @@ export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>,
   __subStepRef?: ReturnType<typeof useFunnelSubStep>['subStepRef'];
 
   /**
-   * React key attached to the content wrapper. It is used to force content re-mount but not container re-mount, which
-   * is necessary for components that use container as a root node internally so that their test-utils wrapper is not detached.
+   * React key attached to the content element. It is used to force content re-mount (and reset the content error boundary)
+   * without re-mounting the container root, header, or footer. Components that use container as a root node internally rely
+   * on this so that their test-utils wrapper is not detached and focus inside the header is preserved.
    */
   __contentKey?: string;
+
+  styleClassNames?: StyleClassNames;
+
+  /**
+   * Native attributes spread onto the container root, for ARIA that `getBaseProps` does not forward
+   * (it forwards only id/className/data-*).
+   */
+  __nativeAttributes?: React.HTMLAttributes<HTMLDivElement>;
+}
+
+// Style API v2
+export interface StyleClassNames {
+  root?: string;
+  header?: string;
+  footer?: string;
 }
 
 export const InternalContainerAsSubstep = React.forwardRef(
@@ -93,6 +110,8 @@ const InternalContainer = React.forwardRef(function InternalContainer(
     __funnelSubStepProps,
     __subStepRef,
     __contentKey,
+    styleClassNames,
+    __nativeAttributes,
     ...restProps
   }: InternalContainerProps,
   ref: React.Ref<ContainerProps.Ref>
@@ -157,7 +176,9 @@ const InternalContainer = React.forwardRef(function InternalContainer(
     <div
       {...baseProps}
       {...__funnelSubStepProps}
+      {...__nativeAttributes}
       className={clsx(
+        styleClassNames?.root,
         baseProps.className,
         styles.root,
         styles[`variant-${variant}`],
@@ -171,7 +192,8 @@ const InternalContainer = React.forwardRef(function InternalContainer(
       ref={mergedRef}
       onBlur={onRootBlur}
       {...getAnalyticsLabelAttribute(
-        `.${analyticsSelectors.header} h1, .${analyticsSelectors.header} h2, .${analyticsSelectors.header} h3`
+        // heading-text covers Header titles rendered outside h1-h3 via headingTagOverride.
+        `.${analyticsSelectors.header} :is(h1, h2, h3, .${headerAnalyticsSelectors['heading-text']})`
       )}
       style={getRootStyles(style)}
     >
@@ -190,7 +212,6 @@ const InternalContainer = React.forwardRef(function InternalContainer(
       <div
         id={contentId}
         ref={__subStepRef}
-        key={__contentKey}
         className={clsx(styles['content-wrapper'], fitHeight && styles['content-wrapper-fit-height'])}
       >
         {/* We use a wrapper around the boundary to preserve container's paddings. */}
@@ -201,6 +222,7 @@ const InternalContainer = React.forwardRef(function InternalContainer(
                 <div
                   id={headerId}
                   className={clsx(
+                    styleClassNames?.header,
                     isRefresh && styles.refresh,
                     styles.header,
                     analyticsSelectors.header,
@@ -228,7 +250,7 @@ const InternalContainer = React.forwardRef(function InternalContainer(
               </StickyHeaderContext.Provider>
             </ContainerHeaderContextProvider>
           )}
-          <div className={clsx(styles.content, fitHeight && styles['content-fit-height'])}>
+          <div key={__contentKey} className={clsx(styles.content, fitHeight && styles['content-fit-height'])}>
             <div
               className={clsx(styles['content-inner'], testStyles['content-inner'], {
                 [styles['with-paddings']]: !disableContentPaddings,
@@ -250,7 +272,7 @@ const InternalContainer = React.forwardRef(function InternalContainer(
           </div>
           {footer && (
             <div
-              className={clsx(styles.footer, {
+              className={clsx(styleClassNames?.footer, styles.footer, {
                 [styles['with-divider']]: !__disableFooterDivider,
                 [styles['with-paddings']]: !disableFooterPaddings,
               })}

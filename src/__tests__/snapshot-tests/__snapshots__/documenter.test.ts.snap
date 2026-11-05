@@ -3368,6 +3368,7 @@ Instead, use \`onSelect\` in combination with the \`onChange\` handler only as a
                       "caret-right-filled",
                       "caret-up-filled",
                       "caret-up",
+                      "chart",
                       "check",
                       "contact",
                       "closed-caption",
@@ -3380,6 +3381,7 @@ Instead, use \`onSelect\` in combination with the \`onChange\` handler only as a
                       "envelope",
                       "exit-full-screen",
                       "expand",
+                      "eye",
                       "face-happy",
                       "face-happy-filled",
                       "face-neutral",
@@ -3421,6 +3423,7 @@ Instead, use \`onSelect\` in combination with the \`onChange\` handler only as a
                       "side-bar",
                       "slash",
                       "slash-divider",
+                      "sliders",
                       "star-filled",
                       "star-half",
                       "star",
@@ -3459,6 +3462,7 @@ Instead, use \`onSelect\` in combination with the \`onChange\` handler only as a
                       "view-full",
                       "view-horizontal",
                       "view-vertical",
+                      "view-vertical-start",
                       "zoom-to-fit",
                     ],
                   },
@@ -5860,6 +5864,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "caret-right-filled",
           "caret-up-filled",
           "caret-up",
+          "chart",
           "check",
           "contact",
           "closed-caption",
@@ -5872,6 +5877,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "envelope",
           "exit-full-screen",
           "expand",
+          "eye",
           "face-happy",
           "face-happy-filled",
           "face-neutral",
@@ -5913,6 +5919,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "side-bar",
           "slash",
           "slash-divider",
+          "sliders",
           "star-filled",
           "star-half",
           "star",
@@ -5951,6 +5958,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "view-full",
           "view-horizontal",
           "view-vertical",
+          "view-vertical-start",
           "zoom-to-fit",
         ],
       },
@@ -6409,6 +6417,51 @@ modifier keys (that is, CTRL, ALT, SHIFT, META), and the item has an \`href\` se
       "detailType": "ButtonDropdownProps.ItemClickDetails",
       "name": "onItemFollow",
     },
+    {
+      "cancelable": false,
+      "description": "Use this event to implement the asynchronous behavior for the component.
+
+The event is called in the following situations:
+* The dropdown opens, unless the same filtering text was already requested.
+* The user types inside the filtering input field.
+* The user scrolls to the end of the list of items, if \`statusType\` is set to \`pending\`.
+* The user clicks on the recovery button in the error state.
+* The user expands an expandable group that has an \`id\`.
+
+The detail object contains the following properties:
+* \`filteringText\` - The value that you need to use to fetch items. It is empty for events about an expandable group.
+* \`firstPage\` - Indicates that you should fetch the first page of items that match the \`filteringText\`.
+* \`samePage\` - Indicates that you should fetch the same page that you have previously fetched (for example, when the user clicks on the recovery button).
+* \`expandedGroupId\` - Set when the event is about an expandable group: the ID of the group whose items you need to load.",
+      "detailInlineType": {
+        "name": "ButtonDropdownProps.LoadItemsDetail",
+        "properties": [
+          {
+            "name": "expandedGroupId",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "filteringText",
+            "optional": false,
+            "type": "string",
+          },
+          {
+            "name": "firstPage",
+            "optional": false,
+            "type": "boolean",
+          },
+          {
+            "name": "samePage",
+            "optional": false,
+            "type": "boolean",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "ButtonDropdownProps.LoadItemsDetail",
+      "name": "onLoadItems",
+    },
   ],
   "functions": [
     {
@@ -6444,6 +6497,121 @@ Use this to provide an accessible name for buttons that don't have visible text.
       "type": "string",
     },
     {
+      "description": "Contains all the properties for async loading. Make sure to listen to \`onLoadItems\`.
+
+The text properties (\`empty\`, \`loadingText\`, \`finishedText\`, \`errorText\`) are functions that receive the
+\`expandedGroupId\` when the status belongs to an expandable group, and no argument for the root list.
+* \`empty\` - (Optional) Displayed when there are no items to display. This is only shown when \`statusType\` is set to \`finished\` or not set at all.
+* \`loadingText\` - (Optional) Specifies the text to display when in the loading state.
+* \`finishedText\` - (Optional) Specifies the text to display at the bottom of the dropdown menu after pagination has reached the end.
+* \`errorText\` - (Optional) Specifies the text to display when a data fetching error occurs. Make sure that you provide \`recoveryText\`.
+* \`recoveryText\` (i18n) - (Optional) Specifies the text for the recovery button. The text is displayed next to the error text. Use the \`onLoadItems\` event to perform a recovery action (for example, retrying the request).
+* \`errorIconAriaLabel\` (i18n) - (Optional) Provides a text alternative for the error icon in the error message.
+* \`statusType\` - (Optional) Specifies the current status of loading more items.
+* * \`pending\` - Indicates that no request is in progress, but more items may be loaded.
+* * \`loading\` - Indicates that data fetching is in progress.
+* * \`finished\` - Indicates that pagination has finished and no more requests are expected.
+* * \`error\` - Indicates that an error occurred during fetch. You should use \`recoveryText\` to enable the user to recover.",
+      "inlineType": {
+        "name": "ButtonDropdownProps.AsyncLoadingProps",
+        "properties": [
+          {
+            "inlineType": {
+              "name": "(expandedGroupId?: string | undefined) => React.ReactNode",
+              "parameters": [
+                {
+                  "name": "expandedGroupId",
+                  "type": "string",
+                },
+              ],
+              "returnType": "React.ReactNode",
+              "type": "function",
+            },
+            "name": "empty",
+            "optional": true,
+            "type": "((expandedGroupId?: string | undefined) => React.ReactNode)",
+          },
+          {
+            "name": "errorIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "(expandedGroupId?: string | undefined) => string",
+              "parameters": [
+                {
+                  "name": "expandedGroupId",
+                  "type": "string",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "errorText",
+            "optional": true,
+            "type": "((expandedGroupId?: string | undefined) => string)",
+          },
+          {
+            "inlineType": {
+              "name": "(expandedGroupId?: string | undefined) => string",
+              "parameters": [
+                {
+                  "name": "expandedGroupId",
+                  "type": "string",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "finishedText",
+            "optional": true,
+            "type": "((expandedGroupId?: string | undefined) => string)",
+          },
+          {
+            "inlineType": {
+              "name": "(expandedGroupId?: string | undefined) => string",
+              "parameters": [
+                {
+                  "name": "expandedGroupId",
+                  "type": "string",
+                },
+              ],
+              "returnType": "string",
+              "type": "function",
+            },
+            "name": "loadingText",
+            "optional": true,
+            "type": "((expandedGroupId?: string | undefined) => string)",
+          },
+          {
+            "name": "recoveryText",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "inlineType": {
+              "name": "ButtonDropdownProps.AsyncLoadingStatusType",
+              "type": "union",
+              "values": [
+                "error",
+                "finished",
+                "loading",
+                "pending",
+              ],
+            },
+            "name": "statusType",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "asyncLoadingProps",
+      "optional": true,
+      "type": "ButtonDropdownProps.AsyncLoadingProps",
+    },
+    {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -6459,7 +6627,8 @@ Use this to provide an accessible name for buttons that don't have visible text.
     },
     {
       "defaultValue": "false",
-      "description": "Controls expandability of the item groups.",
+      "description": "Controls expandability of the item groups.
+If group items are loaded asynchronously, return each group's status from \`getExpandableItemsAsyncLoadingState\`.",
       "name": "expandableGroups",
       "optional": true,
       "type": "boolean",
@@ -6522,17 +6691,25 @@ because fixed positioning results in a slight, visible lag when scrolling comple
     },
     {
       "defaultValue": "'none'",
-      "description": "Enables filtering of the dropdown items.
+      "description": "Determines how filtering is applied to the dropdown \`items\`:
 
-When set to \`auto\`, a search input is rendered inside the dropdown and the items are filtered as the user
-types. Items are matched client-side using a case-insensitive substring match against their \`text\`,
-\`secondaryText\`, and \`labelTag\`.",
+* \`auto\` - The component will automatically filter items based on user input.
+* \`manual\` - You will set up \`onLoadItems\` event listeners and filter items on your side or request
+them from server.
+
+If you set this property to \`auto\`, the component will filter the provided \`items\` based on the value of the filtering input field.
+The filtering text is matched against the item's \`text\`, \`secondaryText\`, and \`labelTag\`.
+
+If you set this property to \`manual\`, the default filtering mechanism is disabled and all provided \`items\` are
+displayed in the dropdown list. In that case make sure that you use the \`onLoadItems\` events in order
+to set the \`items\` property to the items that are relevant for the user, given the filtering input value.",
       "inlineType": {
         "name": "ButtonDropdownProps.FilteringType",
         "type": "union",
         "values": [
           "auto",
           "none",
+          "manual",
         ],
       },
       "name": "filteringType",
@@ -6544,6 +6721,32 @@ types. Items are matched client-side using a case-insensitive substring match ag
       "name": "fullWidth",
       "optional": true,
       "type": "boolean",
+    },
+    {
+      "description": "Specifies the async loading status of individual expandable groups.
+Use only if you load the nested items asynchronously upon expanding a group.
+
+Return values are:
+* \`pending\` - Indicates that no request in progress, but more options may be loaded.
+* \`loading\` - Indicates that data fetching is in progress.
+* \`finished\` - Indicates that the group's items are loaded and no more requests are expected.
+* \`error\` - Indicates that an error occurred during fetch. You should use \`recoveryText\` to enable the user to recover.
+
+If null or undefined, the status will be treated as \`finished\`.",
+      "inlineType": {
+        "name": "(options: { item: ButtonDropdownProps.ItemGroup; }) => ButtonDropdownProps.AsyncLoadingStatusType | null",
+        "parameters": [
+          {
+            "name": "options",
+            "type": "{ item: ButtonDropdownProps.ItemGroup; }",
+          },
+        ],
+        "returnType": "ButtonDropdownProps.AsyncLoadingStatusType | null",
+        "type": "function",
+      },
+      "name": "getExpandableItemsAsyncLoadingState",
+      "optional": true,
+      "type": "((options: { item: ButtonDropdownProps.ItemGroup; }) => ButtonDropdownProps.AsyncLoadingStatusType | null | undefined)",
     },
     {
       "description": "An object containing all the necessary localized strings required by the component.",
@@ -6628,6 +6831,7 @@ Defaults to \`ellipsis\`. Applies to the \`icon\` and \`inline-icon\` variants o
           "caret-right-filled",
           "caret-up-filled",
           "caret-up",
+          "chart",
           "check",
           "contact",
           "closed-caption",
@@ -6640,6 +6844,7 @@ Defaults to \`ellipsis\`. Applies to the \`icon\` and \`inline-icon\` variants o
           "envelope",
           "exit-full-screen",
           "expand",
+          "eye",
           "face-happy",
           "face-happy-filled",
           "face-neutral",
@@ -6681,6 +6886,7 @@ Defaults to \`ellipsis\`. Applies to the \`icon\` and \`inline-icon\` variants o
           "side-bar",
           "slash",
           "slash-divider",
+          "sliders",
           "star-filled",
           "star-half",
           "star",
@@ -6719,6 +6925,7 @@ Defaults to \`ellipsis\`. Applies to the \`icon\` and \`inline-icon\` variants o
           "view-full",
           "view-horizontal",
           "view-vertical",
+          "view-vertical-start",
           "zoom-to-fit",
         ],
       },
@@ -6749,7 +6956,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
 The following properties are supported across all types:
 
 - \`type\` (string) - The type of the item. Can be \`action\`, \`group\`, \`checkbox\`. Defaults to \`action\` if \`items\` undefined and \`group\` otherwise.
-- \`id\` (string) - allows to identify the item that the user clicked on. Mandatory for individual items, optional for categories.
+- \`id\` (string) - allows to identify the item that the user clicked on. Mandatory for individual items, optional for categories. Mandatory for expandable groups whose items you load asynchronously.
 - \`text\` (string) - description shown in the menu for this item. Mandatory for individual items, optional for categories.
 - \`lang\` (string) - (Optional) The language of the item, provided as a BCP 47 language tag.
 - \`disabled\` (boolean) - whether the item is disabled. Disabled items are not clickable, but they can be highlighted with the keyboard to make them accessible.
@@ -6926,6 +7133,7 @@ The main action also supports the following properties of the [button](/componen
                 "caret-right-filled",
                 "caret-up-filled",
                 "caret-up",
+                "chart",
                 "check",
                 "contact",
                 "closed-caption",
@@ -6938,6 +7146,7 @@ The main action also supports the following properties of the [button](/componen
                 "envelope",
                 "exit-full-screen",
                 "expand",
+                "eye",
                 "face-happy",
                 "face-happy-filled",
                 "face-neutral",
@@ -6979,6 +7188,7 @@ The main action also supports the following properties of the [button](/componen
                 "side-bar",
                 "slash",
                 "slash-divider",
+                "sliders",
                 "star-filled",
                 "star-half",
                 "star",
@@ -7017,6 +7227,7 @@ The main action also supports the following properties of the [button](/componen
                 "view-full",
                 "view-horizontal",
                 "view-vertical",
+                "view-vertical-start",
                 "zoom-to-fit",
               ],
             },
@@ -7283,7 +7494,8 @@ If you set both \`iconUrl\` and \`iconSvg\`, \`iconSvg\` will take precedence.",
       "name": "iconSvg",
     },
     {
-      "description": "Displayed when filtering is enabled and there are no matches for the filtering input.",
+      "description": "Displayed when filtering is enabled and there are no matches for the filtering input.
+With \`filteringType="manual"\`, this is shown when you set \`items\` to an empty array while the filtering input has a value.",
       "isDefault": false,
       "name": "noMatch",
     },
@@ -10933,6 +11145,7 @@ exports[`Components definition for control-group matches the snapshot: control-g
                 "caret-right-filled",
                 "caret-up-filled",
                 "caret-up",
+                "chart",
                 "check",
                 "contact",
                 "closed-caption",
@@ -10945,6 +11158,7 @@ exports[`Components definition for control-group matches the snapshot: control-g
                 "envelope",
                 "exit-full-screen",
                 "expand",
+                "eye",
                 "face-happy",
                 "face-happy-filled",
                 "face-neutral",
@@ -10986,6 +11200,7 @@ exports[`Components definition for control-group matches the snapshot: control-g
                 "side-bar",
                 "slash",
                 "slash-divider",
+                "sliders",
                 "star-filled",
                 "star-half",
                 "star",
@@ -11024,6 +11239,7 @@ exports[`Components definition for control-group matches the snapshot: control-g
                 "view-full",
                 "view-horizontal",
                 "view-vertical",
+                "view-vertical-start",
                 "zoom-to-fit",
               ],
             },
@@ -13118,6 +13334,7 @@ Do not use this property when using drawers inside app layout.",
                 "caret-right-filled",
                 "caret-up-filled",
                 "caret-up",
+                "chart",
                 "check",
                 "contact",
                 "closed-caption",
@@ -13130,6 +13347,7 @@ Do not use this property when using drawers inside app layout.",
                 "envelope",
                 "exit-full-screen",
                 "expand",
+                "eye",
                 "face-happy",
                 "face-happy-filled",
                 "face-neutral",
@@ -13171,6 +13389,7 @@ Do not use this property when using drawers inside app layout.",
                 "side-bar",
                 "slash",
                 "slash-divider",
+                "sliders",
                 "star-filled",
                 "star-half",
                 "star",
@@ -13209,6 +13428,7 @@ Do not use this property when using drawers inside app layout.",
                 "view-full",
                 "view-horizontal",
                 "view-vertical",
+                "view-vertical-start",
                 "zoom-to-fit",
               ],
             },
@@ -14043,6 +14263,14 @@ slot (not with the deprecated \`header\`), and not with the navigation variant."
       "type": "string",
     },
     {
+      "description": "Visually hides the header text while keeping it available to assistive technology.
+Use with \`headerSecondaryContent\` to present a purely interactive header control.
+Use with the default or container variant.",
+      "name": "hideHeaderText",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
@@ -14099,6 +14327,12 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "The area next to the heading, used to display an Info link. Use with the container or stacked variants.",
       "isDefault": false,
       "name": "headerInfo",
+    },
+    {
+      "description": "Secondary content displayed next to the header text, such as an interactive control or supporting text.
+Use with the default or container variant.",
+      "isDefault": false,
+      "name": "headerSecondaryContent",
     },
     {
       "description": "The heading text. Use plain text. When using the container variant, you can use additional header props like \`headerDescription\` and \`headerCounter\` to display other elements in the header.",
@@ -16005,16 +16239,19 @@ exports[`Components definition for header matches the snapshot: header 1`] = `
     },
     {
       "description": "Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements)
-provided by the variant. Using this property does not change the visual appearance of the component.",
+provided by the variant. Set to \`div\` to render the title without heading semantics. Using this property does not
+change the visual appearance of the component.",
       "inlineType": {
         "name": "HeaderProps.HeadingTag",
         "type": "union",
         "values": [
+          "div",
           "h1",
           "h2",
           "h3",
           "h4",
           "h5",
+          "h6",
         ],
       },
       "name": "headingTagOverride",
@@ -16332,6 +16569,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
           "caret-right-filled",
           "caret-up-filled",
           "caret-up",
+          "chart",
           "check",
           "contact",
           "closed-caption",
@@ -16344,6 +16582,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
           "envelope",
           "exit-full-screen",
           "expand",
+          "eye",
           "face-happy",
           "face-happy-filled",
           "face-neutral",
@@ -16385,6 +16624,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
           "side-bar",
           "slash",
           "slash-divider",
+          "sliders",
           "star-filled",
           "star-half",
           "star",
@@ -16423,6 +16663,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
           "view-full",
           "view-horizontal",
           "view-vertical",
+          "view-vertical-start",
           "zoom-to-fit",
         ],
       },
@@ -16826,6 +17067,11 @@ The same applies to switching icons in the same configuration (for example, \`{'
             "type": "React.ReactNode",
           },
           {
+            "name": "chart",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          {
             "name": "check",
             "optional": true,
             "type": "React.ReactNode",
@@ -16917,6 +17163,11 @@ The same applies to switching icons in the same configuration (for example, \`{'
           },
           {
             "name": "external",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          {
+            "name": "eye",
             "optional": true,
             "type": "React.ReactNode",
           },
@@ -17201,6 +17452,11 @@ The same applies to switching icons in the same configuration (for example, \`{'
             "type": "React.ReactNode",
           },
           {
+            "name": "sliders",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          {
             "name": "star",
             "optional": true,
             "type": "React.ReactNode",
@@ -17392,6 +17648,11 @@ The same applies to switching icons in the same configuration (for example, \`{'
           },
           {
             "name": "view-vertical",
+            "optional": true,
+            "type": "React.ReactNode",
+          },
+          {
+            "name": "view-vertical-start",
             "optional": true,
             "type": "React.ReactNode",
           },
@@ -22684,6 +22945,7 @@ Requires React 18.",
                       "caret-right-filled",
                       "caret-up-filled",
                       "caret-up",
+                      "chart",
                       "check",
                       "contact",
                       "closed-caption",
@@ -22696,6 +22958,7 @@ Requires React 18.",
                       "envelope",
                       "exit-full-screen",
                       "expand",
+                      "eye",
                       "face-happy",
                       "face-happy-filled",
                       "face-neutral",
@@ -22737,6 +23000,7 @@ Requires React 18.",
                       "side-bar",
                       "slash",
                       "slash-divider",
+                      "sliders",
                       "star-filled",
                       "star-half",
                       "star",
@@ -22775,6 +23039,7 @@ Requires React 18.",
                       "view-full",
                       "view-horizontal",
                       "view-vertical",
+                      "view-vertical-start",
                       "zoom-to-fit",
                     ],
                   },
@@ -23055,6 +23320,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "caret-right-filled",
           "caret-up-filled",
           "caret-up",
+          "chart",
           "check",
           "contact",
           "closed-caption",
@@ -23067,6 +23333,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "envelope",
           "exit-full-screen",
           "expand",
+          "eye",
           "face-happy",
           "face-happy-filled",
           "face-neutral",
@@ -23108,6 +23375,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "side-bar",
           "slash",
           "slash-divider",
+          "sliders",
           "star-filled",
           "star-half",
           "star",
@@ -23146,6 +23414,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "view-full",
           "view-horizontal",
           "view-vertical",
+          "view-vertical-start",
           "zoom-to-fit",
         ],
       },
@@ -26672,6 +26941,7 @@ The event \`detail\` contains the current \`selectedOption\`.",
                       "caret-right-filled",
                       "caret-up-filled",
                       "caret-up",
+                      "chart",
                       "check",
                       "contact",
                       "closed-caption",
@@ -26684,6 +26954,7 @@ The event \`detail\` contains the current \`selectedOption\`.",
                       "envelope",
                       "exit-full-screen",
                       "expand",
+                      "eye",
                       "face-happy",
                       "face-happy-filled",
                       "face-neutral",
@@ -26725,6 +26996,7 @@ The event \`detail\` contains the current \`selectedOption\`.",
                       "side-bar",
                       "slash",
                       "slash-divider",
+                      "sliders",
                       "star-filled",
                       "star-half",
                       "star",
@@ -26763,6 +27035,7 @@ The event \`detail\` contains the current \`selectedOption\`.",
                       "view-full",
                       "view-horizontal",
                       "view-vertical",
+                      "view-vertical-start",
                       "zoom-to-fit",
                     ],
                   },
@@ -27358,6 +27631,7 @@ If you want to clear the selection, use \`null\`.",
                 "caret-right-filled",
                 "caret-up-filled",
                 "caret-up",
+                "chart",
                 "check",
                 "contact",
                 "closed-caption",
@@ -27370,6 +27644,7 @@ If you want to clear the selection, use \`null\`.",
                 "envelope",
                 "exit-full-screen",
                 "expand",
+                "eye",
                 "face-happy",
                 "face-happy-filled",
                 "face-neutral",
@@ -27411,6 +27686,7 @@ If you want to clear the selection, use \`null\`.",
                 "side-bar",
                 "slash",
                 "slash-divider",
+                "sliders",
                 "star-filled",
                 "star-half",
                 "star",
@@ -27449,6 +27725,7 @@ If you want to clear the selection, use \`null\`.",
                 "view-full",
                 "view-horizontal",
                 "view-vertical",
+                "view-vertical-start",
                 "zoom-to-fit",
               ],
             },
@@ -33747,6 +34024,7 @@ If an href is provided, it opens the link in a new tab.",
           "caret-right-filled",
           "caret-up-filled",
           "caret-up",
+          "chart",
           "check",
           "contact",
           "closed-caption",
@@ -33759,6 +34037,7 @@ If an href is provided, it opens the link in a new tab.",
           "envelope",
           "exit-full-screen",
           "expand",
+          "eye",
           "face-happy",
           "face-happy-filled",
           "face-neutral",
@@ -33800,6 +34079,7 @@ If an href is provided, it opens the link in a new tab.",
           "side-bar",
           "slash",
           "slash-divider",
+          "sliders",
           "star-filled",
           "star-half",
           "star",
@@ -33838,6 +34118,7 @@ If an href is provided, it opens the link in a new tab.",
           "view-full",
           "view-horizontal",
           "view-vertical",
+          "view-vertical-start",
           "zoom-to-fit",
         ],
       },
@@ -33968,6 +34249,7 @@ operations performed directly on the native element may bypass the built-in comp
           "caret-right-filled",
           "caret-up-filled",
           "caret-up",
+          "chart",
           "check",
           "contact",
           "closed-caption",
@@ -33980,6 +34262,7 @@ operations performed directly on the native element may bypass the built-in comp
           "envelope",
           "exit-full-screen",
           "expand",
+          "eye",
           "face-happy",
           "face-happy-filled",
           "face-neutral",
@@ -34021,6 +34304,7 @@ operations performed directly on the native element may bypass the built-in comp
           "side-bar",
           "slash",
           "slash-divider",
+          "sliders",
           "star-filled",
           "star-half",
           "star",
@@ -34059,6 +34343,7 @@ operations performed directly on the native element may bypass the built-in comp
           "view-full",
           "view-horizontal",
           "view-vertical",
+          "view-vertical-start",
           "zoom-to-fit",
         ],
       },
@@ -35239,27 +35524,28 @@ exports[`Components definition for tutorial-panel matches the snapshot: tutorial
     },
     {
       "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
       "inlineType": {
         "name": "TutorialPanelProps.I18nStrings",
         "properties": [
           {
             "name": "completionScreenTitle",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           {
             "name": "dismissTutorialButtonText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           {
             "name": "feedbackLinkText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           {
             "name": "labelExitTutorial",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           {
@@ -35274,29 +35560,29 @@ exports[`Components definition for tutorial-panel matches the snapshot: tutorial
           },
           {
             "inlineType": {
-              "name": "{ pending: string; 'in-progress': string; success: string; }",
+              "name": "{ pending?: string | undefined; 'in-progress'?: string | undefined; success?: string | undefined; }",
               "properties": [
                 {
                   "name": "in-progress",
-                  "optional": false,
+                  "optional": true,
                   "type": "string",
                 },
                 {
                   "name": "pending",
-                  "optional": false,
+                  "optional": true,
                   "type": "string",
                 },
                 {
                   "name": "success",
-                  "optional": false,
+                  "optional": true,
                   "type": "string",
                 },
               ],
               "type": "object",
             },
             "name": "labelsTaskStatus",
-            "optional": false,
-            "type": "{ pending: string; 'in-progress': string; success: string; }",
+            "optional": true,
+            "type": "{ pending?: string | undefined; 'in-progress'?: string | undefined; success?: string | undefined; }",
           },
           {
             "inlineType": {
@@ -35311,8 +35597,8 @@ exports[`Components definition for tutorial-panel matches the snapshot: tutorial
               "type": "function",
             },
             "name": "labelTotalSteps",
-            "optional": false,
-            "type": "(totalStepCount: number) => string",
+            "optional": true,
+            "type": "((totalStepCount: number) => string)",
           },
           {
             "name": "labelTutorialListDownloadLink",
@@ -35321,22 +35607,22 @@ exports[`Components definition for tutorial-panel matches the snapshot: tutorial
           },
           {
             "name": "learnMoreLinkText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           {
             "name": "loadingText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           {
             "name": "restartTutorialButtonText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           {
             "name": "startTutorialButtonText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           {
@@ -35356,8 +35642,8 @@ exports[`Components definition for tutorial-panel matches the snapshot: tutorial
               "type": "function",
             },
             "name": "stepTitle",
-            "optional": false,
-            "type": "(stepIndex: number, stepTitle: string) => string",
+            "optional": true,
+            "type": "((stepIndex: number, stepTitle: string) => string)",
           },
           {
             "inlineType": {
@@ -35376,12 +35662,12 @@ exports[`Components definition for tutorial-panel matches the snapshot: tutorial
               "type": "function",
             },
             "name": "taskTitle",
-            "optional": false,
-            "type": "(taskIndex: number, taskTitle: string) => string",
+            "optional": true,
+            "type": "((taskIndex: number, taskTitle: string) => string)",
           },
           {
             "name": "tutorialCompletedText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           {
@@ -35391,12 +35677,12 @@ exports[`Components definition for tutorial-panel matches the snapshot: tutorial
           },
           {
             "name": "tutorialListDownloadLinkText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           {
             "name": "tutorialListTitle",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],
@@ -36733,6 +37019,31 @@ Use this method to assert the panel position.",
           },
         },
         {
+          "description": "Finds the error recovery button when item loading fails.
+Set \`expandedGroupDropdown\` to true to access the recovery button of an expanded group.
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
+          "name": "findErrorRecoveryButton",
+          "parameters": [
+            {
+              "defaultValue": "{ expandedGroupDropdown: false }",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandedGroupDropdown: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "description": "Finds an expandable category in the open dropdown by category id. Returns null if there is no open dropdown.
 
 This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
@@ -36908,6 +37219,31 @@ Supported options:
         {
           "name": "findOpenDropdown",
           "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the status displayed at the footer of the dropdown.
+Set \`expandedGroupDropdown\` to true to access the status of an expanded group.
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
+          "name": "findStatusIndicator",
+          "parameters": [
+            {
+              "defaultValue": "{ expandedGroupDropdown: false }",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandedGroupDropdown: boolean; }",
+            },
+          ],
           "returnType": {
             "isNullable": true,
             "name": "ElementWrapper",
@@ -46765,6 +47101,34 @@ Supported options:
           },
         },
         {
+          "description": "Finds the error recovery button when item loading fails.
+Set \`expandedGroupDropdown\` to true to access the recovery button of an expanded group.
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findErrorRecoveryButton",
+          },
+          "name": "findErrorRecoveryButton",
+          "parameters": [
+            {
+              "defaultValue": "{ expandedGroupDropdown: false }",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandedGroupDropdown: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "description": "Finds an expandable category in the open dropdown by category id. Returns null if there is no open dropdown.
 
 This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
@@ -47046,6 +47410,34 @@ Supported options:
               },
               "name": "options",
               "typeName": "{ disabled?: boolean | undefined; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the status displayed at the footer of the dropdown.
+Set \`expandedGroupDropdown\` to true to access the status of an expanded group.
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findStatusIndicator",
+          },
+          "name": "findStatusIndicator",
+          "parameters": [
+            {
+              "defaultValue": "{ expandedGroupDropdown: false }",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandedGroupDropdown: boolean; }",
             },
           ],
           "returnType": {
@@ -48438,6 +48830,34 @@ Searches within this tooltip's scope to avoid conflicts with popovers.",
           },
         },
         {
+          "description": "Finds the error recovery button when item loading fails.
+Set \`expandedGroupDropdown\` to true to access the recovery button of an expanded group.
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findErrorRecoveryButton",
+          },
+          "name": "findErrorRecoveryButton",
+          "parameters": [
+            {
+              "defaultValue": "{ expandedGroupDropdown: false }",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandedGroupDropdown: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "description": "Finds an expandable category in the open dropdown by category id. Returns null if there is no open dropdown.
 
 This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
@@ -48640,6 +49060,34 @@ Supported options:
           },
           "name": "findOpenDropdown",
           "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Finds the status displayed at the footer of the dropdown.
+Set \`expandedGroupDropdown\` to true to access the status of an expanded group.
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findStatusIndicator",
+          },
+          "name": "findStatusIndicator",
+          "parameters": [
+            {
+              "defaultValue": "{ expandedGroupDropdown: false }",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandedGroupDropdown: boolean; }",
+            },
+          ],
           "returnType": {
             "isNullable": true,
             "name": "ElementWrapper",
@@ -49870,6 +50318,28 @@ Use this method to assert the panel position.",
           },
         },
         {
+          "description": "Finds the error recovery button when item loading fails.
+Set \`expandedGroupDropdown\` to true to access the recovery button of an expanded group.
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
+          "name": "findErrorRecoveryButton",
+          "parameters": [
+            {
+              "defaultValue": "{
+    expandedGroupDropdown: false
+  }",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandedGroupDropdown: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "description": "Finds an expandable category in the open dropdown by category id. Returns null if there is no open dropdown.
 
 This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
@@ -50001,6 +50471,28 @@ Supported options:
         {
           "name": "findOpenDropdown",
           "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the status displayed at the footer of the dropdown.
+Set \`expandedGroupDropdown\` to true to access the status of an expanded group.
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
+          "name": "findStatusIndicator",
+          "parameters": [
+            {
+              "defaultValue": "{
+    expandedGroupDropdown: false
+  }",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandedGroupDropdown: boolean; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "ElementWrapper",
@@ -57062,6 +57554,31 @@ Supported options:
           },
         },
         {
+          "description": "Finds the error recovery button when item loading fails.
+Set \`expandedGroupDropdown\` to true to access the recovery button of an expanded group.
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findErrorRecoveryButton",
+          },
+          "name": "findErrorRecoveryButton",
+          "parameters": [
+            {
+              "defaultValue": "{
+    expandedGroupDropdown: false
+  }",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandedGroupDropdown: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "description": "Finds an expandable category in the open dropdown by category id. Returns null if there is no open dropdown.
 
 This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
@@ -57281,6 +57798,31 @@ Supported options:
               },
               "name": "options",
               "typeName": "{ disabled?: boolean | undefined; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the status displayed at the footer of the dropdown.
+Set \`expandedGroupDropdown\` to true to access the status of an expanded group.
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findStatusIndicator",
+          },
+          "name": "findStatusIndicator",
+          "parameters": [
+            {
+              "defaultValue": "{
+    expandedGroupDropdown: false
+  }",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandedGroupDropdown: boolean; }",
             },
           ],
           "returnType": {
@@ -58267,6 +58809,31 @@ Searches within this tooltip's scope to avoid conflicts with popovers.",
           },
         },
         {
+          "description": "Finds the error recovery button when item loading fails.
+Set \`expandedGroupDropdown\` to true to access the recovery button of an expanded group.
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findErrorRecoveryButton",
+          },
+          "name": "findErrorRecoveryButton",
+          "parameters": [
+            {
+              "defaultValue": "{
+    expandedGroupDropdown: false
+  }",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandedGroupDropdown: boolean; }",
+            },
+          ],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "description": "Finds an expandable category in the open dropdown by category id. Returns null if there is no open dropdown.
 
 This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
@@ -58422,6 +58989,31 @@ Supported options:
           },
           "name": "findOpenDropdown",
           "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Finds the status displayed at the footer of the dropdown.
+Set \`expandedGroupDropdown\` to true to access the status of an expanded group.
+This utility does not open the dropdown. To find dropdown items, call \`openDropdown()\` first.",
+          "inheritedFrom": {
+            "name": "ButtonDropdownWrapper.findStatusIndicator",
+          },
+          "name": "findStatusIndicator",
+          "parameters": [
+            {
+              "defaultValue": "{
+    expandedGroupDropdown: false
+  }",
+              "flags": {
+                "isOptional": false,
+              },
+              "name": "options",
+              "typeName": "{ expandedGroupDropdown: boolean; }",
+            },
+          ],
           "returnType": {
             "isNullable": false,
             "name": "ElementWrapper",

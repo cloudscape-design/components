@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useImperativeHandle, useRef } from 'react';
+import clsx from 'clsx';
 
 import InternalLiveRegion, { InternalLiveRegionRef } from '../live-region/internal';
 
@@ -14,10 +15,11 @@ interface SearchResultsProps {
   id: string;
   children: string;
   renderLiveRegion: boolean;
+  className?: string;
 }
 
 export const SearchResults = React.forwardRef(
-  ({ id, renderLiveRegion, children }: SearchResultsProps, ref?: React.Ref<InternalLiveRegionRef>) => {
+  ({ id, renderLiveRegion, children, className }: SearchResultsProps, ref?: React.Ref<InternalLiveRegionRef>) => {
     const liveRegionRef = useRef<InternalLiveRegionRef>(null);
 
     useImperativeHandle(
@@ -32,7 +34,7 @@ export const SearchResults = React.forwardRef(
 
     return (
       <>
-        <span className={styles.results} id={id}>
+        <span className={clsx(className, styles.results)} id={id}>
           {children}
         </span>
         {renderLiveRegion && (

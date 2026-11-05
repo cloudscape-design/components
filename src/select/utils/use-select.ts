@@ -7,6 +7,8 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { InternalDropdownProps } from '../../dropdown/internal';
 import { ButtonTriggerProps } from '../../internal/components/button-trigger';
+import { SelectionModel } from '../../internal/components/listbox/selection/interfaces';
+import { singleSelection } from '../../internal/components/listbox/selection/single-selection';
 import { connectOptionsByValue } from '../../internal/components/listbox/utils/connect-options';
 import { DropdownOption } from '../../internal/components/option/interfaces';
 import { isGroup, isGroupInteractive, isInteractive } from '../../internal/components/option/utils/filter-options';
@@ -20,7 +22,7 @@ import useForwardFocus from '../../internal/hooks/forward-focus';
 import { usePrevious } from '../../internal/hooks/use-previous';
 import { DropdownStatusProps } from '../../types/dropdown-status';
 import { NonCancelableEventHandler } from '../../types/events';
-import { OptionDefinition, OptionGroup } from '../../types/option';
+import { OptionDefinition } from '../../types/option';
 import { SelectProps } from '../interfaces';
 import { FilterProps } from '../parts/filter';
 import { ItemProps } from '../parts/item';
@@ -42,8 +44,8 @@ interface UseSelectProps {
   setFilteringValue?: (filteringText: string) => void;
   useInteractiveGroups?: boolean;
   statusType: DropdownStatusProps.StatusType;
-  isAllSelected?: boolean;
-  isSomeSelected?: boolean;
+  /** Source of group and select-all state. Defaults to single selection over `selectedOptions`. */
+  selection?: SelectionModel;
   toggleAll?: () => void;
   dropdownRole?: SelectProps.DropdownRole;
 }
@@ -66,8 +68,7 @@ export function useSelect({
   setFilteringValue,
   useInteractiveGroups = false,
   statusType,
-  isAllSelected,
-  isSomeSelected,
+  selection = singleSelection(selectedOptions),
   toggleAll,
   dropdownRole,
 }: UseSelectProps) {
@@ -84,12 +85,6 @@ export function useSelect({
   const activeRef = hasFilter ? filterRef : menuRef;
   const __selectedOptions = connectOptionsByValue(options, selectedOptions);
   const __selectedOptionsSet = new Set(__selectedOptions);
-  const __selectedValuesSet = selectedOptions.reduce((selectedValuesSet: Set<string>, item: OptionDefinition) => {
-    if (item.value) {
-      selectedValuesSet.add(item.value);
-    }
-    return selectedValuesSet;
-  }, new Set<string>());
   const [
     { highlightType, highlightedOption, highlightedIndex },
     {
@@ -271,31 +266,23 @@ export function useSelect({
     }
     return menuProps;
   };
-  const getGroupState = (option: OptionGroup) => {
-    const totalSelected = option.options.filter(item => !!item.value && __selectedValuesSet.has(item.value)).length;
-    const hasSelected = totalSelected > 0;
-    const allSelected = totalSelected === option.options.length;
-    return {
-      selected: hasSelected && allSelected && useInteractiveGroups,
-      indeterminate: hasSelected && !allSelected,
-    };
-  };
-
   const getOptionProps = (option: DropdownOption, index: number) => {
     const isSelectAll = option.type === 'select-all';
     const highlighted = option === highlightedOption;
-    const groupState = isGroup(option.option) ? getGroupState(option.option) : undefined;
-    const selected = isSelectAll ? isAllSelected : __selectedOptionsSet.has(option) || !!groupState?.selected;
-    const nextOption = options[index + 1]?.option;
+    const groupState = isSelectAll || isGroup(option.option) ? selection.getGroupState(option) : undefined;
+    const selected = isSelectAll ? !!groupState?.selected : __selectedOptionsSet.has(option) || !!groupState?.selected;
+    // Only group neighbours use group state. Select-all never counts as a selected neighbour, so the row
+    // below it doesn't get the previous-item-selected style.
+    const nextOption = options[index + 1];
     const isNextSelected =
-      !!nextOption && isGroup(nextOption)
-        ? getGroupState(nextOption).selected
-        : __selectedOptionsSet.has(options[index + 1]);
-    const previousOption = options[index - 1]?.option;
+      !!nextOption && isGroup(nextOption.option)
+        ? selection.getGroupState(nextOption).selected
+        : __selectedOptionsSet.has(nextOption);
+    const previousOption = options[index - 1];
     const isPreviousSelected =
-      !!previousOption && isGroup(previousOption)
-        ? getGroupState(previousOption).selected
-        : __selectedOptionsSet.has(options[index - 1]);
+      !!previousOption && isGroup(previousOption.option)
+        ? selection.getGroupState(previousOption).selected
+        : __selectedOptionsSet.has(previousOption);
     const optionProps: any = {
       key: index,
       option,
@@ -303,7 +290,7 @@ export function useSelect({
       selected,
       isNextSelected,
       isPreviousSelected,
-      indeterminate: !!groupState?.indeterminate || (isSelectAll && !isAllSelected && isSomeSelected),
+      indeterminate: !!groupState?.indeterminate,
       ['data-mouse-target']: isHighlightable(option) ? index : -1,
       id: getOptionId(menuId, index),
     };
@@ -360,7 +347,7 @@ export function useSelect({
 
   useForwardFocus(externalRef, triggerRef as React.RefObject<HTMLElement>);
   const highlightedGroupSelected =
-    !!highlightedOption && isGroup(highlightedOption.option) && getGroupState(highlightedOption.option).selected;
+    !!highlightedOption && isGroup(highlightedOption.option) && selection.getGroupState(highlightedOption).selected;
   const announceSelected =
     !!highlightedOption && (__selectedOptionsSet.has(highlightedOption) || highlightedGroupSelected);
 

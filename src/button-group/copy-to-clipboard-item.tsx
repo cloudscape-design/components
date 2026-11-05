@@ -14,6 +14,7 @@ import { ButtonGroupProps } from './interfaces.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
 interface CopyToClipboardItemProps {
+  styleClassName?: string;
   item: ButtonGroupProps.IconCopyToClipboard;
   showTooltip: boolean;
   showFeedback: boolean;
@@ -26,6 +27,7 @@ interface CopyToClipboardItemProps {
 const CopyToClipboardItem = forwardRef(
   (
     {
+      styleClassName,
       item,
       showTooltip,
       showFeedback,
@@ -67,6 +69,7 @@ const CopyToClipboardItem = forwardRef(
     return (
       <div ref={containerRef}>
         <InternalButton
+          styleClassNames={{ root: styleClassName }}
           ref={ref}
           variant="icon"
           iconName="copy"

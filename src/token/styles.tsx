@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { ButtonProps } from '../button/interfaces';
 import { SYSTEM } from '../internal/environment';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { TokenProps } from './interfaces';
@@ -20,14 +21,30 @@ export function getTokenRootStyles(style: TokenProps['style']) {
     [customCssProps.tokenStyleBorderColorDefault]: style?.root?.borderColor?.default,
     [customCssProps.tokenStyleBorderColorDisabled]: style?.root?.borderColor?.disabled,
     [customCssProps.tokenStyleBorderColorReadOnly]: style?.root?.borderColor?.readOnly,
-    [customCssProps.tokenStyleDismissColorDefault]: style?.dismissButton?.color?.default,
-    [customCssProps.tokenStyleDismissColorDisabled]: style?.dismissButton?.color?.disabled,
-    [customCssProps.tokenStyleDismissColorHover]: style?.dismissButton?.color?.hover,
-    [customCssProps.tokenStyleDismissColorReadOnly]: style?.dismissButton?.color?.readOnly,
-    ...(style?.dismissButton?.focusRing && {
-      [customCssProps.styleFocusRingBorderColor]: style.dismissButton.focusRing.borderColor,
-      [customCssProps.styleFocusRingBorderRadius]: style.dismissButton.focusRing.borderRadius,
-      [customCssProps.styleFocusRingBorderWidth]: style.dismissButton.focusRing.borderWidth,
-    }),
+  };
+}
+
+// Maps the token's dismiss button style to the button style. Button has no read-only state: a read-only token
+// shows its dismiss button as disabled, and the disabled color wins when both apply. The token never had an
+// active color, so pressing keeps the hover color.
+export function getDismissButtonStyles(
+  style: TokenProps['style'],
+  { disabled, readOnly }: { disabled?: boolean; readOnly?: boolean }
+): ButtonProps.Style | undefined {
+  const dismissButton = style?.dismissButton;
+  if (SYSTEM !== 'core' || !dismissButton) {
+    return undefined;
+  }
+  const color = dismissButton.color;
+  return {
+    root: {
+      color: color && {
+        default: color.default,
+        hover: color.hover,
+        active: color.hover,
+        disabled: readOnly && !disabled ? color.readOnly : color.disabled,
+      },
+      focusRing: dismissButton.focusRing,
+    },
   };
 }

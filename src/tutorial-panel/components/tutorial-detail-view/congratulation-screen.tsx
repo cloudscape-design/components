@@ -14,7 +14,7 @@ import styles from './styles.css.js';
 interface CongratulationScreenProps {
   children: React.ReactNode;
   onFeedbackClick?: () => void;
-  i18nStrings: TutorialPanelProps['i18nStrings'];
+  i18nStrings: TutorialPanelProps.I18nStrings;
 }
 
 export function CongratulationScreen({ children, onFeedbackClick, i18nStrings }: CongratulationScreenProps) {

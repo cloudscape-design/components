@@ -1,0 +1,36 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~components/styling/container';
+@use '../style-api/palette' as palette;
+
+.container {
+  @include container.root(
+    $background: palette.$surface,
+    $border-color: palette.$border-accent,
+    $border-width: 2px,
+    $border-style: solid,
+    $box-shadow: 0 4px 12px palette.$subtle-active,
+    $border-radius: 24px
+  );
+}
+
+// Only the block-end side of the header border is visible: it is the divider between the header and the content.
+.header {
+  @include container.header(
+    $background: palette.$genai-surface,
+    $border-color: palette.$genai,
+    $border-block-width: 0 2px
+  );
+}
+
+// Only the block-start side of the footer border is visible: it is the divider between the content and the footer.
+.footer {
+  @include container.footer(
+    $background: palette.$info-surface,
+    $border-color: palette.$info,
+    $border-block-width: 3px 0
+  );
+}

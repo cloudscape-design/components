@@ -13,6 +13,7 @@ import {
 import InternalContainer, { InternalContainerProps } from '../container/internal';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { getAnalyticsMetadataProps, getBaseProps } from '../internal/base-component';
+import { StickyScrollbar } from '../internal/components/sticky-scrollbar';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
@@ -56,7 +57,6 @@ import { useGroupSelection } from './selection/use-group-selection';
 import { SkeletonRows } from './skeleton-rows';
 import { useStickyColumns } from './sticky-columns';
 import StickyHeader, { StickyHeaderRef } from './sticky-header';
-import { StickyScrollbar } from './sticky-scrollbar';
 import {
   getTableRoleProps,
   getTableRowRoleProps,
@@ -655,7 +655,11 @@ const InternalTable = React.forwardRef(
                     })}
                   >
                     {resizableColumns && columnGroupsLayout && columnGroupsLayout.rows.length > 1 && (
-                      <TableColGroup visibleColumnDefinitions={visibleColumnDefinitions} hasSelection={hasSelection} />
+                      <TableColGroup
+                        visibleColumnDefinitions={visibleColumnDefinitions}
+                        hasSelection={hasSelection}
+                        selectionColumnId={selectionColumnId}
+                      />
                     )}
                     <Thead
                       ref={theadRef}

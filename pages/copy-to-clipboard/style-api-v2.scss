@@ -1,0 +1,36 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~components/styling/button';
+@use '~components/styling/popover';
+@use '../style-api/palette' as palette;
+
+// The copy button forwards to the button root slot.
+.copy-brand {
+  @include button.root(
+    $background: palette.$control-bg,
+    $color: palette.$accent,
+    $border-color: palette.$border-accent,
+    $border-radius: 4px,
+    $focus-ring-color: palette.$accent
+  );
+
+  &:hover {
+    @include button.root($color: palette.$accent-hover, $border-color: palette.$accent-hover);
+  }
+
+  &:active {
+    @include button.root($color: palette.$accent-active);
+  }
+}
+
+// The status popover forwards to the popover container and arrow slots.
+.copy-status-popover {
+  @include popover.container($border-color: palette.$border-accent, $border-radius: 4px);
+}
+
+.copy-status-popover-arrow {
+  @include popover.arrow($border-color: palette.$border-accent);
+}

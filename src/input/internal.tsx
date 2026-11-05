@@ -51,7 +51,9 @@ export interface InternalInputProps
   __onEndIconClick?: () => void;
 
   __noBorderRadius?: boolean;
-  __noBorder?: boolean;
+
+  // Rendered inside the field, between the start icon and the native input.
+  __inlineContent?: React.ReactNode;
 
   __onDelayedInput?: NonCancelableEventHandler<BaseChangeDetail>;
   __onBlurWithDetail?: NonCancelableEventHandler<{ relatedTarget: Node | null }>;
@@ -89,7 +91,7 @@ function InternalInput(
     disableBrowserAutocorrect,
     spellcheck,
     __noBorderRadius,
-    __noBorder,
+    __inlineContent,
 
     __startIcon,
     __onStartIconClick,
@@ -340,7 +342,7 @@ function InternalInput(
           disabled && styles['input-field-disabled'],
           readOnly && !disabled && styles['input-field-readonly'],
           __noBorderRadius && styles['input-field-no-border-radius'],
-          __noBorder && styles['input-field-no-border'],
+          !!__inlineContent && styles['input-field-has-inline-content'],
           groupedControlClasses
         )}
         aria-disabled={disabled || undefined}
@@ -355,6 +357,11 @@ function InternalInput(
             </span>
             <span className={styles['input-adornment-divider']} />
           </>
+        )}
+        {__inlineContent && (
+          <div className={styles['input-inline-content']}>
+            <ResetGroupedControlContext>{__inlineContent}</ResetGroupedControlContext>
+          </div>
         )}
         {mainInput}
         {hasSuffix && (

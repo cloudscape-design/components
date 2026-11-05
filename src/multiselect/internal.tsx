@@ -7,6 +7,7 @@ import { useResizeObserver, useUniqueId } from '@cloudscape-design/component-too
 
 import Dropdown from '../dropdown/internal';
 import { useInternalI18n } from '../i18n/context';
+import { StyleClassNames as InputStyleClassNames } from '../input/internal';
 import { getBaseProps } from '../internal/base-component';
 import { getBreakpointValue } from '../internal/breakpoints';
 import DropdownFooter from '../internal/components/dropdown-footer/index.js';
@@ -23,6 +24,7 @@ import PlainList from '../select/parts/plain-list';
 import Trigger from '../select/parts/trigger';
 import VirtualList from '../select/parts/virtual-list';
 import { composeDropdownContent } from '../select/utils/dropdown-customization';
+import { StyleClassNames as TokenStyleClassNames } from '../token/internal';
 import { TokenGroupProps } from '../token-group/interfaces';
 import InternalTokenGroup from '../token-group/internal';
 import { MultiselectProps } from './interfaces';
@@ -34,7 +36,18 @@ type InternalMultiselectProps = SomeRequired<
   MultiselectProps,
   'options' | 'selectedOptions' | 'filteringType' | 'statusType' | 'keepOpen' | 'hideTokens'
 > &
-  InternalBaseComponentProps;
+  InternalBaseComponentProps & {
+    styleClassNames?: StyleClassNames;
+  };
+
+// Style API v2
+export interface StyleClassNames {
+  trigger?: string;
+  inlineLabel?: string;
+  filter?: InputStyleClassNames;
+  dropdown?: string;
+  token?: TokenStyleClassNames;
+}
 
 type ExtendedToken = TokenGroupProps.Item & { _readOnly: boolean };
 
@@ -70,6 +83,7 @@ const InternalMultiselect = React.forwardRef(
       renderDropdownFooter,
       dropdownRole,
       dropdownAriaDescribedby,
+      styleClassNames,
       ...restProps
     }: InternalMultiselectProps,
     externalRef: React.Ref<MultiselectProps.Ref>
@@ -141,6 +155,7 @@ const InternalMultiselect = React.forwardRef(
         ariaLabel={filteringAriaLabel}
         ariaRequired={ariaRequired}
         value={filteringValue}
+        styleClassNames={styleClassNames?.filter}
         {...multiselectProps.getFilterProps()}
       />
     );
@@ -149,7 +164,7 @@ const InternalMultiselect = React.forwardRef(
     const [triggerWidth, setTriggerWidth] = useState<number | null>(null);
     useResizeObserver(
       () => triggerRef.current,
-      entry => entry.borderBoxWidth > 0 && setTriggerWidth(entry.borderBoxWidth)
+      entry => setTriggerWidth(entry.borderBoxWidth)
     );
 
     const trigger = (
@@ -165,6 +180,11 @@ const InternalMultiselect = React.forwardRef(
         isOpen={multiselectProps.isOpen}
         groupedControlProps={groupedControlProps}
         inlineLabelText={inlineLabelText}
+        styleClassNames={{
+          trigger: styleClassNames?.trigger,
+          inlineLabel: styleClassNames?.inlineLabel,
+          token: styleClassNames?.token,
+        }}
         {...formFieldContext}
         controlId={controlId}
         ariaLabelledby={joinStrings(formFieldContext.ariaLabelledby, ariaLabelId)}
@@ -225,6 +245,7 @@ const InternalMultiselect = React.forwardRef(
         >
           <Dropdown
             {...dropdownProps}
+            styleClassNames={{ container: styleClassNames?.dropdown }}
             ariaLabelledby={dropdownProps.ariaRole ? joinStrings(ariaLabelId, controlId) : undefined}
             ariaDescribedby={
               dropdownProps.ariaRole
@@ -277,6 +298,7 @@ const InternalMultiselect = React.forwardRef(
               disableOuterPadding={true}
               readOnly={readOnly}
               isItemReadOnly={item => (item as ExtendedToken)._readOnly}
+              styleClassNames={{ token: styleClassNames?.token }}
             />
           )}
 

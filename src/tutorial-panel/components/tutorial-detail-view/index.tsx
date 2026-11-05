@@ -26,7 +26,7 @@ export default function TutorialDetailView({
   onExitTutorial: HotspotContext['onExitTutorial'];
   currentStepIndex: HotspotContext['currentStepIndex'];
   onFeedbackClick: TutorialPanelProps['onFeedbackClick'];
-  i18nStrings: TutorialPanelProps['i18nStrings'];
+  i18nStrings: TutorialPanelProps.I18nStrings;
 }) {
   const isRefresh = useVisualRefresh();
 

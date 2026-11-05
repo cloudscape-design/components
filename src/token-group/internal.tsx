@@ -14,7 +14,7 @@ import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useListFocusController } from '../internal/hooks/use-list-focus-controller';
 import { SomeRequired } from '../internal/types';
-import InternalToken from '../token/internal';
+import InternalToken, { StyleClassNames as TokenStyleClassNames } from '../token/internal';
 import { TokenGroupProps } from './interfaces';
 
 import tokenListStyles from '../internal/components/token-list/styles.css.js';
@@ -23,6 +23,8 @@ import styles from './styles.css.js';
 type InternalTokenGroupProps = SomeRequired<TokenGroupProps, 'items' | 'alignment'> &
   InternalBaseComponentProps & {
     isItemReadOnly?: (item: TokenGroupProps.Item) => boolean;
+    // Style API v2: the Token classes applied to every token
+    styleClassNames?: { token?: TokenStyleClassNames };
   };
 
 export default function InternalTokenGroup({
@@ -36,6 +38,7 @@ export default function InternalTokenGroup({
   limitShowMoreAriaLabel,
   readOnly,
   isItemReadOnly,
+  styleClassNames,
   __internalRootRef,
   ...props
 }: InternalTokenGroupProps) {
@@ -81,6 +84,7 @@ export default function InternalTokenGroup({
             }}
             readOnly={readOnly || isItemReadOnly?.(item)}
             variant={'normal'}
+            styleClassNames={styleClassNames?.token}
             icon={
               item.iconName || item.iconUrl || item.iconSvg ? (
                 <InternalIcon

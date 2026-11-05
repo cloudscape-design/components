@@ -17,6 +17,7 @@ import { InternalIconButton } from './internal-interfaces.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
 interface IconButtonItemProps {
+  styleClassName?: string;
   item: InternalIconButton;
   showTooltip: boolean;
   showFeedback: boolean;
@@ -26,7 +27,7 @@ interface IconButtonItemProps {
 
 const IconButtonItem = forwardRef(
   (
-    { item, showTooltip, showFeedback, onTooltipDismiss, onItemClick }: IconButtonItemProps,
+    { styleClassName, item, showTooltip, showFeedback, onTooltipDismiss, onItemClick }: IconButtonItemProps,
     ref: React.Ref<ButtonProps.Ref>
   ) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
@@ -41,6 +42,7 @@ const IconButtonItem = forwardRef(
     return (
       <div ref={containerRef}>
         <InternalButton
+          styleClassNames={{ root: styleClassName }}
           variant="icon"
           loading={item.loading}
           loadingText={item.loadingText}

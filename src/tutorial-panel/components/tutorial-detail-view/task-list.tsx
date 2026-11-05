@@ -16,7 +16,7 @@ interface TaskListProps {
   tasks: ReadonlyArray<TutorialPanelProps.Task>;
   onExitTutorial: () => void;
   currentGlobalStepIndex: HotspotContext['currentStepIndex'];
-  i18nStrings: TutorialPanelProps['i18nStrings'];
+  i18nStrings: TutorialPanelProps.I18nStrings;
 }
 
 export function TaskList({ tasks, onExitTutorial, currentGlobalStepIndex, i18nStrings }: TaskListProps) {

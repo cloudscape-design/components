@@ -10,13 +10,19 @@ import { DividerProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-type InternalDividerProps = DividerProps & InternalBaseComponentProps;
+// Style API v2
+export interface StyleClassNames {
+  root?: string;
+}
+
+type InternalDividerProps = DividerProps & InternalBaseComponentProps & { styleClassNames?: StyleClassNames };
 
 export default function InternalDivider({
   orientation,
   children,
   nativeAttributes,
   __internalRootRef,
+  styleClassNames,
   ...rest
 }: InternalDividerProps) {
   const baseProps = getBaseProps(rest);
@@ -24,7 +30,7 @@ export default function InternalDivider({
   const isVertical = orientation === 'vertical';
   const hasLabel = !isVertical && children !== null && children !== undefined;
 
-  const className = clsx(baseProps.className, styles.divider, styles[`divider-${orientation}`], {
+  const className = clsx(baseProps.className, styleClassNames?.root, styles.divider, styles[`divider-${orientation}`], {
     [styles['divider-has-label']]: hasLabel,
   });
 

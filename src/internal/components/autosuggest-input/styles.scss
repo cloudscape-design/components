@@ -5,8 +5,6 @@
 
 @use '../../../internal/styles/tokens' as awsui;
 @use '../../../internal/styles' as styles;
-@use '../../../internal/styles/foundation' as foundation;
-@use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 .root {
   // Used in test-utils.
@@ -21,86 +19,6 @@
   display: contents;
 }
 
-.token-field-container {
-  position: relative;
-  inline-size: 100%;
-}
-
-.token-field {
-  display: flex;
-  align-items: center;
-  flex-wrap: nowrap;
-  inline-size: 100%;
-  box-sizing: border-box;
-  min-block-size: awsui.$size-vertical-input;
-  padding-inline-start: styles.$control-padding-horizontal;
-  padding-inline-end: 0;
-  column-gap: awsui.$space-xxs;
-  @include styles.logical-radius(styles.$control-border-radius);
-  @include styles.input-default-styles;
-
-  &:hover {
-    @include styles.input-hover-styles;
-  }
-
-  &:focus-within {
-    background-color: var(#{custom-props.$styleBackgroundFocus}, awsui.$color-background-input-default);
-    @include styles.input-focus-styles;
-  }
-
-  &.token-field-disabled {
-    @include styles.form-disabled-element(
-      $background-color: var(#{custom-props.$styleBackgroundDisabled}, awsui.$color-background-input-disabled),
-      $border-color: var(#{custom-props.$styleBorderColorDisabled}, awsui.$color-border-input-disabled),
-      $color: var(#{custom-props.$styleColorDisabled}, awsui.$color-text-input-disabled),
-      $cursor: default
-    );
-    box-shadow: var(#{custom-props.$styleBoxShadowDisabled});
-  }
-
-  &.token-field-readonly {
-    box-shadow: var(#{custom-props.$styleBoxShadowReadonly});
-    @include styles.input-readonly-styles;
-  }
-
-  &.token-field-invalid {
-    @include styles.form-invalid-control(
-      $color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-status-error),
-      $border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-error),
-      $focus-box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid)
-    );
-
-    &:focus-within {
-      box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid);
-    }
-  }
-
-  &.token-field-warning {
-    @include styles.form-warning-control(
-      $color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-status-warning),
-      $border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-warning),
-      $focus-box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid)
-    );
-
-    &:focus-within {
-      box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid);
-    }
-  }
-
-  &.grouped {
-    @include styles.grouped-control;
-    &.token-field-disabled {
-      @include styles.grouped-control-disabled;
-    }
-  }
-}
-
-.token-field-icon {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-
 .token-list {
   @include styles.styles-reset-ul;
   display: flex;
@@ -112,18 +30,14 @@
 }
 
 .inline-tokens {
-  display: contents;
+  display: flex;
+  align-items: center;
+  column-gap: awsui.$space-xxs;
+  min-inline-size: 0;
 }
 
 .token-list-item {
   display: contents;
-}
-
-.token-input-wrapper {
-  flex: 1 1 0;
-  min-inline-size: 20%;
-  overflow: hidden;
-  margin-inline-start: calc(-1 * #{awsui.$space-xxs});
 }
 
 .token-overflow {

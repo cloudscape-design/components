@@ -16,7 +16,7 @@
 }
 
 .dropdown-brand {
-  @include dropdown.dropdown(
+  @include dropdown.container(
     $background: palette.$surface-alt,
     $border-radius: 0px,
     $outline-color: palette.$border-accent,
@@ -25,7 +25,7 @@
 }
 
 .dropdown-borderless {
-  @include dropdown.dropdown(
+  @include dropdown.container(
     $background: palette.$subtle,
     $border-radius: 12px,
     $box-shadow: 0 0 24px rgba(0, 0, 0, 0.2),
@@ -34,9 +34,9 @@
 }
 
 .dropdown-focus-within {
-  @include dropdown.dropdown($background: palette.$surface, $outline-color: palette.$border, $outline-width: 2px);
+  @include dropdown.container($background: palette.$surface, $outline-color: palette.$border, $outline-width: 2px);
 
   &:focus-within {
-    @include dropdown.dropdown($outline-color: palette.$accent);
+    @include dropdown.container($outline-color: palette.$accent);
   }
 }
