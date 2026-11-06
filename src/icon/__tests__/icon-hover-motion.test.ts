@@ -64,12 +64,10 @@ describe('the generic hover motion rule, as compiled', () => {
 
   test('the generic rule also fires on :focus-visible, guarded the same way as :hover', () => {
     const selector = genericRuleSelector();
-    expect(selector).toMatch(
-      /\[data-awsui-motion-trigger~=hover]:not\(:disabled\):not\(\[aria-disabled=true]\):focus-visible /
+    expect(selector).toContain(
+      ':is([data-awsui-motion-trigger~=hover]:is(:hover, :focus-visible), [data-awsui-motion-trigger~=focus]:focus-visible, '
     );
-    expect(selector).toMatch(
-      /\[data-awsui-motion-trigger~=focus]:not\(:disabled\):not\(\[aria-disabled=true]\):focus-visible /
-    );
+    expect(selector).toContain('):not(:disabled):not([aria-disabled=true]) .icon');
   });
 
   test('no rule uses :has(), which is costly to match on every style recalc and DOM insert', () => {
@@ -77,18 +75,16 @@ describe('the generic hover motion rule, as compiled', () => {
   });
 
   test('a delegated-focus trigger fires on :focus-within, only during keyboard interaction', () => {
-    expect(genericRuleSelector()).toMatch(
-      /\[data-awsui-motion-trigger~=delegated-focus]:not\(:disabled\):not\(\[aria-disabled=true]\):focus-within:where\(body\[data-awsui-focus-visible=true] \*\) /
+    expect(genericRuleSelector()).toContain(
+      '[data-awsui-motion-trigger~=delegated-focus]:focus-within:where(body[data-awsui-focus-visible=true] *))'
     );
   });
 
   test('the disabled guard excludes aria-disabled="true" but not aria-disabled="false"', () => {
-    // The trigger's compound is whitespace-free (e.g. `[data-awsui-motion-trigger~=hover]:not(...):hover`),
-    // so token splitting isolates it; `:hover` is dropped since jsdom cannot set hover state.
-    const guard = genericRuleSelector()
-      .split(/\s+/)
-      .find(token => token.startsWith('[data-awsui-motion-trigger'))!
-      .replace(':hover', '');
+    // The guard follows the trigger-state `:is(...)`, which is dropped since jsdom cannot set hover
+    // or focus-visible state.
+    const guard =
+      '[data-awsui-motion-trigger~=hover]' + genericRuleSelector().match(/(?<=\)\))(:not\([^\s]+)(?= \.icon)/)![0];
 
     const button = (attributes: Record<string, string> = {}) => {
       const element = document.createElement('button');
@@ -180,15 +176,17 @@ describe('the cancel rule for icons with only part motion', () => {
   // animated parts. Without them, the icon would lose the generic motion and get none instead.
   test('every cancelled icon contains the parts its motion targets', () => {
     const css = compile([THEME]);
-    const cancelBlock = css.split('}').find(block => block.includes('transform: none'))!;
+    const blocks = css.split('}');
+    const cancelBlock = blocks.find(block => block.includes('transform: none'))!;
     const names = Array.from(new Set(Array.from(cancelBlock.matchAll(/\.name-([\w-]+)/g)).map(match => match[1])));
     expect(names.length).toBeGreaterThan(0);
 
     for (const name of names) {
       const parts = new Set(
-        Array.from(
-          css.matchAll(new RegExp(`\\.name-${name} > :global\\(svg\\[data-awsui-icon-animated\\] \\.([\\w-]+)\\)`, 'g'))
-        ).map(match => match[1])
+        blocks
+          .filter(block => new RegExp(`\\.name-${name}(?![\\w-])`).test(block))
+          .flatMap(block => Array.from(block.matchAll(/:global\(svg\[data-awsui-icon-animated\] \.([\w-]+)\)/g)))
+          .map(match => match[1])
       );
       expect(parts.size).toBeGreaterThan(0);
       const svg = readSource(`icon/icons/${name}.svg`);
@@ -196,5 +194,31 @@ describe('the cancel rule for icons with only part motion', () => {
         expect({ name, part, present: svg.includes(part) }).toEqual({ name, part, present: true });
       }
     }
+  });
+});
+
+describe('per-icon rules', () => {
+  /** The compiled rules outside `@keyframes`, as selector and declaration pairs. */
+  function rules(): Array<{ selector: string; declarations: string }> {
+    const css = compile([THEME])
+      .replace(/@keyframes[^{]+\{(?:[^{}]*\{[^{}]*\})*[^{}]*\}/g, '')
+      .replace(/@media[^{]+\{/, '');
+    return Array.from(css.matchAll(/([^{}]+)\{([^{}]*)\}/g)).map(([, selector, declarations]) => ({
+      selector: selector.trim(),
+      declarations: declarations.replace(/\s+/g, ' ').trim(),
+    }));
+  }
+
+  test('icons with identical motion share one rule', () => {
+    const thumbsUp = rules().filter(rule => rule.declarations.includes('rotate(-12deg) scale(0.92)'));
+    expect(thumbsUp).toHaveLength(1);
+    expect(thumbsUp[0].selector).toContain('.name-thumbs-up,');
+    expect(thumbsUp[0].selector).toContain('.name-thumbs-up-filled)');
+  });
+
+  test('no two rules differ only in the icon name', () => {
+    const anyName = /:is\(\.name-[\w-]+(?:, \.name-[\w-]+)*\)|\.name-[\w-]+/g;
+    const keys = rules().map(rule => `${rule.selector.replace(anyName, '.name-*')} { ${rule.declarations} }`);
+    expect(new Set(keys).size).toBe(keys.length);
   });
 });
