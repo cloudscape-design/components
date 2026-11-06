@@ -3,6 +3,7 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use 'sass:map';
 @use '../internal/styles/index' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
@@ -10,8 +11,74 @@
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../internal/styles/typography/constants.scss' as constants;
 @use '../internal/components/sticky-header/mixins' as sticky-header;
+@use '../internal/styles/style-api' as style-api;
+@use './style-api' as table-style-api;
+
+@include style-api.register(
+  table-style-api.$root-tokens,
+  table-style-api.$header-cell-tokens,
+  table-style-api.$row-tokens,
+  table-style-api.$cell-tokens,
+  table-style-api.$cell-focus-ring-tokens
+);
+@include style-api.docs(
+  'root',
+  table-style-api.$root-tokens,
+  $descriptions: (
+    tokens: (
+      selected-row-outline-color: 'Line around selected rows, including between consecutive selected rows.',
+      selected-row-outline-radius: 'Corner radius of the outline around selected rows.',
+      sticky-header-shadow:
+        'Shadow below the header while it is stuck. Its first layer draws the line below the header.',
+    )
+  )
+);
+@include style-api.docs(
+  'headerCell',
+  table-style-api.$header-cell-tokens,
+  $properties: (background, color, font-family, font-size, font-weight, letter-spacing),
+  $descriptions: (
+    slot: 'Column, column group and selection header cells.',
+    tokens: (
+      border-color: 'Line below the cell.',
+      divider-color: 'Line at the inline end of the cell, except while resizing.',
+      focus-ring-color: 'Keyboard navigation focus ring of the cell and its resize handle.',
+    )
+  )
+);
+@include style-api.docs(
+  'sortingIndicator',
+  $properties: (color),
+  $descriptions: (slot: 'Sorting indicator of column header cells, including the multi-column sort priority.')
+);
+@include style-api.docs(
+  'row',
+  table-style-api.$row-tokens,
+  $descriptions: (
+    tokens: (
+      background-color: 'Background of every cell in the row, including sticky cells.',
+      divider-color: 'Line below the row.',
+    )
+  )
+);
+@include style-api.docs(
+  'cell',
+  map.merge(table-style-api.$cell-tokens, table-style-api.$cell-focus-ring-tokens),
+  $descriptions: (
+    slot: 'Body cells, including selection cells.',
+    tokens: (
+      focus-ring-color: 'Keyboard navigation focus ring. Focusable cell content keeps its own focus ring.',
+    )
+  )
+);
+@include style-api.docs-forward('selectionCheckbox', 'checkbox');
+@include style-api.docs-forward('selectionRadio', 'radio-button');
 
 .root {
+  @include style-api.carriers(table-style-api.$root-tokens);
+  @if style-api.enabled() {
+    #{custom-props.$tableStickyHeaderShadow}: table-style-api.root(sticky-header-shadow, awsui.$shadow-sticky-embedded);
+  }
   @include styles.default-text-style;
   inline-size: 100%;
 }
@@ -71,6 +138,8 @@
 }
 
 .wrapper {
+  // Keeps the sticky header shadow from reaching containers rendered inside cells.
+  #{custom-props.$tableStickyHeaderShadow}: initial;
   position: relative;
   box-sizing: border-box;
   inline-size: 100%;
@@ -236,6 +305,10 @@ filter search icon.
     // Align the footer pagination on the right
     margin-inline-start: auto;
   }
+}
+
+.row {
+  @include style-api.carriers(table-style-api.$row-tokens);
 }
 
 .thead-active,

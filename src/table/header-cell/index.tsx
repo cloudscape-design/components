@@ -25,6 +25,7 @@ import {
   toggleDirection,
 } from '../multi-column-sort/utils';
 import { Divider, Resizer } from '../resizer';
+import { getStyleClassName } from '../style-api';
 import { BaseHeaderCellProps } from './common-props';
 import { SortMenu, SortMenuAction } from './sort-menu';
 import { TableThElement } from './th-element';
@@ -92,6 +93,7 @@ export function TableHeaderCell<ItemType>({
   multiColumnSort,
   i18nStrings,
   ariaLabels,
+  styleClassNames,
 }: TableHeaderCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
   const sortable = !!column.sortingComparator || !!column.sortingField;
@@ -215,6 +217,13 @@ export function TableHeaderCell<ItemType>({
 
   return (
     <TableThElement
+      styleClassName={getStyleClassName(styleClassNames?.headerCell, {
+        type: 'column',
+        column,
+        sortable: sortable && !sortingDisabled,
+        sorted,
+        sortingDescending: sorted && descending,
+      })}
       resizableStyle={resizableStyle}
       cellRef={cellRefCombined}
       sortingStatus={sortingStatus}
@@ -307,7 +316,7 @@ export function TableHeaderCell<ItemType>({
           </div>
           {sortAccessibleText && <ScreenreaderOnly>{sortAccessibleText}</ScreenreaderOnly>}
           {sortingStatus && (
-            <span className={styles['sorting-icon']}>
+            <span className={clsx(styleClassNames?.sortingIndicator, styles['sorting-icon'])}>
               {showPriorityBadge && (
                 <span className={styles['sort-priority-badge']} aria-hidden="true">
                   {multiSortIndex}
