@@ -7,10 +7,10 @@ import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/
 
 import { MultiselectProps } from '../../../../multiselect/interfaces';
 import { SelectProps } from '../../../../select/interfaces';
-import { GetOptionProps, MenuProps } from '../../../../select/utils/use-select';
 import { DropdownOption } from '../../option/interfaces';
 import OptionsList from '../../options-list';
 import { HighlightType } from '../../options-list/utils/use-highlight-option';
+import { GetOptionProps, ListElementProps } from '../interfaces';
 import { SelectionType } from '../selection/interfaces';
 import { fallbackItemHeight } from './common';
 import { renderOptions } from './render-options';
@@ -19,7 +19,7 @@ import scrollToIndex from './scroll-to-index';
 import styles from '../../../../select/parts/styles.css.js';
 
 export interface SelectListProps {
-  menuProps: MenuProps;
+  menuProps: ListElementProps;
   getOptionProps: GetOptionProps;
   filteredOptions: ReadonlyArray<DropdownOption>;
   filteringValue: string;
