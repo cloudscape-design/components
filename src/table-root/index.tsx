@@ -14,7 +14,7 @@ export { TableRootProps };
 function TableRoot({ columnLayout = { type: 'auto' }, ...props }: TableRootProps) {
   const baseComponentProps = useBaseComponent('TableRoot', {
     props: {},
-    metadata: { columnLayoutType: columnLayout.type },
+    metadata: { columnLayoutType: columnLayout.type, hasStickyHeader: !!props.stickyHeader },
   });
   return <InternalTableRoot columnLayout={columnLayout} {...props} {...baseComponentProps} />;
 }

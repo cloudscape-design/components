@@ -10,7 +10,8 @@ import { BaseComponentProps } from '../types/base-component';
  */
 export interface TableRootProps extends BaseComponentProps {
   /**
-   * The table's content. Provide a `TableHead` followed by a `TableBody` that contains the rows.
+   * The table's content. Provide a `TableHead` followed by a `TableBody` that contains the rows. When you
+   * use `stickyHeader`, provide only the `TableBody` here.
    */
   children: React.ReactNode;
 
@@ -44,6 +45,21 @@ export interface TableRootProps extends BaseComponentProps {
    * subset of rows, such as with virtualization; otherwise it is derived from the DOM.
    */
   ariaRowcount?: number;
+
+  /**
+   * A `TableHead` that stays pinned to the top of its scroll container as the body scrolls. When you
+   * provide it, render only the `TableBody` as `children`.
+   *
+   * The header is rendered twice, as the real header and a pinned copy, so use controlled state for any
+   * controls in it.
+   */
+  stickyHeader?: React.ReactNode;
+
+  /**
+   * Specifies a vertical offset (in pixels) for the sticky header. For example, use this if you
+   * need to position the sticky header below other fixed position elements on the page.
+   */
+  stickyHeaderVerticalOffset?: number;
 }
 
 export namespace TableRootProps {
