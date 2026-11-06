@@ -41,7 +41,24 @@ import testutilStyles from './test-classes/styles.css.js';
 
 interface InternalPromptInputProps
   extends SomeRequired<PromptInputProps, 'maxRows' | 'minRows'>,
-    InternalBaseComponentProps {}
+    InternalBaseComponentProps {
+  styleClassNames?: StyleClassNames;
+}
+
+// Style API v2
+export interface StyleClassNames {
+  root?: string;
+  textarea?: string;
+  actionButton?: string;
+  token?: string;
+  menu?: string;
+}
+
+// An empty computed value (detached element) falls back to the stock padding, which keeps the row bounds unchanged.
+function toPaddingLength(computedValue: string, fallback: string) {
+  const pixels = parseFloat(computedValue);
+  return isNaN(pixels) ? fallback : `${pixels}px`;
+}
 
 const InternalPromptInput = React.forwardRef(
   (
@@ -87,6 +104,7 @@ const InternalPromptInput = React.forwardRef(
       onTriggerDetected,
       i18nStrings,
       __internalRootRef,
+      styleClassNames,
       ...rest
     }: InternalPromptInputProps,
     ref: Ref<PromptInputProps.Ref | HTMLTextAreaElement | HTMLInputElement>
@@ -170,15 +188,21 @@ const InternalPromptInput = React.forwardRef(
       // The native textarea already grows to its `rows={minRows}` attribute, so this
       // formula only needs to act as a one-line floor there. The contentEditable div used
       // in token mode has no equivalent native sizing, so it must scale with minRows directly.
+      // A Style API `padding` on the text element changes its block padding; add its difference from the
+      // stock padding to the row bounds so they still fit `minRows`/`maxRows` lines. The difference is 0 by default.
+      const computedStyle = getComputedStyle(element);
+      const paddingTop = toPaddingLength(computedStyle.paddingTop, designTokens.spaceFieldVertical);
+      const paddingBottom = toPaddingLength(computedStyle.paddingBottom, designTokens.spaceFieldVertical);
+      const paddingDelta = `(${paddingTop} + ${paddingBottom} - 2 * ${designTokens.spaceFieldVertical})`;
       const minRowsHeight = isTokenMode
-        ? `calc(${minRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING})`
-        : `calc(${LINE_HEIGHT} +  ${designTokens.spaceFieldVertical} * 2)`;
+        ? `calc(${minRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING} + ${paddingDelta})`
+        : `calc(${LINE_HEIGHT} + ${paddingTop} + ${paddingBottom})`;
       const scrollHeight = `calc(${element.scrollHeight}px)`;
 
       if (maxRows === -1) {
         element.style.height = `max(${scrollHeight}, ${minRowsHeight})`;
       } else {
-        const maxRowsHeight = `calc(${maxRows <= 0 ? DEFAULT_MAX_ROWS : maxRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING})`;
+        const maxRowsHeight = `calc(${maxRows <= 0 ? DEFAULT_MAX_ROWS : maxRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING} + ${paddingDelta})`;
         element.style.height = `min(max(${scrollHeight}, ${minRowsHeight}), ${maxRowsHeight})`;
       }
 
@@ -190,11 +214,23 @@ const InternalPromptInput = React.forwardRef(
     // Height is adjusted per-mode. `value` must not be a dependency in token
     // mode — it's unused there, and re-running the effect on `value` changes
     // resets the contentEditable caret to offset 0.
+    // The root, textarea, token and actionButton classes can change the text layout (padding, font, token width,
+    // button width), so a change to any of them re-measures.
     useEffect(() => {
       if (isTokenMode) {
         requestAnimationFrame(() => adjustInputHeight());
       }
-    }, [isTokenMode, tokens, adjustInputHeight, isCompactMode, placeholder]);
+    }, [
+      isTokenMode,
+      tokens,
+      adjustInputHeight,
+      isCompactMode,
+      placeholder,
+      styleClassNames?.root,
+      styleClassNames?.textarea,
+      styleClassNames?.token,
+      styleClassNames?.actionButton,
+    ]);
 
     // When minRows/maxRows change, recalculate height synchronously — these prop
     // changes don't involve caret position so no RAF deferral is needed.
@@ -208,7 +244,19 @@ const InternalPromptInput = React.forwardRef(
       if (!isTokenMode) {
         adjustInputHeight();
       }
-    }, [isTokenMode, value, adjustInputHeight, isCompactMode, placeholder, minRows, maxRows]);
+    }, [
+      isTokenMode,
+      value,
+      adjustInputHeight,
+      isCompactMode,
+      placeholder,
+      minRows,
+      maxRows,
+      styleClassNames?.root,
+      styleClassNames?.textarea,
+      styleClassNames?.token,
+      styleClassNames?.actionButton,
+    ]);
 
     // Observe width changes on the component's root element to handle container resizes.
     // We need a separate RefObject because __internalRootRef may be a callback ref,
@@ -255,6 +303,7 @@ const InternalPromptInput = React.forwardRef(
       onMenuLoadItems,
       i18nStrings: effectiveI18nStrings,
       adjustInputHeight,
+      styleClassNames,
     });
 
     const handleInsertText = useStableCallback((text: string, caretStart?: number, caretEnd?: number) => {
@@ -364,7 +413,7 @@ const InternalPromptInput = React.forwardRef(
       name,
       placeholder,
       autoFocus,
-      className: clsx(styles.textarea, testutilStyles.textarea, {
+      className: clsx(styleClassNames?.textarea, styles.textarea, testutilStyles.textarea, {
         [styles.invalid]: invalid,
         [styles.warning]: warning,
       }),
@@ -388,6 +437,7 @@ const InternalPromptInput = React.forwardRef(
         {customPrimaryAction ?? (
           <InternalButton
             className={clsx(styles['action-button'], testutilStyles['action-button'])}
+            styleClassNames={{ root: styleClassNames?.actionButton }}
             ariaLabel={effectiveI18nStrings.actionButtonAriaLabel}
             disabled={disabled || readOnly || disableActionButton}
             __focusable={readOnly}
@@ -411,7 +461,7 @@ const InternalPromptInput = React.forwardRef(
       <div
         {...baseProps}
         aria-label={ariaLabel}
-        className={clsx(styles.root, testutilStyles.root, baseProps.className, {
+        className={clsx(styleClassNames?.root, styles.root, testutilStyles.root, baseProps.className, {
           [styles['textarea-readonly']]: readOnly,
           [styles['textarea-invalid']]: invalid,
           [styles['textarea-warning']]: warning && !invalid,
@@ -459,6 +509,7 @@ const InternalPromptInput = React.forwardRef(
               menuDropdownStatus={tokenMode.menuDropdownStatus}
               maxMenuHeight={maxMenuHeight}
               menuStyle={(style as PromptInputInternalStyle | undefined)?._menu}
+              styleClassNames={{ menu: styleClassNames?.menu }}
               handleInput={tokenMode.handleInput}
               handleLoadMore={tokenMode.handleLoadMore}
               editableElementAttributes={tokenMode.editableElementAttributes}

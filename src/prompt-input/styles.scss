@@ -10,6 +10,41 @@
 @use '../internal/styles/forms/constants' as constants;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/styles/style-api' as style-api;
+
+@include style-api.docs(
+  'root',
+  $properties: (background, border, border-radius, box-shadow),
+  $descriptions: (
+    slot:
+      'The field box which contains the text element, the secondary content, the secondary actions and the action button. Pass a different class for the states you control (`invalid`, `warning`, `disabled`, `readOnly`); use `:hover` and `:focus-within` for interaction states, as shown for Input.root.',
+    properties: (
+      box-shadow: 'Also draws the focus ring under `:focus-within`.',
+    )
+  )
+);
+
+// The placeholder tokens are read by the ::placeholder pseudo-element of the native textarea and by the
+// ::before placeholder of the editable element, which do not inherit the non-inheriting public tokens: they are
+// re-anchored as carriers on the text element itself.
+$textarea-tokens: style-api.resolve(
+  (placeholder-color, placeholder-font-size, placeholder-font-style, placeholder-font-weight),
+  carrier
+);
+@include style-api.register($textarea-tokens);
+@include style-api.docs(
+  'textarea',
+  $textarea-tokens,
+  $properties: (color, padding, font-family, font-size, font-weight),
+  $descriptions: (
+    slot:
+      'The text element: the native textarea, or the editable element when `tokens` is set. Use `:hover` and `:focus` for interaction states; pass a different class for `disabled` and `readOnly`.'
+  )
+);
+
+@include style-api.docs-forward('actionButton', 'button', 'root');
+@include style-api.docs-forward('token', 'token', 'root');
+@include style-api.docs-forward('menu', 'dropdown', 'container');
 
 $send-icon-right-spacing: awsui.$space-static-xxs;
 $invalid-border-offset: constants.$invalid-control-left-padding;
@@ -90,7 +125,7 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
         box-shadow: foundation.$box-shadow-focused-light-invalid;
       }
     }
-    
+
     // When disabled, keep validation border (including thick left border) but remove focus box-shadow
     &.disabled:focus-within,
     &.disabled:focus {
@@ -118,7 +153,7 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
         box-shadow: foundation.$box-shadow-focused-light-invalid;
       }
     }
-    
+
     // When disabled, keep validation border (including thick left border) but remove focus box-shadow
     &.disabled:focus-within,
     &.disabled:focus {
@@ -153,6 +188,7 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
 }
 
 .textarea {
+  @include style-api.carriers($textarea-tokens);
   @include styles.styles-reset;
   @include styles.control-border-radius-full();
   @include styles.font-body-m;
@@ -197,10 +233,26 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   &.placeholder-visible::before {
     content: attr(data-placeholder);
     @include styles.form-placeholder(
-      $color: var(#{custom-props.$promptInputStylePlaceholderColor}, awsui.$color-text-input-placeholder),
-      $font-size: var(#{custom-props.$promptInputStylePlaceholderFontSize}),
-      $font-style: var(#{custom-props.$promptInputStylePlaceholderFontStyle}, italic),
-      $font-weight: var(#{custom-props.$promptInputStylePlaceholderFontWeight})
+      $color: style-api.value(
+          $textarea-tokens,
+          placeholder-color,
+          var(#{custom-props.$promptInputStylePlaceholderColor}, #{awsui.$color-text-input-placeholder})
+        ),
+      $font-size: style-api.value(
+          $textarea-tokens,
+          placeholder-font-size,
+          var(#{custom-props.$promptInputStylePlaceholderFontSize})
+        ),
+      $font-style: style-api.value(
+          $textarea-tokens,
+          placeholder-font-style,
+          var(#{custom-props.$promptInputStylePlaceholderFontStyle}, italic)
+        ),
+      $font-weight: style-api.value(
+          $textarea-tokens,
+          placeholder-font-weight,
+          var(#{custom-props.$promptInputStylePlaceholderFontWeight})
+        )
     );
     opacity: 1;
     pointer-events: none;
@@ -233,10 +285,26 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   // Native placeholder for textarea element
   &::placeholder {
     @include styles.form-placeholder(
-      $color: var(#{custom-props.$promptInputStylePlaceholderColor}, awsui.$color-text-input-placeholder),
-      $font-size: var(#{custom-props.$promptInputStylePlaceholderFontSize}),
-      $font-style: var(#{custom-props.$promptInputStylePlaceholderFontStyle}, italic),
-      $font-weight: var(#{custom-props.$promptInputStylePlaceholderFontWeight})
+      $color: style-api.value(
+          $textarea-tokens,
+          placeholder-color,
+          var(#{custom-props.$promptInputStylePlaceholderColor}, #{awsui.$color-text-input-placeholder})
+        ),
+      $font-size: style-api.value(
+          $textarea-tokens,
+          placeholder-font-size,
+          var(#{custom-props.$promptInputStylePlaceholderFontSize})
+        ),
+      $font-style: style-api.value(
+          $textarea-tokens,
+          placeholder-font-style,
+          var(#{custom-props.$promptInputStylePlaceholderFontStyle}, italic)
+        ),
+      $font-weight: style-api.value(
+          $textarea-tokens,
+          placeholder-font-weight,
+          var(#{custom-props.$promptInputStylePlaceholderFontWeight})
+        )
     );
     opacity: 1;
   }
@@ -253,7 +321,9 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
     overflow-y: hidden;
 
     &::placeholder {
-      @include styles.form-placeholder-disabled;
+      @include styles.form-placeholder-disabled(
+        $color: style-api.value($textarea-tokens, placeholder-color, awsui.$color-text-input-placeholder-disabled)
+      );
       opacity: 1;
     }
   }
@@ -264,10 +334,12 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
       var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-body-default)
     );
   }
-  
+
   // Placeholder for disabled contentEditable div (token mode)
   &.textarea-disabled.placeholder-visible::before {
-    @include styles.form-placeholder-disabled;
+    @include styles.form-placeholder-disabled(
+      $color: style-api.value($textarea-tokens, placeholder-color, awsui.$color-text-input-placeholder-disabled)
+    );
     opacity: 1;
     pointer-events: none;
   }
@@ -396,6 +468,7 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   white-space: pre-wrap;
   // Inherit color from parent (textarea) for disabled/readonly states
   color: inherit;
+  font-family: inherit;
   font-size: inherit;
   font-weight: inherit;
 }
