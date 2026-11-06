@@ -5,8 +5,9 @@ import React, { forwardRef, useCallback, useImperativeHandle, useRef } from 'rea
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
+import { ScrollToIndexRef } from '../../internal/components/listbox/interfaces';
 import { fallbackItemHeight } from '../../internal/components/listbox/parts/common';
-import { SelectListProps } from '../../internal/components/listbox/parts/plain-list';
+import { ListProps } from '../../internal/components/listbox/parts/plain-list';
 import { renderOptions } from '../../internal/components/listbox/parts/render-options';
 import customScrollToIndex from '../../internal/components/listbox/parts/scroll-to-index';
 import OptionsList from '../../internal/components/options-list';
@@ -14,14 +15,14 @@ import { useVirtual } from '../../internal/hooks/use-virtual';
 
 import styles from './styles.css.js';
 
-const VirtualList = (props: SelectListProps, ref: React.Ref<SelectListProps.SelectListRef>) => {
-  return props.menuProps.open ? <VirtualListOpen {...props} ref={ref} /> : <VirtualListClosed {...props} ref={ref} />;
+const VirtualList = (props: ListProps, ref: React.Ref<ScrollToIndexRef>) => {
+  return props.listProps.open ? <VirtualListOpen {...props} ref={ref} /> : <VirtualListClosed {...props} ref={ref} />;
 };
 
 const VirtualListOpen = forwardRef(
   (
     {
-      menuProps,
+      listProps,
       getOptionProps,
       filteredOptions,
       filteringValue,
@@ -33,8 +34,8 @@ const VirtualListOpen = forwardRef(
       firstOptionSticky,
       isMultiSelect,
       renderOption,
-    }: SelectListProps,
-    ref: React.Ref<SelectListProps.SelectListRef>
+    }: ListProps,
+    ref: React.Ref<ScrollToIndexRef>
   ) => {
     // update component, when it gets wider or narrower to reposition items
     const [width, menuMeasureRef] = useContainerQuery(
@@ -42,7 +43,7 @@ const VirtualListOpen = forwardRef(
       []
     );
     const menuRefObject = useRef(null);
-    const menuRef = useMergeRefs(menuMeasureRef, menuRefObject, menuProps.ref);
+    const menuRef = useMergeRefs(menuMeasureRef, menuRefObject, listProps.ref);
     const previousHighlightedIndex = useRef<number>();
     const { virtualItems, totalSize, scrollToIndex } = useVirtual({
       items: filteredOptions,
@@ -105,7 +106,7 @@ const VirtualListOpen = forwardRef(
     });
 
     return (
-      <OptionsList {...menuProps} stickyItemBlockSize={stickySize} ref={menuRef} isMultiSelect={isMultiSelect}>
+      <OptionsList {...listProps} stickyItemBlockSize={stickySize} ref={menuRef} isMultiSelect={isMultiSelect}>
         {finalOptions}
         <div aria-hidden="true" key="total-size" className={styles['layout-strut']} style={{ height: totalSize }} />
         {listBottom ? (
@@ -119,10 +120,10 @@ const VirtualListOpen = forwardRef(
 );
 
 const VirtualListClosed = forwardRef(
-  ({ menuProps, listBottom, isMultiSelect }: SelectListProps, ref: React.Ref<SelectListProps.SelectListRef>) => {
+  ({ listProps, listBottom, isMultiSelect }: ListProps, ref: React.Ref<ScrollToIndexRef>) => {
     useImperativeHandle(ref, () => () => {}, []);
     return (
-      <OptionsList {...menuProps} ref={menuProps.ref} isMultiSelect={isMultiSelect}>
+      <OptionsList {...listProps} ref={listProps.ref} isMultiSelect={isMultiSelect}>
         {listBottom ? (
           <div role="option" className={styles['list-bottom']}>
             {listBottom}

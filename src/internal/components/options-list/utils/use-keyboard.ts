@@ -13,7 +13,7 @@ interface UseMenuKeyboard {
     selectOption: () => void;
     goHome: () => void;
     goEnd: () => void;
-    closeDropdown: () => void;
+    onEscape: () => void;
     preventNativeSpace?: boolean;
   }): CancelableEventHandler<BaseKeyDetail>;
 }
@@ -24,7 +24,7 @@ export const useMenuKeyboard: UseMenuKeyboard = ({
   selectOption,
   goHome,
   goEnd,
-  closeDropdown,
+  onEscape,
   preventNativeSpace = false,
 }) => {
   return (event: CustomEvent<BaseKeyDetail>) => {
@@ -45,7 +45,7 @@ export const useMenuKeyboard: UseMenuKeyboard = ({
         break;
       case KeyCode.escape:
         event.stopPropagation();
-        closeDropdown();
+        onEscape();
         break;
       case KeyCode.enter:
         event.preventDefault();

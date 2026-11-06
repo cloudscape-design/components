@@ -89,7 +89,7 @@ export default function MultiselectPage() {
               }
               content={
                 <ListComponent
-                  menuProps={{ statusType: 'finished', ref, open }}
+                  listProps={{ statusType: 'finished', ref, open }}
                   getOptionProps={(option, index) => ({ option: { ...option }, key: index, index: index, open })}
                   filteredOptions={options}
                   filteringValue={''}

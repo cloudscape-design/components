@@ -77,7 +77,7 @@ const EmbeddedMultiselect = React.forwardRef(
     return (
       <div className={styles.embedded}>
         <ListComponent
-          menuProps={multiselectProps.getMenuProps()}
+          listProps={multiselectProps.getMenuProps()}
           getOptionProps={multiselectProps.getOptionProps}
           filteredOptions={multiselectProps.filteredOptions}
           filteringValue={filteringText}
