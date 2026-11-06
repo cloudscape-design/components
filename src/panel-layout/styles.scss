@@ -20,11 +20,22 @@
   outline-offset: calc(-1 * #{$width});
 }
 
+// Non-scrolling areas must not clip (so focus rings can extend past their edges)
+// and must be allowed to shrink below their content width.
+@mixin non-scrolling {
+  overflow: visible;
+  min-inline-size: 0;
+}
+
 .root {
   @include styles.styles-reset;
   block-size: 100%;
   overflow: hidden;
   display: flex;
+  &.disable-panel-scrolling,
+  &.disable-main-scrolling {
+    overflow: visible;
+  }
 }
 
 .panel {
@@ -50,6 +61,12 @@
     overflow-y: auto;
     overflow-x: visible;
   }
+  .disable-panel-scrolling > & {
+    @include non-scrolling;
+  }
+  .disable-panel-scrolling > & > .panel-content {
+    @include non-scrolling;
+  }
 }
 
 .content {
@@ -58,6 +75,9 @@
   flex-shrink: 1;
   .display-panel-only > & {
     display: none;
+  }
+  .disable-main-scrolling > & {
+    @include non-scrolling;
   }
   @include focus-visible.when-visible {
     @include container-inner-focus-ring;
