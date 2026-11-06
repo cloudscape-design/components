@@ -280,6 +280,9 @@
     "deselectAriaLabel": "{option__label} 제거",
     "i18nStrings.selectAllText": "모두 선택"
   },
+  "option-list": {
+    "i18nStrings.selectedAriaLabel": "선택됨"
+  },
   "pagination": {
     "ariaLabels.jumpToPageButtonLabel": "페이지로 이동",
     "ariaLabels.nextPageLabel": "다음 페이지",

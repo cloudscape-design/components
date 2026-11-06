@@ -61,4 +61,31 @@ describe('useTypeAhead', () => {
 
     expect(highlightOption).not.toHaveBeenCalled();
   });
+
+  describe('disabled options', () => {
+    // "beta" is disabled, so "b" matches it first, then "bravo".
+    const withDisabled: DropdownOption[] = [
+      { option: { label: 'alpha', value: 'alpha' } },
+      { option: { label: 'beta', value: 'beta' }, disabled: true },
+      { option: { label: 'bravo', value: 'bravo' } },
+    ];
+
+    test('reaches a disabled option, like Up and Down', () => {
+      const highlightOption = jest.fn();
+      const hook = renderHook(useTypeAhead, {
+        initialProps: { ...initialProps, options: withDisabled, highlightOption },
+      });
+      act(() => hook.result.current({ key: 'b' } as React.KeyboardEvent));
+      expect(highlightOption).toHaveBeenCalledWith(withDisabled[1]);
+    });
+
+    test('skips a disabled option with skipDisabled', () => {
+      const highlightOption = jest.fn();
+      const hook = renderHook(useTypeAhead, {
+        initialProps: { ...initialProps, options: withDisabled, highlightOption, skipDisabled: true },
+      });
+      act(() => hook.result.current({ key: 'b' } as React.KeyboardEvent));
+      expect(highlightOption).toHaveBeenCalledWith(withDisabled[2]);
+    });
+  });
 });

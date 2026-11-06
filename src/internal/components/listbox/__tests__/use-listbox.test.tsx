@@ -119,6 +119,15 @@ describe('useListbox', () => {
       expect(onEscape).toHaveBeenCalledTimes(1);
       expect(event.cancelBubble).toBe(true);
     });
+
+    test('is not handled and keeps propagating without onEscape', () => {
+      const { keyDown } = renderListbox({ onEscape: undefined });
+
+      const event = keyDown(KeyCode.escape);
+
+      expect(event.cancelBubble).toBe(false);
+      expect(event.defaultPrevented).toBe(false);
+    });
   });
 
   describe('Home and End', () => {

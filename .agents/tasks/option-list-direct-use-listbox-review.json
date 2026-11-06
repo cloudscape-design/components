@@ -1,0 +1,9 @@
+{
+  "verdict": "APPROVED",
+  "findings": [
+    "Non-blocking (confirmed): UseListboxApi.activeDescendantId docstring says 'undefined when nothing is highlighted', but with the default 'always' mode it is undefined only when highlightedIndex is -1 (a stale index past the options still yields an id). Reword to reference highlightedIndex -1 and the activeDescendant option.",
+    "Non-blocking (confirmed): with scrollOn 'keyboard-request', the raw highlight.highlightOptionWithKeyboard / goHomeWithKeyboard setters change the highlight without requesting a scroll, unlike the returned highlightOption/goHome. Note this on the `highlight` docstring.",
+    "Non-blocking (confirmed): the comment 'useListbox comes first, so the list id is created first, as before.' in src/option-list/internal.tsx refers to history; state the constraint directly (keep useListbox the first id-generating hook so ids stay stable)."
+  ],
+  "reviewDoc": "/Users/amanabiy/Documents/components/.agents/tasks/option-list-direct-use-listbox-review.md"
+}

@@ -1,0 +1,686 @@
+
+> @cloudscape-design/components@3.0.0 build
+> cross-env NODE_ENV=production gulp build
+
+[12:17:30] Using gulpfile ~/Documents/components/.worktrees/listbox-use-listbox/gulpfile.js
+[12:17:30] Starting 'build'...
+[12:17:30] Starting 'clean'...
+[12:17:31] Finished 'clean' after 771 ms
+[12:17:31] Starting 'generateI18nMessages'...
+[12:17:31] Starting 'generateEnvironment'...
+[12:17:31] Starting 'generateIndexFile'...
+[12:17:31] Starting 'package-json:@cloudscape-design/components'...
+[12:17:31] Starting 'package-json:@cloudscape-design/design-tokens'...
+[12:17:31] Starting 'package-json:@cloudscape-design/components-definitions'...
+[12:17:31] Starting 'package-json:@cloudscape-design/style-dictionary'...
+[12:17:31] Starting 'package-json:@cloudscape-design/components-themeable'...
+[12:17:31] Starting 'copy:package-lock'...
+[12:17:31] Starting 'package-json:@cloudscape-design/dev-pages'...
+[12:17:31] Starting 'package-json:@cloudscape-design/test-definitions'...
+Environment values
+ {
+  "PACKAGE_SOURCE": "components",
+  "PACKAGE_VERSION": "3.0.0 (HEAD)",
+  "GIT_SHA": "HEAD",
+  "THEME": "default",
+  "SYSTEM": "core",
+  "ALWAYS_VISUAL_REFRESH": false,
+  "INCLUDE_ONE_THEME": false
+}
+[12:17:31] Starting 'generateIcons:default'...
+[12:17:31] Starting 'copy:license:default'...
+[12:17:31] Finished 'generateI18nMessages' after 50 ms
+[12:17:31] Finished 'generateEnvironment' after 50 ms
+[12:17:31] Finished 'generateIndexFile' after 50 ms
+[12:17:31] Finished 'package-json:@cloudscape-design/components' after 50 ms
+[12:17:31] Finished 'package-json:@cloudscape-design/design-tokens' after 50 ms
+[12:17:31] Finished 'package-json:@cloudscape-design/components-definitions' after 49 ms
+[12:17:31] Finished 'package-json:@cloudscape-design/style-dictionary' after 49 ms
+[12:17:31] Finished 'package-json:@cloudscape-design/components-themeable' after 49 ms
+[12:17:31] Finished 'package-json:@cloudscape-design/dev-pages' after 50 ms
+[12:17:31] Finished 'package-json:@cloudscape-design/test-definitions' after 50 ms
+[12:17:31] Finished 'copy:package-lock' after 68 ms
+[12:17:31] Finished 'copy:license:default' after 27 ms
+[12:17:31] Finished 'generateIcons:default' after 84 ms
+[12:17:31] Starting 'generateCustomCssPropertiesMap'...
+[12:17:31] Starting 'typescript:style-dictionary'...
+[12:17:31] Starting 'typescript:default'...
+[12:17:31] Starting 'generateTestUtilsForComponents'...
+[12:17:31] Finished 'generateTestUtilsForComponents' after 255 ms
+[12:17:31] Starting 'typescript:test-utils:default'...
+[12:17:31] Finished 'generateCustomCssPropertiesMap' after 257 ms
+[12:17:32] Finished 'typescript:style-dictionary' after 1.12 s
+[12:17:32] Starting 'styles:default'...
+Design token versions: {"v3-1":1172}
+[12:17:33] Finished 'typescript:test-utils:default' after 1.75 s
+[12:17:41] Finished 'typescript:default' after 9.75 s
+[12:17:41] Finished 'styles:default' after 8.69 s
+[12:17:41] Starting 'styles:core-update-pages-theme'...
+[12:17:41] Finished 'styles:core-update-pages-theme' after 162 ms
+[12:17:41] Starting 'bundle-vendor-files'...
+[12:17:41] Starting 'styleMixins'...
+[12:17:41] Finished 'styleMixins' after 14 ms
+[36m
+[1m./src/internal/vendor/d3-scale.js[22m → [1mlib/components/internal/vendor[22m...[39m
+[32mcreated [1mlib/components/internal/vendor[22m in [1m169ms[22m[39m
+[36m
+[1m./src/internal/vendor/react-virtual.js[22m → [1mlib/components/internal/vendor[22m...[39m
+[32mcreated [1mlib/components/internal/vendor[22m in [1m17ms[22m[39m
+[12:17:42] Finished 'bundle-vendor-files' after 291 ms
+[12:17:42] Starting 'docs'...
+[12:17:42] Starting 'styleDocs'...
+[12:17:42] Starting 'size-limit'...
+[12:17:42] Starting 'buildPagesStatic'...
+[12:17:42] Starting 'buildPagesSource'...
+[12:17:42] Starting 'typescript:components-themeable'...
+[12:17:42] Starting 'package-json:@cloudscape-design/components-themed'...
+[12:17:42] Starting 'package-json:@cloudscape-design/design-tokens-themed'...
+[12:17:42] Starting 'copy:license:themeable'...
+[12:17:42] Starting 'themeable-source:copy-styles:components-themeable'...
+[12:17:42] Starting 'themeable-source:copy-template:components-themeable'...
+[12:17:47] Starting 'test-definitions:compile'...
+- Adding to empty esbuild project
+✔ Adding to empty esbuild project
+  
+  lib/components/internal/plugins/index.js
+  Size limit: 15 kB
+  Size:       14.62 kB with all dependencies and minified
+  
+  lib/components/internal/widget-exports.js
+  Size limit: 1.46 MB
+  Size:       1.46 MB with all dependencies and minified
+  
+[12:17:49] Finished 'docs' after 7.54 s
+[12:17:49] Finished 'styleDocs' after 7.54 s
+[12:17:49] Finished 'buildPagesSource' after 7.54 s
+[12:17:49] Finished 'package-json:@cloudscape-design/components-themed' after 7.54 s
+[12:17:49] Finished 'package-json:@cloudscape-design/design-tokens-themed' after 7.54 s
+[12:17:49] Finished 'size-limit' after 7.55 s
+[12:17:51] Finished 'themeable-source:copy-template:components-themeable' after 9.42 s
+[12:17:51] Finished 'typescript:components-themeable' after 9.43 s
+[12:17:51] Finished 'test-definitions:compile' after 3.9 s
+[12:17:51] Starting 'generateTestDefinitionsIndex'...
+[12:17:51] Finished 'generateTestDefinitionsIndex' after 1.15 ms
+[12:17:51] Finished 'copy:license:themeable' after 9.64 s
+[12:17:52] Finished 'themeable-source:copy-styles:components-themeable' after 11 s
+assets by status 22 MiB [1m[32m[cached][39m[22m 1617 assets
+assets by path [1m[32m.[39m[22m 11.6 MiB
+  assets by path [1m[32mace/*.js[39m[22m 9.05 MiB
+    assets by status [1m[33m3.72 MiB[39m[22m [1m[33m[big][39m[22m
+      asset [1m[33mace/worker-xquery.js[39m[22m [1m[33m1.53 MiB[39m[22m [1m[33m[compared for emit][39m[22m [from: ../../../node_modules/ace-builds/src-min-noconflict/worker-xquery.js] [1m[32m[copied][39m[22m [1m[32m[minimized][39m[22m [1m[33m[big][39m[22m
+      + 5 assets
+    + 277 assets
+  assets by path [1m[32mace/snippets/*.js[39m[22m 272 KiB
+    asset [1m[32mace/snippets/gobstones.js[39m[22m 38.8 KiB [1m[33m[compared for emit][39m[22m [from: ../../../node_modules/ace-builds/src-min-noconflict/snippets/gobstones.js] [1m[32m[copied][39m[22m [1m[32m[minimized][39m[22m
+    asset [1m[32mace/snippets/lsl.js[39m[22m 35.6 KiB [1m[33m[compared for emit][39m[22m [from: ../../../node_modules/ace-builds/src-min-noconflict/snippets/lsl.js] [1m[32m[copied][39m[22m [1m[32m[minimized][39m[22m
+    asset [1m[32mace/snippets/ruby.js[39m[22m 21.8 KiB [1m[33m[compared for emit][39m[22m [from: ../../../node_modules/ace-builds/src-min-noconflict/snippets/ruby.js] [1m[32m[copied][39m[22m [1m[32m[minimized][39m[22m
+    + 191 assets
+  assets by status 2.28 MiB [1m[32m[emitted][39m[22m
+    asset [1m[33mawsui.9072c404dac20f6e2bee.js[39m[22m [1m[33m2.28 MiB[39m[22m [1m[32m[emitted][39m[22m [1m[32m[immutable][39m[22m [1m[32m[minimized][39m[22m [1m[33m[big][39m[22m (name: awsui) (id hint: awsui) 1 related asset
+    asset [1m[32mindex.html[39m[22m 1.72 KiB [1m[32m[emitted][39m[22m [1m[33m[compared for emit][39m[22m
+Entrypoint [1mmain[39m[22m [1m[33m[big][39m[22m 3.61 MiB (10.6 MiB) = [1m[32mawsui.9072c404dac20f6e2bee.js[39m[22m 2.28 MiB [1m[32mvendor.595e57f64703092a72ab.css[39m[22m 181 KiB [1m[32mvendor.d999648c12db2ce24e1f.js[39m[22m 499 KiB [1m[32mmain.1562643304b41549f6bf.css[39m[22m 534 KiB [1m[32mmain.5bacf7c0d1faa0cfc8cd.js[39m[22m 144 KiB 5 auxiliary assets
+orphan modules 9.66 MiB (javascript) 10.3 KiB (asset) 1.98 KiB (runtime) [1m[33m[orphan][39m[22m 1930 modules
+runtime modules 360 KiB 1305 modules
+built modules 12 MiB (javascript) 2.32 MiB (css/mini-extract) 1.62 MiB (asset) [1m[33m[built][39m[22m
+  javascript modules 12 MiB
+    modules by path [1m./[39m[22m 3.07 MiB 864 modules
+    modules by path [1m../[39m[22m 8.96 MiB
+      modules by path [1m../lib/[39m[22m 6.32 MiB 492 modules
+      modules by path [1m../../[39m[22m 2.64 MiB 256 modules
+  css modules 2.32 MiB
+    modules by path [1m../lib/components/[39m[22m 1.82 MiB 241 modules
+    modules by path [1m./[39m[22m 275 KiB 76 modules
+    modules by path [1m../../../node_modules/[39m[22m 232 KiB
+      modules by path [1m../../../node_modules/ace-builds/css/theme/*.css[39m[22m 15.6 KiB 4 modules
+      + 2 modules
+  asset modules 1.62 MiB (asset) 9.58 KiB (javascript) 20 modules
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./app/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./app/components/header.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./token/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./wizard/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./toggle/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./visual-contexts/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./theming/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./icon/icons-list.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./tooltip/style-api-v2.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./token/style-api-v2.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./toggle/style-api-v2.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./top-navigation/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./textarea/style-api-v2.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./toggle-button/style-api-v2.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./tree-view/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./text-filter/style-api-v2.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./text-content/style.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./tabs/responsive.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./table-fragments/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./table/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./spinner/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./space-between/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./table-root/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./slider/style-api-v2.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./slider/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./styling/style-overrides.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./select/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./radio-group/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./radio-button/style-api-v2.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./popover/style-api-v2.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./popover/scenarios.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./popover/positioning.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./popover/nav-v1-0-positioning.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./progress-bar/style-api-v2.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./link/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./link/style-api-v2.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./input/style-api-v2.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./help-panel/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./form/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./divider/style-api-v2.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./drag-handle/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./dropdown/style-api-v2.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./dropdown/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./dropdown/fixed-container.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./copy-to-clipboard/style-api-v2.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./dnd/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./container/media.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./container/style-api-v2.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./container/fit-height.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./checkbox/style-api-v2.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./checkbox/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./button/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./button/style-api-v2.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./button-group/style-api-v2.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./button-dropdown/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./button-dropdown/style-api-v2.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./box/style.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./badge/style-api-v2.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./autosuggest/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./app-layout/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./app-layout/with-table-collection-select-filter.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./app-layout/landing-page.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./annotation-context/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./alert/style-api-v2.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./utils/screenshot-area.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./anchor-navigation/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./alert/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./utils/iframe-wrapper.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./style-api/input-field.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./styling/custom-pill.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./styling/custom-panel.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./table/grouped-table/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./item-card/styles.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1mLOG from ../../../node_modules/sass-loader/dist/cjs.js sass-loader ../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../../../node_modules/sass-loader/dist/cjs.js!./property-filter/custom-forms.scss[39m[22m
+<w> [1m[33mDeprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mMore info: https://sass-lang.com/d/legacy-js-api[39m[22m
+<w> [1m[33m[39m[22m
+<w> [1m[33mnull[39m[22m
+
+[1m[33mWARNING[39m[22m in [1masset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+This can impact web performance.
+Assets: 
+  fde5d628ea9f3bf38478.png (761 KiB)
+  52e927d480ba563f2183.png (278 KiB)
+  f1cc0a4929c74cf0b141.png (369 KiB)
+  ace/ace.js (449 KiB)
+  ace/mode-php.js (494 KiB)
+  ace/mode-php_laravel_blade.js (499 KiB)
+  ace/worker-coffee.js (311 KiB)
+  ace/worker-javascript.js (497 KiB)
+  ace/worker-xquery.js (1.53 MiB)
+  main.1562643304b41549f6bf.css (534 KiB)
+  chunks/76674.b1a47d6a0a3b189b63ae.js (449 KiB)
+  awsui.9072c404dac20f6e2bee.js (2.28 MiB)
+  vendor.d999648c12db2ce24e1f.js (499 KiB)
+  chunks/73558.591bb8cb0a9cc673bb54.js (697 KiB)[39m[22m
+
+[1m[33mWARNING[39m[22m in [1mentrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+Entrypoints:
+  main (3.61 MiB)
+      awsui.9072c404dac20f6e2bee.js
+      vendor.595e57f64703092a72ab.css
+      vendor.d999648c12db2ce24e1f.js
+      main.1562643304b41549f6bf.css
+      main.5bacf7c0d1faa0cfc8cd.js
+[39m[22m
+
+webpack 5.105.0 compiled with [1m[33m2 warnings[39m[22m in 33138 ms
+[12:18:23] Finished 'buildPagesStatic' after 42 s
+[12:18:23] Finished 'build' after 53 s

@@ -1,0 +1,129 @@
+PASS src/__tests__/snapshot-tests/test-utils-wrappers.test.tsx
+  Generate test utils ElementWrapper
+    ✓ dom ElementWrapper matches the snapshot (3 ms)
+    ✓ selectors ElementWrapper matches the snapshot (1 ms)
+
+PASS src/__tests__/snapshot-tests/design-tokens.test.ts
+  Design tokens artifacts
+    ✓ Design tokens JSON for classic matches the snapshot (26 ms)
+    ✓ Design tokens JSON for visual-refresh matches the snapshot (34 ms)
+    ✓ Design tokens JSON schema is generated (2 ms)
+    ✓ Design tokens JSON schema is generated
+
+PASS src/__tests__/snapshot-tests/documenter.test.ts
+  Components
+    ✓ definition for action-card matches the snapshot (4 ms)
+    ✓ definition for alert matches the snapshot (1 ms)
+    ✓ definition for anchor-navigation matches the snapshot
+    ✓ definition for annotation-context matches the snapshot (1 ms)
+    ✓ definition for app-layout matches the snapshot (1 ms)
+    ✓ definition for app-layout-toolbar matches the snapshot
+    ✓ definition for area-chart matches the snapshot (1 ms)
+    ✓ definition for attribute-editor matches the snapshot
+    ✓ definition for autosuggest matches the snapshot (1 ms)
+    ✓ definition for badge matches the snapshot
+    ✓ definition for bar-chart matches the snapshot (2 ms)
+    ✓ definition for box matches the snapshot (1 ms)
+    ✓ definition for breadcrumb-group matches the snapshot
+    ✓ definition for button matches the snapshot
+    ✓ definition for button-dropdown matches the snapshot (1 ms)
+    ✓ definition for button-group matches the snapshot
+    ✓ definition for calendar matches the snapshot
+    ✓ definition for cards matches the snapshot (1 ms)
+    ✓ definition for checkbox matches the snapshot
+    ✓ definition for code-editor matches the snapshot
+    ✓ definition for collection-preferences matches the snapshot (1 ms)
+    ✓ definition for column-layout matches the snapshot
+    ✓ definition for container matches the snapshot
+    ✓ definition for content-layout matches the snapshot
+    ✓ definition for control-group matches the snapshot
+    ✓ definition for copy-to-clipboard matches the snapshot
+    ✓ definition for date-input matches the snapshot (1 ms)
+    ✓ definition for date-picker matches the snapshot
+    ✓ definition for date-range-picker matches the snapshot
+    ✓ definition for dialog matches the snapshot
+    ✓ definition for divider matches the snapshot
+    ✓ definition for drawer matches the snapshot (1 ms)
+    ✓ definition for dropdown matches the snapshot
+    ✓ definition for error-boundary matches the snapshot
+    ✓ definition for expandable-section matches the snapshot
+    ✓ definition for file-dropzone matches the snapshot
+    ✓ definition for file-input matches the snapshot
+    ✓ definition for file-token-group matches the snapshot (1 ms)
+    ✓ definition for file-upload matches the snapshot
+    ✓ definition for flashbar matches the snapshot
+    ✓ definition for form matches the snapshot
+    ✓ definition for form-field matches the snapshot
+    ✓ definition for grid matches the snapshot (1 ms)
+    ✓ definition for header matches the snapshot
+    ✓ definition for help-panel matches the snapshot
+    ✓ definition for hotspot matches the snapshot
+    ✓ definition for icon matches the snapshot
+    ✓ definition for icon-provider matches the snapshot (2 ms)
+    ✓ definition for input matches the snapshot
+    ✓ definition for item-card matches the snapshot (1 ms)
+    ✓ definition for key-value-pairs matches the snapshot
+    ✓ definition for line-chart matches the snapshot
+    ✓ definition for link matches the snapshot
+    ✓ definition for list matches the snapshot (1 ms)
+    ✓ definition for live-region matches the snapshot
+    ✓ definition for mixed-line-bar-chart matches the snapshot
+    ✓ definition for modal matches the snapshot
+    ✓ definition for multiselect matches the snapshot (2 ms)
+    ✓ definition for navigable-group matches the snapshot
+    ✓ definition for pagination matches the snapshot
+    ✓ definition for panel-layout matches the snapshot
+    ✓ definition for pie-chart matches the snapshot (1 ms)
+    ✓ definition for popover matches the snapshot
+    ✓ definition for progress-bar matches the snapshot
+    ✓ definition for prompt-input matches the snapshot (1 ms)
+    ✓ definition for property-filter matches the snapshot
+    ✓ definition for radio-button matches the snapshot
+    ✓ definition for radio-group matches the snapshot (1 ms)
+    ✓ definition for s3-resource-selector matches the snapshot
+    ✓ definition for segmented-control matches the snapshot
+    ✓ definition for select matches the snapshot (1 ms)
+    ✓ definition for side-navigation matches the snapshot
+    ✓ definition for skeleton matches the snapshot
+    ✓ definition for slider matches the snapshot
+    ✓ definition for space-between matches the snapshot
+    ✓ definition for spinner matches the snapshot
+    ✓ definition for split-panel matches the snapshot (1 ms)
+    ✓ definition for status-indicator matches the snapshot
+    ✓ definition for steps matches the snapshot
+    ✓ definition for table matches the snapshot
+    ✓ definition for table-body matches the snapshot (1 ms)
+    ✓ definition for table-body-cell matches the snapshot
+    ✓ definition for table-head matches the snapshot
+    ✓ definition for table-header-cell matches the snapshot
+    ✓ definition for table-root matches the snapshot
+    ✓ definition for table-row matches the snapshot
+    ✓ definition for tabs matches the snapshot
+    ✓ definition for tag-editor matches the snapshot (1 ms)
+    ✓ definition for text-content matches the snapshot
+    ✓ definition for text-filter matches the snapshot
+    ✓ definition for textarea matches the snapshot
+    ✓ definition for tiles matches the snapshot
+    ✓ definition for time-input matches the snapshot (1 ms)
+    ✓ definition for toggle matches the snapshot
+    ✓ definition for toggle-button matches the snapshot
+    ✓ definition for token matches the snapshot
+    ✓ definition for token-group matches the snapshot
+    ✓ definition for tooltip matches the snapshot
+    ✓ definition for top-navigation matches the snapshot (1 ms)
+    ✓ definition for tree-view matches the snapshot
+    ✓ definition for truncated-text matches the snapshot
+    ✓ definition for tutorial-panel matches the snapshot
+    ✓ definition for wizard matches the snapshot
+  Test-utils
+    ✓ dom definitions match the snapshot (8 ms)
+    ✓ selectors definitions match the snapshot (4 ms)
+
+PASS src/__tests__/snapshot-tests/test-utils-selectors.test.tsx
+  ✓ test-utils selectors (346 ms)
+
+Test Suites: 4 passed, 4 total
+Tests:       112 passed, 112 total
+Snapshots:   110 passed, 110 total
+Time:        4.41 s
+Ran all test suites matching /src\/__tests__\/snapshot-tests/i.

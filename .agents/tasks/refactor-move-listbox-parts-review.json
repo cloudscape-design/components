@@ -1,0 +1,9 @@
+{
+  "verdict": "APPROVED",
+  "findings": [
+    "Sticky-item dev page gains checkboxes (confirmed, non-blocking): pages/dropdown/list-with-sticky-item.page.tsx now renders multi rows with checkboxes. Mention this in the PR description so reviewers know it is intended.",
+    "Permutations screenshot mapping (likely no visual diff, non-blocking): the hasCheckbox:true permutations on pages/select/item.permutations.page.tsx became selectionType:'multi'. If visual regression reports a diff on this page, it comes from this mapping. Note it in the PR description.",
+    "Item rename not detected at default similarity (confirmed, non-blocking): listbox/parts/item.tsx pairs with select/parts/item.tsx only at -M30%, so the PR shows a full add and two deletes (~966 changed lines instead of ~700). Tell reviewers in the PR description to compare each branch with its old file."
+  ],
+  "reviewDoc": "/Users/amanabiy/Documents/components/.agents/tasks/refactor-move-listbox-parts-review.md"
+}

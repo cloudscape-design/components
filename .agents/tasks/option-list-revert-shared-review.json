@@ -1,0 +1,8 @@
+{
+  "verdict": "APPROVED",
+  "findings": [
+    "Non-blocking: OptionList regresses A–D (including the dangling aria-describedby from D) until the follow-up. The follow-up should restore the 8 removed OptionList tests and the disabled-test aria-describedby assertions.",
+    "Non-blocking: two base-neutral tests ('highlights a group when its own label matches' in multiselect native-search and the use-type-ahead interactive-groups case) were removed so the files match base. Re-add them in the follow-up."
+  ],
+  "reviewDoc": "/Users/amanabiy/Documents/components/.agents/tasks/option-list-revert-shared-review.md"
+}

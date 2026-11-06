@@ -188,6 +188,8 @@ const InternalSelect = React.forwardRef(
       options: filteredOptions,
       highlightOption: !isOpen ? selectOption : highlightOption,
       highlightedOption: !isOpen ? selectedOption : highlightedOption?.option,
+      // When closed, type-ahead selects the match, so it skips disabled options as a native select does.
+      skipDisabled: !isOpen,
     });
 
     const selectAriaLabelId = useUniqueId('select-arialabel-');

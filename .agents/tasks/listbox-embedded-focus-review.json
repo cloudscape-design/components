@@ -1,0 +1,20 @@
+{
+  "verdict": "APPROVED",
+  "findings": [
+    {
+      "id": 1,
+      "blocking": false,
+      "confidence": "likely",
+      "label": "Pointer focus without hover",
+      "detail": "Without the pointer-down guard, a tap or click on an unfocused OptionList with no prior mousemove briefly puts a keyboard highlight on the first option before mouseup selects the tapped row. Embedded Multiselect on main does the same; accepted trade-off, revisit with follow-up 4."
+    },
+    {
+      "id": 2,
+      "blocking": false,
+      "confidence": "confirmed",
+      "label": "Scroll page preselection is now inert for focus",
+      "detail": "pages/option-list/scroll.page.tsx still offers 'Already selected: Option 81' while focus now lands on Option 1. Keep it for the follow-up or add a comment."
+    }
+  ],
+  "reviewDoc": "/Users/amanabiy/Documents/components/.agents/tasks/listbox-embedded-focus-review.md"
+}

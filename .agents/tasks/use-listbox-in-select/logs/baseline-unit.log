@@ -1,0 +1,1699 @@
+jest-haste-map: Haste module naming collision: @cloudscape-design/components
+  The following files share their name; please adjust your hasteImpl:
+    * <rootDir>/lib/components/package.json
+    * <rootDir>/package.json
+
+PASS src/select/__tests__/use-select.test.ts (8.832 s)
+  useSelect
+    ✓ option group is not selected when its only option is selected (2 ms)
+    ✓ should open and close the dropdown (2 ms)
+    ✓ should highlight the first option by default (keyboard:enter) (1 ms)
+    ✓ should open and navigate to the first option (keyboard:down) (1 ms)
+    ✓ should navigate to the last option by triggering keyboard:up on first option
+    ✓ should navigate to the first parent option by triggering keyboard:up on second child option (interactive groups) (1 ms)
+    ✓ should navigate to the first option by triggering keyboard:down on last option (1 ms)
+    ✓ should open and highlight the selected option (keyboard:enter) (1 ms)
+    ✓ should highlight the first option by default (mouse) (1 ms)
+    ✓ should open and highlight the selected option (mouse)
+    ✓ should open and navigate to the first option and select (1 ms)
+    ✓ should open and navigate to the first option and select and keep open (1 ms)
+    ✓ should open and navigate to the second disabled option
+    ✓ should open and navigate to the second disabled option [no filtering] (1 ms)
+    ✓ should navigate to disabled item but not select by enter
+    ✓ should clear the highlight on the option when a key is typed into the filter (1 ms)
+    ✓ select without filter should open and navigate to selected option
+    ✓ select with filter should open and NOT navigate to selected option (1 ms)
+    ✓ should set aria-haspopup="listbox" on trigger for standard select
+    ✓ should set aria-haspopup="dialog" on trigger for select with filtering (1 ms)
+    default props
+      ✓ should return isOpen=false as the initial state (15 ms)
+      ✓ should return highlightedOption=undefined as the initial state (1 ms)
+      ✓ should return getTriggerProps that configures the trigger
+      ✓ should return getMenuProps that configures the menu (1 ms)
+      ✓ should return getFilterProps that configures the filter
+      ✓ should return getOptionProps that configures the options
+    calculates if the highlighted option is selected
+      ✓ highlighted option is selected
+      ✓ highlighted option is not selected (1 ms)
+
+PASS src/property-filter/__tests__/property-filter-controller.test.ts (10.676 s)
+  getAllowedOperators
+    ✓ returns default operator (6 ms)
+    ✓ adds default operator
+    ✓ reorders operators (1 ms)
+    ✓ removes duplicates
+    ✓ preserves custom operators after known ones
+    ✓ adds default custom operator
+    ✓ preserves custom operator with description
+  parseText
+    ✓ free text
+    ✓ negated free text (1 ms)
+    ✓ negated free text with whitespace
+    ✓ negated free text shorthand
+    ✓ negated free text shorthand with whitespace
+    ✓ free text negation after whitespace is ignored
+    ✓ free text negation does not apply, if the free text is disabled
+    ✓ free text with a non-default operator
+    ✓ free text with an unsupported operator
+    ✓ full operator
+    ✓ full operator with whitespace before (1 ms)
+    ✓ full operator with whitespace after
+    ✓ partial operator
+    ✓ partial operator with text after (4 ms)
+    ✓ partial operator with whitespace before
+    ✓ partial operator was not completed (1 ms)
+    ✓ range operator greedy (could have been completed by a "=", but is already treated like completed)
+    ✓ operator after a property with the same prefix in the label
+    ✓ operator after edge case property
+    ✓ unsupported operator
+    ✓ unsupported operator incompleted
+    ✓ default operator
+    ✓ whitespace before the property label is not allowed
+    ✓ property label without an operator
+    ✓ custom operator
+    ✓ text-based operator with space
+    ✓ text-based operator case-insensitive
+    ✓ text-based operator not matched when part of value (1 ms)
+  getAutosuggestOptions
+    ✓ returns property suggestions when the filtering value is empty
+    ✓ returns all value and property suggestions, when the filtering text does not start with one of the property labels
+    ✓ returns all property suggestions and operator suggestions for a property, when the filtering text starts with this property`s label
+    ✓ returns value suggestions for a given property, when the filteringText starts with this property`s labels followed by a completed operator
+    ✓ returns value suggestions for the properies that support `!:` operator, when doing a negated free text search (1 ms)
+    ✓ returns custom operator with description in operator suggestions
+    ✓ custom description overrides built-in i18n for predefined operators
+  operatorToDescription
+    ✓ returns built-in i18n for known operators without custom description
+    ✓ custom description overrides built-in i18n for known operators
+    ✓ returns custom description for unknown operators
+    ✓ returns empty string for unknown operators without description
+    ✓ returns built-in i18n when no property is provided
+    ✓ returns empty string for unknown operator when no property is provided (1 ms)
+
+PASS src/autosuggest/__tests__/render-option.test.tsx
+  Autosuggest renderOption
+    virtual list
+      ✓ renders custom option content (55 ms)
+      ✓ receives correct item properties for item option (16 ms)
+      ✓ receives correct item properties for group option (16 ms)
+      ✓ receives correct item properties for entered-text option (16 ms)
+      ✓ reflects highlighted state (23 ms)
+      ✓ reflects selected state (10 ms)
+      ✓ renders children within groups correctly (14 ms)
+      ✓ receives correct parent attribute for child item in group (8 ms)
+      ✓ reflects disabled state (9 ms)
+      ✓ allows selection with custom rendered options (25 ms)
+      ✓ receives filterText parameter when filtering (16 ms)
+      ✓ renders custom content for entered-text option (13 ms)
+      ✓ maintains option index in item properties (18 ms)
+      ✓ maintains group index in item properties (8 ms)
+      ✓ handles group disabled state correctly (7 ms)
+      ✓ falls back to default content when renderOption returns null (7 ms)
+      ✓ wraps custom content inside option element with data-value (30 ms)
+      ✓ wraps default content inside option element with data-value when renderOption returns null (29 ms)
+    plain list
+      ✓ renders custom option content (7 ms)
+      ✓ receives correct item properties for item option (14 ms)
+      ✓ receives correct item properties for group option (6 ms)
+      ✓ receives correct item properties for entered-text option (19 ms)
+      ✓ reflects highlighted state (13 ms)
+      ✓ reflects selected state (7 ms)
+      ✓ renders children within groups correctly (6 ms)
+      ✓ receives correct parent attribute for child item in group (23 ms)
+      ✓ reflects disabled state (13 ms)
+      ✓ allows selection with custom rendered options (24 ms)
+      ✓ receives filterText parameter when filtering (30 ms)
+      ✓ renders custom content for entered-text option (7 ms)
+      ✓ maintains option index in item properties (6 ms)
+      ✓ maintains group index in item properties (34 ms)
+      ✓ handles group disabled state correctly (7 ms)
+      ✓ falls back to default content when renderOption returns null (36 ms)
+      ✓ wraps custom content inside option element with data-value (6 ms)
+      ✓ wraps default content inside option element with data-value when renderOption returns null (7 ms)
+
+PASS src/autosuggest/__tests__/autosuggest.test.tsx (11.634 s)
+  ✓ renders correct labels when focused (52 ms)
+  ✓ renders lang on options (23 ms)
+  ✓ option can be selected (22 ms)
+  ✓ option can be selected by value (10 ms)
+  ✓ option with special characters can be selected by value (31 ms)
+  ✓ should display entered text option/label (9 ms)
+  ✓ should not display entered text option when hideEnteredTextOption=false (20 ms)
+  ✓ entered text option should not get screenreader override (10 ms)
+  ✓ should not close dropdown when no related target in blur (29 ms)
+  ✓ should warn if recoveryText is provided without associated handler (10 ms)
+  ✓ findOptionInGroup (19 ms)
+  ✓ findOptionInGroup returns consistent element with findOption (20 ms)
+  onSelect
+    ✓ should select normal value (16 ms)
+    ✓ should select `enteredText` option (11 ms)
+  a11y props
+    ✓ adds combobox role to input (33 ms)
+    ✓ adds correct aria properties to input (14 ms)
+    ✓ has correct aria property when suggestion dialog is open (5 ms)
+    ✓ adds correct aria properties to input when expanded (7 ms)
+    ✓ can add an aria-label to input (2 ms)
+    ✓ adds id of highlighted item as aria-activedescendant to input (15 ms)
+    ✓ Option should have appropriate aria-selected values (14 ms)
+    ✓ Option should have appropriate aria label (18 ms)
+    ✓ renders screen reader content for highlighted option (19 ms)
+    ✓ renders screen reader content for highlighted option with custom text (10 ms)
+  keyboard interactions
+    ✓ selects option on enter (13 ms)
+    ✓ closes dropdown on enter and opens it on arrow keys (30 ms)
+    ✓ does not select option on enter keydown if part of IME composition (21 ms)
+    ✓ does not select option on enter when composition ends immediately before keydown (6 ms)
+    ✓ selects option on enter after composition flag is cleared (41 ms)
+    ✓ blocks enter during rapid sequential composition events (19 ms)
+    ✓ does not select option when enter pressed to complete character composition (9 ms)
+    ✓ closes dropdown and clears input on esc (12 ms)
+    ✓ arrow up key on first option should highlight last option (16 ms)
+    ✓ arrow up key on first option should highlight last option (options with groups) (8 ms)
+    ✓ arrow down key on last option should highlight first option (25 ms)
+  Check if should render dropdown
+    ✓ should render dropdown content when not empty and dropdown content is not null (43 ms)
+    ✓ should not render dropdown content when empty and dropdown content is null (19 ms)
+    ✓ should render dropdown content when not empty (25 ms)
+    ✓ should render dropdown content when dropdown content is not null (12 ms)
+    ✓ should render dropdown when the only visible option is entered text option (30 ms)
+    ✓ should render dropdown when no options matched with a message (32 ms)
+    ✓ should not render dropdown when no options matched with no message (26 ms)
+  Ref
+    ✓ can be used to focus the component (7 ms)
+    ✓ can be used to select all text (9 ms)
+  native attributes
+    ✓ adds native attributes (13 ms)
+    ✓ chains autosuggest-specific handlers (6 ms)
+    ✓ warns about overriding autosuggest-specific attributes (2 ms)
+    ✓ warns about overriding input-specific attributes (2 ms)
+
+PASS src/property-filter/__tests__/property-filter-i18n.test.tsx (11.783 s)
+  i18n
+    ✓ uses dropdown labels from i18n provider for a string property (150 ms)
+    ✓ uses dropdown labels from i18n provider for a numeric property (54 ms)
+    ✓ uses token and editor labels from i18n provider (332 ms)
+    ✓ uses token group edit label from i18n provider (38 ms)
+    ✓ uses formatted token for removeTokenButtonAriaLabel (29 ms)
+
+PASS src/property-filter/__tests__/analytics-metadata.test.tsx (11.838 s)
+  PropertyFilter renders correct analytics metadata
+    ✓ when disabled (64 ms)
+    ✓ in clear input button (51 ms)
+    ✓ in dropdown and expandToViewport=false (58 ms)
+    ✓ in dropdown and expandToViewport=true (64 ms)
+    in selected filters
+      ✓ in clear all filters button (102 ms)
+      ✓ in dismiss button (48 ms)
+      ✓ in operation select (74 ms)
+      ✓ in token edit flow (131 ms)
+      ✓ in show more (41 ms)
+
+PASS src/property-filter/__tests__/property-filter-token-list.test.tsx (11.857 s)
+  filtering tokens
+    content
+      ✓ free text token (54 ms)
+      ✓ negated free text token (7 ms)
+      ✓ custom operator free text token (6 ms)
+      ✓ property token (8 ms)
+      ✓ property token with missing property key and operator : (14 ms)
+      ✓ property token with missing property key and operator !: (6 ms)
+    join operation control
+      ✓ is missing on the first token (47 ms)
+      ✓ can be used to change the operation (74 ms)
+      ✓ can be used to check aria-label attribute on the filter token operator (42 ms)
+    dismiss button
+      ✓ causes onChange to fire, removing the token (33 ms)
+      ✓ moves the focus to the input, when pressed (19 ms)
+      ✓ has a label from i18nStrings (5 ms)
+      ✓ disabled, when the component is disabled (4 ms)
+      ✓ moves focus to the adjacent grouped token and to the single remaining token (94 ms)
+  tokens show-more toggle
+    ✓ is hidden, when there are no filtering tokens (3 ms)
+    ✓ is hidden, when tokenLimit is not provided (8 ms)
+    ✓ toggles the visibility of tokens past the limit (20 ms)
+    aria-label on toggle fewer/more button
+      ✓ sets no aria-label text on the expand button by default (43 ms)
+      ✓ sets aria-label text on the expand button when provided (17 ms)
+      ✓ sets no aria-label text on the collapse button by default (14 ms)
+      ✓ sets aria-label text on the collapse button when provided (9 ms)
+  tokens remove all button
+    ✓ is hidden, when there are no filtering tokens (14 ms)
+    ✓ a11y label (5 ms)
+    ✓ causes onChange to fire, removing all tokens (5 ms)
+    ✓ moves focus to the input but keeps dropdown closed (4 ms)
+    ✓ disabled, when the component is disabled (10 ms)
+  grouped token
+    ✓ token group has correct ARIA label and edit button ARIA label (22 ms)
+    ✓ changes group operation (34 ms)
+    ✓ removes token from group (63 ms)
+
+PASS src/property-filter/__tests__/property-filter.filtering-input.test.tsx (11.985 s)
+  filtering input
+    ✓ can be focused using the property filter ref (32 ms)
+    ✓ receives `placeholder`, `ariaLabel` and `disabled` properties passed to the component (14 ms)
+    ✓ receives `ariaLabelledby`, `ariaDescribedby` and `controlId` properties passed to the component (4 ms)
+    ✓ can use selectSuggestionByValue (33 ms)
+    "use entered" option
+      ✓ is added, when a token can be created from the current text in the input (78 ms)
+      ✓ with free text tokens disabled (34 ms)
+      ✓ causes a token to be created, when selected (99 ms)
+    typing experience:
+      ✓ provides relevant suggestions depending on the currently entered string (139 ms)
+      ✓ filters suggestions by tags and filteringTags in dropdown (21 ms)
+      ✓ supports property names that are substrings of others (15 ms)
+      ✓ supports property names that are substrings of others (alternate order) (21 ms)
+      ✓ can be submitted to create a token (41 ms)
+      ✓ submitting empty input does not create a token (18 ms)
+      ✓ can not be submitted to create a free text token, when free text tokens are disabled (51 ms)
+    selecting items in the dropdown
+      ✓ keeps the dropdown open, when property or operator suggestions are selected (53 ms)
+      ✓ creates a new token and closes the dropdown, when a value suggestion is selected (23 ms)
+      ✓ inserts operator when property is selected if only one operator is defined for that property (32 ms)
+  count text
+    ✓ is not displayed when count text is empty (15 ms)
+    ✓ is not displayed when there are no filtering tokens (7 ms)
+    ✓ is visible when there is at least 1 token (9 ms)
+    ✓ is visible when there is at least 1 token group (4 ms)
+    live announcement
+      ✓ includes the live announcement when all conditions met (4 ms)
+      ✓ does not include the live announcement when loading = true (20 ms)
+      ✓ includes the live announcement when loading switches from true to false (11 ms)
+      ✓ re-announce the live announcement when countText changes (33 ms)
+  constraint text
+    ✓ is not displayed when constraint text is empty (4 ms)
+    ✓ is visible when the constraint text is not empty (3 ms)
+    ✓ is used as ARIA description for the autosuggest input (4 ms)
+
+PASS src/property-filter/__tests__/property-filter.test.tsx (12.778 s)
+  ✓ warns and does not hide operations when using hideOperations and enableTokenGroups (43 ms)
+  property filter parts
+    ✓ `expandToViewport` property test utils (80 ms)
+    ✓ property filter input can be found with autosuggest selector (8 ms)
+    ✓ property filter input can be found with styles.input (8 ms)
+    ✓ check a11y (196 ms)
+    status indicators
+      ✓ displays error status (46 ms)
+      ✓ links error status to dropdown (103 ms)
+      ✓ displays finished status (79 ms)
+      ✓ links finished status to dropdown (55 ms)
+    dropdown states
+      ✓ when free text filtering is allowed and no property is matched the dropdown is visible but aria-expanded is false (12 ms)
+      ✓ when free text filtering is allowed and no properties available the filtering-empty is shown (10 ms)
+      ✓ when free text filtering is allowed and no properties available, with text entered, the use message is shown (23 ms)
+      ✓ when free text filtering is not allowed and no properties available the filtering-empty is shown (28 ms)
+      ✓ when free text filtering is not allowed and no properties available the filtering-empty is shown, also when text is entered (28 ms)
+    async loading
+      ✓ calls onLoadItems with parsed property and operator when operator is selected (42 ms)
+      ✓ calls onLoadItems with parsed property and operator when operator is inserted (53 ms)
+      ✓ does not call onLoadItems when clear button is clicked and asyncProperties=false (39 ms)
+      ✓ calls onLoadItems on clear when filter by text and asyncProperties=true (34 ms)
+      ✓ token editor has matched property options (178 ms)
+      ✓ calls onLoadItem when opening editor value autosuggest (109 ms)
+    labelled values
+      ✓ tokens are labelled (8 ms)
+      ✓ token editor values are labelled (133 ms)
+      ✓ property value suggestions are labelled (25 ms)
+      ✓ matches property values (54 ms)
+      ✓ matches all values (17 ms)
+      ✓ query is created with actual value when clicking on option, disableFreeTextFiltering=false (27 ms)
+      ✓ query is created with actual value when clicking on option, disableFreeTextFiltering=true (25 ms)
+      ✓ query is created with actual value when pressing enter, disableFreeTextFiltering=false (30 ms)
+      ✓ query is created with actual value when pressing enter, disableFreeTextFiltering=true (76 ms)
+    custom element slots
+      ✓ can define a customControl element (7 ms)
+      ✓ can define a customFilterAction that replaces the clear filters button (10 ms)
+
+PASS src/multiselect/__tests__/analytics-metadata.test.tsx
+  ✓ Internal Multiselect does not render "component" metadata (4 ms)
+  Multiselect renders correct analytics metadata
+    ✓ on the trigger button (66 ms)
+    ✓ when disabled (4 ms)
+    ✓ with simple items (62 ms)
+    ✓ with groups and expandToViewport=false (136 ms)
+    ✓ with groups and expandToViewport=true (34 ms)
+    ✓ within a formfield (10 ms)
+    with selected options
+      ✓ with one selected option (6 ms)
+      ✓ with selected options without value (5 ms)
+      ✓ when readonly (18 ms)
+      ✓ in dismiss button (38 ms)
+      ✓ in show more (42 ms)
+
+PASS src/autosuggest/__tests__/i18n.test.tsx
+  i18n provider
+    ✓ supports providing recoveryText (99 ms)
+    ✓ do not render recovery button if no recovery callback was provided (34 ms)
+    ✓ supports providing errorIconAriaLabel (31 ms)
+    ✓ supports providing enteredTextLabel (75 ms)
+    ✓ supports providing selectedAriaLabel (38 ms)
+    ✓ should not show entered-text option when enteredTextLabel is undefined and not using the i18n provider (24 ms)
+    ✓ should not show entered-text option when enteredTextLabel is undefined when using the i18n provider without enteredTextLabel value (85 ms)
+    ✓ should not show entered-text option when enteredTextLabel is undefined when using the i18n provider with empty enteredTextLabel value (8 ms)
+    ✓ should show entered-text option when enteredTextLabel is provided via i18n provider (9 ms)
+    ✓ supports providing enteredTextLabel via i18n provider in token mode (43 ms)
+    ✓ should not warn when token mode and enteredTextLabel is provided via i18n provider (9 ms)
+    ✓ supports providing enteredTextLabel via i18n provider dotted key 'i18nStrings.enteredTextLabel' (26 ms)
+    ✓ dotted key 'i18nStrings.enteredTextLabel' wins over flat 'enteredTextLabel' in provider (7 ms)
+    ✓ should not warn when 'i18nStrings.enteredTextLabel' dotted key is provided via i18n provider (4 ms)
+    ✓ i18nStrings.enteredTextLabel direct prop is used in token mode (31 ms)
+    ✓ i18nStrings.enteredTextLabel direct prop is used in default mode (6 ms)
+    ✓ i18nStrings.enteredTextLabel takes priority over deprecated enteredTextLabel prop in token mode (8 ms)
+    ✓ supports providing i18nStrings.tokenInsertedAriaLabel via i18n provider dotted key (57 ms)
+    ✓ i18nStrings.tokenInsertedAriaLabel direct prop takes effect in token mode (18 ms)
+
+PASS src/property-filter/filtering-token/__tests__/filtering-token.test.tsx
+  ✓ renders a single token as role="group" with token ARIA label and dismiss button (23 ms)
+  ✓ the dismiss button is a hover-motion trigger and its close icon carries the motion target (3 ms)
+  ✓ renders 3 tokens as role="group" with group ARIA label no dismiss button (62 ms)
+  ✓ nested tokens rendered as role="group" with token ARIA label and dismiss button (35 ms)
+  ✓ fires root onDismiss when the remove button is pressed (2 ms)
+  ✓ fires grouped onDismiss when the remove button is pressed (28 ms)
+  ✓ shows root operation selector if showOperation is true, slice=1 (19 ms)
+  ✓ shows root operation selector if showOperation is true, slice=2 (29 ms)
+  ✓ shows operation selector for 2 and 3 grouped tokens (30 ms)
+  ✓ opens token editor by clicking on token label, editorExpandToViewport=false (5 ms)
+  ✓ opens token editor by clicking on token label, editorExpandToViewport=true (4 ms)
+  ✓ opens token editor by clicking on token edit button, editorExpandToViewport=false (20 ms)
+  ✓ opens token editor by clicking on token edit button, editorExpandToViewport=true (13 ms)
+  ✓ moved focus to adjacent element when inner token is removed (45 ms)
+  ✓ tokens operations are not clickable when readOnlyOperations=true (31 ms)
+
+  console.error
+    Warning: An update to TestComponent inside a test was not wrapped in act(...).
+    
+    When testing, code that causes React state updates should be wrapped into act(...):
+    
+    act(() => {
+      /* fire events that update state */
+    });
+    /* assert on the output */
+    
+    This ensures that you're testing the behavior the user would see in the browser. Learn more at https://fb.me/react-wrap-tests-with-act
+        in TestComponent
+
+      40 |   const [highlightType, setHighlightType] = useState<HighlightType>(new HighlightType('keyboard'));
+      41 |   const setHighlightedIndex = useCallback((index: number, newHighlightType: HighlightType) => {
+    > 42 |     setHighlightedIndexState(index);
+         |     ^
+      43 |     setHighlightType(oldHighlight => (oldHighlight.type !== newHighlightType.type ? newHighlightType : oldHighlight));
+      44 |   }, []);
+      45 |
+
+      at printWarning (../../node_modules/react-dom/cjs/react-dom.development.js:88:30)
+      at error (../../node_modules/react-dom/cjs/react-dom.development.js:60:5)
+      at warnIfNotCurrentlyActingUpdatesInDEV (../../node_modules/react-dom/cjs/react-dom.development.js:23284:7)
+      at dispatchAction (../../node_modules/react-dom/cjs/react-dom.development.js:15656:9)
+      at src/internal/components/options-list/utils/use-highlight-option.ts:42:5
+      at moveHighlightFrom (src/internal/components/options-list/utils/use-highlight-option.ts:57:7)
+      at moveHighlight (src/internal/components/options-list/utils/use-highlight-option.ts:62:5)
+      at Object.moveHighlightWithKeyboard (src/internal/components/options-list/utils/use-highlight-option.ts:78:57)
+      at Object.<anonymous> (src/autosuggest/__tests__/options-controller.test.ts:171:23)
+
+  console.error
+    Warning: An update to TestComponent inside a test was not wrapped in act(...).
+    
+    When testing, code that causes React state updates should be wrapped into act(...):
+    
+    act(() => {
+      /* fire events that update state */
+    });
+    /* assert on the output */
+    
+    This ensures that you're testing the behavior the user would see in the browser. Learn more at https://fb.me/react-wrap-tests-with-act
+        in TestComponent
+
+      41 |   const setHighlightedIndex = useCallback((index: number, newHighlightType: HighlightType) => {
+      42 |     setHighlightedIndexState(index);
+    > 43 |     setHighlightType(oldHighlight => (oldHighlight.type !== newHighlightType.type ? newHighlightType : oldHighlight));
+         |     ^
+      44 |   }, []);
+      45 |
+      46 |   const highlightedOption =
+
+      at printWarning (../../node_modules/react-dom/cjs/react-dom.development.js:88:30)
+      at error (../../node_modules/react-dom/cjs/react-dom.development.js:60:5)
+      at warnIfNotCurrentlyActingUpdatesInDEV (../../node_modules/react-dom/cjs/react-dom.development.js:23284:7)
+      at dispatchAction (../../node_modules/react-dom/cjs/react-dom.development.js:15656:9)
+      at src/internal/components/options-list/utils/use-highlight-option.ts:43:5
+      at moveHighlightFrom (src/internal/components/options-list/utils/use-highlight-option.ts:57:7)
+      at moveHighlight (src/internal/components/options-list/utils/use-highlight-option.ts:62:5)
+      at Object.moveHighlightWithKeyboard (src/internal/components/options-list/utils/use-highlight-option.ts:78:57)
+      at Object.<anonymous> (src/autosuggest/__tests__/options-controller.test.ts:171:23)
+
+PASS src/multiselect/__tests__/multiselect.test.tsx (13.047 s)
+  ✓ opens and closes dropdown (69 ms)
+  ✓ keeps dropdown open after selecting an item by default (16 ms)
+  ✓ closes dropdown after selecting an option when keepOpen=false (15 ms)
+  ✓ does not open dropdown when disabled (7 ms)
+  ✓ does not open dropdown when readOnly (3 ms)
+  ✓ renders lang on options (10 ms)
+  ✓ filtering state stays unchanged when an item is selected (24 ms)
+  ✓ sets proper filtering text for the onLoadItems event (327 ms)
+  ✓ renders selected options (16 ms)
+  ✓ does not render tokens when no tokens are present (5 ms)
+  ✓ renders inline label text when provided (7 ms)
+  ✓ does not render inline label when inlineLabelText is not provided (6 ms)
+  ✓ associate label with trigger button (3 ms)
+  ✓ allows deselecting an option without object equality (20 ms)
+  ✓ allows deselecting options programmatically via empty array (7 ms)
+  ✓ allows deselecting options programmatically via undefined (7 ms)
+  ✓ fires change event when user selects an option (9 ms)
+  ✓ fires a change event when user selects option and there were other options selected (30 ms)
+  ✓ fires a change event when user deselects an option from the dropdown (15 ms)
+  ✓ fires a change event when user dismisses an option from the token list (25 ms)
+  ✓ can hide tokens completely (7 ms)
+  ✓ disables tokens when multiselect is disabled (6 ms)
+  ✓ does not render token group when no tokens are present (14 ms)
+  ✓ Shifts focus to the filter on retry failed request (62 ms)
+  ✓ fires a change event when user selects a group option from the dropdown (23 ms)
+  ✓ deselects all options when a user clicks on a selected group option from the dropdown (39 ms)
+  ✓ fires a change event when user selects group option and there were other options selected (16 ms)
+  ✓ deselecting a group option does not remove other selected options (178 ms)
+  ✓ group selection allows only the selection of enabled options (10 ms)
+  ✓ keeps dropdown open after selecting a group option by default (28 ms)
+  ✓ closes dropdown after selecting a group option when keepOpen=false (12 ms)
+  ✓ Option should have aria-checked (51 ms)
+  ✓ Trigger should have refer to the element using aria-label value and placeholder (2 ms)
+  ✓ Trigger receives focus when autofocus is true (3 ms)
+  ✓ group options can have description, label tag, tags, disabled reason (18 ms)
+  ✓ tolerates options with { options: undefined }, and considers them to not be groups (5 ms)
+  ✓ renders aria-multiselectable="true" on listbox (7 ms)
+  ✓ renders aria-multiselectable="true" on listbox with virtual scroll (14 ms)
+  Token group
+    ✓ displays no show more button when tokenLimit is higher than selected token count (4 ms)
+    ✓ displays show more button when tokenLimit is collapsed (17 ms)
+    ✓ displays show more button when tokenLimit is collapsed (readOnly state) (20 ms)
+    ✓ displays show fewer button when tokenlist is expanded (15 ms)
+    ✓ sets no aria-label text on the expand button by default (7 ms)
+    ✓ sets aria-label text on the expand button when provided (4 ms)
+    ✓ sets no aria-label text on the collapse button by default (5 ms)
+    ✓ sets aria-label text on the collapse button when provided (13 ms)
+  Dropdown states
+    ✓ should display loading status text as sticky footer (33 ms)
+    ✓ should associate loading status text as sticky footer to the dropdown element (34 ms)
+    ✓ check a11y for loading and sticky footer (301 ms)
+    ✓ should display error status text as sticky footer (34 ms)
+    ✓ should associate error status text as sticky footer to the dropdown element (26 ms)
+    ✓ check a11y for error and sticky footer (107 ms)
+    ✓ should display finished status text as non-sticky footer (15 ms)
+    ✓ should associate finished status text as non-sticky footer to the dropdown element (12 ms)
+    ✓ check a11y for finished and non-sticky footer (98 ms)
+    ✓ should display error status icon with provided aria label (23 ms)
+    ✓ should warn if recoveryText is provided without associated handler (2 ms)
+  footer live announcements [expandToViewport=true]
+    ✓ live announces footer text on initial dropdown render (8 ms)
+    ✓ live announce footer text on dropdown toggle (13 ms)
+  footer live announcements [expandToViewport=false]
+    ✓ live announces footer text on initial dropdown render (79 ms)
+    ✓ live announce footer text on dropdown toggle (38 ms)
+  a11y properties
+    ✓ trigger should aria-control the list (role="listbox") when filtering disabled (7 ms)
+    ✓ trigger should aria-control the dropdown (role="dialog") when filtering enabled (8 ms)
+    ✓ dropdown (role="dialog") should receive a label when filtering enabled (32 ms)
+    ✓ listbox should receive aria-required when that property is set (13 ms)
+  With inline tokens
+    ✓ can render inline tokens (2 ms)
+    ✓ shows placeholder when no items are selected (2 ms)
+    ✓ does not display features like tags in the inline tokens (3 ms)
+    ✓ shows multiple selected options inline (20 ms)
+  Disabled item with reason
+    ✓ has no tooltip open by default (6 ms)
+    ✓ has no tooltip without disabledReason (7 ms)
+    ✓ open tooltip when the item is highlighted (13 ms)
+    ✓ has no disabledReason a11y attributes by default (15 ms)
+    ✓ has disabledReason a11y attributes (18 ms)
+    ✓ can not select disabled with reason option (12 ms)
+    ✓ closes tooltip when Esc is pressed but leaves dropdown open (73 ms)
+  resize observer
+    ✓ sets triggerWidth when borderBoxWidth is positive (3 ms)
+    ✓ does not set triggerWidth when borderBoxWidth is 0 (2 ms)
+
+PASS src/autosuggest/__tests__/options-controller.test.ts
+  useAutosuggestItems
+    ✓ "flattens" the list of options, indenting group items (10 ms)
+    ✓ disables options inside a disabled group (1 ms)
+    ✓ disables group that only contains disabled options
+    ✓ does not disable group with at least one enabled option
+    ✓ does not filter again, if called with the same list (1 ms)
+    ✓ filters passed items and generates a "use-entered" item
+    ✓ does not filter items using "filteringType" "manual" (1 ms)
+    ✓ does not filter items when "showAll" flag is set
+    ✓ does not filter again when called with the same parameters
+    ✓ selectHighlightedOptionWithKeyboard (42 ms)
+    ✓ handles large amount of nested options (274 ms)
+    selectVisibleOption
+      ✓ invokes the callback if the selected index is inside the options array and the corresponding option is interactive (29 ms)
+      ✓ does not invoke the callback if the selected index is not in the options array
+      ✓ does not invoke the callback if the corresponding option is not interactive (15 ms)
+    token mode enteredTextLabel
+      ✓ uses enteredTextLabel (shows "Add" text in token mode) (9 ms)
+      ✓ uses enteredTextLabel in default mode (1 ms)
+      ✓ filtering behaviour is unchanged — options are still filtered
+      ✓ uses isTokenMode=false (Use: text) when isTokenMode is undefined — property-filter path
+
+PASS src/multiselect/__tests__/select-all.test.tsx
+  Multiselect with "select all" control
+    ✓ closes the dropdown after clicking when `keepOpen` is false (14 ms)
+    ✓ is hidden when there are no options to select [virtuaScroll=false] (7 ms)
+    ✓ is hidden when there are no options to select [virtuaScroll=true] (13 ms)
+    Selection logic
+      ✓ selects all options when none are selected (79 ms)
+      ✓ selects all options when some but not all are selected (31 ms)
+      ✓ deselects all options when all are selected (84 ms)
+      ✓ does not select disabled options (12 ms)
+      ✓ does not deselect disabled options (25 ms)
+    with filtering
+      ✓ does not select non-visible options (20 ms)
+      ✓ does not deselect non-visible options (25 ms)
+    Keyboard interactions
+      ✓ closes the dropdown after clicking when `keepOpen` is false (30 ms)
+      virtualScroll=false
+        ✓ selects all options when none are selected (18 ms)
+      virtualScroll=true
+        ✓ selects all options when none are selected (15 ms)
+    i18n
+      ✓ uses i18nStrings.selectAllText from i18n provider (39 ms)
+      ✓ uses i18nStrings.selectAllText from i18nStrings prop (11 ms)
+      ✓ uses i18nStrings.selectAllText from i18nStrings prop when both i18n provider and i18nStrings prop are provided (11 ms)
+    Test utils
+      ✓ `selectAll` throws an error if the dropdown is not open (51 ms)
+      ✓ `selectAll` throws an error if the "select all" element is not present (13 ms)
+      ✓ does not alter option test indices (25 ms)
+
+PASS src/autosuggest/__tests__/autosuggest-token-mode.test.tsx (13.39 s)
+  rendering
+    ✓ renders each token inline (65 ms)
+    ✓ renders the token icon (22 ms)
+    ✓ renders no tokens and no group semantics without the tokens property (4 ms)
+    ✓ does not include tokens in the change detail without the tokens property (14 ms)
+    ✓ groups tokens and input under the aria-label (8 ms)
+    ✓ labels the group by the form field label (9 ms)
+    ✓ marks the input as invalid when the field is invalid (8 ms)
+    ✓ marks the input as invalid from the form field context (7 ms)
+    ✓ does not mark a valid input as invalid (4 ms)
+    ✓ exposes the position of visible tokens in the whole set (19 ms)
+  adding tokens
+    ✓ Enter adds the trimmed input value as a token and clears the input (37 ms)
+    ✓ Enter on the highlighted entered-text option adds the token (39 ms)
+    ✓ selecting a suggestion adds it as a token, keeping existing ones (65 ms)
+    ✓ selecting a suggestion keeps its value exactly as declared (30 ms)
+    ✓ the entered-text option adds the trimmed input value (24 ms)
+    ✓ allows duplicate tokens (20 ms)
+    ✓ Enter does not add a token for whitespace-only value (4 ms)
+    ✓ Enter does not add a token for read-only (3 ms)
+    ✓ Enter does not add a token for disabled (3 ms)
+    ✓ Enter during IME composition does not add a token (25 ms)
+    ✓ does not announce filtering results (10 ms)
+    announcement
+      ✓ announces a token added with Enter (16 ms)
+      ✓ announces a token added from the suggestions (31 ms)
+      ✓ announces the token value when no label is provided (7 ms)
+      ✓ uses the provider message (50 ms)
+  removing tokens
+    ✓ dismiss button removes the token (51 ms)
+    ✓ key 8 on a token removes it (32 ms)
+    ✓ key 46 on a token removes it (21 ms)
+    ✓ tokens cannot be removed when { readOnly: true } (32 ms)
+    ✓ tokens cannot be removed when { disabled: true } (6 ms)
+    ✓ read-only tokens stay focusable and keyboard navigable (149 ms)
+    ✓ disabled tokens are not in the tab sequence (61 ms)
+    ✓ focus moves to the next token after removing a middle token (12 ms)
+    ✓ focus moves to the previous token after removing the last token (43 ms)
+    ✓ focus moves to the input without opening suggestions after removing the only token (25 ms)
+    ✓ focus lands on the right token when a hidden token is revealed by the removal (35 ms)
+  keyboard navigation
+    ✓ only one token is in the tab sequence (15 ms)
+    ✓ the overflow trigger is the tab stop when tokens are hidden (13 ms)
+    ✓ the tab stop follows the focused token while focus stays in the tokens (19 ms)
+    ✓ re-entering the tokens returns to the last focused token (23 ms)
+    ✓ arrow keys move between tokens and into the input (22 ms)
+    ✓ arrow keys follow the visual order in right-to-left layouts (21 ms)
+    ✓ Home focuses the first item and End focuses the input (14 ms)
+    ✓ Backspace in an empty input focuses the last token without removing it (27 ms)
+    ✓ Backspace in an empty input focuses the last token again after a token was removed (17 ms)
+    ✓ Backspace in an empty input focuses the overflow trigger when all tokens are hidden (45 ms)
+    ✓ Backspace in a non-empty input keeps focus in the input (16 ms)
+    ✓ focusing a token does not open the suggestions, focusing the input does (11 ms)
+  overflow dropdown
+    ✓ labels the trigger without announcing a listbox popup (12 ms)
+    ✓ reports expand and collapse analytics on the trigger (27 ms)
+    ✓ shows the number of hidden tokens on the trigger (16 ms)
+    ✓ has no trigger when all tokens fit (6 ms)
+    ✓ trigger toggles the dropdown listing hidden tokens (31 ms)
+    ✓ opening the overflow dropdown closes the suggestions (37 ms)
+    ✓ does not move focus into the dropdown on open (28 ms)
+    ✓ ArrowDown and ArrowUp from the trigger move focus into the dropdown (26 ms)
+    ✓ ArrowDown on the closed trigger opens the dropdown and focuses the first token (44 ms)
+    ✓ ArrowUp on the closed trigger opens the dropdown and focuses the last token (96 ms)
+    ✓ ArrowDown and ArrowUp cycle through dropdown tokens (32 ms)
+    ✓ Escape closes the dropdown and returns focus to the trigger (28 ms)
+    ✓ Tab closes the dropdown (139 ms)
+    ✓ clicking outside closes the dropdown (99 ms)
+    ✓ removing a token from the dropdown focuses the next one (37 ms)
+    ✓ Backspace on a dropdown token removes it and focuses the next one (75 ms)
+    ✓ Delete on a dropdown token removes it and focuses the next one (60 ms)
+    ✓ Backspace on a dropdown token does not remove it when read-only (17 ms)
+    ✓ removing all hidden tokens starting from the first one focuses the first visible token (88 ms)
+    ✓ removing all hidden tokens starting from the last one focuses the first visible token (98 ms)
+    ✓ removing all hidden tokens starting from the middle one focuses the first visible token (45 ms)
+    ✓ focuses the first visible token when a removal lets the remaining hidden tokens fit (42 ms)
+    ✓ does not move focus when hidden tokens become visible while focus is elsewhere in the field (34 ms)
+    ✓ disabling the component closes an open dropdown (24 ms)
+    ✓ trigger is disabled when the component is disabled (36 ms)
+    ✓ hidden tokens can be inspected but not removed when read-only (23 ms)
+    ✓ finds the dropdown rendered in a portal (18 ms)
+  input value
+    ✓ clear button clears the value and keeps tokens (25 ms)
+    ✓ clear button visibility when { readOnly: true } (8 ms)
+    ✓ clear button visibility when { disabled: true } (4 ms)
+    ✓ clear button visibility when {} (16 ms)
+    ✓ has no clear button when the input is empty (13 ms)
+    ✓ typing keeps tokens in the change detail (8 ms)
+    ✓ Escape clears the value and keeps tokens (13 ms)
+  i18n
+    ✓ uses i18nStrings for labels (9 ms)
+    ✓ has no dismiss label when neither i18nStrings nor provider messages are given (4 ms)
+    ✓ uses provider messages with plural forms (2 visible) (26 ms)
+    ✓ uses provider messages with plural forms (1 visible) (12 ms)
+    ✓ i18nStrings take precedence over provider messages (10 ms)
+
+PASS src/select/__tests__/select.test.tsx (13.535 s)
+  expandToViewport=false
+    ✓ renders selected option (49 ms)
+    ✓ allows deselecting an option programmatically (8 ms)
+    ✓ opens and closes dropdown (41 ms)
+    ✓ allows dropdown to be opened with Space (29 ms)
+    ✓ allows dropdown to be opened with Enter (15 ms)
+    ✓ selects top-level option (23 ms)
+    ✓ finds option by value with special characters (12 ms)
+    ✓ renders lang on options (12 ms)
+    ✓ throws an error when attempting to select an option with closed dropdown (20 ms)
+    ✓ throws an error when option index is not valid (9 ms)
+    ✓ throws an error when trying to select a non-existing option index (15 ms)
+    ✓ throws an error when trying to select a non-existing value (47 ms)
+    ✓ selects an option in a group (29 ms)
+    ✓ allows setting a disabled option through API and display it (11 ms)
+    ✓ correctly identifies disabled options (11 ms)
+    ✓ should render with focus when autoFocus=true (3 ms)
+    ✓ group options can have description, label tag, tags (31 ms)
+    Filtering feature
+      ✓ fires onLoadItems event after a delay (233 ms)
+      ✓ fires onLoadItems to load next page after scroll (10 ms)
+      ✓ fires onLoadItems to retry failed request (12 ms)
+      ✓ should warn if recoveryText is provided without associated handler (8 ms)
+      ✓ applies automatic client-side filtering when it is enabled (22 ms)
+    Placeholder Support
+      ✓ renders placeholder when no option is selected (12 ms)
+      ✓ can update a placeholder (5 ms)
+      ✓ removes placeholder after selecting an option (4 ms)
+      ✓ shows placeholder again after setting selectedOption to null (4 ms)
+    Dropdown states
+      ✓ should display loading status text as sticky footer (17 ms)
+      ✓ should link loading status text in sticky footer to dropdown list (46 ms)
+      ✓ check a11y for loading and sticky footer (240 ms)
+      ✓ should display error status text as sticky footer (22 ms)
+      ✓ should link error status text in sticky footer to dropdown list (49 ms)
+      ✓ check a11y for error and sticky footer (122 ms)
+      ✓ should display finished status text as non-sticky footer (28 ms)
+      ✓ should link finished status text in non-sticky footer to dropdown list (15 ms)
+      ✓ check a11y for finished and non-sticky footer (88 ms)
+      ✓ should display error status icon with provided aria label (15 ms)
+    a11y properties
+      ✓ trigger should aria-control the list (role="listbox") when filtering disabled (14 ms)
+      ✓ trigger should aria-control the dropdown (role="dialog") when filtering enabled (9 ms)
+      ✓ dropdown (role="dialog") should receive a label when filtering enabled (16 ms)
+      ✓ listbox should receive aria-required when that property is set (26 ms)
+    Filtering results
+      ✓ shows filtering result text after typing (14 ms)
+      ✓ Error and loading states have advantage over filtering text (46 ms)
+    Inline Label
+      ✓ should render (3 ms)
+      ✓ associate label with trigger button (3 ms)
+  expandToViewport=true
+    ✓ renders selected option (12 ms)
+    ✓ allows deselecting an option programmatically (4 ms)
+    ✓ opens and closes dropdown (24 ms)
+    ✓ allows dropdown to be opened with Space (8 ms)
+    ✓ allows dropdown to be opened with Enter (35 ms)
+    ✓ selects top-level option (30 ms)
+    ✓ finds option by value with special characters (19 ms)
+    ✓ renders lang on options (31 ms)
+    ✓ throws an error when attempting to select an option with closed dropdown (3 ms)
+    ✓ throws an error when option index is not valid (3 ms)
+    ✓ throws an error when trying to select a non-existing option index (34 ms)
+    ✓ throws an error when trying to select a non-existing value (16 ms)
+    ✓ selects an option in a group (10 ms)
+    ✓ allows setting a disabled option through API and display it (121 ms)
+    ✓ correctly identifies disabled options (37 ms)
+    ✓ should render with focus when autoFocus=true (3 ms)
+    ✓ group options can have description, label tag, tags (13 ms)
+    Filtering feature
+      ✓ fires onLoadItems event after a delay (227 ms)
+      ✓ fires onLoadItems to load next page after scroll (9 ms)
+      ✓ fires onLoadItems to retry failed request (8 ms)
+      ✓ should warn if recoveryText is provided without associated handler (7 ms)
+      ✓ applies automatic client-side filtering when it is enabled (9 ms)
+    Placeholder Support
+      ✓ renders placeholder when no option is selected (2 ms)
+      ✓ can update a placeholder (6 ms)
+      ✓ removes placeholder after selecting an option (4 ms)
+      ✓ shows placeholder again after setting selectedOption to null (4 ms)
+    Dropdown states
+      ✓ should display loading status text as sticky footer (25 ms)
+      ✓ should link loading status text in sticky footer to dropdown list (17 ms)
+      ✓ check a11y for loading and sticky footer (101 ms)
+      ✓ should display error status text as sticky footer (10 ms)
+      ✓ should link error status text in sticky footer to dropdown list (24 ms)
+      ✓ check a11y for error and sticky footer (113 ms)
+      ✓ should display finished status text as non-sticky footer (26 ms)
+      ✓ should link finished status text in non-sticky footer to dropdown list (22 ms)
+      ✓ check a11y for finished and non-sticky footer (93 ms)
+      ✓ should display error status icon with provided aria label (18 ms)
+    a11y properties
+      ✓ trigger should aria-control the list (role="listbox") when filtering disabled (10 ms)
+      ✓ trigger should aria-control the dropdown (role="dialog") when filtering enabled (21 ms)
+      ✓ dropdown (role="dialog") should receive a label when filtering enabled (15 ms)
+      ✓ listbox should receive aria-required when that property is set (21 ms)
+    Filtering results
+      ✓ shows filtering result text after typing (55 ms)
+      ✓ Error and loading states have advantage over filtering text (37 ms)
+    Inline Label
+      ✓ should render (2 ms)
+      ✓ associate label with trigger button (2 ms)
+
+PASS src/internal/components/listbox/selection/__tests__/multi-selection.test.ts
+  multiSelection
+    ✓ choosing an unselected option adds it, choosing a selected option removes it (1 ms)
+    ✓ an option with an empty-string value toggles like any other option
+    ✓ toggling a group only toggles its enabled children
+    ✓ toggling a group only affects children that are currently visible
+    ✓ select-all is checked only when every option in allOptions is selected, including filtered-out ones
+    ✓ toggling select-all changes only visible enabled options and keeps hidden selections (5 ms)
+    ✓ toggling select-all off keeps hidden selections and clears the visible enabled options
+    ✓ a group is indeterminate when some but not all children are selected
+    ✓ a group is selected when all children are selected
+    ✓ choosing a disabled option that is not selected leaves the selection unchanged
+    ✓ deselecting a group keeps its selected disabled children
+    ✓ deselecting a group keeps selections outside the group
+    ✓ newly chosen options are appended after the existing selection
+    ✓ select-all turns off when every visible enabled option is selected, even if a disabled one is not
+    ✓ removing an option that is not in the visible list deselects it
+    ✓ a fully selected group is not shown as selected when groups are not interactive (1 ms)
+    ✓ a selected child with an empty-string value is not counted as a group selection
+
+PASS src/multiselect/__tests__/dropdown-customization.test.tsx
+  Multiselect dropdown customization
+    ✓ renders custom header and footer (30 ms)
+    ✓ render functions receive the current filterText (14 ms)
+    ✓ closeDropdown closes the dropdown (17 ms)
+    ✓ omitting the props preserves current behavior (11 ms)
+    ✓ closeDropdown returns focus to the trigger (11 ms)
+    ✓ composes the custom header before the filter row, and the status before the custom footer (30 ms)
+    ✓ find utils resolve the custom regions with expandToViewport (7 ms)
+    filteringType="none"
+      ✓ renders the custom header but gates out the filter input (8 ms)
+      ✓ interactive footer control is keyboard-reachable and Tab does not trap or close the dropdown (23 ms)
+    dropdownRole
+      ✓ defaults to listbox semantics without a filter (3 ms)
+      ✓ dropdownRole="dialog" forces dialog semantics without a filter (8 ms)
+    dropdownAriaDescribedby
+      ✓ is applied to the listbox and joined with the built-in status id (24 ms)
+      ✓ is applied to the dialog and joined with the built-in status id (31 ms)
+
+PASS src/select/__tests__/analytics-metadata.test.tsx
+  ✓ Internal Select does not render "component" metadata (3 ms)
+  Select renders correct analytics metadata
+    ✓ on the trigger button (32 ms)
+    ✓ when disabled (16 ms)
+    ✓ when readonly (10 ms)
+    ✓ with simple items (11 ms)
+    ✓ with groups and expandToViewport=false (59 ms)
+    ✓ with groups and expandToViewport=true (25 ms)
+    ✓ within a formfield (12 ms)
+    with selectedOption
+      ✓ and defined value (7 ms)
+      ✓ and undefined value (6 ms)
+
+PASS src/select/__tests__/trigger.test.tsx
+  Trigger component
+    ✓ is a hover-motion trigger and its caret icon carries the motion target (2 ms)
+    Empty state
+      ✓ should have root trigger class
+      ✓ should have id attribute
+      ✓ should have type=button
+      ✓ should not have disabled attribute
+      ✓ should have aria-expanded=false
+      ✓ should have aria-labelledby attribute consisting of passed aria-labelby and the one pointing to trigger content (1 ms)
+      ✓ should have aria-haspopup attribute
+      ✓ should have text content placeholder
+    Open state
+      ✓ should have aria-expanded=true
+    Invalid state
+      ✓ should have invalid class
+    Warning state
+      ✓ should have warning class
+    Disabled state
+      ✓ should have disabled class and disabled attribute
+    Selected option with undefined label
+      ✓ should use the value if label is not provided
+    Selected option with triggerVariant=label
+      ✓ should have text content of the selected option
+    Selected option with triggerVariant=option
+      ✓ should have text content of the selected option (1 ms)
+    autoFocus
+      ✓ receives focus when autoFocus is true (8 ms)
+    Custom content with renderOption
+      ✓ should call renderOption with trigger item when triggerVariant is option (2 ms)
+      ✓ should render custom content in trigger when renderOption returns JSX (1 ms)
+      ✓ should fall back to default option rendering when renderOption returns null
+      ✓ should not call renderOption when triggerVariant is label
+
+PASS src/autosuggest/__tests__/autosuggest-dropdown-states.test.tsx
+  footer types
+    ✓ empty (131 ms)
+    ✓ pending (99 ms)
+    ✓ loading (114 ms)
+    ✓ error (174 ms)
+    ✓ finished (97 ms)
+    ✓ results (68 ms)
+  footer live announcements [expandToViewport=true]
+    ✓ live announces error text on initial dropdown render (19 ms)
+    ✓ live announces error text on dropdown toggle (29 ms)
+  footer live announcements [expandToViewport=false]
+    ✓ live announces error text on initial dropdown render (27 ms)
+    ✓ live announces error text on dropdown toggle (57 ms)
+  recovery button keyboard interaction
+    ✓ closes dropdown when ESC is pressed on recovery button (11 ms)
+  filtering results
+    with empty state
+      ✓ displays empty state footer when value is empty (7 ms)
+      ✓ displays results footer when value is entered but not filtering (11 ms)
+    with pending state
+      ✓ displays no footer when value is empty (15 ms)
+      ✓ displays no footer when value is not empty (9 ms)
+      ✓ displays results footer when value is entered (48 ms)
+    with loading state
+      ✓ displays loading footer when value is empty (38 ms)
+      ✓ displays loading footer when value is not empty (25 ms)
+    with error state
+      ✓ displays error footer when value is empty (16 ms)
+      ✓ displays error footer when value is not empty (47 ms)
+    with finished state
+      ✓ displays no footer when finished w/o finished text and value is empty (6 ms)
+      ✓ displays finished footer when finished w/ finished text and value is empty (8 ms)
+      ✓ displays finished footer when finished w/ finished text and value is present but not filtering (9 ms)
+      ✓ displays results footer when finished w/o finished text and value is entered (15 ms)
+      ✓ displays results footer when finished w/ finished text and value is entered (9 ms)
+
+PASS src/select/__tests__/dropdown-customization.test.tsx
+  Select dropdown customization
+    ✓ renders custom header and footer (30 ms)
+    ✓ render functions receive the current filterText (17 ms)
+    ✓ closeDropdown closes the dropdown (20 ms)
+    ✓ omitting the props preserves current behavior (13 ms)
+    ✓ closeDropdown returns focus to the trigger (48 ms)
+    ✓ composes the custom header before the filter row, and the status before the custom footer (18 ms)
+    ✓ find utils resolve the custom regions with expandToViewport (16 ms)
+    filteringType="none"
+      ✓ renders the custom header but gates out the filter input (21 ms)
+      ✓ interactive footer control is keyboard-reachable and Tab does not trap or close the dropdown (15 ms)
+    dropdownRole
+      ✓ defaults to listbox semantics without a filter (4 ms)
+      ✓ dropdownRole="dialog" forces dialog semantics without a filter (20 ms)
+    dropdownAriaDescribedby
+      ✓ is applied to the listbox and joined with the built-in status id (29 ms)
+      ✓ is applied to the dialog and joined with the built-in status id (8 ms)
+
+PASS src/internal/components/selectable-item/__tests__/analytics-metadata.test.tsx
+  SelectableItem renders correct analytics metadata
+    ✓ when isParent=true (2 ms)
+    ✓ when disabled (1 ms)
+    ✓ with simple content
+    ✓ with value (1 ms)
+    ✓ with data-test-index (1 ms)
+    with Option component
+      ✓ simple option (1 ms)
+      ✓ complex option (1 ms)
+    with isChild=true
+      ✓ with simple content
+      ✓ with value (1 ms)
+      ✓ with data-test-index
+      ✓ with data-group-index (1 ms)
+      ✓ with data-group-index and data-in-group-index
+      ✓ with data-group-index and data-child-index (1 ms)
+      ✓ with parent element
+
+PASS src/property-filter/__tests__/property-filter-enum-tokens.test.tsx (14.212 s)
+  ✓ formats tokens using custom and default formatters (138 ms)
+  sync token creation
+    ✓ creates a value token for state (44 ms)
+    ✓ creates an enum token for state by selecting a suggested value (29 ms)
+    ✓ creates an enum token for state by submitting value with Enter (39 ms)
+    ✓ creates an enum token for state by submitting non-matched value with Enter (76 ms)
+    ✓ creates an enum token for state by submitting two values with multiselect (50 ms)
+    ✓ filters enum token values with property filter input text (19 ms)
+    ✓ shows filtering empty if no enum token values are provided (25 ms)
+    ✓ shows filtering empty if no enum token values are matched (19 ms)
+  sync token editing
+    ✓ can replace value token with enum token (151 ms)
+    ✓ can replace enum token with value token (215 ms)
+    ✓ can change value in enum token (287 ms)
+    ✓ keeps value when changing operator so that value type preserves (166 ms)
+    ✓ keeps value when changing operator so that enum type preserves (143 ms)
+    ✓ enum token options can be filtered (91 ms)
+    ✓ can render enum query tokens with value=null (70 ms)
+  async token creation
+    ✓ shows enum token values and a loading indicator if status type is loading (84 ms)
+    ✓ shows enum token values and an error indicator if status type is error (38 ms)
+    ✓ shows enum token values and finished text if status type is finished (17 ms)
+    ✓ shows filtering empty if status type is finished and no options (21 ms)
+    ✓ calls onLoadItems upon rendering when status type is pending (24 ms)
+    ✓ calls onLoadItems upon retrying (126 ms)
+  async token editing
+    ✓ shows enum token values and a loading indicator if status type is loading (123 ms)
+    ✓ shows enum token values and an error indicator if status type is error (93 ms)
+    ✓ shows enum token values and finished text if status type is finished (161 ms)
+    ✓ shows filtering empty if status type is finished and no options (108 ms)
+    ✓ calls onLoadItems upon opening dropdown when status is pending (86 ms)
+    ✓ calls onLoadItems upon retrying (118 ms)
+
+PASS src/autosuggest/__tests__/analytics-metadata.test.tsx
+  ✓ Internal Autosuggest does not render "component" metadata (7 ms)
+  Autosuggest renders correct analytics metadata
+    ✓ on the clear input button (18 ms)
+    ✓ when disabled (3 ms)
+    ✓ with simple items (14 ms)
+    ✓ with groups and expandToViewport=false (23 ms)
+    ✓ with groups and expandToViewport=true (16 ms)
+    ✓ within a formfield (5 ms)
+
+PASS src/property-filter/__tests__/property-filter-stories-token-create-sync.test.tsx
+  Property filter stories: tokens creation, sync
+    ✓ creates token with 3 clicks (78 ms)
+    ✓ creates token with 2 clicks (for single-operator property) (47 ms)
+    ✓ creates token with search and keyboard select (65 ms)
+    ✓ creates token with value search (38 ms)
+    ✓ creates free-text token with by pressing enter (17 ms)
+    ✓ creates free-text token by selecting "use" option (51 ms)
+    ✓ creates token with 3 clicks with disallowed free-text selection (20 ms)
+    ✓ fails to create free-text token when pressing enter when free-text selection is disallowed (12 ms)
+    ✓ fails to create token with non-matched operator when free-text selection is disallowed (57 ms)
+    ✓ creates token with non-matched value when free-text selection is disallowed (17 ms)
+    ✓ creates empty enum token (26 ms)
+    ✓ creates enum token with two options (31 ms)
+    ✓ creates enum token with two options using filter (71 ms)
+    ✓ creates empty date token (57 ms)
+    ✓ creates filled date token using custom input (19 ms)
+    ✓ creates filled date token using enter (20 ms)
+
+PASS src/property-filter/__tests__/utils.test.ts
+  matchFilteringProperty
+    ✓ should match property by label when filtering text equals to it
+    ✓ should match property by label ignoring case
+    ✓ should match property by label when filtering text has trailing space
+    ✓ should match property by label when filtering text has trailing symbol (1 ms)
+    ✓ should not match property by label when filtering text has leading space
+    ✓ should prefer an exact match to non-exact
+    ✓ should prefer an exact match to non-exact (with operator)
+  matchOperator
+    ✓ should match operator when filtering text equals to it
+    ✓ should match operator ignoring case
+    ✓ should match operator when filtering text has trailing space
+    ✓ should match operator when filtering text has trailing symbol
+    ✓ should not match operator when filtering text has leading space
+    ✓ should not match text operator when followed by non-space character
+    ✓ should match text operator when followed by space
+    ✓ should match text operator when at end of string
+    ✓ should match text operator case-insensitively
+    ✓ should prefer longer text operator match (1 ms)
+    ✓ should still match symbolic operators without word boundary
+  matchOperatorPrefix
+    ✓ should return empty string if filtering text is empty
+    ✓ should return empty string if filtering text only has spaces
+    ✓ should return filtering text if it matches some operator prefix
+    ✓ should return filtering text if it matches some operator prefix ignoring case
+    ✓ should return null if filtering text has leading space
+  matchTokenValue
+    ✓ should return token as-is if no match found
+    ✓ should match by label
+    ✓ should case-insensitive match
+    ✓ should prefer case-sensitive match
+    ✓ should return token as-is for a token value of type string[]
+
+PASS src/property-filter/__tests__/property-filter-autosuggest.test.tsx
+  Property filter autosuggest
+    ✓ the list of suggestions to be filtered, when the input is focused (8 ms)
+    ✓ hideEnteredTextOption: stops "entered text" option from being created (8 ms)
+    ✓ focuses first focusable custom form element when down arrow is pressed (7 ms)
+    ✓ has no focus trap when no custom form and no recovery button (6 ms)
+    ✓ has focus trap when custom form (5 ms)
+    ✓ has focus trap when recovery button (8 ms)
+    filterText
+      ✓ is used for filtering (50 ms)
+      ✓ is used for highlighting (29 ms)
+      ✓ is not used for the enteredText- option (8 ms)
+    onOptionClick
+      ✓ called when selecting an item with a mouse (22 ms)
+      ✓ called when selecting an item with a keyboard (12 ms)
+      ✓ could be prevented to stop dropdown from closing (11 ms)
+      ✓ highlight gets reset when selecting an option, even if the dropdown did not close (20 ms)
+    disabled option
+      ✓ should highlight disabled option (13 ms)
+      ✓ should not select disabled option (35 ms)
+
+PASS src/internal/components/listbox/__tests__/option-props.test.ts
+  isHighlightable
+    ✓ group headers are highlightable only with interactive groups (1 ms)
+  getListboxOptionProps
+    ✓ single selection marks the selected option and highlight (1 ms)
+    ✓ multi selection uses group state for headers and group neighbours
+    ✓ select-all gets group state but never counts as a selected neighbour
+    ✓ non-highlightable group headers get data-mouse-target -1 (1 ms)
+  isAnnouncedSelected
+    ✓ announces selected options and fully selected groups
+  getSelectableOption
+    ✓ returns the given option, or the highlighted option when omitted (1 ms)
+    ✓ returns undefined when there is nothing to choose or it is not interactive
+  getListMouseHandlers
+    ✓ selects and highlights the option under the pointer (1 ms)
+    ✓ ignores pointer events outside a highlightable option
+
+PASS src/property-filter/__tests__/property-filter-extended-operators.test.tsx
+  extended operators
+    ✓ property label is used to annotate custom form field (21 ms)
+    ✓ property filter renders operator form instead of options list (11 ms)
+    ✓ property filter uses operator form in the token editor (92 ms)
+    ✓ extended operator form takes value/onChange state (11 ms)
+    ✓ extended operator form can be cancelled/submitted (27 ms)
+    ✓ extended operator form value is reset when operator changes (39 ms)
+    ✓ extended operator form value is reset when dropdown closes (16 ms)
+    ✓ extended operator form takes chosen operator and entered filter text (15 ms)
+    ✓ property filter uses operator formatter to render token value (7 ms)
+
+  console.error
+    Warning: `NaN` is an invalid value for the `insetBlockStart` css style property.
+        in div (created by PopoverContainer)
+        in PopoverContainer (created by Transition)
+        in Transition (created by Transition)
+        in Transition (created by InternalTooltip)
+        in div (created by InternalTooltip)
+        in Portal (created by InternalTooltip)
+        in InternalTooltip (created by ForwardRef(Item))
+        in div (created by ForwardRef(Item))
+        in div (created by ForwardRef(SelectableItem))
+        in div (created by ForwardRef(SelectableItem))
+        in ForwardRef(SelectableItem) (created by ForwardRef(Item))
+        in ForwardRef(Item)
+        in ForwardRef(Item) (created by ForwardRef(PlainList))
+        in div (created by ForwardRef(OptionsList))
+        in ForwardRef(OptionsList) (created by ForwardRef(PlainList))
+        in ForwardRef(PlainList) (created by ForwardRef)
+        in DropdownContextProvider (created by TransitionContent)
+        in div (created by TransitionContent)
+        in div (created by TransitionContent)
+        in div (created by TransitionContent)
+        in TransitionContent (created by Transition)
+        in div (created by Transition)
+        in Transition (created by Transition)
+        in Transition (created by InternalDropdown)
+        in DropdownContainer (created by InternalDropdown)
+        in div (created by InternalDropdown)
+        in InternalDropdown (created by ForwardRef)
+        in div (created by ForwardRef)
+        in ResetGroupedControlContext (created by ForwardRef)
+        in ForwardRef (created by Select)
+        in Select
+
+      84 |         });
+      85 |         wrapper.openDropdown();
+    > 86 |         wrapper.findDropdown({ expandToViewport }).findOptionsContainer()!.keydown(KeyCode.down);
+         |                                                                            ^
+      87 |
+      88 |         expect(
+      89 |           wrapper.findDropdown({ expandToViewport }).findOption(2)!.findDisabledReason()!.getElement()
+
+      at printWarning (../../node_modules/react-dom/cjs/react-dom.development.js:88:30)
+      at error (../../node_modules/react-dom/cjs/react-dom.development.js:60:5)
+      at warnStyleValueIsNaN (../../node_modules/react-dom/cjs/react-dom.development.js:4512:5)
+      at warnValidStyle (../../node_modules/react-dom/cjs/react-dom.development.js:4536:9)
+      at setValueForStyles (../../node_modules/react-dom/cjs/react-dom.development.js:4600:9)
+      at updateDOMProperties (../../node_modules/react-dom/cjs/react-dom.development.js:5843:7)
+      at updateProperties (../../node_modules/react-dom/cjs/react-dom.development.js:6252:3)
+      at commitUpdate (../../node_modules/react-dom/cjs/react-dom.development.js:7553:3)
+      at commitWork (../../node_modules/react-dom/cjs/react-dom.development.js:20546:13)
+      at commitMutationEffects (../../node_modules/react-dom/cjs/react-dom.development.js:22776:11)
+      at HTMLUnknownElement.callCallback (../../node_modules/react-dom/cjs/react-dom.development.js:188:14)
+      at HTMLUnknownElement.callTheUserObjectsOperation (../../node_modules/jsdom/lib/jsdom/living/generated/EventListener.js:26:30)
+      at innerInvokeEventListeners (../../node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:350:25)
+      at invokeEventListeners (../../node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:286:3)
+      at HTMLUnknownElementImpl._dispatch (../../node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:233:9)
+      at HTMLUnknownElementImpl.dispatchEvent (../../node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:104:17)
+      at HTMLUnknownElement.dispatchEvent (../../node_modules/jsdom/lib/jsdom/living/generated/EventTarget.js:241:34)
+      at Object.invokeGuardedCallbackDev (../../node_modules/react-dom/cjs/react-dom.development.js:237:16)
+      at invokeGuardedCallback (../../node_modules/react-dom/cjs/react-dom.development.js:292:31)
+      at commitRootImpl (../../node_modules/react-dom/cjs/react-dom.development.js:22509:9)
+      at unstable_runWithPriority (../../node_modules/scheduler/cjs/scheduler.development.js:653:12)
+      at runWithPriority$1 (../../node_modules/react-dom/cjs/react-dom.development.js:11039:10)
+      at commitRoot (../../node_modules/react-dom/cjs/react-dom.development.js:22381:3)
+      at finishSyncRender (../../node_modules/react-dom/cjs/react-dom.development.js:21807:3)
+      at performSyncWorkOnRoot (../../node_modules/react-dom/cjs/react-dom.development.js:21793:7)
+      at ../../node_modules/react-dom/cjs/react-dom.development.js:11089:24
+      at unstable_runWithPriority (../../node_modules/scheduler/cjs/scheduler.development.js:653:12)
+      at runWithPriority$1 (../../node_modules/react-dom/cjs/react-dom.development.js:11039:10)
+      at flushSyncCallbackQueueImpl (../../node_modules/react-dom/cjs/react-dom.development.js:11084:7)
+      at flushSyncCallbackQueue (../../node_modules/react-dom/cjs/react-dom.development.js:11072:3)
+      at batchedUpdates$1 (../../node_modules/react-dom/cjs/react-dom.development.js:21862:7)
+      at act (../../node_modules/react-dom/cjs/react-dom-test-utils.development.js:929:14)
+      at ElementWrapper.fireEvent (../../node_modules/@cloudscape-design/test-utils-core/dist/dom.js:44:28)
+      at ElementWrapper.fireEvent [as keydown] (../../node_modules/@cloudscape-design/test-utils-core/dist/dom.js:31:14)
+      at Object.<anonymous> (src/select/__tests__/disabled.test.tsx:86:76)
+
+PASS src/internal/components/listbox/__tests__/use-announcement.test.ts
+  useAnnouncement
+    ✓ should return empty string when there is no highlighted or selected option (1 ms)
+    ✓ should return announcement string when there is a highlighted option
+    ✓ should return announcement string when there is a highlighted option in a group (1 ms)
+    ✓ should return announcement string with tags
+    ✓ should return announcement string with all of the matching filtering tags
+    ✓ should return announcement string without non-matching filtering tags
+    ✓ announcement should be prepended with selected label, if highlighted item is selected (4 ms)
+    ✓ should return custom announcement string when renderHighlightedAriaLive is provided (1 ms)
+    ✓ should include group announcement only the first time the group is entered (2 ms)
+    ✓ should repeat group announcement after entering an orphan option (1 ms)
+    ✓ should repeat group announcement after entering a different group option (1 ms)
+
+PASS src/internal/components/options-list/__tests__/use-highlight-option.test.ts
+  useHighlightedOption
+    ✓ should move highlight and also highlight disabled options (2 ms)
+    ✓ should go to the end and do not move further
+    ✓ should move highlight to the beginning to do not go further (11 ms)
+    ✓ should reset highlight (1 ms)
+    ✓ should set highlighted index
+    ✓ should highlight option by value
+    ✓ should update highlightType when highligh option (1 ms)
+
+PASS src/internal/components/options-list/__tests__/use-keyboard.test.ts
+  useTriggerKeyboard
+    ✓ should call openDropdown and goHome when press up (1 ms)
+    ✓ should call openDropdown and goHome when press down (1 ms)
+  useMenuKeyboard
+    ✓ should go up when pressing up (1 ms)
+    ✓ should go down when pressing down (1 ms)
+    ✓ should go home when pressing home
+    ✓ should go to end when pressing end (1 ms)
+    ✓ should close the dropdown when pressing escape
+    ✓ should select option when pressing enter
+    ✓ should not select option when pressing space when native space is in action (filtering enabled) (1 ms)
+    ✓ should select option when pressing space when preventNativeSpace is enabled
+
+PASS src/multiselect/__tests__/group-state.test.tsx
+  Multiselect select-all checkbox state
+    ✓ all selected (30 ms)
+    ✓ some selected (74 ms)
+    ✓ none selected (9 ms)
+    ✓ all selected, some filtered out (22 ms)
+    ✓ all visible selected, a filtered out one is not (39 ms)
+    ✓ enabled selected, disabled not (19 ms)
+    ✓ enabled and disabled selected (67 ms)
+    ✓ selected value not in options (9 ms)
+    ✓ is not rendered when there are no options (7 ms)
+  Multiselect group checkbox state
+    ✓ all children selected (41 ms)
+    ✓ some children selected (10 ms)
+    ✓ enabled children selected, a disabled child not (8 ms)
+  Multiselect selected neighbour styling
+    ✓ a row next to a fully selected group is styled as having a selected neighbour (32 ms)
+    ✓ the row after select-all is not styled as having a selected neighbour (21 ms)
+  Multiselect highlighted row announcement
+    ✓ announces a fully selected group as selected (28 ms)
+    ✓ does not announce select-all as selected (18 ms)
+
+PASS src/multiselect/__tests__/render-option.test.tsx
+  Multiselect renderOption
+    ✓ renders custom option content (43 ms)
+    ✓ receives correct item properties for item option (19 ms)
+    ✓ receives correct item properties for group option (8 ms)
+    ✓ receives correct item properties for select-all option (8 ms)
+    ✓ reflects highlighted state (8 ms)
+    ✓ reflects disabled state (44 ms)
+    ✓ reflects selected state (18 ms)
+    ✓ reflects partial selection state for parent option (11 ms)
+    ✓ receives correct parent attribute for child item in group (16 ms)
+    ✓ allows selection with custom rendered options (9 ms)
+
+PASS src/property-filter/__tests__/filter-options.test.tsx
+  filterOptions matching
+    ✓ should match by value property
+    ✓ should match by partial value
+    ✓ should match by label property (1 ms)
+    ✓ should match by partial label
+    ✓ should match by tags property
+    ✓ should match by filteringTags property
+    ✓ should match across multiple properties for same option
+    ✓ should perform case-insensitive matching across all properties
+    ✓ should match multiple options when search matches different properties (1 ms)
+    ✓ should return empty array when no properties match
+
+PASS src/internal/components/listbox/__tests__/scroll-to-index.test.ts
+  scroll-to-index
+    ✓ scrolls to the top of an item if that item is above visible area (1 ms)
+    ✓ scrolls to the bottom of an item if that item is below visible area
+    ✓ scrolls to the top of an item if that item is below and larger than the visible area
+    ✓ scrolls to the top of an item if that item is large and partially visible (1 ms)
+    ✓ does not scroll if item is fully visible
+    scroll padding
+      ✓ does not scroll if item is fully visible
+      ✓ scrolls to the top of an item if that item is above the visible area
+      ✓ scrolls to the top of an item if that item is partially above the visible area
+      ✓ scrolls to the top of an item if that item is large and partially visible
+
+PASS src/select/__tests__/group-state.test.tsx
+  useSelect group state with single selection
+    ✓ a group with one of several children selected is indeterminate, not selected (2 ms)
+    ✓ the same value in two groups makes both groups indeterminate
+    ✓ a selected value that is not in the options leaves groups unselected (1 ms)
+    ✓ defaults to single selection over selectedOptions when no selection model is passed (1 ms)
+  Select group row state
+    ✓ selecting a child in a multi-child group does not mark the group header as selected (24 ms)
+    ✓ selecting the only child of a group does not mark the group header as selected (32 ms)
+
+PASS src/select/__tests__/disabled.test.tsx
+  expandToViewport=false
+    Disabled state
+      ✓ enabled by default (19 ms)
+      ✓ can be disabled (10 ms)
+      Disabled item with reason
+        ✓ has no tooltip open by default (15 ms)
+        ✓ has no tooltip without disabledReason (11 ms)
+        ✓ open tooltip when the item is highlighted (137 ms)
+        ✓ has no disabledReason a11y attributes by default (10 ms)
+        ✓ has disabledReason a11y attributes (14 ms)
+        ✓ can not select disabled with reason option (51 ms)
+        ✓ click on disabled with reason option does not close dropdown (20 ms)
+        ✓ closes tooltip when Esc is pressed but leaves dropdown open (64 ms)
+        ✓ hides disabled reason when the option is scrolled away (95 ms)
+  expandToViewport=true
+    Disabled state
+      ✓ enabled by default (13 ms)
+      ✓ can be disabled (3 ms)
+      Disabled item with reason
+        ✓ has no tooltip open by default (8 ms)
+        ✓ has no tooltip without disabledReason (43 ms)
+        ✓ open tooltip when the item is highlighted (17 ms)
+        ✓ has no disabledReason a11y attributes by default (8 ms)
+        ✓ has disabledReason a11y attributes (45 ms)
+        ✓ can not select disabled with reason option (17 ms)
+        ✓ click on disabled with reason option does not close dropdown (26 ms)
+        ✓ closes tooltip when Esc is pressed but leaves dropdown open (19 ms)
+        ✓ hides disabled reason when the option is scrolled away (76 ms)
+
+PASS src/autosuggest/__tests__/load-more-controller.test.ts
+  Autosuggest load-more-controller
+    ✓ calls onLoadItems on input focus (2 ms)
+    ✓ calls onLoadItems on input change
+    ✓ calls onLoadItems on recovery click (1 ms)
+    ✓ only calls onLoadItems on scroll when options are not empty and status is pending
+    ✓ returns current filtering text when called on input focus (1 ms)
+    ✓ does not override filtering text when called on recovery or scroll
+
+PASS src/select/__tests__/render-option.test.tsx
+  Select renderOption
+    ✓ renders custom option content (31 ms)
+    ✓ receives correct item properties for item option (10 ms)
+    ✓ receives correct item properties for group option (28 ms)
+    ✓ receives correct item properties for trigger option (15 ms)
+    ✓ reflects highlighted state (15 ms)
+    ✓ reflects selected state (13 ms)
+    ✓ renders children within groups correctly (14 ms)
+    ✓ receives correct parent attribute for child item in group (9 ms)
+    ✓ reflects disabled state (19 ms)
+    ✓ allows selection with custom rendered options (9 ms)
+
+PASS src/multiselect/__tests__/multiselect-embedded.test.tsx
+  ✓ renders options, virtualScroll=false (10 ms)
+  ✓ renders options, virtualScroll=true (11 ms)
+  ✓ renders footer with statusType="pending" (4 ms)
+  ✓ renders footer with statusType="loading" (5 ms)
+  ✓ renders footer with statusType="error" (5 ms)
+  ✓ renders footer with statusType="finished" (4 ms)
+  ✓ ARIA labels (15 ms)
+  ✓ highlights first option when list is focused and removes highlight when the focus is lost (5 ms)
+  ✓ selects options with Enter and Space and keeps highlight after Esc is pressed (9 ms)
+
+PASS src/internal/components/selectable-item/__tests__/selectable-item.test.tsx
+  ✓ does not assign aria attributes by default (2 ms)
+  ✓ does not assign aria attributes when highlighted (51 ms)
+  ✓ assigns aria-selected when selected
+  ✓ assigns aria-checked when checked (1 ms)
+  ✓ highlighted option with screenReaderContent should have aria-hidden and screenReaderContent (2 ms)
+  ✓ highlighted option with highlightType "mouse" should not add keyboard class to the item
+  ✓ highlighted option with highlightType "keyboard" should add keyboard class to the item (1 ms)
+  ✓ assign aria-posinset and aria-setsize when set
+  ✓ assigns aria-disabled when disabled (1 ms)
+
+PASS src/internal/components/options-list/__tests__/options-list.test.tsx
+  ✓ calls onMouseMove handler with item index (4 ms)
+  ✓ calls onMouseUp handler with item index (4 ms)
+  ✓ supports ariaLabelledby (1 ms)
+  ✓ supports ariaRequired
+  ✓ onLoadMore fires when dropdown opens and its bottom is on the screen (1 ms)
+  ✓ onLoadMore is called when dropdown is open and status type changes to "pending" (1 ms)
+
+PASS src/internal/components/listbox/__tests__/navigation.test.ts
+  getListboxNavigation
+    ✓ moves the highlight by one option (2 ms)
+    ✓ wraps from the first option to the end and from the last option to the start
+    ✓ wraps up from the first child of a leading group when groups are not interactive
+    ✓ moves up to the leading group header when groups are interactive (1 ms)
+    ✓ wraps down only from the last row, even when it is not highlightable
+    ✓ moves down from no highlight
+
+PASS src/internal/components/listbox/selection/__tests__/single-selection.test.ts
+  singleSelection
+    ✓ choosing an option returns only that option as the next selection (1 ms)
+    ✓ re-choosing the already selected option keeps it selected
+    ✓ a selected child with an empty-string value is not counted as a group selection
+    ✓ a group with some but not all children selected is indeterminate and not selected
+    ✓ a group whose only child is the selected one is not indeterminate (all children selected)
+    ✓ a non-group option has no group state
+    ✓ only the first selected option is kept
+    ✓ a selected option without a value does not mark its group as indeterminate
+
+PASS src/property-filter/__tests__/property-filter-stories-token-create-async.test.tsx
+  Property filter stories: tokens creation, async
+    ✓ waits and selects property, then waits and selects option (103 ms)
+    ✓ searches token by value, waits and selects the matched option (34 ms)
+    ✓ searches enum token value, waits and selects all matched options (69 ms)
+
+PASS src/internal/components/listbox/__tests__/get-item-props.test.ts
+  getItemProps
+    ✓ should return props for the first child in the first group
+    ✓ should return props for the first child in the first group with highlighted state (1 ms)
+    ✓ should return props for the first child in the first group with selected state
+    ✓ should return props for the option that is not in a group
+
+PASS src/select/__tests__/filter.test.tsx
+  Filter component
+    ✓ should render nothing when filteringType is none (1 ms)
+    Default
+      ✓ should have root filter class
+      ✓ should have no border class
+      ✓ should have aria-required attribute
+      ✓ should have placeholder attribute
+      ✓ should have aria-label attribute (1 ms)
+      ✓ should have aria-expanded attribute
+      ✓ should have aria-haspopup attribute
+      ✓ should have role=combobox attribute
+      ✓ should have autocomplete=off attribute
+      ✓ should have autocorrect=off attribute
+      ✓ should have autocapitalize=off attribute
+      ✓ should have aria-controls attribute
+      ✓ should have value
+      ✓ should have type="text"
+
+PASS src/internal/components/listbox/__tests__/connect-options.test.ts
+  findOptionIndex
+    ✓ should return -1 when no match
+    ✓ should return index when there is a match by value
+    ✓ should return index when there is a match by reference (1 ms)
+  connectOptionsByValue
+    ✓ should return initial array if there are no matches
+    ✓ should take an item from the options array if there is a match by value
+    ✓ should return an empty array when there are no selected options
+    ✓ should preserve the order of the selected options
+    ✓ should skip parent options when matching by value
+    ✓ should return the first matching option when multiple share the same value
+    ✓ should match options with an undefined value
+
+PASS src/select/__tests__/select-a11y.test.tsx
+  expandToViewport=false
+    ✓ with opened dropdown (190 ms)
+    ✓ with filtering (192 ms)
+    ✓ Option should have aria-selected (18 ms)
+    ✓ Trigger should have refer to the element using aria-label value and selected option (4 ms)
+    ✓ live announces footer text on initial dropdown render (15 ms)
+    ✓ live announce footer text on dropdown toggle (28 ms)
+    ✓ renders screen reader content for highlighted selected option (10 ms)
+    ✓ renders screen reader content for highlighted option with custom text (15 ms)
+  expandToViewport=true
+    ✓ with opened dropdown (40 ms)
+    ✓ with filtering (33 ms)
+    ✓ Option should have aria-selected (12 ms)
+    ✓ Trigger should have refer to the element using aria-label value and selected option (2 ms)
+    ✓ live announces footer text on initial dropdown render (7 ms)
+    ✓ live announce footer text on dropdown toggle (29 ms)
+    ✓ renders screen reader content for highlighted selected option (10 ms)
+    ✓ renders screen reader content for highlighted option with custom text (8 ms)
+
+PASS src/autosuggest/__tests__/utils.test.ts
+  filterOptions
+    ✓ matches on value, label, description and labelTag (1 ms)
+    ✓ matches on tags and filteringTags
+    ✓ matching is case-insensitive in both directions
+    ✓ keeps groups that have matching children and drops empty ones
+    ✓ returns all options for an empty search text
+
+PASS src/internal/components/options-list/__tests__/use-open-state.test.ts
+  useOpenState
+    ✓ should open (2 ms)
+    ✓ should open with keyboard flag
+    ✓ should close (1 ms)
+    ✓ should toggle open state
+
+PASS src/multiselect/__tests__/selection-order.test.tsx
+  Multiselect selection
+    ✓ choosing a group while filtering selects only its visible enabled options (35 ms)
+    ✓ choosing a partially selected group appends all its enabled options after other selections (37 ms)
+    ✓ does not render select all when filtering matches no options (21 ms)
+
+PASS src/select/__tests__/i18n.test.tsx
+  i18n provider
+    ✓ supports providing recoveryText (21 ms)
+    ✓ do not render recovery button if no recovery callback was provided (21 ms)
+    ✓ supports providing errorIconAriaLabel (32 ms)
+    ✓ supports providing selectedAriaLabel (13 ms)
+
+PASS src/multiselect/__tests__/i18n.test.tsx
+  i18n provider
+    ✓ supports providing deselectAriaLabel (14 ms)
+    ✓ utilises recoveryText from Select messages (15 ms)
+    ✓ do not render recovery button if no recovery callback was provided (27 ms)
+    ✓ utilises errorIconAriaLabel from Select messages (24 ms)
+    ✓ utilizes selectedAriaLabel from Select messages (21 ms)
+
+PASS src/internal/components/options-list/__tests__/test-indexes.test.ts
+  Test indexes
+    ✓ generates indexes
+    ✓ skips "use-entered" option but not group headers
+
+PASS src/autosuggest/__tests__/autosuggest-and-token-group.test.tsx
+  ✓ Adding tokens from the dropdown (30 ms)
+  ✓ Adding custom tokens (12 ms)
+  ✓ Removing tokens (20 ms)
+
+PASS src/autosuggest/__tests__/virtual-scroll.test.tsx
+  Virtual scroll support
+    ✓ should render plain virtual list (18 ms)
+    ✓ should render a subset of items in virtual list (117 ms)
+    ✓ should render virtual list with groups (14 ms)
+    ✓ should select an option in virtual list (16 ms)
+
+PASS src/multiselect/__tests__/control-group.test.tsx
+  Multiselect in control group
+    ✓ resets the context for a custom dropdown footer (21 ms)
+    ✓ renders inline tokens even if `inlineTokens` is not set (9 ms)
+    ✓ renders the dropdown in a portal even if `expandToViewport` is not set (13 ms)
+
+PASS src/select/__tests__/virtual-scroll.test.tsx
+  Virtual scroll support
+    ✓ should render plain virtual list (25 ms)
+    ✓ should render a subset of items in virtual list (30 ms)
+    ✓ should render virtual list with groups (24 ms)
+    ✓ should select an option in virtual list (15 ms)
+
+PASS src/property-filter/__tests__/property-filter-stories-token-edit-group.test.tsx
+  Property filter stories: tokens editing, group
+    ✓ changes operation (72 ms)
+    ✓ changes second token to a group of two (525 ms)
+    ✓ changes first token from a group of two to single (106 ms)
+
+PASS src/internal/components/listbox/__tests__/use-type-ahead.test.ts
+  useTypeAhead
+    ✓ should highlight the correct option when a key is pressed (1 ms)
+    ✓ should not highlight an option when a non-character key is pressed
+    ✓ should not highlight an option when isEnabled is false
+
+  console.error
+    Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
+        in StatefulAsyncPropertyFilter
+
+      68 |   const onLoadItems: PropertyFilterProps['onLoadItems'] = ({ detail }) => {
+      69 |     clearTimeout(timeoutRef.current);
+    > 70 |     setFilteringStatusType('loading');
+         |     ^
+      71 |     timeoutRef.current = setTimeout(() => {
+      72 |       setFilteringStatusType('finished');
+      73 |       loadProperties(detail.filteringText);
+
+      at printWarning (../../node_modules/react-dom/cjs/react-dom.development.js:88:30)
+      at error (../../node_modules/react-dom/cjs/react-dom.development.js:60:5)
+      at warnAboutUpdateOnUnmountedFiberInDEV (../../node_modules/react-dom/cjs/react-dom.development.js:23161:5)
+      at scheduleUpdateOnFiber (../../node_modules/react-dom/cjs/react-dom.development.js:21169:5)
+      at dispatchAction (../../node_modules/react-dom/cjs/react-dom.development.js:15660:5)
+      at onLoadItems (src/property-filter/__tests__/stories-components.tsx:70:5)
+      at handler (src/internal/events/index.ts:43:3)
+      at fireLoadItems (src/property-filter/use-load-items.ts:29:27)
+      at fireLoadItems (src/property-filter/use-load-items.ts:43:5)
+      at handler (src/internal/events/index.ts:43:3)
+      at onLoadItems (src/autosuggest/internal.tsx:121:76)
+      at onLoadItems (src/autosuggest/load-more-controller.ts:43:7)
+      at Object.fireLoadMore [as fireLoadMoreOnInputChange] (src/autosuggest/load-more-controller.ts:59:5)
+      at fireLoadMoreOnInputChange (src/autosuggest/internal.tsx:131:33)
+      at handler (src/internal/events/index.ts:43:3)
+      at handleDelayedInput (src/internal/components/autosuggest-input/index.tsx:344:29)
+      at handleDelayedInput (src/internal/components/autosuggest-input/index.tsx:421:66)
+      at handler (src/internal/events/index.ts:43:3)
+      at Object.current (src/input/internal.tsx:127:89)
+      at current (src/internal/hooks/use-debounce-callback/index.ts:17:23)
+      at func (src/internal/debounce.ts:20:7)
+      at Timeout.task [as _onTimeout] (../../node_modules/jsdom/lib/jsdom/browser/Window.js:520:19)
+
+PASS src/multiselect/__tests__/multiselect-feature-metrics.test.tsx
+  ✓ reports dropdown-customization feature usage in metadata (8 ms)
+  ✓ reports no dropdown-customization usage by default (3 ms)
+
+PASS src/select/__tests__/select-feature-metrics.test.tsx
+  ✓ reports dropdown-customization feature usage in metadata (9 ms)
+  ✓ reports no dropdown-customization usage by default (4 ms)
+
+PASS src/property-filter/__tests__/property-filter-stories-token-edit-single.test.tsx
+  Property filter stories: tokens editing, single
+    ✓ changes text token value using available suggestions and custom input (260 ms)
+    ✓ edits property operator and property type then cancels the change (415 ms)
+    ✓ fails to edit property to free text when free text is disabled (86 ms)
+    ✓ changes enum property value (144 ms)
+    ✓ changes date property value (81 ms)
+    ✓ changes operation (56 ms)
+    ✓ changes async text option (211 ms)
+    ✓ changes async enum option (222 ms)
+
+PASS src/select/__tests__/test-utils.test.tsx
+  test utils
+    findGroups
+      ✓ returns all groups (1 ms)
+    findGroup
+      ✓ returns a group by 1-based index (11 ms)
+
+PASS src/autosuggest/__tests__/autosuggest-feature-metrics.test.tsx
+  ✓ reports token mode usage in metadata with tokens (20 ms)
+  ✓ reports token mode usage in metadata with an empty tokens array (12 ms)
+  ✓ reports no token mode usage by default (3 ms)
+
+PASS src/autosuggest/__tests__/control-group.test.tsx
+  Autosuggest in control group
+    ✓ resets the context for custom empty content (29 ms)
+    ✓ renders the dropdown in a portal even if `expandToViewport` is not set (22 ms)
+
+PASS src/multiselect/__tests__/test-utils.test.tsx
+  test utils
+    findGroups
+      ✓ returns all groups (1 ms)
+    findGroup
+      ✓ returns a group by 1-based index (16 ms)
+
+PASS src/select/__tests__/control-group.test.tsx
+  Select control in control group
+    ✓ resets the context for custom dropdown content (17 ms)
+    ✓ renders the dropdown in a portal even if `expandToViewport` is not set (13 ms)
+
+PASS src/autosuggest/__tests__/autosuggest-option.test.tsx
+  AutosuggestOption nativeAttributes
+    ✓ sets aria-label when provided in nativeAttributes (2 ms)
+    ✓ sets aria-label when renderOption is provided (1 ms)
+    ✓ does not set aria-label when not in nativeAttributes (1 ms)
+
+PASS src/property-filter/__tests__/property-filter-token-editor.test.tsx (19.741 s)
+  ✓ tolerates numeric token values, value=0 (21 ms)
+  ✓ tolerates numeric token values, value=1.11 (22 ms)
+  ✓ tolerates numeric token values, value=3 (18 ms)
+  token editor, expandToViewport=false
+    ✓ uses i18nStrings to populate header (141 ms)
+    changing token property to another property sets correct default value type
+      ✓ string property initializes to string (237 ms)
+      ✓ enum property initializes to empty array (209 ms)
+      ✓ custom property initializes to null (128 ms)
+    form controls content
+      ✓ default (270 ms)
+      ✓ with free text disabled (98 ms)
+      ✓ with custom free text operators (313 ms)
+      ✓ enables client-side filtering on property options (187 ms)
+      ✓ preserves fields, when one is edited (298 ms)
+    exit actions
+      ✓ dismiss button closes the popover and discards the changes (244 ms)
+      ✓ cancel button closes the popover and discards the changes (380 ms)
+      ✓ submit button closes the popover and saves the changes (288 ms)
+      ✓ form submit closes the popover and saves the changes (291 ms)
+  token editor, expandToViewport=true
+    ✓ uses i18nStrings to populate header (19 ms)
+    changing token property to another property sets correct default value type
+      ✓ string property initializes to string (54 ms)
+      ✓ enum property initializes to empty array (58 ms)
+      ✓ custom property initializes to null (140 ms)
+    form controls content
+      ✓ default (344 ms)
+      ✓ with free text disabled (129 ms)
+      ✓ with custom free text operators (66 ms)
+      ✓ enables client-side filtering on property options (77 ms)
+      ✓ preserves fields, when one is edited (364 ms)
+    exit actions
+      ✓ dismiss button closes the popover and discards the changes (203 ms)
+      ✓ cancel button closes the popover and discards the changes (341 ms)
+      ✓ submit button closes the popover and saves the changes (211 ms)
+      ✓ form submit closes the popover and saves the changes (231 ms)
+  with i18n-provider false
+    ✓ uses entered text label for token value autosuggest (84 ms)
+  with i18n-provider true
+    ✓ uses entered text label for token value autosuggest (91 ms)
+  token editor labels, isMobile = false
+    with i18n-provider false
+      ✓ token editor with a single filter, enableTokenGroups=false (64 ms)
+      ✓ token editor with a single filter, enableTokenGroups=true (44 ms)
+      ✓ token editor with two filters (143 ms)
+    with i18n-provider true
+      ✓ token editor with a single filter, enableTokenGroups=false (60 ms)
+      ✓ token editor with a single filter, enableTokenGroups=true (40 ms)
+      ✓ token editor with two filters (137 ms)
+  token editor labels, isMobile = true
+    with i18n-provider false
+      ✓ token editor with a single filter, enableTokenGroups=false (57 ms)
+      ✓ token editor with a single filter, enableTokenGroups=true (40 ms)
+      ✓ token editor with two filters (159 ms)
+    with i18n-provider true
+      ✓ token editor with a single filter, enableTokenGroups=false (56 ms)
+      ✓ token editor with a single filter, enableTokenGroups=true (39 ms)
+      ✓ token editor with two filters (157 ms)
+  token editor with groups
+    ✓ changes filter property, disableFreeTextFiltering=false (68 ms)
+    ✓ changes filter property, disableFreeTextFiltering=true (67 ms)
+    ✓ changes filter operator (71 ms)
+    ✓ changes filter value (65 ms)
+    ✓ removes first filter (81 ms)
+    ✓ removes second filter (77 ms)
+    ✓ removes first filter from group (82 ms)
+    ✓ adds new filter, disableFreeTextFiltering=false (84 ms)
+    ✓ adds new filter, disableFreeTextFiltering=true (80 ms)
+    ✓ adds new filter from standalone (118 ms)
+    ✓ standalone token is unmodified when it is removed from group (234 ms)
+    ✓ standalone token can be removed from group and added back (310 ms)
+    ✓ can remove nested filter from group, add it back, and remove completely (191 ms)
+    ✓ defines group operation as the opposite of query operation when a group is created, query operation=and (61 ms)
+    ✓ defines group operation as the opposite of query operation when a group is created, query operation=or (61 ms)
+    ✓ moves focus to adjacent property when a filter is removed (153 ms)
+    ✓ moves focus to the new filter when it is added (131 ms)
+    ✓ standalone property menu items have indices as IDs (56 ms)
+
+Test Suites: 74 passed, 74 total
+Tests:       1157 passed, 1157 total
+Snapshots:   0 total
+Time:        20.952 s
+Ran all test suites matching /src\/select|src\/multiselect|src\/autosuggest|src\/property-filter|src\/internal\/components\/listbox|src\/internal\/components\/options-list|src\/internal\/components\/selectable-item/i.
