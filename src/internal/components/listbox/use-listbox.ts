@@ -86,8 +86,8 @@ export interface UseListboxApi {
    * Base props for the list element: id, ref and mouse handlers. With `withKeyboard`, also `onKeyDown` and
    * `aria-activedescendant`, for a list that has focus itself (not through a filter input). With `embedded`, also
    * `onFocus` and `onBlur`, for an embedded list: an always visible list that is a tab stop. Focus highlights the
-   * first option if nothing is highlighted, and blur clears the highlight. A hover highlight is kept on focus, so a
-   * click selects the hovered option. Moving focus to the selected option is a follow-up.
+   * first selected option (in selection order), or the first option when nothing is selected, and blur clears the
+   * highlight. A hover highlight is kept on focus, so a click selects the hovered option.
    * Callers that add native attributes spread `nativeAttributes`.
    */
   getListProps(options: { withKeyboard: boolean; embedded?: boolean }): BaseListProps;
@@ -192,8 +192,16 @@ export function useListbox({
       listProps.nativeAttributes = { 'aria-activedescendant': activeDescendantId };
     }
     if (embedded) {
+      // Like opening Select or Multiselect with the keyboard: highlight the first selected option (in selection
+      // order) and scroll it into view, or the first option when nothing in the list is selected.
       listProps.onFocus = () => {
-        if (!highlightedOption) {
+        if (highlightedOption) {
+          return;
+        }
+        const firstSelected = selectedOptions.find(option => options.includes(option));
+        if (firstSelected) {
+          highlight.highlightOptionWithKeyboard(firstSelected);
+        } else {
           highlight.goHomeWithKeyboard();
         }
       };
