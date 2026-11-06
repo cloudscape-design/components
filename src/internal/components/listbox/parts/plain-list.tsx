@@ -5,17 +5,18 @@ import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { fallbackItemHeight } from '../../internal/components/listbox/parts/common';
-import { renderOptions } from '../../internal/components/listbox/parts/render-options';
-import scrollToIndex from '../../internal/components/listbox/parts/scroll-to-index';
-import { DropdownOption } from '../../internal/components/option/interfaces';
-import OptionsList from '../../internal/components/options-list';
-import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
-import { MultiselectProps } from '../../multiselect/interfaces';
-import { SelectProps } from '../interfaces';
-import { GetOptionProps, MenuProps } from '../utils/use-select';
+import { MultiselectProps } from '../../../../multiselect/interfaces';
+import { SelectProps } from '../../../../select/interfaces';
+import { GetOptionProps, MenuProps } from '../../../../select/utils/use-select';
+import { DropdownOption } from '../../option/interfaces';
+import OptionsList from '../../options-list';
+import { HighlightType } from '../../options-list/utils/use-highlight-option';
+import { SelectionType } from '../selection/interfaces';
+import { fallbackItemHeight } from './common';
+import { renderOptions } from './render-options';
+import scrollToIndex from './scroll-to-index';
 
-import styles from './styles.css.js';
+import styles from '../../../../select/parts/styles.css.js';
 
 export interface SelectListProps {
   menuProps: MenuProps;
@@ -23,10 +24,9 @@ export interface SelectListProps {
   filteredOptions: ReadonlyArray<DropdownOption>;
   filteringValue: string;
   highlightType: HighlightType;
-  checkboxes?: boolean;
   hasDropdownStatus?: boolean;
   listBottom?: React.ReactNode;
-  useInteractiveGroups?: boolean;
+  selectionType?: SelectionType;
   screenReaderContent?: string;
   firstOptionSticky?: boolean;
   isMultiSelect?: boolean;
@@ -44,10 +44,9 @@ const PlainList = (
     filteredOptions,
     filteringValue,
     highlightType,
-    checkboxes,
     hasDropdownStatus,
     listBottom,
-    useInteractiveGroups,
+    selectionType,
     screenReaderContent,
     firstOptionSticky,
     isMultiSelect,
@@ -102,9 +101,8 @@ const PlainList = (
         filteringValue,
         idPrefix,
         highlightType,
-        checkboxes,
         hasDropdownStatus,
-        useInteractiveGroups,
+        selectionType,
         screenReaderContent,
         firstOptionSticky,
         stickyOptionRef,
