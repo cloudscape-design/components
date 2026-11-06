@@ -5,7 +5,8 @@ import React, { useRef } from 'react';
 import type { OptionDefinition, OptionGroup } from '../../../types/option';
 import { useDebounceCallback } from '../../hooks/use-debounce-callback';
 import type { DropdownOption } from '../option/interfaces';
-import { filterOptions, isGroup, isGroupInteractive, isInteractive } from '../option/utils/filter-options';
+import { filterOptions, isGroup } from '../option/utils/filter-options';
+import { isHighlightable } from './utils/option-props';
 
 const isRepeatedChar = (str: string) => str.split('').every(c => c === str[0]);
 
@@ -15,17 +16,23 @@ interface UseTypeAheadProps {
   highlightOption: (option: DropdownOption) => void;
   highlightedOption: OptionDefinition | undefined | null;
   interactiveGroups?: boolean;
+  /**
+   * Skips disabled options. By default type-ahead reaches disabled options, like Up and Down, so their disabled
+   * state and reason are announced. Use it when type-ahead selects the match instead of highlighting it.
+   */
+  skipDisabled?: boolean;
 }
 
 function findMatchingOption(
   options: ReadonlyArray<DropdownOption>,
   searchText: string,
   currentHighlight: OptionDefinition | OptionGroup | undefined | null,
-  interactiveGroups?: boolean
+  interactiveGroups = false,
+  skipDisabled = false
 ) {
-  const interactivityCheck = interactiveGroups ? isGroupInteractive : isInteractive;
-  const filter = (searchText: string) =>
-    filterOptions(options, searchText, true).filter(option => interactivityCheck(option));
+  const isMatchable = (option: DropdownOption) =>
+    isHighlightable(option, interactiveGroups) && !(skipDisabled && option.disabled);
+  const filter = (searchText: string) => filterOptions(options, searchText, true).filter(isMatchable);
   const matchingOptions = filter(searchText);
 
   if (matchingOptions.length === 1) {
@@ -66,6 +73,7 @@ export function useTypeAhead({
   highlightOption,
   highlightedOption,
   interactiveGroups,
+  skipDisabled,
 }: UseTypeAheadProps) {
   const value = useRef('');
 
@@ -86,7 +94,7 @@ export function useTypeAhead({
     const newValue = value.current + key;
     value.current = newValue;
 
-    const nextHighlight = findMatchingOption(options, newValue, highlightedOption, interactiveGroups);
+    const nextHighlight = findMatchingOption(options, newValue, highlightedOption, interactiveGroups, skipDisabled);
     if (nextHighlight) {
       highlightOption(nextHighlight);
     }
