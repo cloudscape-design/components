@@ -68,6 +68,20 @@ export interface PanelLayoutProps extends BaseComponentProps {
   mainFocusable?: PanelLayoutProps.FocusableConfig;
 
   /**
+   * Disables scrolling of the panel content area. Use this when the panel content manages its own scrolling,
+   * or to prevent elements near the edges (such as focus rings) from being clipped.
+   * Content that doesn't fit is not clipped and overflows the panel area.
+   */
+  disablePanelScrolling?: boolean;
+
+  /**
+   * Disables scrolling of the main content area. Use this when the main content manages its own scrolling,
+   * or to prevent elements near the edges (such as focus rings) from being clipped.
+   * Content that doesn't fit is not clipped and overflows the main content area.
+   */
+  disableMainScrolling?: boolean;
+
+  /**
    * Determines which content is displayed:
    * - 'all': Both panel and main content are displayed.
    * - 'panel-only': Only panel is displayed.

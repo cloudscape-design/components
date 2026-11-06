@@ -16,7 +16,12 @@ const PanelLayout = React.forwardRef<PanelLayoutProps.Ref, PanelLayoutProps>(fun
   ref
 ) {
   const baseComponentProps = useBaseComponent('PanelLayout', {
-    props: { panelPosition, resizable },
+    props: {
+      panelPosition,
+      resizable,
+      disablePanelScrolling: props.disablePanelScrolling,
+      disableMainScrolling: props.disableMainScrolling,
+    },
     metadata: {
       mainFocusable: props.mainFocusable !== undefined,
       panelFocusable: props.panelFocusable !== undefined,

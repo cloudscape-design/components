@@ -38,6 +38,8 @@ const InternalPanelLayout = React.forwardRef<PanelLayoutProps.Ref, InternalPanel
       maxPanelSize,
       i18nStrings,
       display,
+      disablePanelScrolling,
+      disableMainScrolling,
       panelFocusable,
       mainFocusable,
       __internalRootRef,
@@ -141,7 +143,14 @@ const InternalPanelLayout = React.forwardRef<PanelLayoutProps.Ref, InternalPanel
       <div
         {...baseProps}
         ref={mergedRef}
-        className={clsx(baseProps.className, styles.root, testStyles.root, styles[`display-${display}`])}
+        className={clsx(
+          baseProps.className,
+          styles.root,
+          testStyles.root,
+          styles[`display-${display}`],
+          disablePanelScrolling && styles['disable-panel-scrolling'],
+          disableMainScrolling && styles['disable-main-scrolling']
+        )}
       >
         {panelPosition === 'side-end' && wrappedMainContent}
         <div
