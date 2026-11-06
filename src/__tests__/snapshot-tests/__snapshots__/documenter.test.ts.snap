@@ -16319,6 +16319,11 @@ to display resource counters in table and cards components.",
       "isDefault": false,
       "name": "info",
     },
+    {
+      "description": "Secondary content displayed next to the header text.",
+      "isDefault": false,
+      "name": "secondaryContent",
+    },
   ],
   "releaseStatus": "stable",
 }
@@ -43632,6 +43637,19 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
             ],
           },
         },
+        {
+          "name": "findSecondaryContent",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
       ],
       "name": "HeaderWrapper",
     },
@@ -55059,6 +55077,14 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
         },
         {
           "name": "findInfo",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "name": "findSecondaryContent",
           "parameters": [],
           "returnType": {
             "isNullable": false,

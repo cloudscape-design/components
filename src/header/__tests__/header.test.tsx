@@ -42,6 +42,37 @@ test('renders everything provided', () => {
   expect(wrapper.findActions()!.find('button')!.getElement()).toHaveTextContent('Click me');
 });
 
+describe('secondary content', () => {
+  test('is not rendered by default', () => {
+    const { wrapper } = renderHeader(<Header>Test title</Header>);
+    expect(wrapper.findSecondaryContent()).toBeNull();
+  });
+
+  test.each(['h1', 'h2', 'h3', 'awsui-h1-sticky'] as const)('renders outside the heading element for %s', variant => {
+    const { wrapper } = renderHeader(
+      <Header variant={variant} secondaryContent={<button>Filter</button>}>
+        Test title
+      </Header>
+    );
+    const secondaryContent = wrapper.findSecondaryContent()!.getElement();
+    expect(secondaryContent).toHaveTextContent('Filter');
+    expect(secondaryContent.closest('h1,h2,h3,h4,h5,h6')).toBeNull();
+  });
+
+  test('renders between the title and the actions', () => {
+    const { wrapper } = renderHeader(
+      <Header info="Info" secondaryContent={<button>Filter</button>} actions={<button>Create</button>}>
+        Test title
+      </Header>
+    );
+    const info = wrapper.findInfo()!.getElement();
+    const secondaryContent = wrapper.findSecondaryContent()!.getElement();
+    const actions = wrapper.findActions()!.getElement();
+    expect(info.compareDocumentPosition(secondaryContent) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(secondaryContent.compareDocumentPosition(actions) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+});
+
 test('renders arbitrary counter content', () => {
   const { wrapper } = renderHeader(<Header counter={<Spinner />} />);
   expect(wrapper.findCounter()).not.toBeNull();
