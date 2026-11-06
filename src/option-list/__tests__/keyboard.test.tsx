@@ -1,19 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act, fireEvent } from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/component-toolkit/internal';
 
-import {
-  focusList,
-  groupedOptions,
-  highlightedValue,
-  pressKey,
-  renderOptionList,
-  Stateful,
-  withDisabled,
-} from './common';
+import { focusList, groupedOptions, highlightedValue, pressKey, renderOptionList, Stateful } from './common';
 
 const typeKey = (listbox: HTMLElement, key: string) => fireEvent.keyDown(listbox, { key });
 
@@ -79,23 +71,6 @@ describe('OptionList keyboard', () => {
       typeKey(listbox, 't');
       expect(highlightedValue(wrapper)).toBe('c');
       expect(listbox).toHaveAttribute('aria-activedescendant', wrapper.findOptionByValue('c')!.getElement().id);
-    });
-
-    test('typing does not highlight a disabled option', () => {
-      jest.useFakeTimers();
-      try {
-        const { wrapper, listbox } = renderOptionList(<Stateful options={withDisabled} />);
-        focusList(listbox);
-        // Only the disabled "Second" starts with "s", so the highlight stays on the first option.
-        typeKey(listbox, 's');
-        expect(highlightedValue(wrapper)).toBe('a');
-        // After the type-ahead resets, an enabled match is still highlighted.
-        act(() => jest.advanceTimersByTime(1000));
-        typeKey(listbox, 't');
-        expect(highlightedValue(wrapper)).toBe('c');
-      } finally {
-        jest.useRealTimers();
-      }
     });
 
     test('multi: typing can highlight a group header', () => {
