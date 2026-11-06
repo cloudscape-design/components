@@ -32,7 +32,7 @@ const menuInitialProps = {
   selectOption: () => {},
   goHome: () => {},
   goEnd: () => {},
-  closeDropdown: () => {},
+  onEscape: () => {},
 };
 
 describe('useTriggerKeyboard', () => {
@@ -96,12 +96,12 @@ describe('useMenuKeyboard', () => {
   });
 
   test('should close the dropdown when pressing escape', () => {
-    const closeDropdown = jest.fn();
+    const onEscape = jest.fn();
     const hook = renderHook(useMenuKeyboard, {
-      initialProps: { ...menuInitialProps, closeDropdown },
+      initialProps: { ...menuInitialProps, onEscape },
     });
     act(() => hook.result.current(menuKeys.escape));
-    expect(closeDropdown).toHaveBeenCalled();
+    expect(onEscape).toHaveBeenCalled();
     expect(menuKeys.escape.preventDefault).not.toHaveBeenCalled();
   });
 
