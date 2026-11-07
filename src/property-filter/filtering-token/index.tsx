@@ -15,6 +15,7 @@ import { useListFocusController } from '../../internal/hooks/use-list-focus-cont
 import { PopoverProps } from '../../popover/interfaces';
 import InternalPopover, { InternalPopoverProps } from '../../popover/internal';
 import InternalSelect from '../../select/internal';
+import InternalToken from '../../token/internal';
 import { GeneratedAnalyticsMetadataPropertyEditStart } from '../analytics-metadata/interfaces';
 
 import testUtilStyles from '../test-classes/styles.css.js';
@@ -129,77 +130,127 @@ const FilteringToken = forwardRef(
             />
           )
         }
-        tokenAction={
-          tokens.length === 1 ? (
-            <TokenDismissButton
-              ariaLabel={tokens[0].dismissAriaLabel}
-              onClick={() => onDismissToken(0)}
-              parent={true}
-              disabled={disabled}
-            />
-          ) : (
-            <InternalPopover ref={popoverRef} {...popoverProps} triggerType="filtering-token">
-              <TokenEditButton ariaLabel={groupEditAriaLabel} disabled={disabled} />
-            </InternalPopover>
-          )
-        }
         parent={true}
-        grouped={tokens.length > 1}
-        disabled={disabled}
         hasGroups={hasGroups}
         {...copyAnalyticsMetadataAttribute(rest)}
       >
         {tokens.length === 1 ? (
-          <InternalPopover ref={popoverRef} {...popoverProps}>
-            <span
-              {...getAnalyticsMetadataAttribute({
-                action: 'editStart',
-              } as Partial<GeneratedAnalyticsMetadataPropertyEditStart>)}
-            >
-              {tokens[0].content}
-            </span>
-          </InternalPopover>
-        ) : (
-          <ul className={styles.list}>
-            {tokens.map((token, index) => (
-              <li key={index}>
-                <TokenGroup
-                  ariaLabel={token.ariaLabel}
-                  operation={
-                    index !== 0 && (
-                      <OperationSelector
-                        operation={groupOperation}
-                        onChange={onChangeGroupOperation}
-                        ariaLabel={operationAriaLabel}
-                        andText={andText}
-                        orText={orText}
-                        parent={false}
-                        readOnlyOperations={readOnlyOperations}
-                        disabled={disabled}
-                      />
-                    )
-                  }
-                  tokenAction={
-                    <TokenDismissButton
-                      ariaLabel={token.dismissAriaLabel}
-                      onClick={() => {
-                        onDismissToken(index);
-                        setNextFocusIndex(index);
-                      }}
-                      parent={false}
-                      disabled={disabled}
-                    />
-                  }
-                  parent={false}
-                  grouped={false}
+          // Single token: InternalToken owns the token-box; content + dismiss button go via
+          // __customContent so the dismiss button retains its test-util selector class.
+          <InternalToken
+            role="presentation"
+            __customContent={
+              <>
+                <div className={clsx(styles['token-content'], testUtilStyles['filtering-token-content'])}>
+                  <InternalPopover ref={popoverRef} {...popoverProps}>
+                    <span
+                      {...getAnalyticsMetadataAttribute({
+                        action: 'editStart',
+                      } as Partial<GeneratedAnalyticsMetadataPropertyEditStart>)}
+                    >
+                      {tokens[0].content}
+                    </span>
+                  </InternalPopover>
+                </div>
+                <TokenDismissButton
+                  ariaLabel={tokens[0].dismissAriaLabel}
+                  onClick={() => onDismissToken(0)}
+                  parent={true}
                   disabled={disabled}
-                  hasGroups={false}
+                />
+              </>
+            }
+            __tokenBoxClassName={clsx(
+              styles.token,
+              showOperation && styles['show-operation'],
+              disabled && styles['token-disabled']
+            )}
+            disableInnerPadding={true}
+          />
+        ) : (
+          // Grouped token: content list + edit button both go inside __customContent so
+          // InternalToken owns the token-box border/background/radius.
+          <InternalToken
+            role="presentation"
+            __customContent={
+              <>
+                <div
+                  className={clsx(
+                    styles['token-content'],
+                    styles['token-content-grouped'],
+                    testUtilStyles['filtering-token-content']
+                  )}
                 >
-                  {token.content}
-                </TokenGroup>
-              </li>
-            ))}
-          </ul>
+                  <ul className={styles.list}>
+                    {tokens.map((token, index) => (
+                      <li key={index}>
+                        <TokenGroup
+                          ariaLabel={token.ariaLabel}
+                          operation={
+                            index !== 0 && (
+                              <OperationSelector
+                                operation={groupOperation}
+                                onChange={onChangeGroupOperation}
+                                ariaLabel={operationAriaLabel}
+                                andText={andText}
+                                orText={orText}
+                                parent={false}
+                                readOnlyOperations={readOnlyOperations}
+                                disabled={disabled}
+                              />
+                            )
+                          }
+                          parent={false}
+                          hasGroups={false}
+                        >
+                          <InternalToken
+                            role="presentation"
+                            __customContent={
+                              <>
+                                <div
+                                  className={clsx(
+                                    styles['inner-token-content'],
+                                    testUtilStyles['filtering-token-inner-content']
+                                  )}
+                                >
+                                  {token.content}
+                                </div>
+                                <TokenDismissButton
+                                  ariaLabel={token.dismissAriaLabel}
+                                  onClick={() => {
+                                    onDismissToken(index);
+                                    setNextFocusIndex(index);
+                                  }}
+                                  parent={false}
+                                  disabled={disabled}
+                                />
+                              </>
+                            }
+                            __tokenBoxClassName={clsx(
+                              styles['inner-token'],
+                              index !== 0 && styles['show-operation'],
+                              disabled && styles['token-disabled']
+                            )}
+                            disableInnerPadding={true}
+                          />
+                        </TokenGroup>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <InternalPopover ref={popoverRef} {...popoverProps} triggerType="filtering-token">
+                  <TokenEditButton ariaLabel={groupEditAriaLabel} disabled={disabled} />
+                </InternalPopover>
+              </>
+            }
+            __tokenBoxClassName={clsx(
+              styles.token,
+              showOperation && styles['show-operation'],
+              styles.grouped,
+              disabled && styles['token-disabled']
+            )}
+            disableInnerPadding={true}
+          />
         )}
       </TokenGroup>
     );
@@ -214,20 +265,14 @@ const TokenGroup = forwardRef(
       ariaLabel,
       children,
       operation,
-      tokenAction,
       parent,
-      grouped,
-      disabled,
       hasGroups,
       ...rest
     }: {
       ariaLabel?: string;
       children: React.ReactNode;
       operation: React.ReactNode;
-      tokenAction: React.ReactNode;
       parent: boolean;
-      grouped: boolean;
-      disabled: boolean;
       hasGroups: boolean;
     },
     ref: React.Ref<HTMLDivElement>
@@ -250,29 +295,7 @@ const TokenGroup = forwardRef(
         {...copyAnalyticsMetadataAttribute(rest)}
       >
         {operation}
-
-        <div
-          className={clsx(
-            parent ? styles.token : styles['inner-token'],
-            !!operation && styles['show-operation'],
-            grouped && styles.grouped,
-            disabled && styles['token-disabled']
-          )}
-          aria-disabled={disabled}
-        >
-          <div
-            className={clsx(
-              parent
-                ? clsx(styles['token-content'], testUtilStyles['filtering-token-content'])
-                : clsx(styles['inner-token-content'], testUtilStyles['filtering-token-inner-content']),
-              grouped && styles['token-content-grouped']
-            )}
-          >
-            {children}
-          </div>
-
-          {tokenAction}
-        </div>
+        {children}
       </div>
     );
   }
