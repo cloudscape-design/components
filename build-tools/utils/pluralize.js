@@ -103,6 +103,7 @@ const pluralizationMap = {
   TreeView: 'TreeViews',
   TruncatedText: 'TruncatedTexts',
   TutorialPanel: 'TutorialPanels',
+  VirtualTable: 'VirtualTables',
   Wizard: 'Wizards',
 };
 
