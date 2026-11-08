@@ -1,0 +1,81 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~components/styling/segmented-control';
+@use '~components/styling/select';
+@use '~components/styling/dropdown';
+@use '../style-api/palette' as palette;
+
+.root {
+  @include segmented-control.root(
+    $background: palette.$info-surface,
+    $border-color: palette.$info,
+    $border-width: 2px,
+    $border-radius: 12px
+  );
+}
+
+.segment {
+  @include segmented-control.segment(
+    $color: palette.$text-muted,
+    $background: palette.$surface,
+    $padding: 2px 16px,
+    $font-family: monospace,
+    $font-size: 12px,
+    $font-weight: 700,
+    $focus-ring-color: palette.$accent,
+    $focus-ring-width: 3px,
+    $focus-ring-radius: 12px
+  );
+
+  &:hover {
+    @include segmented-control.segment($background: palette.$subtle-hover, $color: palette.$text);
+  }
+
+  &[aria-pressed='true'] {
+    @include segmented-control.segment(
+      $background: palette.$accent,
+      $color: palette.$text-on-accent,
+      $box-shadow: inset 0 0 0 1px palette.$accent-active
+    );
+  }
+
+  &:disabled,
+  &[aria-disabled='true'] {
+    @include segmented-control.segment($background: palette.$control-bg-disabled, $color: palette.$text-disabled);
+  }
+}
+
+.segment-square {
+  @include segmented-control.segment(
+    $border-radius: 0,
+    $border-style: solid,
+    $border-width: 1px,
+    $border-color: palette.$border-accent
+  );
+}
+
+.divider {
+  @include segmented-control.divider($color: palette.$border-accent, $width: 2px);
+}
+
+// Select fallback, rendered below the x-small breakpoint: the trigger and its dropdown.
+.select-trigger {
+  @include select.trigger(
+    $background: palette.$info-surface,
+    $border-color: palette.$info,
+    $border-width: 2px,
+    $border-radius: 12px
+  );
+}
+
+.select-dropdown {
+  @include dropdown.container(
+    $background: palette.$surface-alt,
+    $border-radius: 12px,
+    $outline-color: palette.$info,
+    $outline-width: 2px
+  );
+}

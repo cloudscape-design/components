@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs, useResizeObserver, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -12,8 +12,9 @@ import { getBaseProps } from '../internal/base-component';
 import { getBreakpointValue } from '../internal/breakpoints';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
+import PlainList from '../internal/components/listbox/parts/plain-list';
 import { singleSelection } from '../internal/components/listbox/selection/single-selection';
-import { useAnnouncement } from '../internal/components/listbox/use-announcement';
+import { useTypeAhead } from '../internal/components/listbox/use-type-ahead';
 import { checkOptionValueField } from '../internal/components/listbox/utils/check-option-value-field';
 import { prepareOptions } from '../internal/components/option/utils/prepare-options.js';
 import { ResetGroupedControlContext, useGroupedControlContext } from '../internal/context/control-group-context';
@@ -29,11 +30,9 @@ import { joinStrings } from '../internal/utils/strings/join-strings.js';
 import { OptionGroup } from '../types/option';
 import { SelectProps } from './interfaces';
 import Filter from './parts/filter';
-import PlainList, { SelectListProps } from './parts/plain-list';
 import Trigger from './parts/trigger';
 import VirtualList from './parts/virtual-list';
 import { composeDropdownContent } from './utils/dropdown-customization';
-import { useNativeSearch } from './utils/use-native-search';
 import { useSelect } from './utils/use-select';
 
 import styles from './styles.css.js';
@@ -150,13 +149,11 @@ const InternalSelect = React.forwardRef(
     const selfControlId = useUniqueId('trigger');
     const controlId = formFieldContext.controlId ?? selfControlId;
 
-    const scrollToIndex = useRef<SelectListProps.SelectListRef>(null);
     const selectedOptions = selectedOption ? [selectedOption] : [];
     const {
       isOpen,
       highlightType,
       highlightedOption,
-      highlightedIndex,
       getTriggerProps,
       getDropdownProps,
       getFilterProps,
@@ -164,7 +161,8 @@ const InternalSelect = React.forwardRef(
       getOptionProps,
       highlightOption,
       selectOption,
-      announceSelected,
+      announcement,
+      scrollToIndex,
       focusActiveRef,
       closeDropdown,
     } = useSelect({
@@ -180,9 +178,12 @@ const InternalSelect = React.forwardRef(
       setFilteringValue,
       statusType,
       dropdownRole,
+      getParent: option => parentMap.get(option)?.option as undefined | OptionGroup,
+      selectedAriaLabel,
+      renderHighlightedAriaLive,
     });
 
-    const handleNativeSearch = useNativeSearch({
+    const handleNativeSearch = useTypeAhead({
       isEnabled: filteringType === 'none' && !readOnly,
       options: filteredOptions,
       highlightOption: !isOpen ? selectOption : highlightOption,
@@ -191,10 +192,6 @@ const InternalSelect = React.forwardRef(
 
     const selectAriaLabelId = useUniqueId('select-arialabel-');
     const footerId = useUniqueId('footer');
-
-    useEffect(() => {
-      scrollToIndex.current?.(highlightedIndex);
-    }, [highlightedIndex]);
 
     const dropdownContentProps: SelectProps.DropdownContentProps = { filterText: filteringValue, closeDropdown };
     const customDropdownHeader = renderDropdownHeader?.(dropdownContentProps);
@@ -279,14 +276,6 @@ const InternalSelect = React.forwardRef(
       ariaRequired,
     };
 
-    const announcement = useAnnouncement({
-      announceSelected,
-      highlightedOption,
-      getParent: option => parentMap.get(option)?.option as undefined | OptionGroup,
-      selectedAriaLabel,
-      renderHighlightedAriaLive,
-    });
-
     const ListComponent = virtualScroll ? VirtualList : PlainList;
 
     const handleMouseDown = (event: React.MouseEvent) => {
@@ -341,7 +330,7 @@ const InternalSelect = React.forwardRef(
                   ) : null
                 }
                 renderOption={renderOption}
-                menuProps={menuProps}
+                listProps={menuProps}
                 getOptionProps={getOptionProps}
                 filteredOptions={filteredOptions}
                 filteringValue={filteringValue}

@@ -211,6 +211,9 @@ $tokens: style-api.resolve(style-api.$focus-ring, carrier);
   }
 
   &.variant-inline-link {
+    text-decoration-line: awsui.$font-decoration-line-button-inline-link;
+    text-underline-offset: 3.5px;
+
     > .icon-left {
       inset-inline-start: 0;
       margin-inline-end: awsui.$space-xs;

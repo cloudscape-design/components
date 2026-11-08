@@ -1,14 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
 import { multiSelection } from '../internal/components/listbox/selection/multi-selection';
-import { useAnnouncement } from '../internal/components/listbox/use-announcement';
+import { useTypeAhead } from '../internal/components/listbox/use-type-ahead';
 import { checkOptionValueField } from '../internal/components/listbox/utils/check-option-value-field.js';
 import { DropdownOption } from '../internal/components/option/interfaces';
 import { prepareOptions } from '../internal/components/option/utils/prepare-options';
@@ -16,8 +16,6 @@ import { fireNonCancelableEvent } from '../internal/events';
 import { useLoadItems } from '../internal/hooks/use-load-items';
 import { SomeRequired } from '../internal/types';
 import { joinStrings } from '../internal/utils/strings';
-import { SelectListProps } from '../select/parts/plain-list';
-import { useNativeSearch } from '../select/utils/use-native-search';
 import { useSelect } from '../select/utils/use-select';
 import { TokenGroupProps } from '../token-group/interfaces';
 import { DropdownStatusProps } from '../types/dropdown-status';
@@ -137,7 +135,6 @@ export function useMultiselect({
     fireNonCancelableEvent(onChange, { selectedOptions: selection.getNextSelection({ option }) });
   };
 
-  const scrollToIndex = useRef<SelectListProps.SelectListRef>(null);
   const {
     isOpen,
     highlightType,
@@ -149,7 +146,8 @@ export function useMultiselect({
     getMenuProps,
     getOptionProps,
     highlightOption,
-    announceSelected,
+    announcement,
+    scrollToIndex,
     focusActiveRef,
     closeDropdown,
   } = useSelect({
@@ -169,14 +167,17 @@ export function useMultiselect({
     selection,
     toggleAll,
     dropdownRole,
+    getParent: option => parentMap.get(option)?.option as undefined | OptionGroup,
+    selectedAriaLabel,
+    renderHighlightedAriaLive,
   });
 
-  const wrapperOnKeyDown = useNativeSearch({
+  const wrapperOnKeyDown = useTypeAhead({
     isEnabled: filteringType === 'none' && isOpen,
     options: visibleOptions,
     highlightOption: highlightOption,
     highlightedOption: highlightedOption?.option,
-    useInteractiveGroups,
+    interactiveGroups: useInteractiveGroups,
   });
 
   const isEmpty = !options || options.length === 0;
@@ -203,14 +204,6 @@ export function useMultiselect({
     hasRecoveryCallback: !!onLoadItems,
   });
 
-  const announcement = useAnnouncement({
-    announceSelected,
-    highlightedOption,
-    getParent: option => parentMap.get(option)?.option as undefined | OptionGroup,
-    selectedAriaLabel,
-    renderHighlightedAriaLive,
-  });
-
   const tokens: TokenGroupProps['items'] = selectedOptions.map(option => ({
     label: option.label,
     disabled: disabled || option.disabled,
@@ -225,10 +218,6 @@ export function useMultiselect({
       format({ option__label: option.label ?? '' })
     ),
   }));
-
-  useEffect(() => {
-    scrollToIndex.current?.(highlightedIndex);
-  }, [highlightedIndex]);
 
   const dropdownOnMouseDown = (event: React.MouseEvent) => {
     const target = event.target as HTMLElement;

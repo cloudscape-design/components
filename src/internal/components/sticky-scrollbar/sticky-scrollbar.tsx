@@ -5,14 +5,14 @@ import clsx from 'clsx';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
-import { useIntersectionObserver } from '../../internal/hooks/use-intersection-observer';
-import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
-import { browserScrollbarSize } from '../../internal/utils/browser-scrollbar-size';
-import { useStickyScrollbar } from './use-sticky-scrollbar';
+import { useIntersectionObserver } from '../../hooks/use-intersection-observer';
+import { useVisualRefresh } from '../../hooks/use-visual-mode';
+import { browserScrollbarSize } from '../../utils/browser-scrollbar-size';
+import { StickyScrollbarContentOptions, useStickyScrollbar } from './use-sticky-scrollbar';
 
 import styles from './styles.css.js';
 
-interface StickyScrollbarProps {
+interface StickyScrollbarProps extends StickyScrollbarContentOptions {
   wrapperRef: React.RefObject<HTMLDivElement>;
   tableRef: React.RefObject<HTMLTableElement>;
   onScroll?: React.UIEventHandler<HTMLDivElement>;
@@ -22,7 +22,7 @@ interface StickyScrollbarProps {
 export default forwardRef(StickyScrollbar);
 
 function StickyScrollbar(
-  { wrapperRef, tableRef, onScroll, hasStickyColumns }: StickyScrollbarProps,
+  { wrapperRef, tableRef, onScroll, hasStickyColumns, getContentInlineSize, contentKey }: StickyScrollbarProps,
   ref: React.Ref<HTMLDivElement>
 ) {
   const isVisualRefresh = useVisualRefresh();
@@ -36,7 +36,10 @@ function StickyScrollbar(
    */
   const offsetScrollbar = hasStickyColumns || browserScrollbarSize().height === 0;
 
-  useStickyScrollbar(scrollbarRef, scrollbarContentRef, tableRef, wrapperRef, offsetScrollbar);
+  useStickyScrollbar(scrollbarRef, scrollbarContentRef, tableRef, wrapperRef, offsetScrollbar, {
+    getContentInlineSize,
+    contentKey,
+  });
 
   const { ref: stickyDetectionRef, isIntersecting: isStickyDetectionVisible } = useIntersectionObserver();
 

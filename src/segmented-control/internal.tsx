@@ -9,13 +9,24 @@ import { useGroupedControlContext } from '../internal/context/control-group-cont
 import { fireNonCancelableEvent } from '../internal/events';
 import { getGroupedControlClassNames } from '../internal/grouped-control/grouped-control-styles';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import InternalSelect, { InternalSelectProps } from '../select/internal';
+import InternalSelect, { InternalSelectProps, StyleClassNames as SelectStyleClassNames } from '../select/internal';
 import { SegmentedControlProps } from './interfaces';
 import InternalSegmentedControlComponent from './internal-segmented-control';
 
 import styles from './styles.css.js';
 
-type InternalSegmentedControlProps = SegmentedControlProps & InternalBaseComponentProps;
+type InternalSegmentedControlProps = SegmentedControlProps &
+  InternalBaseComponentProps & {
+    styleClassNames?: StyleClassNames;
+  };
+
+// Style API v2
+export interface StyleClassNames {
+  root?: string;
+  segment?: string;
+  divider?: string;
+  select?: SelectStyleClassNames;
+}
 
 export default function InternalSegmentedControl({
   selectedId,
@@ -25,6 +36,7 @@ export default function InternalSegmentedControl({
   onChange,
   __internalRootRef,
   style,
+  styleClassNames,
   ...props
 }: InternalSegmentedControlProps) {
   const baseProps = getBaseProps(props);
@@ -45,6 +57,7 @@ export default function InternalSegmentedControl({
     selectedOption: currentSelectedOption,
     triggerVariant: 'option',
     onChange: event => fireNonCancelableEvent(onChange, { selectedId: event.detail.selectedOption.value! }),
+    styleClassNames: styleClassNames?.select,
   };
 
   return (
@@ -57,6 +70,7 @@ export default function InternalSegmentedControl({
         onChange={onChange}
         style={style}
         groupedControlProps={groupedControlProps}
+        styleClassNames={styleClassNames}
       />
       <div className={clsx(styles.select, getGroupedControlClassNames(styles, groupedControlProps))}>
         {ariaLabelledby && <InternalSelect {...selectProps} ariaLabelledby={ariaLabelledby} />}

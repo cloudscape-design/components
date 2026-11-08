@@ -15,6 +15,17 @@ import { getContentStyles, getFooterStyles, getHeaderStyles, getRootStyles } fro
 import styles from './styles.css.js';
 import testStyles from './test-classes/styles.css.js';
 
+// Style API v2
+export interface StyleClassNames {
+  root?: string;
+  header?: string;
+  footer?: string;
+}
+
+interface InternalItemCardWithStyleProps extends InternalItemCardProps {
+  styleClassNames?: StyleClassNames;
+}
+
 export default function InternalItemCard({
   actions,
   highlighted,
@@ -34,8 +45,9 @@ export default function InternalItemCard({
   fullHeight,
   variant = 'default',
   __internalRootRef,
+  styleClassNames,
   ...restProps
-}: InternalItemCardProps) {
+}: InternalItemCardWithStyleProps) {
   const baseProps = getBaseProps(restProps);
   const isRefresh = useVisualRefresh();
   const rootRef = useMergeRefs(__internalRootRef, nativeAttributes?.ref);
@@ -46,6 +58,7 @@ export default function InternalItemCard({
     {
       className: clsx(
         className,
+        styleClassNames?.root,
         styles.root,
         highlighted && styles.highlighted,
         fullHeight && styles['full-height'],
@@ -66,6 +79,7 @@ export default function InternalItemCard({
         {!headerRowEmpty && (
           <div
             className={clsx(
+              styleClassNames?.header,
               styles.header,
               disableHeaderPaddings && styles['no-padding'],
               !!actions && styles['with-actions']
@@ -94,7 +108,12 @@ export default function InternalItemCard({
         )}
         {footer && (
           <div
-            className={clsx(styles.footer, testStyles.footer, disableFooterPaddings && styles['no-padding'])}
+            className={clsx(
+              styleClassNames?.footer,
+              styles.footer,
+              testStyles.footer,
+              disableFooterPaddings && styles['no-padding']
+            )}
             style={getFooterStyles(style)}
           >
             {footer}

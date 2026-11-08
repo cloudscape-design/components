@@ -155,7 +155,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextInteractiveInvertedHover: { light: '{colorNeutral950}', dark: '{colorWhite}' },
 
   colorTextBadgeGreen: { light: '{colorSuccess600}', dark: '{colorSuccess200}' },
-  colorTextBadgeBlue: { light: '{colorInfo600}', dark: '{colorInfo300}' },
+  colorTextBadgeBlue: { light: '{colorInfo700}', dark: '{colorInfo300}' },
   colorTextBadgeRed: { light: '{colorError700}', dark: '{colorError400}' },
   colorTextBadgeGrey: { light: '{colorNeutral850}', dark: '{colorNeutral300}' },
 

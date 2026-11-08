@@ -5,55 +5,50 @@ import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import { fallbackItemHeight } from '../../internal/components/listbox/parts/common';
-import { renderOptions } from '../../internal/components/listbox/parts/render-options';
-import scrollToIndex from '../../internal/components/listbox/parts/scroll-to-index';
-import { DropdownOption } from '../../internal/components/option/interfaces';
-import OptionsList from '../../internal/components/options-list';
-import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
-import { MultiselectProps } from '../../multiselect/interfaces';
-import { SelectProps } from '../interfaces';
-import { GetOptionProps, MenuProps } from '../utils/use-select';
+import { MultiselectProps } from '../../../../multiselect/interfaces';
+import { SelectProps } from '../../../../select/interfaces';
+import { DropdownOption } from '../../option/interfaces';
+import OptionsList from '../../options-list';
+import { HighlightType } from '../../options-list/utils/use-highlight-option';
+import { GetOptionProps, ListElementProps, ScrollToIndexRef } from '../interfaces';
+import { SelectionType } from '../selection/interfaces';
+import { fallbackItemHeight } from './common';
+import { renderOptions } from './render-options';
+import scrollToIndex from './scroll-to-index';
 
-import styles from './styles.css.js';
+import styles from '../../../../select/parts/styles.css.js';
 
-export interface SelectListProps {
-  menuProps: MenuProps;
+export interface ListProps {
+  listProps: ListElementProps;
   getOptionProps: GetOptionProps;
   filteredOptions: ReadonlyArray<DropdownOption>;
   filteringValue: string;
   highlightType: HighlightType;
-  checkboxes?: boolean;
   hasDropdownStatus?: boolean;
   listBottom?: React.ReactNode;
-  useInteractiveGroups?: boolean;
+  selectionType?: SelectionType;
   screenReaderContent?: string;
   firstOptionSticky?: boolean;
   isMultiSelect?: boolean;
   renderOption?: SelectProps.SelectOptionItemRenderer | MultiselectProps.MultiselectOptionItemRenderer;
 }
 
-export namespace SelectListProps {
-  export type SelectListRef = (index: number) => void;
-}
-
 const PlainList = (
   {
-    menuProps,
+    listProps,
     getOptionProps,
     filteredOptions,
     filteringValue,
     highlightType,
-    checkboxes,
     hasDropdownStatus,
     listBottom,
-    useInteractiveGroups,
+    selectionType,
     screenReaderContent,
     firstOptionSticky,
     isMultiSelect,
     renderOption,
-  }: SelectListProps,
-  ref: React.Ref<SelectListProps.SelectListRef>
+  }: ListProps,
+  ref: React.Ref<ScrollToIndexRef>
 ) => {
   const idPrefix = useUniqueId('select-list-');
   const stickyOptionRef = useRef<HTMLDivElement>(null);
@@ -71,7 +66,7 @@ const PlainList = (
     return { inner: rect.contentBoxWidth, outer: rect.borderBoxWidth };
   });
 
-  const menuRef = menuProps.ref;
+  const menuRef = listProps.ref;
 
   const mergedRef = useMergeRefs(menuMeasureRef, menuRef);
 
@@ -90,7 +85,7 @@ const PlainList = (
 
   return (
     <OptionsList
-      {...menuProps}
+      {...listProps}
       ref={mergedRef}
       stickyItemBlockSize={stickyOptionBlockSize}
       isMultiSelect={isMultiSelect}
@@ -102,9 +97,8 @@ const PlainList = (
         filteringValue,
         idPrefix,
         highlightType,
-        checkboxes,
         hasDropdownStatus,
-        useInteractiveGroups,
+        selectionType,
         screenReaderContent,
         firstOptionSticky,
         stickyOptionRef,

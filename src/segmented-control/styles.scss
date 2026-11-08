@@ -8,7 +8,28 @@
 @use 'sass:list' as list;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/utils/theming' as theming;
+@use '../internal/styles/style-api' as style-api;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+// Style API v2
+@include style-api.register(seg.$root-tokens);
+@include style-api.docs(
+  'root',
+  seg.$root-tokens,
+  $properties: (background, border),
+  $descriptions: (slot: 'The segment group. The radius is also applied to the segments.')
+);
+@include style-api.docs(
+  'segment',
+  seg.$segment-tokens,
+  $properties: (color, background, border, border-radius, box-shadow, padding, font-family, font-size, font-weight),
+  $descriptions: (
+    slot:
+      'Every segment button. Target the selected segment with `[aria-pressed=true]`, a disabled segment with `:disabled` or `[aria-disabled=true]`, and the hover state with `:hover`.'
+  )
+);
+@include style-api.docs('divider', seg.$divider-tokens, $descriptions: (slot: 'The line between two segments.'));
+@include style-api.docs-forward('select', 'select');
 
 @function repeatValue($value, $times) {
   $result: ();
@@ -25,13 +46,14 @@
 }
 
 .segment-part {
+  @include style-api.carriers(seg.$root-tokens);
   display: inline-grid;
   border-inline: solid awsui.$border-width-field awsui.$color-border-segment-wrapper;
   border-block: solid awsui.$border-width-field awsui.$color-border-segment-wrapper;
-  border-start-start-radius: awsui.$border-radius-button;
-  border-start-end-radius: awsui.$border-radius-button;
-  border-end-start-radius: awsui.$border-radius-button;
-  border-end-end-radius: awsui.$border-radius-button;
+  border-start-start-radius: seg.$root-radius;
+  border-start-end-radius: seg.$root-radius;
+  border-end-start-radius: seg.$root-radius;
+  border-end-end-radius: seg.$root-radius;
   background-color: awsui.$color-background-segment-wrapper;
   align-items: center;
   min-block-size: calc(awsui.$line-height-body-m + awsui.$space-static-xxs);

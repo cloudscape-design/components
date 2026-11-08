@@ -11,6 +11,7 @@ import { StyleClassNames as InputStyleClassNames } from '../input/internal';
 import { getBaseProps } from '../internal/base-component';
 import { getBreakpointValue } from '../internal/breakpoints';
 import DropdownFooter from '../internal/components/dropdown-footer/index.js';
+import PlainList from '../internal/components/listbox/parts/plain-list';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { ResetGroupedControlContext, useGroupedControlContext } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
@@ -20,7 +21,6 @@ import { SomeRequired } from '../internal/types';
 import { getDropdownMinWidth } from '../internal/utils/get-dropdown-min-width';
 import { joinStrings } from '../internal/utils/strings';
 import Filter from '../select/parts/filter';
-import PlainList from '../select/parts/plain-list';
 import Trigger from '../select/parts/trigger';
 import VirtualList from '../select/parts/virtual-list';
 import { composeDropdownContent } from '../select/utils/dropdown-customization';
@@ -269,14 +269,13 @@ const InternalMultiselect = React.forwardRef(
                     <DropdownFooter content={multiselectProps.isOpen ? dropdownStatus.content : null} id={footerId} />
                   ) : null
                 }
-                menuProps={{ ...multiselectProps.getMenuProps(), ariaRequired }}
+                listProps={{ ...multiselectProps.getMenuProps(), ariaRequired }}
                 getOptionProps={multiselectProps.getOptionProps}
                 filteredOptions={multiselectProps.filteredOptions}
                 filteringValue={filteringValue}
                 ref={multiselectProps.scrollToIndex}
                 hasDropdownStatus={dropdownStatus.content !== null}
-                checkboxes={true}
-                useInteractiveGroups={true}
+                selectionType="multi"
                 screenReaderContent={multiselectProps.announcement}
                 highlightType={multiselectProps.highlightType}
                 firstOptionSticky={hasFilteredOptions && enableSelectAll}
