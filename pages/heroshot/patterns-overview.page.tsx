@@ -28,6 +28,7 @@ import {
   Flashbar,
   Form,
   FormField,
+  Grid,
   Header,
   Input,
   KeyValuePairs,
@@ -83,7 +84,7 @@ type PreviewKind =
   | 'chart'
   | 'command'
   | 'create'
-  | 'dashboard'
+  | 'hero-header'
   | 'dashboard-item'
   | 'details'
   | 'edit'
@@ -112,6 +113,15 @@ interface PatternDefinition {
   title: string;
   kind: PreviewKind;
   detail: string;
+  /**
+   * How the preview heads its content:
+   * - omitted: the pattern's own title (or, for some kinds, its detail) as an h2, standing in for the
+   *   page the pattern sits on;
+   * - a string: that text as an h3, for previews that lead with their control rather than with the
+   *   page around it;
+   * - `null`: no heading at all, for previews that are only about the control itself.
+   */
+  heading?: string | null;
 }
 
 const patterns: ReadonlyArray<PatternDefinition> = [
@@ -166,28 +176,59 @@ const patterns: ReadonlyArray<PatternDefinition> = [
     kind: 'filter',
     detail: 'Status = Running',
   },
-  { id: 'filtering-patterns', title: 'Filtering patterns', kind: 'filter', detail: 'Find resources' },
+  {
+    id: 'filtering-patterns',
+    title: 'Filtering patterns',
+    kind: 'filter',
+    detail: 'Find resources',
+    heading: 'Resources',
+  },
   { id: 'global-actions', title: 'Global actions', kind: 'actions', detail: 'Items' },
   { id: 'help-system', title: 'Help system', kind: 'info-link', detail: 'Distribution ID' },
-  { id: 'hero-header', title: 'Hero header', kind: 'dashboard', detail: 'Build and operate your application' },
+  {
+    id: 'hero-header',
+    title: 'Hero header',
+    kind: 'hero-header',
+    detail: 'Enterprise search, observability, and security.',
+  },
   {
     id: 'iam-roles-for-service-access',
     title: 'IAM roles for service access',
     kind: 'selection',
     detail: 'Choose an IAM role',
+    heading: 'Service access',
   },
-  { id: 'iam-service-linked-roles', title: 'IAM service linked roles', kind: 'status', detail: 'Service-linked role' },
+  {
+    id: 'iam-service-linked-roles',
+    title: 'IAM service linked roles',
+    kind: 'status',
+    detail: 'Service-linked role',
+    heading: 'Permissions',
+  },
   { id: 'iam-service-role', title: 'IAM service role', kind: 'selection', detail: 'Create a new service role' },
-  { id: 'image-magnifier', title: 'Image magnifier', kind: 'details', detail: 'Architecture diagram' },
+  {
+    id: 'image-magnifier',
+    title: 'Image magnifier',
+    kind: 'details',
+    detail: 'Architecture diagram',
+    heading: 'Architecture diagram',
+  },
   { id: 'in-context-actions', title: 'In-context actions', kind: 'actions', detail: 'Actions for selected resource' },
   {
     id: 'inclusive-language-validation',
     title: 'Inclusive language validation (internal)',
     kind: 'form',
     detail: 'Use an inclusive alternative.',
+    heading: null,
   },
-  { id: 'inline-edit', title: 'Inline edit', kind: 'edit', detail: 'Edit resource description' },
-  { id: 'kms-key-selection', title: 'KMS key selection', kind: 'selection', detail: 'AWS managed key' },
+  { id: 'inline-edit', title: 'Inline edit', kind: 'edit', detail: 'Edit resource description', heading: null },
+  {
+    id: 'kms-key-selection',
+    title: 'KMS key selection',
+    kind: 'selection',
+    detail: 'AWS managed key',
+    heading: null,
+  },
   { id: 'loading-and-refreshing', title: 'Loading and refreshing', kind: 'loading', detail: 'Refreshing resources' },
   {
     id: 'migration-communication',
@@ -200,6 +241,7 @@ const patterns: ReadonlyArray<PatternDefinition> = [
     title: 'Migration opt-in/opt-out',
     kind: 'status',
     detail: 'Use the new console experience',
+    heading: null,
   },
   { id: 'multi-page-create', title: 'Multipage create', kind: 'wizard', detail: 'Configure resource' },
   { id: 'one-click-delete', title: 'One-click delete', kind: 'actions', detail: 'Delete low-risk item' },
@@ -221,8 +263,15 @@ const patterns: ReadonlyArray<PatternDefinition> = [
     title: 'S3 resource selection',
     kind: 'selection',
     detail: 's3://example-bucket/logs/',
+    heading: null,
   },
-  { id: 'saved-filter-sets', title: 'Saved filter sets', kind: 'filter', detail: 'Production resources' },
+  {
+    id: 'saved-filter-sets',
+    title: 'Saved filter sets',
+    kind: 'filter',
+    detail: 'Production resources',
+    heading: 'Saved filter sets',
+  },
   { id: 'secondary-panels', title: 'Secondary panels', kind: 'help', detail: 'Selected resource details' },
   { id: 'selection-in-forms', title: 'Selection in forms', kind: 'selection', detail: 'On-demand' },
   { id: 'service-navigation', title: 'Service navigation', kind: 'navigation', detail: 'Resources' },
@@ -232,7 +281,13 @@ const patterns: ReadonlyArray<PatternDefinition> = [
   { id: 'top-navigation', title: 'Top navigation', kind: 'navigation', detail: 'Global utilities' },
   { id: 'user-feedback', title: 'User feedback', kind: 'status', detail: 'How was your experience?' },
   { id: 'validation', title: 'Validation', kind: 'form', detail: 'Enter a valid resource name.' },
-  { id: 'view-resources', title: 'View resources', kind: 'table', detail: 'Browse resources' },
+  {
+    id: 'view-resources',
+    title: 'View resources',
+    kind: 'table',
+    detail: 'Browse resources',
+    heading: 'Browse resources',
+  },
 ];
 
 export default function PatternsOverviewHeroshotPage() {
@@ -603,6 +658,93 @@ function DashboardItem({ detail }: { detail: string }) {
   );
 }
 
+/**
+ * The heading a preview puts above its content, or `undefined` for no heading at all — which is why
+ * this is a function and not a component: a component rendering `null` would still leave the container
+ * drawing an empty header strip. See `PatternDefinition.heading`.
+ *
+ * `fallback` is the h2 text for kinds that head their content with the pattern detail rather than its
+ * title; `counter` only applies to a collection heading, so it is passed where the content is one.
+ */
+function previewHeading(
+  pattern: PatternDefinition,
+  { counter, fallback }: { counter?: string; fallback?: string } = {}
+): React.ReactNode {
+  if (pattern.heading === null) {
+    return undefined;
+  }
+  return pattern.heading ? (
+    <Header variant="h3" counter={counter}>
+      {pattern.heading}
+    </Header>
+  ) : (
+    <Header variant="h2">{fallback ?? pattern.title}</Header>
+  );
+}
+
+/**
+ * The hero header of a product detail page: the product named and described on the left, its actions
+ * stacked on the right, over a high-contrast band that the page content follows. Text is kept short so
+ * it reads at thumbnail size — a real hero header carries a full product description here.
+ */
+function HeroHeader({ detail }: { detail: string }) {
+  return (
+    <ContentLayout
+      defaultPadding={true}
+      disableOverlap={true}
+      headerVariant="high-contrast"
+      header={
+        <Box padding={{ vertical: 'l' }}>
+          {/*
+            Fixed colspans rather than per-breakpoint ones: the preview is laid out at a single width.
+            A slightly wider action column than a real page needs, so the primary action stays on one
+            line at the width this preview is scaled down from.
+          */}
+          <Grid gridDefinition={[{ colspan: 7 }, { colspan: 5 }]}>
+            <div>
+              <Box variant="h1">Elastic Cloud</Box>
+              <Box variant="p" color="text-body-secondary" margin={{ top: 'xxs', bottom: 's' }}>
+                {detail}
+              </Box>
+              <SpaceBetween size="xxs">
+                <div>
+                  Sold by:{' '}
+                  <Link variant="primary" href="#">
+                    Elastic
+                  </Link>
+                </div>
+                <div>
+                  Tags:{' '}
+                  <Link variant="primary" href="#">
+                    Free trial
+                  </Link>
+                  {' | '}
+                  <Link variant="primary" href="#">
+                    Vendor insights
+                  </Link>
+                </div>
+              </SpaceBetween>
+            </div>
+            <Box margin={{ top: 'l' }}>
+              <SpaceBetween size="xs">
+                <Button variant="primary" fullWidth={true}>
+                  View purchase options
+                </Button>
+                <Button fullWidth={true}>Request a demo</Button>
+              </SpaceBetween>
+            </Box>
+          </Grid>
+        </Box>
+      }
+    >
+      <Box variant="h2" padding={{ top: 'l' }}>
+        Content heading
+      </Box>
+      <Box variant="p">This is a content paragraph.</Box>
+    </ContentLayout>
+  );
+}
+
 function PatternPreview({ pattern }: { pattern: PatternDefinition }) {
   switch (pattern.kind) {
     case 'access':
@@ -662,30 +804,13 @@ function PatternPreview({ pattern }: { pattern: PatternDefinition }) {
           </FormField>
         </Form>
       );
-    case 'dashboard':
-      return (
-        <ContentLayout
-          header={
-            <Header variant="h1" description={pattern.detail}>
-              {pattern.title}
-            </Header>
-          }
-        >
-          <ColumnLayout columns={2} borders="vertical">
-            <KeyValuePairs items={[{ label: 'Healthy', value: <StatusIndicator>12 resources</StatusIndicator> }]} />
-            <KeyValuePairs
-              items={[
-                { label: 'Needs attention', value: <StatusIndicator type="warning">2 resources</StatusIndicator> },
-              ]}
-            />
-          </ColumnLayout>
-        </ContentLayout>
-      );
+    case 'hero-header':
+      return <HeroHeader detail={pattern.detail} />;
     case 'dashboard-item':
       return <DashboardItem detail={pattern.detail} />;
     case 'details':
       return (
-        <Container header={<Header variant="h2">{pattern.detail}</Header>}>
+        <Container header={previewHeading(pattern, { fallback: pattern.detail })}>
           <KeyValuePairs
             columns={2}
             items={[
@@ -697,7 +822,7 @@ function PatternPreview({ pattern }: { pattern: PatternDefinition }) {
       );
     case 'edit':
       return (
-        <Container header={<Header variant="h2">{pattern.title}</Header>}>
+        <Container header={previewHeading(pattern)}>
           <FormField label={pattern.detail}>
             <Input value="Production" onChange={noop} />
           </FormField>
@@ -739,7 +864,11 @@ function PatternPreview({ pattern }: { pattern: PatternDefinition }) {
       return (
         <Table
           variant="embedded"
-          header={<Header variant="h2">{pattern.title}</Header>}
+          header={previewHeading(pattern, {
+            // Only the filtering preview reads as a resource collection; the others are named after
+            // the filter state they show, which a row count would not belong to.
+            counter: pattern.id === 'filtering-patterns' ? '(2)' : undefined,
+          })}
           filter={
             pattern.id === 'filtering-patterns' ? (
               <PropertyFilter
@@ -781,7 +910,7 @@ function PatternPreview({ pattern }: { pattern: PatternDefinition }) {
       return FORM_WITHOUT_CONTAINER.has(pattern.id) ? (
         field
       ) : (
-        <Container header={<Header variant="h2">{pattern.title}</Header>}>{field}</Container>
+        <Container header={previewHeading(pattern)}>{field}</Container>
       );
     }
     case 'help':
@@ -914,12 +1043,12 @@ function PatternPreview({ pattern }: { pattern: PatternDefinition }) {
       return SELECTION_AS_FORM_FIELD.has(pattern.id) ? (
         <FormField label={pattern.title}>{control}</FormField>
       ) : (
-        <Container header={<Header variant="h2">{pattern.title}</Header>}>{control}</Container>
+        <Container header={previewHeading(pattern)}>{control}</Container>
       );
     }
     case 'status':
       return (
-        <Container header={<Header variant="h2">{pattern.title}</Header>}>
+        <Container header={previewHeading(pattern)}>
           <SpaceBetween size="s">
             {pattern.id === 'user-feedback' ? (
               <RadioGroup
@@ -944,7 +1073,7 @@ function PatternPreview({ pattern }: { pattern: PatternDefinition }) {
       return (
         <Table
           variant="embedded"
-          header={<Header variant="h2">{pattern.detail}</Header>}
+          header={previewHeading(pattern, { fallback: pattern.detail })}
           items={resources}
           columnDefinitions={linkedResourceColumns}
         />
@@ -1019,10 +1148,13 @@ const CONTENT_SIZES: Partial<Record<PreviewKind, { width: number; height: number
   // Likewise for the dashboard item: scaled down (~0.8) so its container closes inside the frame
   // instead of having its bottom edge cropped away.
   'dashboard-item': { width: 390, height: 171 },
+  // A page-level hero, laid out wide enough for its two columns to sit side by side and scaled down.
+  // The frame ratio rather than the padded box, since this preview bleeds to the frame edges.
+  'hero-header': { width: 680, height: 334 },
 };
 
 // Kinds whose content bleeds to the frame edges and so supplies its own insets.
-const PADDINGS: Partial<Record<PreviewKind, number>> = { wizard: 8, command: 0 };
+const PADDINGS: Partial<Record<PreviewKind, number>> = { wizard: 8, command: 0, 'hero-header': 0 };
 
 interface Resource {
   name: string;

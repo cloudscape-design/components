@@ -27,6 +27,7 @@ import {
   ColumnLayout,
   Container,
   ContentLayout,
+  ControlGroup,
   CopyToClipboard,
   DateInput,
   DatePicker,
@@ -322,7 +323,7 @@ export default function HeroshotOverviewPage() {
           </SpaceBetween>
         </Heroshot>
 
-        <Heroshot id="code-editor" label="CodeEditor" stretch={true} padding={8}>
+        <Heroshot id="code-editor" label="CodeEditor" stretch={true} padding={8} contentSize={CODE_EDITOR_SIZE}>
           <CodeEditorHeroshot />
         </Heroshot>
 
@@ -358,10 +359,46 @@ export default function HeroshotOverviewPage() {
           </Container>
         </Heroshot>
 
-        <Heroshot id="content-layout" label="ContentLayout" stretch={true}>
-          <ContentLayout header={<Header variant="h1">Instances</Header>}>
-            <Container>Content</Container>
+        <Heroshot id="content-layout" label="ContentLayout" padding={0} contentSize={CONTENT_LAYOUT_SIZE}>
+          {/*
+            The high-contrast header bleeds to the edges of its own layout, so the frame contributes no
+            padding of its own and the layout's `defaultPadding` insets the content instead.
+          */}
+          <ContentLayout
+            defaultPadding={true}
+            headerVariant="high-contrast"
+            header={
+              <Header
+                variant="h1"
+                info={<Link variant="info">Info</Link>}
+                description="This is a generic description used in the header."
+              >
+                Header
+              </Header>
+            }
+          >
+            <Container header={<Header variant="h2">Content heading</Header>}>Content</Container>
           </ContentLayout>
+        </Heroshot>
+
+        {/* Not stretched, so the frame centers the group instead of pinning it to the frame width. */}
+        <Heroshot id="control-group" label="ControlGroup">
+          <ControlGroup
+            inlineLabelText="Metric"
+            // The frame is narrower than the group's auto-layout threshold, so the direction is pinned
+            // to keep the controls adjoined on one line, which is what distinguishes the component.
+            direction="horizontal"
+            actionButton={{ iconName: 'remove', ariaLabel: 'Remove metric' }}
+          >
+            {/* A short statistic: at the frame width a longer one is truncated mid-word. */}
+            <Select
+              ariaLabel="Statistic"
+              selectedOption={{ label: 'Sum', value: 'sum' }}
+              options={[]}
+              onChange={noop}
+            />
+            <Input ariaLabel="Metric name" value="CPUUtilization" onChange={noop} />
+          </ControlGroup>
         </Heroshot>
 
         <Heroshot id="copy-to-clipboard" label="CopyToClipboard">
@@ -500,22 +537,33 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot id="form" label="Form" align="start" stretch={true}>
-          <Form
-            header={<Header variant="h1">Create instance</Header>}
-            actions={
-              <SpaceBetween size="xs" direction="horizontal">
-                <Button>Cancel</Button>
-                <Button variant="primary">Create</Button>
+        <Heroshot id="form" label="Form" stretch={true} contentSize={FORM_CONTENT_SIZE}>
+          {/*
+            Content only, without the form's header and actions: at the frame size the whole form is
+            twice as tall as the frame, and shrinking it to fit leaves the fields too small to read.
+            The fields are shorter than the scaled content box, so they are centered in it to sit in
+            the middle of the frame instead of at its top.
+          */}
+          <div style={{ blockSize: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <Form>
+              <SpaceBetween size="m">
+                <FormField label="Instance type">
+                  <Select selectedOption={{ label: 't3.medium', value: 't3.medium' }} options={[]} onChange={noop} />
+                </FormField>
+                <FormField label="Purchase option">
+                  <Tiles
+                    value="on-demand"
+                    onChange={noop}
+                    columns={2}
+                    items={[
+                      { value: 'on-demand', label: 'On-demand' },
+                      { value: 'spot', label: 'Spot' },
+                    ]}
+                  />
+                </FormField>
               </SpaceBetween>
-            }
-          >
-            <Container>
-              <FormField label="Name">
-                <Input value="" onChange={noop} />
-              </FormField>
-            </Container>
-          </Form>
+            </Form>
+          </div>
         </Heroshot>
 
         <Heroshot id="form-field" label="FormField" stretch={true}>
@@ -868,15 +916,21 @@ export default function HeroshotOverviewPage() {
           <IframeWrapper id="heroshot-split-panel" size={LAYOUT_CONTENT_SIZE} AppComponent={SplitPanelHeroshot} />
         </Heroshot>
 
-        <Heroshot id="status-indicator" label="StatusIndicator">
-          <SpaceBetween size="xs">
-            <StatusIndicator type="success">Running</StatusIndicator>
-            <StatusIndicator type="in-progress">Pending</StatusIndicator>
-            <StatusIndicator type="error">Failed</StatusIndicator>
-          </SpaceBetween>
+        <Heroshot id="status-indicator" label="StatusIndicator" stretch={true}>
+          <Container>
+            <SpaceBetween size="m" direction="horizontal">
+              <StatusIndicator type="success">Running</StatusIndicator>
+              <StatusIndicator type="warning">Degraded</StatusIndicator>
+              <StatusIndicator type="error">Failed</StatusIndicator>
+            </SpaceBetween>
+          </Container>
         </Heroshot>
 
-        <Heroshot id="steps" label="Steps" stretch={true}>
+        {/*
+          Not stretched: the steps are as wide as their longest label, so letting the list size to its
+          own content lets the frame center the visible block instead of pinning it to the left edge.
+        */}
+        <Heroshot id="steps" label="Steps">
           <Steps
             steps={[
               { status: 'success', header: 'Validated template' },
@@ -1003,7 +1057,8 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot id="tree-view" label="TreeView" stretch={true}>
+        {/* Not stretched, for the same reason as the steps heroshot: the frame centers the tree. */}
+        <Heroshot id="tree-view" label="TreeView">
           <TreeView
             ariaLabel="Resources"
             items={treeItems}
@@ -1286,6 +1341,25 @@ const MODAL_CONTENT_SIZE = { width: 700, height: 344 };
  * its bottom row cropped.
  */
 const ATTRIBUTE_EDITOR_SIZE = { width: 420, height: 185 };
+/**
+ * Tiles only lay out side by side from a container width of 465px, so the form is laid out above that
+ * and scaled down (~0.65). At the frame width the tiles would stack instead, which is tall enough that
+ * the second one falls outside the frame.
+ */
+const FORM_CONTENT_SIZE = { width: 480, height: 211 };
+/**
+ * The layout reads as a page, so it is laid out at a page-like width and scaled down (~0.7) — wide
+ * enough that the header keeps its description on one line and the action beside the title, rather
+ * than wrapping into the frame-width stack it would fall back to. Matches the 346:170 frame ratio,
+ * which the frame fills edge to edge because the high-contrast header bleeds to its own edges.
+ */
+const CONTENT_LAYOUT_SIZE = { width: 420, height: 206 };
+/**
+ * A slight scale-down (~0.88) only, so the code stays legible. Both dimensions are above the padded
+ * content box (330x154) by the same factor, and the editor is still taller than the box at that scale,
+ * so the frame keeps cropping its bottom.
+ */
+const CODE_EDITOR_SIZE = { width: 375, height: 175 };
 
 const customSettingsIcon = (
   <svg viewBox="0 0 16 16" focusable={false}>
@@ -1328,6 +1402,19 @@ function HotspotHeroshot() {
   );
 }
 
+/**
+ * Enough lines to fill the taller editor, so the extra height shows code rather than empty gutter
+ * rows. Kept short enough to fit the frame width, so the numbered lines stay one to a row instead of
+ * wrapping into unnumbered continuations.
+ */
+const editorSource = `const region = 'us-east-1';
+const client = new EC2Client();
+
+export async function list() {
+  const res = await describe();
+  return res.Reservations ?? [];
+}`;
+
 function CodeEditorHeroshot() {
   const [ace, setAce] = React.useState<any>();
 
@@ -1353,9 +1440,12 @@ function CodeEditorHeroshot() {
   return (
     <CodeEditor
       ace={ace}
-      value="const region = 'us-east-1';"
+      value={editorSource}
       language="javascript"
-      editorContentHeight={80}
+      // Taller than the frame on purpose: the editor is a page-sized component, so the frame crops its
+      // bottom — the status bar and the pane below it — and the thumbnail reads as a detail of a real
+      // editor rather than as a squat one.
+      editorContentHeight={150}
       loading={!ace}
       i18nStrings={codeEditorI18nStrings}
       themes={codeEditorThemes}
