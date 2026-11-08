@@ -1,0 +1,33 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+
+.root {
+  @include styles.styles-reset;
+  display: grid;
+  // Master column has a sensible minimum and takes ~1/3, detail takes the rest.
+  grid-template-columns: minmax(280px, 1fr) 2fr;
+  gap: awsui.$space-scaled-l;
+  inline-size: 100%;
+  align-items: start;
+
+  &.narrow {
+    // Collapse to a single column on narrow containers.
+    grid-template-columns: 1fr;
+  }
+}
+
+.master {
+  min-inline-size: 0;
+}
+
+.detail {
+  min-inline-size: 0;
+}
+
+.back-button {
+  margin-block-end: awsui.$space-scaled-s;
+}
