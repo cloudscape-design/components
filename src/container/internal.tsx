@@ -11,6 +11,7 @@ import InternalBox from '../box/internal';
 import { BuiltInErrorBoundary } from '../error-boundary/internal';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { getBaseProps } from '../internal/base-component';
+import { getVisualContextClassname } from '../internal/components/visual-context';
 import { ContainerHeaderContextProvider } from '../internal/context/container-header';
 import { useModalContext } from '../internal/context/modal-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -92,6 +93,7 @@ const InternalContainer = React.forwardRef(function InternalContainer(
     footer,
     children,
     variant = 'default',
+    background = 'default',
     disableHeaderPaddings = false,
     disableContentPaddings = false,
     disableFooterPaddings = false,
@@ -171,6 +173,7 @@ const InternalContainer = React.forwardRef(function InternalContainer(
 
   const hasMedia = !!media?.content;
   const mediaPosition = media?.position ?? 'top';
+  const isSubtle = isRefresh && background === 'subtle';
 
   return (
     <div
@@ -187,7 +190,8 @@ const InternalContainer = React.forwardRef(function InternalContainer(
         shouldHaveStickyStyles && [styles['sticky-enabled']],
         shouldHaveStickyStyles && isStuck && isStuckAtBottom && [styles['with-stuck-sticky-header-at-bottom']],
         showFocusRing && styles['focus-ring'],
-        isRefresh && styles.refresh
+        isRefresh && styles.refresh,
+        isSubtle && [styles['background-subtle'], getVisualContextClassname('container-subtle')]
       )}
       ref={mergedRef}
       onBlur={onRootBlur}

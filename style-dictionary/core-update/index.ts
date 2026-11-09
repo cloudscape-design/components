@@ -6,6 +6,7 @@ import {
   createAlertContext,
   createAppLayoutToolbarContext,
   createCompactTableContext,
+  createContainerSubtleContext,
   createFlashbarContext,
   createFlashbarWarningContext,
   createHeaderAlertContext,
@@ -57,6 +58,9 @@ builder.addContext(createTopNavigationContext((await import('./contexts/top-navi
 builder.addContext(createHeaderContext((await import('./contexts/header.js')).tokens));
 builder.addContext(
   createAppLayoutToolbarContext((await import('../visual-refresh/contexts/app-layout-toolbar.js')).tokens)
+);
+builder.addContext(
+  createContainerSubtleContext((await import('../visual-refresh/contexts/container-subtle.js')).tokens)
 );
 
 const notificationContexts = [

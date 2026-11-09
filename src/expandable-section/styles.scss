@@ -201,6 +201,10 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
       padding-block-end: calc(#{awsui.$space-container-header-top} + #{awsui.$space-scaled-xxs});
     }
 
+    &.header-divided.wrapper-expanded {
+      padding-block-end: awsui.$space-container-header-top;
+    }
+
     &.header-deprecated {
       padding-inline-start: container.$header-padding-horizontal;
     }
@@ -465,6 +469,10 @@ $nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
   &-container {
     padding-block: awsui.$space-container-content-top awsui.$space-scaled-l;
     padding-inline: awsui.$space-container-horizontal;
+
+    &.content-inner-body-divided:not(.disable-content-paddings) {
+      padding-block-start: awsui.$space-scaled-m;
+    }
   }
 }
 

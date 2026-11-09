@@ -365,6 +365,15 @@ $border-radius: style-api.value(
   border-end-start-radius: 0;
   border-end-end-radius: 0;
 }
+.root.background-subtle > .content-wrapper > .header:not(.with-hidden-content) {
+  border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  &.with-paddings {
+    padding-block-end: awsui.$space-container-header-top;
+  }
+}
+.root.background-subtle > .content-wrapper > .content > .content-inner.with-paddings.with-header {
+  padding-block-start: awsui.$space-scaled-m;
+}
 .root.variant-stacked + .root.variant-stacked > .content-wrapper > .header {
   border-start-start-radius: 0;
   border-start-end-radius: 0;

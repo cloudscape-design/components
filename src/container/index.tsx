@@ -20,6 +20,7 @@ const Container = React.forwardRef(
   (
     {
       variant = 'default',
+      background = 'default',
       disableHeaderPaddings = false,
       disableContentPaddings = false,
       fitHeight = false,
@@ -36,6 +37,7 @@ const Container = React.forwardRef(
           disableHeaderPaddings,
           fitHeight,
           variant,
+          background,
         },
         metadata: {
           hasInstanceIdentifier: Boolean(analyticsMetadata?.instanceIdentifier),
@@ -58,6 +60,7 @@ const Container = React.forwardRef(
         <InternalContainerAsSubstep
           ref={ref}
           variant={variant}
+          background={background}
           disableContentPaddings={disableContentPaddings}
           disableHeaderPaddings={disableHeaderPaddings}
           fitHeight={fitHeight}

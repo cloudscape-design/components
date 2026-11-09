@@ -11,7 +11,11 @@ import InternalExpandableSection from './internal';
 
 export { ExpandableSectionProps };
 
-export default function ExpandableSection({ variant = 'default', ...props }: ExpandableSectionProps) {
+export default function ExpandableSection({
+  variant = 'default',
+  background = 'default',
+  ...props
+}: ExpandableSectionProps) {
   const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
   const baseComponentProps = useBaseComponent(
     'ExpandableSection',
@@ -20,6 +24,7 @@ export default function ExpandableSection({ variant = 'default', ...props }: Exp
         disableContentPaddings: props.disableContentPaddings,
         headingTagOverride: props.headingTagOverride,
         variant,
+        background,
       },
       metadata: {
         hasInstanceIdentifier: Boolean(analyticsMetadata?.instanceIdentifier),
@@ -32,6 +37,7 @@ export default function ExpandableSection({ variant = 'default', ...props }: Exp
   return (
     <InternalExpandableSection
       variant={variant}
+      background={background}
       {...props}
       {...baseComponentProps}
       __injectAnalyticsComponentMetadata={true}

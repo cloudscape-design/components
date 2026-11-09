@@ -11,6 +11,7 @@ export namespace ExpandableSectionProps {
   }
 
   export type Variant = 'default' | 'footer' | 'container' | 'navigation' | 'stacked' | 'inline';
+  export type Background = 'default' | 'subtle';
   export interface ChangeDetail {
     expanded: boolean;
   }
@@ -49,6 +50,14 @@ export interface ExpandableSectionProps extends BaseComponentProps {
    * @visualrefresh `stacked` variant
    * */
   variant?: ExpandableSectionProps.Variant;
+
+  /**
+   * Specifies the background of the expandable section. Use with the container or stacked variants.
+   * * `default` - The default container background.
+   * * `subtle` - A subtle neutral background, with a divider between the header and the content when expanded.
+   * @visualrefresh
+   */
+  background?: ExpandableSectionProps.Background;
 
   /**
    * Determines whether the default padding around the content section is removed.

@@ -10617,6 +10617,24 @@ container programmatically, for example in "jump to item" or deep-linking patter
       "type": "ContainerProps.AnalyticsMetadata",
     },
     {
+      "defaultValue": "'default'",
+      "description": "Specifies the background of the container:
+* \`default\` - The default container background.
+* \`subtle\` - A subtle neutral background, with a divider between the header and the content.",
+      "inlineType": {
+        "name": "ContainerProps.Background",
+        "type": "union",
+        "values": [
+          "default",
+          "subtle",
+        ],
+      },
+      "name": "background",
+      "optional": true,
+      "type": "string",
+      "visualRefreshTag": "",
+    },
+    {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -14194,6 +14212,24 @@ The event \`detail\` contains the current value of the \`expanded\` property.",
       "name": "analyticsMetadata",
       "optional": true,
       "type": "ExpandableSectionProps.AnalyticsMetadata",
+    },
+    {
+      "defaultValue": "'default'",
+      "description": "Specifies the background of the expandable section. Use with the container or stacked variants.
+* \`default\` - The default container background.
+* \`subtle\` - A subtle neutral background, with a divider between the header and the content when expanded.",
+      "inlineType": {
+        "name": "ExpandableSectionProps.Background",
+        "type": "union",
+        "values": [
+          "default",
+          "subtle",
+        ],
+      },
+      "name": "background",
+      "optional": true,
+      "type": "string",
+      "visualRefreshTag": "",
     },
     {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
