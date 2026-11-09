@@ -578,6 +578,8 @@ export type ColorsTokenName =
   | 'colorBackgroundItemCard'
   | 'colorBackgroundContainerContent'
   | 'colorBackgroundContainerHeader'
+  | 'colorBackgroundContainerAccentuatedContent'
+  | 'colorBackgroundContainerAccentuatedHeader'
   | 'colorBackgroundControlChecked'
   | 'colorBackgroundControlDefault'
   | 'colorBackgroundControlDisabled'

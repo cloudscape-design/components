@@ -39,6 +39,12 @@ export const createHeaderContext = (tokens: TokenCategory<string, GlobalValue | 
   };
 };
 
+export const createContainerAccentuatedContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => ({
+  id: 'container-accentuated',
+  selector: '.awsui-context-container-accentuated',
+  tokens,
+});
+
 export const createFlashbarContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
   return {
     id: 'flashbar',

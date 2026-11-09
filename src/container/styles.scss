@@ -172,8 +172,27 @@ $border-radius: style-api.value(
 
   // In visual refresh the header has the content's colour, so a header that is not sticky paints no background of
   // its own and a background set on the root shows through. Full-page and cards headers are their own box.
-  &.refresh:not(.header-sticky-enabled):not(.header-full-page):not(.header-variant-cards) {
+  &.refresh:not(.header-sticky-enabled):not(.header-full-page):not(.header-variant-cards):not(.header-accentuated) {
     background-color: transparent;
+  }
+
+  &.header-accentuated {
+    background-color: awsui.$color-background-container-accentuated-header;
+    // The background sits inside the container border, so its corners follow the inner radius.
+    #{custom-props.$containerBorderRadius}: #{$border-radius};
+    $inner-radius: calc(var(#{custom-props.$containerBorderRadius}) - #{awsui.$border-divider-section-width});
+    border-start-start-radius: $inner-radius;
+    border-start-end-radius: $inner-radius;
+    &.with-hidden-content {
+      border-end-start-radius: $inner-radius;
+      border-end-end-radius: $inner-radius;
+    }
+    &:not(.with-hidden-content) {
+      border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+      &.with-paddings {
+        padding-block-end: awsui.$space-container-header-top;
+      }
+    }
   }
 
   &.header-with-media {
@@ -310,6 +329,9 @@ $border-radius: style-api.value(
 
     &.with-header {
       padding-block-start: awsui.$space-container-content-top;
+      &.content-inner-accentuated {
+        padding-block-start: awsui.$space-scaled-m;
+      }
     }
   }
 }

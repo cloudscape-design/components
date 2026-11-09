@@ -105,6 +105,18 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBackgroundContainerAccentuatedContent: {
+    description:
+      'The background color of the content area of containers and expandable sections with the accentuated visual variant.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundContainerAccentuatedHeader: {
+    description:
+      'The background color of the header of containers and expandable sections with the accentuated visual variant.',
+    public: true,
+    themeable: true,
+  },
   colorBackgroundControlChecked: {
     description:
       'The background color of a checked form control. For example: background fill of a selected radio button, checked checkbox, and toggle that is switched on.',
