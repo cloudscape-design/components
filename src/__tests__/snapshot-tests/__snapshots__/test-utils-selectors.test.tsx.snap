@@ -378,6 +378,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_heading-text_2qdw9",
     "awsui_info_2qdw9",
     "awsui_root_2qdw9",
+    "awsui_secondary-content_2qdw9",
   ],
   "help-panel": [
     "awsui_content_1d237",
