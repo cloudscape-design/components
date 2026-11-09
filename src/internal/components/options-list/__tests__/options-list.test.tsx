@@ -119,3 +119,13 @@ test('onLoadMore is called when dropdown is open and status type changes to "pen
 
   expect(onLoadMore).toHaveBeenCalledTimes(2);
 });
+
+test('onLoadMore does not fire on open when statusType is omitted', () => {
+  const onLoadMore = jest.fn();
+  render(
+    <OptionsList open={true} onLoadMore={onLoadMore}>
+      <div>Option</div>
+    </OptionsList>
+  );
+  expect(onLoadMore).not.toHaveBeenCalled();
+});
