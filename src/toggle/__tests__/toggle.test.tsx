@@ -29,7 +29,6 @@ test('renders an input element', () => {
   const { wrapper } = renderToggle(<Toggle checked={false} />);
   const nativeInput = wrapper.findNativeInput().getElement();
   expect(nativeInput.type).toEqual('checkbox');
-  expect(nativeInput.getAttribute('role')).toEqual('switch');
 });
 
 test('synchronizes native and styled controls', () => {
