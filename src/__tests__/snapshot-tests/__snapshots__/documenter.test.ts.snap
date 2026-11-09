@@ -30931,12 +30931,29 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "optional": true,
       "type": "string",
     },
+    {
+      "description": "Specifies a vertical offset (in pixels) for the sticky header. For example, use this if you
+need to position the sticky header below other fixed position elements on the page.",
+      "name": "stickyHeaderVerticalOffset",
+      "optional": true,
+      "type": "number",
+    },
   ],
   "regions": [
     {
-      "description": "The table's content. Provide a \`TableHead\` followed by a \`TableBody\` that contains the rows.",
+      "description": "The table's content. Provide a \`TableHead\` followed by a \`TableBody\` that contains the rows. When you
+use \`stickyHeader\`, provide only the \`TableBody\` here.",
       "isDefault": true,
       "name": "children",
+    },
+    {
+      "description": "A \`TableHead\` that stays pinned to the top of its scroll container as the body scrolls. When you
+provide it, render only the \`TableBody\` as \`children\`.
+
+The header is rendered twice, as the real header and a pinned copy, so use controlled state for any
+controls in it.",
+      "isDefault": false,
+      "name": "stickyHeader",
     },
   ],
   "releaseStatus": "stable",
