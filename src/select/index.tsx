@@ -61,6 +61,7 @@ const Select = React.forwardRef(
 
     return (
       <InternalSelect
+        __registerField={true}
         renderOption={renderOption}
         options={options}
         filteringType={filteringType}

@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 
-import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { getBaseProps } from '../internal/base-component';
@@ -11,6 +11,7 @@ import RadioButton from '../internal/components/radio-button';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { useFieldRegistration } from '../internal/field-registry';
+import { matchOption } from '../internal/field-registry/utils';
 import useRadioGroupForwardFocus from '../internal/hooks/forward-focus/radio-group';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { GeneratedAnalyticsMetadataRadioGroupSelect } from './analytics-metadata/interfaces';
@@ -20,7 +21,7 @@ import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
-type InternalRadioGroupProps = RadioGroupProps & InternalBaseComponentProps;
+type InternalRadioGroupProps = RadioGroupProps & InternalBaseComponentProps & { __registerField?: boolean };
 
 const InternalRadioGroup = React.forwardRef(
   (
@@ -36,32 +37,42 @@ const InternalRadioGroup = React.forwardRef(
       __internalRootRef,
       style,
       direction,
+      __registerField,
       ...props
     }: InternalRadioGroupProps,
     ref: React.Ref<RadioGroupProps.Ref>
   ) => {
     const { ariaDescribedby, ariaLabelledby } = useFormFieldContext(props);
 
-    useFieldRegistration({
-      label: typeof ariaLabel === 'string' ? ariaLabel : undefined,
-      type: 'radio',
-      value: value ?? null,
-      options: items as ReadonlyArray<{ label?: string; value?: string }>,
-      setValue: next => {
-        const wanted = String(next).toLowerCase();
-        const match = (items ?? []).find(
-          i => i.value?.toLowerCase() === wanted || String(i.label ?? '').toLowerCase() === wanted
-        );
-        if (match) {
-          fireNonCancelableEvent(onChange, { value: match.value });
-        }
-      },
-    });
-
     const baseProps = getBaseProps(props);
     const generatedName = useUniqueId('awsui-radio-');
 
     const [radioButtonRef, radioButtonRefIndex] = useRadioGroupForwardFocus(ref, items, value);
+    const rootRef = useRef<HTMLDivElement>(null);
+    const mergedRootRef = useMergeRefs(rootRef, __internalRootRef);
+
+    useFieldRegistration({
+      register: __registerField,
+      name,
+      type: 'radio',
+      value: value ?? null,
+      options: items?.map(item => ({
+        value: item.value,
+        label: typeof item.label === 'string' ? item.label : undefined,
+        disabled: item.disabled,
+      })),
+      readOnly,
+      labels: [ariaLabel],
+      setValue: next => {
+        const match = matchOption(items, next);
+        if (!match) {
+          return false;
+        }
+        fireNonCancelableEvent(onChange, { value: match.value });
+        return true;
+      },
+      scrollTarget: () => rootRef.current,
+    });
 
     return (
       <div
@@ -79,7 +90,7 @@ const InternalRadioGroup = React.forwardRef(
           styles['radio-group'],
           direction === 'horizontal' && styles['horizontal-group']
         )}
-        ref={__internalRootRef}
+        ref={mergedRootRef}
       >
         {items &&
           items.map((item, index) => (

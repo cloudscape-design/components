@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { KeyboardEvent, useCallback, useEffect, useRef } from 'react';
+import React, { KeyboardEvent, useCallback, useContext, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
@@ -9,6 +9,7 @@ import { getBaseProps } from '../internal/base-component';
 import { screenReaderTextClass } from '../internal/components/chart-series-details/series-details-text';
 import { Transition } from '../internal/components/transition';
 import { fireNonCancelableEvent } from '../internal/events';
+import { FieldRevealContext } from '../internal/field-registry';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
 import { useOneTheme } from '../internal/hooks/use-visual-mode';
@@ -97,6 +98,16 @@ export default function InternalExpandableSection({
     },
     [onChange, setExpanded]
   );
+
+  const revealParent = useContext(FieldRevealContext);
+  const revealField = () => {
+    const parentOpened = revealParent?.() ?? false;
+    if (expanded) {
+      return parentOpened;
+    }
+    onExpandChange(true);
+    return true;
+  };
 
   const onClick = useCallback(() => {
     onExpandChange(!expanded);
@@ -222,7 +233,7 @@ export default function InternalExpandableSection({
                     disableContentPaddings && styles['disable-content-paddings']
                   )}
                 >
-                  {children}
+                  <FieldRevealContext.Provider value={revealField}>{children}</FieldRevealContext.Provider>
                 </div>
               </div>
             </div>

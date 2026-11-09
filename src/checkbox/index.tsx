@@ -14,7 +14,15 @@ const Checkbox = React.forwardRef(({ ...props }: CheckboxProps, ref: React.Ref<C
   const baseComponentProps = useBaseComponent('Checkbox', {
     props: { readOnly: props.readOnly },
   });
-  return <InternalCheckbox {...props} {...baseComponentProps} ref={ref} __injectAnalyticsComponentMetadata={true} />;
+  return (
+    <InternalCheckbox
+      {...props}
+      {...baseComponentProps}
+      ref={ref}
+      __injectAnalyticsComponentMetadata={true}
+      __registerField={true}
+    />
+  );
 });
 
 applyDisplayName(Checkbox, 'Checkbox');

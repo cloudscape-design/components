@@ -58,6 +58,7 @@ export interface InternalInputProps
   __onBlurWithDetail?: NonCancelableEventHandler<{ relatedTarget: Node | null }>;
 
   __inheritFormFieldProps?: boolean;
+  __registerField?: boolean;
   __injectAnalyticsComponentMetadata?: boolean;
   __skipNativeAttributesWarnings?: SkipWarnings;
   __fullWidth?: boolean;
@@ -110,6 +111,7 @@ function InternalInput(
     nativeInputAttributes,
     __internalRootRef,
     __inheritFormFieldProps,
+    __registerField,
     __injectAnalyticsComponentMetadata,
     __skipNativeAttributesWarnings,
     __fullWidth,
@@ -172,19 +174,25 @@ function InternalInput(
     readOnly,
   });
 
-  // Self-register with the field registry (no-op when no host registry exists).
-  const agentFieldName = controlId ?? name;
   useFieldRegistration(
-    agentFieldName
-      ? {
-          name: agentFieldName,
-          label: typeof ariaLabel === 'string' ? ariaLabel : undefined,
+    type === 'password'
+      ? null
+      : {
+          register: __registerField,
+          name: controlId ?? name,
           type: 'input',
           value: value ?? '',
           disabled,
-          setValue: next => handleChange(String(next ?? '')),
+          readOnly,
+          invalid,
+          labels: [inlineLabelText, ariaLabel],
+          setValue: next => {
+            handleChange(String(next ?? ''));
+            return true;
+          },
+          blur: () => fireNonCancelableEvent(onBlur),
+          scrollTarget: () => inputRef.current,
         }
-      : null
   );
 
   const hasPrefix = !!prefix;

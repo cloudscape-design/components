@@ -111,6 +111,7 @@ const Input = React.forwardRef(
         }}
         className={clsx(styles.root, baseProps.className)}
         __inheritFormFieldProps={true}
+        __registerField={true}
         __injectAnalyticsComponentMetadata={true}
       />
     );

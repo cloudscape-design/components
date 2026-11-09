@@ -1,89 +1,122 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { createContext, ReactNode, useContext, useEffect } from 'react';
+import { createContext, ReactNode, useContext, useEffect, useRef } from 'react';
 
-import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { isMotionDisabled, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-// Framework-neutral field registry. Form controls describe themselves and expose
-// a programmatic setter that routes through their own change path. A host opts in
-// by installing a registry on this key; Cloudscape only ever reads it.
+import { awsuiPluginsInternal } from '../plugins/api';
+import type { FieldRegistration } from '../plugins/controllers/field-registry';
 
-export const FIELD_REGISTRY_KEY = Symbol.for('awsui.field-registry');
+export type FieldType = 'input' | 'textarea' | 'select' | 'multiselect' | 'radio' | 'checkbox' | 'toggle';
 
-export type FieldType =
-  | 'input'
-  | 'textarea'
-  | 'select'
-  | 'multiselect'
-  | 'radio'
-  | 'checkbox'
-  | 'toggle'
-  | 'tiles'
-  | 'autosuggest';
+export interface FieldOption {
+  label?: string;
+  value?: string;
+  disabled?: boolean;
+  options?: ReadonlyArray<FieldOption>;
+}
 
 export interface FieldDescriptor {
-  /** Stable identifier — the control's controlId, or a generated fallback. */
   name: string;
-  /** Human label, sourced from the enclosing FormField when present. */
-  label?: string;
+  label: string;
   type: FieldType;
-  /** Current value, in the control's own shape. */
   value: unknown;
-  /** Available choices, for choice controls. */
-  options?: ReadonlyArray<{ label?: string; value?: string }>;
+  options?: ReadonlyArray<FieldOption>;
   disabled?: boolean;
-  /**
-   * Sets the value through the control's OWN onChange. The control resolves the
-   * argument to the shape it emits, so shape correctness lives with the control.
-   * Returns false when the argument could not be resolved to a valid value, so a
-   * caller never reports success for a write that did not happen.
-   */
-  setValue: (next: unknown) => boolean | void;
+  readOnly?: boolean;
+  invalid?: boolean;
+  errorText?: string;
+  warningText?: string;
+  statusType?: string;
+  setValue: (next: unknown) => boolean;
+  blur?: () => void;
 }
 
-export interface FieldRegistry {
-  register(descriptor: FieldDescriptor): void;
-  unregister(name: string): void;
-}
-
-/** The host-installed registry, or null when no host has opted in. */
-function getRegistry(): FieldRegistry | null {
-  if (typeof window === 'undefined') {
-    return null;
-  }
-  return (window as unknown as Record<symbol, FieldRegistry | undefined>)[FIELD_REGISTRY_KEY] ?? null;
-}
-
-/** FormField publishes its label here so controls can report a human label. */
-export const FieldLabelContext = createContext<ReactNode>(undefined);
-
-/** What a control passes; name and label are optional and filled in by the hook. */
-export type FieldRegistrationInput = Omit<FieldDescriptor, 'name' | 'label'> & {
-  name?: string;
+export interface FieldState {
   label?: ReactNode;
-};
+  errorText?: ReactNode;
+  warningText?: ReactNode;
+}
 
-/**
- * Registers the control while it is mounted. No-op when no host registry is
- * installed, so there is zero behavior change unless a host opts in. The human
- * label comes from the enclosing FormField unless the control supplies its own.
- */
+export const FieldStateContext = createContext<FieldState | null>(null);
+
+export const FieldRevealContext = createContext<(() => boolean) | null>(null);
+
+export interface FieldRegistrationInput {
+  register?: boolean;
+  name?: string;
+  type: FieldType;
+  value: unknown;
+  options?: ReadonlyArray<FieldOption>;
+  disabled?: boolean;
+  readOnly?: boolean;
+  invalid?: boolean;
+  statusType?: string;
+  labels?: ReadonlyArray<ReactNode>;
+  setValue: (next: unknown) => boolean;
+  blur?: () => void;
+  scrollTarget?: () => HTMLElement | null;
+}
+
+const REVEAL_SCROLL_DELAY = 250;
+
+const plainText = (node: ReactNode) => (typeof node === 'string' && node.trim() ? node : undefined);
+
+function scrollIntoView(element: HTMLElement | null | undefined) {
+  element?.scrollIntoView({ block: 'center', behavior: isMotionDisabled(element) ? 'auto' : 'smooth' });
+}
+
 export function useFieldRegistration(input: FieldRegistrationInput | null): void {
-  const contextLabel = useContext(FieldLabelContext);
-  const fallbackId = useUniqueId('awsui-field');
+  const fieldState = useContext(FieldStateContext);
+  const reveal = useContext(FieldRevealContext);
+  const fallbackName = useUniqueId('awsui-field');
+  const registration = useRef<FieldRegistration | null>(null);
+
+  useEffect(
+    () => () => {
+      registration.current?.cleanup();
+      registration.current = null;
+    },
+    []
+  );
+
   useEffect(() => {
-    const registry = getRegistry();
-    if (!registry || !input) {
+    const label = [fieldState?.label, ...(input?.labels ?? [])].map(plainText).find(Boolean);
+    if (!input?.register || !label) {
+      registration.current?.cleanup();
+      registration.current = null;
       return;
     }
-    const rawLabel = contextLabel ?? input.label;
     const descriptor: FieldDescriptor = {
-      ...input,
-      name: input.name ?? fallbackId,
-      label: typeof rawLabel === 'string' ? rawLabel : undefined,
+      name: input.name ?? fallbackName,
+      label,
+      type: input.type,
+      value: input.value,
+      options: input.options,
+      disabled: input.disabled,
+      readOnly: input.readOnly,
+      invalid: !!input.invalid || !!fieldState?.errorText,
+      errorText: plainText(fieldState?.errorText),
+      warningText: plainText(fieldState?.warningText),
+      statusType: input.statusType,
+      blur: input.blur,
+      setValue: next => {
+        if (input.disabled || input.readOnly || !input.setValue(next)) {
+          return false;
+        }
+        const opened = reveal?.() ?? false;
+        if (opened) {
+          setTimeout(() => scrollIntoView(input.scrollTarget?.()), REVEAL_SCROLL_DELAY);
+        } else {
+          scrollIntoView(input.scrollTarget?.());
+        }
+        return true;
+      },
     };
-    registry.register(descriptor);
-    return () => registry.unregister(descriptor.name);
-    // Re-run every render so value/options/setValue stay current in the registry.
+    if (registration.current) {
+      registration.current.update(descriptor);
+    } else {
+      registration.current = awsuiPluginsInternal.fieldRegistry.registerField(descriptor);
+    }
   });
 }

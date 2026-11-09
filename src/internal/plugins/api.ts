@@ -10,6 +10,11 @@ import {
 import { AppLayoutWidgetApiInternal, AppLayoutWidgetController } from './controllers/app-layout-widget';
 import { BreadcrumbsApiInternal, BreadcrumbsController } from './controllers/breadcrumbs';
 import { DrawersApiInternal, DrawersApiPublic, DrawersController } from './controllers/drawers';
+import {
+  FieldRegistryApiInternal,
+  FieldRegistryApiPublic,
+  FieldRegistryController,
+} from './controllers/field-registry';
 import { SharedReactContexts, SharedReactContextsApiInternal } from './controllers/shared-react-contexts';
 import { reportRuntimeApiLoadMetric } from './helpers/metrics';
 
@@ -22,6 +27,7 @@ interface AwsuiApi {
     alertContent: AlertFlashContentApiPublic;
     flashbar: ActionsApiPublic;
     flashContent: AlertFlashContentApiPublic;
+    fieldRegistry: FieldRegistryApiPublic;
   };
   awsuiPluginsInternal: {
     appLayout: DrawersApiInternal;
@@ -32,6 +38,7 @@ interface AwsuiApi {
     flashContent: AlertFlashContentApiInternal;
     breadcrumbs: BreadcrumbsApiInternal<BreadcrumbGroupProps>;
     sharedReactContexts: SharedReactContextsApiInternal;
+    fieldRegistry: FieldRegistryApiInternal;
   };
 }
 
@@ -110,6 +117,10 @@ function installApi(api: DeepPartial<AwsuiApi>): AwsuiApi {
   api.awsuiPluginsInternal.sharedReactContexts = sharedReactContexts.installInternal(
     api.awsuiPluginsInternal.sharedReactContexts
   );
+
+  const fieldRegistry = new FieldRegistryController();
+  api.awsuiPlugins.fieldRegistry = fieldRegistry.installPublic(api.awsuiPlugins.fieldRegistry);
+  api.awsuiPluginsInternal.fieldRegistry = fieldRegistry.installInternal(api.awsuiPluginsInternal.fieldRegistry);
 
   return api as AwsuiApi;
 }

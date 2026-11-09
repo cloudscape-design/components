@@ -13,6 +13,7 @@ import AbstractSwitch from '../internal/components/abstract-switch';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { useFieldRegistration } from '../internal/field-registry';
+import { parseBoolean } from '../internal/field-registry/utils';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import WithNativeAttributes from '../internal/utils/with-native-attributes';
@@ -25,6 +26,7 @@ import styles from './styles.css.js';
 interface InternalToggleProps extends ToggleProps, InternalBaseComponentProps {
   styleClassNames?: StyleClassNames;
   __injectAnalyticsComponentMetadata?: boolean;
+  __registerField?: boolean;
 }
 
 // Style API v2
@@ -52,23 +54,35 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
       style,
       styleClassNames,
       __injectAnalyticsComponentMetadata,
+      __registerField,
       ...rest
     },
     ref
   ) => {
     const { ariaDescribedby, ariaLabelledby } = useFormFieldContext(rest);
 
+    const baseProps = getBaseProps(rest);
+    const checkboxRef = useRef<HTMLInputElement>(null);
+
     useFieldRegistration({
+      register: __registerField,
       name: controlId ?? name,
-      label: typeof ariaLabel === 'string' ? ariaLabel : undefined,
       type: 'toggle',
       value: !!checked,
       disabled,
-      setValue: next => fireNonCancelableEvent(onChange, { checked: Boolean(next) }),
+      readOnly,
+      labels: [ariaLabel, children],
+      setValue: next => {
+        const nextChecked = parseBoolean(next);
+        if (nextChecked === null) {
+          return false;
+        }
+        fireNonCancelableEvent(onChange, { checked: nextChecked });
+        return true;
+      },
+      blur: () => fireNonCancelableEvent(onBlur),
+      scrollTarget: () => checkboxRef.current,
     });
-
-    const baseProps = getBaseProps(rest);
-    const checkboxRef = useRef<HTMLInputElement>(null);
 
     // The handle's follow-through animation only plays once the state has changed since mount.
     const [initialChecked] = useState(!!checked);

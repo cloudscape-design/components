@@ -71,6 +71,7 @@ const Multiselect = React.forwardRef(
 
     return (
       <InternalMultiselect
+        __registerField={true}
         renderOption={renderOption}
         options={options}
         filteringType={filteringType}

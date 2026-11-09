@@ -69,20 +69,28 @@ const Textarea = React.forwardRef(
     });
     const { ariaLabelledby, ariaDescribedby, controlId, invalid, warning } = useFormFieldContext(rest);
 
-    useFieldRegistration({
-      name: controlId,
-      label: typeof ariaLabel === 'string' ? ariaLabel : undefined,
-      type: 'textarea',
-      value: value ?? '',
-      disabled,
-      setValue: next => fireNonCancelableEvent(onChange, { value: String(next ?? '') }),
-    });
-
     const baseProps = getBaseProps(rest);
     const { styleClassNames } = rest as { styleClassNames?: StyleClassNames };
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     useForwardFocus(ref, textareaRef);
+
+    useFieldRegistration({
+      register: true,
+      name: controlId,
+      type: 'textarea',
+      value: value ?? '',
+      disabled,
+      readOnly,
+      invalid,
+      labels: [ariaLabel],
+      setValue: next => {
+        fireNonCancelableEvent(onChange, { value: String(next ?? '') });
+        return true;
+      },
+      blur: () => fireNonCancelableEvent(onBlur),
+      scrollTarget: () => textareaRef.current,
+    });
 
     const attributes: React.TextareaHTMLAttributes<HTMLTextAreaElement> = {
       'aria-label': ariaLabel,

@@ -13,6 +13,9 @@ import DropdownFooter from '../internal/components/dropdown-footer/index.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { ResetGroupedControlContext, useGroupedControlContext } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
+import { fireNonCancelableEvent } from '../internal/events';
+import { useFieldRegistration } from '../internal/field-registry';
+import { matchOption } from '../internal/field-registry/utils';
 import { warnOnUnsupportedGroupedControlProps } from '../internal/grouped-control/dev-warnings';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { SomeRequired } from '../internal/types';
@@ -25,6 +28,7 @@ import VirtualList from '../select/parts/virtual-list';
 import { composeDropdownContent } from '../select/utils/dropdown-customization';
 import { TokenGroupProps } from '../token-group/interfaces';
 import InternalTokenGroup from '../token-group/internal';
+import { OptionDefinition } from '../types/option';
 import { MultiselectProps } from './interfaces';
 import { useMultiselect } from './use-multiselect';
 
@@ -34,7 +38,7 @@ type InternalMultiselectProps = SomeRequired<
   MultiselectProps,
   'options' | 'selectedOptions' | 'filteringType' | 'statusType' | 'keepOpen' | 'hideTokens'
 > &
-  InternalBaseComponentProps;
+  InternalBaseComponentProps & { __registerField?: boolean };
 
 type ExtendedToken = TokenGroupProps.Item & { _readOnly: boolean };
 
@@ -70,6 +74,7 @@ const InternalMultiselect = React.forwardRef(
       renderDropdownFooter,
       dropdownRole,
       dropdownAriaDescribedby,
+      __registerField,
       ...restProps
     }: InternalMultiselectProps,
     externalRef: React.Ref<MultiselectProps.Ref>
@@ -146,6 +151,32 @@ const InternalMultiselect = React.forwardRef(
     );
 
     const triggerRef = useRef<HTMLButtonElement>(null);
+
+    useFieldRegistration({
+      register: __registerField,
+      name: controlId,
+      type: 'multiselect',
+      value: selectedOptions.map(option => option.value),
+      options,
+      disabled,
+      readOnly,
+      statusType: restProps.statusType,
+      labels: [inlineLabelText, ariaLabel],
+      setValue: next => {
+        const matches: OptionDefinition[] = [];
+        for (const item of Array.isArray(next) ? next : [next]) {
+          const match = matchOption(options, item);
+          if (!match) {
+            return false;
+          }
+          matches.push(match);
+        }
+        fireNonCancelableEvent(restProps.onChange, { selectedOptions: matches });
+        return true;
+      },
+      blur: () => fireNonCancelableEvent(restProps.onBlur, {}),
+      scrollTarget: () => triggerRef.current,
+    });
     const [triggerWidth, setTriggerWidth] = useState<number | null>(null);
     useResizeObserver(
       () => triggerRef.current,

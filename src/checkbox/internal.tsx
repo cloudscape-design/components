@@ -15,6 +15,7 @@ import CheckboxIcon from '../internal/components/checkbox-icon';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { useFieldRegistration } from '../internal/field-registry';
+import { parseBoolean } from '../internal/field-registry/utils';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import WithNativeAttributes from '../internal/utils/with-native-attributes';
@@ -29,6 +30,7 @@ interface InternalProps extends CheckboxProps, InternalBaseComponentProps {
   showOutline?: boolean;
   styleClassNames?: StyleClassNames;
   __injectAnalyticsComponentMetadata?: boolean;
+  __registerField?: boolean;
 }
 
 // Style API v2
@@ -60,23 +62,35 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
       nativeInputAttributes,
       __internalRootRef,
       __injectAnalyticsComponentMetadata = false,
+      __registerField,
       ...rest
     },
     ref
   ) => {
     const { ariaDescribedby, ariaLabelledby } = useFormFieldContext(rest);
 
+    const baseProps = getBaseProps(rest);
+    const checkboxRef = useRef<HTMLInputElement>(null);
+
     useFieldRegistration({
+      register: __registerField,
       name: controlId ?? name,
-      label: typeof ariaLabel === 'string' ? ariaLabel : undefined,
       type: 'checkbox',
       value: !!checked,
       disabled,
-      setValue: next => fireNonCancelableEvent(onChange, { checked: Boolean(next), indeterminate: false }),
+      readOnly,
+      labels: [ariaLabel, children],
+      setValue: next => {
+        const nextChecked = parseBoolean(next);
+        if (nextChecked === null) {
+          return false;
+        }
+        fireNonCancelableEvent(onChange, { checked: nextChecked, indeterminate: false });
+        return true;
+      },
+      blur: () => fireNonCancelableEvent(onBlur),
+      scrollTarget: () => checkboxRef.current,
     });
-
-    const baseProps = getBaseProps(rest);
-    const checkboxRef = useRef<HTMLInputElement>(null);
     useForwardFocus(ref, checkboxRef);
     useEffect(() => {
       if (checkboxRef.current) {

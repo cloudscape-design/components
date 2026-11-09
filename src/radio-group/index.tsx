@@ -23,6 +23,7 @@ const RadioGroup = React.forwardRef(
     return (
       <InternalRadioGroup
         ref={ref}
+        __registerField={true}
         direction={direction}
         {...rest}
         {...baseComponentProps}

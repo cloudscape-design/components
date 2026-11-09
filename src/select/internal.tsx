@@ -19,6 +19,7 @@ import { ResetGroupedControlContext, useGroupedControlContext } from '../interna
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { useFieldRegistration } from '../internal/field-registry';
+import { matchOption } from '../internal/field-registry/utils';
 import { warnOnUnsupportedGroupedControlProps } from '../internal/grouped-control/dev-warnings';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -40,6 +41,7 @@ import styles from './styles.css.js';
 
 export interface InternalSelectProps extends SomeRequired<SelectProps, 'options'>, InternalBaseComponentProps {
   __inFilteringToken?: 'root' | 'nested';
+  __registerField?: boolean;
 }
 
 const InternalSelect = React.forwardRef(
@@ -74,6 +76,7 @@ const InternalSelect = React.forwardRef(
       expandToViewport,
       autoFocus,
       __inFilteringToken,
+      __registerField,
       __internalRootRef,
       renderOption,
       renderDropdownHeader,
@@ -140,25 +143,26 @@ const InternalSelect = React.forwardRef(
     const selfControlId = useUniqueId('trigger');
     const controlId = formFieldContext.controlId ?? selfControlId;
 
-    // Self-register with the field registry (no-op when no host registry exists).
-    // setValue resolves a scalar/label to an option and fires Select's own
-    // onChange — so the { value, label } option shape is produced by Select.
     useFieldRegistration({
+      register: __registerField,
       name: controlId,
-      label: typeof ariaLabel === 'string' ? ariaLabel : undefined,
       type: 'select',
       value: selectedOption?.value,
-      options: options as ReadonlyArray<{ label?: string; value?: string }>,
+      options,
       disabled,
+      readOnly,
+      statusType,
+      labels: [inlineLabelText, ariaLabel],
       setValue: next => {
-        const wanted = String(next).toLowerCase();
-        const match = (options as ReadonlyArray<{ label?: string; value?: string }>).find(
-          o => o.value?.toLowerCase() === wanted || o.label?.toLowerCase() === wanted
-        );
-        if (match) {
-          fireNonCancelableEvent(onChange, { selectedOption: match as any });
+        const match = matchOption(options, next);
+        if (!match) {
+          return false;
         }
+        fireNonCancelableEvent(onChange, { selectedOption: match });
+        return true;
       },
+      blur: () => fireNonCancelableEvent(onBlur, {}),
+      scrollTarget: () => rootRef.current,
     });
 
     const scrollToIndex = useRef<SelectListProps.SelectListRef>(null);
