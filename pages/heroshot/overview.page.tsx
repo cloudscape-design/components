@@ -1408,12 +1408,13 @@ function HotspotHeroshot() {
  * wrapping into unnumbered continuations.
  */
 const editorSource = `const region = 'us-east-1';
-const client = new EC2Client();
+const instanceType = 't3.medium';
+const volumeSize = 20;
 
-export async function list() {
-  const res = await describe();
-  return res.Reservations ?? [];
-}`;
+const instanceName = 'web-1';
+const environment = 'production';
+
+const client = new EC2Client();`;
 
 function CodeEditorHeroshot() {
   const [ace, setAce] = React.useState<any>();
