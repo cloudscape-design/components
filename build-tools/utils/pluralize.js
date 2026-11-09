@@ -87,6 +87,7 @@ const pluralizationMap = {
   TableHeaderCell: 'TableHeaderCells',
   TableRoot: 'TableRoots',
   TableRow: 'TableRows',
+  TableSortButton: 'TableSortButtons',
   Tabs: 'Tabs',
   TagEditor: 'TagEditors',
   TextContent: 'TextContents',

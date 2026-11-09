@@ -1,0 +1,72 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/styles/index' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+// Looks like the column label it replaces: the header cell's colour and typography, filling the cell.
+.root {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: awsui.$space-xxs;
+  inline-size: 100%;
+  min-inline-size: 0;
+  position: relative;
+  padding-block: 0;
+  padding-inline: 0;
+  border-block: none;
+  border-inline: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(awsui.$space-table-header-focus-outline-gutter);
+  }
+
+  &:disabled {
+    cursor: default;
+  }
+}
+
+.label {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.sorting-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: awsui.$color-text-column-sorting-icon;
+
+  .root:disabled > & {
+    color: awsui.$color-text-interactive-disabled;
+  }
+}
+
+// Hovered and sorted columns use the active colour, as in the existing Table.
+.root:not(:disabled):hover,
+.root:not(:disabled).sorting-state-ascending,
+.root:not(:disabled).sorting-state-descending {
+  color: awsui.$color-text-interactive-active;
+
+  > .sorting-icon {
+    color: awsui.$color-text-interactive-active;
+  }
+}
+
+.sorting-state-sortable,
+.sorting-state-ascending,
+.sorting-state-descending {
+  /* used in test-utils */
+}

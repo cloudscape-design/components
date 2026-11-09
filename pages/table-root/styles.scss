@@ -2,27 +2,6 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
-@use '~design-tokens' as tokens;
-
-// A minimal sort control for the demo: a native button that inherits the header cell's colour and
-// typography (so the label stays the column-header colour, not link blue). It fills the cell and
-// pushes the caret to the end, so the label stays left-aligned with the column while the sort
-// indicator sits at the right.
-.sort-button {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  inline-size: 100%;
-  gap: tokens.$space-static-xxs;
-  padding-block: 0;
-  padding-inline: 0;
-  border-block: none;
-  border-inline: none;
-  background: none;
-  color: inherit;
-  font: inherit;
-  cursor: pointer;
-}
 
 // Centres the selection control within a disablePaddings control cell, matching classic Table.
 // The Cloudscape checkbox/radio control carries an intrinsic 2px top margin (it aligns the box with
@@ -34,13 +13,6 @@
   justify-content: center;
   align-items: center;
   padding-block-end: 2px;
-}
-
-// Sort affordance at the right of a sortable header (the caret icon).
-.sort-indicator {
-  display: inline-flex;
-  align-items: center;
-  gap: tokens.$space-static-xxs;
 }
 
 // A fixed-height region that scrolls its table in both directions.

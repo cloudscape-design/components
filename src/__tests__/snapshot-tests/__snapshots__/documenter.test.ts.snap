@@ -31085,6 +31085,101 @@ assistive technologies via the selection control in a leading cell.",
 }
 `;
 
+exports[`Components definition for table-sort-button matches the snapshot: table-sort-button 1`] = `
+{
+  "dashCaseName": "table-sort-button",
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Called when the user activates the button. The event \`detail\` contains the requested \`sortingState\`:
+\`ascending\` for an unsorted or descending column, \`descending\` for an ascending column.",
+      "detailInlineType": {
+        "name": "TableSortButtonProps.SortingChangeDetail",
+        "properties": [
+          {
+            "inlineType": {
+              "name": ""ascending" | "descending"",
+              "type": "union",
+              "values": [
+                "ascending",
+                "descending",
+              ],
+            },
+            "name": "sortingState",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "TableSortButtonProps.SortingChangeDetail",
+      "name": "onSortingChange",
+    },
+  ],
+  "functions": [],
+  "name": "TableSortButton",
+  "properties": [
+    {
+      "description": "Provides an accessible name for the button. Use it when the visible label isn't enough, for example to
+include the sort direction for assistive technologies that don't announce \`aria-sort\`.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Prevents the column from being sorted. When the column is currently sorted, the sort indicator stays
+visible in a disabled style.",
+      "name": "disabled",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "The column's current sort state:
+* \`sortable\` - The column can be sorted but isn't currently.
+* \`ascending\` - The column is sorted in ascending order.
+* \`descending\` - The column is sorted in descending order.",
+      "inlineType": {
+        "name": "TableSortButtonProps.SortingState",
+        "type": "union",
+        "values": [
+          "ascending",
+          "descending",
+          "sortable",
+        ],
+      },
+      "name": "sortingState",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "description": "The column label.",
+      "displayName": "label",
+      "isDefault": true,
+      "name": "children",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Components definition for tabs matches the snapshot: tabs 1`] = `
 {
   "dashCaseName": "tabs",
@@ -47892,6 +47987,56 @@ Returns the current value of the input.",
     {
       "methods": [
         {
+          "description": "Returns the column label.",
+          "name": "findLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the sort indicator icon, or \`null\` for a disabled column that isn't sorted.",
+          "name": "findSortingIcon",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the current sort state.",
+          "name": "getSortingState",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": ""ascending" | "descending" | "sortable"",
+          },
+        },
+        {
+          "name": "isDisabled",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "boolean",
+          },
+        },
+      ],
+      "name": "TableSortButtonWrapper",
+    },
+    {
+      "methods": [
+        {
           "description": "Finds the tab action by using the tab id",
           "name": "findActionByTabId",
           "parameters": [
@@ -58114,6 +58259,29 @@ This utility does not open the dropdown. To find dropdown items, call \`openDrop
     {
       "methods": [],
       "name": "TableRowWrapper",
+    },
+    {
+      "methods": [
+        {
+          "description": "Returns the column label.",
+          "name": "findLabel",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the sort indicator icon, or \`null\` for a disabled column that isn't sorted.",
+          "name": "findSortingIcon",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+      ],
+      "name": "TableSortButtonWrapper",
     },
     {
       "methods": [
