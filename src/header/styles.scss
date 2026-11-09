@@ -130,7 +130,7 @@
   }
 }
 
-.additional-title-content {
+.secondary-content {
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
@@ -189,7 +189,7 @@
 
 // With secondary content beside the heading, center both against a constant-height line so their
 // alignment no longer shifts when actions wrap to a second row.
-.main:has(> .additional-title-content) > .title-variant-h2.title-in-expandable-section.refresh {
+.main:has(> .secondary-content) > .title-variant-h2.title-in-expandable-section.refresh {
   padding-block-start: 0;
   min-block-size: awsui.$size-vertical-input;
   display: flex;

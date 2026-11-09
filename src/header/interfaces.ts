@@ -43,6 +43,10 @@ export interface HeaderProps extends BaseComponentProps {
    * Area next to the heading to display an Info link.
    */
   info?: React.ReactNode;
+  /**
+   * Secondary content displayed next to the header text.
+   */
+  secondaryContent?: React.ReactNode;
 }
 
 export namespace HeaderProps {

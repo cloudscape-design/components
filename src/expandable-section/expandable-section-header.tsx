@@ -410,7 +410,7 @@ const ExpandableHeaderTextWrapper = ({
             actions={actions}
             headingTagOverride={hideText ? 'div' : headingTagOverride}
             __inExpandableSection={true}
-            __additionalTitleContent={secondaryContent ? <span id={describedById}>{secondaryContent}</span> : undefined}
+            secondaryContent={secondaryContent ? <span id={describedById}>{secondaryContent}</span> : undefined}
           >
             {headerButton}
           </InternalHeader>

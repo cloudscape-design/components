@@ -26,4 +26,8 @@ export default class HeaderWrapper extends ComponentWrapper {
   findActions(): ElementWrapper | null {
     return this.findByClassName(styles.actions);
   }
+
+  findSecondaryContent(): ElementWrapper | null {
+    return this.findByClassName(styles['secondary-content']);
+  }
 }

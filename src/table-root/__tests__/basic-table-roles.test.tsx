@@ -4,17 +4,15 @@ import React from 'react';
 
 import { findTable, makeItems, renderResourcesTable, ResourcesTable } from './table-fixtures';
 
-// Role semantics for the atomic table. In `auto` layout the parts are native
-// <table>/<thead>/<tr>/<th>/<tbody>/<td>, so the browser supplies the table semantics and no explicit
-// ARIA roles are emitted. In `grid` layout the parts are laid out with display:grid, which strips the
-// native table semantics, so the hook restores role=table -> rowgroup -> row -> columnheader/cell.
+// In `auto` layout only the table carries an explicit role; its parts keep their native roles. In `grid`
+// layout display:grid strips the native semantics, so every part gets an explicit role.
 
 describe('Table role semantics', () => {
-  describe('auto layout uses native table semantics (no explicit roles)', () => {
-    test('the table, rows, and cells carry no ARIA role attributes', () => {
+  describe('auto layout', () => {
+    test('sets role=table on the table and no roles on its parts', () => {
       const { wrapper } = renderResourcesTable({ items: makeItems(20) });
       const table = findTable(wrapper);
-      expect(table.hasAttribute('role')).toBe(false);
+      expect(table.getAttribute('role')).toBe('table');
       expect(table.querySelectorAll('[role]')).toHaveLength(0);
     });
   });

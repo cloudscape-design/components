@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import scrollToIndex from '../parts/scroll-to-index';
+import scrollToIndex, { scrollOptionIntoView } from '../parts/scroll-to-index';
 
 describe('scroll-to-index', () => {
   function runWith({
@@ -166,5 +166,46 @@ describe('scroll-to-index', () => {
       });
       expect(scrollBy).toHaveBeenCalledWith({ top: 20 });
     });
+  });
+});
+
+describe('scrollOptionIntoView', () => {
+  const originalScrollIntoView = HTMLElement.prototype.scrollIntoView;
+  let scrollIntoView: jest.Mock;
+
+  beforeEach(() => {
+    scrollIntoView = HTMLElement.prototype.scrollIntoView = jest.fn();
+  });
+  afterEach(() => {
+    HTMLElement.prototype.scrollIntoView = originalScrollIntoView;
+  });
+
+  function createMenu(mouseTargets: number[]) {
+    const menuEl = document.createElement('div');
+    for (const mouseTarget of mouseTargets) {
+      const item = document.createElement('div');
+      item.dataset.mouseTarget = `${mouseTarget}`;
+      menuEl.appendChild(item);
+    }
+    return menuEl;
+  }
+
+  it('scrolls the option at the index into view through its scrollable ancestors', () => {
+    const menuEl = createMenu([0, 1, 2]);
+    scrollOptionIntoView({ index: 2, menuEl });
+    expect(scrollIntoView).toHaveBeenCalledTimes(1);
+    expect(scrollIntoView.mock.instances[0]).toBe(menuEl.children[2]);
+    expect(scrollIntoView).toHaveBeenCalledWith({ block: 'nearest', inline: 'nearest' });
+  });
+
+  it('does not scroll when nothing is highlighted, even if a non-interactive row uses index -1', () => {
+    // Non-interactive rows such as single-selection group headers render with data-mouse-target="-1".
+    scrollOptionIntoView({ index: -1, menuEl: createMenu([-1, 0, 1]) });
+    expect(scrollIntoView).not.toHaveBeenCalled();
+  });
+
+  it('does not scroll when no option has the index', () => {
+    scrollOptionIntoView({ index: 5, menuEl: createMenu([0, 1]) });
+    expect(scrollIntoView).not.toHaveBeenCalled();
   });
 });
