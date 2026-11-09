@@ -12,6 +12,7 @@ import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analyti
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { GeneratedAnalyticsMetadataExpandableSectionComponent } from './analytics-metadata/interfaces';
+import { ExpandableSectionProps } from './interfaces';
 import { InternalVariant } from './internal-interfaces';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
@@ -21,6 +22,7 @@ interface ExpandableSectionContainerProps extends InternalBaseComponentProps {
   header: React.ReactNode;
   children?: React.ReactNode;
   variant: InternalVariant;
+  containerVisualVariant?: ExpandableSectionProps.ContainerVisualVariant;
   expanded: boolean | undefined;
   role?: string;
   ariaLabel?: string;
@@ -33,6 +35,7 @@ export const ExpandableSectionContainer = ({
   children,
   header,
   variant,
+  containerVisualVariant,
   expanded,
   role,
   ariaLabel,
@@ -65,6 +68,7 @@ export const ExpandableSectionContainer = ({
           className={className}
           header={header}
           variant={variant === 'stacked' ? 'stacked' : 'default'}
+          visualVariant={containerVisualVariant}
           disableContentPaddings={true}
           disableHeaderPaddings={true}
           __hiddenContent={!expanded}

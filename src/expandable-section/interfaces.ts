@@ -11,6 +11,7 @@ export namespace ExpandableSectionProps {
   }
 
   export type Variant = 'default' | 'footer' | 'container' | 'navigation' | 'stacked' | 'inline';
+  export type ContainerVisualVariant = 'default' | 'accentuated';
   export interface ChangeDetail {
     expanded: boolean;
   }
@@ -49,6 +50,14 @@ export interface ExpandableSectionProps extends BaseComponentProps {
    * @visualrefresh `stacked` variant
    * */
   variant?: ExpandableSectionProps.Variant;
+
+  /**
+   * Specifies the visual treatment of the container. Use with the container or stacked variants.
+   * * `default` - The header and content share the container background.
+   * * `accentuated` - The header and content have a subtle visual distinction, with a divider between them when expanded.
+   * @visualrefresh
+   */
+  containerVisualVariant?: ExpandableSectionProps.ContainerVisualVariant;
 
   /**
    * Determines whether the default padding around the content section is removed.

@@ -49,6 +49,8 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundItemCard: '{colorBackgroundCard}',
   colorBackgroundContainerContent: { light: '{colorWhite}', dark: '{colorNeutral850}' },
   colorBackgroundContainerHeader: { light: '{colorWhite}', dark: '{colorNeutral850}' },
+  colorBackgroundContainerAccentuatedContent: { light: '{colorWhite}', dark: '{colorNeutral1000}' },
+  colorBackgroundContainerAccentuatedHeader: { light: '{colorNeutral50}', dark: '{colorNeutral950}' },
   colorBackgroundControlChecked: { light: '{colorPrimary600}', dark: '{colorPrimary400}' },
   colorBackgroundControlDefault: { light: '{colorWhite}', dark: '{colorNeutral850}' },
   colorBackgroundControlDisabled: { light: '{colorNeutral300}', dark: '{colorNeutral700}' },

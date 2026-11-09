@@ -39,6 +39,18 @@ export const createHeaderContext = (tokens: TokenCategory<string, GlobalValue | 
   };
 };
 
+export const createContainerAccentuatedContexts = (tokens: {
+  contentTokens: TokenCategory<string, GlobalValue | ModeValue>;
+  headerTokens: TokenCategory<string, GlobalValue | ModeValue>;
+}) => [
+  { id: 'container-accentuated', selector: '.awsui-context-container-accentuated', tokens: tokens.contentTokens },
+  {
+    id: 'container-accentuated-header',
+    selector: '.awsui-context-container-accentuated-header',
+    tokens: tokens.headerTokens,
+  },
+];
+
 export const createFlashbarContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
   return {
     id: 'flashbar',
