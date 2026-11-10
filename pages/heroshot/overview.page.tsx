@@ -103,6 +103,7 @@ import OptionsList from '~components/internal/components/options-list';
 import SelectableItem from '~components/internal/components/selectable-item';
 import PopoverArrow from '~components/popover/arrow';
 import PopoverBody from '~components/popover/body';
+import { colorBackgroundLayoutMain } from '~design-tokens';
 
 import { SimplePage } from '../app/templates';
 import { i18nStrings as codeEditorI18nStrings, themes as codeEditorThemes } from '../code-editor/base-props';
@@ -161,12 +162,15 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        {/* `padding={11}` so the drawing, which is 307x147, sits inside the frame whole. */}
-        <Heroshot id="app-layout" label="AppLayout" padding={11}>
+        {/*
+          `padding={11}` so the drawing sits inside the frame at its own width, and `bleedBlockEnd` so it
+          runs to the frame's bottom edge: the layout continues below the thumbnail on a real page.
+        */}
+        <Heroshot id="app-layout" label="AppLayout" padding={11} bleedBlockEnd={true}>
           <AppLayoutDrawing />
         </Heroshot>
 
-        <Heroshot id="app-layout-toolbar" label="AppLayoutToolbar" padding={11}>
+        <Heroshot id="app-layout-toolbar" label="AppLayoutToolbar" padding={11} bleedBlockEnd={true}>
           <AppLayoutToolbarDrawing />
         </Heroshot>
 
@@ -1133,6 +1137,9 @@ const instances = [
 const LAYOUT_CONTENT_SIZE = { width: 1280, height: 629 };
 
 /**
+ * Borders are drawn in `#CBC9C3`, one step more prominent than the `#E3E1DE` of the source design —
+ * `colorNeutralGrey350` rather than `300` of the core palette the drawing is built from.
+ *
  * The AppLayout heroshot is a drawing rather than the component itself: at thumbnail size the real
  * layout's content is unreadable, and the layout — navigation, content, panel, drawer triggers — reads
  * better as a diagram. Taken verbatim from the design, so it carries its own colours rather than design
@@ -1142,20 +1149,21 @@ function AppLayoutDrawing() {
   return (
     <svg
       width="307"
-      height="147"
-      viewBox="0 0 307 147"
+      height="159"
+      viewBox="0 0 307 159"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden={true}
     >
-      <rect x="0.5" y="0.5" width="306" height="227.059" rx="4" fill="#F9F9F9" />
-      <rect x="0.5" y="0.5" width="306" height="227.059" rx="4" stroke="#E3E1DE" />
-      <rect x="92.5" y="32.5" width="98.3154" height="135" rx="1" fill="#F9F9F9" strokeWidth="0.5" stroke="#E3E1DE" />
+      {/* The canvas follows the page background token, so the drawing sits on the same grey as a page. */}
+      <rect x="0.5" y="0.5" width="306" height="227.059" rx="4" fill={colorBackgroundLayoutMain} />
+      <rect x="0.5" y="0.5" width="306" height="227.059" rx="4" stroke="#CBC9C3" />
+      <rect x="92.5" y="32.5" width="98.3154" height="135" rx="1" fill="#F9F9F9" strokeWidth="0.5" stroke="#CBC9C3" />
       <rect opacity="0.6" x="92.5" y="12.5" width="67" height="8" rx="1.26144" fill="#6F6B63" />
       <mask id="path-4-inside-1_3803_52967" fill="white">
         <path d="M0.5 0.5H80.5V227.5H0.5V0.5Z" />
       </mask>
-      <path d="M79.8 0.5V227.5H81.2V0.5H79.8Z" fill="#E3E1DE" mask="url(#path-4-inside-1_3803_52967)" />
+      <path d="M79.8 0.5V227.5H81.2V0.5H79.8Z" fill="#CBC9C3" mask="url(#path-4-inside-1_3803_52967)" />
       <rect x="12.5" y="12.5" width="45" height="8" rx="1.26144" fill="#6F6B63" />
       <path
         d="M68.7966 14.5159L66.8123 16.5002L68.7966 18.4846L68.2654 19.0159L66.0154 16.7659C65.869 16.6195 65.8692 16.3811 66.0154 16.2346L68.2654 13.9846L68.7966 14.5159Z"
@@ -1166,13 +1174,13 @@ function AppLayoutDrawing() {
       <rect opacity="0.6" x="12.5" y="52.5" width="48" height="6" rx="1.26144" fill="#6F6B63" />
       <rect opacity="0.6" x="12.5" y="67.5" width="48" height="6" rx="1.26144" fill="#6F6B63" />
       <rect opacity="0.6" x="12.5" y="82.5" width="36" height="6" rx="1.26144" fill="#6F6B63" />
-      <path d="M13 102H67" strokeWidth="0.5" stroke="#E3E1DE" />
+      <path d="M13 102H67" strokeWidth="0.5" stroke="#CBC9C3" />
       <mask id="path-14-inside-2_3803_52967" fill="white">
         <path d="M203.5 0.5H283.5V227.5H203.5V0.5Z" />
       </mask>
       <path
         d="M282.8 0.5V227.5H284.2V0.5H282.8ZM204.2 227.5V0.5H202.8V227.5H204.2Z"
-        fill="#E3E1DE"
+        fill="#CBC9C3"
         mask="url(#path-14-inside-2_3803_52967)"
       />
       <rect x="215.5" y="12.5" width="45" height="8" rx="1.26144" fill="#6F6B63" />
@@ -1184,7 +1192,7 @@ function AppLayoutDrawing() {
       <rect opacity="0.6" x="215.5" y="52.5" width="48" height="6" rx="1.26144" fill="#6F6B63" />
       <rect opacity="0.6" x="215.5" y="67.5" width="48" height="6" rx="1.26144" fill="#6F6B63" />
       <rect opacity="0.6" x="215.5" y="82.5" width="36" height="6" rx="1.26144" fill="#6F6B63" />
-      <path d="M216 102H270" strokeWidth="0.5" stroke="#E3E1DE" />
+      <path d="M216 102H270" strokeWidth="0.5" stroke="#CBC9C3" />
       <circle cx="294.659" cy="16.3105" r="6.42381" fill="#5C7FFF" />
       <circle cx="294.659" cy="33.0762" r="6.42381" fill="#424650" />
     </svg>
@@ -1196,19 +1204,20 @@ function AppLayoutToolbarDrawing() {
   return (
     <svg
       width="307"
-      height="147"
-      viewBox="0 0 307 147"
+      height="159"
+      viewBox="0 0 307 159"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden={true}
     >
       <g clipPath="url(#clip0_3803_53002)">
-        <rect x="0.5" y="0.5" width="306" height="227.059" rx="4" fill="#F9F9F9" />
-        <rect x="92.5" y="27.5" width="122" height="135" rx="1" fill="#F9F9F9" strokeWidth="0.5" stroke="#E3E1DE" />
+        {/* As above: the canvas follows the page background token. */}
+        <rect x="0.5" y="0.5" width="306" height="227.059" rx="4" fill={colorBackgroundLayoutMain} />
+        <rect x="92.5" y="27.5" width="122" height="135" rx="1" fill="#F9F9F9" strokeWidth="0.5" stroke="#CBC9C3" />
         <mask id="path-3-inside-1_3803_53002" fill="white">
           <path d="M0.5 18.5H80.5V245.5H0.5V18.5Z" />
         </mask>
-        <path d="M79.8 18.5V245.5H81.2V18.5H79.8Z" fill="#E3E1DE" mask="url(#path-3-inside-1_3803_53002)" />
+        <path d="M79.8 18.5V245.5H81.2V18.5H79.8Z" fill="#CBC9C3" mask="url(#path-3-inside-1_3803_53002)" />
         <rect x="12.5" y="30.5" width="45" height="8" rx="1.26144" fill="#6F6B63" />
         <path
           d="M68.7971 32.5161L66.8127 34.5005L68.7971 36.4849L68.2659 37.0161L66.0159 34.7661C65.8694 34.6197 65.8694 34.3813 66.0159 34.2349L68.2659 31.9839L68.7971 32.5161Z"
@@ -1219,11 +1228,11 @@ function AppLayoutToolbarDrawing() {
         <rect opacity="0.6" x="12.5" y="70.5" width="48" height="6" rx="1.26144" fill="#6F6B63" />
         <rect opacity="0.6" x="12.5" y="85.5" width="48" height="6" rx="1.26144" fill="#6F6B63" />
         <rect opacity="0.6" x="12.5" y="100.5" width="36" height="6" rx="1.26144" fill="#6F6B63" />
-        <path d="M13 120H67" strokeWidth="0.5" stroke="#E3E1DE" />
+        <path d="M13 120H67" strokeWidth="0.5" stroke="#CBC9C3" />
         <mask id="path-13-inside-2_3803_53002" fill="white">
           <path d="M226.5 18.5H306.5V245.5H226.5V18.5Z" />
         </mask>
-        <path d="M227.2 245.5V18.5H225.8V245.5H227.2Z" fill="#E3E1DE" mask="url(#path-13-inside-2_3803_53002)" />
+        <path d="M227.2 245.5V18.5H225.8V245.5H227.2Z" fill="#CBC9C3" mask="url(#path-13-inside-2_3803_53002)" />
         <rect x="238.5" y="30.5" width="45" height="8" rx="1.26144" fill="#6F6B63" />
         <path
           d="M294.715 34.2393C294.861 34.3858 294.86 34.6234 294.714 34.7695L292.464 37.0156L291.935 36.4844L293.919 34.5029L291.938 32.5146L292.469 31.9854L294.715 34.2393Z"
@@ -1233,13 +1242,13 @@ function AppLayoutToolbarDrawing() {
         <rect opacity="0.6" x="238.5" y="70.5" width="48" height="6" rx="1.26144" fill="#6F6B63" />
         <rect opacity="0.6" x="238.5" y="85.5" width="48" height="6" rx="1.26144" fill="#6F6B63" />
         <rect opacity="0.6" x="238.5" y="100.5" width="36" height="6" rx="1.26144" fill="#6F6B63" />
-        <path d="M239 120H293" strokeWidth="0.5" stroke="#E3E1DE" />
-        <line x1="1.14331" y1="18.8282" x2="305.5" y2="18.8282" strokeWidth="0.7" stroke="#E3E1DE" />
+        <path d="M239 120H293" strokeWidth="0.5" stroke="#CBC9C3" />
+        <line x1="1.14331" y1="18.8282" x2="305.5" y2="18.8282" strokeWidth="0.7" stroke="#CBC9C3" />
         <rect opacity="0.6" x="26.5" y="6.5" width="67" height="8" rx="1.26144" fill="#6F6B63" />
         <rect x="287.904" y="4.95557" width="10" height="10" rx="2" fill="#5C7FFF" />
         <rect x="10.5" y="5.5" width="10" height="10" rx="2" fill="#5C7FFF" />
       </g>
-      <rect x="0.5" y="0.5" width="306" height="227.059" rx="4" stroke="#E3E1DE" />
+      <rect x="0.5" y="0.5" width="306" height="227.059" rx="4" stroke="#CBC9C3" />
       <defs>
         <clipPath id="clip0_3803_53002">
           <rect x="0.5" y="0.5" width="306" height="227.059" rx="4" fill="white" />
