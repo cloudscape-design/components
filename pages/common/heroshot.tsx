@@ -1,7 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { Mode } from '@cloudscape-design/global-styles';
+
+import { FormField, Select } from '~components';
 import {
   colorBackgroundLayoutMain,
   colorBorderDividerDefault,
@@ -9,9 +12,76 @@ import {
   fontSizeBodyS,
 } from '~design-tokens';
 
+import { useAppContext } from '../app/app-context';
+
 // Thumbnail size used by the components overview pages of the documentation website.
 export const HEROSHOT_WIDTH = 346;
 export const HEROSHOT_HEIGHT = 170;
+
+/**
+ * The backgrounds a gallery can be captured on. `default` is the one the documentation website uses
+ * today; the others are candidates being explored, and carry their own value per colour mode because
+ * they are not design tokens yet.
+ */
+const BACKGROUNDS = {
+  default: { label: 'Default (layout main)', light: colorBackgroundLayoutMain, dark: colorBackgroundLayoutMain },
+  warm: { label: 'Warm (#f5f3ef / #080808)', light: '#f5f3ef', dark: '#080808' },
+};
+
+type HeroshotBackground = keyof typeof BACKGROUNDS;
+
+/*
+ * The choice lives in a module-level store rather than in a React context, so that the control can sit
+ * beside a gallery instead of wrapping it: wrapping the 70+ frames of the component gallery would
+ * re-indent the whole page for a dev-only control.
+ */
+let selectedBackground: HeroshotBackground = 'default';
+const backgroundListeners = new Set<() => void>();
+
+function useSelectedBackground() {
+  const [background, setBackground] = useState(selectedBackground);
+  useEffect(() => {
+    const listener = () => setBackground(selectedBackground);
+    backgroundListeners.add(listener);
+    // The store is read on mount as well, so a frame added later starts on the current choice.
+    listener();
+    return () => {
+      backgroundListeners.delete(listener);
+    };
+  }, []);
+  return background;
+}
+
+/**
+ * The control that switches the background of every frame on the page. Render it once, above a gallery.
+ */
+export function HeroshotBackgroundSelect() {
+  const background = useSelectedBackground();
+  return (
+    <div style={{ maxInlineSize: 320, marginBlockEnd: 24 }}>
+      <FormField label="Heroshot background">
+        <Select
+          selectedOption={{ value: background, label: BACKGROUNDS[background].label }}
+          options={Object.entries(BACKGROUNDS).map(([value, { label }]) => ({ value, label }))}
+          onChange={event => {
+            selectedBackground = event.detail.selectedOption.value as HeroshotBackground;
+            backgroundListeners.forEach(listener => listener());
+          }}
+        />
+      </FormField>
+    </div>
+  );
+}
+
+/**
+ * The background of the frames in the current colour mode. The two candidate colours are not design
+ * tokens yet, so each carries its own value per mode.
+ */
+function useHeroshotBackground() {
+  const background = BACKGROUNDS[useSelectedBackground()];
+  const { mode } = useAppContext();
+  return mode === Mode.Dark ? background.dark : background.light;
+}
 
 interface HeroshotProps {
   /**
@@ -63,6 +133,7 @@ export function Heroshot({
   contentSize,
   children,
 }: HeroshotProps) {
+  const background = useHeroshotBackground();
   const paddingBlockEnd = bleedBlockEnd ? 0 : padding;
   const contentInlineSize = HEROSHOT_WIDTH - 2 * padding;
   const contentBlockSize = HEROSHOT_HEIGHT - padding - paddingBlockEnd;
@@ -99,7 +170,7 @@ export function Heroshot({
           paddingBlock: `${padding}px ${paddingBlockEnd}px`,
           paddingInline: padding,
           overflow: 'hidden',
-          background: colorBackgroundLayoutMain,
+          background,
           outline: `1px dashed ${colorBorderDividerDefault}`,
           display: 'flex',
           flexDirection: 'column',

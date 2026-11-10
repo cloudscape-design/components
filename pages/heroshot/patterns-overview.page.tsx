@@ -82,7 +82,7 @@ import {
 } from '~design-tokens';
 
 import { SimplePage } from '../app/templates';
-import { Heroshot } from '../common/heroshot';
+import { Heroshot, HeroshotBackgroundSelect } from '../common/heroshot';
 import { IframeWrapper } from '../utils/iframe-wrapper';
 
 // @ts-expect-error The generated style map does not publish a TypeScript declaration.
@@ -321,6 +321,7 @@ const patterns: ReadonlyArray<PatternDefinition> = [
 export default function PatternsOverviewHeroshotPage() {
   return (
     <SimplePage title="Pattern heroshots" screenshotArea={{ disableAnimations: true }} i18n={{}}>
+      <HeroshotBackgroundSelect />
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24 }}>
         {patterns.map(pattern => (
           <Heroshot

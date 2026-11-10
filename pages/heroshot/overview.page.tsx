@@ -107,7 +107,7 @@ import PopoverBody from '~components/popover/body';
 
 import { SimplePage } from '../app/templates';
 import { i18nStrings as codeEditorI18nStrings, themes as codeEditorThemes } from '../code-editor/base-props';
-import { Heroshot } from '../common/heroshot';
+import { Heroshot, HeroshotBackgroundSelect } from '../common/heroshot';
 import { annotationContextStrings, tutorialPanelStrings } from '../onboarding/i18n';
 import tutorialData from '../onboarding/tutorials';
 import { IframeWrapper } from '../utils/iframe-wrapper';
@@ -118,6 +118,7 @@ import popoverStyles from '~components/popover/styles.css.js';
 export default function HeroshotOverviewPage() {
   return (
     <SimplePage title="Heroshots" screenshotArea={{ disableAnimations: true }} i18n={{}}>
+      <HeroshotBackgroundSelect />
       {/* The frames have a fixed size, so the gallery wraps them instead of stacking 70+ rows. */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24 }}>
         <Heroshot id="action-card" label="ActionCard" stretch={true}>
