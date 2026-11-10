@@ -18,59 +18,44 @@ interface WriteResult {
 
 const ASSISTANT_PREFIX = 'assistant-';
 
+const pageFields = (fields: ReadonlyArray<FieldDescriptor>) =>
+  fields.filter(field => !field.name?.startsWith(ASSISTANT_PREFIX));
+
 let latestFields: ReadonlyArray<FieldDescriptor> = [];
-const listeners = new Set<() => void>();
 
 awsuiPlugins.fieldRegistry.registerListener(fields => {
-  latestFields = fields.filter(field => !field.name.startsWith(ASSISTANT_PREFIX));
-  listeners.forEach(listener => listener());
+  latestFields = pageFields(fields);
 });
-
-function nextUpdate(previous: FieldDescriptor, timeout: number) {
-  return new Promise<FieldDescriptor | undefined>(resolve => {
-    const check = () => {
-      const current = latestFields.find(field => field.name === previous.name);
-      if (current && current !== previous) {
-        clearTimeout(timer);
-        listeners.delete(check);
-        resolve(current);
-      }
-    };
-    const timer = setTimeout(() => {
-      listeners.delete(check);
-      resolve(undefined);
-    }, timeout);
-    listeners.add(check);
-  });
-}
 
 async function writeField(label: string, value: unknown): Promise<WriteResult> {
   const field = latestFields.find(descriptor => descriptor.label === label);
   if (!field) {
     return { label, applied: false, message: 'No field with this label' };
   }
-  if (!field.setValue(value)) {
-    return { label, applied: false, message: field.disabled || field.readOnly ? 'Not editable' : 'Value not accepted' };
+  try {
+    const written = await awsuiPlugins.fieldRegistry.setValue(field.id, value);
+    return { label, applied: true, message: written.errorText ?? 'Set' };
+  } catch (error) {
+    return { label, applied: false, message: (error as Error).message };
   }
-  const updated = await nextUpdate(field, 1000);
-  updated?.blur?.();
-  const validated = updated ? await nextUpdate(updated, 300) : undefined;
-  const latest = validated ?? updated ?? field;
-  return { label, applied: true, message: latest.errorText ?? 'Set' };
 }
 
 const exampleWrites = () => EXAMPLE_VALUES.filter(([label]) => latestFields.some(field => field.label === label));
 
+const sameFields = (a: ReadonlyArray<FieldDescriptor>, b: ReadonlyArray<FieldDescriptor>) =>
+  a.length === b.length && a.every((field, index) => field === b[index]);
+
 function useFields() {
   const [fields, setFields] = useState(latestFields);
-  useEffect(() => {
-    const update = () => setFields(latestFields);
-    listeners.add(update);
-    update();
-    return () => {
-      listeners.delete(update);
-    };
-  }, []);
+  useEffect(
+    () =>
+      awsuiPlugins.fieldRegistry.registerListener(all => {
+        const next = pageFields(all);
+        // The panel's own controls register too, so it keeps its state when only they change, or it would loop.
+        setFields(previous => (sameFields(previous, next) ? previous : next));
+      }),
+    []
+  );
   return fields;
 }
 
@@ -131,7 +116,7 @@ function AssistantPanel() {
         variant="embedded"
         header={<Box variant="h4">Registered fields</Box>}
         items={[...fields]}
-        trackBy="name"
+        trackBy="id"
         columnDefinitions={[
           { id: 'label', header: 'Label', cell: field => field.label },
           { id: 'type', header: 'Type', cell: field => field.type },
@@ -157,18 +142,7 @@ function IsolatedAssistant() {
       ) {
         return;
       }
-      const result =
-        event.data.type === 'write'
-          ? await writeField(event.data.label, event.data.value)
-          : latestFields.map(({ name, label, type, value, disabled, readOnly, errorText }) => ({
-              name,
-              label,
-              type,
-              value,
-              disabled,
-              readOnly,
-              errorText,
-            }));
+      const result = event.data.type === 'write' ? await writeField(event.data.label, event.data.value) : latestFields;
       frame.postMessage({ channel: BRIDGE_CHANNEL, id: event.data.id, result }, otherLoopbackOrigin());
     };
     window.addEventListener('message', onMessage);

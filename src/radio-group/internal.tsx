@@ -56,11 +56,7 @@ const InternalRadioGroup = React.forwardRef(
       name,
       type: 'radio',
       value: value ?? null,
-      options: items?.map(item => ({
-        value: item.value,
-        label: typeof item.label === 'string' ? item.label : undefined,
-        disabled: item.disabled,
-      })),
+      options: items,
       readOnly,
       labels: [ariaLabel],
       setValue: next => {

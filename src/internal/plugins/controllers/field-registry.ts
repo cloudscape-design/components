@@ -1,49 +1,61 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import debounce from '../../debounce';
 import type { FieldDescriptor } from '../../field-registry';
 
 export type FieldsListener = (fields: ReadonlyArray<FieldDescriptor>) => void;
 
+export type FieldWriter = (value: unknown) => Promise<FieldDescriptor>;
+
 export interface FieldRegistration {
-  update(descriptor: FieldDescriptor): void;
+  update(field: FieldDescriptor): void;
   cleanup(): void;
 }
 
 export interface FieldRegistryApiPublic {
   registerListener(listener: FieldsListener): () => void;
+  setValue(id: string, value: unknown): Promise<FieldDescriptor>;
 }
 
 export interface FieldRegistryApiInternal {
-  registerField(descriptor: FieldDescriptor): FieldRegistration;
+  registerField(field: FieldDescriptor, write: FieldWriter): FieldRegistration;
+}
+
+interface Entry {
+  field: FieldDescriptor;
+  write: FieldWriter;
 }
 
 export class FieldRegistryController {
-  #entries = new Set<{ descriptor: FieldDescriptor }>();
+  #entries = new Set<Entry>();
   #listeners = new Set<FieldsListener>();
 
-  #snapshot = () => [...this.#entries].map(entry => entry.descriptor);
+  #fields = () => [...this.#entries].map(entry => entry.field);
 
-  #notify = debounce(() => {
-    const fields = this.#snapshot();
+  #notify = () => {
+    const fields = this.#fields();
     this.#listeners.forEach(listener => listener(fields));
-  }, 0);
+  };
 
   registerListener = (listener: FieldsListener) => {
     this.#listeners.add(listener);
-    listener(this.#snapshot());
+    listener(this.#fields());
     return () => {
       this.#listeners.delete(listener);
     };
   };
 
-  registerField = (descriptor: FieldDescriptor): FieldRegistration => {
-    const entry = { descriptor };
+  setValue = (id: string, value: unknown) => {
+    const entry = [...this.#entries].find(candidate => candidate.field.id === id);
+    return entry ? entry.write(value) : Promise.reject(new Error(`No field has the id "${id}".`));
+  };
+
+  registerField = (field: FieldDescriptor, write: FieldWriter): FieldRegistration => {
+    const entry: Entry = { field, write };
     this.#entries.add(entry);
     this.#notify();
     return {
       update: next => {
-        entry.descriptor = next;
+        entry.field = next;
         this.#notify();
       },
       cleanup: () => {
@@ -55,6 +67,7 @@ export class FieldRegistryController {
 
   installPublic(api: Partial<FieldRegistryApiPublic> = {}): FieldRegistryApiPublic {
     api.registerListener ??= this.registerListener;
+    api.setValue ??= this.setValue;
     return api as FieldRegistryApiPublic;
   }
 

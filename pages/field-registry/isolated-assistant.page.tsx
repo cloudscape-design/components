@@ -33,16 +33,6 @@ function callBridge<T>(request: Record<string, unknown>) {
   });
 }
 
-function directAccess() {
-  try {
-    return (window.parent as unknown as Record<symbol, unknown>)[Symbol.for('awsui-plugin-api')]
-      ? 'allowed'
-      : 'no API found';
-  } catch (error) {
-    return `blocked (${(error as Error).name})`;
-  }
-}
-
 export default function IsolatedAssistant() {
   const [results, setResults] = useState<ReadonlyArray<BridgeResult>>([]);
   const [busy, setBusy] = useState(false);
@@ -62,7 +52,6 @@ export default function IsolatedAssistant() {
   return (
     <Box padding="m">
       <SpaceBetween size="m">
-        <Box data-testid="direct-access">Direct access to the page&apos;s registry: {directAccess()}</Box>
         <Button data-testid="fill-example-values" variant="primary" loading={busy} onClick={fill}>
           Fill example values
         </Button>

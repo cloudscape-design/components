@@ -45,14 +45,21 @@ const flush = () => act(() => new Promise<void>(resolve => setTimeout(resolve)))
 const field = (label: string) => fields.find(descriptor => descriptor.label === label)!;
 const labels = () => fields.map(descriptor => descriptor.label);
 
-async function write(label: string, value: unknown) {
-  let applied = false;
+async function setValue(label: string, value: unknown) {
+  let written: Promise<FieldDescriptor> | undefined;
   act(() => {
-    applied = field(label).setValue(value);
+    written = awsuiPlugins.fieldRegistry.setValue(field(label).id, value);
+    written.catch(() => {});
   });
   await flush();
-  return applied;
+  return written!;
 }
+
+const write = (label: string, value: unknown) =>
+  setValue(label, value).then(
+    () => true,
+    () => false
+  );
 
 beforeAll(() => {
   Element.prototype.scrollIntoView = scrollIntoView;
@@ -252,27 +259,33 @@ describe('updates', () => {
     stop();
   });
 
-  test("an earlier descriptor writes and blurs with the control's latest props", async () => {
-    const onBlur = jest.fn();
+  test('a write calls onBlur once the field has re-rendered, so it sees the new value', async () => {
+    const calls: string[] = [];
     function Field() {
       const [name, setName] = useState('');
       return (
         <FormField label="Name">
-          <Input value={name} onChange={e => setName(e.detail.value)} onBlur={() => onBlur(name)} />
+          <Input
+            value={name}
+            onChange={e => {
+              calls.push(`change:${e.detail.value}`);
+              setName(e.detail.value);
+            }}
+            onBlur={() => calls.push(`blur:${name}`)}
+          />
         </FormField>
       );
     }
     render(<Field />);
     await flush();
-    const earlier = field('Name');
-    act(() => {
-      earlier.setValue('web-1');
-    });
+    await write('Name', 'web-1');
+    expect(calls).toEqual(['change:web-1', 'blur:web-1']);
+  });
+
+  test('fields are plain data', async () => {
+    render(<Form />);
     await flush();
-    act(() => {
-      earlier.blur!();
-    });
-    expect(onBlur).toHaveBeenCalledWith('web-1');
+    expect(JSON.parse(JSON.stringify(fields))).toEqual(fields);
   });
 
   test('fields leave the registry when the page is hidden, and return when it is restored from the back/forward cache', async () => {
@@ -324,6 +337,27 @@ describe('writes', () => {
     expect(field('Monitoring').value).toBe(false);
     expect(await write('Feature', 'maybe')).toBe(false);
     expect(field('Feature').value).toBe(false);
+  });
+
+  test('setValue rejects for an id that is not registered', async () => {
+    await expect(awsuiPlugins.fieldRegistry.setValue('missing', 'web-1')).rejects.toThrow(
+      'No field has the id "missing".'
+    );
+  });
+
+  test('setValue rejects when the field unmounts before it re-renders', async () => {
+    function Acknowledgement() {
+      const [shown, setShown] = useState(true);
+      return shown ? (
+        <Checkbox checked={false} onChange={() => setShown(false)}>
+          I acknowledge the terms
+        </Checkbox>
+      ) : null;
+    }
+    render(<Acknowledgement />);
+    await flush();
+    await expect(setValue('I acknowledge the terms', true)).rejects.toThrow('The field was removed.');
+    expect(fields).toHaveLength(0);
   });
 
   test('disabled and read-only fields refuse writes', async () => {
@@ -435,22 +469,22 @@ describe('validation and state', () => {
     );
   }
 
-  test('blur() on the descriptor registered after a write validates the new value', async () => {
+  test('a write runs blur validation and resolves with the error', async () => {
     const { container } = render(<BlurValidatedForm />);
     await flush();
-    expect(await write('Name', 'ab')).toBe(true);
-    act(() => {
-      field('Name').blur!();
+    await expect(setValue('Name', 'ab')).resolves.toMatchObject({
+      value: 'ab',
+      invalid: true,
+      errorText: 'Name is too short',
     });
-    await flush();
     expect(createWrapper(container).findFormField()!.findError()!.getElement()).toHaveTextContent('Name is too short');
     expect(field('Name')).toMatchObject({ invalid: true, errorText: 'Name is too short' });
   });
 
-  test('a write alone does not run blur validation', async () => {
+  test('a write that passes validation resolves without an error', async () => {
     const { container } = render(<BlurValidatedForm />);
     await flush();
-    await write('Name', 'ab');
+    await expect(setValue('Name', 'web-1')).resolves.toMatchObject({ value: 'web-1', invalid: false });
     expect(createWrapper(container).findFormField()!.findError()).toBeNull();
   });
 
@@ -462,13 +496,6 @@ describe('validation and state', () => {
     );
     await flush();
     expect(field('Name').warningText).toBe('Name is long');
-  });
-
-  test('RadioGroup has no blur() because it has no onBlur', async () => {
-    render(<Form />);
-    await flush();
-    expect(field('Architecture (radio)').blur).toBeUndefined();
-    expect(typeof field('Architecture (select)').blur).toBe('function');
   });
 
   test('Select and Multiselect report their statusType', async () => {

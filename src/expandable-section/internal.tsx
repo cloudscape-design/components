@@ -101,12 +101,10 @@ export default function InternalExpandableSection({
 
   const revealParent = useContext(FieldRevealContext);
   const revealField = () => {
-    const parentOpened = revealParent?.() ?? false;
-    if (expanded) {
-      return parentOpened;
+    revealParent?.();
+    if (!expanded) {
+      onExpandChange(true);
     }
-    onExpandChange(true);
-    return true;
   };
 
   const onClick = useCallback(() => {

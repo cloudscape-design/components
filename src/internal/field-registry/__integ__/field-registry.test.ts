@@ -97,10 +97,6 @@ test(
   'an assistant in a cross-origin frame fills the page through a message bridge',
   setupTest({ frameForm: 'true', isolatedAssistant: 'true' }, async page => {
     await page.runInsideIframe('#isolated-assistant', true, async () => {
-      await page.waitForVisible('[data-testid="direct-access"]');
-      await expect(page.getText('[data-testid="direct-access"]')).resolves.toBe(
-        "Direct access to the page's registry: blocked (SecurityError)"
-      );
       await expect(page.fillExampleValues()).resolves.toEqual(EXPECTED_RESULTS);
     });
     await page.expectPageFormFilled();

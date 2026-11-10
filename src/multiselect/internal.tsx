@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useResizeObserver, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
@@ -152,11 +152,12 @@ const InternalMultiselect = React.forwardRef(
 
     const triggerRef = useRef<HTMLButtonElement>(null);
 
+    const selectedValues = useMemo(() => selectedOptions.map(option => option.value), [selectedOptions]);
     useFieldRegistration({
       register: __registerField,
       name: controlId,
       type: 'multiselect',
-      value: selectedOptions.map(option => option.value),
+      value: selectedValues,
       options,
       disabled,
       readOnly,
