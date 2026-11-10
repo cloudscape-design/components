@@ -26,6 +26,10 @@
       if (location.hash.includes('file-upload')) {
         csp['img-src'] = 'blob:';
       }
+      // The field registry demo frames its assistant from the other loopback host name, so the frame is cross-origin
+      if (location.hash.includes('field-registry-demo')) {
+        csp['frame-src'] = "'self' http://localhost:* http://127.0.0.1:*";
+      }
       
       const cspString = Object.entries(csp)
         .map(([key, value]) => `${key} ${value}`)

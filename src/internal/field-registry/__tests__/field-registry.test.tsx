@@ -221,6 +221,78 @@ describe('registration', () => {
   });
 });
 
+describe('updates', () => {
+  function RerenderingForm() {
+    const [renders, setRenders] = useState(0);
+    const [name, setName] = useState('');
+    return (
+      <>
+        <button onClick={() => setRenders(renders + 1)}>Re-render</button>
+        <FormField label="Name">
+          <Input value={name} onChange={e => setName(e.detail.value)} />
+        </FormField>
+      </>
+    );
+  }
+
+  test('a re-render that changes nothing about a field does not notify listeners', async () => {
+    const { getByText } = render(<RerenderingForm />);
+    await flush();
+    let notifications = 0;
+    const stop = awsuiPlugins.fieldRegistry.registerListener(() => {
+      notifications++;
+    });
+    act(() => {
+      getByText('Re-render').click();
+    });
+    await flush();
+    expect(notifications).toBe(1);
+    await write('Name', 'web-1');
+    expect(notifications).toBe(2);
+    stop();
+  });
+
+  test("an earlier descriptor writes and blurs with the control's latest props", async () => {
+    const onBlur = jest.fn();
+    function Field() {
+      const [name, setName] = useState('');
+      return (
+        <FormField label="Name">
+          <Input value={name} onChange={e => setName(e.detail.value)} onBlur={() => onBlur(name)} />
+        </FormField>
+      );
+    }
+    render(<Field />);
+    await flush();
+    const earlier = field('Name');
+    act(() => {
+      earlier.setValue('web-1');
+    });
+    await flush();
+    act(() => {
+      earlier.blur!();
+    });
+    expect(onBlur).toHaveBeenCalledWith('web-1');
+  });
+
+  test('fields leave the registry when the page is hidden, and return when it is restored from the back/forward cache', async () => {
+    render(<Form />);
+    await flush();
+    act(() => {
+      window.dispatchEvent(new Event('pagehide'));
+    });
+    await flush();
+    expect(fields).toHaveLength(0);
+    const restored = new Event('pageshow');
+    Object.defineProperty(restored, 'persisted', { value: true });
+    act(() => {
+      window.dispatchEvent(restored);
+    });
+    await flush();
+    expect(fields).toHaveLength(7);
+  });
+});
+
 describe('writes', () => {
   test('each control receives the shape its onChange emits', async () => {
     render(<Form />);
