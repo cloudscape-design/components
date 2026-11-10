@@ -5,12 +5,12 @@
 ```
 npm test               # all tests
 npm run test:unit      # unit tests
-npm run test:integ     # integration tests (starts dev server automatically)
-npm run test:motion    # motion tests (starts dev server automatically)
+npm run test:integ     # integration tests (builds and serves the dev pages automatically)
+npm run test:motion    # motion tests (builds and serves the dev pages automatically)
 npm run test:a11y      # accessibility tests
 ```
 
-The npm scripts use gulp tasks that handle env vars (`TZ=UTC`, `NODE_OPTIONS=--experimental-vm-modules`) and dev server lifecycle automatically.
+The npm scripts use gulp tasks that handle env vars (`TZ=UTC`, `NODE_OPTIONS=--experimental-vm-modules`) and serve a development build of the dev pages at `http://localhost:8080` automatically.
 
 ## Test Types
 

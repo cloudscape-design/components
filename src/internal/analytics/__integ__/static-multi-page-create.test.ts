@@ -48,7 +48,8 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
         return;
       }
       const page = new MultiPageCreate(browser);
-      await browser.url(`#/light/funnel-analytics/static-multi-page-flow?${getUrlParams(theme, {})}`);
+      await page.visit(`#/light/funnel-analytics/static-multi-page-flow?${getUrlParams(theme, {})}`);
+      await new Promise(r => setTimeout(r, 10));
       await testFn(page);
     });
   }

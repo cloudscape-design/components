@@ -6,12 +6,16 @@
     <title>Cloudscape demo pages</title>
 
     <script>
-      const isDevelopment = '<%= process.env.NODE_ENV %>' !== 'production';
+      const isDevelopment = '%MODE%' !== 'production';
 
       const csp = { 'default-src': "'self'", 'font-src': 'data:', 'style-src': "'self'" };
 
       if (isDevelopment) {
         csp['connect-src'] = `'self' ws://${location.host};`;
+        // The dev server injects the imported styles as <style> elements, which carry the same nonce as this script
+        if (document.currentScript.nonce) {
+          csp['style-src'] += ` 'nonce-${document.currentScript.nonce}'`;
+        }
       }
 
       // Theming generates inline styles in runtime
@@ -40,5 +44,6 @@
     <div id="b">
       <div id="app"></div>
     </div>
+    <script type="module" src="./index.tsx"></script>
   </body>
 </html>

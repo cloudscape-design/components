@@ -14,7 +14,7 @@ export default function PageView({ pageId }: { pageId: string }) {
   const Page = pagesComponents[pageId];
   return (
     <ErrorBoundary key={pageId}>
-      <Suspense fallback={<span>Loading...</span>}>
+      <Suspense fallback={<span data-dev-pages-loading={true}>Loading...</span>}>
         <Page />
       </Suspense>
     </ErrorBoundary>

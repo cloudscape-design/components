@@ -50,7 +50,7 @@ jobs:
           INCLUDE_ONE_THEME: 'true'
 
       - name: Bundle dev pages
-        run: node_modules/.bin/webpack --config pages/webpack.config.integ.cjs --output-path pages/lib/static-default
+        run: node_modules/.bin/vite build --config pages/vite.config.mjs --outDir "${GITHUB_WORKSPACE}/pages/lib/static-default"
         env:
           NODE_ENV: production
           REACT_VERSION: ${{ matrix.react }}
@@ -113,7 +113,13 @@ jobs:
           INCLUDE_ONE_THEME: 'true'
 
       - name: Bundle baseline pages
-        run: node_modules/.bin/webpack --config pages/webpack.config.integ.cjs --output-path "${GITHUB_WORKSPACE}/pages/lib/static-visual-baseline"
+        run: |
+          # The baseline can still use webpack until the Vite migration is merged
+          if [ -f pages/vite.config.mjs ]; then
+            node_modules/.bin/vite build --config pages/vite.config.mjs --outDir "${GITHUB_WORKSPACE}/pages/lib/static-visual-baseline"
+          else
+            node_modules/.bin/webpack --config pages/webpack.config.integ.cjs --output-path "${GITHUB_WORKSPACE}/pages/lib/static-visual-baseline"
+          fi
         working-directory: /tmp/baseline
         env:
           NODE_ENV: production

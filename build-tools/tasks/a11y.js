@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 const execa = require('execa');
 const glob = require('glob');
-const waitOn = require('wait-on');
+const { startDevPagesServer } = require('../utils/dev-pages-server.js');
 const { task } = require('../utils/gulp-utils.js');
 const { parseArgs } = require('node:util');
 
@@ -13,12 +13,7 @@ module.exports = task('test:a11y', async () => {
     },
   };
   const shard = parseArgs({ options, strict: false }).values.shard;
-  const devServer = execa('webpack', ['serve', '--config', 'pages/webpack.config.integ.cjs'], {
-    env: {
-      NODE_ENV: 'development',
-    },
-  });
-  await waitOn({ resources: ['http://localhost:8080'] });
+  const devServer = await startDevPagesServer();
 
   const files = glob.sync('src/**/__a11y__/**/*.test.ts');
   const commands = ['-c', 'jest.integ.config.js', ...files];

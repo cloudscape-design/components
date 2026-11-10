@@ -18,3 +18,5 @@ npm run start:react18  # starts watcher + dev server (React 18)
 ```
 
 The dev server runs at `http://localhost:8080`. Pages are served from `pages/<component-name>/`.
+
+The dev pages are built with [Vite](https://vite.dev), see `pages/vite.config.base.mjs`.

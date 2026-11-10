@@ -1,23 +1,31 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 const { cpSync } = require('node:fs');
-const { promisify } = require('util');
-const webpack = require('webpack');
+const execa = require('execa');
 const { parallel } = require('gulp');
 const path = require('path');
 const { mkdirSync, existsSync } = require('fs');
-const createConfig = require('../../pages/webpack.config.cjs');
 const { task } = require('../utils/gulp-utils');
 const workspace = require('../utils/workspace');
 
-const asyncWebpack = promisify(webpack);
-
 async function buildPagesStatic() {
-  const stats = await asyncWebpack(createConfig());
+  const { build } = await import('vite');
+  const { createConfig } = await import('../../pages/vite.config.mjs');
+  await build({ ...createConfig(), configFile: false });
+}
 
-  console.log(stats.toString({ colors: true }));
-  if (stats.hasErrors()) {
-    throw new Error('Error while running webpack');
+// Vite only transpiles the pages, they are type-checked separately
+async function typecheckPages() {
+  // The custom icons page has a separate project for its module augmentation
+  for (const [project, buildInfo] of [
+    ['pages/tsconfig.json', 'pages.tsbuildinfo'],
+    ['pages/icon-provider/custom-icons/tsconfig.json', 'pages-custom-icons.tsbuildinfo'],
+  ]) {
+    await execa(
+      'tsc',
+      ['-p', project, '--noEmit', '--skipLibCheck', '--tsBuildInfoFile', path.join(workspace.targetPath, buildInfo)],
+      { stdio: 'inherit' }
+    );
   }
 }
 
@@ -27,8 +35,12 @@ function buildPagesSource() {
   if (!existsSync(targetPath)) {
     mkdirSync(targetPath);
   }
-  cpSync('pages', targetPath, { recursive: true });
+  // pages/lib contains build outputs
+  cpSync('pages', targetPath, {
+    recursive: true,
+    filter: source => path.resolve(source) !== path.resolve('pages/lib'),
+  });
   return Promise.resolve();
 }
 
-module.exports = task('build-pages', parallel(buildPagesStatic, buildPagesSource));
+module.exports = task('build-pages', parallel(buildPagesStatic, typecheckPages, buildPagesSource));

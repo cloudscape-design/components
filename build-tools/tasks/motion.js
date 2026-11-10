@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 const execa = require('execa');
 const glob = require('glob');
-const waitOn = require('wait-on');
+const { startDevPagesServer } = require('../utils/dev-pages-server.js');
 const { task } = require('../utils/gulp-utils.js');
 const { parseArgs } = require('node:util');
 
@@ -11,13 +11,7 @@ module.exports = task('test:motion', async () => {
     reactVersion: { type: 'string' },
   };
   const { reactVersion = '16' } = parseArgs({ options, strict: false }).values;
-  const devServer = execa('webpack', ['serve', '--config', 'pages/webpack.config.integ.cjs'], {
-    env: {
-      NODE_ENV: 'development',
-      REACT_VERSION: reactVersion,
-    },
-  });
-  await waitOn({ resources: ['http://localhost:8080'] });
+  const devServer = await startDevPagesServer({ reactVersion });
 
   const files = glob.sync('src/**/__motion__/**/*.test.ts');
   await execa('jest', ['-c', 'jest.motion.config.js', ...files], {

@@ -23,6 +23,14 @@ function copyStyles(srcDoc: Document, targetDoc: Document): Promise<unknown> {
     targetDoc.head.appendChild(newStylesheet);
   }
 
+  // The Vite dev server injects the imported styles as <style> elements
+  for (const style of Array.from(srcDoc.querySelectorAll<HTMLStyleElement>('style[data-vite-dev-id]'))) {
+    const newStyle = targetDoc.createElement('style');
+    newStyle.nonce = style.nonce;
+    newStyle.textContent = style.textContent;
+    targetDoc.head.appendChild(newStyle);
+  }
+
   return Promise.all(pending);
 }
 

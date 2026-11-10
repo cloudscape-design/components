@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 /* global jest */
 const { configure } = require('@cloudscape-design/browser-test-tools/use-browser');
+require('./wait-for-dev-pages');
 
 configure({
   browserName: 'ChromeHeadlessIntegration',
