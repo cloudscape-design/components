@@ -441,7 +441,8 @@ export function Resizer({
             styles['divider-interactive'],
             (isPointerDown || isDragging) && styles['divider-active'],
             isGrouped && styles['divider-grouped'],
-            dividerPosition && dividerPosition !== 'default' && styles[`divider-position-${dividerPosition}`]
+            dividerPosition && dividerPosition !== 'default' && styles[`divider-position-${dividerPosition}`],
+            isVisualRefresh && isBorderless && isLast && styles['divider-edge']
           )}
           data-awsui-table-suppress-navigation={true}
           ref={resizerSeparatorRef}

@@ -57,6 +57,7 @@ import { useGroupSelection } from './selection/use-group-selection';
 import { SkeletonRows } from './skeleton-rows';
 import { useStickyColumns } from './sticky-columns';
 import StickyHeader, { StickyHeaderRef } from './sticky-header';
+import { getStyleClassName, StyleClassNames } from './style-api';
 import {
   getTableRoleProps,
   getTableRowRoleProps,
@@ -88,6 +89,7 @@ type InternalTableProps<T> = SomeRequired<
 > &
   InternalBaseComponentProps & {
     __funnelSubStepProps?: InternalContainerProps['__funnelSubStepProps'];
+    styleClassNames?: StyleClassNames<T>;
   };
 
 export const InternalTableAsSubstep = React.forwardRef(
@@ -159,6 +161,7 @@ const InternalTable = React.forwardRef(
       renderLoaderCounter,
       cellVerticalAlign,
       __funnelSubStepProps,
+      styleClassNames,
       ...rest
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
@@ -423,6 +426,7 @@ const InternalTable = React.forwardRef(
 
     const theadProps: TheadProps = {
       selectionType,
+      styleClassNames,
       getSelectAllProps: selection.getSelectAllProps,
       columnDefinitions: visibleColumnDefinitions,
       groupDefinitions,
@@ -525,6 +529,7 @@ const InternalTable = React.forwardRef(
               {...tableInteractionAttributes}
               __internalRootRef={tableRootRef}
               className={clsx(baseProps.className, styles.root)}
+              styleClassNames={{ root: styleClassNames?.root }}
               __funnelSubStepProps={__funnelSubStepProps}
               __fullPage={variant === 'full-page'}
               header={
@@ -728,7 +733,15 @@ const InternalTable = React.forwardRef(
                             return (
                               <tr
                                 key={rowId}
-                                className={clsx(styles.row, sharedCellProps.isSelected && styles['row-selected'])}
+                                className={clsx(
+                                  getStyleClassName(styleClassNames?.row, {
+                                    item: row.item,
+                                    index: rowIndex,
+                                    selected: sharedCellProps.isSelected,
+                                  }),
+                                  styles.row,
+                                  sharedCellProps.isSelected && styles['row-selected']
+                                )}
                                 {...focusMarkers.item}
                                 {...rowRoleProps}
                                 onFocus={({ currentTarget }) => {
@@ -747,7 +760,12 @@ const InternalTable = React.forwardRef(
                                 {selection.getItemSelectionProps && (
                                   <TableBodySelectionCell
                                     {...sharedCellProps}
+                                    styleClassName={getStyleClassName(styleClassNames?.cell, {
+                                      type: 'selection',
+                                      item: row.item,
+                                    })}
                                     columnId={selectionColumnId}
+                                    styleClassNames={styleClassNames}
                                     selectionControlProps={{
                                       ...selection.getItemSelectionProps(row.item),
                                       onFocusDown: moveFocusDown,
@@ -800,6 +818,11 @@ const InternalTable = React.forwardRef(
                                       ariaLabels={ariaLabels}
                                       column={column}
                                       item={row.item}
+                                      styleClassName={getStyleClassName(styleClassNames?.cell, {
+                                        type: 'data',
+                                        item: row.item,
+                                        column,
+                                      })}
                                       wrapLines={wrapLines}
                                       isEditable={isEditable}
                                       isEditing={isEditing}
@@ -852,6 +875,7 @@ const InternalTable = React.forwardRef(
                                     verticalAlign={cellVerticalAlign}
                                     tableVariant={computedVariant}
                                     selectionControlProps={selectionType === 'group' ? loaderSelectionProps : undefined}
+                                    styleClassNames={styleClassNames}
                                     isSelected={selectionType === 'group' && !!loaderSelectionProps?.checked}
                                   />
                                 ) : null}
