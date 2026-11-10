@@ -7,12 +7,15 @@
 // only need to carry enough of a pattern to be recognisable at thumbnail size, so they show a single
 // static state and leave out interaction, real data and the parts that would not survive the crop.
 //
+// Most previews are compositions at or near real size that the frame crops at its edges (see `Crop`),
+// so a thumbnail reads as a detail of a real page rather than as a whole page made tiny. Only the
+// handful of previews that lose their meaning without the whole layout — a wizard, a modal, a page
+// hero — are laid out at a larger size and scaled down to fit (`CONTENT_SIZES`).
+//
 // Add a pattern by adding an entry to `patterns` and a `case` for its `kind` in `PatternPreview`.
-// Previews that only read as themselves above the frame width are laid out larger and either scaled
-// down to fit (`CONTENT_SIZES`) or scaled slightly and cropped at the frame edges.
 //
 // See `pages/heroshot/overview.page.tsx` for the equivalent page covering individual components.
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
   Alert,
@@ -24,16 +27,17 @@ import {
   ButtonDropdown,
   ColumnLayout,
   Container,
-  ContentLayout,
-  Flashbar,
   Form,
   FormField,
-  Grid,
   Header,
+  Icon,
   Input,
   KeyValuePairs,
   Link,
   Modal,
+  Multiselect,
+  PieChart,
+  Popover,
   ProgressBar,
   PropertyFilter,
   RadioGroup,
@@ -42,9 +46,7 @@ import {
   SpaceBetween,
   StatusIndicator,
   Table,
-  Tabs,
   Textarea,
-  TextContent,
   TextFilter,
   Tiles,
   Toggle,
@@ -52,19 +54,30 @@ import {
   Wizard,
 } from '~components';
 import Dropdown from '~components/dropdown/internal';
-import Option from '~components/internal/components/option';
+import Item from '~components/internal/components/listbox/parts/item';
 import OptionsList from '~components/internal/components/options-list';
-import SelectableItem from '~components/internal/components/selectable-item';
 import PopoverArrow from '~components/popover/arrow';
 import PopoverBody from '~components/popover/body';
 import {
+  borderRadiusContainer,
   borderRadiusInput,
+  colorBackgroundButtonPrimaryDefault,
+  colorBackgroundCellShaded,
+  colorBackgroundContainerContent,
+  colorBackgroundControlDisabled,
   colorBackgroundInputDefault,
+  colorBackgroundStatusInfo,
+  colorBorderDividerDefault,
   colorBorderInputDefault,
   colorChartsPaletteCategorical1,
   colorChartsPaletteCategorical2,
+  colorTextHeadingDefault,
+  colorTextLinkDefault,
+  colorTextStatusSuccess,
+  fontWeightHeadingM,
   spaceScaledM,
   spaceScaledS,
+  spaceScaledXs,
   spaceScaledXxs,
 } from '~design-tokens';
 
@@ -80,32 +93,49 @@ type PreviewKind =
   | 'access-denied'
   | 'account'
   | 'actions'
+  | 'alert-info'
   | 'announcement'
   | 'chart'
   | 'command'
   | 'create'
-  | 'hero-header'
   | 'dashboard-item'
+  | 'default-select'
+  | 'density'
   | 'details'
+  | 'disabled-states'
   | 'edit'
   | 'empty'
   | 'error-page'
-  | 'feedback'
+  | 'feedback-buttons'
   | 'filter'
-  | 'form'
-  | 'help'
-  | 'info-link'
+  | 'hero-header'
+  | 'panels-diagram'
+  | 'iam-access'
+  | 'iam-role-select'
+  | 'image'
+  | 'in-context'
+  | 'help-diagram'
+  | 'inline-edit'
+  | 'kms-select'
+  | 'language-validation'
   | 'loading'
+  | 'modal-details'
   | 'navigation'
+  | 'one-click-delete'
   | 'password'
   | 'plans'
-  | 'selection'
+  | 'property-filter'
+  | 'region-table'
+  | 's3-modal'
+  | 'saved-filters'
   | 'status'
   | 'subscription'
-  | 'tag-suggest'
   | 'table'
+  | 'tag-widget'
+  | 'multiselect'
   | 'timestamps'
-  | 'tabs'
+  | 'top-navigation'
+  | 'validation'
   | 'wizard';
 
 interface PatternDefinition {
@@ -131,60 +161,70 @@ const patterns: ReadonlyArray<PatternDefinition> = [
     kind: 'access-denied',
     detail: "You don't have permission to [AWSOrganizations:ListAccounts].",
   },
-  { id: 'account-display', title: 'Account display', kind: 'account', detail: 'Development account' },
-  { id: 'actions', title: 'Actions', kind: 'actions', detail: 'Resource' },
+  {
+    id: 'account-display',
+    title: 'Account display',
+    kind: 'account',
+    detail: 'Mailapp-Backend-Devs',
+  },
+  { id: 'actions', title: 'Actions', kind: 'actions', detail: 'Create resource' },
   {
     id: 'announcing-beta-preview-features',
     title: 'Announcing beta and preview features',
     kind: 'announcement',
-    detail: 'Preview',
+    detail: 'We are improving the way to create scheduled instances.',
   },
-  { id: 'announcing-new-features', title: 'Announcing new features', kind: 'tabs', detail: 'Distribution monitoring' },
+  {
+    id: 'announcing-new-features',
+    title: 'Announcing new features',
+    kind: 'announcement',
+    detail: 'Launch templates is a new capability.',
+  },
   {
     id: 'managed-application-widget',
     title: 'AWS Managed Application widget',
     kind: 'subscription',
     detail: 'Current plan',
   },
-  { id: 'aws-regions', title: 'AWS Regions', kind: 'selection', detail: 'Europe (Frankfurt)' },
-  { id: 'aws-tagging-widget', title: 'AWS Tagging widget', kind: 'tag-suggest', detail: 'some-ta' },
-  { id: 'chart-metric-drill-down', title: 'Chart metric drill down', kind: 'chart', detail: 'Requests by status' },
+  { id: 'aws-regions', title: 'AWS Regions', kind: 'region-table', detail: 'N. Virginia (us-east-1)' },
+  { id: 'aws-tagging-widget', title: 'AWS Tagging widget', kind: 'tag-widget', detail: 'Find a tag' },
+  { id: 'chart-metric-drill-down', title: 'Chart metric drill down', kind: 'chart', detail: 'September 23rd' },
   { id: 'cloudshell-commands', title: 'CloudShell commands', kind: 'command', detail: 'aws ec2 describe-instances' },
-  { id: 'dashboard-items', title: 'Dashboard items', kind: 'dashboard-item', detail: 'Resource health' },
-  { id: 'defaults', title: 'Defaults', kind: 'form', detail: 'Recommended settings applied' },
-  { id: 'density-settings', title: 'Density settings', kind: 'selection', detail: 'Comfortable' },
+  { id: 'dashboard-items', title: 'Dashboard items', kind: 'dashboard-item', detail: 'Board item' },
+  { id: 'defaults', title: 'Defaults', kind: 'default-select', detail: 'Availability zone' },
+  { id: 'density-settings', title: 'Density settings', kind: 'density', detail: 'Comfortable' },
   {
     id: 'disabled-and-read-only-states',
     title: 'Disabled and read-only states',
-    kind: 'form',
-    detail: 'Managed by your organization',
+    kind: 'disabled-states',
+    detail: 'Option 1',
   },
   { id: 'edit-resource', title: 'Edit resource', kind: 'edit', detail: 'Resource name' },
-  { id: 'empty-states', title: 'Empty states', kind: 'empty', detail: 'No resources yet' },
+  { id: 'empty-states', title: 'Empty states', kind: 'empty', detail: 'No resources' },
   { id: 'error-messages', title: 'Error messages', kind: 'access', detail: 'Correct the highlighted fields.' },
   { id: 'error-pages', title: 'Error pages', kind: 'error-page', detail: 'Page not found' },
   { id: 'errors', title: 'Errors', kind: 'access', detail: 'The resource could not be loaded.' },
   {
     id: 'feedback-mechanisms',
     title: 'Feedback mechanisms',
-    kind: 'feedback',
-    detail: 'Instance created successfully.',
+    kind: 'alert-info',
+    detail: 'Known issues/limitations',
   },
   {
     id: 'filter-persistence-in-collection-views',
     title: 'Filter persistence in collection views',
     kind: 'filter',
     detail: 'Status = Running',
+    heading: 'Resources',
   },
   {
     id: 'filtering-patterns',
     title: 'Filtering patterns',
-    kind: 'filter',
+    kind: 'property-filter',
     detail: 'Find resources',
-    heading: 'Resources',
   },
-  { id: 'global-actions', title: 'Global actions', kind: 'actions', detail: 'Items' },
-  { id: 'help-system', title: 'Help system', kind: 'info-link', detail: 'Distribution ID' },
+  { id: 'global-actions', title: 'Global actions', kind: 'actions', detail: 'Create thing' },
+  { id: 'help-system', title: 'Help system', kind: 'help-diagram', detail: 'Help panel' },
   {
     id: 'hero-header',
     title: 'Hero header',
@@ -194,47 +234,43 @@ const patterns: ReadonlyArray<PatternDefinition> = [
   {
     id: 'iam-roles-for-service-access',
     title: 'IAM roles for service access',
-    kind: 'selection',
-    detail: 'Choose an IAM role',
-    heading: 'Service access',
+    kind: 'iam-access',
+    detail:
+      'To access other AWS services and resources your function needs an IAM role. Choose a role with the right permissions for your function.',
   },
   {
     id: 'iam-service-linked-roles',
     title: 'IAM service linked roles',
-    kind: 'status',
-    detail: 'Service-linked role',
-    heading: 'Permissions',
+    kind: 'modal-details',
+    detail: 'Permission details',
   },
-  { id: 'iam-service-role', title: 'IAM service role', kind: 'selection', detail: 'Create a new service role' },
+  { id: 'iam-service-role', title: 'IAM service role', kind: 'iam-role-select', detail: 'Create a new service role' },
   {
     id: 'image-magnifier',
     title: 'Image magnifier',
-    kind: 'details',
+    kind: 'image',
     detail: 'Architecture diagram',
-    heading: 'Architecture diagram',
   },
-  { id: 'in-context-actions', title: 'In-context actions', kind: 'actions', detail: 'Actions for selected resource' },
+  { id: 'in-context-actions', title: 'In-context actions', kind: 'in-context', detail: 'Download' },
   {
     id: 'inclusive-language-validation',
     title: 'Inclusive language validation (internal)',
-    kind: 'form',
-    detail: 'Use an inclusive alternative.',
-    heading: null,
+    kind: 'language-validation',
+    detail: 'Grandfathered',
   },
-  { id: 'inline-edit', title: 'Inline edit', kind: 'edit', detail: 'Edit resource description', heading: null },
+  { id: 'inline-edit', title: 'Inline edit', kind: 'inline-edit', detail: '3A' },
   {
     id: 'kms-key-selection',
     title: 'KMS key selection',
-    kind: 'selection',
-    detail: 'AWS managed key',
-    heading: null,
+    kind: 'kms-select',
+    detail: 'Choose an AWS KMS key',
   },
-  { id: 'loading-and-refreshing', title: 'Loading and refreshing', kind: 'loading', detail: 'Refreshing resources' },
+  { id: 'loading-and-refreshing', title: 'Loading and refreshing', kind: 'loading', detail: 'Loading resources' },
   {
     id: 'migration-communication',
     title: 'Migration communication',
-    kind: 'announcement',
-    detail: 'A new console experience is available.',
+    kind: 'alert-info',
+    detail: 'Introducing the new CloudFront console experience',
   },
   {
     id: 'migration-opt-in-opt-out',
@@ -244,7 +280,7 @@ const patterns: ReadonlyArray<PatternDefinition> = [
     heading: null,
   },
   { id: 'multi-page-create', title: 'Multipage create', kind: 'wizard', detail: 'Configure resource' },
-  { id: 'one-click-delete', title: 'One-click delete', kind: 'actions', detail: 'Delete low-risk item' },
+  { id: 'one-click-delete', title: 'One-click delete', kind: 'one-click-delete', detail: 'Remove' },
   {
     id: 'password-strength-indicator',
     title: 'Password strength indicator',
@@ -261,33 +297,25 @@ const patterns: ReadonlyArray<PatternDefinition> = [
   {
     id: 's3-resource-selection',
     title: 'S3 resource selection',
-    kind: 'selection',
-    detail: 's3://example-bucket/logs/',
-    heading: null,
+    kind: 's3-modal',
+    detail: 'Choose an object in S3',
   },
   {
     id: 'saved-filter-sets',
     title: 'Saved filter sets',
-    kind: 'filter',
-    detail: 'Production resources',
-    heading: 'Saved filter sets',
+    kind: 'saved-filters',
+    detail: 'Stopped instances',
   },
-  { id: 'secondary-panels', title: 'Secondary panels', kind: 'help', detail: 'Selected resource details' },
-  { id: 'selection-in-forms', title: 'Selection in forms', kind: 'selection', detail: 'On-demand' },
+  { id: 'secondary-panels', title: 'Secondary panels', kind: 'panels-diagram', detail: 'Resource details' },
+  { id: 'selection-in-forms', title: 'Selection in forms', kind: 'multiselect', detail: 'Choose options' },
   { id: 'service-navigation', title: 'Service navigation', kind: 'navigation', detail: 'Resources' },
   { id: 'side-navigation', title: 'Side navigation', kind: 'navigation', detail: 'Instances' },
   { id: 'sub-resource-create', title: 'Sub resource create', kind: 'create', detail: 'Add subnet' },
   { id: 'timestamps', title: 'Timestamps', kind: 'timestamps', detail: 'Creation date' },
-  { id: 'top-navigation', title: 'Top navigation', kind: 'navigation', detail: 'Global utilities' },
-  { id: 'user-feedback', title: 'User feedback', kind: 'status', detail: 'How was your experience?' },
-  { id: 'validation', title: 'Validation', kind: 'form', detail: 'Enter a valid resource name.' },
-  {
-    id: 'view-resources',
-    title: 'View resources',
-    kind: 'table',
-    detail: 'Browse resources',
-    heading: 'Browse resources',
-  },
+  { id: 'top-navigation', title: 'Top navigation', kind: 'top-navigation', detail: 'Global utilities' },
+  { id: 'user-feedback', title: 'User feedback', kind: 'feedback-buttons', detail: 'Was this page helpful?' },
+  { id: 'validation', title: 'Validation', kind: 'validation', detail: 'Enter a valid root object.' },
+  { id: 'view-resources', title: 'View resources', kind: 'table', detail: 'production-api' },
 ];
 
 export default function PatternsOverviewHeroshotPage() {
@@ -301,6 +329,7 @@ export default function PatternsOverviewHeroshotPage() {
             label={pattern.title}
             align={TOP_ANCHORED_KINDS.has(pattern.kind) ? 'start' : 'center'}
             padding={PADDINGS[pattern.kind] ?? 16}
+            bleedBlockEnd={BLEED_BLOCK_END_KINDS.has(pattern.kind)}
             stretch={true}
             contentSize={CONTENT_SIZES[pattern.kind]}
           >
@@ -312,61 +341,84 @@ export default function PatternsOverviewHeroshotPage() {
   );
 }
 
-// The new feature is called out by appending an italic "new" to the label of the tab that holds it.
-function NewFeatureTabs({ detail }: { detail: string }) {
-  const [activeTabId, setActiveTabId] = useState('monitoring');
+/**
+ * Lays its content out wider than the frame so that the frame crops it at the edges. This keeps the
+ * content at (or near) the size it would have on a real page instead of shrinking it to fit, which is
+ * what makes a thumbnail read as a detail of a real page.
+ *
+ * `offsetInlineStart` moves the content out of the frame on the start edge as well, for previews whose
+ * subject sits in the middle of a wider composition — a value column next to its labels, the utilities
+ * at the end of a top navigation. `offsetBlockStart` does the same on the top edge, and takes a positive
+ * value to push the content down instead.
+ */
+function Crop({
+  width,
+  scale = 1,
+  offsetInlineStart = 0,
+  offsetBlockStart = 0,
+  origin = 'top left',
+  children,
+}: {
+  width: number;
+  scale?: number;
+  offsetInlineStart?: number;
+  offsetBlockStart?: number;
+  origin?: string;
+  children: React.ReactNode;
+}) {
   return (
-    // The tabs are shorter than the scaled content box, so they are centered in it to sit in the
-    // middle of the frame instead of at its top.
-    <div style={{ blockSize: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-      <Tabs
-        activeTabId={activeTabId}
-        onChange={({ detail }) => setActiveTabId(detail.activeTabId)}
-        tabs={[
-          { id: 'details', label: 'Details', content: 'Distribution details' },
-          { id: 'permissions', label: 'Permissions', content: 'Distribution permissions' },
-          {
-            id: 'monitoring',
-            label: (
-              <>
-                Monitoring - <i>new</i>
-              </>
-            ),
-            content: detail,
-          },
-        ]}
-      />
+    <div
+      style={{
+        inlineSize: width,
+        flexShrink: 0,
+        marginInlineStart: offsetInlineStart,
+        marginBlockStart: offsetBlockStart,
+        transform: scale === 1 ? undefined : `scale(${scale})`,
+        transformOrigin: origin,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+/**
+ * Centers its content on both axes. The frame stretches its content to the full width, so previews
+ * that are about a single small control wrap it in this to sit in the middle of the frame instead.
+ */
+function Centered({ children }: { children: React.ReactNode }) {
+  return (
+    <div
+      style={{
+        blockSize: '100%',
+        inlineSize: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      {children}
     </div>
   );
 }
 
 // Simplified version of the access denied pattern: the error alert states the missing permission and
 // offers the request text in a copyable code block. The real pattern lists the full user, service,
-// action, resource and context lines; the frame only has room for the shape, so they are trimmed.
+// action, resource and context lines; the frame only has room for the first of them.
 //
-// Unlike the other scaled previews this one is not shrunk to fit. It is laid out wider than the frame
-// and only slightly scaled down, so the frame crops it at the right and bottom edges and the thumbnail
-// reads as a detail of a real alert instead of a shrunken whole.
-const ACCESS_DENIED_CROP = { layoutWidth: 560, scale: 0.87 };
-
+// Laid out wider than the frame at full size, so the frame crops it at the right and bottom edges and
+// the thumbnail reads as a detail of a real alert instead of a shrunken whole.
 function AccessDeniedAlert({ detail }: { detail: string }) {
-  const requestLines = ['Service: [AWSOrganizations]', 'Action: [ListAccounts]', 'User: [user/awsgenericuser]'];
+  const requestLines = [
+    'User: [arn:aws:iam::123456789000:user/admin]',
+    'Service: [AWSOrganizations]',
+    'Action: [ListAccounts]',
+  ];
   return (
-    <div
-      style={{
-        inlineSize: ACCESS_DENIED_CROP.layoutWidth,
-        transform: `scale(${ACCESS_DENIED_CROP.scale})`,
-        transformOrigin: 'top left',
-      }}
-    >
+    <Crop width={430}>
       <Alert type="error" header="Access denied">
         <SpaceBetween size="s">
-          <div>
-            {detail} To request access, copy the following text and send it to your AWS administrator.{' '}
-            <Link external={true} href="#">
-              Learn more
-            </Link>
-          </div>
+          <div>{detail} To request access, copy the following text and send it to your AWS administrator.</div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: spaceScaledXxs }}>
             <div
               style={{
@@ -391,25 +443,17 @@ function AccessDeniedAlert({ detail }: { detail: string }) {
           </div>
         </SpaceBetween>
       </Alert>
-    </div>
+    </Crop>
   );
 }
 
 // Subscription widget: the plan and its tier in the header, with the charges and the payment method
 // side by side below. Laid out wider than the frame and cropped, like the access denied preview.
-const SUBSCRIPTION_CROP = { layoutWidth: 760, scale: 0.72 };
-
 function SubscriptionWidget({ detail }: { detail: string }) {
   return (
-    <div
-      style={{
-        inlineSize: SUBSCRIPTION_CROP.layoutWidth,
-        transform: `scale(${SUBSCRIPTION_CROP.scale})`,
-        // Scales about the vertical middle so that the container stays centered in the frame while the
-        // crop falls on the right edge.
-        transformOrigin: 'left center',
-      }}
-    >
+    // Scales about the vertical middle so that the container stays centered in the frame while the
+    // crop falls on the right edge.
+    <Crop width={760} scale={0.72} origin="left center">
       <Container
         header={
           <Header
@@ -438,61 +482,60 @@ function SubscriptionWidget({ detail }: { detail: string }) {
           </SpaceBetween>
         </ColumnLayout>
       </Container>
-    </div>
+    </Crop>
   );
 }
 
-// Tag key suggestions while typing. The public Autosuggest only opens its dropdown while the input is
-// focused, which a heroshot can't rely on, so the open state is reproduced from the same internal
-// building blocks the real dropdown uses, as the component overview page does.
-function OpenTagKeyAutosuggest({ detail }: { detail: string }) {
-  const tagKeys = [`${detail}g1`, `${detail}g2`];
+/**
+ * An announcement attached to the thing it is about: a dotted trigger next to the control or label it
+ * annotates, with its popover open to the side. Popovers only open on click, which a heroshot can't
+ * rely on, so the open state is assembled from the popover internals the same way the component
+ * overview page does.
+ *
+ * The dismiss button is reproduced as a plain icon button rather than through `PopoverBody`, whose own
+ * dismiss button traps focus inside the thumbnail — this static preview has no working dismiss to
+ * release it again.
+ */
+function AnnouncementPopover({ trigger, header, detail }: { trigger: string; header: string; detail: string }) {
   return (
-    <Dropdown
-      open={true}
-      minWidth="trigger"
-      maxWidth="trigger"
-      // The frame clips its overflow, so without this the dropdown would shrink to the remaining space
-      // inside the frame and cut off the last option mid-row.
-      stretchHeight={true}
-      onOutsideClick={noop}
-      onMouseDown={noop}
-      trigger={
-        <Autosuggest
-          value={detail}
-          onChange={noop}
-          options={tagKeys.map(value => ({ value }))}
-          ariaLabel="Tag key"
-          empty="No matches found"
-        />
-      }
-      content={
-        <OptionsList open={true} statusType="finished" role="listbox" ariaLabel="Tag key">
-          <SelectableItem isParent={true}>
-            <Option option={{ label: 'Existing tag keys' }} />
-          </SelectableItem>
-          {tagKeys.map(value => (
-            <SelectableItem key={value} isChild={true}>
-              <Option option={{ value }} highlightText={detail} />
-            </SelectableItem>
-          ))}
-        </OptionsList>
-      }
-    />
+    <div style={{ position: 'relative', blockSize: '100%', display: 'flex', alignItems: 'center' }}>
+      {/* Lifted above the middle of the frame so the trigger sits beside the top of its popover. */}
+      <div style={{ transform: 'translateY(-30px)' }}>
+        <Popover content={null} dismissButton={false}>
+          {trigger}
+        </Popover>
+      </div>
+      <div style={{ position: 'absolute', insetInlineStart: 52, insetBlockStart: 22, inlineSize: 254 }}>
+        <div style={{ position: 'relative' }}>
+          <div
+            className={`${popoverStyles['container-arrow']} ${popoverStyles['container-arrow-position-right-top']}`}
+            aria-hidden={true}
+          >
+            <PopoverArrow position="right-top" />
+          </div>
+          <div className={`${popoverStyles['container-body']} ${popoverStyles['container-body-size-medium']}`}>
+            <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={undefined} header={header}>
+              {detail}
+            </PopoverBody>
+          </div>
+          <div style={{ position: 'absolute', insetBlockStart: 4, insetInlineEnd: 4 }}>
+            <Button variant="icon" iconName="close" ariaLabel="Dismiss announcement" />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
 // Drilling into a bar of a cost chart. Chart popovers only open on hover, which a heroshot can't rely
 // on, so the open state is assembled from the popover internals the same way the component overview
-// page does. Simplified from the real pattern: the per-account breakdown under each service is left
-// out, so the rows are a flat list of services and their totals.
-function ChartDrillDownPopover() {
-  const series = [
-    { label: 'EC2', color: colorChartsPaletteCategorical1 },
-    { label: 'S3', color: colorChartsPaletteCategorical2 },
-  ];
+// page does. The drilled-into service is expanded to the per-account breakdown the pattern is about.
+function ChartDrillDownPopover({ detail }: { detail: string }) {
+  const accounts = ['689704984877', '499704984878', '866704984844'];
   return (
-    <div style={{ position: 'relative', blockSize: '100%' }}>
+    // The top inset keeps the chart's highest tick label clear of the layout box, which would otherwise
+    // clip it; the popover is pushed down by the same amount so it stays level with the plot area.
+    <div style={{ position: 'relative', blockSize: '100%', paddingBlockStart: 10 }}>
       <BarChart
         hideFilter={true}
         hideLegend={true}
@@ -504,7 +547,7 @@ function ChartDrillDownPopover() {
         yTickFormatter={value => `${value / 1000}K`}
         series={[{ title: 'EC2', type: 'bar', data: [{ x: 'Sep 23', y: 28000 }] }]}
       />
-      <div style={{ position: 'absolute', insetBlockStart: 0, insetInlineStart: 96, inlineSize: 232 }}>
+      <div style={{ position: 'absolute', insetBlockStart: 10, insetInlineStart: 90, inlineSize: 330 }}>
         <div style={{ position: 'relative' }}>
           <div
             className={`${popoverStyles['container-arrow']} ${popoverStyles['container-arrow-position-right-top']}`}
@@ -512,7 +555,7 @@ function ChartDrillDownPopover() {
           >
             <PopoverArrow position="right-top" />
           </div>
-          <div className={`${popoverStyles['container-body']} ${popoverStyles['container-body-size-small']}`}>
+          <div className={`${popoverStyles['container-body']} ${popoverStyles['container-body-size-medium']}`}>
             {/*
              * No dismiss button: it would autofocus and trap focus inside the thumbnail, and this
              * static preview has no working dismiss to release it again.
@@ -521,37 +564,64 @@ function ChartDrillDownPopover() {
               dismissButton={false}
               dismissAriaLabel={undefined}
               onDismiss={undefined}
-              header="September 23rd"
+              header={detail}
               variant="chart"
             >
-              <SpaceBetween size="xs">
-                {series.map(item => (
-                  <div
-                    key={item.label}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: spaceScaledXxs,
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: spaceScaledXxs }}>
-                      <div
-                        style={{ inlineSize: 12, blockSize: 12, borderRadius: 2, background: item.color }}
-                        aria-hidden={true}
-                      />
-                      <Box variant="strong">{item.label}</Box>
-                    </div>
-                    <Link external={true} href="#">
-                      $1000.00
-                    </Link>
-                  </div>
+              <SpaceBetween size="xxs">
+                <DrillDownRow
+                  color={colorChartsPaletteCategorical1}
+                  label="EC2"
+                  amount="$1000.00"
+                  expanded={true}
+                  key="ec2"
+                />
+                {accounts.map(account => (
+                  <DrillDownRow key={account} label={`Account: ${account}`} amount="$100.00" indented={true} />
                 ))}
+                <DrillDownRow color={colorChartsPaletteCategorical2} label="S3" amount="$1000.00" key="s3" />
               </SpaceBetween>
             </PopoverBody>
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function DrillDownRow({
+  color,
+  label,
+  amount,
+  expanded,
+  indented,
+}: {
+  color?: string;
+  label: string;
+  amount: string;
+  expanded?: boolean;
+  indented?: boolean;
+}) {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: spaceScaledXxs,
+        justifyContent: 'space-between',
+        marginInlineStart: indented ? spaceScaledM : undefined,
+        whiteSpace: 'nowrap',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: spaceScaledXxs }}>
+        {expanded ? <Icon name="caret-down-filled" size="small" /> : null}
+        {color ? (
+          <div style={{ inlineSize: 12, blockSize: 12, borderRadius: 2, background: color }} aria-hidden={true} />
+        ) : null}
+        {color ? <Box variant="strong">{label}</Box> : <Box>{label}</Box>}
+      </div>
+      <Link external={true} href="#">
+        {amount}
+      </Link>
     </div>
   );
 }
@@ -621,40 +691,704 @@ function RunCommandModal() {
   );
 }
 
-// A single static dashboard item, which is what the pattern is about: a self-contained container whose
-// header carries the title and the item's actions in an icon dropdown, and whose content area
-// visualises one thing — here a chart. The previous preview reused the page-level dashboard header, so
-// it read as a dashboard page rather than as an item on one.
+// The permissions a service-linked role carries, read in a modal from the form that creates it. Like
+// the CloudShell modal it is rendered in an iframe so that the portal stays inside the frame.
+function PermissionDetailsModal() {
+  useUnlockedGalleryScroll();
+
+  return (
+    <Modal visible={true} header="Permission details" closeAriaLabel="Close modal">
+      <KeyValuePairs
+        items={[
+          { label: 'Role name', value: 'AmazonCloudFrontDN' },
+          { label: 'Trusted entity', value: 'cloudfront.amazonaws.com' },
+          { label: 'Policy', value: 'AWSCloudFrontLogger' },
+        ]}
+      />
+    </Modal>
+  );
+}
+
+// Picking a bucket from a modal that lists the account's buckets, the entry point of the S3 resource
+// selection pattern. Rendered in an iframe for the same reason as the modals above.
+function S3SelectionModal() {
+  useUnlockedGalleryScroll();
+
+  return (
+    <Modal
+      visible={true}
+      header="Choose an object in S3"
+      closeAriaLabel="Close modal"
+      footer={
+        <Box float="right">
+          <SpaceBetween size="xs" direction="horizontal">
+            <Button variant="link">Cancel</Button>
+            <Button variant="primary">Choose</Button>
+          </SpaceBetween>
+        </Box>
+      }
+    >
+      <SpaceBetween size="s">
+        <TextFilter filteringText="" filteringPlaceholder="Find buckets" filteringAriaLabel="Find buckets" />
+        <Table
+          variant="embedded"
+          selectionType="single"
+          selectedItems={[buckets[0]]}
+          onSelectionChange={noop}
+          ariaLabels={{
+            selectionGroupLabel: 'Bucket selection',
+            itemSelectionLabel: ({ selectedItems }, item) =>
+              `${item.name}${selectedItems.includes(item) ? ', selected' : ''}`,
+          }}
+          items={buckets}
+          columnDefinitions={[
+            { id: 'name', header: 'Name', cell: item => <Link href="#">{item.name}</Link> },
+            { id: 'created', header: 'Creation date', cell: item => item.created },
+          ]}
+        />
+      </SpaceBetween>
+    </Modal>
+  );
+}
+
+// A single static dashboard item, which is what the pattern is about: a self-contained container that
+// an operator can pick up by its drag handle, whose header carries the title and whose content area
+// visualises one thing — here the share each item takes of a total.
 function DashboardItem({ detail }: { detail: string }) {
   return (
     <Container
       header={
-        <Header
-          variant="h2"
-          actions={
-            <ButtonDropdown
-              variant="icon"
-              ariaLabel="Item actions"
-              items={[
-                { id: 'preferences', text: 'Preferences' },
-                { id: 'remove', text: 'Remove' },
-              ]}
-            />
-          }
-        >
-          {detail}
+        <Header variant="h2">
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: spaceScaledXxs }}>
+            <span aria-hidden={true}>
+              <Icon name="drag-indicator" />
+            </span>
+            {detail}
+          </span>
         </Header>
       }
     >
-      <BarChart
-        height={60}
+      <PieChart
+        variant="donut"
+        size="small"
         hideFilter={true}
         hideLegend={true}
-        xScaleType="categorical"
-        yDomain={[0, 20]}
-        series={[{ title: 'Healthy', type: 'bar', data: healthSeries }]}
+        data={boardItemShares}
+        segmentDescription={(segment, sum) => `${Math.round((segment.value / sum) * 100)}%`}
       />
     </Container>
+  );
+}
+
+// The recommended default of a field, offered as the first option of its dropdown and selected when the
+// form opens. Dropdowns only open on click, which a heroshot can't rely on, so the open state is
+// reproduced from the same internal building blocks the real dropdown uses.
+function DefaultSelect({ detail }: { detail: string }) {
+  const defaultOption = {
+    label: 'No preference',
+    description: 'Availability zone will be assigned automatically',
+  };
+  return (
+    <FormField
+      label={detail}
+      info={
+        <Link variant="info" href="#">
+          Info
+        </Link>
+      }
+    >
+      <Dropdown
+        open={true}
+        minWidth="trigger"
+        maxWidth="trigger"
+        // The frame clips its overflow, so without this the dropdown would shrink to the remaining space
+        // inside the frame and cut off the last option mid-row.
+        stretchHeight={true}
+        onOutsideClick={noop}
+        onMouseDown={noop}
+        trigger={<Select selectedOption={defaultOption} options={[]} onChange={noop} ariaLabel={detail} />}
+        content={
+          <OptionsList open={true} statusType="finished" role="listbox" ariaLabel={detail}>
+            <Item
+              index={0}
+              option={{ option: defaultOption }}
+              selected={true}
+              highlighted={true}
+              highlightType="keyboard"
+            />
+            <Item index={1} option={{ option: { value: 'us-west-2a' } }} />
+            <Item index={2} option={{ option: { value: 'us-west-2b' } }} />
+          </OptionsList>
+        }
+      />
+    </FormField>
+  );
+}
+
+// Choosing a KMS key by searching the account's keys or pasting an ARN. Like the dropdown above, the
+// open state is reproduced from the internal building blocks so that it holds without focus.
+function KmsKeySelect({ detail }: { detail: string }) {
+  return (
+    <FormField label={detail}>
+      <Dropdown
+        open={true}
+        minWidth="trigger"
+        maxWidth="trigger"
+        stretchHeight={true}
+        onOutsideClick={noop}
+        onMouseDown={noop}
+        trigger={
+          <Autosuggest
+            value=""
+            onChange={noop}
+            options={kmsKeys}
+            placeholder={`${detail} or enter an ARN`}
+            ariaLabel={detail}
+            empty="No matches found"
+          />
+        }
+        content={
+          <OptionsList open={true} statusType="finished" role="listbox" ariaLabel={detail}>
+            {kmsKeys.map((option, index) => (
+              <Item key={option.description} index={index} option={{ option }} />
+            ))}
+          </OptionsList>
+        }
+      />
+    </FormField>
+  );
+}
+
+// Choosing several values from a set while filling in a form, which is what the pattern covers. The
+// control carries that on its own, so the preview shows the multiselect open and nothing else. Dropdowns
+// only open on click, which a heroshot can't rely on, so the open state is reproduced from the same
+// internal building blocks the real dropdown uses.
+function MultiselectInForm({ detail }: { detail: string }) {
+  return (
+    // Nudged down so that the trigger and its open dropdown sit centered in the frame as one block: the
+    // dropdown is positioned out of flow, so centering the trigger alone would leave the options hanging
+    // past the bottom edge.
+    <div style={{ marginBlockStart: 18 }}>
+      <Dropdown
+        open={true}
+        minWidth="trigger"
+        maxWidth="trigger"
+        stretchHeight={true}
+        onOutsideClick={noop}
+        onMouseDown={noop}
+        trigger={
+          <Multiselect selectedOptions={[]} options={[]} placeholder={detail} onChange={noop} ariaLabel={detail} />
+        }
+        content={
+          <OptionsList open={true} statusType="finished" role="listbox" ariaLabel={detail}>
+            <Item
+              index={0}
+              selectionType="multi"
+              option={{ option: { label: 'Option 1' } }}
+              selected={true}
+              highlighted={true}
+              highlightType="keyboard"
+            />
+            <Item index={1} selectionType="multi" option={{ option: { label: 'Option 2' } }} />
+          </OptionsList>
+        }
+      />
+    </div>
+  );
+}
+
+/**
+ * The actions of a section, which is all this pattern is about: the grouped secondary actions and the
+ * primary one, in the header of the section they act on. The section is laid out past the frame on the
+ * start and bottom edges, so only its top-right corner is in view and the actions carry the thumbnail —
+ * what the section holds does not matter here, so its content area is left empty.
+ */
+function ActionsInCorner({ detail }: { detail: string }) {
+  return (
+    <Crop width={560} offsetInlineStart={-256} offsetBlockStart={10}>
+      <Container
+        header={
+          <Header
+            variant="h2"
+            actions={
+              <SpaceBetween direction="horizontal" size="xs">
+                <ButtonDropdown
+                  items={[
+                    { id: 'edit', text: 'Edit' },
+                    { id: 'delete', text: 'Delete' },
+                  ]}
+                >
+                  Actions
+                </ButtonDropdown>
+                <Button variant="primary">{detail}</Button>
+              </SpaceBetween>
+            }
+          >
+            Resources
+          </Header>
+        }
+      >
+        <div style={{ blockSize: 200 }} />
+      </Container>
+    </Crop>
+  );
+}
+
+// The action offered on each row of a collection, which is all this pattern is about — so the preview
+// shows the rows alone, without the collection-level actions above them.
+function InContextActionsTable({ detail }: { detail: string }) {
+  return (
+    <Crop width={400}>
+      <Table
+        variant="embedded"
+        items={cells}
+        columnDefinitions={[
+          {
+            id: 'first',
+            header: 'cell',
+            cell: () => (
+              <Popover content="Resource details" dismissButton={false}>
+                Popover trigger
+              </Popover>
+            ),
+          },
+          { id: 'second', header: 'cell', cell: () => <Link href="#">{detail}</Link> },
+        ]}
+      />
+    </Crop>
+  );
+}
+
+// Tagging an existing resource: the tags already on it, searchable, with their values editable in place
+// and the policy each value comes from linked from the row.
+function TaggingWidget({ detail }: { detail: string }) {
+  return (
+    // The container variant, like the regions table: the search belongs to the table, so it goes in its
+    // filter slot rather than in a box of its own above it.
+    <Table
+      items={tags}
+      filter={<TextFilter filteringText="" filteringPlaceholder={detail} filteringAriaLabel={detail} />}
+      columnDefinitions={[
+        { id: 'key', header: 'Key', cell: item => item.key },
+        {
+          id: 'value',
+          header: 'Value',
+          cell: item => <Input type="search" value={item.value} onChange={noop} ariaLabel={`${item.key} value`} />,
+        },
+        { id: 'policy', header: 'Policy', cell: item => <Link href="#">{item.policies}</Link> },
+      ]}
+    />
+  );
+}
+
+// Editing one cell of a table without leaving it: the active cell swaps its value for the control that
+// edits it, with the submit and cancel actions beside the control.
+function InlineEditTable({ detail }: { detail: string }) {
+  return (
+    <Crop width={520}>
+      <Table
+        variant="embedded"
+        items={objects}
+        sortingColumn={{ sortingField: 'name' }}
+        columnDefinitions={[
+          {
+            id: 'name',
+            header: 'Item',
+            sortingField: 'name',
+            cell: item => <Link href="#">{item.name}</Link>,
+          },
+          {
+            id: 'type',
+            header: 'Type',
+            sortingField: 'type',
+            cell: item =>
+              item.editing ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: spaceScaledXxs }}>
+                  <Select
+                    selectedOption={{ label: detail, value: detail }}
+                    options={[]}
+                    onChange={noop}
+                    ariaLabel={`${item.name} type`}
+                  />
+                  <Button variant="icon" iconName="close" ariaLabel="Cancel edit" />
+                  <Button variant="icon" iconName="check" ariaLabel="Submit edit" />
+                </div>
+              ) : (
+                item.type
+              ),
+          },
+          { id: 'size', header: 'Size', cell: item => item.size },
+        ]}
+      />
+    </Crop>
+  );
+}
+
+// The filter bar of a collection whose filters are saved as a set: the saved sets to switch between,
+// the free-text search, and the filters currently applied with the way to clear them.
+function SavedFilterSets({ detail }: { detail: string }) {
+  return (
+    <Crop width={460}>
+      <SpaceBetween size="s">
+        <div style={{ display: 'grid', gridTemplateColumns: '190px 1fr', gap: spaceScaledS }}>
+          <Select
+            selectedOption={{ label: detail, value: 'stopped' }}
+            options={[]}
+            onChange={noop}
+            ariaLabel="Saved filter sets"
+          />
+          <TextFilter filteringText="" filteringPlaceholder="Find resources" filteringAriaLabel="Find resources" />
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: spaceScaledS }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: spaceScaledXxs,
+              paddingInlineStart: spaceScaledS,
+              border: `1px solid ${colorBorderInputDefault}`,
+              borderRadius: borderRadiusInput,
+              background: colorBackgroundInputDefault,
+            }}
+          >
+            <Box>State: Stop</Box>
+            <Button variant="icon" iconName="close" ariaLabel="Remove filter" />
+          </div>
+          <div style={{ alignSelf: 'stretch', borderInlineEnd: `1px solid ${colorBorderDividerDefault}` }} />
+          <ButtonDropdown
+            mainAction={{ text: 'Clear filters' }}
+            items={[{ id: 'save', text: 'Save as new filter set' }]}
+            ariaLabel="Filter set actions"
+          />
+        </div>
+      </SpaceBetween>
+    </Crop>
+  );
+}
+
+/**
+ * The role a service acts under, which is what the pattern asks the user to decide: let the console
+ * create a role with the permissions the service needs, or point it at a role that already exists. The
+ * consequence of the default choice is spelled out underneath it.
+ */
+function ServiceAccessForm({ detail }: { detail: string }) {
+  return (
+    // Laid out wider than the frame so the two choices keep their columns: Tiles falls back to one column
+    // below 465px, and once the container's own padding is taken off, 520 is about the narrowest layout
+    // that stays above that.
+    <Crop width={520}>
+      <Container>
+        <FormField label="Permissions" description={detail}>
+          <SpaceBetween size="s">
+            <Tiles
+              value="default"
+              columns={2}
+              onChange={noop}
+              items={[
+                { value: 'default', label: 'Create default role' },
+                { value: 'existing', label: 'Use another role' },
+              ]}
+            />
+            <Box variant="p">
+              A new role will be created named &ldquo;myFunctionName-role-5abtoqem&rdquo; to give your function
+              permission to upload logs to Amazon CloudWatch.
+            </Box>
+          </SpaceBetween>
+        </FormField>
+      </Container>
+    </Crop>
+  );
+}
+
+/**
+ * How an account is named where a page refers to one, taken from the pattern's own example: the account
+ * name links to the account, its ID follows in parentheses, and the email it belongs to closes the line
+ * in secondary text. Read as one key-value pair of a details page, which is where the pattern puts it.
+ *
+ * The pattern's other example pairs this with copy-to-clipboard actions across three columns, which at
+ * thumbnail width would collapse into a single column and lose that shape, so this preview shows the
+ * account line alone.
+ */
+function AccountDisplay({ detail }: { detail: string }) {
+  return (
+    // Laid out a little wider than the frame so that the name and ID keep one line, with the email on
+    // its own line below: the whole line is wider than any thumbnail, and cropping it would cut the ID
+    // or break the email mid-word.
+    <Crop width={380}>
+      <Container>
+        <KeyValuePairs
+          columns={1}
+          items={[
+            {
+              label: 'Account',
+              value: (
+                <div>
+                  <div>
+                    <Link href="#" variant="primary" external={true} externalIconAriaLabel="(opens in a new tab)">
+                      {detail}
+                    </Link>{' '}
+                    <span>({account.id})</span>
+                  </div>
+                  <Box variant="span" color="text-body-secondary" fontSize="body-s">
+                    {account.email}
+                  </Box>
+                </div>
+              ),
+            },
+          ]}
+        />
+      </Container>
+    </Crop>
+  );
+}
+
+/**
+ * The help system is about where help lives rather than about what it says: a panel beside the page,
+ * holding the explanation of what the page asks for and the links that go deeper. At thumbnail size real
+ * copy in both halves is unreadable, so this preview is an abstract drawing of that split, with the page
+ * content on the left and the panel on the right. Everything is drawn from colour tokens, so the drawing
+ * follows the theme like the rest of the gallery.
+ */
+function HelpSystemDiagram() {
+  return (
+    // Laid out wider than the frame and shifted, so the page content is cut on the start edge and the
+    // panel keeps its full width: the panel is the subject of the pattern.
+    <Crop width={430} offsetInlineStart={-116}>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 190px',
+          // Taller than the frame, so the drawing is cropped at its bottom edge rather than floating in it.
+          blockSize: 200,
+          boxSizing: 'border-box',
+          borderBlockStart: `1px solid ${colorBorderDividerDefault}`,
+          background: colorBackgroundContainerContent,
+        }}
+        aria-hidden={true}
+      >
+        <div style={{ padding: spaceScaledM }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: spaceScaledS }}>
+            <Bar />
+            <div
+              style={{
+                blockSize: 11,
+                inlineSize: 60,
+                flexShrink: 0,
+                background: colorBackgroundButtonPrimaryDefault,
+              }}
+            />
+          </div>
+          {/* The container the page content sits in, which the help panel explains. */}
+          <div
+            style={{
+              marginBlockStart: 24,
+              blockSize: 130,
+              border: `1px solid ${colorBorderDividerDefault}`,
+              borderRadius: borderRadiusContainer,
+            }}
+          />
+        </div>
+        <div style={{ padding: spaceScaledM, borderInlineStart: `1px solid ${colorBorderDividerDefault}` }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ blockSize: 14, inlineSize: 100, background: colorTextHeadingDefault }} />
+            <Icon name="angle-right" />
+          </div>
+          <div style={{ display: 'grid', rowGap: 9, marginBlockStart: 12 }}>
+            <Bar />
+            <Bar />
+            <Bar />
+            <div style={{ inlineSize: '80%' }}>
+              <Bar />
+            </div>
+          </div>
+          {/* The links out of the panel, which the pattern puts at the end of it. */}
+          <div style={{ display: 'grid', rowGap: 9, marginBlockStart: 12 }}>
+            <LinkBar />
+            <LinkBar />
+          </div>
+        </div>
+      </div>
+    </Crop>
+  );
+}
+
+function LinkBar() {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: spaceScaledXs }}>
+      <div style={{ blockSize: 7, inlineSize: '76%', background: colorTextLinkDefault }} />
+      <div style={{ blockSize: 7, inlineSize: 10, background: colorTextLinkDefault }} />
+    </div>
+  );
+}
+
+/**
+ * Secondary panels are about what sits beside the page rather than about any one panel's content: two of
+ * them open at once, each with its own title and its own way of collapsing. At thumbnail size real copy
+ * in two columns is unreadable, so this is an abstract drawing of that arrangement, in the same style as
+ * the help system drawing above.
+ */
+function SecondaryPanelsDiagram() {
+  return (
+    // Same framing as the help system drawing: the layout's end edge lands on the frame's, so its
+    // top-right corner is in view, and what comes before it is cut on the start edge.
+    <Crop width={340} offsetInlineStart={-26}>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '170px 170px',
+          // Taller than the frame, so the drawing is cropped at its bottom edge rather than floating in it.
+          blockSize: 200,
+          boxSizing: 'border-box',
+          borderBlockStart: `1px solid ${colorBorderDividerDefault}`,
+          background: colorBackgroundContainerContent,
+        }}
+        aria-hidden={true}
+      >
+        {/* A panel of details, with rows that expand into more of them. */}
+        <PanelColumn>
+          <div style={{ display: 'grid', rowGap: 9, marginBlockStart: 14 }}>
+            <Bar />
+            <Bar />
+          </div>
+          <div style={{ display: 'grid', rowGap: 9, marginBlockStart: 16 }}>
+            <ExpandableRow />
+            <ExpandableRow />
+          </div>
+        </PanelColumn>
+        {/* A panel of progress, where each step carries its own status. */}
+        <PanelColumn>
+          <div style={{ display: 'grid', rowGap: 9, marginBlockStart: 14 }}>
+            <StatusRow iconName="status-positive" iconVariant="success" barColor={colorTextStatusSuccess} />
+            <Bar />
+            <Bar />
+            <div style={{ inlineSize: '70%' }}>
+              <Bar />
+            </div>
+          </div>
+          <div style={{ display: 'grid', rowGap: 9, marginBlockStart: 16 }}>
+            <StatusRow iconName="status-pending" barColor={colorTextHeadingDefault} />
+            <Bar />
+            <div style={{ inlineSize: '70%' }}>
+              <Bar />
+            </div>
+          </div>
+        </PanelColumn>
+      </div>
+    </Crop>
+  );
+}
+
+// A panel of the drawing above: its title and the control that collapses it, over whatever it holds.
+function PanelColumn({ children }: { children: React.ReactNode }) {
+  return (
+    <div style={{ padding: spaceScaledM, borderInlineStart: `1px solid ${colorBorderDividerDefault}` }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ blockSize: 11, inlineSize: 90, background: colorTextHeadingDefault }} />
+        <Icon name="angle-right" />
+      </div>
+      {children}
+    </div>
+  );
+}
+
+function ExpandableRow() {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: spaceScaledXxs }}>
+      <Icon name="caret-right-filled" size="small" />
+      <div style={{ inlineSize: '78%' }}>
+        <Bar />
+      </div>
+    </div>
+  );
+}
+
+function StatusRow({
+  iconName,
+  iconVariant,
+  barColor,
+}: {
+  iconName: 'status-positive' | 'status-pending';
+  iconVariant?: 'success';
+  barColor: string;
+}) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: spaceScaledXs }}>
+      <Icon name={iconName} variant={iconVariant} />
+      <div style={{ blockSize: 7, inlineSize: '82%', background: barColor }} />
+    </div>
+  );
+}
+
+/**
+ * The density setting is about the spacing of a whole page rather than about one control, which no real
+ * component can show at thumbnail size. So this preview is an abstract drawing instead: the same page,
+ * once in comfortable and once in compact spacing, with its content standing in as bars. Everything is
+ * drawn from colour tokens, so the drawing follows the theme like the rest of the gallery.
+ */
+function DensityDiagram() {
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: spaceScaledM }}>
+      <DensityPanel rows={5} rowGap={13} />
+      <DensityPanel rows={8} rowGap={6} />
+    </div>
+  );
+}
+
+function DensityPanel({ rows, rowGap }: { rows: number; rowGap: number }) {
+  return (
+    <div
+      // Taller than the frame so that the panels are cropped at its bottom edge, which keeps the rows
+      // reading as part of a longer page.
+      style={{
+        blockSize: 190,
+        boxSizing: 'border-box',
+        padding: spaceScaledM,
+        border: `1px solid ${colorBorderDividerDefault}`,
+        borderRadius: borderRadiusContainer,
+        background: colorBackgroundContainerContent,
+      }}
+      aria-hidden={true}
+    >
+      <div style={{ blockSize: 7, inlineSize: '70%', background: colorTextHeadingDefault }} />
+      <div style={{ display: 'grid', rowGap, marginBlockStart: 20 }}>
+        {Array.from({ length: rows }, (_, index) => (
+          <div key={index} style={{ display: 'grid', gridTemplateColumns: '12% 32% 1fr', gap: 6 }}>
+            <Bar />
+            <Bar />
+            <Bar />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// A placeholder for a line of content in the abstract drawings above.
+function Bar() {
+  return <div style={{ blockSize: 7, inlineSize: '100%', background: colorBackgroundControlDisabled }} />;
+}
+
+// A diagram shown at a size the page has room for, with the control that magnifies it in the corner.
+function ImageMagnifier() {
+  return (
+    // Shifted up so the diagram's bottom-left corner is in view, with the magnify control in it: the
+    // diagram runs past the frame on the top and end edges, as it would on a page with room for it.
+    <Crop width={430} offsetBlockStart={-90}>
+      <div
+        style={{
+          border: `1px solid ${colorBorderDividerDefault}`,
+          borderRadius: borderRadiusInput,
+          background: colorBackgroundInputDefault,
+          padding: spaceScaledXs,
+        }}
+      >
+        <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: spaceScaledXs, alignItems: 'end' }}>
+          <Button iconName="zoom-in" ariaLabel="Magnify diagram" />
+          {/* Stands in for the diagram itself, which a thumbnail has no room to show. */}
+          <div style={{ blockSize: 200, background: colorBackgroundStatusInfo }} aria-hidden={true} />
+        </div>
+      </div>
+    </Crop>
   );
 }
 
@@ -683,116 +1417,121 @@ function previewHeading(
 }
 
 /**
- * The hero header of a product detail page: the product named and described on the left, its actions
- * stacked on the right, over a high-contrast band that the page content follows. Text is kept short so
- * it reads at thumbnail size — a real hero header carries a full product description here.
+ * The hero header of a product page is a band of its own above the page content: what the product is on
+ * one side, the actions that take you into it on the other. At thumbnail size its copy is unreadable, so
+ * this preview is an abstract drawing of that band and the page it heads, in the same style as the other
+ * drawings in this gallery.
  */
-function HeroHeader({ detail }: { detail: string }) {
+function HeroHeaderDiagram() {
   return (
-    <ContentLayout
-      defaultPadding={true}
-      disableOverlap={true}
-      headerVariant="high-contrast"
-      header={
-        <Box padding={{ vertical: 'l' }}>
-          {/*
-            Fixed colspans rather than per-breakpoint ones: the preview is laid out at a single width.
-            A slightly wider action column than a real page needs, so the primary action stays on one
-            line at the width this preview is scaled down from.
-          */}
-          <Grid gridDefinition={[{ colspan: 7 }, { colspan: 5 }]}>
-            <div>
-              <Box variant="h1">Elastic Cloud</Box>
-              <Box variant="p" color="text-body-secondary" margin={{ top: 'xxs', bottom: 's' }}>
-                {detail}
-              </Box>
-              <SpaceBetween size="xxs">
-                <div>
-                  Sold by:{' '}
-                  <Link variant="primary" href="#">
-                    Elastic
-                  </Link>
-                </div>
-                <div>
-                  Tags:{' '}
-                  <Link variant="primary" href="#">
-                    Free trial
-                  </Link>
-                  {' | '}
-                  <Link variant="primary" href="#">
-                    Vendor insights
-                  </Link>
-                </div>
-              </SpaceBetween>
-            </div>
-            <Box margin={{ top: 'l' }}>
-              <SpaceBetween size="xs">
-                <Button variant="primary" fullWidth={true}>
-                  View purchase options
-                </Button>
-                <Button fullWidth={true}>Request a demo</Button>
-              </SpaceBetween>
-            </Box>
-          </Grid>
-        </Box>
-      }
-    >
-      <Box variant="h2" padding={{ top: 'l' }}>
-        Content heading
-      </Box>
-      <Box variant="p">This is a content paragraph.</Box>
-    </ContentLayout>
+    <div style={{ inlineSize: '100%', blockSize: 200, background: colorBackgroundContainerContent }} aria-hidden={true}>
+      {/* The band itself: the product named and described, with its actions at the end. */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr auto',
+          gap: spaceScaledM,
+          alignItems: 'start',
+          padding: spaceScaledM,
+          background: colorBackgroundCellShaded,
+        }}
+      >
+        <div>
+          <div style={{ blockSize: 12, inlineSize: '85%', background: colorTextHeadingDefault }} />
+          <div style={{ display: 'grid', rowGap: 8, marginBlockStart: 14, inlineSize: '70%' }}>
+            <Bar />
+            <Bar />
+          </div>
+        </div>
+        <div style={{ display: 'grid', rowGap: 8, inlineSize: 72 }}>
+          <div style={{ blockSize: 14, background: colorTextHeadingDefault }} />
+          <div
+            style={{
+              blockSize: 14,
+              boxSizing: 'border-box',
+              border: `1px solid ${colorBorderDividerDefault}`,
+              background: colorBackgroundContainerContent,
+            }}
+          />
+        </div>
+      </div>
+      {/* The page content the band heads, cropped at the frame's bottom edge. */}
+      <div style={{ padding: spaceScaledM }}>
+        <div
+          style={{
+            blockSize: 120,
+            border: `1px solid ${colorBorderDividerDefault}`,
+            borderRadius: borderRadiusContainer,
+          }}
+        />
+      </div>
+    </div>
   );
 }
 
 function PatternPreview({ pattern }: { pattern: PatternDefinition }) {
   switch (pattern.kind) {
+    // Cropped at the right edge, like the info alerts: the alert reads at the width it has on a real
+    // page rather than being squeezed into the frame.
     case 'access':
       return (
-        <Alert type="error" header={pattern.title} action={<Button>View permissions</Button>}>
-          {pattern.detail}
-        </Alert>
+        <Crop width={470}>
+          <Alert type="error" header={pattern.title}>
+            {pattern.detail}
+          </Alert>
+        </Crop>
       );
     case 'access-denied':
       return <AccessDeniedAlert detail={pattern.detail} />;
     case 'subscription':
       return <SubscriptionWidget detail={pattern.detail} />;
+    // The pattern is about reading the account you are acting in, so the preview shows only the account
+    // line itself: its name and number, the account type, and the address it belongs to.
     case 'account':
-      return (
-        <Container>
-          <KeyValuePairs items={[{ label: pattern.detail, value: '1234-5678-9012' }]} />
-        </Container>
-      );
-    // The pattern is about the action buttons themselves, so the preview shows only them: the grouped
-    // secondary actions and the primary one, without the container and header they would sit in.
+      return <AccountDisplay detail={pattern.detail} />;
     case 'actions':
-      return (
-        <div style={{ blockSize: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <SpaceBetween direction="horizontal" size="xs">
-            <ButtonDropdown
-              items={[
-                { id: 'edit', text: 'Edit' },
-                { id: 'delete', text: 'Delete' },
-              ]}
-            >
-              Actions
-            </ButtonDropdown>
-            <Button variant="primary">{pattern.id === 'one-click-delete' ? 'Delete' : 'Create'}</Button>
-          </SpaceBetween>
-        </div>
-      );
+      return <ActionsInCorner detail={pattern.detail} />;
+    case 'in-context':
+      return <InContextActionsTable detail={pattern.detail} />;
     case 'announcement':
       return (
-        <Alert type="info" header={pattern.detail} action={<Button>Learn more</Button>}>
-          {pattern.title}
-        </Alert>
+        <AnnouncementPopover
+          trigger={pattern.id === 'announcing-new-features' ? 'New' : 'Beta'}
+          header={pattern.id === 'announcing-new-features' ? 'New feature' : 'Beta feature'}
+          detail={pattern.detail}
+        />
       );
-    case 'tabs':
-      return <NewFeatureTabs detail={pattern.detail} />;
+    // Announcements and caveats a service makes about itself, which the pattern delivers as a page-level
+    // info alert. Cropped at the right edge so the text reads at the size it has on a real page.
+    case 'alert-info':
+      return (
+        <Crop width={470}>
+          <Alert type="info" header={pattern.detail}>
+            {pattern.id === 'migration-communication' ? (
+              <>
+                We&apos;ve redesigned the CloudFront console to make it easier to find what you need.{' '}
+                <Link href="#">Let us know what you think.</Link>
+              </>
+            ) : (
+              'Review the documentation to learn about potential compatibility issues with specific database versions.'
+            )}
+          </Alert>
+        </Crop>
+      );
     case 'chart':
-      return <ChartDrillDownPopover />;
+      return <ChartDrillDownPopover detail={pattern.detail} />;
     case 'command':
       return <IframeWrapper id="heroshot-run-command" size={PAGE_CONTENT_SIZE} AppComponent={RunCommandModal} />;
+    case 'modal-details':
+      return (
+        <IframeWrapper
+          id="heroshot-permission-details"
+          size={PAGE_CONTENT_SIZE}
+          AppComponent={PermissionDetailsModal}
+        />
+      );
+    case 's3-modal':
+      return <IframeWrapper id="heroshot-s3-selection" size={PAGE_CONTENT_SIZE} AppComponent={S3SelectionModal} />;
     case 'create':
       return (
         <Form
@@ -805,9 +1544,15 @@ function PatternPreview({ pattern }: { pattern: PatternDefinition }) {
         </Form>
       );
     case 'hero-header':
-      return <HeroHeader detail={pattern.detail} />;
+      return <HeroHeaderDiagram />;
     case 'dashboard-item':
       return <DashboardItem detail={pattern.detail} />;
+    case 'default-select':
+      return <DefaultSelect detail={pattern.detail} />;
+    case 'kms-select':
+      return <KmsKeySelect detail={pattern.detail} />;
+    case 'multiselect':
+      return <MultiselectInForm detail={pattern.detail} />;
     case 'details':
       return (
         <Container header={previewHeading(pattern, { fallback: pattern.detail })}>
@@ -820,153 +1565,145 @@ function PatternPreview({ pattern }: { pattern: PatternDefinition }) {
           />
         </Container>
       );
+    // The states a field can be in when the user may not change it: disabled, because something else has
+    // to happen first, above the editable field it is compared with.
+    case 'disabled-states':
+      return (
+        <Centered>
+          <div style={{ inlineSize: '100%' }}>
+            <SpaceBetween size="m">
+              <Select
+                disabled={true}
+                selectedOption={{ label: pattern.detail, value: 'option-1' }}
+                options={[]}
+                onChange={noop}
+                ariaLabel="Disabled selection"
+              />
+              <Select
+                selectedOption={{ label: pattern.detail, value: 'option-1' }}
+                options={[]}
+                onChange={noop}
+                ariaLabel="Selection"
+              />
+            </SpaceBetween>
+          </div>
+        </Centered>
+      );
+    // Two densities of the same content, which is what the setting switches between.
+    case 'density':
+      return <DensityDiagram />;
+    // The fields carry the pattern on their own, so the section keeps no heading: at thumbnail size a
+    // heading would cost the room the second field needs.
     case 'edit':
       return (
-        <Container header={previewHeading(pattern)}>
-          <FormField label={pattern.detail}>
-            <Input value="Production" onChange={noop} />
-          </FormField>
+        <Container>
+          <SpaceBetween size="l">
+            <FormField label={pattern.detail}>
+              <Input value="Production" onChange={noop} />
+            </FormField>
+            <FormField label="Description">
+              <Input value="Production web tier" onChange={noop} />
+            </FormField>
+          </SpaceBetween>
         </Container>
       );
+    case 'inline-edit':
+      return <InlineEditTable detail={pattern.detail} />;
+    // The empty state fills the slot its collection would occupy, so the preview shows the message and
+    // the way out of it alone, without the table frame around them.
     case 'empty':
       return (
-        <Table
-          variant="embedded"
-          header={<Header variant="h2">{pattern.title}</Header>}
-          items={resources.slice(0, 0)}
-          columnDefinitions={[{ id: 'name', header: 'Name', cell: item => item.name }]}
-          empty={
-            <Box textAlign="center">
-              <SpaceBetween size="xs">
-                <b>{pattern.detail}</b>
-                <Button>Create resource</Button>
-              </SpaceBetween>
-            </Box>
-          }
-        />
-      );
-    // An error page fills the page rather than a collection's empty slot, so unlike the `empty` preview
-    // it is shown without a table around it: just the message and the way out of it.
-    case 'error-page':
-      return (
-        <div style={{ blockSize: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Centered>
           <Box textAlign="center">
             <SpaceBetween size="xs">
-              <b>{pattern.detail}</b>
+              <Box color="text-status-inactive">{pattern.detail}</Box>
               <Button>Create resource</Button>
             </SpaceBetween>
           </Box>
-        </div>
+        </Centered>
       );
-    case 'feedback':
-      return <Flashbar items={[{ type: 'success', content: pattern.detail, id: 'success' }]} />;
+    case 'error-page':
+      return (
+        <Centered>
+          <Box textAlign="center">
+            <SpaceBetween size="xs">
+              {/*
+               * Medium rather than bold: Box only offers normal, bold and heavy, so the weight comes from
+               * the heading token, which is the medium weight of the theme.
+               */}
+              <div style={{ fontWeight: fontWeightHeadingM }}>{pattern.detail}</div>
+              <Button>Create resource</Button>
+            </SpaceBetween>
+          </Box>
+        </Centered>
+      );
+    // A collection whose filter survives leaving the page and coming back, so the preview shows the
+    // filter applied and the rows it leaves behind.
     case 'filter':
       return (
         <Table
           variant="embedded"
-          header={previewHeading(pattern, {
-            // Only the filtering preview reads as a resource collection; the others are named after
-            // the filter state they show, which a row count would not belong to.
-            counter: pattern.id === 'filtering-patterns' ? '(2)' : undefined,
-          })}
+          header={previewHeading(pattern)}
           filter={
-            pattern.id === 'filtering-patterns' ? (
-              <PropertyFilter
-                query={{ tokens: [], operation: 'and' }}
-                filteringAriaLabel="Filter resources"
-                filteringPlaceholder={pattern.detail}
-                filteringProperties={[]}
-                onChange={noop}
-              />
-            ) : (
-              <TextFilter
-                filteringText="production"
-                filteringAriaLabel="Filter resources"
-                countText="2 matches"
-                onChange={noop}
-              />
-            )
+            <TextFilter
+              filteringText="production"
+              filteringAriaLabel="Filter resources"
+              countText="2 matches"
+              onChange={noop}
+            />
           }
           items={resources.slice(0, 2)}
           columnDefinitions={resourceColumns}
         />
       );
-    case 'form': {
-      const field = (
-        <FormField
-          label="Resource name"
-          description={pattern.id === 'defaults' ? pattern.detail : undefined}
-          errorText={
-            pattern.id === 'validation' || pattern.id === 'inclusive-language-validation' ? pattern.detail : undefined
-          }
-        >
-          <Input
-            value={pattern.id === 'disabled-and-read-only-states' ? 'Organization default' : 'resource-name'}
-            disabled={pattern.id === 'disabled-and-read-only-states'}
+    // Filtering by property: the query is built from tokens, which is what the pattern is about, so the
+    // preview shows the tokens and their operators rather than the collection under them.
+    case 'property-filter':
+      return (
+        <Crop width={470}>
+          <PropertyFilter
+            query={{ operation: 'or', tokens: filterTokens }}
+            filteringAriaLabel="Filter resources"
+            filteringPlaceholder={pattern.detail}
+            filteringProperties={filteringProperties}
             onChange={noop}
+          />
+        </Crop>
+      );
+    case 'saved-filters':
+      return <SavedFilterSets detail={pattern.detail} />;
+    case 'panels-diagram':
+      return <SecondaryPanelsDiagram />;
+    case 'iam-access':
+      return <ServiceAccessForm detail={pattern.detail} />;
+    // Choosing between an existing role and a new one, the decision the pattern is about.
+    case 'iam-role-select':
+      return (
+        <FormField label="Service access">
+          <RadioGroup
+            value="new"
+            onChange={noop}
+            items={[
+              { value: 'new', label: pattern.detail },
+              { value: 'existing', label: 'Use an existing service role' },
+            ]}
           />
         </FormField>
       );
-      return FORM_WITHOUT_CONTAINER.has(pattern.id) ? (
-        field
-      ) : (
-        <Container header={previewHeading(pattern)}>{field}</Container>
-      );
-    }
-    case 'help':
-      return (
-        <Container header={<Header variant="h2">{pattern.title}</Header>}>
-          <SpaceBetween size="xs">
-            <Box>{pattern.detail}</Box>
-            <Link href="#">Learn more</Link>
-          </SpaceBetween>
-        </Container>
-      );
-    case 'info-link':
-      return (
-        // The frame stretches its content, so the pairs are wrapped in a box that shrinks to their own
-        // width and is then centered on both axes. A single column because at the frame width a third
-        // of it is too narrow to keep the label, value and info link from wrapping.
-        <div style={{ blockSize: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ inlineSize: 'fit-content' }}>
-            <KeyValuePairs
-              columns={1}
-              items={[
-                {
-                  label: pattern.detail,
-                  value: 'E1WG1ZNPRXT0D4',
-                  info: (
-                    <Link variant="info" href="#">
-                      Info
-                    </Link>
-                  ),
-                },
-              ]}
-            />
-          </div>
-        </div>
-      );
+    case 'image':
+      return <ImageMagnifier />;
+    case 'help-diagram':
+      return <HelpSystemDiagram />;
+    // Loading is page-level here rather than inside a collection, which is what the pattern covers: the
+    // page says what it is fetching and nothing else is on it yet.
     case 'loading':
       return (
-        <Table
-          variant="embedded"
-          header={<Header variant="h2">{pattern.title}</Header>}
-          loading={true}
-          loadingText={pattern.detail}
-          items={resources}
-          columnDefinitions={resourceColumns}
-        />
+        <Centered>
+          <StatusIndicator type="loading">{pattern.detail}</StatusIndicator>
+        </Centered>
       );
     case 'navigation':
-      return pattern.id === 'top-navigation' || pattern.id === 'aws-console-navigation' ? (
-        <TopNavigation
-          identity={{ title: pattern.detail, href: '#' }}
-          utilities={[
-            { type: 'button', iconName: 'notification', ariaLabel: 'Notifications' },
-            { type: 'menu-dropdown', text: 'Account', items: [{ id: 'settings', text: 'Settings' }] },
-          ]}
-        />
-      ) : (
+      return (
         <SideNavigation
           header={{ text: 'Service', href: '#' }}
           activeHref="#resources"
@@ -976,8 +1713,53 @@ function PatternPreview({ pattern }: { pattern: PatternDefinition }) {
           ]}
         />
       );
-    // Flat-rate plan tiers, the pricing model the pattern covers: a fixed recurring price per user at
-    // each tier, which the customer upgrades or downgrades between.
+    // The same composition as the TopNavigation component heroshot: the bar at the full width of the
+    // frame, with the identity at its start and the utilities at its end.
+    case 'top-navigation':
+      return (
+        <TopNavigation
+          identity={{ title: 'Service', href: '#' }}
+          utilities={[
+            { type: 'button', iconName: 'notification', ariaLabel: 'Notifications' },
+            { type: 'menu-dropdown', text: 'Account', items: [{ id: 'profile', text: 'Profile' }] },
+          ]}
+        />
+      );
+    // Deleting a low-risk item without a confirmation step: the action sits on the item itself and takes
+    // effect on the first click. Cropped on the start edge so the remove actions lead the composition.
+    case 'one-click-delete':
+      return (
+        <Crop width={470} offsetInlineStart={-145}>
+          {/*
+           * The rows are laid out directly rather than with AttributeEditor, which stacks its fields
+           * one per row at this width and would lose the row-per-item shape the pattern is about.
+           */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '150px 200px max-content',
+              columnGap: spaceScaledS,
+              rowGap: spaceScaledXs,
+              alignItems: 'end',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            <Box variant="awsui-key-label">Key</Box>
+            <Box variant="awsui-key-label">Value</Box>
+            <div />
+            {recipients.map(recipient => (
+              <React.Fragment key={recipient.key}>
+                <Input value={recipient.key} onChange={noop} ariaLabel="Key" />
+                <Input value={recipient.value} onChange={noop} ariaLabel="Value" />
+                <Button>{pattern.detail}</Button>
+              </React.Fragment>
+            ))}
+            <div>
+              <Button>Add new item</Button>
+            </div>
+          </div>
+        </Crop>
+      );
     // The real pattern renders the strength meter with PasswordStrengthIndicator, which ships in a
     // separate package, so the frame shows the fields it sits between and stands the meter in with a
     // progress bar.
@@ -995,11 +1777,11 @@ function PatternPreview({ pattern }: { pattern: PatternDefinition }) {
           </FormField>
         </SpaceBetween>
       );
+    // Flat-rate plan tiers, the pricing model the pattern covers: a fixed recurring price per user at
+    // each tier, which the customer upgrades or downgrades between.
     case 'plans':
       return (
-        // The frame stretches its content, so the tiers are wrapped in a box that shrinks to their own
-        // width and is then centered on both axes.
-        <div style={{ blockSize: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Centered>
           <div style={{ inlineSize: 'fit-content' }}>
             <RadioGroup
               value={pattern.detail.toLowerCase()}
@@ -1011,86 +1793,89 @@ function PatternPreview({ pattern }: { pattern: PatternDefinition }) {
               ]}
             />
           </div>
-        </div>
+        </Centered>
       );
-    case 'selection': {
-      const control =
-        pattern.id === 'selection-in-forms' || pattern.id === 'density-settings' ? (
-          <Tiles
-            value="selected"
-            columns={2}
-            onChange={noop}
-            items={[
-              { value: 'selected', label: pattern.detail },
-              { value: 'alternative', label: 'Alternative' },
+    case 'region-table':
+      return (
+        <Crop width={400}>
+          <Table
+            items={regions}
+            columnDefinitions={[
+              { id: 'region', header: 'Region', cell: item => item.name },
+              { id: 'status', header: 'Status', cell: () => <StatusIndicator>Healthy</StatusIndicator> },
             ]}
           />
-        ) : pattern.id.includes('iam') ? (
-          <RadioGroup
-            value="existing"
-            onChange={noop}
-            items={[
-              { value: 'existing', label: pattern.detail },
-              { value: 'new', label: 'Create a new role' },
-            ]}
-          />
-        ) : (
-          <Select selectedOption={{ label: pattern.detail, value: 'selected' }} options={[]} onChange={noop} />
-        );
-      // These two are about choosing a value while filling in a form, so the control is shown as a
-      // labelled form field. The rest stand in for a whole section of a page, so they keep the
-      // container and its heading.
-      return SELECTION_AS_FORM_FIELD.has(pattern.id) ? (
-        <FormField label={pattern.title}>{control}</FormField>
-      ) : (
-        <Container header={previewHeading(pattern)}>{control}</Container>
+        </Crop>
       );
-    }
     case 'status':
       return (
         <Container header={previewHeading(pattern)}>
-          <SpaceBetween size="s">
-            {pattern.id === 'user-feedback' ? (
-              <RadioGroup
-                value="good"
-                onChange={noop}
-                items={[
-                  { value: 'good', label: 'Good' },
-                  { value: 'poor', label: 'Needs improvement' },
-                ]}
-              />
-            ) : (
-              <Toggle checked={true} onChange={noop}>
-                {pattern.detail}
-              </Toggle>
-            )}
-          </SpaceBetween>
+          <Toggle checked={true} onChange={noop}>
+            {pattern.detail}
+          </Toggle>
         </Container>
       );
-    case 'tag-suggest':
-      return <OpenTagKeyAutosuggest detail={pattern.detail} />;
-    case 'table':
+    // Feedback collected on the page it is about, which is what the pattern is: a single question and
+    // the two answers to it.
+    case 'feedback-buttons':
       return (
-        <Table
-          variant="embedded"
-          header={previewHeading(pattern, { fallback: pattern.detail })}
-          items={resources}
-          columnDefinitions={linkedResourceColumns}
-        />
+        <Centered>
+          <SpaceBetween size="s" alignItems="center">
+            <Box variant="h3">{pattern.detail}</Box>
+            <SpaceBetween size="xs" direction="horizontal">
+              <Button iconName="thumbs-up">Yes</Button>
+              <Button iconName="thumbs-down">No</Button>
+            </SpaceBetween>
+          </SpaceBetween>
+        </Centered>
       );
+    case 'tag-widget':
+      return <TaggingWidget detail={pattern.detail} />;
+    // No heading: the pattern is about reading a collection, and the rows carry that on their own.
+    case 'table':
+      return <Table variant="embedded" items={resources} columnDefinitions={linkedResourceColumns} />;
+    // An absolute timestamp with its timezone and the user who caused the event, which is the form the
+    // pattern recommends over a relative one.
     case 'timestamps':
       return (
-        // The key label renders a `div`, so these wrappers cannot be `p` elements: React logs the
-        // invalid nesting as a console error, which fails the accessibility test run.
-        <TextContent>
+        <Centered>
           <div>
-            <Box variant="awsui-key-label">{pattern.detail}</Box>5 hours ago by <Link href="#">plrs</Link>
+            <Box variant="awsui-key-label">{pattern.detail}</Box>
+            <div>
+              January 31, 2023, 14:32 (UTC+3:30) by <Link href="#">plrs</Link>
+            </div>
           </div>
-          <br />
-          <div>
-            <Box variant="awsui-key-label">Scan completed</Box>6 days ago
-          </div>
-        </TextContent>
+        </Centered>
+      );
+    // Validation on submit: the field keeps the value that failed, and the error says what to do about
+    // it. Cropped at the right edge so the field reads at the width it has on a real form.
+    case 'validation':
+      return (
+        <Crop width={430}>
+          <FormField
+            label="Root object"
+            description="Enter the URL of the object that you want service to return when a viewer requests the root URL."
+            errorText={pattern.detail}
+          >
+            <Input value="project" invalid={true} onChange={noop} />
+          </FormField>
+        </Crop>
+      );
+    // A term flagged while the user types it, with the guidance that replaces it underneath. The flagged
+    // value stands in for the terms the real validation covers, which this repository does not use.
+    case 'language-validation':
+      return (
+        <Crop width={430}>
+          <SpaceBetween size="s">
+            <FormField label="Name" description="Specify a unique name for the group.">
+              <Input value={pattern.detail} invalid={true} onChange={noop} />
+            </FormField>
+            <Alert type="warning">
+              The term &ldquo;{pattern.detail}&rdquo; does not follow Amazon acceptable language guidelines. Replace it
+              with a more inclusive alternative.
+            </Alert>
+          </SpaceBetween>
+        </Crop>
       );
     case 'wizard':
       return (
@@ -1116,18 +1901,26 @@ function PatternPreview({ pattern }: { pattern: PatternDefinition }) {
 
 const noop = () => {};
 
-// Kinds laid out from the top of the frame rather than centered in it. Previews taller than the frame
-// are already top-aligned by the frame itself, so this is only for content that fits but still has to
-// sit at the top: the tag suggestions, whose dropdown hangs below the input and needs the room underneath.
-const TOP_ANCHORED_KINDS = new Set<PreviewKind>(['tag-suggest']);
-
-// Selection previews shown as a labelled form field instead of inside a container with a heading.
-const SELECTION_AS_FORM_FIELD = new Set(['aws-regions', 'selection-in-forms']);
-
-// Form previews about the state of the field itself — its prefilled value, or its disabled styling —
-// so they are shown as a bare field. The rest read as a validation state within a section of a page
-// and keep the container and heading around it.
-const FORM_WITHOUT_CONTAINER = new Set(['defaults', 'disabled-and-read-only-states']);
+// Kinds laid out from the top of the frame rather than centered in it. Content taller than the frame is
+// already top-aligned by the frame itself, so this is for compositions that fit vertically but are
+// cropped horizontally, or that hang a dropdown below a trigger and need the room underneath.
+const TOP_ANCHORED_KINDS = new Set<PreviewKind>([
+  'access-denied',
+  'actions',
+  'default-select',
+  'density',
+  'help-diagram',
+  'iam-access',
+  'image',
+  'in-context',
+  'inline-edit',
+  'kms-select',
+  'one-click-delete',
+  'panels-diagram',
+  'region-table',
+  'saved-filters',
+  'multiselect',
+]);
 
 // Kinds that only read as themselves above the frame width are laid out larger and scaled down.
 // Both sizes keep the 346:170 frame ratio so that the scaled content fills the frame without letterboxing.
@@ -1136,43 +1929,55 @@ const PAGE_CONTENT_SIZE = { width: 800, height: 393 };
 
 const CONTENT_SIZES: Partial<Record<PreviewKind, { width: number; height: number }>> = {
   wizard: PAGE_CONTENT_SIZE,
-  // The modal renders at viewport scale, so it gets a viewport-sized layout of its own.
+  // The modals render at viewport scale, so they get a viewport-sized layout of their own.
   command: PAGE_CONTENT_SIZE,
-  // Just wide enough that the three tabs fit on one line instead of collapsing into scroll buttons.
-  // The ratio matches the padded content box (314x138), not the frame, so that the scaled tabs fill
-  // the full width instead of being letterboxed by the height constraint.
-  tabs: { width: 420, height: 185 },
+  'modal-details': PAGE_CONTENT_SIZE,
+  's3-modal': PAGE_CONTENT_SIZE,
   // Two fields and the strength meter are a little taller than the frame at full size, so they are laid
   // out slightly larger and scaled down (~0.85) to fit whole instead of having the second field cropped.
   password: { width: 370, height: 163 },
-  // Likewise for the dashboard item: scaled down (~0.8) so its container closes inside the frame
-  // instead of having its bottom edge cropped away.
-  'dashboard-item': { width: 390, height: 171 },
-  // A page-level hero, laid out wide enough for its two columns to sit side by side and scaled down.
-  // The frame ratio rather than the padded box, since this preview bleeds to the frame edges.
-  'hero-header': { width: 680, height: 334 },
+  // The dashboard item is laid out wide enough for the chart labels to sit beside the chart. The ratio
+  // follows its own padded box, which has no bottom inset (see `BLEED_BLOCK_END_KINDS`), so the chart
+  // gets the full height down to the frame edge.
+  'dashboard-item': { width: 470, height: 230 },
+  // The container variant puts the search inside the table, which with the header row and the editable
+  // rows is taller than the frame; laid out larger so the search and two rows stay in view.
+  'tag-widget': { width: 460, height: 202 },
+  // The drill-down popover needs the room for its per-account rows, which only fits beside the chart at
+  // a wider layout.
+  chart: { width: 440, height: 193 },
 };
 
+// Kinds that give up the frame's bottom inset to the content. The dashboard item is a chart that is
+// cropped at the bottom anyway, so every pixel of height it gains shows more of the chart.
+const BLEED_BLOCK_END_KINDS = new Set<PreviewKind>(['dashboard-item']);
+
 // Kinds whose content bleeds to the frame edges and so supplies its own insets.
-const PADDINGS: Partial<Record<PreviewKind, number>> = { wizard: 8, command: 0, 'hero-header': 0 };
+const PADDINGS: Partial<Record<PreviewKind, number>> = {
+  wizard: 8,
+  command: 0,
+  'hero-header': 0,
+  'modal-details': 0,
+  's3-modal': 0,
+  'top-navigation': 0,
+};
 
 interface Resource {
   name: string;
   status: string;
 }
 
-// Enough bars that the dashboard item's chart reads as a trend rather than as a single value.
-const healthSeries = [
-  { x: 'Mon', y: 12 },
-  { x: 'Tue', y: 15 },
-  { x: 'Wed', y: 11 },
-  { x: 'Thu', y: 17 },
-  { x: 'Fri', y: 14 },
+// Enough segments that the dashboard item's chart reads as a breakdown rather than as a single value.
+const boardItemShares = [
+  { title: 'Item A', value: 50 },
+  { title: 'Item B', value: 30 },
+  { title: 'Item C', value: 20 },
 ];
 
 const resources: Resource[] = [
   { name: 'production-api', status: 'Running' },
   { name: 'staging-worker', status: 'Stopped' },
+  { name: 'analytics-batch', status: 'Running' },
 ];
 const statusColumn = {
   id: 'status',
@@ -1186,4 +1991,57 @@ const resourceColumns = [{ id: 'name', header: 'Name', cell: (item: Resource) =>
 const linkedResourceColumns = [
   { id: 'name', header: 'Name', cell: (item: Resource) => <Link href="#">{item.name}</Link> },
   statusColumn,
+];
+
+// Rows of a generic collection, for the previews that are about the actions around a table rather than
+// about the data in it.
+const cells = [{ id: 'first' }, { id: 'second' }, { id: 'third' }];
+
+// The account the account-display preview names, from the pattern's own example.
+const account = { id: '508979544374', email: 'developers-backend@example.com' };
+
+const regions = [{ name: 'N. Virginia (us-east-1)' }, { name: 'Ireland (eu-west-1)' }, { name: 'Ohio (us-east-2)' }];
+
+const tags = [
+  { key: 'CostCenter', value: '102', policies: '1' },
+  { key: 'Environment', value: 'prod', policies: '2' },
+  { key: 'Owner', value: 'platform', policies: '1' },
+];
+
+const objects = [
+  { name: 'BKASRBK1', type: '1A', size: '1.2 MB', editing: false },
+  { name: 'BPGGJENK', type: '3A', size: '2.3 MB', editing: true },
+  { name: 'CAIISYXF2', type: '2B', size: '1.6 MB', editing: false },
+];
+
+const buckets = [
+  { name: 'bucket-fuglat', created: 'December 27, 2019' },
+  { name: 'bucket-ut', created: 'July 06, 2019' },
+  { name: 'bucket-veniam', created: 'June 13, 2019' },
+];
+
+const recipients = [
+  { key: 'owner', value: 'abcd@amazon.com' },
+  { key: 'operator', value: 'efgh@amazon.com' },
+];
+
+// The same KMS key under a few aliases, as the real selection lists them: the key ID with the alias it
+// is reachable by underneath.
+const kmsKeys = [
+  { value: '6b22f61b-68f3-417b-b8f2-aaa29112d9a0', description: 'alias-1' },
+  { value: '6b22f61b-68f3-417b-b8f2-aaa29112d9a1', description: 'alias-2' },
+  { value: '6b22f61b-68f3-417b-b8f2-aaa29112d9a2', description: 'alias-3' },
+];
+
+const filteringProperties = [
+  { key: 'state', propertyLabel: 'State', groupValuesLabel: 'State values', operators: ['=', '!='] },
+  { key: 'type', propertyLabel: 'Type', groupValuesLabel: 'Type values', operators: ['=', '!='] },
+  { key: 'status', propertyLabel: 'Status', groupValuesLabel: 'Status values', operators: ['=', '!='] },
+];
+
+// Two tokens: enough for the operator between them to show, which is what the pattern is about, without
+// filling the frame with chips.
+const filterTokens = [
+  { propertyKey: 'state', operator: '=', value: 'Running' },
+  { propertyKey: 'type', operator: '=', value: 't3' },
 ];

@@ -29,12 +29,17 @@ interface HeroshotProps {
   align?: 'center' | 'start';
   /** Inset between the frame edges and the content. Set to 0 for compositions that bleed to the edges. */
   padding?: number;
+  /**
+   * Drops the inset on the bottom edge, so the content runs to it. Use for content that needs every
+   * pixel of height it can get and is cropped at the bottom anyway — a chart filling a dashboard item.
+   */
+  bleedBlockEnd?: boolean;
   /** Stretches the content to the full frame width. Use for block components such as alert or container. */
   stretch?: boolean;
   /**
    * Lays the content out at this pixel size and scales it down to fit the frame. Use for page-level
    * layouts (app layout, wizard) that only read as themselves at a full viewport width. Pick a size
-   * with the same 346:170 aspect ratio to avoid letterboxing.
+   * with the same aspect ratio as the padded content box to avoid letterboxing.
    */
   contentSize?: { width: number; height: number };
   children: React.ReactNode;
@@ -53,27 +58,23 @@ export function Heroshot({
   label,
   align = 'center',
   padding = 16,
+  bleedBlockEnd = false,
   stretch = false,
   contentSize,
   children,
 }: HeroshotProps) {
+  const paddingBlockEnd = bleedBlockEnd ? 0 : padding;
+  const contentInlineSize = HEROSHOT_WIDTH - 2 * padding;
+  const contentBlockSize = HEROSHOT_HEIGHT - padding - paddingBlockEnd;
+
   // Scaled content is laid out at its own size and shrunk to fit, so it ignores the flex alignment below.
   const scaled = contentSize ? (
-    <div
-      style={{
-        inlineSize: HEROSHOT_WIDTH - 2 * padding,
-        blockSize: HEROSHOT_HEIGHT - 2 * padding,
-        overflow: 'hidden',
-      }}
-    >
+    <div style={{ inlineSize: contentInlineSize, blockSize: contentBlockSize, overflow: 'hidden' }}>
       <div
         style={{
           inlineSize: contentSize.width,
           blockSize: contentSize.height,
-          transform: `scale(${Math.min(
-            (HEROSHOT_WIDTH - 2 * padding) / contentSize.width,
-            (HEROSHOT_HEIGHT - 2 * padding) / contentSize.height
-          )})`,
+          transform: `scale(${Math.min(contentInlineSize / contentSize.width, contentBlockSize / contentSize.height)})`,
           transformOrigin: 'top left',
         }}
       >
@@ -95,7 +96,8 @@ export function Heroshot({
           inlineSize: HEROSHOT_WIDTH,
           blockSize: HEROSHOT_HEIGHT,
           boxSizing: 'border-box',
-          padding,
+          paddingBlock: `${padding}px ${paddingBlockEnd}px`,
+          paddingInline: padding,
           overflow: 'hidden',
           background: colorBackgroundLayoutMain,
           outline: `1px dashed ${colorBorderDividerDefault}`,
