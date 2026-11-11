@@ -109,7 +109,9 @@ This property only applies when an \`href\` is provided.",
       "defaultValue": "false",
       "description": "Stretches the action card to fill the available height.
 
-Use this property to align heights of multiple action cards displayed in a single row.",
+Use this property to align heights of multiple action cards displayed in a single row.
+
+Unlike in the [container](/components/container/) component, setting this property to \`true\` does not make the body scrollable if the action card overflows its parent.",
       "name": "fitHeight",
       "optional": true,
       "type": "boolean",
@@ -18374,7 +18376,9 @@ exports[`Components definition for item-card matches the snapshot: item-card 1`]
       "defaultValue": "false",
       "description": "Stretches the item card to fill the available height.
 
-Use this property to align heights of multiple item cards displayed in a single row.",
+Use this property to align heights of multiple item cards displayed in a single row.
+
+Unlike in the [container](/components/container/) component, setting this property to \`true\` does not make the body scrollable if the item card overflows its parent.",
       "name": "fitHeight",
       "optional": true,
       "type": "boolean",

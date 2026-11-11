@@ -88,6 +88,8 @@ export interface ActionCardProps extends BaseComponentProps {
    * Stretches the action card to fill the available height.
    *
    * Use this property to align heights of multiple action cards displayed in a single row.
+   *
+   * Unlike in the [container](/components/container/) component, setting this property to `true` does not make the body scrollable if the action card overflows its parent.
    */
   fitHeight?: boolean;
 

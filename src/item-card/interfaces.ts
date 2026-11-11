@@ -61,6 +61,8 @@ export interface ItemCardProps extends BaseComponentProps {
    * Stretches the item card to fill the available height.
    *
    * Use this property to align heights of multiple item cards displayed in a single row.
+   *
+   * Unlike in the [container](/components/container/) component, setting this property to `true` does not make the body scrollable if the item card overflows its parent.
    */
   fitHeight?: boolean;
 
