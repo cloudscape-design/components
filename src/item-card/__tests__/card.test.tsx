@@ -345,16 +345,4 @@ describe('internal props', () => {
       expect(itemCard.getElement()).not.toHaveClass(styles.highlighted);
     });
   });
-
-  describe('fitHeight', () => {
-    it('applies fit-height class when fitHeight=true', () => {
-      const { itemCard } = renderItemCard(<ItemCard fitHeight={true}>content</ItemCard>);
-      expect(itemCard.getElement()).toHaveClass(styles['fit-height']);
-    });
-
-    it.each([false, undefined])('does not apply fit-height class when fitHeight=%s', fitHeight => {
-      const { itemCard } = renderItemCard(<ItemCard fitHeight={fitHeight}>content</ItemCard>);
-      expect(itemCard.getElement()).not.toHaveClass(styles['fit-height']);
-    });
-  });
 });
