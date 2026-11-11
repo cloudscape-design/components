@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext } from 'react';
 
+import Checkbox from '~components/checkbox';
 import ColumnLayout from '~components/column-layout';
 import Grid from '~components/grid';
 import ItemCard, { ItemCardProps } from '~components/item-card';
@@ -13,7 +14,7 @@ import { actions } from './common';
 
 import styles from './fit-height.scss';
 
-type DemoContext = React.Context<AppContextType<{ showFooters: boolean }>>;
+type DemoContext = React.Context<AppContextType<{ showFooters: boolean; constrainHeight: boolean }>>;
 
 function ItemCardPlayground(props: ItemCardProps) {
   const { urlParams } = useContext(AppContext as DemoContext);
@@ -54,14 +55,12 @@ export default function () {
     <SimplePage
       title="Item card fit height"
       settings={
-        <label>
-          <input
-            type="checkbox"
-            checked={urlParams.showFooters ?? false}
-            onChange={event => setUrlParams({ showFooters: event.target.checked })}
-          />{' '}
+        <Checkbox
+          checked={urlParams.showFooters ?? false}
+          onChange={({ detail }) => setUrlParams({ showFooters: detail.checked })}
+        >
           Show footers
-        </label>
+        </Checkbox>
       }
       screenshotArea={{}}
     >
@@ -99,6 +98,15 @@ export default function () {
           <MediumCard />
           <LargeCard />
         </SpaceBetween>
+      </div>
+
+      <div>
+        <h2>Inside parent with constrained height</h2>
+        <div className={styles.short}>
+          <SmallCard />
+          <MediumCard />
+          <LargeCard />
+        </div>
       </div>
     </SimplePage>
   );
