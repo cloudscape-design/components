@@ -16,7 +16,7 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { GeneratedAnalyticsMetadataTabsComponent } from './analytics-metadata/interfaces';
 import { TabsProps } from './interfaces';
-import { getTabElementId, TabHeaderBar } from './tab-header-bar';
+import { getTabElementId, StyleClassNames, TabHeaderBar } from './tab-header-bar';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -58,6 +58,7 @@ export default function Tabs({
   style,
   ...rest
 }: TabsProps) {
+  const styleClassNames = (rest as { styleClassNames?: StyleClassNames }).styleClassNames;
   for (const tab of tabs) {
     checkSafeUrl('Tabs', tab.href);
   }
@@ -105,7 +106,7 @@ export default function Tabs({
     const renderContent = (tab: TabsProps.Tab) => {
       const isTabSelected = tab === selectedTab;
 
-      const classes = clsx({
+      const classes = clsx(styleClassNames?.content, {
         [styles['tabs-content']]: true,
         [styles['tabs-content-active']]: isTabSelected,
       });
@@ -156,6 +157,7 @@ export default function Tabs({
       i18nStrings={i18nStrings}
       keyboardActivationMode={keyboardActivationMode}
       style={style}
+      styleClassNames={styleClassNames}
     />
   );
 

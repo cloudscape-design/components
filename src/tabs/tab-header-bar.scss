@@ -7,11 +7,64 @@
 @use '../internal/styles//foundation' as foundation;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../internal/styles/style-api' as style-api;
 
 $separator-color: awsui.$color-border-tabs-divider;
 $label-horizontal-spacing: awsui.$space-xs;
 
+// Style API v2
+$header-tokens: style-api.resolve((divider-color, divider-width), carrier);
+$tab-tokens: style-api.resolve(
+  (active-indicator-color, active-indicator-width, active-indicator-border-radius),
+  public
+);
+$link-tokens: style-api.resolve(style-api.$focus-ring, carrier);
+$content-tokens: style-api.resolve(style-api.$focus-ring, carrier);
+@include style-api.register($header-tokens, $tab-tokens, $link-tokens, $content-tokens);
+@include style-api.docs(
+  'tabsHeader',
+  $header-tokens,
+  $properties: (border),
+  $descriptions: (
+    slot:
+      'The bar with all tabs, the scroll buttons and `actions`. The block-end border is the divider between the tabs and the content.',
+    tokens: (
+      divider-color: 'The line between two tabs.',
+    )
+  )
+);
+@include style-api.docs(
+  'tab',
+  $tab-tokens,
+  $properties: (background, border, border-radius),
+  $descriptions: (
+    slot:
+      'One tab: the box around the link, the `action` and the dismiss button, and the underline of the active tab. Accepts a class name or a function of the tab returning one. Pass a different class for `disabled`, and for the active tab when you control `activeTabId`.',
+    tokens: (
+      active-indicator-color: 'The underline of the active tab.',
+      active-indicator-width: 'Thickness of the underline.',
+      active-indicator-border-radius: 'Corner radius of the underline, one length.',
+    )
+  )
+);
+@include style-api.docs(
+  'tabLink',
+  $link-tokens,
+  $properties: (color, padding, font-family, font-size, font-weight),
+  $descriptions: (
+    slot:
+      "The clickable element of a tab, a `button` or an `a` with `href`: its text, padding and focus ring. Use `:hover` for the interaction state; style the link of an active or disabled tab through that tab's class, for example `.my-active-tab .my-link`."
+  )
+);
+@include style-api.docs(
+  'content',
+  $content-tokens,
+  $descriptions: (slot: 'The panel of each tab. The focus ring shows on the active panel on keyboard focus.')
+);
+@include style-api.docs-forward('dismissButton', 'button', 'root');
+
 .tabs-header {
+  @include style-api.carriers($header-tokens);
   margin-block: 0;
   margin-inline: 0;
   padding-block: 0;
@@ -133,24 +186,39 @@ $label-horizontal-spacing: awsui.$space-xs;
     inset-inline-start: 0;
     inline-size: calc(100% - 1px);
     inset-block-end: calc(-1 * #{awsui.$border-divider-section-width});
-    block-size: var(#{custom-props.$styleTabsActiveIndicatorWidth}, awsui.$border-active-width);
-    border-start-start-radius: var(
-      #{custom-props.$styleTabsActiveIndicatorBorderRadius},
-      awsui.$border-radius-tabs-focus-ring
+    block-size: style-api.value(
+      $tab-tokens,
+      active-indicator-width,
+      var(#{custom-props.$styleTabsActiveIndicatorWidth}, awsui.$border-active-width)
     );
-    border-start-end-radius: var(
-      #{custom-props.$styleTabsActiveIndicatorBorderRadius},
-      awsui.$border-radius-tabs-focus-ring
+    --awsui-style-active-indicator-color: inherit;
+    --awsui-style-active-indicator-width: inherit;
+    --awsui-style-active-indicator-border-radius: inherit;
+    border-start-start-radius: style-api.value(
+      $tab-tokens,
+      active-indicator-border-radius,
+      var(#{custom-props.$styleTabsActiveIndicatorBorderRadius}, awsui.$border-radius-tabs-focus-ring)
     );
-    border-end-start-radius: var(
-      #{custom-props.$styleTabsActiveIndicatorBorderRadius},
-      awsui.$border-radius-tabs-focus-ring
+    border-start-end-radius: style-api.value(
+      $tab-tokens,
+      active-indicator-border-radius,
+      var(#{custom-props.$styleTabsActiveIndicatorBorderRadius}, awsui.$border-radius-tabs-focus-ring)
     );
-    border-end-end-radius: var(
-      #{custom-props.$styleTabsActiveIndicatorBorderRadius},
-      awsui.$border-radius-tabs-focus-ring
+    border-end-start-radius: style-api.value(
+      $tab-tokens,
+      active-indicator-border-radius,
+      var(#{custom-props.$styleTabsActiveIndicatorBorderRadius}, awsui.$border-radius-tabs-focus-ring)
     );
-    background: var(#{custom-props.$styleTabsActiveIndicatorColor}, awsui.$color-border-tabs-underline);
+    border-end-end-radius: style-api.value(
+      $tab-tokens,
+      active-indicator-border-radius,
+      var(#{custom-props.$styleTabsActiveIndicatorBorderRadius}, awsui.$border-radius-tabs-focus-ring)
+    );
+    background: style-api.value(
+      $tab-tokens,
+      active-indicator-color,
+      var(#{custom-props.$styleTabsActiveIndicatorColor}, awsui.$color-border-tabs-underline)
+    );
     opacity: 0;
   }
 
@@ -170,8 +238,13 @@ $label-horizontal-spacing: awsui.$space-xs;
     &:before {
       content: '';
       position: absolute;
-      border-inline-end: var(#{custom-props.$styleTabsSeparatorWidth}, awsui.$border-divider-section-width) solid
-        var(#{custom-props.$styleTabsSeparatorColor}, $separator-color);
+      border-inline-end: style-api.value(
+          $header-tokens,
+          divider-width,
+          var(#{custom-props.$styleTabsSeparatorWidth}, awsui.$border-divider-section-width)
+        )
+        solid
+        style-api.value($header-tokens, divider-color, var(#{custom-props.$styleTabsSeparatorColor}, $separator-color));
       inset: awsui.$space-scaled-s 0;
       opacity: 1;
     }
@@ -183,6 +256,7 @@ $label-horizontal-spacing: awsui.$space-xs;
 }
 
 .tabs-tab-link {
+  @include style-api.carriers($link-tokens);
   position: relative;
   display: flex;
   align-items: stretch;
@@ -231,12 +305,24 @@ $label-horizontal-spacing: awsui.$space-xs;
 
   @include focus-visible.when-visible {
     #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
-      var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
-      var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused);
+      style-api.value(
+        $link-tokens,
+        focus-ring-width,
+        var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
+      )
+      style-api.value(
+        $link-tokens,
+        focus-ring-color,
+        var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused)
+      );
 
     @include styles.focus-highlight(
       $gutter: awsui.$space-tabs-focus-outline-gutter,
-      $border-radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
+      $border-radius: style-api.value(
+          $link-tokens,
+          focus-ring-radius,
+          var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring)
+        ),
       $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow}),
       // Positions focus ring above the underline to prevent the bottom edge from being obscured.
       // Previously used z-index on the button, but that hides the underline when the button has a background color.
