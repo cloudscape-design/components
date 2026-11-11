@@ -8,6 +8,7 @@ import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { TableTdElement, TableTdElementProps } from '../body-cell/td-element';
 import { TableThElement, TableThElementProps } from '../header-cell/th-element';
 import { Divider } from '../resizer';
+import { getStyleClassName, StyleClassNames } from '../style-api';
 import { ItemSelectionProps } from './interfaces';
 import { SelectionControl, SelectionControlProps } from './selection-control';
 
@@ -19,11 +20,13 @@ interface TableHeaderSelectionCellProps extends Omit<TableThElementProps, 'child
   getSelectAllProps?: () => ItemSelectionProps;
   onFocusMove: ((sourceElement: HTMLElement, fromIndex: number, direction: -1 | 1) => void) | undefined;
   isGrouped?: boolean;
+  styleClassNames?: StyleClassNames;
 }
 
 interface TableBodySelectionCellProps
   extends Omit<TableTdElementProps, 'children' | 'colIndex' | 'wrapLines' | 'isEditable' | 'isEditing'> {
   selectionControlProps?: SelectionControlProps;
+  styleClassNames?: StyleClassNames;
 }
 
 export function TableHeaderSelectionCell({
@@ -32,12 +35,14 @@ export function TableHeaderSelectionCell({
   getSelectAllProps,
   onFocusMove,
   isGrouped,
+  styleClassNames,
   ...props
 }: TableHeaderSelectionCellProps) {
   const selectAllProps = getSelectAllProps ? getSelectAllProps() : undefined;
   return (
     <TableThElement
       {...props}
+      styleClassName={getStyleClassName(styleClassNames?.headerCell, { type: 'selection' })}
       isSelection={true}
       colIndex={0}
       focusedComponent={focusedComponent}
@@ -53,6 +58,7 @@ export function TableHeaderSelectionCell({
           }}
           focusedComponent={focusedComponent}
           {...selectAllProps}
+          styleClassNames={styleClassNames}
           {...(props.sticky ? { tabIndex: -1 } : {})}
         />
       ) : (
@@ -63,11 +69,19 @@ export function TableHeaderSelectionCell({
   );
 }
 
-export function TableBodySelectionCell({ selectionControlProps, ...props }: TableBodySelectionCellProps) {
+export function TableBodySelectionCell({
+  selectionControlProps,
+  styleClassNames,
+  ...props
+}: TableBodySelectionCellProps) {
   return (
     <TableTdElement {...props} isSelection={true} wrapLines={false} isEditable={false} isEditing={false} colIndex={0}>
       {selectionControlProps ? (
-        <SelectionControl {...selectionControlProps} verticalAlign={props.verticalAlign} />
+        <SelectionControl
+          {...selectionControlProps}
+          verticalAlign={props.verticalAlign}
+          styleClassNames={styleClassNames}
+        />
       ) : null}
     </TableTdElement>
   );
