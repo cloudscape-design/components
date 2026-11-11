@@ -24950,6 +24950,11 @@ This property cannot be set when \`enableTokenGroups=true\`.",
             "type": "string",
           },
           {
+            "name": "tokenEditorPropertyFilteringAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "inlineType": {
               "name": "(token: PropertyFilterProps.FormattedToken) => string",
               "parameters": [
@@ -24988,6 +24993,11 @@ This property cannot be set when \`enableTokenGroups=true\`.",
           },
           {
             "name": "tokenEditorTokenRemoveLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "tokenEditorValueFilteringAriaLabel",
             "optional": true,
             "type": "string",
           },
