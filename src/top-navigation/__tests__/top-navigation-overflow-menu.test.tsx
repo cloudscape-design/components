@@ -131,6 +131,21 @@ describe('Submenu', () => {
     expect(element.tabIndex).toEqual(0);
   });
 
+  test('renders the expandable group trigger as a non-submit button', () => {
+    const wrapper = createWrapper(
+      render(
+        <SubmenuView
+          definition={{
+            type: 'menu-dropdown',
+            items: [{ text: 'Group', items: [{ id: 'one', text: 'One' }] }],
+          }}
+        />
+      ).container
+    );
+
+    expect(wrapper.find('button[aria-expanded]')!.getElement()).toHaveProperty('type', 'button');
+  });
+
   test('passes lang attribute to submenu items', () => {
     const wrapper = createWrapper(
       render(
@@ -182,6 +197,11 @@ describe('UtilityMenuItem', () => {
       expect(onClick).toHaveBeenCalledWith(expect.objectContaining({ detail: {} }));
     }
   );
+
+  test('renders a button utility without href as a non-submit button', () => {
+    const { container } = render(<UtilityMenuItem type="button" index={0} text="Action" />);
+    expect(createWrapper(container).find('button')!.getElement()).toHaveProperty('type', 'button');
+  });
 
   test('onClose is fired when clicking on utilityMenuItem', () => {
     const onClose = jest.fn();

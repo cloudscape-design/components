@@ -130,6 +130,11 @@ describe('TableBodyCell', () => {
     expect(onEditStart).toHaveBeenCalled();
   });
 
+  it('should render the edit button as a non-submit button', () => {
+    render(<TestComponent />);
+    expect(screen.getByRole('button', { name: 'Edit testData test' })).toHaveProperty('type', 'button');
+  });
+
   it('should call onEditEnd', () => {
     render(<TestComponent isEditing={true} />);
     fireEvent.click(screen.getByRole('button', { name: 'submit edit' }));
@@ -269,6 +274,11 @@ describe('TableBodyCell', () => {
       const disabledButton = screen.getByRole('button', { name: 'Edit testData test' });
       expect(disabledButton).toHaveAccessibleDescription('Cannot edit');
       expect(disabledButton).toHaveAttribute('aria-disabled');
+    });
+
+    test('renders the disabled edit button as a non-submit button', () => {
+      render(<TestComponent {...commonProps} column={disableInlineEditColumn} />);
+      expect(screen.getByRole('button', { name: 'Edit testData test' })).toHaveProperty('type', 'button');
     });
 
     test('activates live region when disabled cell is activated', async () => {

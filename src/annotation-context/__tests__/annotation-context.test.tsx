@@ -261,6 +261,22 @@ test('trigger should have aria-expanded depending on open state', () => {
   expect(hotspot.findTrigger().getElement().getAttribute('aria-expanded')).toBe('false');
 });
 
+test('trigger is not a submit button when rendered inside a form', () => {
+  const { wrapper } = renderAnnotationContext(
+    <form>
+      <Hotspot hotspotId="first-hotspot" data-testid="first-hotspot" />
+      <Hotspot hotspotId="second-hotspot" data-testid="second-hotspot" />
+      <button type="submit">Submit</button>
+    </form>
+  );
+
+  // The first hotspot is open by default, and the second one is closed.
+  const openTrigger = wrapper.findHotspot('[data-testid="first-hotspot"]')!.findTrigger().getElement();
+  const closedTrigger = wrapper.findHotspot('[data-testid="second-hotspot"]')!.findTrigger().getElement();
+  expect(openTrigger).toHaveProperty('type', 'button');
+  expect(closedTrigger).toHaveProperty('type', 'button');
+});
+
 test('annotation should have be labeled by header and step counter', () => {
   const { wrapper } = renderAnnotationContext(
     <>
