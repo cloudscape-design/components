@@ -17,6 +17,13 @@ export default class ButtonWrapper extends ComponentWrapper<HTMLButtonElement> {
     return this.find(`.${styles.content}`);
   }
 
+  /**
+   * Returns the content of the `iconEnd` slot, or `null` if there isn't any.
+   */
+  findIconEnd(): ElementWrapper | null {
+    return this.findByClassName(styles['icon-end']);
+  }
+
   @usesDom
   isDisabled(): boolean {
     return this.element.disabled || this.element.getAttribute('aria-disabled') === 'true';

@@ -22,10 +22,14 @@ export interface InternalTableRootProps extends TableRootProps, InternalBaseComp
 // In grid layout the rows overflow the table element, so the scroller, not the table, measures the
 // scrollable width. scrollWidth is rounded to a whole pixel, so content that fits a fractional-width
 // scroller reports the scroller's own width instead, using the same tolerance as measureScrollable.
+// The scroller's inline padding (room for focus rings at the table's edges) isn't part of the content.
 function getScrollerContentInlineSize(_table: HTMLElement, scroller: HTMLElement) {
-  return scroller.scrollWidth - scroller.clientWidth > 1
-    ? scroller.scrollWidth
-    : scroller.getBoundingClientRect().width;
+  const { paddingInlineStart, paddingInlineEnd } = getComputedStyle(scroller);
+  const padding = (parseFloat(paddingInlineStart) || 0) + (parseFloat(paddingInlineEnd) || 0);
+  return (
+    (scroller.scrollWidth - scroller.clientWidth > 1 ? scroller.scrollWidth : scroller.getBoundingClientRect().width) -
+    padding
+  );
 }
 
 export default function InternalTableRoot({

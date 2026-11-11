@@ -4,16 +4,15 @@ import React, { useRef } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs, useResizeObserver, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
-import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import InternalButton from '../../button/internal';
 import { useInternalI18n } from '../../i18n/context';
 import InternalIcon from '../../icon/internal';
 import { useInternalComponentIcons } from '../../icon-provider/use-component-icons';
 import { CustomizableIcon } from '../../internal/components/customizable-icon';
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { fireNonCancelableEvent } from '../../internal/events';
-import { KeyCode } from '../../internal/keycode';
 import { getStyleClassName } from '../../internal/utils/style-slot';
 import { GeneratedAnalyticsMetadataTableSort } from '../analytics-metadata/interfaces';
 import { TableProps } from '../interfaces';
@@ -186,22 +185,40 @@ export function TableHeaderCell<ItemType>({
     fireNonCancelableEvent(multiColumnSort.onChange, { sortingColumns: next });
   };
 
-  // Elements with role="button" do not have the default behavior of <button>, where pressing
-  // Enter or Space will trigger a click event. Therefore we need to add this ourselves.
-  // The native <button> element cannot be used due to a misaligned implementation in Firefox:
-  // https://bugzilla.mozilla.org/show_bug.cgi?id=843003
-  const handleKeyPress = ({ nativeEvent: e }: React.KeyboardEvent) => {
-    if (e.keyCode === KeyCode.enter || e.keyCode === KeyCode.space) {
-      e.preventDefault();
-      handleClick(e.shiftKey);
-    }
-  };
-
   const headerId = useUniqueId('table-header-');
+  const sortingFocusId = `sorting-control-${String(columnId)}`;
+  const headerAriaLabel = column.ariaLabel
+    ? column.ariaLabel({
+        sorted: sorted,
+        descending: sorted && descending,
+        disabled: !!sortingDisabled,
+        sortIndex: multiSortIndex ?? undefined,
+      })
+    : undefined;
   const icons = useInternalComponentIcons('table');
 
-  const clickableHeaderRef = useRef<HTMLDivElement>(null);
-  const { tabIndex: clickableHeaderTabIndex } = useSingleTabStopNavigation(clickableHeaderRef, { tabIndex });
+  const headerText = (
+    <div
+      className={clsx(
+        styles['header-cell-text'],
+        analyticsSelectors['header-cell-text'],
+        wrapLines && styles['header-cell-text-wrap'],
+        // The sort button's text region already sets the line height and padding.
+        sortingStatus && styles['header-cell-text-in-button']
+      )}
+      id={headerId}
+    >
+      {column.header}
+      {isEditable ? (
+        <span className={styles['edit-icon']}>
+          <InternalIcon
+            name="edit"
+            ariaLabel={i18n('columnDefinitions.editConfig.editIconAriaLabel', column.editConfig?.editIconAriaLabel)}
+          />
+        </span>
+      ) : null}
+    </div>
+  );
 
   const cellRefObject = useRef<HTMLElement>(null);
   const cellRefCombined = useMergeRefs(cellRef, cellRefObject);
@@ -259,81 +276,57 @@ export function TableHeaderCell<ItemType>({
     >
       <div className={clsx(styles['header-cell-main'], hasSortMenu && styles['header-cell-main-with-menu'])}>
         <div
-          ref={clickableHeaderRef}
-          data-focus-id={`sorting-control-${String(columnId)}`}
-          className={clsx(
-            sortingStatus && !sortingDisabled && styleClassNames?.sortingButton,
-            styles['header-cell-content'],
-            {
-              [styles['header-cell-fake-focus']]: focusedComponent === `sorting-control-${String(columnId)}`,
-              [styles['header-cell-content-expandable']]: isExpandable,
-              [styles['header-cell-content-multi-sorted']]: showPriorityBadge,
-              [styles['header-cell-content-with-menu']]: hasSortMenu,
-            }
-          )}
-          aria-label={
-            column.ariaLabel
-              ? column.ariaLabel({
-                  sorted: sorted,
-                  descending: sorted && descending,
-                  disabled: !!sortingDisabled,
-                  sortIndex: multiSortIndex ?? undefined,
-                })
-              : undefined
-          }
-          {...(sortingStatus && !sortingDisabled
-            ? {
-                onKeyPress: handleKeyPress,
-                tabIndex: clickableHeaderTabIndex,
-                role: 'button',
-                onClick: event => handleClick(event.shiftKey),
-                'data-awsui-motion-trigger': 'hover',
+          className={clsx(styles['header-cell-content'], {
+            [styles['header-cell-content-expandable']]: isExpandable,
+            [styles['header-cell-content-with-menu']]: hasSortMenu,
+            [styles['header-cell-content-has-button']]: !!sortingStatus,
+          })}
+          aria-label={sortingStatus ? undefined : headerAriaLabel}
+        >
+          {sortingStatus ? (
+            <InternalButton
+              variant="table-header"
+              styleClassNames={{ root: sortingDisabled ? undefined : styleClassNames?.sortingButton }}
+              formAction="none"
+              disabled={!!sortingDisabled}
+              wrapText={!!wrapLines}
+              ariaLabel={headerAriaLabel}
+              // The header text is already visible, so a tooltip with the accessible name would only repeat it.
+              __title=""
+              __fakeFocus={focusedComponent === sortingFocusId}
+              iconEnd={
+                <span className={clsx(styleClassNames?.sortingIndicator, styles['sorting-indicator'])}>
+                  {showPriorityBadge && (
+                    <span className={styles['sort-priority-badge']} aria-hidden="true">
+                      {multiSortIndex}
+                    </span>
+                  )}
+                  <CustomizableIcon
+                    customIcon={icons?.sortingIndicator?.({ sortingState: sortingStatus })}
+                    fallback={{
+                      name: getSortingIconName(sortingStatus),
+                      nativeAttributes: { 'data-awsui-motion-target': '' },
+                    }}
+                  />
+                </span>
+              }
+              __tabIndex={tabIndex}
+              nativeButtonAttributes={{
+                'data-focus-id': sortingFocusId,
                 // Prevent the browser from extending the text selection on Shift+click.
-                onMouseDown: (event: React.MouseEvent) => {
+                onMouseDown: event => {
                   if (event.shiftKey) {
                     event.preventDefault();
                   }
                 },
-              }
-            : {})}
-        >
-          <div
-            className={clsx(
-              styles['header-cell-text'],
-              analyticsSelectors['header-cell-text'],
-              wrapLines && styles['header-cell-text-wrap']
-            )}
-            id={headerId}
-          >
-            {column.header}
-            {isEditable ? (
-              <span className={styles['edit-icon']}>
-                <InternalIcon
-                  name="edit"
-                  ariaLabel={i18n(
-                    'columnDefinitions.editConfig.editIconAriaLabel',
-                    column.editConfig?.editIconAriaLabel
-                  )}
-                />
-              </span>
-            ) : null}
-          </div>
-          {sortAccessibleText && <ScreenreaderOnly>{sortAccessibleText}</ScreenreaderOnly>}
-          {sortingStatus && (
-            <span className={clsx(styleClassNames?.sortingIndicator, styles['sorting-icon'])}>
-              {showPriorityBadge && (
-                <span className={styles['sort-priority-badge']} aria-hidden="true">
-                  {multiSortIndex}
-                </span>
-              )}
-              <CustomizableIcon
-                customIcon={icons?.sortingIndicator?.({ sortingState: sortingStatus })}
-                fallback={{
-                  name: getSortingIconName(sortingStatus),
-                  nativeAttributes: { 'data-awsui-motion-target': '' },
-                }}
-              />
-            </span>
+              }}
+              onClick={({ detail }) => handleClick(detail.shiftKey)}
+            >
+              {headerText}
+              {sortAccessibleText && <ScreenreaderOnly>{sortAccessibleText}</ScreenreaderOnly>}
+            </InternalButton>
+          ) : (
+            headerText
           )}
         </div>
         {hasSortMenu && (

@@ -20,6 +20,10 @@
 // Its scrollbar is hidden in favour of the sticky scrollbar, which stays reachable however tall the body is.
 .body-scroller {
   overflow-x: auto;
+  // Leaves room before the table's start edge for focus rings, such as a first-column header button's, without
+  // moving the table. Only the start: browsers leave inline-end padding out of the scrollable area.
+  padding-inline-start: awsui.$space-button-focus-outline-gutter;
+  margin-inline-start: calc(-1 * #{awsui.$space-button-focus-outline-gutter});
   @include sticky-scrollbar.hidden-scrollbar;
   @include focus-visible.when-visible {
     @include styles.container-focus();

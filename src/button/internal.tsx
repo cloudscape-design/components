@@ -60,6 +60,10 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   __emitPerformanceMarks?: boolean;
   __skipNativeAttributesWarnings?: boolean;
   __compact?: boolean;
+  // Shows the focus ring without focus, e.g. on a copy of a focused button.
+  __fakeFocus?: boolean;
+  // A tab index for single tab stop navigation, e.g. the existing Table's grid navigation.
+  __tabIndex?: number;
   styleClassNames?: StyleClassNames;
 } & InternalBaseComponentProps;
 
@@ -78,6 +82,7 @@ export const InternalButton = React.forwardRef(
       onClick,
       onFollow,
       iconAlign = 'left',
+      iconEnd,
       iconUrl,
       iconSvg,
       iconAlt,
@@ -111,6 +116,8 @@ export const InternalButton = React.forwardRef(
       __emitPerformanceMarks = true,
       __skipNativeAttributesWarnings,
       __compact = false,
+      __fakeFocus = false,
+      __tabIndex,
       analyticsAction = 'click',
       styleClassNames,
       ...props
@@ -148,6 +155,9 @@ export const InternalButton = React.forwardRef(
 
     if ((iconName || iconUrl || iconSvg) && iconAlign === 'right' && external) {
       warnOnce('Button', 'A right-aligned icon should not be combined with an external icon.');
+    }
+    if ((iconName || iconUrl || iconSvg) && iconAlign === 'right' && iconEnd) {
+      warnOnce('Button', 'A right-aligned icon should not be combined with `iconEnd`.');
     }
 
     const buttonRef = useRef<HTMLElement>(null);
@@ -215,10 +225,11 @@ export const InternalButton = React.forwardRef(
       [styles['button-no-text']]: !shouldHaveContent,
       [styles['full-width']]: shouldHaveContent && fullWidth,
       [styles['button-compact']]: __compact,
+      [styles['fake-focus']]: __fakeFocus,
       [styles.link]: isAnchor,
     });
 
-    const explicitTabIndex = nativeButtonAttributes?.tabIndex ?? nativeAnchorAttributes?.tabIndex;
+    const explicitTabIndex = nativeButtonAttributes?.tabIndex ?? nativeAnchorAttributes?.tabIndex ?? __tabIndex;
     const { tabIndex } = useSingleTabStopNavigation(buttonRef, {
       tabIndex: isAnchor && isNotInteractive && !isDisabledWithReason ? -1 : explicitTabIndex,
     });
@@ -289,6 +300,7 @@ export const InternalButton = React.forwardRef(
             )}
           </>
         )}
+        {iconEnd && <span className={styles['icon-end']}>{iconEnd}</span>}
         <RightIcon {...iconProps} />
       </>
     );

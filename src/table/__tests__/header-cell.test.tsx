@@ -15,6 +15,7 @@ import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
 import { renderHook } from '../../__tests__/render-hook';
 import { TableProps } from '../interfaces';
 
+import buttonStyles from '../../../lib/components/button/styles.css.js';
 import styles from '../../../lib/components/table/header-cell/styles.css.js';
 import resizerStyles from '../../../lib/components/table/resizer/styles.css.js';
 
@@ -87,7 +88,7 @@ it('renders a fake focus outline on the sort control', () => {
   );
   // Activate focus-visible
   fireEvent.keyDown(document.body, { key: 'Tab', keyCode: 65 });
-  expect(container.querySelector(`.${styles['header-cell-fake-focus']}`)).toBeInTheDocument();
+  expect(container.querySelector(`.${buttonStyles['fake-focus']}`)).toBeInTheDocument();
 });
 
 it('renders a fake focus outline on the resize control', () => {

@@ -64,8 +64,12 @@ export const InternalTableHeaderCell = React.forwardRef<HTMLTableCellElement, In
           isVisualRefresh && headerCellStyles['is-visual-refresh'],
           // Own is-visual-refresh marker keys the first-column content-offset reset (VR only).
           isVisualRefresh && styles['is-visual-refresh'],
-          disablePaddings && styles['disable-paddings'],
-          !disablePaddings && headerCellStyles['with-paddings'],
+          // A public header cell pads its content wrapper, or splits the padding with a header button. The existing
+          // Table renders its own content and keeps the cell padding (and its first-column offset, via `.with-paddings`).
+          !disableContentWrapper && !disablePaddings && styles['padded-content'],
+          !disableContentWrapper && disablePaddings === 'headerButton' && styles['header-button'],
+          disablePaddings === true && styles['disable-paddings'],
+          disableContentWrapper && !disablePaddings && headerCellStyles['with-paddings'],
           disableDivider && styles['no-divider']
         )}
         style={style}

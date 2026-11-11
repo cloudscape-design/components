@@ -488,7 +488,9 @@ const InternalTable = React.forwardRef(
     // column header instead. Focusing synchronously (before the re-render unmounts the button)
     // keeps focus on the persistent header element.
     const focusFirstSortableColumn = () => {
-      tableRefObject.current?.querySelector<HTMLElement>('[data-focus-id^="sorting-control-"][role="button"]')?.focus();
+      tableRefObject.current
+        ?.querySelector<HTMLElement>('button[data-focus-id^="sorting-control-"]:not(:disabled)')
+        ?.focus();
     };
 
     const wrapperProps = getTableWrapperRoleProps({

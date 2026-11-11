@@ -4,7 +4,6 @@ import * as React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
-import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import Table from '../../../lib/components/table';
 import { TableProps } from '../../../lib/components/table/interfaces';
@@ -91,22 +90,14 @@ describe('header click / keyboard', () => {
     ]);
   });
 
-  test('Enter triggers the same behavior as a click', () => {
-    const { wrapper, onChange } = renderTable([]);
-    fireEvent.keyPress(wrapper.findColumnSortingArea(COL_A)!.getElement(), { keyCode: KeyCode.enter });
-    expect(emitted(onChange)).toEqual([{ field: 'a', desc: false }]);
+  test('the sort control is a native button, so Enter and Space activate it like a click', () => {
+    const { wrapper } = renderTable([]);
+    const control = wrapper.findColumnSortingArea(COL_A)!.getElement();
+    expect(control.tagName).toBe('BUTTON');
+    expect(control).toHaveAttribute('type', 'button');
   });
 
-  test('Shift+Enter appends like Shift+click', () => {
-    const { wrapper, onChange } = renderTable([{ sortingColumn: { sortingField: 'a' }, isDescending: false }]);
-    fireEvent.keyPress(wrapper.findColumnSortingArea(COL_B)!.getElement(), { keyCode: KeyCode.enter, shiftKey: true });
-    expect(emitted(onChange)).toEqual([
-      { field: 'a', desc: false },
-      { field: 'b', desc: false },
-    ]);
-  });
-
-  test('with keyboard navigation enabled, Enter and Shift+Enter still emit the correct sort detail', () => {
+  test('with keyboard navigation enabled, activating the sort control still emits the correct sort detail', () => {
     const { wrapper, onChange } = renderTable(
       [{ sortingColumn: { sortingField: 'a' }, isDescending: false }],
       jest.fn(),
@@ -114,30 +105,9 @@ describe('header click / keyboard', () => {
       undefined,
       { enableKeyboardNavigation: true }
     );
-    // Enter toggles the already-sorted column in place.
-    fireEvent.keyPress(wrapper.findColumnSortingArea(COL_A)!.getElement(), { keyCode: KeyCode.enter });
+    clickHeader(wrapper, COL_A);
     expect(emitted(onChange)).toEqual([{ field: 'a', desc: true }]);
-    // Shift+Enter appends a second column to the sort.
-    fireEvent.keyPress(wrapper.findColumnSortingArea(COL_B)!.getElement(), { keyCode: KeyCode.enter, shiftKey: true });
-    expect(emitted(onChange)).toEqual([
-      { field: 'a', desc: false },
-      { field: 'b', desc: false },
-    ]);
-  });
-
-  test('Space triggers the same behavior as a click', () => {
-    const { wrapper, onChange } = renderTable([]);
-    wrapper.findColumnSortingArea(COL_A)!.keypress(KeyCode.space);
-    expect(emitted(onChange)).toEqual([{ field: 'a', desc: false }]);
-  });
-
-  test('Shift+Space appends like Shift+click', () => {
-    const { wrapper, onChange } = renderTable([{ sortingColumn: { sortingField: 'a' }, isDescending: false }]);
-    wrapper.findColumnSortingArea(COL_B)!.keypress({
-      keyCode: KeyCode.space,
-      charCode: KeyCode.space,
-      shiftKey: true,
-    });
+    clickHeader(wrapper, COL_B, true);
     expect(emitted(onChange)).toEqual([
       { field: 'a', desc: false },
       { field: 'b', desc: false },

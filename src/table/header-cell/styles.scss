@@ -15,6 +15,17 @@ $border-color: table-style-api.header-cell(border-color, awsui.$color-border-div
 $group-border-color: table-style-api.header-cell(border-color, awsui.$color-border-divider-table-group);
 $group-divider-color: table-style-api.header-cell(divider-color, awsui.$color-border-divider-table-group);
 
+// A sort button spans the header row's height, so sortable cells move their block padding into it. Its focus ring
+// sits outside it inline, like other buttons, so sortable cells leave room for that, with the start side narrower
+// by the divider's width so the ring is the same distance from the dividers on both sides. The first column
+// already has room.
+$sort-button-ring-room: calc(
+  #{awsui.$space-button-focus-outline-gutter} + #{awsui.$space-table-header-focus-outline-gutter}
+);
+$sort-button-gap-inline-start: calc(
+  #{awsui.$space-xs} - #{awsui.$border-divider-list-width} + #{$sort-button-ring-room}
+);
+
 @mixin when-focus-visible-or-fake {
   @include focus-visible.when-visible {
     @content;
@@ -111,6 +122,12 @@ $group-divider-color: table-style-api.header-cell(divider-color, awsui.$color-bo
     padding-inline-end: awsui.$space-xs;
   }
 
+  &.header-cell-sortable {
+    padding-block: 0;
+    padding-inline-start: $sort-button-gap-inline-start;
+    padding-inline-end: calc(#{awsui.$space-xs} + #{$sort-button-ring-room});
+  }
+
   &.sticky-cell {
     position: sticky;
     background: awsui.$color-background-table-header;
@@ -174,6 +191,12 @@ $group-divider-color: table-style-api.header-cell(divider-color, awsui.$color-bo
   display: contents;
 }
 
+// The sort button's end content: the sort priority and the sorting icon, side by side.
+.sorting-indicator {
+  display: flex;
+  align-items: center;
+}
+
 .sort-priority-badge {
   margin-inline-end: awsui.$space-xxs;
 }
@@ -222,11 +245,36 @@ $group-divider-color: table-style-api.header-cell(divider-color, awsui.$color-bo
       color: awsui.$color-text-interactive-disabled;
     }
   }
+
+  // A sort button fills the content area: the wrapper draws no box, and the button inherits its padding and colour.
+  // The button lays out its own icon, so it needs no space reserved at the end.
+  .header-cell-sortable > .header-cell-main > &.header-cell-content-has-button {
+    display: contents;
+    padding-block: calc(#{awsui.$space-scaled-xxs} + #{awsui.$space-scaled-xxs});
+    // Keeps the text where it is, with the cell's start padding changed above.
+    padding-inline-start: calc(#{awsui.$space-scaled-xs} + #{awsui.$space-s} - #{$sort-button-gap-inline-start});
+    padding-inline-end: calc(#{awsui.$space-s} - #{$sort-button-ring-room});
+
+    &.header-cell-content-expandable {
+      padding-inline-start: calc(
+        #{awsui.$space-scaled-xs} + #{awsui.$space-s} + #{awsui.$space-m} + #{awsui.$space-xs} -
+          #{$sort-button-gap-inline-start}
+      );
+    }
+  }
+
+  .header-cell-grouped.header-cell-sortable > .header-cell-main > &.header-cell-content-has-button,
+  .header-cell-spans-rows.header-cell-sortable > .header-cell-main > &.header-cell-content-has-button {
+    padding-block: calc(#{awsui.$space-xxxs} + #{awsui.$space-xxxs});
+  }
 }
 
 .header-cell-main-with-menu {
   display: flex;
   align-items: center;
+  // The sort button's ring room goes between the button and the menu, not at the cell's end.
+  column-gap: $sort-button-ring-room;
+  margin-inline-end: calc(-1 * #{$sort-button-ring-room});
 }
 
 .header-cell-content-with-menu {
@@ -281,6 +329,10 @@ $group-divider-color: table-style-api.header-cell(divider-color, awsui.$color-bo
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  &.header-cell-text-in-button {
+    padding-block: 0;
+  }
 }
 
 .header-cell-ascending,
@@ -297,6 +349,20 @@ settings icon in the pagination slot.
 .header-cell:not(.is-visual-refresh) {
   &:first-child {
     @include cell-offset(awsui.$space-xs);
+  }
+
+  &:first-child.header-cell-sortable {
+    padding-inline-start: calc(#{awsui.$space-xs} + #{$sort-button-ring-room});
+
+    > .header-cell-main > .header-cell-content-has-button {
+      padding-inline-start: calc(#{awsui.$space-s} - #{$sort-button-ring-room});
+
+      &.header-cell-content-expandable {
+        padding-inline-start: calc(
+          #{awsui.$space-s} + #{awsui.$space-m} + #{awsui.$space-xs} - #{$sort-button-ring-room}
+        );
+      }
+    }
   }
 }
 
@@ -330,7 +396,7 @@ settings icon in the pagination slot.
 
   &:last-child.header-cell-sortable:not(.header-cell-resizable),
   &[data-rightmost].header-cell-sortable:not(.header-cell-resizable) {
-    padding-inline-end: awsui.$space-xxxs;
+    padding-inline-end: calc(#{awsui.$space-xxxs} + #{$sort-button-ring-room});
   }
 
   &.sticky-cell-pad-inline-start {

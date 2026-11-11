@@ -26,7 +26,12 @@ export const updatePosition = (
   }
 
   const tableInlineSize = getContentInlineSize(tableEl, wrapperEl);
-  const { inlineSize: wrapperInlineSize } = getLogicalBoundingClientRect(wrapperEl);
+  // The wrapper's inline padding, if any, isn't part of the visible track.
+  const wrapperStyle = getComputedStyle(wrapperEl);
+  const wrapperInlineSize =
+    getLogicalBoundingClientRect(wrapperEl).inlineSize -
+    (parseFloat(wrapperStyle.paddingInlineStart) || 0) -
+    (parseFloat(wrapperStyle.paddingInlineEnd) || 0);
 
   // using 15 px as a height of transparent scrollbar on mac
   const scrollbarHeight = browserScrollbarSize().height;

@@ -134,7 +134,7 @@ export default class TableWrapper extends ComponentWrapper {
    */
   findColumnSortingArea(colIndex: number): ElementWrapper | null {
     return this.findActiveTHead().find(
-      `:is(th[data-column-index="${colIndex}"], tr:not([data-group-level]) > *:nth-child(${colIndex})) [role=button]`
+      `:is(th[data-column-index="${colIndex}"], tr:not([data-group-level]) > *:nth-child(${colIndex})) [data-focus-id^="sorting-control-"]`
     );
   }
 

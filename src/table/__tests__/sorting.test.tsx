@@ -3,12 +3,11 @@
 import * as React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
-import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
-
 import Table from '../../../lib/components/table';
 import { TableProps } from '../../../lib/components/table/interfaces';
 import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
 
+import buttonStyles from '../../../lib/components/button/styles.css.js';
 import headerCellStyles from '../../../lib/components/table/header-cell/styles.css.js';
 import resizerStyles from '../../../lib/components/table/resizer/styles.css.js';
 import tableStyles from '../../../lib/components/table/styles.css.js';
@@ -166,20 +165,11 @@ describe('should change direction', () => {
     );
   });
 
-  test('when pressing Enter', () => {
-    wrapper.findColumnSortingArea(1)!.keypress(KeyCode.enter);
-    expect(sortingChangeSpy).toHaveBeenCalledWith(
-      expect.objectContaining({
-        detail: {
-          sortingColumn: defaultColumns[0],
-          isDescending: false,
-        },
-      })
-    );
-  });
-
-  test('when pressing Space', () => {
-    wrapper.findColumnSortingArea(1)!.keypress(KeyCode.space);
+  test('when activating the native sort button, which Enter and Space do', () => {
+    const control = wrapper.findColumnSortingArea(1)!.getElement();
+    expect(control.tagName).toBe('BUTTON');
+    expect(control).toHaveAttribute('type', 'button');
+    fireEvent.click(control);
     expect(sortingChangeSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         detail: {
@@ -245,9 +235,9 @@ describe('with stickyHeader=true', () => {
         stickyHeader={true}
       />
     );
-    findNativeTable(wrapper)!.findByClassName(headerCellStyles['header-cell-content'])!.focus();
+    findNativeTable(wrapper)!.find('[data-focus-id^="sorting-control-"]')!.focus();
     fireEvent.keyDown(document.body, { key: 'Tab', keyCode: 65 });
-    expect(wrapper.findByClassName(headerCellStyles['header-cell-fake-focus'])).not.toBeFalsy();
+    expect(wrapper.findByClassName(buttonStyles['fake-focus'])).not.toBeFalsy();
   });
 
   test('renders a fake focus ring on resizer when the hidden sort button is focused', () => {
