@@ -12,6 +12,34 @@ import { mockedFunnelInteractionId, mockFunnelMetrics } from '../../internal/ana
 
 import styles from '../../../lib/components/button/styles.css.js';
 
+describe('__fakeFocus property', () => {
+  test('marks the button so it shows its focus ring without focus', () => {
+    const { container } = render(<InternalButton variant="table-header" __fakeFocus={true} />);
+    expect(container.querySelector('button')).toHaveClass(styles['fake-focus']);
+  });
+
+  test('is off by default', () => {
+    const { container } = render(<InternalButton variant="table-header" />);
+    expect(container.querySelector('button')).not.toHaveClass(styles['fake-focus']);
+  });
+});
+
+describe('__tabIndex property', () => {
+  test('sets the tab index', () => {
+    const { container } = render(<InternalButton __tabIndex={-1}>Label</InternalButton>);
+    expect(container.querySelector('button')).toHaveAttribute('tabIndex', '-1');
+  });
+
+  test('gives way to a native tabIndex', () => {
+    const { container } = render(
+      <InternalButton __tabIndex={-1} nativeButtonAttributes={{ tabIndex: 0 }}>
+        Label
+      </InternalButton>
+    );
+    expect(container.querySelector('button')).toHaveAttribute('tabIndex', '0');
+  });
+});
+
 test('supports __iconClass property', () => {
   const { container } = render(<InternalButton __iconClass="example-class" iconName="settings" />);
   expect(container.querySelector(`button .${styles.icon}`)).toHaveClass('example-class');

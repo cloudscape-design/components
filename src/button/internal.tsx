@@ -60,7 +60,7 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   __emitPerformanceMarks?: boolean;
   __skipNativeAttributesWarnings?: boolean;
   __compact?: boolean;
-  // Shows the focus ring without focus, e.g. on a copy of a focused button.
+  // Shows the focus ring without focus, on a copy of a focused button. Only the table-header variant draws it.
   __fakeFocus?: boolean;
   // A tab index for single tab stop navigation, e.g. the existing Table's grid navigation.
   __tabIndex?: number;
@@ -156,7 +156,9 @@ export const InternalButton = React.forwardRef(
     if ((iconName || iconUrl || iconSvg) && iconAlign === 'right' && external) {
       warnOnce('Button', 'A right-aligned icon should not be combined with an external icon.');
     }
-    if ((iconName || iconUrl || iconSvg) && iconAlign === 'right' && iconEnd) {
+    // React renders nothing for these, but it does render `0`.
+    const hasIconEnd = iconEnd !== undefined && iconEnd !== null && iconEnd !== false && iconEnd !== '';
+    if ((iconName || iconUrl || iconSvg) && iconAlign === 'right' && hasIconEnd) {
       warnOnce('Button', 'A right-aligned icon should not be combined with `iconEnd`.');
     }
 
@@ -300,7 +302,7 @@ export const InternalButton = React.forwardRef(
             )}
           </>
         )}
-        {iconEnd && <span className={styles['icon-end']}>{iconEnd}</span>}
+        {hasIconEnd && <span className={styles['icon-end']}>{iconEnd}</span>}
         <RightIcon {...iconProps} />
       </>
     );

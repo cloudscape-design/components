@@ -178,14 +178,6 @@ $sort-button-gap-inline-start: calc(
   }
 }
 
-.sorting-icon {
-  position: absolute;
-  inset-block-start: 50%;
-  transform: translateY(-50%);
-  inset-inline-end: awsui.$space-xxs;
-  color: awsui.$color-text-column-sorting-icon;
-}
-
 .header-cell-main {
   /* When the wrapper is present without a sort menu, behave as if it weren't there. */
   display: contents;
@@ -229,25 +221,7 @@ $sort-button-gap-inline-start: calc(
     padding-block: awsui.$space-xxxs;
   }
 
-  .header-cell-sortable > .header-cell-main > & {
-    padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-xxs});
-  }
-
-  // The multi-sort priority badge renders alongside the sort arrow inside the
-  // absolutely-positioned sort icon. Reserve extra inline-end space for it so it
-  // does not overlap long, non-truncated header text (e.g. resizable columns off).
-  .header-cell-sortable > .header-cell-main > &.header-cell-content-multi-sorted {
-    padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-xxs} + #{awsui.$space-m});
-  }
-
-  .header-cell-disabled.header-cell-sorted > .header-cell-main > & {
-    & > .sorting-icon {
-      color: awsui.$color-text-interactive-disabled;
-    }
-  }
-
   // A sort button fills the content area: the wrapper draws no box, and the button inherits its padding and colour.
-  // The button lays out its own icon, so it needs no space reserved at the end.
   .header-cell-sortable > .header-cell-main > &.header-cell-content-has-button {
     display: contents;
     padding-block: calc(#{awsui.$space-scaled-xxs} + #{awsui.$space-scaled-xxs});
@@ -292,13 +266,6 @@ $sort-button-gap-inline-start: calc(
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-
-    // stylelint-disable-next-line no-descending-specificity
-    > .sorting-icon {
-      inset-block-start: auto;
-      inset-block-end: awsui.$space-scaled-xxs;
-      transform: none;
-    }
   }
 }
 
@@ -307,9 +274,6 @@ $sort-button-gap-inline-start: calc(
   // The sorted color is set on the cell so that a `headerCell` color applies to sorted cells too.
   &.header-cell-sorted {
     color: awsui.$color-text-interactive-active;
-    & > .header-cell-main > .header-cell-content > .sorting-icon {
-      color: awsui.$color-text-interactive-active;
-    }
   }
   & > .header-cell-main > .header-cell-content:hover {
     color: awsui.$color-text-interactive-active;

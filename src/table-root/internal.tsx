@@ -23,7 +23,7 @@ export interface InternalTableRootProps extends TableRootProps, InternalBaseComp
 // scrollable width. scrollWidth is rounded to a whole pixel, so content that fits a fractional-width
 // scroller reports the scroller's own width instead, using the same tolerance as measureScrollable.
 // The scroller's inline padding (room for focus rings at the table's edges) isn't part of the content.
-function getScrollerContentInlineSize(_table: HTMLElement, scroller: HTMLElement) {
+export function getScrollerContentInlineSize(_table: HTMLElement, scroller: HTMLElement) {
   const { paddingInlineStart, paddingInlineEnd } = getComputedStyle(scroller);
   const padding = (parseFloat(paddingInlineStart) || 0) + (parseFloat(paddingInlineEnd) || 0);
   return (

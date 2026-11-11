@@ -31,6 +31,14 @@ describe('updatePosition', () => {
     expect(scrollbarContent.style.inlineSize).toBe('800px');
   });
 
+  test("leaves the wrapper's inline padding out of the scrollbar width", () => {
+    const { scrollbar, scrollbarContent, table, wrapper } = setupElements();
+    wrapper.style.paddingInlineStart = '4px';
+    wrapper.style.paddingInlineEnd = '2px';
+    updatePosition(table, wrapper, scrollbar, scrollbarContent, true);
+    expect(scrollbar.style.inlineSize).toBe('594px');
+  });
+
   test('sizes the content from a custom measurement when one is given', () => {
     const { scrollbar, scrollbarContent, table, wrapper } = setupElements();
     updatePosition(table, wrapper, scrollbar, scrollbarContent, true, () => 1200);

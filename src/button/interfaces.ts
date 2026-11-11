@@ -147,7 +147,7 @@ export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
 
   /**
    * Displays content after the text, for example a sort indicator with its sort priority.
-   * Use `Icon` components, which inherit the button's color.
+   * Use `Icon` components, which inherit the button's color. Pass `null` when there's nothing to show.
    *
    * Don't combine it with a right-aligned icon (`iconAlign="right"`).
    */
