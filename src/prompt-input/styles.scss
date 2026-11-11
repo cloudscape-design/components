@@ -90,7 +90,7 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
         box-shadow: foundation.$box-shadow-focused-light-invalid;
       }
     }
-    
+
     // When disabled, keep validation border (including thick left border) but remove focus box-shadow
     &.disabled:focus-within,
     &.disabled:focus {
@@ -118,7 +118,7 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
         box-shadow: foundation.$box-shadow-focused-light-invalid;
       }
     }
-    
+
     // When disabled, keep validation border (including thick left border) but remove focus box-shadow
     &.disabled:focus-within,
     &.disabled:focus {
@@ -170,10 +170,18 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   padding-inline: styles.$control-padding-horizontal;
 
   color: var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-body-default);
-  max-inline-size: 100%;
-  inline-size: 100%;
   display: block;
-  box-sizing: border-box;
+  // content-box so min/max-block-size count content rows only, not padding or border
+  box-sizing: content-box;
+  // native textarea grows to fit content; no-op on the contenteditable div
+  field-sizing: content;
+  // flex sizing for when this element is a direct flex child (textarea mode)
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  overflow-y: auto;
+  // row bounds set via inline custom properties from minRows / maxRows props
+  min-block-size: var(#{custom-props.$promptInputMinRows}, 1lh);
+  max-block-size: var(#{custom-props.$promptInputMaxRows}, calc(3 * 1lh));
 
   border: 0;
 
@@ -264,7 +272,7 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
       var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-body-default)
     );
   }
-  
+
   // Placeholder for disabled contentEditable div (token mode)
   &.textarea-disabled.placeholder-visible::before {
     @include styles.form-placeholder-disabled;
@@ -288,7 +296,6 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
 .editable-element {
   word-wrap: break-word;
   overflow-wrap: break-word;
-  overflow-y: auto;
   overflow-x: hidden;
 }
 

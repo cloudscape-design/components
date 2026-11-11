@@ -1,14 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { Ref, useEffect, useImperativeHandle, useRef } from 'react';
+import React, { Ref, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
-import {
-  useDensityMode,
-  useMergeRefs,
-  useStableCallback,
-  warnOnce,
-} from '@cloudscape-design/component-toolkit/internal';
+import { useStableCallback, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalButton from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
@@ -16,10 +11,8 @@ import { convertAutoComplete } from '../input/utils';
 import { getBaseProps } from '../internal/base-component';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireCancelableEvent, fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
-import * as designTokens from '../internal/generated/styles/tokens';
+import customCssProps from '../internal/generated/custom-css-properties';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { useWidthChange } from '../internal/hooks/use-width-change';
 import { isDevelopment } from '../internal/is-development';
 import { SomeRequired } from '../internal/types';
 import InternalLiveRegion from '../live-region/internal';
@@ -142,80 +135,9 @@ const InternalPromptInput = React.forwardRef(
     const editableElementRef = useRef<HTMLDivElement>(null);
     const caretControllerRef = useRef<CaretController | null>(null);
 
-    const isRefresh = useVisualRefresh();
-    const textareaDensityMode = useDensityMode(textareaRef);
-    const editableDensityMode = useDensityMode(editableElementRef);
-    const isCompactMode = (isTokenMode ? editableDensityMode : textareaDensityMode) === 'compact';
-
-    const PADDING = isRefresh ? designTokens.spaceXxs : designTokens.spaceXxxs;
-    const LINE_HEIGHT = designTokens.lineHeightBodyM;
-
     const getActiveElement = useStableCallback(() => {
       return isTokenMode ? editableElementRef.current : textareaRef.current;
     });
-
-    /**
-     * Dynamically adjusts the input height based on content and row constraints.
-     */
-    const adjustInputHeight = useStableCallback(() => {
-      const element = getActiveElement();
-      if (!element) {
-        return;
-      }
-
-      const scrollTop = element.scrollTop;
-      // this is required so the scrollHeight becomes dynamic, otherwise it will be locked at the highest value for the size it reached e.g. 500px
-      element.style.height = 'auto';
-
-      // The native textarea already grows to its `rows={minRows}` attribute, so this
-      // formula only needs to act as a one-line floor there. The contentEditable div used
-      // in token mode has no equivalent native sizing, so it must scale with minRows directly.
-      const minRowsHeight = isTokenMode
-        ? `calc(${minRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING})`
-        : `calc(${LINE_HEIGHT} +  ${designTokens.spaceFieldVertical} * 2)`;
-      const scrollHeight = `calc(${element.scrollHeight}px)`;
-
-      if (maxRows === -1) {
-        element.style.height = `max(${scrollHeight}, ${minRowsHeight})`;
-      } else {
-        const maxRowsHeight = `calc(${maxRows <= 0 ? DEFAULT_MAX_ROWS : maxRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING})`;
-        element.style.height = `min(max(${scrollHeight}, ${minRowsHeight}), ${maxRowsHeight})`;
-      }
-
-      if (isTokenMode) {
-        element.scrollTop = scrollTop;
-      }
-    });
-
-    // Height is adjusted per-mode. `value` must not be a dependency in token
-    // mode — it's unused there, and re-running the effect on `value` changes
-    // resets the contentEditable caret to offset 0.
-    useEffect(() => {
-      if (isTokenMode) {
-        requestAnimationFrame(() => adjustInputHeight());
-      }
-    }, [isTokenMode, tokens, adjustInputHeight, isCompactMode, placeholder]);
-
-    // When minRows/maxRows change, recalculate height synchronously — these prop
-    // changes don't involve caret position so no RAF deferral is needed.
-    useEffect(() => {
-      if (isTokenMode) {
-        adjustInputHeight();
-      }
-    }, [isTokenMode, adjustInputHeight, minRows, maxRows]);
-
-    useEffect(() => {
-      if (!isTokenMode) {
-        adjustInputHeight();
-      }
-    }, [isTokenMode, value, adjustInputHeight, isCompactMode, placeholder, minRows, maxRows]);
-
-    // Observe width changes on the component's root element to handle container resizes.
-    // We need a separate RefObject because __internalRootRef may be a callback ref,
-    // and useWidthChange needs a RefObject with .current to read the DOM node.
-    const rootElementRef = useRef<HTMLDivElement>(null);
-    const mergedRootRef = useMergeRefs(__internalRootRef, rootElementRef);
-    useWidthChange(rootElementRef, adjustInputHeight);
 
     const plainTextValue = isTokenMode
       ? tokensToText
@@ -254,7 +176,6 @@ const InternalPromptInput = React.forwardRef(
       onMenuFilter,
       onMenuLoadItems,
       i18nStrings: effectiveI18nStrings,
-      adjustInputHeight,
     });
 
     const handleInsertText = useStableCallback((text: string, caretStart?: number, caretEnd?: number) => {
@@ -346,7 +267,6 @@ const InternalPromptInput = React.forwardRef(
         value: event.target.value,
       };
       fireNonCancelableEvent(onChange, detail);
-      adjustInputHeight();
     };
 
     const hasActionButton = !!(
@@ -374,7 +294,6 @@ const InternalPromptInput = React.forwardRef(
       spellCheck: spellcheck,
       disabled,
       readOnly: readOnly ? true : undefined,
-      rows: minRows,
       value: value || '',
       onKeyDown: handleTextareaKeyDown,
       onKeyUp: onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
@@ -417,9 +336,14 @@ const InternalPromptInput = React.forwardRef(
           [styles['textarea-warning']]: warning && !invalid,
           [styles.disabled]: disabled,
         })}
-        ref={mergedRootRef}
+        ref={__internalRootRef}
         role="region"
-        style={getPromptInputStyles(style)}
+        style={{
+          ...getPromptInputStyles(style),
+          [customCssProps.promptInputMinRows]: `calc(${minRows} * 1lh)`,
+          [customCssProps.promptInputMaxRows]:
+            maxRows === -1 ? 'none' : `calc(${maxRows <= 0 ? DEFAULT_MAX_ROWS : maxRows} * 1lh)`,
+        }}
       >
         <InternalLiveRegion tagName="span" hidden={true} assertive={true} delay={0}>
           {tokenMode.tokenOperationAnnouncement}

@@ -78,8 +78,8 @@ const customCssPropertiesList = [
   'togglesLeftWidth',
   'togglesRightWidth',
   // Prompt input
+  'promptInputMinRows',
   'promptInputMaxRows',
-  'promptInputScrollHeight',
   // Internal drag handle properties
   'dragHandleAnimationInlineOffset',
   'dragHandleAnimationBlockOffset',

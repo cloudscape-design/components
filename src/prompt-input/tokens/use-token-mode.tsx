@@ -198,8 +198,6 @@ export interface UseTokenModeConfig {
   onMenuLoadItems?: PromptInputProps['onMenuLoadItems'];
 
   i18nStrings?: PromptInputProps['i18nStrings'];
-
-  adjustInputHeight: () => void;
 }
 
 /** Return value of useTokenMode — state, handlers, and attributes consumed by TokenMode component. */
@@ -381,7 +379,6 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     onMenuFilter,
     onMenuLoadItems,
     i18nStrings,
-    adjustInputHeight,
   } = config;
 
   const shortcutsState = useShortcutsState();
@@ -661,11 +658,8 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     }
 
     processUserInput(extractedTokens);
-
-    adjustInputHeight();
   }, [
     processUserInput,
-    adjustInputHeight,
     editableElementRef,
     caretControllerRef,
     portalContainersRef,
@@ -724,7 +718,6 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
       renderTokens(orderedTokens, editableElementRef.current);
       lastRenderedTokensRef.current = orderedTokens;
       cc.setPosition(triggerTransition);
-      adjustInputHeight();
       return;
     }
 
@@ -746,7 +739,6 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
         const posBeforeTrigger = triggerIndex > 0 ? calculateTokenPosition(orderedTokens, triggerIndex - 1) : 0;
         cc.setPosition(posBeforeTrigger + newTrigger.triggerChar.length);
       }
-      adjustInputHeight();
       return;
     }
 
@@ -770,7 +762,6 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
         positionCaretAfterMenuSelection(orderedTokens ?? [], editableState, cc);
 
         lastRenderedTokensRef.current = orderedTokens;
-        adjustInputHeight();
         return;
       }
     }
@@ -784,7 +775,6 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     renderTokens(orderedTokens ?? [], editableElementRef.current);
 
     if (positionCaretAfterMenuSelection(orderedTokens ?? [], editableState, cc)) {
-      adjustInputHeight();
       return;
     }
 
@@ -802,13 +792,10 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
         cc.restore();
       }
     }
-
-    adjustInputHeight();
   }, [
     disabled,
     readOnly,
     tokens,
-    adjustInputHeight,
     caretControllerRef,
     editableElementRef,
     portalContainersRef,

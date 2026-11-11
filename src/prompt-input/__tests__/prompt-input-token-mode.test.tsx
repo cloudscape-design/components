@@ -2751,43 +2751,6 @@ describe('internal.tsx paths', () => {
     expect(getValue(wrapper)).toBe('');
   });
 
-  test('minRows scales the computed height formula in token mode, unlike the single-row textarea fallback', () => {
-    // jsdom's CSSStyleDeclaration doesn't parse CSS min()/max(), so assigning our formula to
-    // `element.style.height` is silently dropped and reading it back is unreliable. Spy on the
-    // `height` setter instead to capture the raw string the component actually assigns.
-    const assignedValues: string[] = [];
-    const heightSetterSpy = jest
-      .spyOn(window.CSSStyleDeclaration.prototype, 'height', 'set')
-      .mockImplementation(function (this: CSSStyleDeclaration, value: string) {
-        assignedValues.push(value);
-      });
-    // The height calculation runs inside requestAnimationFrame; run it synchronously here so we
-    // can assert on the resulting formula.
-    const rafSpy = jest.spyOn(window, 'requestAnimationFrame').mockImplementation((callback: FrameRequestCallback) => {
-      callback(0);
-      return 0;
-    });
-    try {
-      render(
-        <PromptInput
-          tokens={[]}
-          menus={defaultMenus}
-          actionButtonIconName="send"
-          ariaLabel="Chat input"
-          i18nStrings={defaultI18nStrings}
-          minRows={5}
-          maxRows={-1}
-        />
-      );
-      // The height formula in token mode must multiply by minRows (5), not fall back to the
-      // single-line formula used for the native textarea's floor height.
-      expect(assignedValues.some(value => value.includes('5 *'))).toBe(true);
-    } finally {
-      heightSetterSpy.mockRestore();
-      rafSpy.mockRestore();
-    }
-  });
-
   test('action button is disabled when disableActionButton is true', () => {
     const onAction = jest.fn();
     const { wrapper } = renderTokenMode({ props: { tokens: [{ type: 'text', value: 'hello' }], onAction } });
@@ -5246,31 +5209,6 @@ describe('token mode misc', () => {
     const { unmount } = render(<div />, { container });
     unmount();
     expect(disconnectSpy).toHaveBeenCalled();
-    window.ResizeObserver = originalResizeObserver;
-  });
-
-  test('ResizeObserver triggers height adjustment without error', () => {
-    const originalResizeObserver = window.ResizeObserver;
-    let resizeCallback: () => void = () => {};
-    const MockResizeObserver = jest.fn(cb => ({
-      observe: () => {
-        resizeCallback = cb;
-      },
-      unobserve: jest.fn(),
-      disconnect: jest.fn(),
-    }));
-    window.ResizeObserver = MockResizeObserver;
-
-    const ref = React.createRef<PromptInputProps.Ref>();
-    const { wrapper } = renderTokenMode({ props: { tokens: [{ type: 'text', value: 'hello' }] }, ref });
-    act(() => {
-      ref.current!.focus();
-    });
-    act(() => {
-      resizeCallback();
-    });
-    // The component should still render correctly and preserve content after resize
-    expect(getValue(wrapper)).toBe('hello');
     window.ResizeObserver = originalResizeObserver;
   });
 
@@ -8048,52 +7986,6 @@ describe('tokens takes precedence over value', () => {
     );
   });
 
-  test('updating the value prop does not trigger the token-mode height effect', () => {
-    const rafSpy = jest.spyOn(window, 'requestAnimationFrame').mockImplementation(() => 0);
-    try {
-      const tokens: PromptInputProps['tokens'] = [{ type: 'text', value: 'hello' }];
-      const { rerender } = renderTokenMode({ props: { tokens, value: 'initial' } });
-      const callsAfterMount = rafSpy.mock.calls.length;
-      expect(callsAfterMount).toBeGreaterThan(0);
-
-      rerender(
-        <PromptInput
-          tokens={tokens}
-          value="changed"
-          menus={defaultMenus}
-          actionButtonIconName="send"
-          i18nStrings={defaultI18nStrings}
-          ariaLabel="Chat input"
-        />
-      );
-
-      expect(rafSpy.mock.calls.length).toBe(callsAfterMount);
-    } finally {
-      rafSpy.mockRestore();
-    }
-  });
-
-  test('updating tokens still triggers the token-mode height effect', () => {
-    const rafSpy = jest.spyOn(window, 'requestAnimationFrame').mockImplementation(() => 0);
-    try {
-      const { rerender } = renderTokenMode({ props: { tokens: [{ type: 'text', value: 'hello' }] } });
-      const callsAfterMount = rafSpy.mock.calls.length;
-
-      rerender(
-        <PromptInput
-          tokens={[{ type: 'text', value: 'hello world' }]}
-          menus={defaultMenus}
-          actionButtonIconName="send"
-          i18nStrings={defaultI18nStrings}
-          ariaLabel="Chat input"
-        />
-      );
-
-      expect(rafSpy.mock.calls.length).toBeGreaterThan(callsAfterMount);
-    } finally {
-      rafSpy.mockRestore();
-    }
-  });
   describe('switching between textarea mode and token mode after mount', () => {
     test('initializes token-mode editing when switching from value to tokens after mount', () => {
       const onChange = jest.fn();

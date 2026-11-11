@@ -1,0 +1,14 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+// stylelint-disable-next-line selector-combinator-disallowed-list
+.large-padding-wrapper [class*='textarea']:not([class*='wrapper']) {
+  // !important overrides the component's :not(#\9) specificity booster
+  padding-block: 10px !important;
+
+  &:hover {
+    padding-block: 15px !important;
+  }
+}
