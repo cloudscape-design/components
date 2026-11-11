@@ -10,8 +10,11 @@ import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 import img from './images/icon.png';
 
-const enteredTextLabel = (value: string) => `Use: ${value}`;
-const permutations = createPermutations<AutosuggestProps>([
+// enteredTextLabel is built in render from this prefix. A function in the permutations would put its minified
+// source in the permutation ID, which changes between builds and stops screenshot tests from matching permutations.
+type AutosuggestPermutation = Omit<AutosuggestProps, 'enteredTextLabel'> & { enteredTextPrefix: string };
+
+const permutations = createPermutations<AutosuggestPermutation>([
   {
     ariaLabel: ['some label'],
     placeholder: [undefined, 'Enter some data'],
@@ -24,7 +27,7 @@ const permutations = createPermutations<AutosuggestProps>([
       ],
       undefined,
     ],
-    enteredTextLabel: [enteredTextLabel],
+    enteredTextPrefix: ['Use: '],
   },
   {
     ariaLabel: ['some label'],
@@ -38,7 +41,7 @@ const permutations = createPermutations<AutosuggestProps>([
       ],
       undefined,
     ],
-    enteredTextLabel: [enteredTextLabel],
+    enteredTextPrefix: ['Use: '],
   },
   {
     ariaLabel: ['some label'],
@@ -52,7 +55,7 @@ const permutations = createPermutations<AutosuggestProps>([
         { value: 'option2', label: 'Option 2' },
       ],
     ],
-    enteredTextLabel: [enteredTextLabel],
+    enteredTextPrefix: ['Use: '],
   },
   {
     ariaLabel: ['some label'],
@@ -65,7 +68,7 @@ const permutations = createPermutations<AutosuggestProps>([
         No options, but <a>a link</a>
       </>,
     ],
-    enteredTextLabel: [enteredTextLabel],
+    enteredTextPrefix: ['Use: '],
   },
   {
     ariaLabel: ['some label'],
@@ -73,7 +76,7 @@ const permutations = createPermutations<AutosuggestProps>([
     invalid: [true, false],
     value: ['', 'Some option'],
     placeholder: ['Enter some data'],
-    enteredTextLabel: [enteredTextLabel],
+    enteredTextPrefix: ['Use: '],
   },
   {
     ariaLabel: ['some label'],
@@ -81,28 +84,28 @@ const permutations = createPermutations<AutosuggestProps>([
     warning: [true],
     value: ['', 'Some option'],
     placeholder: ['Enter some data'],
-    enteredTextLabel: [enteredTextLabel],
+    enteredTextPrefix: ['Use: '],
   },
   {
     ariaLabel: ['some label'],
     readOnly: [true],
     value: ['', 'Some option'],
     placeholder: ['Enter some data'],
-    enteredTextLabel: [enteredTextLabel],
+    enteredTextPrefix: ['Use: '],
   },
   {
     value: [''],
     ariaLabel: ['some label'],
     statusType: ['loading'],
     loadingText: ['Loading more items', undefined],
-    enteredTextLabel: [enteredTextLabel],
+    enteredTextPrefix: ['Use: '],
   },
   {
     value: [''],
     ariaLabel: ['some label'],
     statusType: ['error'],
     errorText: ['Error while loading', undefined],
-    enteredTextLabel: [enteredTextLabel],
+    enteredTextPrefix: ['Use: '],
   },
   {
     value: ['', 'op', 'Option 2', 'tag1', 'this is a label tag', 'thisisafilteringtag'],
@@ -156,17 +159,17 @@ const permutations = createPermutations<AutosuggestProps>([
         { value: 'option2', label: 'Option 2' },
       ],
     ],
-    enteredTextLabel: [enteredTextLabel],
+    enteredTextPrefix: ['Use: '],
   },
   {
     value: [''],
-    enteredTextLabel: [enteredTextLabel],
+    enteredTextPrefix: ['Use: '],
     options: [range(20).map(i => ({ value: `option${i}`, label: `Option ${i}` }))],
     virtualScroll: [true, false],
   },
   {
     value: ['some value'],
-    enteredTextLabel: [enteredTextLabel],
+    enteredTextPrefix: ['Use: '],
     options: [[]],
     virtualScroll: [true, false],
   },
@@ -179,7 +182,7 @@ export default function () {
       <ScreenshotArea disableAnimations={true}>
         <PermutationsView
           permutations={permutations}
-          render={permutation => (
+          render={({ enteredTextPrefix, ...permutation }) => (
             <div style={{ marginBottom: '100px' }}>
               <Autosuggest
                 ariaLabel="Input field"
@@ -188,6 +191,7 @@ export default function () {
                   /*empty handler to suppress react controlled property warning*/
                 }}
                 {...permutation}
+                enteredTextLabel={value => `${enteredTextPrefix}${value}`}
               />
             </div>
           )}
