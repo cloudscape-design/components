@@ -64,6 +64,9 @@
 
 .sticky-copy-scroller {
   @include sticky-header.copy-scroller;
+  // The same room before the table's start edge as the body scroller, so the two stay aligned.
+  padding-inline-start: awsui.$space-button-focus-outline-gutter;
+  margin-inline-start: calc(-1 * #{awsui.$space-button-focus-outline-gutter});
 }
 
 .sticky-copy-focus {
