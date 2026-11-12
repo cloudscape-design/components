@@ -16,9 +16,7 @@ import { convertAutoComplete } from '../input/utils';
 import { getBaseProps } from '../internal/base-component';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireCancelableEvent, fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
-import * as designTokens from '../internal/generated/styles/tokens';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useWidthChange } from '../internal/hooks/use-width-change';
 import { isDevelopment } from '../internal/is-development';
 import { SomeRequired } from '../internal/types';
@@ -39,9 +37,20 @@ import { insertTextIntoContentEditable } from './utils/insert-text-content-edita
 import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';
 
+// Style API v2
+export interface StyleClassNames {
+  root?: string;
+  textarea?: string;
+  actionButton?: string;
+  token?: string;
+  menu?: string;
+}
+
 interface InternalPromptInputProps
   extends SomeRequired<PromptInputProps, 'maxRows' | 'minRows'>,
-    InternalBaseComponentProps {}
+    InternalBaseComponentProps {
+  styleClassNames?: StyleClassNames;
+}
 
 const InternalPromptInput = React.forwardRef(
   (
@@ -87,6 +96,7 @@ const InternalPromptInput = React.forwardRef(
       onTriggerDetected,
       i18nStrings,
       __internalRootRef,
+      styleClassNames,
       ...rest
     }: InternalPromptInputProps,
     ref: Ref<PromptInputProps.Ref | HTMLTextAreaElement | HTMLInputElement>
@@ -142,20 +152,16 @@ const InternalPromptInput = React.forwardRef(
     const editableElementRef = useRef<HTMLDivElement>(null);
     const caretControllerRef = useRef<CaretController | null>(null);
 
-    const isRefresh = useVisualRefresh();
     const textareaDensityMode = useDensityMode(textareaRef);
     const editableDensityMode = useDensityMode(editableElementRef);
     const isCompactMode = (isTokenMode ? editableDensityMode : textareaDensityMode) === 'compact';
-
-    const PADDING = isRefresh ? designTokens.spaceXxs : designTokens.spaceXxxs;
-    const LINE_HEIGHT = designTokens.lineHeightBodyM;
 
     const getActiveElement = useStableCallback(() => {
       return isTokenMode ? editableElementRef.current : textareaRef.current;
     });
 
     /**
-     * Dynamically adjusts the input height based on content and row constraints.
+     * Sizes the text element from its own computed line-height, padding and border, so padding from any source counts.
      */
     const adjustInputHeight = useStableCallback(() => {
       const element = getActiveElement();
@@ -163,24 +169,31 @@ const InternalPromptInput = React.forwardRef(
         return;
       }
 
-      const scrollTop = element.scrollTop;
-      // this is required so the scrollHeight becomes dynamic, otherwise it will be locked at the highest value for the size it reached e.g. 500px
-      element.style.height = 'auto';
+      const computed = window.getComputedStyle(element);
+      const lineHeight = parseFloat(computed.lineHeight);
+      const paddingTop = parseFloat(computed.paddingTop);
+      const paddingBottom = parseFloat(computed.paddingBottom);
+      const borderTop = parseFloat(computed.borderTopWidth);
+      const borderBottom = parseFloat(computed.borderBottomWidth);
 
-      // The native textarea already grows to its `rows={minRows}` attribute, so this
-      // formula only needs to act as a one-line floor there. The contentEditable div used
-      // in token mode has no equivalent native sizing, so it must scale with minRows directly.
-      const minRowsHeight = isTokenMode
-        ? `calc(${minRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING})`
-        : `calc(${LINE_HEIGHT} +  ${designTokens.spaceFieldVertical} * 2)`;
-      const scrollHeight = `calc(${element.scrollHeight}px)`;
-
-      if (maxRows === -1) {
-        element.style.height = `max(${scrollHeight}, ${minRowsHeight})`;
-      } else {
-        const maxRowsHeight = `calc(${maxRows <= 0 ? DEFAULT_MAX_ROWS : maxRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING})`;
-        element.style.height = `min(max(${scrollHeight}, ${minRowsHeight}), ${maxRowsHeight})`;
+      // jsdom returns empty strings for layout properties; skip rather than write NaNpx.
+      if ([lineHeight, paddingTop, paddingBottom, borderTop, borderBottom].some(isNaN)) {
+        return;
       }
+
+      const borders = borderTop + borderBottom;
+      const box = paddingTop + paddingBottom;
+      const effectiveMaxRows = maxRows <= 0 ? DEFAULT_MAX_ROWS : maxRows;
+
+      const scrollTop = element.scrollTop;
+      element.style.height = 'auto';
+      const scrollHeight = element.scrollHeight;
+
+      const minHeight = minRows * lineHeight + box + borders;
+      const maxHeight = maxRows === -1 ? Infinity : effectiveMaxRows * lineHeight + box + borders;
+      const clampedHeight = Math.min(Math.max(scrollHeight + borders, minHeight), maxHeight);
+
+      element.style.height = `${clampedHeight}px`;
 
       if (isTokenMode) {
         element.scrollTop = scrollTop;
@@ -209,6 +222,17 @@ const InternalPromptInput = React.forwardRef(
         adjustInputHeight();
       }
     }, [isTokenMode, value, adjustInputHeight, isCompactMode, placeholder, minRows, maxRows]);
+
+    // Padding from any source changes the content box; the frame hop avoids Chrome's ResizeObserver loop error.
+    useEffect(() => {
+      const element = getActiveElement();
+      if (!element || typeof ResizeObserver === 'undefined') {
+        return;
+      }
+      const observer = new ResizeObserver(() => requestAnimationFrame(() => adjustInputHeight()));
+      observer.observe(element, { box: 'content-box' });
+      return () => observer.disconnect();
+    }, [isTokenMode, getActiveElement, adjustInputHeight]);
 
     // Observe width changes on the component's root element to handle container resizes.
     // We need a separate RefObject because __internalRootRef may be a callback ref,
@@ -255,6 +279,7 @@ const InternalPromptInput = React.forwardRef(
       onMenuLoadItems,
       i18nStrings: effectiveI18nStrings,
       adjustInputHeight,
+      styleClassNames,
     });
 
     const handleInsertText = useStableCallback((text: string, caretStart?: number, caretEnd?: number) => {
@@ -364,7 +389,7 @@ const InternalPromptInput = React.forwardRef(
       name,
       placeholder,
       autoFocus,
-      className: clsx(styles.textarea, testutilStyles.textarea, {
+      className: clsx(styleClassNames?.textarea, styles.textarea, testutilStyles.textarea, {
         [styles.invalid]: invalid,
         [styles.warning]: warning,
       }),
@@ -388,6 +413,7 @@ const InternalPromptInput = React.forwardRef(
         {customPrimaryAction ?? (
           <InternalButton
             className={clsx(styles['action-button'], testutilStyles['action-button'])}
+            styleClassNames={{ root: styleClassNames?.actionButton }}
             ariaLabel={effectiveI18nStrings.actionButtonAriaLabel}
             disabled={disabled || readOnly || disableActionButton}
             __focusable={readOnly}
@@ -411,7 +437,7 @@ const InternalPromptInput = React.forwardRef(
       <div
         {...baseProps}
         aria-label={ariaLabel}
-        className={clsx(styles.root, testutilStyles.root, baseProps.className, {
+        className={clsx(styleClassNames?.root, styles.root, testutilStyles.root, baseProps.className, {
           [styles['textarea-readonly']]: readOnly,
           [styles['textarea-invalid']]: invalid,
           [styles['textarea-warning']]: warning && !invalid,
@@ -459,6 +485,7 @@ const InternalPromptInput = React.forwardRef(
               menuDropdownStatus={tokenMode.menuDropdownStatus}
               maxMenuHeight={maxMenuHeight}
               menuStyle={(style as PromptInputInternalStyle | undefined)?._menu}
+              styleClassNames={{ menu: styleClassNames?.menu }}
               handleInput={tokenMode.handleInput}
               handleLoadMore={tokenMode.handleLoadMore}
               editableElementAttributes={tokenMode.editableElementAttributes}

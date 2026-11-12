@@ -92,3 +92,17 @@ $_focus-ring-carriers: toolkit.resolve($focus-ring, carrier);
     );
   }
 }
+
+// A wrapper for forms.container-focus with style API integration.
+@mixin container-focus($radius: awsui.$border-radius-container) {
+  @if enabled() {
+    @include forms.container-focus(
+      $border-radius: var(#{toolkit.read($_focus-ring-carriers, focus-ring-radius)}, #{$radius}),
+      $box-shadow: 0 0 0
+        var(#{toolkit.read($_focus-ring-carriers, focus-ring-width)}, #{foundation.$box-shadow-focused-width})
+        var(#{toolkit.read($_focus-ring-carriers, focus-ring-color)}, #{awsui.$color-border-item-focused})
+    );
+  } @else {
+    @include forms.container-focus($radius);
+  }
+}
