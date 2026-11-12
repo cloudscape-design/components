@@ -7,6 +7,7 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { SelectProps } from '../../../select/interfaces';
 import { BaseKeyDetail, CancelableEventHandler } from '../../../types/events';
 import { OptionDefinition, OptionGroup } from '../../../types/option';
+import { KeyCode } from '../../keycode';
 import { DropdownOption } from '../option/interfaces';
 import { isGroupInteractive, isInteractive } from '../option/utils/filter-options';
 import {
@@ -76,7 +77,11 @@ export interface UseListboxApi {
   highlight: HighlightedOptionHandlers<DropdownOption>;
   /** Chooses `option`, or the highlighted option when omitted. Ignores non-interactive options. */
   selectOption(option?: DropdownOption): void;
-  /** Keydown handler for the element that has focus (list or filter input). */
+  /**
+   * Keydown handler for a filter input that controls the list. Home and End keep their native action there, to move
+   * the text cursor. The list element gets its own handler from `getListProps({ withKeyboard: true })`, which
+   * prevents the native Home and End action.
+   */
   onKeyDown: CancelableEventHandler<BaseKeyDetail>;
   /** `onMouseUp` / `onMouseMove` for the list element. */
   mouseHandlers: ReturnType<typeof getListMouseHandlers>;
@@ -84,10 +89,11 @@ export interface UseListboxApi {
   listRef: RefObject<HTMLDivElement>;
   /**
    * Base props for the list element: id, ref and mouse handlers. With `withKeyboard`, also `onKeyDown` and
-   * `aria-activedescendant`, for a list that has focus itself (not through a filter input). With `embedded`, also
+   * `aria-activedescendant`, for a list that has focus itself (not through a filter input). This `onKeyDown`
+   * prevents the native Home and End action, so they don't scroll the page or a scroll container. With `embedded`, also
    * `onFocus` and `onBlur`, for an embedded list: an always visible list that is a tab stop. Focus highlights the
-   * first option if nothing is highlighted, and blur clears the highlight. A hover highlight is kept on focus, so a
-   * click selects the hovered option. Moving focus to the selected option is a follow-up.
+   * first selected option (in selection order), or the first option when nothing is selected, and blur clears the
+   * highlight. A hover highlight is kept on focus, so a click selects the hovered option.
    * Callers that add native attributes spread `nativeAttributes`.
    */
   getListProps(options: { withKeyboard: boolean; embedded?: boolean }): BaseListProps;
@@ -133,6 +139,7 @@ export function useListbox({
     }
   };
 
+  // Shared by the list element and a filter input. In a filter input, Home and End also move the text cursor.
   const onKeyDown = useMenuKeyboard({
     ...getListboxNavigation({
       options,
@@ -150,6 +157,13 @@ export function useListbox({
     // With 'keyboard-highlight', Space chooses only while an option has a keyboard highlight, and types otherwise.
     preventNativeSpace: spaceSelects === 'always' || (!!highlightedOption && highlightType.type === 'keyboard'),
   });
+  // On the list element, Home and End only move the highlight, so they don't scroll the page or a scroll container.
+  const onListKeyDown: CancelableEventHandler<BaseKeyDetail> = event => {
+    if (event.detail.keyCode === KeyCode.home || event.detail.keyCode === KeyCode.end) {
+      event.preventDefault();
+    }
+    onKeyDown(event);
+  };
 
   const mouseHandlers = getListMouseHandlers({
     options,
@@ -188,12 +202,20 @@ export function useListbox({
   const getListProps = ({ withKeyboard, embedded }: { withKeyboard: boolean; embedded?: boolean }) => {
     const listProps: BaseListProps = { id: listId, ref: listRef, ...mouseHandlers };
     if (withKeyboard) {
-      listProps.onKeyDown = onKeyDown;
+      listProps.onKeyDown = onListKeyDown;
       listProps.nativeAttributes = { 'aria-activedescendant': activeDescendantId };
     }
     if (embedded) {
+      // Like opening Select or Multiselect with the keyboard: highlight the first selected option (in selection
+      // order) and scroll it into view, or the first option when nothing in the list is selected.
       listProps.onFocus = () => {
-        if (!highlightedOption) {
+        if (highlightedOption) {
+          return;
+        }
+        const firstSelected = selectedOptions.find(option => options.includes(option));
+        if (firstSelected) {
+          highlight.highlightOptionWithKeyboard(firstSelected);
+        } else {
           highlight.goHomeWithKeyboard();
         }
       };

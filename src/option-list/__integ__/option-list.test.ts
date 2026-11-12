@@ -58,3 +58,31 @@ describe('OptionList', () => {
     })
   );
 });
+
+describe('OptionList in an iframe', () => {
+  const list = wrapper.findOptionList('[data-testid="option-list"]');
+  const highlighted = list.findHighlightedOption();
+
+  test(
+    'Home and End move the highlight without scrolling the iframe away from it',
+    useBrowser(async browser => {
+      await browser.url('#/light/option-list/in-iframe');
+      const page = new BasePageObject(browser);
+      await page.runInsideIframe('#option-list-iframe', true, async () => {
+        await page.click('#option-list-heading');
+        await page.keys(['Tab']);
+        await expect(page.isFocused(`${list.toSelector()} [role="listbox"]`)).resolves.toBe(true);
+
+        for (const [key, label] of [
+          ['End', 'Option 30'],
+          ['Home', 'Option 1'],
+        ]) {
+          await page.keys([key]);
+          await expect(page.getText(highlighted.findLabel().toSelector())).resolves.toBe(label);
+          await page.pause(500);
+          await expect(page.isDisplayedInViewport(highlighted.toSelector())).resolves.toBe(true);
+        }
+      });
+    })
+  );
+});
