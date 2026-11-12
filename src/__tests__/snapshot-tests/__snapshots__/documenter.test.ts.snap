@@ -9102,7 +9102,7 @@ Use this to retry loading the code editor or to provide another option for the u
           {
             "name": "annotations",
             "optional": false,
-            "type": "Array<Ace.Annotation>",
+            "type": "Array<CodeEditorProps.Annotation>",
           },
         ],
         "type": "object",
