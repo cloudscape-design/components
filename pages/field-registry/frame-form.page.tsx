@@ -2,29 +2,31 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import { FormField, Input, Select, SpaceBetween, Toggle } from '~components';
-import { SelectProps } from '~components/select';
+import { FormField, Input, Multiselect, SpaceBetween, Toggle } from '~components';
+import { MultiselectProps } from '~components/multiselect';
 
 import { SimplePage } from '../app/templates';
 
 const SUBNETS = [
-  { label: 'subnet-a', value: 'subnet-a' },
-  { label: 'subnet-b', value: 'subnet-b' },
+  { label: 'subnet-a', value: 'subnet-a', description: 'us-east-1a' },
+  { label: 'subnet-b', value: 'subnet-b', description: 'us-east-1b' },
+  { label: 'subnet-c', value: 'subnet-c', description: 'us-east-1c' },
 ];
 
 export default function FieldRegistryFrameForm() {
-  const [subnet, setSubnet] = useState<SelectProps.Option | null>(null);
+  const [subnets, setSubnets] = useState<ReadonlyArray<MultiselectProps.Option>>([]);
   const [securityGroup, setSecurityGroup] = useState('');
   const [flowLogs, setFlowLogs] = useState(false);
 
   return (
     <SimplePage title="Network settings">
       <SpaceBetween size="l">
-        <FormField label="Subnet" data-testid="subnet">
-          <Select
-            selectedOption={subnet}
+        <FormField label="Subnets" data-testid="subnets">
+          <Multiselect
+            selectedOptions={subnets}
             options={SUBNETS}
-            onChange={({ detail }) => setSubnet(detail.selectedOption)}
+            placeholder="Choose subnets"
+            onChange={({ detail }) => setSubnets(detail.selectedOptions)}
           />
         </FormField>
         <FormField label="Security group" data-testid="security-group">
