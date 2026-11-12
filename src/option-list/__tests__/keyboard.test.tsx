@@ -5,7 +5,15 @@ import { fireEvent } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/component-toolkit/internal';
 
-import { focusList, groupedOptions, highlightedValue, pressKey, renderOptionList, Stateful } from './common';
+import {
+  focusList,
+  groupedOptions,
+  highlightedValue,
+  pressKey,
+  renderOptionList,
+  Stateful,
+  withDisabled,
+} from './common';
 
 const typeKey = (listbox: HTMLElement, key: string) => fireEvent.keyDown(listbox, { key });
 
@@ -71,6 +79,14 @@ describe('OptionList keyboard', () => {
       typeKey(listbox, 't');
       expect(highlightedValue(wrapper)).toBe('c');
       expect(listbox).toHaveAttribute('aria-activedescendant', wrapper.findOptionByValue('c')!.getElement().id);
+    });
+
+    test('typing highlights a disabled option, like Up and Down, so its disabled state is announced', () => {
+      const { wrapper, listbox } = renderOptionList(<Stateful options={withDisabled} />);
+      focusList(listbox);
+      // Only the disabled "Second" starts with "s".
+      typeKey(listbox, 's');
+      expect(highlightedValue(wrapper)).toBe('b');
     });
 
     test('multi: typing can highlight a group header', () => {
