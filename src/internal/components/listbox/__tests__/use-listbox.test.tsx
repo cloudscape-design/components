@@ -133,6 +133,7 @@ describe('useListbox', () => {
   describe('Home and End', () => {
     test('move the highlight and keep the native action in a filter input, to move the text cursor', () => {
       const { hook, keyDown } = renderListbox();
+      expect(hook.result.current.highlightedIndex).toBe(-1);
 
       const end = keyDown(END);
       expect(hook.result.current.highlightedIndex).toBe(4);
@@ -150,6 +151,8 @@ describe('useListbox', () => {
         act(() => hook.result.current.getListProps({ withKeyboard: true }).onKeyDown!(event));
         return event;
       };
+      expect(hook.result.current.highlightedIndex).toBe(-1);
+
       const end = listKeyDown(END);
       expect(hook.result.current.highlightedIndex).toBe(4);
       expect(end.defaultPrevented).toBe(true);
