@@ -188,7 +188,8 @@ const InternalSelect = React.forwardRef(
       options: filteredOptions,
       highlightOption: !isOpen ? selectOption : highlightOption,
       highlightedOption: !isOpen ? selectedOption : highlightedOption?.option,
-      // When closed, type-ahead selects the match, so it skips disabled options as a native select does.
+      // When closed, type-ahead selects the match, and selecting ignores a disabled option. Skip disabled options,
+      // so typing selects the next enabled match, as a native select does.
       skipDisabled: !isOpen,
     });
 
