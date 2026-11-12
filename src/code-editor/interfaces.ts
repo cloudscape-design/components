@@ -1,7 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { Ace } from 'ace-builds';
-
 import { BaseModalProps } from '../modal/interfaces';
 import { BaseComponentProps } from '../types/base-component';
 import { NonCancelableEventHandler } from '../types/events';
@@ -181,8 +179,16 @@ export namespace CodeEditorProps {
     value: string;
   }
 
+  // Mirrors Ace.Annotation so the public types don't depend on ace-builds.
+  export interface Annotation {
+    row: number;
+    column: number;
+    text: string;
+    type: string;
+  }
+
   export interface ValidateDetail {
-    annotations: Ace.Annotation[];
+    annotations: Annotation[];
   }
 
   export interface Ref {
