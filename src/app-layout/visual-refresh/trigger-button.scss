@@ -35,6 +35,10 @@
   }
 }
 
+.trigger-icon-wrapper {
+  display: flex;
+}
+
 .trigger-badge-wrapper {
   position: absolute;
   inset-block-start: 0;
@@ -59,8 +63,14 @@ the calculation used to determine the Split Panel maximum width in the
 handleSplitPanelMaxWidth function in the context.
 */
 .trigger {
+  // Native button padding is asymmetric in WebKit (2px/3px) and the icon would otherwise sit on a
+  // font-dependent line box, so the padding is reset and the icon is centered with flex.
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-block: none;
   border-inline: none;
+  padding-block: 0;
   padding-inline: 0;
   color: awsui.$color-text-layout-toggle;
   cursor: pointer;
