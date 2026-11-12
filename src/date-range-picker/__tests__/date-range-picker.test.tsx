@@ -221,6 +221,26 @@ describe('Date range picker', () => {
       });
     });
 
+    test('closes the open dropdown when disabled', () => {
+      const onChange = jest.fn();
+      const props = { ...currentModeDefaultProps, onChange };
+      const { container, rerender } = render(<DateRangePicker {...props} />);
+      const wrapper = createWrapper(container).findDateRangePicker()!;
+      wrapper.openDropdown();
+      expect(wrapper.findDropdown()).not.toBeNull();
+
+      rerender(<DateRangePicker {...props} disabled={true} />);
+      expect(wrapper.findDropdown()).toBeNull();
+      expect(onChange).not.toHaveBeenCalled();
+
+      rerender(<DateRangePicker {...props} />);
+      expect(wrapper.findDropdown()).toBeNull();
+      wrapper.openDropdown();
+      wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue(optionTen)!.click();
+      wrapper.findDropdown()!.findApplyButton().click();
+      expect(onChange).toHaveBeenCalledTimes(1);
+    });
+
     test('opens relative range mode by default', () => {
       const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps } as DateRangePickerProps);
       wrapper.openDropdown();
