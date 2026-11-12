@@ -38,8 +38,7 @@ const InternalPanelLayout = React.forwardRef<PanelLayoutProps.Ref, InternalPanel
       maxPanelSize,
       i18nStrings,
       display,
-      disablePanelScrolling,
-      disableMainScrolling,
+      scrollable,
       panelFocusable,
       mainFocusable,
       __internalRootRef,
@@ -103,7 +102,11 @@ const InternalPanelLayout = React.forwardRef<PanelLayoutProps.Ref, InternalPanel
 
     const wrappedPanelContent = (
       <div
-        className={clsx(styles['panel-content'], display !== 'main-only' && testStyles.panel)}
+        className={clsx(
+          styles['panel-content'],
+          scrollable && styles.scrollable,
+          display !== 'main-only' && testStyles.panel
+        )}
         tabIndex={panelFocusable && 0}
         role={panelFocusable && 'region'}
         aria-label={panelFocusable?.ariaLabel}
@@ -114,7 +117,11 @@ const InternalPanelLayout = React.forwardRef<PanelLayoutProps.Ref, InternalPanel
     );
     const wrappedMainContent = (
       <div
-        className={clsx(styles.content, display !== 'panel-only' && testStyles.content)}
+        className={clsx(
+          styles.content,
+          scrollable && styles.scrollable,
+          display !== 'panel-only' && testStyles.content
+        )}
         tabIndex={mainFocusable && 0}
         role={mainFocusable && 'region'}
         aria-label={mainFocusable?.ariaLabel}
@@ -143,14 +150,7 @@ const InternalPanelLayout = React.forwardRef<PanelLayoutProps.Ref, InternalPanel
       <div
         {...baseProps}
         ref={mergedRef}
-        className={clsx(
-          baseProps.className,
-          styles.root,
-          testStyles.root,
-          styles[`display-${display}`],
-          disablePanelScrolling && styles['disable-panel-scrolling'],
-          disableMainScrolling && styles['disable-main-scrolling']
-        )}
+        className={clsx(baseProps.className, styles.root, testStyles.root, styles[`display-${display}`])}
       >
         {panelPosition === 'side-end' && wrappedMainContent}
         <div

@@ -2,19 +2,20 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext } from 'react';
 
-import { Button, Checkbox, SegmentedControl, SpaceBetween } from '~components';
+import { Button, Checkbox, SpaceBetween } from '~components';
 import PanelLayout, { PanelLayoutProps } from '~components/panel-layout';
 import { colorBackgroundCellShaded } from '~design-tokens';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
+import FocusTarget from '../common/focus-target';
+import { DisplaySetting, PanelPositionSetting } from './common';
 
 type PageContext = React.Context<
   AppContextType<{
     display: PanelLayoutProps.Display;
     panelPosition: PanelLayoutProps.PanelPosition;
-    disablePanelScrolling: boolean;
-    disableMainScrolling: boolean;
+    scrollable: boolean;
     tallContent: boolean;
   }>
 >;
@@ -31,60 +32,28 @@ function EdgeContent({ label, tall }: { label: string; tall: boolean }) {
   );
 }
 
-export default function PanelLayoutDisableScrollingPage() {
+export default function PanelLayoutScrollablePage() {
   const {
-    urlParams: {
-      display = 'all',
-      panelPosition = 'side-start',
-      disablePanelScrolling = false,
-      disableMainScrolling = false,
-      tallContent = false,
-    },
+    urlParams: { display = 'all', panelPosition = 'side-start', scrollable = false, tallContent = false },
     setUrlParams,
   } = useContext(AppContext as PageContext);
 
   return (
     <SimplePage
-      title="Panel layout with disabled scrolling"
+      title="Panel layout scrollable"
       screenshotArea={{}}
+      i18n={{}}
       settings={
         <SpaceBetween size="s">
-          <SegmentedControl
-            label="Display"
-            options={[
-              { id: 'all', text: 'all' },
-              { id: 'panel-only', text: 'panel-only' },
-              { id: 'main-only', text: 'main-only' },
-            ]}
-            selectedId={display}
-            onChange={({ detail }) => setUrlParams({ display: detail.selectedId as PanelLayoutProps.Display })}
-          />
-          <SegmentedControl
-            label="Panel position"
-            options={[
-              { id: 'side-start', text: 'side-start' },
-              { id: 'side-end', text: 'side-end' },
-            ]}
-            selectedId={panelPosition}
-            onChange={({ detail }) =>
-              setUrlParams({ panelPosition: detail.selectedId as PanelLayoutProps.PanelPosition })
-            }
-          />
-          <Checkbox
-            checked={disablePanelScrolling}
-            onChange={({ detail }) => setUrlParams({ disablePanelScrolling: detail.checked })}
-          >
-            disablePanelScrolling
-          </Checkbox>
-          <Checkbox
-            checked={disableMainScrolling}
-            onChange={({ detail }) => setUrlParams({ disableMainScrolling: detail.checked })}
-          >
-            disableMainScrolling
+          <DisplaySetting value={display} onChange={value => setUrlParams({ display: value })} />
+          <PanelPositionSetting value={panelPosition} onChange={value => setUrlParams({ panelPosition: value })} />
+          <Checkbox checked={scrollable} onChange={({ detail }) => setUrlParams({ scrollable: detail.checked })}>
+            scrollable
           </Checkbox>
           <Checkbox checked={tallContent} onChange={({ detail }) => setUrlParams({ tallContent: detail.checked })}>
             Tall content
           </Checkbox>
+          <FocusTarget />
         </SpaceBetween>
       }
     >
@@ -95,8 +64,7 @@ export default function PanelLayoutDisableScrollingPage() {
           minPanelSize={200}
           display={display}
           panelPosition={panelPosition}
-          disablePanelScrolling={disablePanelScrolling}
-          disableMainScrolling={disableMainScrolling}
+          scrollable={scrollable}
           panelContent={<EdgeContent label="Panel" tall={tallContent} />}
           mainContent={<EdgeContent label="Main" tall={tallContent} />}
         />
