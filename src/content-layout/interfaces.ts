@@ -39,8 +39,10 @@ export interface ContentLayoutProps extends BaseComponentProps {
   maxContentWidth?: number;
 
   /**
-   * Set it to `true` if your page uses the [app layout component](/components/app-layout/) with `disableContentPaddings=true`.
-   * In that case, the content layout will become sensitive to the state of drawers in app layout and leave the necessary padding to avoid visual overlap with those elements.
+   * Set it to `true` in either of these cases:
+   * * If your page does not use the [app layout component](/components/app-layout/).
+   * * If your page uses the [app layout component](/components/app-layout/) with `disableContentPaddings=true`.
+   *   In that case, the content layout will become sensitive to the state of drawers in app layout and leave the necessary padding to avoid visual overlap with those elements.
    */
   defaultPadding?: boolean;
 
