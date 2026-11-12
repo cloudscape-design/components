@@ -3,6 +3,7 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use '~components/styling/button';
 @use '~components/styling/checkbox';
 @use '~components/styling/radio-button';
 @use '~components/styling/table';
@@ -58,8 +59,16 @@ $transitioning-surface: light-dark(hsl(0, 0%, 96.5%), hsl(0, 0%, 21%));
   @include header-cell($network-surface, $network-text);
 }
 
+.sorting-button:hover {
+  @include table.sortingButton($color: palette.$genai);
+}
+
 .sorting-indicator {
   @include table.sortingIndicator($color: palette.$genai);
+}
+
+.sorting-menu-trigger {
+  @include button.root($color: palette.$genai, $focus-ring-color: palette.$genai);
 }
 
 .row {

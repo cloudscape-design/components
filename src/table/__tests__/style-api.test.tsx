@@ -89,6 +89,27 @@ describe('Table Style API v2 (implicit styleClassNames)', () => {
     expect(table.findColumnHeaders()[1].getElement()).not.toHaveClass('sortable');
   });
 
+  test.each([
+    [false, 1],
+    [true, 0],
+  ])('applies the sorting button slot to sortable columns when sortingDisabled=%s', (sortingDisabled, count) => {
+    const sortable = { ...columnDefinitions[0], sortingField: 'name' };
+    const table = renderTable({ columnDefinitions: [sortable, columnDefinitions[1]], sortingDisabled }, {
+      sortingButton: 'sorting-button',
+    } satisfies StyleClassNames<Item>);
+    expect(table.findColumnHeaders()[0].findAll('[role="button"].sorting-button')).toHaveLength(count);
+    expect(table.findAll('.sorting-button')).toHaveLength(count);
+  });
+
+  test('applies the sorting menu slot to the multi-column sort menu', () => {
+    const [a, b] = columnDefinitions.map(column => ({ ...column, sortingField: column.id }));
+    const table = renderTable(
+      { columnDefinitions: [a, b], multiColumnSort: { sortingColumns: [{ sortingColumn: a }], onChange: () => {} } },
+      { sortingMenu: { trigger: 'sorting-menu-trigger' } } satisfies StyleClassNames<Item>
+    );
+    expect(table.findAll('button.sorting-menu-trigger')).toHaveLength(2);
+  });
+
   test('applies the sorting indicator slot to the sorting indicator and the sort priority', () => {
     const [a, b] = columnDefinitions.map(column => ({ ...column, sortingField: column.id }));
     const table = renderTable(

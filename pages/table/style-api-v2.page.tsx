@@ -19,6 +19,7 @@ interface Settings {
   stickyColumnsLast: string;
   statusHighlight: 'none' | 'cells' | 'rows';
   nestedRowsHighlight: boolean;
+  multiSort: boolean;
 }
 
 type PageContext = React.Context<AppContextType<Partial<Settings>>>;
@@ -86,19 +87,28 @@ export default function () {
       stickyColumnsLast = '0',
       statusHighlight = 'cells',
       nestedRowsHighlight = true,
+      multiSort = false,
     },
     setUrlParams,
   } = useContext(AppContext as PageContext);
 
   const [selectedItems, setSelectedItems] = useState<Instance[]>([rootItems[2], rootItems[4]]);
   const [expandedItems, setExpandedItems] = useState<Instance[]>([parentItems[0]]);
-  const [sortingColumn, setSortingColumn] = useState<TableProps.SortingColumn<Instance>>(columnDefinitions[1]);
-  const [sortingDescending, setSortingDescending] = useState(false);
+  // Single-column sort uses the first entry.
+  const [sortingColumns, setSortingColumns] = useState<ReadonlyArray<TableProps.SortingState<Instance>>>([
+    { sortingColumn: columnDefinitions[1] },
+  ]);
 
-  const sortingField = sortingColumn.sortingField as keyof Instance;
-  const items = [...rootItems].sort(
-    (a, b) => String(a[sortingField]).localeCompare(String(b[sortingField])) * (sortingDescending ? -1 : 1)
-  );
+  const items = [...rootItems].sort((a, b) => {
+    for (const { sortingColumn, isDescending } of sortingColumns) {
+      const field = sortingColumn.sortingField as keyof Instance;
+      const result = String(a[field]).localeCompare(String(b[field]));
+      if (result !== 0) {
+        return isDescending ? -result : result;
+      }
+    }
+    return 0;
+  });
 
   const booleanSetting = (key: keyof Settings, label: string, checked: boolean) => (
     <Checkbox checked={checked} onChange={({ detail }) => setUrlParams({ [key]: detail.checked })}>
@@ -134,7 +144,9 @@ export default function () {
       const groupId = args.type === 'group' ? args.group.id : columnGroups.get(args.column.id ?? '');
       return groupId ? styles[`${groupId}-header-cell`] : styles['header-cell'];
     },
+    sortingButton: styles['sorting-button'],
     sortingIndicator: styles['sorting-indicator'],
+    sortingMenu: { trigger: styles['sorting-menu-trigger'] },
     row: ({ item, selected }) =>
       clsx(
         styles.row,
@@ -161,6 +173,7 @@ export default function () {
     <SimplePage
       title="Table - Style API v2"
       screenshotArea={{}}
+      i18n={{}}
       settings={
         <SpaceBetween size="m">
           <SpaceBetween size="m" direction="horizontal" alignItems="end">
@@ -171,6 +184,7 @@ export default function () {
           </SpaceBetween>
           <SpaceBetween size="m" direction="horizontal">
             {booleanSetting('nestedRowsHighlight', 'Highlight nested rows', nestedRowsHighlight)}
+            {booleanSetting('multiSort', 'Multi-column sort', multiSort)}
           </SpaceBetween>
         </SpaceBetween>
       }
@@ -192,12 +206,12 @@ export default function () {
         selectedItems={selectedItems}
         onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
         isItemDisabled={isItemDisabled}
-        sortingColumn={sortingColumn}
-        sortingDescending={sortingDescending}
-        onSortingChange={({ detail }) => {
-          setSortingColumn(detail.sortingColumn);
-          setSortingDescending(!!detail.isDescending);
-        }}
+        multiColumnSort={
+          multiSort ? { sortingColumns, onChange: ({ detail }) => setSortingColumns(detail.sortingColumns) } : undefined
+        }
+        sortingColumn={multiSort ? undefined : sortingColumns[0]?.sortingColumn}
+        sortingDescending={sortingColumns[0]?.isDescending}
+        onSortingChange={({ detail }) => setSortingColumns([detail])}
         expandableRows={{
           getItemChildren: item => itemChildren.get(item) ?? [],
           isItemExpandable: item => itemChildren.has(item),
