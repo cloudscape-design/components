@@ -9,7 +9,20 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/typography' as typography;
 @use '../internal/styles/utils/theming' as theming;
+@use '../internal/styles/style-api' as style-api;
 @use './collapsible.motion';
+
+// Style API v2. The focus-ring tokens are registered once, in styles.scss.
+$_bar-tokens: style-api.resolve(style-api.$focus-ring, carrier);
+@include style-api.docs(
+  'notificationBar',
+  $_bar-tokens,
+  $properties: (color, background, border, border-radius, box-shadow, padding),
+  $descriptions: (
+    slot:
+      'The bar under the stacked messages that expands and collapses the stack. Rendered for `stackItems` with more than one message; use `:hover` and `:active` for interaction states.'
+  )
+);
 
 $notification-bar-top-overlap: (
   'collapsed': calc(#{awsui.$space-scaled-xl} + 3px),
@@ -171,6 +184,7 @@ the grid layout will be:
 }
 
 .stack > .notification-bar {
+  @include style-api.carriers($_bar-tokens);
   @include styles.text-wrapping;
   background: var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-notification-stack-bar);
   border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-notification-stack-bar);
@@ -203,7 +217,7 @@ the grid layout will be:
   > .status > .item-count,
   > .button {
     @include typography.default-text-style;
-    color: awsui.$color-text-notification-stack-bar;
+    color: inherit;
     cursor: pointer;
     margin-block: 0;
     padding-block: 0;
@@ -278,9 +292,6 @@ the grid layout will be:
     @include theming.one-theme-only {
       padding-inline: 0;
     }
-    #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
-      var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
-      var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-notification-stack-bar-focused);
 
     > .icon {
       @include styles.with-motion {
@@ -296,13 +307,12 @@ the grid layout will be:
     }
 
     @include focus-visible.when-visible {
-      @include styles.focus-highlight(
-        $gutter: 0px,
-        $border-radius: var(
-            #{custom-props.$styleFocusRingBorderRadius},
-            awsui.$border-radius-control-default-focus-ring
-          ),
-        $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow})
+      @include style-api.focus-highlight(
+        $gutter-block: 0px,
+        $gutter-inline: 0px,
+        $radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
+        $width: var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width),
+        $color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-notification-stack-bar-focused)
       );
     }
   }

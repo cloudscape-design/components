@@ -3,8 +3,8 @@
 import React, { useRef } from 'react';
 
 import { Box, Link } from '~components';
+import { StickyScrollbar } from '~components/internal/components/sticky-scrollbar';
 import { useScrollSync } from '~components/internal/hooks/use-scroll-sync';
-import { StickyScrollbar } from '~components/table/sticky-scrollbar';
 
 import { generateItems, Instance } from '../table/generate-data';
 

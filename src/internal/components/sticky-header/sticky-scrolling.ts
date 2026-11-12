@@ -1,0 +1,68 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
+
+import { getOverflowParents } from '../../utils/scrollable-containers';
+
+/**
+ * @param containerRef ref to surrounding container with sticky element
+ * @param stickyRef ref to sticky element scrolled inside of containerRef
+ */
+export default function stickyScrolling(
+  containerRef: React.MutableRefObject<HTMLElement | null>,
+  stickyRef: React.MutableRefObject<HTMLElement | null>
+) {
+  const scrollToTop = () => {
+    if (!containerRef.current || !stickyRef.current) {
+      return;
+    }
+    const scrollingOffset = calculateScrollingOffset(containerRef.current, stickyRef.current);
+    if (scrollingOffset > 0) {
+      scrollUpBy(scrollingOffset, containerRef.current);
+    }
+  };
+  const scrollToItem = (item: HTMLElement | null) => {
+    if (!item || !containerRef.current || !stickyRef.current) {
+      return;
+    }
+    // For grouped headers with multiple <tr> rows, stickyRef points to the first <tr>.
+    // Use the full <thead> bottom so we account for all header rows.
+    /* istanbul ignore next: requires DOM scroll measurements */
+    const stickyEl = stickyRef.current.closest('thead') ?? stickyRef.current;
+    const stickyBottom = getLogicalBoundingClientRect(stickyEl).insetBlockEnd;
+    const scrollingOffset = stickyBottom - getLogicalBoundingClientRect(item).insetBlockStart;
+    if (scrollingOffset > 0) {
+      scrollUpBy(scrollingOffset, containerRef.current);
+    }
+  };
+  return {
+    scrollToTop,
+    scrollToItem,
+  };
+}
+
+/**
+ * Calculates the scrolling offset between container and sticky element
+ * @param container
+ * @param sticky element inside of container
+ */
+export function calculateScrollingOffset(container: HTMLElement, sticky: HTMLElement) {
+  const stickyRect = getLogicalBoundingClientRect(sticky);
+  const containerRect = getLogicalBoundingClientRect(container);
+  return stickyRect.insetBlockStart - containerRect.insetBlockStart;
+}
+
+/**
+ * Scrolls suitable parent of container up by amount of pixels
+ * @param amount pixels to be scrolled up
+ * @param container used to determine next parent element for scrolling
+ */
+export function scrollUpBy(amount: number, container: HTMLElement) {
+  const parent = getOverflowParents(container);
+  if (parent.length) {
+    // Take next overflow parent in stack
+    parent[0].scrollTop -= amount;
+  } else {
+    window.scrollTo({ top: window.pageYOffset - amount });
+  }
+}

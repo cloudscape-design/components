@@ -1,0 +1,65 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~components/styling/action-card';
+@use '../style-api/palette' as palette;
+
+.cell {
+  inline-size: 240px;
+}
+
+.root {
+  @include action-card.root(
+    $background: palette.$surface,
+    $border-color: palette.$border-accent,
+    $border-width: 2px,
+    $border-radius: 16px,
+    $focus-ring-color: palette.$info,
+    $focus-ring-width: 3px,
+    $focus-ring-radius: 18px
+  );
+
+  &:has(:hover) {
+    @include action-card.root($background: palette.$subtle-hover, $border-color: palette.$accent-hover);
+  }
+
+  &:has(:active) {
+    @include action-card.root($background: palette.$subtle-active, $border-color: palette.$accent-active);
+  }
+}
+
+.root-disabled {
+  @include action-card.root(
+    $background: palette.$control-bg-disabled,
+    $border-color: palette.$border-disabled,
+    $border-width: 2px,
+    $border-radius: 16px,
+    $focus-ring-color: palette.$info,
+    $focus-ring-width: 3px,
+    $focus-ring-radius: 18px
+  );
+}
+
+.header {
+  @include action-card.header($background: palette.$genai-surface, $border-color: palette.$genai, $border-width: 2px);
+}
+
+// stylelint-disable-next-line selector-combinator-disallowed-list
+.root:has(:hover) .header {
+  @include action-card.header($background: palette.$subtle-hover, $border-color: palette.$genai-hover);
+}
+
+// stylelint-disable-next-line selector-combinator-disallowed-list
+.root:has(:active) .header {
+  @include action-card.header($background: palette.$subtle-active, $border-color: palette.$genai-active);
+}
+
+.header-disabled {
+  @include action-card.header(
+    $background: palette.$control-bg-disabled,
+    $border-color: palette.$border-disabled,
+    $border-width: 2px
+  );
+}

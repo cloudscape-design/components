@@ -1,16 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { forwardRef, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import {
-  getIsRtl,
   SingleTabStopNavigationAPI,
   SingleTabStopNavigationProvider,
   useMergeRefs,
-  useResizeObserver,
   useSingleTabStopNavigation,
 } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
@@ -22,7 +20,7 @@ import { getAllFocusables } from '../internal/components/focus-lock/utils';
 import { hasModifierKeys, isPlainLeftClick } from '../internal/events';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import { usePrevious } from '../internal/hooks/use-previous';
-import { useOneTheme, useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import { circleIndex } from '../internal/utils/circle-index';
 import { isHTMLElement } from '../internal/utils/dom';
@@ -47,6 +45,15 @@ import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
+// Style API v2
+export interface StyleClassNames {
+  tabsHeader?: string;
+  tab?: string | ((args: { tab: TabsProps.Tab }) => string);
+  tabLink?: string;
+  content?: string;
+  dismissButton?: string;
+}
+
 const tabSelector = `.${styles['tabs-tab-link']}`;
 const focusedTabSelector = `.${styles['tabs-tab-focused']}`;
 const focusableTabSelector = `.${styles['tabs-tab-focusable']}`;
@@ -56,11 +63,13 @@ function dismissButton({
   dismissDisabled,
   onDismiss,
   tabId,
+  styleClassNames,
 }: {
   dismissLabel?: string;
   dismissDisabled?: boolean;
   onDismiss: ButtonProps['onClick'];
   tabId: string;
+  styleClassNames?: { root?: string };
 }) {
   return (
     <InternalButton
@@ -72,6 +81,7 @@ function dismissButton({
       disabled={dismissDisabled}
       className={clsx(testUtilStyles['tab-dismiss-button'], analyticsSelectors['tab-dismiss-button'])}
       data-testid={`awsui-tab-dismiss-button-${tabId}`}
+      styleClassNames={styleClassNames}
     />
   );
 }
@@ -88,6 +98,7 @@ interface TabHeaderBarProps {
   keyboardActivationMode: Required<TabsProps['keyboardActivationMode']>;
   actions?: TabsProps['actions'];
   style?: TabsProps['style'];
+  styleClassNames?: StyleClassNames;
 }
 
 export function TabHeaderBar({
@@ -102,6 +113,7 @@ export function TabHeaderBar({
   keyboardActivationMode,
   actions,
   style,
+  styleClassNames,
 }: TabHeaderBarProps) {
   const headerBarRef = useRef<HTMLUListElement>(null);
   const activeTabHeaderRef = useRef<null | HTMLElement>(null);
@@ -109,11 +121,6 @@ export function TabHeaderBar({
   const i18n = useInternalI18n('tabs');
 
   const isVisualRefresh = useVisualRefresh();
-  const isOneTheme = useOneTheme();
-
-  const [indicatorStyle, setIndicatorStyle] = useState<React.CSSProperties>({ opacity: 0 });
-  const previousIndicatorTabId = usePrevious(activeTabId);
-  const activeHeaderContainerRef = useRef<HTMLElement | null>(null);
 
   const containerObjectRef = useRef<HTMLDivElement>(null);
   const documentRef = useRef<null | Document>(typeof document !== 'undefined' ? document : null);
@@ -203,54 +210,6 @@ export function TabHeaderBar({
     }
   }, [activeTabId]);
 
-  const activeTab = tabs.find(tab => tab.id === activeTabId);
-  const activeTabVisible = activeTab !== undefined && !activeTab.disabled;
-
-  const updateIndicator = () => {
-    const list = headerBarRef.current;
-    const headerContainer = activeTabVisible ? activeHeaderContainerRef.current : null;
-    if (!list || !headerContainer) {
-      setIndicatorStyle({ opacity: 0 });
-      return;
-    }
-
-    const borderWidth = headerContainer.clientLeft;
-    // Layout metrics ignore transforms (such as a Modal scaling in) and the scroll position.
-    // start = tabStart + border, width = tabWidth - 2 * border - 1 (as the per-tab :after)
-    const tabStart = getIsRtl(list)
-      ? list.clientWidth - headerContainer.offsetLeft - headerContainer.offsetWidth
-      : headerContainer.offsetLeft;
-    const insetInlineStart = `${tabStart + borderWidth}px`;
-    const inlineSize = `${headerContainer.offsetWidth - 2 * borderWidth - 1}px`;
-    const animate = previousIndicatorTabId !== undefined && previousIndicatorTabId !== activeTabId;
-
-    setIndicatorStyle(prev => {
-      const sameGeometry =
-        prev.insetInlineStart === insetInlineStart && prev.inlineSize === inlineSize && prev.opacity === 1;
-      if (sameGeometry) {
-        return prev;
-      }
-      return { insetInlineStart, inlineSize, opacity: 1, transition: animate ? undefined : 'none' };
-    });
-  };
-
-  useLayoutEffect(() => {
-    if (isOneTheme) {
-      updateIndicator();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOneTheme, activeTabId, activeTabVisible, tabs, widthChange]);
-
-  const getActiveHeaderContainer = useCallback(
-    () => (activeTabId !== undefined ? activeHeaderContainerRef.current : null),
-    [activeTabId]
-  );
-  useResizeObserver(getActiveHeaderContainer, () => {
-    if (isOneTheme) {
-      updateIndicator();
-    }
-  });
-
   const onScroll = () => {
     if (headerBarRef.current) {
       setInlineStartOverflow(hasInlineStartOverflow(headerBarRef.current));
@@ -258,7 +217,7 @@ export function TabHeaderBar({
     }
   };
 
-  const classes = clsx({
+  const classes = clsx(styleClassNames?.tabsHeader, {
     [styles['tabs-header']]: true,
     [styles['tabs-header-with-divider']]: variant === 'default' || isVisualRefresh,
   });
@@ -385,7 +344,6 @@ export function TabHeaderBar({
   }
 
   const TabList = hasActionOrDismissible ? 'div' : 'ul';
-  const Indicator = hasActionOrDismissible ? 'span' : 'li';
 
   return (
     <div className={classes}>
@@ -415,16 +373,12 @@ export function TabHeaderBar({
             aria-label={ariaLabel}
             aria-labelledby={ariaLabelledby}
             ref={headerBarRef as never}
-            style={isOneTheme ? getTabContainerStyles(style) : undefined}
             onScroll={onScroll}
             onKeyDown={onKeyDown}
             onFocus={onFocus}
             onBlur={onBlur}
           >
             {tabs.map(renderTabHeader)}
-            {isOneTheme && activeTabVisible && (
-              <Indicator className={styles['tabs-active-indicator']} style={indicatorStyle} aria-hidden="true" />
-            )}
           </TabList>
         </SingleTabStopNavigationProvider>
         {horizontalOverflow && (
@@ -481,7 +435,10 @@ export function TabHeaderBar({
       onChange({ activeTabId: tab.id, activeTabHref: tab.href });
     };
 
-    const classes = clsx({
+    const tabSlotClass =
+      typeof styleClassNames?.tab === 'function' ? styleClassNames.tab({ tab }) : styleClassNames?.tab;
+
+    const classes = clsx(styleClassNames?.tabLink, {
       [styles['tabs-tab-link']]: true,
       [styles.refresh]: isVisualRefresh,
       [styles['tabs-tab-active']]: activeTabId === tab.id && !tab.disabled,
@@ -492,7 +449,7 @@ export function TabHeaderBar({
       [styles['tabs-tab-focusable']]: !tab.disabled || (tab.disabled && !!tab.disabledReason),
     });
 
-    const tabHeaderContainerClasses = clsx({
+    const tabHeaderContainerClasses = clsx(tabSlotClass, {
       [styles['tabs-tab-header-container']]: true,
       [styles.refresh]: isVisualRefresh,
       [styles['tabs-tab-active']]: isActive,
@@ -588,11 +545,6 @@ export function TabHeaderBar({
         key={tab.id}
       >
         <div
-          ref={element => {
-            if (tab.id === activeTabId) {
-              activeHeaderContainerRef.current = element;
-            }
-          }}
           className={tabHeaderContainerClasses}
           {...tabHeaderContainerAriaProps}
           {...getAnalyticsMetadataAttribute({ component: analyticsComponentMetadataInnerContext })}
@@ -609,7 +561,13 @@ export function TabHeaderBar({
           {action && <span className={tabActionClasses}>{action}</span>}
           {dismissible && (
             <span className={styles['tabs-tab-dismiss']} {...getAnalyticsMetadataAttribute(analyticsDismissMetadata)}>
-              {dismissButton({ dismissLabel, dismissDisabled, onDismiss: handleDismiss, tabId: tab.id })}
+              {dismissButton({
+                dismissLabel,
+                dismissDisabled,
+                onDismiss: handleDismiss,
+                tabId: tab.id,
+                styleClassNames: { root: styleClassNames?.dismissButton },
+              })}
             </span>
           )}
         </div>

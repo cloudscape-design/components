@@ -8,7 +8,7 @@ import { viewports } from './constants';
 import { AppLayoutSplitViewPage, getUrlParams } from './utils';
 
 import mobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.selectors.js';
-import tableScrollbarStyles from '../../../lib/components/table/sticky-scrollbar/styles.selectors.js';
+import tableScrollbarStyles from '../../../lib/components/internal/components/sticky-scrollbar/styles.selectors.js';
 
 const scrollbarSelector = `.${tableScrollbarStyles['sticky-scrollbar-visible']}`;
 

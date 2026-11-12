@@ -8,6 +8,12 @@
 @use '../../internal/styles' as styles;
 @use '../cell-base/cell-box' as cell-base;
 @use '../sticky-columns/sticky-boundary' as sticky-boundary;
+@use '../../internal/styles/style-api' as style-api;
+@use '../style-api' as table-style-api;
+
+$border-color: table-style-api.header-cell(border-color, awsui.$color-border-divider-default);
+$group-border-color: table-style-api.header-cell(border-color, awsui.$color-border-divider-table-group);
+$group-divider-color: table-style-api.header-cell(divider-color, awsui.$color-border-divider-table-group);
 
 @mixin when-focus-visible-or-fake {
   @include focus-visible.when-visible {
@@ -22,14 +28,15 @@
 
 @mixin header-cell-focus-outline($gutter) {
   @include when-focus-visible-or-fake {
-    @include styles.focus-highlight(calc(-1 * #{$gutter}));
+    @include table-style-api.focus-highlight(table-style-api.$header-cell-tokens, calc(-1 * #{$gutter}));
   }
 }
 
 @mixin header-cell-focus-outline-first($gutter) {
   @include when-focus-visible-or-fake {
     // Give extra space on the left (inline start) to compensate for missing header cell padding.
-    @include styles.focus-highlight(
+    @include table-style-api.focus-highlight(
+      table-style-api.$header-cell-tokens,
       (
         'vertical': calc(-1 * #{$gutter}),
         'horizontal': (
@@ -50,10 +57,11 @@
 }
 
 .header-cell {
+  @include style-api.carriers(table-style-api.$header-cell-tokens);
   position: relative;
   text-align: start;
   box-sizing: border-box;
-  border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
+  border-block-end: awsui.$border-divider-list-width solid $border-color;
   background: awsui.$color-background-table-header;
   color: awsui.$color-text-column-header;
   font-weight: awsui.$font-weight-heading-s;
@@ -68,20 +76,20 @@
   &.header-cell-spans-rows {
     padding-block: awsui.$space-xxxs;
     padding-inline: awsui.$space-scaled-xs;
-    border-block-end-color: awsui.$color-border-divider-table-group;
+    border-block-end-color: $group-border-color;
 
     > .resize-divider.resize-divider {
-      border-inline-start-color: awsui.$color-border-divider-table-group;
+      border-inline-start-color: $group-divider-color;
     }
   }
 
   &-sticky {
-    border-block-end: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
+    border-block-end: awsui.$border-table-sticky-width solid $border-color;
 
     &.header-cell-group,
     &.header-cell-grouped,
     &.header-cell-spans-rows {
-      border-block-end-color: awsui.$color-border-divider-table-group;
+      border-block-end-color: $group-border-color;
     }
   }
   &-stuck:not(.header-cell-variant-full-page) {
@@ -248,10 +256,10 @@
 
 .header-cell-sortable:not(.header-cell-disabled) {
   cursor: pointer;
-  & > .header-cell-main > .header-cell-content:hover,
-  &.header-cell-sorted > .header-cell-main > .header-cell-content {
+  &:hover,
+  &.header-cell-sorted {
     color: awsui.$color-text-interactive-active;
-    & > .sorting-icon {
+    & > .header-cell-main > .header-cell-content > .sorting-icon {
       color: awsui.$color-text-interactive-active;
     }
   }

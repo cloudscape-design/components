@@ -976,6 +976,7 @@ export type TypographyTokenName =
   | 'fontDecorationThicknessLink'
   | 'fontDecorationThicknessLinkDisplayL'
   | 'fontDecorationStyleLink'
+  | 'fontDecorationLineButtonInlineLink'
   | 'fontDecorationLineLinkSecondary'
   | 'fontPanelHeaderLineHeight'
   | 'fontPanelHeaderSize'

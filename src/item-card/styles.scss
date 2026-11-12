@@ -9,7 +9,42 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../internal/styles/style-api' as style-api;
 @use './motion';
+
+$border-tokens: style-api.resolve((border-color, border-width), public);
+// A carrier, because the nested `.inner-card` reads the radius.
+$radius-tokens: style-api.resolve((border-radius), carrier);
+@include style-api.register($border-tokens, $radius-tokens);
+@include style-api.docs(
+  'root',
+  map.merge($border-tokens, $radius-tokens),
+  $properties: (background, box-shadow),
+  $descriptions: (
+    slot:
+      'The card box. The header, content and footer contents are your own elements; use `disableHeaderPaddings`, `disableContentPaddings` and `disableFooterPaddings` to let them fill their section.',
+    tokens: (
+      border-color: 'The border is drawn over the card edges and takes no space.',
+      border-width: 'The border is drawn over the card edges and takes no space.',
+      border-radius: 'Also rounds the header and footer corners.',
+    )
+  )
+);
+@include style-api.docs(
+  'header',
+  $properties: (background, border),
+  $descriptions: (
+    slot:
+      'Rendered when `header`, `description`, `icon` or `actions` is set. The block-end border is the divider between the header and the content.'
+  )
+);
+@include style-api.docs(
+  'footer',
+  $properties: (background, border),
+  $descriptions: (
+    slot: 'Rendered when `footer` is set. The block-start border is the divider between the content and the footer.'
+  )
+);
 
 // Variant configuration maps — adjust values here for easy customization
 $variant-border-radius: (
@@ -30,15 +65,48 @@ $variant-padding-inline: (
 $action-padding-vertical: awsui.$space-scaled-xxs;
 $action-padding-horizontal: awsui.$space-xxs;
 
-@mixin apply-border-radius($variant: 'default') {
+@function border-radius($variant) {
   $radius: map.get($variant-border-radius, $variant);
-  border-start-start-radius: var(#{custom-props.$styleItemCardBorderRadius}, $radius);
-  border-start-end-radius: var(#{custom-props.$styleItemCardBorderRadius}, $radius);
-  border-end-start-radius: var(#{custom-props.$styleItemCardBorderRadius}, $radius);
-  border-end-end-radius: var(#{custom-props.$styleItemCardBorderRadius}, $radius);
+  @return style-api.value($radius-tokens, border-radius, var(#{custom-props.$styleItemCardBorderRadius}, #{$radius}));
+}
+
+@mixin apply-border-radius($variant: 'default') {
+  $radius: border-radius($variant);
+  border-start-start-radius: $radius;
+  border-start-end-radius: $radius;
+  border-end-start-radius: $radius;
+  border-end-end-radius: $radius;
+}
+
+@mixin inherit-start-radius {
+  border-start-start-radius: inherit;
+  border-start-end-radius: inherit;
+}
+
+@mixin inherit-end-radius {
+  border-end-start-radius: inherit;
+  border-end-end-radius: inherit;
+}
+
+@function border-width($fallback) {
+  @return style-api.value(
+    $border-tokens,
+    border-width,
+    var(#{custom-props.$styleItemCardBorderWidthDefault}, #{$fallback})
+  );
+}
+
+@function border-color($fallback) {
+  @return style-api.value(
+    $border-tokens,
+    border-color,
+    var(#{custom-props.$styleItemCardBorderColorDefault}, #{$fallback})
+  );
 }
 
 .header {
+  // Solid on the divider side only, so a consumer border draws only the divider; zero width keeps the default.
+  border-block-end: 0 solid transparent;
   &-inner {
     @include styles.font-heading-s;
   }
@@ -52,12 +120,15 @@ $action-padding-horizontal: awsui.$space-xxs;
 }
 
 .footer {
+  // Solid on the divider side only, so a consumer border draws only the divider; zero width keeps the default.
+  border-block-start: 0 solid transparent;
   &:first-child {
     margin-block-start: auto;
   }
 }
 
 .root {
+  @include style-api.carriers($radius-tokens);
   @include styles.styles-reset();
   box-sizing: border-box;
   position: relative;
@@ -67,12 +138,15 @@ $action-padding-horizontal: awsui.$space-xxs;
 
   &:before {
     @include styles.base-pseudo-element;
+    @if style-api.enabled() {
+      // Public tokens do not inherit, so `::before` takes them from the root.
+      --awsui-style-border-color: inherit;
+      --awsui-style-border-width: inherit;
+    }
     box-shadow: none;
     border-color: transparent;
-    border-block: solid var(#{custom-props.$styleItemCardBorderWidthDefault}, awsui.$border-width-item-card)
-      var(#{custom-props.$styleItemCardBorderColorDefault}, awsui.$color-border-item-card);
-    border-inline: solid var(#{custom-props.$styleItemCardBorderWidthDefault}, awsui.$border-width-item-card)
-      var(#{custom-props.$styleItemCardBorderColorDefault}, awsui.$color-border-item-card);
+    border-block: solid border-width(awsui.$border-width-item-card) border-color(awsui.$color-border-item-card);
+    border-inline: solid border-width(awsui.$border-width-item-card) border-color(awsui.$color-border-item-card);
   }
 
   &::after {
@@ -80,16 +154,18 @@ $action-padding-horizontal: awsui.$space-xxs;
   }
 
   &:not(.refresh)::before {
-    border-block-start: solid var(#{custom-props.$styleItemCardBorderWidthDefault}, awsui.$border-container-top-width)
-      var(#{custom-props.$styleItemCardBorderColorDefault}, awsui.$color-border-container-top);
+    border-block-start: solid border-width(awsui.$border-container-top-width)
+      border-color(awsui.$color-border-container-top);
   }
 
   &.highlighted {
     background: awsui.$color-background-item-selected;
 
     &:before {
-      border-block: solid awsui.$border-width-card-selected awsui.$color-border-item-card-highlighted;
-      border-inline: solid awsui.$border-width-card-selected awsui.$color-border-item-card-highlighted;
+      border-block: solid style-api.value($border-tokens, border-width, awsui.$border-width-card-selected)
+        style-api.value($border-tokens, border-color, awsui.$color-border-item-card-highlighted);
+      border-inline: solid style-api.value($border-tokens, border-width, awsui.$border-width-card-selected)
+        style-api.value($border-tokens, border-color, awsui.$color-border-item-card-highlighted);
     }
   }
 
@@ -126,6 +202,20 @@ $action-padding-horizontal: awsui.$space-xxs;
       &::after,
       > .inner-card {
         @include apply-border-radius($variant);
+      }
+
+      // So a header or footer background stays inside the rounded card.
+      > .inner-card > .header {
+        @include inherit-start-radius;
+        &:last-child {
+          @include inherit-end-radius;
+        }
+      }
+      > .inner-card > .footer {
+        @include inherit-end-radius;
+        &:first-child {
+          @include inherit-start-radius;
+        }
       }
 
       $padding-block: map.get($variant-padding-block, $variant);
