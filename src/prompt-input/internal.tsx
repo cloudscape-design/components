@@ -37,9 +37,20 @@ import { insertTextIntoContentEditable } from './utils/insert-text-content-edita
 import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';
 
+// Style API v2
+export interface StyleClassNames {
+  root?: string;
+  textarea?: string;
+  actionButton?: string;
+  token?: string;
+  menu?: string;
+}
+
 interface InternalPromptInputProps
   extends SomeRequired<PromptInputProps, 'maxRows' | 'minRows'>,
-    InternalBaseComponentProps {}
+    InternalBaseComponentProps {
+  styleClassNames?: StyleClassNames;
+}
 
 const InternalPromptInput = React.forwardRef(
   (
@@ -85,6 +96,7 @@ const InternalPromptInput = React.forwardRef(
       onTriggerDetected,
       i18nStrings,
       __internalRootRef,
+      styleClassNames,
       ...rest
     }: InternalPromptInputProps,
     ref: Ref<PromptInputProps.Ref | HTMLTextAreaElement | HTMLInputElement>
@@ -267,6 +279,7 @@ const InternalPromptInput = React.forwardRef(
       onMenuLoadItems,
       i18nStrings: effectiveI18nStrings,
       adjustInputHeight,
+      styleClassNames,
     });
 
     const handleInsertText = useStableCallback((text: string, caretStart?: number, caretEnd?: number) => {
@@ -376,7 +389,7 @@ const InternalPromptInput = React.forwardRef(
       name,
       placeholder,
       autoFocus,
-      className: clsx(styles.textarea, testutilStyles.textarea, {
+      className: clsx(styleClassNames?.textarea, styles.textarea, testutilStyles.textarea, {
         [styles.invalid]: invalid,
         [styles.warning]: warning,
       }),
@@ -400,6 +413,7 @@ const InternalPromptInput = React.forwardRef(
         {customPrimaryAction ?? (
           <InternalButton
             className={clsx(styles['action-button'], testutilStyles['action-button'])}
+            styleClassNames={{ root: styleClassNames?.actionButton }}
             ariaLabel={effectiveI18nStrings.actionButtonAriaLabel}
             disabled={disabled || readOnly || disableActionButton}
             __focusable={readOnly}
@@ -423,7 +437,7 @@ const InternalPromptInput = React.forwardRef(
       <div
         {...baseProps}
         aria-label={ariaLabel}
-        className={clsx(styles.root, testutilStyles.root, baseProps.className, {
+        className={clsx(styleClassNames?.root, styles.root, testutilStyles.root, baseProps.className, {
           [styles['textarea-readonly']]: readOnly,
           [styles['textarea-invalid']]: invalid,
           [styles['textarea-warning']]: warning && !invalid,
@@ -471,6 +485,7 @@ const InternalPromptInput = React.forwardRef(
               menuDropdownStatus={tokenMode.menuDropdownStatus}
               maxMenuHeight={maxMenuHeight}
               menuStyle={(style as PromptInputInternalStyle | undefined)?._menu}
+              styleClassNames={{ menu: styleClassNames?.menu }}
               handleInput={tokenMode.handleInput}
               handleLoadMore={tokenMode.handleLoadMore}
               editableElementAttributes={tokenMode.editableElementAttributes}
