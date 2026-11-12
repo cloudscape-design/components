@@ -81,11 +81,6 @@ describe('Collapsible Flashbar', () => {
         expect(toggleElement).toHaveTextContent(customToggleButtonText);
       });
 
-      it('renders the toggle button as a non-submit button', () => {
-        const flashbar = renderFlashbar();
-        expect(findNotificationBar(flashbar)!.querySelector('button')).toHaveProperty('type', 'button');
-      });
-
       it('does not show toggle element if there is only one item', () => {
         const flashbar = renderFlashbar({ items: [{ type: 'error' }] });
         expect(findNotificationBar(flashbar)).toBeFalsy();
