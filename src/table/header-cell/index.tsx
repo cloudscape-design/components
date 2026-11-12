@@ -9,8 +9,6 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import { useInternalI18n } from '../../i18n/context';
 import InternalIcon from '../../icon/internal';
-import { useInternalComponentIcons } from '../../icon-provider/use-component-icons';
-import { CustomizableIcon } from '../../internal/components/customizable-icon';
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { KeyCode } from '../../internal/keycode';
@@ -28,8 +26,9 @@ import { Divider, Resizer } from '../resizer';
 import { getStyleClassName } from '../style-api';
 import { BaseHeaderCellProps } from './common-props';
 import { SortMenu, SortMenuAction } from './sort-menu';
+import { SortingIcon } from './sorting-icon';
 import { TableThElement } from './th-element';
-import { getSortingIconName, getSortingStatus, isSorted } from './utils';
+import { getSortingStatus, isSorted } from './utils';
 
 import analyticsSelectors from '../analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -198,7 +197,6 @@ export function TableHeaderCell<ItemType>({
   };
 
   const headerId = useUniqueId('table-header-');
-  const icons = useInternalComponentIcons('table');
 
   const clickableHeaderRef = useRef<HTMLDivElement>(null);
   const { tabIndex: clickableHeaderTabIndex } = useSingleTabStopNavigation(clickableHeaderRef, { tabIndex });
@@ -322,13 +320,7 @@ export function TableHeaderCell<ItemType>({
                   {multiSortIndex}
                 </span>
               )}
-              <CustomizableIcon
-                customIcon={icons?.sortingIndicator?.({ sortingState: sortingStatus })}
-                fallback={{
-                  name: getSortingIconName(sortingStatus),
-                  nativeAttributes: { 'data-awsui-motion-target': '' },
-                }}
-              />
+              <SortingIcon sortingStatus={sortingStatus} />
             </span>
           )}
         </div>

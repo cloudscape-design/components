@@ -95,6 +95,7 @@ import TableHeadWrapper from './table-head';
 import TableHeaderCellWrapper from './table-header-cell';
 import TableRootWrapper from './table-root';
 import TableRowWrapper from './table-row';
+import TableSortButtonWrapper from './table-sort-button';
 import TabsWrapper from './tabs';
 import TagEditorWrapper from './tag-editor';
 import TextContentWrapper from './text-content';
@@ -200,6 +201,7 @@ export { TableHeadWrapper };
 export { TableHeaderCellWrapper };
 export { TableRootWrapper };
 export { TableRowWrapper };
+export { TableSortButtonWrapper };
 export { TabsWrapper };
 export { TagEditorWrapper };
 export { TextContentWrapper };
@@ -2630,6 +2632,34 @@ findAllTableRows(selector?: string): Array<TableRowWrapper>;
  */
 findClosestTableRow(): TableRowWrapper | null;
 /**
+ * Returns the wrapper of the first TableSortButton that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first TableSortButton.
+ * If no matching TableSortButton is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {TableSortButtonWrapper | null}
+ */
+findTableSortButton(selector?: string): TableSortButtonWrapper | null;
+
+/**
+ * Returns an array of TableSortButton wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the TableSortButtons inside the current wrapper.
+ * If no matching TableSortButton is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<TableSortButtonWrapper>}
+ */
+findAllTableSortButtons(selector?: string): Array<TableSortButtonWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent TableSortButton for the current element,
+ * or the element itself if it is an instance of TableSortButton.
+ * If no TableSortButton is found, returns \`null\`.
+ *
+ * @returns {TableSortButtonWrapper | null}
+ */
+findClosestTableSortButton(): TableSortButtonWrapper | null;
+/**
  * Returns the wrapper of the first Tabs that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first Tabs.
  * If no matching Tabs is found, returns \`null\`.
@@ -4227,6 +4257,19 @@ ElementWrapper.prototype.findTableRow = function(selector) {
 ElementWrapper.prototype.findAllTableRows = function(selector) {
   return this.findAllComponents(TableRowWrapper, selector);
 };
+ElementWrapper.prototype.findTableSortButton = function(selector) {
+  let rootSelector = \`.\${TableSortButtonWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TableSortButtonWrapper && TableSortButtonWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TableSortButtonWrapper.rootSelector}, .\${TableSortButtonWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TableSortButtonWrapper);
+};
+
+ElementWrapper.prototype.findAllTableSortButtons = function(selector) {
+  return this.findAllComponents(TableSortButtonWrapper, selector);
+};
 ElementWrapper.prototype.findTabs = function(selector) {
   let rootSelector = \`.\${TabsWrapper.rootSelector}\`;
   if("legacyRootSelector" in TabsWrapper && TabsWrapper.legacyRootSelector){
@@ -4879,6 +4922,11 @@ ElementWrapper.prototype.findClosestTableRow = function() {
   // https://github.com/microsoft/TypeScript/issues/29132
   return (this as any).findClosestComponent(TableRowWrapper);
 };
+ElementWrapper.prototype.findClosestTableSortButton = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(TableSortButtonWrapper);
+};
 ElementWrapper.prototype.findClosestTabs = function() {
   // casting to 'any' is needed to avoid this issue with generics
   // https://github.com/microsoft/TypeScript/issues/29132
@@ -5069,6 +5117,7 @@ import TableHeadWrapper from './table-head';
 import TableHeaderCellWrapper from './table-header-cell';
 import TableRootWrapper from './table-root';
 import TableRowWrapper from './table-row';
+import TableSortButtonWrapper from './table-sort-button';
 import TabsWrapper from './tabs';
 import TagEditorWrapper from './tag-editor';
 import TextContentWrapper from './text-content';
@@ -5174,6 +5223,7 @@ export { TableHeadWrapper };
 export { TableHeaderCellWrapper };
 export { TableRootWrapper };
 export { TableRowWrapper };
+export { TableSortButtonWrapper };
 export { TabsWrapper };
 export { TagEditorWrapper };
 export { TextContentWrapper };
@@ -6658,6 +6708,23 @@ findTableRow(selector?: string): TableRowWrapper;
  */
 findAllTableRows(selector?: string): MultiElementWrapper<TableRowWrapper>;
 /**
+ * Returns a wrapper that matches the TableSortButtons with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches TableSortButtons.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {TableSortButtonWrapper}
+ */
+findTableSortButton(selector?: string): TableSortButtonWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches TableSortButtons with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches TableSortButtons.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<TableSortButtonWrapper>}
+ */
+findAllTableSortButtons(selector?: string): MultiElementWrapper<TableSortButtonWrapper>;
+/**
  * Returns a wrapper that matches the Tabs with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches Tabs.
  *
@@ -8067,6 +8134,19 @@ ElementWrapper.prototype.findTableRow = function(selector) {
 
 ElementWrapper.prototype.findAllTableRows = function(selector) {
   return this.findAllComponents(TableRowWrapper, selector);
+};
+ElementWrapper.prototype.findTableSortButton = function(selector) {
+  let rootSelector = \`.\${TableSortButtonWrapper.rootSelector}\`;
+  if("legacyRootSelector" in TableSortButtonWrapper && TableSortButtonWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${TableSortButtonWrapper.rootSelector}, .\${TableSortButtonWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TableSortButtonWrapper);
+};
+
+ElementWrapper.prototype.findAllTableSortButtons = function(selector) {
+  return this.findAllComponents(TableSortButtonWrapper, selector);
 };
 ElementWrapper.prototype.findTabs = function(selector) {
   let rootSelector = \`.\${TabsWrapper.rootSelector}\`;
