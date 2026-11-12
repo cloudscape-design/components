@@ -37,6 +37,7 @@
 
 .trigger-icon-wrapper {
   display: flex;
+  justify-content: center;
 }
 
 .trigger-badge-wrapper {
@@ -63,19 +64,20 @@ the calculation used to determine the Split Panel maximum width in the
 handleSplitPanelMaxWidth function in the context.
 */
 .trigger {
-  // Native button padding is asymmetric in WebKit (2px/3px) and the icon would otherwise sit on a
-  // font-dependent line box, so the padding is reset and the icon is centered with flex.
-  display: flex;
-  align-items: center;
-  justify-content: center;
   border-block: none;
   border-inline: none;
-  padding-block: 0;
   padding-inline: 0;
   color: awsui.$color-text-layout-toggle;
   cursor: pointer;
   pointer-events: auto;
   position: relative;
+
+  // WebKit's native block padding is asymmetric (2px/3px), which pushes the icon 0.5px above center.
+  // Badge triggers keep it: their icon wrapper is absolutely positioned, and the padding determines
+  // their baseline and therefore the height of the surrounding wrapper.
+  &:not(.badge) {
+    padding-block: 0;
+  }
 
   @include focus-visible.when-visible {
     @include styles.focus-highlight(3px);
