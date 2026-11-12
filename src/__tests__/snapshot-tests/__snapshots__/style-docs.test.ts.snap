@@ -604,6 +604,13 @@ exports[`Style API docs definition for table matches the snapshot: table 1`] = `
       "name": "sortingMenu",
     },
     {
+      "forwardsTo": {
+        "component": "button",
+        "slot": "root",
+      },
+      "name": "clearSortButton",
+    },
+    {
       "name": "row",
       "properties": [],
       "propertyDescriptions": {},

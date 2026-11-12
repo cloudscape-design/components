@@ -67,7 +67,8 @@ $transitioning-surface: light-dark(hsl(0, 0%, 96.5%), hsl(0, 0%, 21%));
   @include table.sortingIndicator($color: palette.$genai);
 }
 
-.sorting-menu-trigger {
+.sorting-menu-trigger,
+.clear-sort-button {
   @include button.root($color: palette.$genai, $focus-ring-color: palette.$genai);
 }
 

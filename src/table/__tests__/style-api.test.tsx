@@ -110,6 +110,15 @@ describe('Table Style API v2 (implicit styleClassNames)', () => {
     expect(table.findAll('button.sorting-menu-trigger')).toHaveLength(2);
   });
 
+  test('applies the clear sort button slot to the clear sort button', () => {
+    const [a] = columnDefinitions.map(column => ({ ...column, sortingField: column.id }));
+    const table = renderTable(
+      { columnDefinitions: [a], multiColumnSort: { sortingColumns: [{ sortingColumn: a }], onChange: () => {} } },
+      { clearSortButton: 'clear-sort-button' } satisfies StyleClassNames<Item>
+    );
+    expect(table.findAll('button.clear-sort-button')).toHaveLength(1);
+  });
+
   test('applies the sorting indicator slot to the sorting indicator and the sort priority', () => {
     const [a, b] = columnDefinitions.map(column => ({ ...column, sortingField: column.id }));
     const table = renderTable(

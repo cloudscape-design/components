@@ -147,6 +147,7 @@ export default function () {
     sortingButton: styles['sorting-button'],
     sortingIndicator: styles['sorting-indicator'],
     sortingMenu: { trigger: styles['sorting-menu-trigger'] },
+    clearSortButton: styles['clear-sort-button'],
     row: ({ item, selected }) =>
       clsx(
         styles.row,

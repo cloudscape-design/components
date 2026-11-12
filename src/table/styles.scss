@@ -60,6 +60,7 @@
   $descriptions: (slot: 'Sorting indicator of column header cells, including the multi-column sort priority.')
 );
 @include style-api.docs-forward('sortingMenu', 'button-dropdown');
+@include style-api.docs-forward('clearSortButton', 'button', 'root');
 @include style-api.docs(
   'row',
   table-style-api.$row-tokens,
