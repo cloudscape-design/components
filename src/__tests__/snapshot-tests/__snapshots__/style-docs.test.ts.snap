@@ -278,6 +278,26 @@ exports[`Style API docs definition for container matches the snapshot: container
 }
 `;
 
+exports[`Style API docs definition for copy-to-clipboard matches the snapshot: copy-to-clipboard 1`] = `
+{
+  "slots": [
+    {
+      "forwardsTo": {
+        "component": "button",
+        "slot": "root",
+      },
+      "name": "copyButton",
+    },
+    {
+      "forwardsTo": {
+        "component": "popover",
+      },
+      "name": "statusPopover",
+    },
+  ],
+}
+`;
+
 exports[`Style API docs definition for date-input matches the snapshot: date-input 1`] = `
 {
   "slots": [
@@ -444,6 +464,55 @@ exports[`Style API docs definition for link matches the snapshot: link 1`] = `
 }
 `;
 
+exports[`Style API docs definition for popover matches the snapshot: popover 1`] = `
+{
+  "slots": [
+    {
+      "name": "container",
+      "properties": [
+        "background",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
+        "border-radius",
+        "border-start-start-radius",
+        "border-start-end-radius",
+        "border-end-start-radius",
+        "border-end-end-radius",
+        "box-shadow",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
+    },
+    {
+      "name": "arrow",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [
+        "fill-color",
+        "border-color",
+        "border-width",
+      ],
+    },
+    {
+      "forwardsTo": {
+        "component": "button",
+        "slot": "root",
+      },
+      "name": "dismissButton",
+    },
+  ],
+}
+`;
+
 exports[`Style API docs definition for radio-button matches the snapshot: radio-button 1`] = `
 {
   "slots": [
@@ -460,6 +529,126 @@ exports[`Style API docs definition for radio-button matches the snapshot: radio-
         "focus-ring-width",
         "focus-ring-radius",
       ],
+    },
+  ],
+}
+`;
+
+exports[`Style API docs definition for table matches the snapshot: table 1`] = `
+{
+  "slots": [
+    {
+      "name": "root",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {
+        "selected-row-outline-color": "Line around selected rows, including between consecutive selected rows.",
+        "selected-row-outline-radius": "Corner radius of the outline around selected rows.",
+        "sticky-header-shadow": "Shadow below the header while it is stuck. Its first layer draws the line below the header.",
+      },
+      "tokens": [
+        "selected-row-outline-color",
+        "selected-row-outline-radius",
+        "sticky-header-shadow",
+      ],
+    },
+    {
+      "description": "Column, column group and selection header cells.",
+      "name": "headerCell",
+      "properties": [
+        "background",
+        "color",
+        "font-family",
+        "font-size",
+        "font-weight",
+        "letter-spacing",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {
+        "border-color": "Line below the cell.",
+        "divider-color": "Line at the inline end of the cell, except while resizing.",
+        "focus-ring-color": "Keyboard navigation focus ring of the cell and its resize handle.",
+      },
+      "tokens": [
+        "border-color",
+        "divider-color",
+        "focus-ring-color",
+        "focus-ring-width",
+        "focus-ring-radius",
+      ],
+    },
+    {
+      "description": "Sort button of sortable column header cells. Inherits the header cell color; use \`:hover\` for the interaction state.",
+      "name": "sortingButton",
+      "properties": [
+        "color",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
+    },
+    {
+      "description": "Sorting indicator of column header cells, including the multi-column sort priority.",
+      "name": "sortingIndicator",
+      "properties": [
+        "color",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
+    },
+    {
+      "forwardsTo": {
+        "component": "button-dropdown",
+      },
+      "name": "sortingMenu",
+    },
+    {
+      "forwardsTo": {
+        "component": "button",
+        "slot": "root",
+      },
+      "name": "clearSortButton",
+    },
+    {
+      "name": "row",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {
+        "background-color": "Background of every cell in the row, including sticky cells.",
+        "divider-color": "Line below the row.",
+      },
+      "tokens": [
+        "background-color",
+        "divider-color",
+      ],
+    },
+    {
+      "description": "Body cells, including selection cells.",
+      "name": "cell",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {
+        "focus-ring-color": "Keyboard navigation focus ring. Focusable cell content keeps its own focus ring.",
+      },
+      "tokens": [
+        "background-color",
+        "focus-ring-color",
+        "focus-ring-width",
+        "focus-ring-radius",
+      ],
+    },
+    {
+      "forwardsTo": {
+        "component": "checkbox",
+      },
+      "name": "selectionCheckbox",
+    },
+    {
+      "forwardsTo": {
+        "component": "radio-button",
+      },
+      "name": "selectionRadio",
     },
   ],
 }
@@ -569,6 +758,48 @@ exports[`Style API docs definition for toggle matches the snapshot: toggle 1`] =
 }
 `;
 
+exports[`Style API docs definition for tooltip matches the snapshot: tooltip 1`] = `
+{
+  "slots": [
+    {
+      "name": "container",
+      "properties": [
+        "background",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
+        "border-radius",
+        "border-start-start-radius",
+        "border-start-end-radius",
+        "border-end-start-radius",
+        "border-end-end-radius",
+        "box-shadow",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
+    },
+    {
+      "name": "arrow",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [
+        "fill-color",
+        "border-color",
+        "border-width",
+      ],
+    },
+  ],
+}
+`;
+
 exports[`Style API docs list of components with a Style API doc matches the snapshot 1`] = `
 [
   "alert",
@@ -578,15 +809,19 @@ exports[`Style API docs list of components with a Style API doc matches the snap
   "button-group",
   "checkbox",
   "container",
+  "copy-to-clipboard",
   "date-input",
   "divider",
   "dropdown",
   "input",
   "link",
+  "popover",
   "radio-button",
+  "table",
   "text-filter",
   "textarea",
   "time-input",
   "toggle",
+  "tooltip",
 ]
 `;

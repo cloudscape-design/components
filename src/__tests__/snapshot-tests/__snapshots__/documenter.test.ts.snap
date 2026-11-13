@@ -10942,8 +10942,10 @@ exports[`Components definition for content-layout matches the snapshot: content-
       "type": "string",
     },
     {
-      "description": "Set it to \`true\` if your page uses the [app layout component](/components/app-layout/) with \`disableContentPaddings=true\`.
-In that case, the content layout will become sensitive to the state of drawers in app layout and leave the necessary padding to avoid visual overlap with those elements.",
+      "description": "Set it to \`true\` in either of these cases:
+* If your page does not use the [app layout component](/components/app-layout/).
+* If your page uses the [app layout component](/components/app-layout/) with \`disableContentPaddings=true\`.
+  In that case, the content layout will become sensitive to the state of drawers in app layout and leave the necessary padding to avoid visual overlap with those elements.",
       "name": "defaultPadding",
       "optional": true,
       "type": "boolean",
@@ -24960,6 +24962,11 @@ This property cannot be set when \`enableTokenGroups=true\`.",
             "type": "string",
           },
           {
+            "name": "tokenEditorPropertyFilteringAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "inlineType": {
               "name": "(token: PropertyFilterProps.FormattedToken) => string",
               "parameters": [
@@ -24998,6 +25005,11 @@ This property cannot be set when \`enableTokenGroups=true\`.",
           },
           {
             "name": "tokenEditorTokenRemoveLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "tokenEditorValueFilteringAriaLabel",
             "optional": true,
             "type": "string",
           },

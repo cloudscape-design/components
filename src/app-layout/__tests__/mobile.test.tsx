@@ -91,6 +91,19 @@ describeEachAppLayout({ sizes: ['mobile'] }, ({ theme }) => {
     expect(wrapper.findToolsToggle().getElement()).toBeEnabled();
   });
 
+  test('mobile navigation landmark does not use aria-orientation, which is not supported by the navigation role', () => {
+    const { wrapper } = renderComponent(
+      <AppLayout navigationOpen={false} onNavigationChange={() => {}} ariaLabels={{ navigation: 'Navigation' }} />
+    );
+    const navigations = wrapper.findAll('nav');
+    expect(navigations.length).toBeGreaterThan(0);
+    for (const nav of navigations) {
+      expect(nav.getElement()).not.toHaveAttribute('aria-orientation');
+    }
+    const toggle = wrapper.findNavigationToggle().getElement();
+    expect(toggle.closest('nav')).toHaveAttribute('aria-label', 'Navigation');
+  });
+
   test('AppLayout with controlled navigation has navigation forcely closed on initial load', () => {
     const { wrapper } = renderComponent(
       <AppLayoutWithControlledNavigation

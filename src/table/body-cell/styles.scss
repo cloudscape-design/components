@@ -8,10 +8,18 @@
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../cell-base/cell-box' as cell-base;
 @use '../sticky-columns/sticky-boundary' as sticky-boundary;
+@use '../../internal/styles/style-api' as style-api;
+@use '../style-api' as table-style-api;
 
 $cell-horizontal-padding-w-border: calc(#{cell-base.$cell-edge-horizontal-padding} + #{awsui.$border-item-width});
-$selected-border: awsui.$border-width-item-selected solid awsui.$color-border-item-selected;
-$selected-border-placeholder: awsui.$border-divider-list-width solid awsui.$color-border-item-placeholder;
+$row-divider-color: table-style-api.row(divider-color, awsui.$color-border-divider-secondary);
+$striped-background: table-style-api.cell-background(awsui.$color-background-cell-shaded);
+$selected-background: table-style-api.cell-background(awsui.$color-background-item-selected);
+$selected-border: awsui.$border-width-item-selected solid
+  table-style-api.root(selected-row-outline-color, awsui.$color-border-item-selected);
+$selected-radius: table-style-api.root(selected-row-outline-radius, awsui.$border-radius-item);
+$selected-border-placeholder: awsui.$border-divider-list-width solid
+  table-style-api.root(selected-row-outline-color, awsui.$color-border-item-placeholder);
 $icon-width-with-spacing: calc(#{awsui.$size-icon-normal} + #{awsui.$space-xs});
 // Right paddings of the absolute positioned icons (success icon is shown next to the edit icon)
 $edit-button-padding-right: calc(#{awsui.$space-xs} + #{awsui.$space-xxs});
@@ -22,7 +30,7 @@ $editing-cell-padding-inline: awsui.$space-xxs;
 $editing-cell-padding-block: awsui.$space-scaled-xxxs;
 
 @mixin safe-focus-highlight($params) {
-  @include styles.focus-highlight($params);
+  @include table-style-api.focus-highlight(table-style-api.$cell-focus-ring-tokens, $params);
 
   // @mixin focus-highlight sets cell's position to "relative".
   // Reinforcing sticky position for it to take precedence.
@@ -62,9 +70,11 @@ $editing-cell-padding-block: awsui.$space-scaled-xxxs;
 }
 
 .body-cell {
+  @include style-api.carriers(table-style-api.$cell-focus-ring-tokens);
   box-sizing: border-box;
   border-block-start: awsui.$border-divider-list-width solid transparent;
-  border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
+  border-block-end: awsui.$border-divider-list-width solid $row-divider-color;
+  background-color: table-style-api.cell-background(transparent);
   word-wrap: break-word;
   font-weight: inherit;
   text-align: start;
@@ -155,13 +165,13 @@ $editing-cell-padding-block: awsui.$space-scaled-xxxs;
     border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
   }
   &-shaded {
-    background: awsui.$color-background-cell-shaded;
+    background: $striped-background;
   }
   tr:not(:last-child) > &.has-striped-rows:not(.body-cell-selected) {
-    border-block-end-color: awsui.$color-border-cell-shaded;
+    border-block-end-color: table-style-api.row(divider-color, awsui.$color-border-cell-shaded);
   }
   &-selected {
-    background-color: awsui.$color-background-item-selected;
+    background-color: $selected-background;
     border-block-start: $selected-border;
     border-block-end: $selected-border;
     @include cell-base.cell-padding-block-end(cell-base.$cell-vertical-padding);
@@ -179,23 +189,23 @@ $editing-cell-padding-block: awsui.$space-scaled-xxxs;
 
     &:first-child {
       border-inline-start: $selected-border;
-      border-start-start-radius: awsui.$border-radius-item;
+      border-start-start-radius: $selected-radius;
       border-start-end-radius: 0;
-      border-end-start-radius: awsui.$border-radius-item;
+      border-end-start-radius: $selected-radius;
       border-end-end-radius: 0;
     }
     &:last-child {
       border-inline-end: $selected-border;
       border-start-start-radius: 0;
-      border-start-end-radius: awsui.$border-radius-item;
+      border-start-end-radius: $selected-radius;
       border-end-start-radius: 0;
-      border-end-end-radius: awsui.$border-radius-item;
+      border-end-end-radius: $selected-radius;
     }
   }
 
   &.sticky-cell {
     position: sticky;
-    background: awsui.$color-background-container-content;
+    background: table-style-api.cell-background(awsui.$color-background-container-content);
     z-index: 798; // Our sticky elements should have z-index in the range of 800-850, this value needs to be lower
     @include styles.with-motion {
       transition-property: padding;
@@ -203,13 +213,13 @@ $editing-cell-padding-block: awsui.$space-scaled-xxxs;
       transition-timing-function: awsui.$motion-easing-sticky;
     }
     &.table-variant-full-page {
-      background: awsui.$color-background-layout-main;
+      background: table-style-api.cell-background(awsui.$color-background-layout-main);
     }
     &.body-cell-shaded {
-      background: awsui.$color-background-cell-shaded;
+      background: $striped-background;
     }
     &.body-cell-selected {
-      background-color: awsui.$color-background-item-selected;
+      background-color: $selected-background;
 
       // Create a background using box-shadow and clip path to hide underlying elements
       &:first-child {

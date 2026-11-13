@@ -7,6 +7,7 @@
 @use '../../internal/styles/tokens' as awsui;
 @use '../cell-base/cell-box' as cell-base;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../style-api' as table-style-api;
 
 //stylelint-disable-next-line selector-combinator-disallowed-list,selector-max-universal
 .resize-active:not(.resize-active-with-focus) * {
@@ -43,15 +44,17 @@ th:not([data-rightmost]) > .divider,
   max-block-size: calc(100% - #{$block-gap});
   margin-block: auto;
   margin-inline: auto;
-  border-inline-start: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
+  border-inline-start: awsui.$border-divider-list-width solid
+    table-style-api.header-cell(divider-color, awsui.$color-border-divider-default);
   box-sizing: border-box;
 
   &.divider-interactive {
-    border-inline-start: awsui.$border-divider-list-width solid awsui.$color-border-divider-interactive-default;
+    border-inline-start: awsui.$border-divider-list-width solid
+      table-style-api.header-cell(divider-color, awsui.$color-border-divider-interactive-default);
   }
 
   &.divider-grouped {
-    border-inline-start-color: awsui.$color-border-divider-table-group;
+    border-inline-start-color: table-style-api.header-cell(divider-color, awsui.$color-border-divider-table-group);
   }
 
   // Position variants for grouped column headers.
@@ -86,10 +89,9 @@ th:not([data-rightmost]) > .divider,
   inset-inline-end: 0;
 }
 
-.resizer-wrapper.visual-refresh.is-borderless.is-last {
-  > .divider-interactive {
-    inset-inline-end: 0;
-  }
+// The divider is nested inside the drag handle wrapper, so a wrapper child selector can't reach it.
+.divider-interactive.divider-edge {
+  inset-inline-end: 0;
 }
 
 .resizer {
@@ -111,7 +113,10 @@ th:not([data-rightmost]) > .divider,
   }
   &.has-focus {
     @include focus-visible.when-visible-unfocused {
-      @include styles.focus-highlight(calc(#{awsui.$space-table-header-focus-outline-gutter} - 2px));
+      @include table-style-api.focus-highlight(
+        table-style-api.$header-cell-tokens,
+        calc(#{awsui.$space-table-header-focus-outline-gutter} - 2px)
+      );
     }
   }
 }
