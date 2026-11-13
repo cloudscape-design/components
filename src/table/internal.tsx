@@ -550,6 +550,7 @@ const InternalTable = React.forwardRef(
                                   multiColumnSort={multiColumnSort}
                                   i18nStrings={i18nStrings}
                                   onClearSort={focusFirstSortableColumn}
+                                  styleClassName={styleClassNames?.clearSortButton}
                                 />
                               ) : undefined
                             }

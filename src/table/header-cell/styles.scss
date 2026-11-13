@@ -256,10 +256,16 @@ $group-divider-color: table-style-api.header-cell(divider-color, awsui.$color-bo
 
 .header-cell-sortable:not(.header-cell-disabled) {
   cursor: pointer;
-  &:hover,
+  // The sorted color is set on the cell so that a `headerCell` color applies to sorted cells too.
   &.header-cell-sorted {
     color: awsui.$color-text-interactive-active;
     & > .header-cell-main > .header-cell-content > .sorting-icon {
+      color: awsui.$color-text-interactive-active;
+    }
+  }
+  & > .header-cell-main > .header-cell-content:hover {
+    color: awsui.$color-text-interactive-active;
+    & > .sorting-icon {
       color: awsui.$color-text-interactive-active;
     }
   }
