@@ -90,7 +90,8 @@ describe(`Select (Native Search)`, () => {
       'highlights the match with dropdown open -- extended option, searches entire option',
       setupTest(optionsType, async page => {
         await page.clickSelect();
-        await page.keys(['s', 's']);
+        // With the dropdown open, the disabled "Another thing" is a match too, so the third keypress reaches "Third thing".
+        await page.keys(['s', 's', 's']);
         await expect(page.getHighlightedOptionLabel()).resolves.toBe('Third thing');
       })
     );
