@@ -87,18 +87,20 @@ describe(`Select (Native Search)`, () => {
     const optionsType = 'extended';
 
     test(
-      'highlights the match with dropdown open -- extended option, searches entire option',
+      'highlights the match with dropdown open -- extended option, searches entire option, includes disabled options',
       setupTest(optionsType, async page => {
         await page.clickSelect();
-        await page.keys(['s', 's']);
+        // With the dropdown open, the disabled "Another thing" is a match too, so the third keypress reaches "Third thing".
+        await page.keys(['s', 's', 's']);
         await expect(page.getHighlightedOptionLabel()).resolves.toBe('Third thing');
       })
     );
 
     test(
-      'selects the match with dropdown closed -- extended option, searches entire option',
+      'selects the match with dropdown closed -- extended option, searches entire option, skips disabled options',
       setupTest(optionsType, async page => {
         await page.focusSelect();
+        // With the dropdown closed, the disabled "Another thing" is skipped, so the second keypress selects "Third thing".
         await page.keys(['s', 's']);
         await expect(page.getTriggerLabel()).resolves.toMatch('Third thing');
       })
