@@ -8,7 +8,6 @@ import {
   AnchorNavigation,
   AnnotationContext,
   AppLayout,
-  AppLayoutToolbar,
   AreaChart,
   AttributeEditor,
   Autosuggest,
@@ -27,6 +26,7 @@ import {
   ColumnLayout,
   Container,
   ContentLayout,
+  ControlGroup,
   CopyToClipboard,
   DateInput,
   DatePicker,
@@ -103,10 +103,11 @@ import OptionsList from '~components/internal/components/options-list';
 import SelectableItem from '~components/internal/components/selectable-item';
 import PopoverArrow from '~components/popover/arrow';
 import PopoverBody from '~components/popover/body';
+import { colorBackgroundLayoutMain } from '~design-tokens';
 
 import { SimplePage } from '../app/templates';
 import { i18nStrings as codeEditorI18nStrings, themes as codeEditorThemes } from '../code-editor/base-props';
-import { Heroshot } from '../common/heroshot';
+import { Heroshot, HeroshotBackgroundSelect } from '../common/heroshot';
 import { annotationContextStrings, tutorialPanelStrings } from '../onboarding/i18n';
 import tutorialData from '../onboarding/tutorials';
 import { IframeWrapper } from '../utils/iframe-wrapper';
@@ -117,6 +118,7 @@ import popoverStyles from '~components/popover/styles.css.js';
 export default function HeroshotOverviewPage() {
   return (
     <SimplePage title="Heroshots" screenshotArea={{ disableAnimations: true }} i18n={{}}>
+      <HeroshotBackgroundSelect />
       {/* The frames have a fixed size, so the gallery wraps them instead of stacking 70+ rows. */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24 }}>
         <Heroshot id="action-card" label="ActionCard" stretch={true}>
@@ -134,10 +136,12 @@ export default function HeroshotOverviewPage() {
           </Alert>
         </Heroshot>
 
-        <Heroshot id="anchor-navigation" label="AnchorNavigation" stretch={true}>
-          <div style={{ transform: `translateX(100px)` }}>
-            <AnchorNavigation activeHref="#overview" anchors={anchors} />
-          </div>
+        {/*
+          Not stretched: the navigation sizes to its own labels and the frame centers it, instead of
+          filling the frame width and needing a hardcoded offset to look placed.
+        */}
+        <Heroshot id="anchor-navigation" label="AnchorNavigation">
+          <AnchorNavigation activeHref="#overview" anchors={anchors} />
         </Heroshot>
 
         <Heroshot id="annotation-context" label="AnnotationContext" padding={0} contentSize={ANNOTATION_CONTENT_SIZE}>
@@ -158,16 +162,16 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot id="app-layout" label="AppLayout" padding={0} contentSize={LAYOUT_CONTENT_SIZE}>
-          <IframeWrapper id="heroshot-app-layout" size={LAYOUT_CONTENT_SIZE} AppComponent={AppLayoutHeroshot} />
+        {/*
+          `padding={11}` so the drawing sits inside the frame at its own width, and `bleedBlockEnd` so it
+          runs to the frame's bottom edge: the layout continues below the thumbnail on a real page.
+        */}
+        <Heroshot id="app-layout" label="AppLayout" padding={11} bleedBlockEnd={true}>
+          <AppLayoutDrawing />
         </Heroshot>
 
-        <Heroshot id="app-layout-toolbar" label="AppLayoutToolbar" padding={0} contentSize={LAYOUT_CONTENT_SIZE}>
-          <IframeWrapper
-            id="heroshot-app-layout-toolbar"
-            size={LAYOUT_CONTENT_SIZE}
-            AppComponent={AppLayoutToolbarHeroshot}
-          />
+        <Heroshot id="app-layout-toolbar" label="AppLayoutToolbar" padding={11} bleedBlockEnd={true}>
+          <AppLayoutToolbarDrawing />
         </Heroshot>
 
         <Heroshot id="area-chart" label="AreaChart" stretch={true}>
@@ -180,10 +184,15 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot id="attribute-editor" label="AttributeEditor" align="start" stretch={true}>
+        <Heroshot id="attribute-editor" label="AttributeEditor" stretch={true} contentSize={ATTRIBUTE_EDITOR_SIZE}>
           <AttributeEditor
             addButtonText="Add tag"
             removeButtonText="Remove"
+            // At the frame width the component would pick its narrowest layout and stack the key over
+            // the value, which is tall enough that the add button falls outside the frame. This is the
+            // same side-by-side layout it uses from the `xs` breakpoint up, pinned so that the whole
+            // row — including both buttons — fits the frame at full size and needs no scaling.
+            gridLayout={[{ rows: [[1, 1]], removeButton: { ownRow: true } }]}
             items={[{ key: 'Environment', value: 'Production' }]}
             definition={[
               { label: 'Key', control: item => <Input value={item.key} readOnly={true} onChange={noop} /> },
@@ -315,7 +324,7 @@ export default function HeroshotOverviewPage() {
           </SpaceBetween>
         </Heroshot>
 
-        <Heroshot id="code-editor" label="CodeEditor" stretch={true} padding={8}>
+        <Heroshot id="code-editor" label="CodeEditor" stretch={true} padding={8} contentSize={CODE_EDITOR_SIZE}>
           <CodeEditorHeroshot />
         </Heroshot>
 
@@ -351,10 +360,46 @@ export default function HeroshotOverviewPage() {
           </Container>
         </Heroshot>
 
-        <Heroshot id="content-layout" label="ContentLayout" stretch={true}>
-          <ContentLayout header={<Header variant="h1">Instances</Header>}>
-            <Container>Content</Container>
+        <Heroshot id="content-layout" label="ContentLayout" padding={0} contentSize={CONTENT_LAYOUT_SIZE}>
+          {/*
+            The high-contrast header bleeds to the edges of its own layout, so the frame contributes no
+            padding of its own and the layout's `defaultPadding` insets the content instead.
+          */}
+          <ContentLayout
+            defaultPadding={true}
+            headerVariant="high-contrast"
+            header={
+              <Header
+                variant="h1"
+                info={<Link variant="info">Info</Link>}
+                description="This is a generic description used in the header."
+              >
+                Header
+              </Header>
+            }
+          >
+            <Container header={<Header variant="h2">Content heading</Header>}>Content</Container>
           </ContentLayout>
+        </Heroshot>
+
+        {/* Not stretched, so the frame centers the group instead of pinning it to the frame width. */}
+        <Heroshot id="control-group" label="ControlGroup">
+          <ControlGroup
+            inlineLabelText="Metric"
+            // The frame is narrower than the group's auto-layout threshold, so the direction is pinned
+            // to keep the controls adjoined on one line, which is what distinguishes the component.
+            direction="horizontal"
+            actionButton={{ iconName: 'remove', ariaLabel: 'Remove metric' }}
+          >
+            {/* A short statistic: at the frame width a longer one is truncated mid-word. */}
+            <Select
+              ariaLabel="Statistic"
+              selectedOption={{ label: 'Sum', value: 'sum' }}
+              options={[]}
+              onChange={noop}
+            />
+            <Input ariaLabel="Metric name" value="CPUUtilization" onChange={noop} />
+          </ControlGroup>
         </Heroshot>
 
         <Heroshot id="copy-to-clipboard" label="CopyToClipboard">
@@ -493,22 +538,33 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot id="form" label="Form" align="start" stretch={true}>
-          <Form
-            header={<Header variant="h1">Create instance</Header>}
-            actions={
-              <SpaceBetween size="xs" direction="horizontal">
-                <Button>Cancel</Button>
-                <Button variant="primary">Create</Button>
+        <Heroshot id="form" label="Form" stretch={true} contentSize={FORM_CONTENT_SIZE}>
+          {/*
+            Content only, without the form's header and actions: at the frame size the whole form is
+            twice as tall as the frame, and shrinking it to fit leaves the fields too small to read.
+            The fields are shorter than the scaled content box, so they are centered in it to sit in
+            the middle of the frame instead of at its top.
+          */}
+          <div style={{ blockSize: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <Form>
+              <SpaceBetween size="m">
+                <FormField label="Instance type">
+                  <Select selectedOption={{ label: 't3.medium', value: 't3.medium' }} options={[]} onChange={noop} />
+                </FormField>
+                <FormField label="Purchase option">
+                  <Tiles
+                    value="on-demand"
+                    onChange={noop}
+                    columns={2}
+                    items={[
+                      { value: 'on-demand', label: 'On-demand' },
+                      { value: 'spot', label: 'Spot' },
+                    ]}
+                  />
+                </FormField>
               </SpaceBetween>
-            }
-          >
-            <Container>
-              <FormField label="Name">
-                <Input value="" onChange={noop} />
-              </FormField>
-            </Container>
-          </Form>
+            </Form>
+          </div>
         </Heroshot>
 
         <Heroshot id="form-field" label="FormField" stretch={true}>
@@ -650,8 +706,8 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot id="modal" label="Modal" padding={0} contentSize={OVERLAY_CONTENT_SIZE}>
-          <IframeWrapper id="heroshot-modal" size={OVERLAY_CONTENT_SIZE} AppComponent={ModalHeroshot} />
+        <Heroshot id="modal" label="Modal" padding={0} contentSize={MODAL_CONTENT_SIZE}>
+          <IframeWrapper id="heroshot-modal" size={MODAL_CONTENT_SIZE} AppComponent={ModalHeroshot} />
         </Heroshot>
 
         <Heroshot id="multiselect" label="Multiselect" stretch={true}>
@@ -861,15 +917,21 @@ export default function HeroshotOverviewPage() {
           <IframeWrapper id="heroshot-split-panel" size={LAYOUT_CONTENT_SIZE} AppComponent={SplitPanelHeroshot} />
         </Heroshot>
 
-        <Heroshot id="status-indicator" label="StatusIndicator">
-          <SpaceBetween size="xs">
-            <StatusIndicator type="success">Running</StatusIndicator>
-            <StatusIndicator type="in-progress">Pending</StatusIndicator>
-            <StatusIndicator type="error">Failed</StatusIndicator>
-          </SpaceBetween>
+        <Heroshot id="status-indicator" label="StatusIndicator" stretch={true}>
+          <Container>
+            <SpaceBetween size="m" direction="horizontal">
+              <StatusIndicator type="success">Running</StatusIndicator>
+              <StatusIndicator type="warning">Degraded</StatusIndicator>
+              <StatusIndicator type="error">Failed</StatusIndicator>
+            </SpaceBetween>
+          </Container>
         </Heroshot>
 
-        <Heroshot id="steps" label="Steps" stretch={true}>
+        {/*
+          Not stretched: the steps are as wide as their longest label, so letting the list size to its
+          own content lets the frame center the visible block instead of pinning it to the left edge.
+        */}
+        <Heroshot id="steps" label="Steps">
           <Steps
             steps={[
               { status: 'success', header: 'Validated template' },
@@ -996,7 +1058,8 @@ export default function HeroshotOverviewPage() {
           />
         </Heroshot>
 
-        <Heroshot id="tree-view" label="TreeView" stretch={true}>
+        {/* Not stretched, for the same reason as the steps heroshot: the frame centers the tree. */}
+        <Heroshot id="tree-view" label="TreeView">
           <TreeView
             ariaLabel="Resources"
             items={treeItems}
@@ -1074,69 +1137,125 @@ const instances = [
 const LAYOUT_CONTENT_SIZE = { width: 1280, height: 629 };
 
 /**
- * Shared by both layout heroshots so the only visible difference between them is the toolbar that
- * app layout toolbar adds.
+ * Borders are drawn in `#CBC9C3`, one step more prominent than the `#E3E1DE` of the source design —
+ * `colorNeutralGrey350` rather than `300` of the core palette the drawing is built from.
+ *
+ * The AppLayout heroshot is a drawing rather than the component itself: at thumbnail size the real
+ * layout's content is unreadable, and the layout — navigation, content, panel, drawer triggers — reads
+ * better as a diagram. Taken verbatim from the design, so it carries its own colours rather than design
+ * tokens, and is only drawn for the light mode those colours come from.
  */
-const layoutSlots = {
-  navigationOpen: true,
-  toolsOpen: true,
-  onNavigationChange: noop,
-  onToolsChange: noop,
-  breadcrumbs: (
-    <BreadcrumbGroup
-      items={[
-        { text: 'Service', href: '#' },
-        { text: 'Instances', href: '#' },
-      ]}
-    />
-  ),
-  navigation: (
-    <SideNavigation
-      header={{ text: 'Service', href: '#' }}
-      activeHref="#instances"
-      items={[
-        { type: 'link', text: 'Dashboard', href: '#dashboard' },
-        { type: 'link', text: 'Instances', href: '#instances' },
-        { type: 'link', text: 'Volumes', href: '#volumes' },
-      ]}
-    />
-  ),
-  tools: (
-    <HelpPanel header={<h2>Instances</h2>}>
-      <p>An instance is a virtual server in the cloud.</p>
-    </HelpPanel>
-  ),
-  content: (
-    <SpaceBetween size="m">
-      <Header variant="h1" actions={<Button variant="primary">Launch instance</Button>}>
-        Instances
-      </Header>
-      <Table
-        variant="container"
-        header={<Header counter="(3)">Running instances</Header>}
-        items={instances}
-        columnDefinitions={[
-          { id: 'id', header: 'Instance ID', cell: item => item.id },
-          { id: 'type', header: 'Type', cell: item => item.type },
-          { id: 'status', header: 'Status', cell: () => <StatusIndicator>Running</StatusIndicator> },
-        ]}
+function AppLayoutDrawing() {
+  return (
+    <svg
+      width="307"
+      height="159"
+      viewBox="0 0 307 159"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden={true}
+    >
+      {/* The canvas follows the page background token, so the drawing sits on the same grey as a page. */}
+      <rect x="0.5" y="0.5" width="306" height="227.059" rx="4" fill={colorBackgroundLayoutMain} />
+      <rect x="0.5" y="0.5" width="306" height="227.059" rx="4" stroke="#CBC9C3" />
+      <rect x="92.5" y="32.5" width="98.3154" height="135" rx="1" fill="#F9F9F9" strokeWidth="0.5" stroke="#CBC9C3" />
+      <rect opacity="0.6" x="92.5" y="12.5" width="67" height="8" rx="1.26144" fill="#6F6B63" />
+      <mask id="path-4-inside-1_3803_52967" fill="white">
+        <path d="M0.5 0.5H80.5V227.5H0.5V0.5Z" />
+      </mask>
+      <path d="M79.8 0.5V227.5H81.2V0.5H79.8Z" fill="#CBC9C3" mask="url(#path-4-inside-1_3803_52967)" />
+      <rect x="12.5" y="12.5" width="45" height="8" rx="1.26144" fill="#6F6B63" />
+      <path
+        d="M68.7966 14.5159L66.8123 16.5002L68.7966 18.4846L68.2654 19.0159L66.0154 16.7659C65.869 16.6195 65.8692 16.3811 66.0154 16.2346L68.2654 13.9846L68.7966 14.5159Z"
+        fill="#4C4942"
       />
-    </SpaceBetween>
-  ),
-} as const;
-
-/**
- * App layout measures the viewport to place its panels, so scaling a plain `div` would leave it
- * laying out against the browser window instead of the frame. Rendering it in an iframe gives it a
- * viewport of exactly `LAYOUT_CONTENT_SIZE`, which the frame then scales down as a whole.
- */
-function AppLayoutHeroshot() {
-  return <AppLayout {...layoutSlots} />;
+      <rect opacity="0.6" x="12.5" y="37.5" width="25" height="6" rx="1.26144" fill="#6F6B63" />
+      <rect x="42.5" y="37.5" width="6" height="6" rx="1.26144" fill="#201E1B" />
+      <rect opacity="0.6" x="12.5" y="52.5" width="48" height="6" rx="1.26144" fill="#6F6B63" />
+      <rect opacity="0.6" x="12.5" y="67.5" width="48" height="6" rx="1.26144" fill="#6F6B63" />
+      <rect opacity="0.6" x="12.5" y="82.5" width="36" height="6" rx="1.26144" fill="#6F6B63" />
+      <path d="M13 102H67" strokeWidth="0.5" stroke="#CBC9C3" />
+      <mask id="path-14-inside-2_3803_52967" fill="white">
+        <path d="M203.5 0.5H283.5V227.5H203.5V0.5Z" />
+      </mask>
+      <path
+        d="M282.8 0.5V227.5H284.2V0.5H282.8ZM204.2 227.5V0.5H202.8V227.5H204.2Z"
+        fill="#CBC9C3"
+        mask="url(#path-14-inside-2_3803_52967)"
+      />
+      <rect x="215.5" y="12.5" width="45" height="8" rx="1.26144" fill="#6F6B63" />
+      <path
+        d="M271.715 16.239C271.861 16.3856 271.86 16.6231 271.714 16.7693L269.464 19.0154L268.935 18.4841L270.919 16.5027L268.938 14.5144L269.469 13.9851L271.715 16.239Z"
+        fill="#4C4942"
+      />
+      <rect opacity="0.6" x="215.5" y="37.5" width="36" height="6" rx="1.26144" fill="#6F6B63" />
+      <rect opacity="0.6" x="215.5" y="52.5" width="48" height="6" rx="1.26144" fill="#6F6B63" />
+      <rect opacity="0.6" x="215.5" y="67.5" width="48" height="6" rx="1.26144" fill="#6F6B63" />
+      <rect opacity="0.6" x="215.5" y="82.5" width="36" height="6" rx="1.26144" fill="#6F6B63" />
+      <path d="M216 102H270" strokeWidth="0.5" stroke="#CBC9C3" />
+      <circle cx="294.659" cy="16.3105" r="6.42381" fill="#5C7FFF" />
+      <circle cx="294.659" cy="33.0762" r="6.42381" fill="#424650" />
+    </svg>
+  );
 }
 
-/** Same technique as {@link AppLayoutHeroshot}; the toolbar is what distinguishes the thumbnail. */
-function AppLayoutToolbarHeroshot() {
-  return <AppLayoutToolbar {...layoutSlots} />;
+/** The same drawing with the toolbar above it, which is what distinguishes this layout. */
+function AppLayoutToolbarDrawing() {
+  return (
+    <svg
+      width="307"
+      height="159"
+      viewBox="0 0 307 159"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden={true}
+    >
+      <g clipPath="url(#clip0_3803_53002)">
+        {/* As above: the canvas follows the page background token. */}
+        <rect x="0.5" y="0.5" width="306" height="227.059" rx="4" fill={colorBackgroundLayoutMain} />
+        <rect x="92.5" y="27.5" width="122" height="135" rx="1" fill="#F9F9F9" strokeWidth="0.5" stroke="#CBC9C3" />
+        <mask id="path-3-inside-1_3803_53002" fill="white">
+          <path d="M0.5 18.5H80.5V245.5H0.5V18.5Z" />
+        </mask>
+        <path d="M79.8 18.5V245.5H81.2V18.5H79.8Z" fill="#CBC9C3" mask="url(#path-3-inside-1_3803_53002)" />
+        <rect x="12.5" y="30.5" width="45" height="8" rx="1.26144" fill="#6F6B63" />
+        <path
+          d="M68.7971 32.5161L66.8127 34.5005L68.7971 36.4849L68.2659 37.0161L66.0159 34.7661C65.8694 34.6197 65.8694 34.3813 66.0159 34.2349L68.2659 31.9839L68.7971 32.5161Z"
+          fill="#4C4942"
+        />
+        <rect opacity="0.6" x="12.5" y="55.5" width="25" height="6" rx="1.26144" fill="#6F6B63" />
+        <rect x="42.5" y="55.5" width="6" height="6" rx="1.26144" fill="#201E1B" />
+        <rect opacity="0.6" x="12.5" y="70.5" width="48" height="6" rx="1.26144" fill="#6F6B63" />
+        <rect opacity="0.6" x="12.5" y="85.5" width="48" height="6" rx="1.26144" fill="#6F6B63" />
+        <rect opacity="0.6" x="12.5" y="100.5" width="36" height="6" rx="1.26144" fill="#6F6B63" />
+        <path d="M13 120H67" strokeWidth="0.5" stroke="#CBC9C3" />
+        <mask id="path-13-inside-2_3803_53002" fill="white">
+          <path d="M226.5 18.5H306.5V245.5H226.5V18.5Z" />
+        </mask>
+        <path d="M227.2 245.5V18.5H225.8V245.5H227.2Z" fill="#CBC9C3" mask="url(#path-13-inside-2_3803_53002)" />
+        <rect x="238.5" y="30.5" width="45" height="8" rx="1.26144" fill="#6F6B63" />
+        <path
+          d="M294.715 34.2393C294.861 34.3858 294.86 34.6234 294.714 34.7695L292.464 37.0156L291.935 36.4844L293.919 34.5029L291.938 32.5146L292.469 31.9854L294.715 34.2393Z"
+          fill="#4C4942"
+        />
+        <rect opacity="0.6" x="238.5" y="55.5" width="36" height="6" rx="1.26144" fill="#6F6B63" />
+        <rect opacity="0.6" x="238.5" y="70.5" width="48" height="6" rx="1.26144" fill="#6F6B63" />
+        <rect opacity="0.6" x="238.5" y="85.5" width="48" height="6" rx="1.26144" fill="#6F6B63" />
+        <rect opacity="0.6" x="238.5" y="100.5" width="36" height="6" rx="1.26144" fill="#6F6B63" />
+        <path d="M239 120H293" strokeWidth="0.5" stroke="#CBC9C3" />
+        <line x1="1.14331" y1="18.8282" x2="305.5" y2="18.8282" strokeWidth="0.7" stroke="#CBC9C3" />
+        <rect opacity="0.6" x="26.5" y="6.5" width="67" height="8" rx="1.26144" fill="#6F6B63" />
+        <rect x="287.904" y="4.95557" width="10" height="10" rx="2" fill="#5C7FFF" />
+        <rect x="10.5" y="5.5" width="10" height="10" rx="2" fill="#5C7FFF" />
+      </g>
+      <rect x="0.5" y="0.5" width="306" height="227.059" rx="4" stroke="#CBC9C3" />
+      <defs>
+        <clipPath id="clip0_3803_53002">
+          <rect x="0.5" y="0.5" width="306" height="227.059" rx="4" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  );
 }
 
 const anchors = [
@@ -1267,6 +1386,37 @@ const previewTutorialPanelStrings = {
 const ANNOTATION_CONTENT_SIZE = { width: 350, height: 172 };
 const HOTSPOT_CONTENT_SIZE = { width: 300, height: 147 };
 const OVERLAY_CONTENT_SIZE = { width: 800, height: 393 };
+/**
+ * Narrower viewport than {@link OVERLAY_CONTENT_SIZE}, so the modal — whose own width is capped by its
+ * `medium` size rather than by the viewport — is scaled down less and reads larger in the frame. Keeps
+ * the 346:170 frame ratio so nothing is letterboxed.
+ */
+const MODAL_CONTENT_SIZE = { width: 700, height: 344 };
+/**
+ * Even in its side-by-side layout the editor is a little taller than the frame, so it is laid out
+ * slightly larger and scaled down (~0.75) to fit whole — the add button included — rather than having
+ * its bottom row cropped.
+ */
+const ATTRIBUTE_EDITOR_SIZE = { width: 420, height: 185 };
+/**
+ * Tiles only lay out side by side from a container width of 465px, so the form is laid out above that
+ * and scaled down (~0.65). At the frame width the tiles would stack instead, which is tall enough that
+ * the second one falls outside the frame.
+ */
+const FORM_CONTENT_SIZE = { width: 480, height: 211 };
+/**
+ * The layout reads as a page, so it is laid out at a page-like width and scaled down (~0.7) — wide
+ * enough that the header keeps its description on one line and the action beside the title, rather
+ * than wrapping into the frame-width stack it would fall back to. Matches the 346:170 frame ratio,
+ * which the frame fills edge to edge because the high-contrast header bleeds to its own edges.
+ */
+const CONTENT_LAYOUT_SIZE = { width: 420, height: 206 };
+/**
+ * A slight scale-down (~0.88) only, so the code stays legible. Both dimensions are above the padded
+ * content box (330x154) by the same factor, and the editor is still taller than the box at that scale,
+ * so the frame keeps cropping its bottom.
+ */
+const CODE_EDITOR_SIZE = { width: 375, height: 175 };
 
 const customSettingsIcon = (
   <svg viewBox="0 0 16 16" focusable={false}>
@@ -1309,6 +1459,20 @@ function HotspotHeroshot() {
   );
 }
 
+/**
+ * Enough lines to fill the taller editor, so the extra height shows code rather than empty gutter
+ * rows. Kept short enough to fit the frame width, so the numbered lines stay one to a row instead of
+ * wrapping into unnumbered continuations.
+ */
+const editorSource = `const region = 'us-east-1';
+const instanceType = 't3.medium';
+const volumeSize = 20;
+
+const instanceName = 'web-1';
+const environment = 'production';
+
+const client = new EC2Client();`;
+
 function CodeEditorHeroshot() {
   const [ace, setAce] = React.useState<any>();
 
@@ -1334,9 +1498,12 @@ function CodeEditorHeroshot() {
   return (
     <CodeEditor
       ace={ace}
-      value="const region = 'us-east-1';"
+      value={editorSource}
       language="javascript"
-      editorContentHeight={80}
+      // Taller than the frame on purpose: the editor is a page-sized component, so the frame crops its
+      // bottom — the status bar and the pane below it — and the thumbnail reads as a detail of a real
+      // editor rather than as a squat one.
+      editorContentHeight={150}
       loading={!ace}
       i18nStrings={codeEditorI18nStrings}
       themes={codeEditorThemes}
@@ -1366,17 +1533,43 @@ function useUnlockedGalleryScroll() {
   }, []);
 }
 
+/**
+ * Shows the delete-with-simple-confirmation pattern: the consequence spelled out in the body, the
+ * wider impact in an info alert, and the destructive action as the primary button in the footer.
+ */
 function ModalHeroshot() {
   useUnlockedGalleryScroll();
 
   return (
     <Modal
       visible={true}
-      header="Delete instance"
+      header="Delete distributions"
       closeAriaLabel="Close modal"
-      footer={<Button variant="primary">Delete</Button>}
+      footer={
+        <Box float="right">
+          <SpaceBetween size="xs" direction="horizontal">
+            <Button variant="link">Cancel</Button>
+            <Button variant="primary">Delete</Button>
+          </SpaceBetween>
+        </Box>
+      }
     >
-      This action cannot be undone.
+      <SpaceBetween size="m">
+        <Box variant="span">
+          Permanently delete{' '}
+          <Box variant="span" fontWeight="bold">
+            5 distributions
+          </Box>
+          ? You can&apos;t undo this action.
+        </Box>
+        <Alert type="info">
+          Proceeding with this action will delete the distributions with all their content and can affect related
+          resources.{' '}
+          <Link external={true} href="#">
+            Learn more
+          </Link>
+        </Alert>
+      </SpaceBetween>
     </Modal>
   );
 }
