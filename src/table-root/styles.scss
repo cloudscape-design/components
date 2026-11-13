@@ -15,7 +15,6 @@
   display: flex;
   flex-direction: column;
   inline-size: 100%;
-  background: awsui.$color-background-container-content;
 }
 
 // Its scrollbar is hidden in favour of the sticky scrollbar, which stays reachable however tall the body is.
