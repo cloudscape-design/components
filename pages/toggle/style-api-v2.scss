@@ -9,7 +9,7 @@
 .toggle-control {
   @include toggle.control(
     $fill-color: palette.$control-border,
-    $indicator-color: palette.$control-fg,
+    $handle-color: palette.$control-fg,
     $focus-ring-color: palette.$accent,
     $focus-ring-width: 3px,
     $focus-ring-radius: 12px
@@ -20,10 +20,10 @@
   }
 
   &.toggle-control-readonly {
-    @include toggle.control($fill-color: palette.$surface-alt, $indicator-color: palette.$text-muted);
+    @include toggle.control($fill-color: palette.$surface-alt, $handle-color: palette.$text-muted);
   }
 
   &.toggle-control-disabled {
-    @include toggle.control($fill-color: palette.$control-bg-disabled, $indicator-color: palette.$control-fg-disabled);
+    @include toggle.control($fill-color: palette.$control-bg-disabled, $handle-color: palette.$control-fg-disabled);
   }
 }
