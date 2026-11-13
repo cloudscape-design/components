@@ -52,8 +52,16 @@ export interface PanelLayoutProps extends BaseComponentProps {
   mainContent: ReactNode;
 
   /**
+   * Makes the panel and main content areas scrollable.
+   *
+   * When setting this property to `true`, make sure that all content, including focus rings of interactive elements,
+   * fits within the panels, otherwise it will be clipped.
+   */
+  scrollable?: boolean;
+
+  /**
    * Makes the panel content focusable. This should be used if there are no focusable elements
-   * inside the panel, to ensure it is keyboard scrollable.
+   * inside the panel, to ensure it is keyboard scrollable when `scrollable` is set.
    *
    * Provide either `{ariaLabel: "Panel label"}` or `{ariaLabelledby: "panel-label-id"}`
    */
@@ -61,7 +69,7 @@ export interface PanelLayoutProps extends BaseComponentProps {
 
   /**
    * Makes the main content area focusable. This should be used if there are no focusable elements
-   * inside the content, to ensure it is keyboard scrollable.
+   * inside the content, to ensure it is keyboard scrollable when `scrollable` is set.
    *
    * Provide either `{ariaLabel: "Main label"}` or `{ariaLabelledby: "main-label-id"}`
    */

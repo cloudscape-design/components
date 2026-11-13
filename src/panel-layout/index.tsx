@@ -12,11 +12,11 @@ import InternalPanelLayout from './internal';
 export { PanelLayoutProps };
 
 const PanelLayout = React.forwardRef<PanelLayoutProps.Ref, PanelLayoutProps>(function PanelLayout(
-  { panelPosition = 'side-start', resizable = false, display = 'all', ...props },
+  { panelPosition = 'side-start', resizable = false, scrollable = false, display = 'all', ...props },
   ref
 ) {
   const baseComponentProps = useBaseComponent('PanelLayout', {
-    props: { panelPosition, resizable },
+    props: { panelPosition, resizable, scrollable },
     metadata: {
       mainFocusable: props.mainFocusable !== undefined,
       panelFocusable: props.panelFocusable !== undefined,
@@ -31,6 +31,7 @@ const PanelLayout = React.forwardRef<PanelLayoutProps.Ref, PanelLayoutProps>(fun
       ref={ref}
       panelPosition={panelPosition}
       resizable={resizable}
+      scrollable={scrollable}
       display={display}
       {...getExternalProps(props)}
       {...baseComponentProps}

@@ -17,6 +17,7 @@ const ActionCard = React.forwardRef(
       disabled = false,
       disableHeaderPaddings = false,
       disableContentPaddings = false,
+      fitHeight = false,
       iconVerticalAlignment = 'top',
       variant = 'default',
       ...props
@@ -28,6 +29,7 @@ const ActionCard = React.forwardRef(
         disabled,
         disableHeaderPaddings,
         disableContentPaddings,
+        fitHeight,
         iconVerticalAlignment,
         variant,
       },
@@ -47,6 +49,7 @@ const ActionCard = React.forwardRef(
         disabled={disabled}
         disableHeaderPaddings={disableHeaderPaddings}
         disableContentPaddings={disableContentPaddings}
+        fitHeight={fitHeight}
         iconVerticalAlignment={iconVerticalAlignment}
         variant={variant}
         {...externalProps}
