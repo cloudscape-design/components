@@ -200,6 +200,57 @@ describe('Alert Analytics', () => {
     expect(FunnelMetrics.funnelStepError).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelSubStepError).not.toHaveBeenCalled();
   });
+  test('sends a funnelSubStepError metric when the alert type changes to error', () => {
+    const renderFunnel = (type: 'warning' | 'error') => (
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
+        <AnalyticsFunnelStep stepNumber={2} stepNameSelector=".step-name-selector">
+          <AnalyticsFunnelSubStep>
+            <Alert type={type}>Alert text</Alert>
+          </AnalyticsFunnelSubStep>
+        </AnalyticsFunnelStep>
+      </AnalyticsFunnel>
+    );
+
+    const { rerender } = render(renderFunnel('warning'));
+    act(() => void jest.runAllTimers());
+    expect(FunnelMetrics.funnelSubStepError).not.toHaveBeenCalled();
+
+    rerender(renderFunnel('error'));
+    act(() => void jest.runAllTimers());
+    expect(FunnelMetrics.funnelSubStepError).toHaveBeenCalledTimes(1);
+  });
+
+  test('completes the funnel when the alert type changes from error to a non-error type before submit', () => {
+    let funnelSubmit: undefined | (() => void) = undefined;
+
+    const ChildComponent = () => {
+      funnelSubmit = useFunnel().funnelSubmit;
+      return <></>;
+    };
+
+    const renderFunnel = (type: 'error' | 'success') => (
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
+        <AnalyticsFunnelStep stepNumber={2} stepNameSelector=".step-name-selector">
+          <AnalyticsFunnelSubStep>
+            <Alert type={type}>Alert text</Alert>
+          </AnalyticsFunnelSubStep>
+          <ChildComponent />
+        </AnalyticsFunnelStep>
+      </AnalyticsFunnel>
+    );
+
+    const { rerender } = render(renderFunnel('error'));
+    act(() => void jest.runAllTimers());
+
+    rerender(renderFunnel('success'));
+    act(() => void jest.runAllTimers());
+
+    act(() => funnelSubmit!());
+    act(() => void jest.runAllTimers());
+
+    expect(FunnelMetrics.funnelComplete).toHaveBeenCalledTimes(1);
+  });
+
   test('passes through errorContext to funnelError when outside of a step and substep', () => {
     render(
       <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
