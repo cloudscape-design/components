@@ -39,6 +39,14 @@ export const createHeaderContext = (tokens: TokenCategory<string, GlobalValue | 
   };
 };
 
+export const createContainerSubtleContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
+  return {
+    id: 'container-subtle',
+    selector: '.awsui-context-container-subtle',
+    tokens,
+  };
+};
+
 export const createFlashbarContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
   return {
     id: 'flashbar',

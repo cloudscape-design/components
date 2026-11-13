@@ -82,6 +82,14 @@ export interface ContainerProps extends BaseComponentProps {
   variant?: 'default' | 'stacked';
 
   /**
+   * Specifies the background of the container:
+   * * `default` - The default container background.
+   * * `subtle` - A subtle neutral background, with a divider between the header and the content.
+   * @visualrefresh
+   */
+  background?: ContainerProps.Background;
+
+  /**
    * An object containing CSS properties to customize the container's visual appearance.
    * Refer to the [style](/components/container/?tabId=style) tab for more details.
    * @awsuiSystem core
@@ -101,6 +109,9 @@ export namespace ContainerProps {
   export interface AnalyticsMetadata {
     instanceIdentifier?: string;
   }
+
+  export type Background = 'default' | 'subtle';
+
   export interface Media {
     /**
      * Use this slot to render your media element. We support `img`, `video`, `picture`, and `iframe` elements.

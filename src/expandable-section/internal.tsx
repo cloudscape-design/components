@@ -11,7 +11,7 @@ import { Transition } from '../internal/components/transition';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
-import { useOneTheme } from '../internal/hooks/use-visual-mode';
+import { useOneTheme, useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import { ExpandableSectionContainer } from './expandable-section-container';
 import { ExpandableSectionHeader } from './expandable-section-header';
@@ -56,6 +56,7 @@ export default function InternalExpandableSection({
   defaultExpanded,
   onChange,
   variant = 'default',
+  background,
   children,
   header,
   headerText,
@@ -78,6 +79,7 @@ export default function InternalExpandableSection({
 }: InternalExpandableSectionProps) {
   const contentInnerRef = useRef<HTMLDivElement>(null);
   const isOneTheme = useOneTheme();
+  const isRefresh = useVisualRefresh();
   const controlId = useUniqueId();
   const triggerControlId = `${controlId}-trigger`;
   const descriptionId = `${controlId}-description`;
@@ -142,6 +144,7 @@ export default function InternalExpandableSection({
   const baseVariant: InternalVariant = variant === 'stacked' ? 'container' : variant;
 
   const headerTextHidden = hideHeaderText && variantSupportsHeaderSecondaryContent(baseVariant);
+  const isDivided = isRefresh && background === 'subtle' && baseVariant === 'container';
 
   return (
     <ExpandableSectionContainer
@@ -149,6 +152,7 @@ export default function InternalExpandableSection({
       expanded={expanded}
       className={clsx(baseProps.className, styles.root, analyticsSelectors.root)}
       variant={variant}
+      background={background}
       {...(headerTextHidden
         ? {
             role: 'region',
@@ -164,7 +168,8 @@ export default function InternalExpandableSection({
             styles.header,
             styles[`header-${baseVariant}`],
             screenReaderTextClass,
-            __disableHeaderPaddings && styles['disable-header-paddings']
+            __disableHeaderPaddings && styles['disable-header-paddings'],
+            isDivided && styles['header-divided']
           )}
           variant={baseVariant}
           expanded={!!expanded}
@@ -219,7 +224,8 @@ export default function InternalExpandableSection({
                   className={clsx(
                     styles['content-inner-body'],
                     styles[`content-inner-body-${baseVariant}`],
-                    disableContentPaddings && styles['disable-content-paddings']
+                    disableContentPaddings && styles['disable-content-paddings'],
+                    isDivided && styles['content-inner-body-divided']
                   )}
                 >
                   {children}

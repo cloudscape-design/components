@@ -6,6 +6,7 @@ import {
   createAlertContext,
   createAppLayoutToolbarContext,
   createCompactTableContext,
+  createContainerSubtleContext,
   createFlashbarContext,
   createFlashbarWarningContext,
   createHeaderAlertContext,
@@ -49,6 +50,7 @@ export async function buildVisualRefresh(builder: ThemeBuilder) {
   builder.addContext(createTopNavigationContext((await import('./contexts/top-navigation.js')).tokens));
   builder.addContext(createHeaderContext((await import('./contexts/header.js')).tokens));
   builder.addContext(createAppLayoutToolbarContext((await import('./contexts/app-layout-toolbar.js')).tokens));
+  builder.addContext(createContainerSubtleContext((await import('./contexts/container-subtle.js')).tokens));
 
   // One theme styles notifications through base tokens and defines no flashbar
   // or alert contexts. For packages bundling both themes, we scope out one
