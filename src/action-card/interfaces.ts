@@ -85,6 +85,15 @@ export interface ActionCardProps extends BaseComponentProps {
   disableContentPaddings?: boolean;
 
   /**
+   * Stretches the action card to fill the available height.
+   *
+   * Use this property to align heights of multiple action cards displayed in a single row.
+   *
+   * Unlike in the [container](/components/container/) component, setting this property to `true` does not make the body scrollable if the action card overflows its parent.
+   */
+  fitHeight?: boolean;
+
+  /**
    * Displays an icon next to the content. You can use the `iconVerticalAlignment` property to control vertical alignment.
    */
   icon?: React.ReactNode;

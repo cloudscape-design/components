@@ -17,8 +17,8 @@ interface UseOptionListProps
 
 /**
  * The list state of OptionList: the shared `useListbox` with OptionList's settings, plus the parts of a list that is
- * always visible. The list is a tab stop; keyboard, mouse and aria-activedescendant come from `useListbox`.
- * This hook adds focus and blur, the mouse-leave reset and type-ahead.
+ * always visible. The list is a tab stop; keyboard, mouse, focus, blur and aria-activedescendant come from
+ * `useListbox`. This hook adds the mouse-leave reset and type-ahead.
  */
 export function useOptionList({
   options,
@@ -37,7 +37,6 @@ export function useOptionList({
     getOptionProps,
     highlightedOption,
     highlight,
-    selectedOptions,
   } = useListbox({
     options,
     selectedOptions: selection.selectedOptions,
@@ -51,26 +50,9 @@ export function useOptionList({
     renderHighlightedAriaLive,
   });
 
-  // Focus entry, like opening Select or Multiselect with the keyboard: highlight the first selected option (in
-  // selection order) and scroll it into view, or the first option when nothing in the list is selected.
-  // A highlight that is already there, such as a hover highlight, is kept, so a click selects the hovered option.
-  const onFocus = () => {
-    if (highlightedOption) {
-      return;
-    }
-    const firstSelected = selectedOptions.find(option => options.includes(option));
-    if (firstSelected) {
-      highlight.highlightOptionWithKeyboard(firstSelected);
-    } else {
-      highlight.goHomeWithKeyboard();
-    }
-  };
-
   const listProps: ListElementProps = {
-    ...getListProps({ withKeyboard: true }),
-    onFocus,
-    // Like closing Select or Multiselect, leaving the list clears the highlight.
-    onBlur: () => highlight.resetHighlightWithKeyboard(),
+    // Focus highlights the first selected option, and blur clears the highlight.
+    ...getListProps({ withKeyboard: true, embedded: true }),
     open: true,
     // The list element is a tab stop without dropdown corners.
     embedded: true,

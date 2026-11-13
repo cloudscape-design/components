@@ -32,6 +32,7 @@ export default React.forwardRef<HTMLButtonElement, AnnotationTriggerProps>(funct
   return (
     <button
       ref={ref}
+      type="button"
       className={styles.hotspot}
       aria-haspopup="dialog"
       aria-expanded={open}

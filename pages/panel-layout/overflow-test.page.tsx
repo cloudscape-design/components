@@ -3,12 +3,13 @@
 
 import React, { useContext, useState } from 'react';
 
-import { Box, Button, SegmentedControl, SpaceBetween } from '~components';
+import { Box, Button, SpaceBetween } from '~components';
 import PanelLayout, { PanelLayoutProps } from '~components/panel-layout';
 import { colorBackgroundCellShaded } from '~design-tokens';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
+import { DisplaySetting } from './common';
 
 type PageContext = React.Context<
   AppContextType<{
@@ -36,22 +37,12 @@ export default function StandalonePanelLayoutPage() {
       title="Panel Layout overflow test page"
       i18n={{}}
       screenshotArea={{}}
-      settings={
-        <SegmentedControl
-          label="Display"
-          options={[
-            { id: 'all', text: 'all' },
-            { id: 'panel-only', text: 'panel-only' },
-            { id: 'main-only', text: 'main-only' },
-          ]}
-          selectedId={display}
-          onChange={({ detail }) => setUrlParams({ display: detail.selectedId as PanelLayoutProps.Display })}
-        />
-      }
+      settings={<DisplaySetting value={display} onChange={value => setUrlParams({ display: value })} />}
     >
       <div style={{ maxWidth: display === 'all' ? 600 : 300 }}>
         <PanelLayout
           resizable={true}
+          scrollable={true}
           minPanelSize={100}
           panelSize={panelSize}
           maxPanelSize={500}
