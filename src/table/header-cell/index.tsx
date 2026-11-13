@@ -14,6 +14,7 @@ import { CustomizableIcon } from '../../internal/components/customizable-icon';
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { KeyCode } from '../../internal/keycode';
+import { getStyleClassName } from '../../internal/utils/style-slot';
 import { GeneratedAnalyticsMetadataTableSort } from '../analytics-metadata/interfaces';
 import { TableProps } from '../interfaces';
 import {
@@ -25,7 +26,6 @@ import {
   toggleDirection,
 } from '../multi-column-sort/utils';
 import { Divider, Resizer } from '../resizer';
-import { getStyleClassName } from '../style-api';
 import { BaseHeaderCellProps } from './common-props';
 import { SortMenu, SortMenuAction } from './sort-menu';
 import { TableThElement } from './th-element';

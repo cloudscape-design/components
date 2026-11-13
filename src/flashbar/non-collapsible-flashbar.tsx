@@ -8,6 +8,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import { useInternalI18n } from '../i18n/context';
 import { Transition } from '../internal/components/transition';
+import { getStyleClassName } from '../internal/utils/style-slot';
 import { getComponentsAnalyticsMetadata, getItemAnalyticsMetadata } from './analytics-metadata/utils';
 import { useFlashbar, useFlashbarVisibility } from './common';
 import { TIMEOUT_FOR_ENTERING_ANIMATION } from './constant';
@@ -48,8 +49,7 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, style, ...r
   const animateFlash = !isReducedMotion && isVisualRefresh;
 
   // Style API v2
-  const getItemClass = (item: FlashbarProps.MessageDefinition) =>
-    typeof styleClassNames?.item === 'function' ? styleClassNames.item({ item }) : styleClassNames?.item;
+  const getItemClass = (item: FlashbarProps.MessageDefinition) => getStyleClassName(styleClassNames?.item, { item });
 
   /**
    * If the flashbar is flat and motion is `enabled` then the adding and removing of items

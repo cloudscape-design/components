@@ -40,7 +40,7 @@ function StyledRadioGroup({ ariaLabel, items, readOnly, direction }: StyledRadio
       onChange={({ detail }) => setValue(detail.value)}
       {...{
         styleClassNames: {
-          radioButton: { control: clsx(styles['radio-control'], readOnly && styles['radio-control-readonly']) },
+          item: { control: clsx(styles['radio-control'], readOnly && styles['radio-control-readonly']) },
         },
       }}
     />

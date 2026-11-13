@@ -25,6 +25,7 @@ import { KeyCode } from '../internal/keycode';
 import { circleIndex } from '../internal/utils/circle-index';
 import { isHTMLElement } from '../internal/utils/dom';
 import handleKey from '../internal/utils/handle-key';
+import { getStyleClassName, Slot } from '../internal/utils/style-slot';
 import Tooltip from '../tooltip/internal.js';
 import {
   GeneratedAnalyticsMetadataTabsComponent,
@@ -48,7 +49,7 @@ import testUtilStyles from './test-classes/styles.css.js';
 // Style API v2
 export interface StyleClassNames {
   tabsHeader?: string;
-  tab?: string | ((args: { tab: TabsProps.Tab }) => string);
+  tab?: Slot<{ tab: TabsProps.Tab }>;
   tabLink?: string;
   content?: string;
   dismissButton?: string;
@@ -435,8 +436,7 @@ export function TabHeaderBar({
       onChange({ activeTabId: tab.id, activeTabHref: tab.href });
     };
 
-    const tabSlotClass =
-      typeof styleClassNames?.tab === 'function' ? styleClassNames.tab({ tab }) : styleClassNames?.tab;
+    const tabSlotClass = getStyleClassName(styleClassNames?.tab, { tab });
 
     const classes = clsx(styleClassNames?.tabLink, {
       [styles['tabs-tab-link']]: true,

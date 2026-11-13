@@ -9,6 +9,7 @@ import { ButtonDropdownProps } from '../button-dropdown/interfaces.js';
 import { FileInputProps } from '../file-input/interfaces';
 import { fireCancelableEvent } from '../internal/events';
 import { nodeBelongs } from '../internal/utils/node-belongs';
+import { getStyleClassName } from '../internal/utils/style-slot';
 import { NonCancelableEventHandler } from '../types/events';
 import CopyToClipboardItem from './copy-to-clipboard-item.js';
 import FileInputItem from './file-input-item';
@@ -139,8 +140,7 @@ const ItemElement = forwardRef(
     };
 
     const itemStylePropertiesAndVariables = getButtonGroupItemStyles(style);
-    const itemClassName =
-      typeof styleClassNames?.item === 'function' ? styleClassNames.item({ item }) : styleClassNames?.item;
+    const itemClassName = getStyleClassName(styleClassNames?.item, { item });
 
     return (
       <div

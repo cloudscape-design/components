@@ -15,7 +15,7 @@
   $properties: (background, border, border-radius, box-shadow),
   $descriptions: (
     properties: (
-      box-shadow: 'Also draws the focus ring under `:focus-within`.',
+      box-shadow: 'Also draws the focus ring.',
     )
   )
 );
@@ -33,8 +33,7 @@ $input-tokens: style-api.resolve(
   $properties: (color, padding, font-family, font-size, font-weight),
   $descriptions: (
     properties: (
-      padding:
-        'Replaces the inline padding reserved for the search icon and the clear button; include that room when styling search inputs.',
+      padding: 'Replaces the padding reserved for the search icon and the clear button.',
     )
   )
 );

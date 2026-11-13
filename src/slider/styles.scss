@@ -18,7 +18,7 @@ $root-tokens: style-api.resolve((track-color, value-color), carrier);
   mixins.$handle-tokens,
   $descriptions: (
     tokens: (
-      halo-color: 'Ring around the handle on hover and focus. Defaults to the fill color.',
+      halo-color: 'Defaults to the fill color.',
     )
   )
 );

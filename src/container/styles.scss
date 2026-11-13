@@ -14,31 +14,9 @@
 // root's non-inheriting public token: it is re-anchored as a carrier on the root.
 $tokens: style-api.resolve((border-radius), carrier);
 @include style-api.register($tokens);
-@include style-api.docs(
-  'root',
-  $tokens,
-  $properties: (background, border, box-shadow),
-  $descriptions: (
-    tokens: (
-      border-radius:
-        'Also rounds the header, footer and media corners. Adjoining corners of stacked containers stay square.',
-    )
-  )
-);
-@include style-api.docs(
-  'header',
-  $properties: (background, border),
-  $descriptions: (
-    slot: 'Rendered when `header` is set. The block-end border is the divider between the header and the content.'
-  )
-);
-@include style-api.docs(
-  'footer',
-  $properties: (background, border),
-  $descriptions: (
-    slot: 'Rendered when `footer` is set. The block-start border is the divider between the content and the footer.'
-  )
-);
+@include style-api.docs('root', $tokens, $properties: (background, border, box-shadow));
+@include style-api.docs('header', $properties: (background, border));
+@include style-api.docs('footer', $properties: (background, border));
 
 // Style API token, then the `style.root.borderRadius` custom property, then the design token.
 $border-radius: style-api.value(

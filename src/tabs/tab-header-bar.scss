@@ -26,41 +26,14 @@ $content-tokens: style-api.resolve(style-api.$focus-ring, carrier);
   $header-tokens,
   $properties: (border),
   $descriptions: (
-    slot:
-      'The bar with all tabs, the scroll buttons and `actions`. The block-end border is the divider between the tabs and the content.',
     tokens: (
       divider-color: 'The line between two tabs.',
     )
   )
 );
-@include style-api.docs(
-  'tab',
-  $tab-tokens,
-  $properties: (background, border, border-radius),
-  $descriptions: (
-    slot:
-      'One tab: the box around the link, the `action` and the dismiss button, and the underline of the active tab. Accepts a class name or a function of the tab returning one. Pass a different class for `disabled`, and for the active tab when you control `activeTabId`.',
-    tokens: (
-      active-indicator-color: 'The underline of the active tab.',
-      active-indicator-width: 'Thickness of the underline.',
-      active-indicator-border-radius: 'Corner radius of the underline, one length.',
-    )
-  )
-);
-@include style-api.docs(
-  'tabLink',
-  $link-tokens,
-  $properties: (color, padding, font-family, font-size, font-weight),
-  $descriptions: (
-    slot:
-      "The clickable element of a tab, a `button` or an `a` with `href`: its text, padding and focus ring. Use `:hover` for the interaction state; style the link of an active or disabled tab through that tab's class, for example `.my-active-tab .my-link`."
-  )
-);
-@include style-api.docs(
-  'content',
-  $content-tokens,
-  $descriptions: (slot: 'The panel of each tab. The focus ring shows on the active panel on keyboard focus.')
-);
+@include style-api.docs('tab', $tab-tokens, $properties: (background, border, border-radius));
+@include style-api.docs('tabLink', $link-tokens, $properties: (color, padding, font-family, font-size, font-weight));
+@include style-api.docs('content', $content-tokens);
 @include style-api.docs-forward('dismissButton', 'button', 'root');
 
 .tabs-header {

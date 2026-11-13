@@ -20,6 +20,7 @@ import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { useThrottleCallback } from '../internal/hooks/use-throttle-callback';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
+import { getStyleClassName } from '../internal/utils/style-slot';
 import InternalLiveRegion from '../live-region/internal';
 import {
   GeneratedAnalyticsMetadataFlashbarCollapse,
@@ -229,8 +230,7 @@ export default function CollapsibleFlashbar({ items, style, styleClassNames, ...
   const getAnimationElementId = (item: StackableItem) => `flash-${getItemId(item)}`;
 
   // Style API v2
-  const getItemClass = (item: FlashbarProps.MessageDefinition) =>
-    typeof styleClassNames?.item === 'function' ? styleClassNames.item({ item }) : styleClassNames?.item;
+  const getItemClass = (item: FlashbarProps.MessageDefinition) => getStyleClassName(styleClassNames?.item, { item });
 
   const renderList = () => (
     <ul

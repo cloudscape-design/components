@@ -19,7 +19,7 @@ function renderRadioGroup(styleClassNames: Record<string, unknown>) {
 
 describe('RadioGroup Style API v2', () => {
   test('forwards the radio button classes to every radio', () => {
-    const { container, wrapper } = renderRadioGroup({ radioButton: { control: 'a', unknown: 'b' }, unknown: 'c' });
+    const { container, wrapper } = renderRadioGroup({ item: { control: 'a', unknown: 'b' }, unknown: 'c' });
     const buttons = wrapper.findButtons();
     expect(buttons).toHaveLength(3);
     for (const button of buttons) {
@@ -29,7 +29,7 @@ describe('RadioGroup Style API v2', () => {
   });
 
   test('does not leak the styleClassNames prop to the DOM', () => {
-    const { container } = renderRadioGroup({ radioButton: { control: 'a' } });
+    const { container } = renderRadioGroup({ item: { control: 'a' } });
     expect(container.querySelector('[styleClassNames]')).toBeNull();
   });
 });
