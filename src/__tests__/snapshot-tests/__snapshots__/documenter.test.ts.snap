@@ -106,6 +106,17 @@ This property only applies when an \`href\` is provided.",
       "type": "string | boolean",
     },
     {
+      "defaultValue": "false",
+      "description": "Stretches the action card to fill the available height.
+
+Use this property to align heights of multiple action cards displayed in a single row.
+
+Unlike in the [container](/components/container/) component, setting this property to \`true\` does not make the body scrollable if the action card overflows its parent.",
+      "name": "fitHeight",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "description": "Turns the action card into a link, pointing to the given URL. The card is rendered using an \`a\` element instead of a \`button\`.
 For example, use this property if selecting the card should navigate the user to another page.",
       "name": "href",
@@ -18417,6 +18428,17 @@ exports[`Components definition for item-card matches the snapshot: item-card 1`]
       "type": "boolean",
     },
     {
+      "defaultValue": "false",
+      "description": "Stretches the item card to fill the available height.
+
+Use this property to align heights of multiple item cards displayed in a single row.
+
+Unlike in the [container](/components/container/) component, setting this property to \`true\` does not make the body scrollable if the item card overflows its parent.",
+      "name": "fitHeight",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
@@ -21895,7 +21917,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
     },
     {
       "description": "Makes the main content area focusable. This should be used if there are no focusable elements
-inside the content, to ensure it is keyboard scrollable.
+inside the content, to ensure it is keyboard scrollable when \`scrollable\` is set.
 
 Provide either \`{ariaLabel: "Main label"}\` or \`{ariaLabelledby: "main-label-id"}\`",
       "inlineType": {
@@ -21932,7 +21954,7 @@ Provide either \`{ariaLabel: "Main label"}\` or \`{ariaLabelledby: "main-label-i
     },
     {
       "description": "Makes the panel content focusable. This should be used if there are no focusable elements
-inside the panel, to ensure it is keyboard scrollable.
+inside the panel, to ensure it is keyboard scrollable when \`scrollable\` is set.
 
 Provide either \`{ariaLabel: "Panel label"}\` or \`{ariaLabelledby: "panel-label-id"}\`",
       "inlineType": {
@@ -21983,6 +22005,16 @@ The actual size will be constrained by \`minPanelSize\` and \`maxPanelSize\`, if
       "defaultValue": "false",
       "description": "Indicates whether the panel is resizable.",
       "name": "resizable",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Makes the panel and main content areas scrollable.
+
+When setting this property to \`true\`, make sure that all content, including focus rings of interactive elements,
+fits within the panels, otherwise it will be clipped.",
+      "name": "scrollable",
       "optional": true,
       "type": "boolean",
     },

@@ -1,0 +1,25 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~design-tokens' as awsui;
+
+.grid,
+.short {
+  gap: 10px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.placeholder {
+  background-color: awsui.$color-background-input-disabled;
+}
+
+.short {
+  display: flex;
+  block-size: 200px;
+}
