@@ -42,7 +42,7 @@ export default function InternalItemCard({
   disableHeaderPaddings,
   disableContentPaddings,
   disableFooterPaddings,
-  fullHeight,
+  fitHeight,
   variant = 'default',
   __internalRootRef,
   styleClassNames,
@@ -61,7 +61,7 @@ export default function InternalItemCard({
         styleClassNames?.root,
         styles.root,
         highlighted && styles.highlighted,
-        fullHeight && styles['full-height'],
+        fitHeight && styles['fit-height'],
         isRefresh && styles.refresh,
         styles[`variant-${variant}`]
       ),

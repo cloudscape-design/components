@@ -261,12 +261,16 @@ export function TableHeaderCell<ItemType>({
         <div
           ref={clickableHeaderRef}
           data-focus-id={`sorting-control-${String(columnId)}`}
-          className={clsx(styles['header-cell-content'], {
-            [styles['header-cell-fake-focus']]: focusedComponent === `sorting-control-${String(columnId)}`,
-            [styles['header-cell-content-expandable']]: isExpandable,
-            [styles['header-cell-content-multi-sorted']]: showPriorityBadge,
-            [styles['header-cell-content-with-menu']]: hasSortMenu,
-          })}
+          className={clsx(
+            sortingStatus && !sortingDisabled && styleClassNames?.sortingButton,
+            styles['header-cell-content'],
+            {
+              [styles['header-cell-fake-focus']]: focusedComponent === `sorting-control-${String(columnId)}`,
+              [styles['header-cell-content-expandable']]: isExpandable,
+              [styles['header-cell-content-multi-sorted']]: showPriorityBadge,
+              [styles['header-cell-content-with-menu']]: hasSortMenu,
+            }
+          )}
           aria-label={
             column.ariaLabel
               ? column.ariaLabel({
@@ -342,6 +346,7 @@ export function TableHeaderCell<ItemType>({
             ariaLabel={ariaLabels?.sortMenuTriggerLabel}
             ariaDescribedby={headerId}
             onAction={handleSortMenuAction}
+            styleClassNames={styleClassNames?.sortingMenu}
           />
         )}
       </div>

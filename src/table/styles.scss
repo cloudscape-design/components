@@ -47,10 +47,20 @@
   )
 );
 @include style-api.docs(
+  'sortingButton',
+  $properties: (color),
+  $descriptions: (
+    slot:
+      'Sort button of sortable column header cells. Inherits the header cell color; use `:hover` for the interaction state.'
+  )
+);
+@include style-api.docs(
   'sortingIndicator',
   $properties: (color),
   $descriptions: (slot: 'Sorting indicator of column header cells, including the multi-column sort priority.')
 );
+@include style-api.docs-forward('sortingMenu', 'button-dropdown');
+@include style-api.docs-forward('clearSortButton', 'button', 'root');
 @include style-api.docs(
   'row',
   table-style-api.$row-tokens,

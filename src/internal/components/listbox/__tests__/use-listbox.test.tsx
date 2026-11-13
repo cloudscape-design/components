@@ -301,6 +301,24 @@ describe('useListbox', () => {
         expect(hook.result.current.highlightedIndex).toBe(-1);
       });
 
+      test('focus highlights the first selected option in selection order, not in list order', () => {
+        const selected = [{ value: 'd' }, { value: 'a' }];
+        const { hook } = renderListbox({
+          selectedOptions: selected,
+          selection: multiSelection(selected, { options: flatOptions }),
+        });
+        act(() => getProps(hook).onFocus!(focusEvent()));
+        expect(hook.result.current.highlightedIndex).toBe(4);
+        expect(hook.result.current.highlightType.type).toBe('keyboard');
+      });
+      test('focus highlights the first option when the selected option is not in the options', () => {
+        const { hook } = renderListbox({
+          selectedOptions: [{ value: 'missing' }],
+          selection: singleSelection([{ value: 'missing' }]),
+        });
+        act(() => getProps(hook).onFocus!(focusEvent()));
+        expect(hook.result.current.highlightedIndex).toBe(1);
+      });
       test('focus keeps an existing highlight', () => {
         const { hook } = renderListbox();
         act(() => hook.result.current.mouseHandlers.onMouseMove(3));

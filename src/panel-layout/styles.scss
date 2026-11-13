@@ -23,8 +23,15 @@
 .root {
   @include styles.styles-reset;
   block-size: 100%;
-  overflow: hidden;
   display: flex;
+}
+
+.panel-content,
+.content {
+  min-inline-size: 0;
+  &.scrollable {
+    overflow-y: auto;
+  }
 }
 
 .panel {
@@ -35,8 +42,6 @@
     align-items: center;
   }
   > .panel-content {
-    overflow-y: auto;
-    overflow-x: visible;
     flex-grow: 1;
     @include focus-visible.when-visible {
       @include container-inner-focus-ring;
@@ -47,13 +52,11 @@
   }
   .display-panel-only > & {
     flex: 1;
-    overflow-y: auto;
-    overflow-x: visible;
+    min-inline-size: 0;
   }
 }
 
 .content {
-  overflow-y: auto;
   flex-grow: 1;
   flex-shrink: 1;
   .display-panel-only > & {
