@@ -50,3 +50,15 @@ test('reports no dropdown-customization usage by default', () => {
     }),
   });
 });
+
+test.each([
+  [true, () => {}],
+  [false, undefined],
+])('reports async loading usage as %s in metadata', (expected, onLoadItems) => {
+  render(<Multiselect {...defaultProps} onLoadItems={onLoadItems} />);
+
+  expect(useBaseComponentSpy).toHaveBeenCalledWith('Multiselect', {
+    props: expect.anything(),
+    metadata: expect.objectContaining({ hasAsyncLoading: expected }),
+  });
+});

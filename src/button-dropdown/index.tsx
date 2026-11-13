@@ -65,6 +65,7 @@ const ButtonDropdown = React.forwardRef(
         hasCustomIcon: Boolean(iconUrl || iconSvg || iconName),
         hasDisabledReason: Boolean(disabledReason),
         hasDisabledReasons: hasDisabledReasonItems(items),
+        hasAsyncLoading: Boolean(onLoadItems),
       },
     });
     const baseProps = getBaseProps(props);
