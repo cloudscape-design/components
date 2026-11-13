@@ -223,7 +223,8 @@ $border-radius: style-api.value(
       border-inline: 0;
     }
     &:not(.header-variant-cards) {
-      box-shadow: awsui.$shadow-sticky-embedded;
+      // Custom property is set by a table that renders as this container.
+      box-shadow: var(#{custom-props.$tableStickyHeaderShadow}, #{awsui.$shadow-sticky-embedded});
     }
   }
 

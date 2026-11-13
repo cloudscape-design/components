@@ -395,6 +395,7 @@ export default function CollapsibleFlashbar({ items, style, styleClassNames, ...
             ]}
           />
           <button
+            type="button"
             aria-controls={flashbarElementId}
             aria-describedby={itemCountElementId}
             aria-expanded={isFlashbarStackExpanded}

@@ -1,0 +1,85 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~components/styling/tabs';
+@use '~components/styling/button';
+@use '../style-api/palette' as palette;
+
+.header {
+  @include tabs.tabsHeader(
+    $border-block-color: palette.$border-accent,
+    $border-block-width: 2px,
+    $border-block-style: solid,
+    $divider-color: palette.$accent,
+    $divider-width: 2px
+  );
+}
+
+.tab {
+  @include tabs.tab(
+    $background: palette.$surface,
+    $border-color: palette.$border,
+    $border-style: solid,
+    $border-width: 1px,
+    $border-radius: 4px
+  );
+}
+
+.tab-active {
+  @include tabs.tab(
+    $background: palette.$accent,
+    $border-color: palette.$accent-active,
+    $border-style: solid,
+    $border-width: 2px,
+    $active-indicator-color: palette.$accent-active
+  );
+}
+
+.tab-disabled {
+  @include tabs.tab($background: palette.$control-bg-disabled);
+}
+
+.link {
+  @include tabs.tabLink($color: palette.$text, $font-family: monospace, $font-size: 13px, $font-weight: 600);
+
+  &:hover {
+    @include tabs.tabLink($color: palette.$accent);
+  }
+}
+
+// stylelint-disable-next-line selector-combinator-disallowed-list
+.tab-active .link {
+  @include tabs.tabLink($color: palette.$text-on-accent);
+}
+
+// stylelint-disable-next-line selector-combinator-disallowed-list
+.tab-disabled .link {
+  @include tabs.tabLink($color: palette.$text-disabled);
+}
+
+.dismiss-btn {
+  @include button.root($color: palette.$accent, $border-color: palette.$accent);
+}
+
+.tab-indicator {
+  @include tabs.tab(
+    $active-indicator-color: palette.$accent,
+    $active-indicator-width: 3px,
+    $active-indicator-border-radius: 4px
+  );
+}
+
+.link-wide {
+  @include tabs.tabLink(
+    $padding: 12px 20px,
+    $focus-ring-color: palette.$accent,
+    $focus-ring-width: 3px,
+    $focus-ring-radius: 6px
+  );
+}
+
+.content-focus-ring {
+  @include tabs.content($focus-ring-color: palette.$accent, $focus-ring-width: 3px, $focus-ring-radius: 6px);
+}

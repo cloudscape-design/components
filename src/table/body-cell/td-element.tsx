@@ -21,6 +21,7 @@ import testUtilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
 export interface TableTdElementProps {
+  styleClassName?: string;
   wrapLines: boolean | undefined;
   isRowHeader?: boolean;
   isSelected: boolean;
@@ -63,6 +64,7 @@ export interface TableTdElementProps {
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
   (
     {
+      styleClassName,
       children,
       wrapLines,
       isRowHeader,
@@ -128,6 +130,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         tag={tag}
         style={{ ...resizableStyle, ...stickyStyles.style }}
         className={clsx(
+          styleClassName,
           isSelected && styles['body-cell-selected'],
           isNextSelected && styles['body-cell-next-selected'],
           isPrevSelected && styles['body-cell-prev-selected'],
