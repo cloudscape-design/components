@@ -4,6 +4,7 @@
 */
 
 @use '../internal/styles/index' as styles;
+@use '../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../internal/components/sticky-header/mixins' as sticky-header;
 @use '../internal/components/sticky-scrollbar/mixins' as sticky-scrollbar;
