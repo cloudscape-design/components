@@ -23,7 +23,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundContainerHeader: { light: '{colorWhite}', dark: '{colorNeutral950}' },
   colorBackgroundContainerContent: { light: '{colorWhite}', dark: '{colorNeutral950}' },
   colorBorderDividerDefault: { light: '{colorNeutral300}', dark: '{colorNeutral750}' },
-  colorBorderDividerInteractiveDefault: { light: '{colorNeutral300}', dark: '{colorNeutral750}' },
+  colorBorderDividerInteractiveDefault: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
   colorBorderDividerSecondary: { light: '{colorNeutral250}', dark: '{colorNeutral800}' },
   colorBorderDividerTableGroup: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
   colorBorderLayout: { light: '{colorNeutral300}', dark: '{colorNeutral750}' },
