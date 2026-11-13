@@ -21,6 +21,7 @@ $tokens: mixins.$tokens;
   $tokens,
   $properties: (background),
   $descriptions: (
+    slot: 'Not a button element: use `:has(:hover)` and `:has(:active)` for interaction states.',
     tokens: (
       border-width: 'Drawn over the card edges; takes no space.',
     )

@@ -1,5 +1,49 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Style API docs definition for action-card matches the snapshot: action-card 1`] = `
+{
+  "slots": [
+    {
+      "description": "Not a button element: use \`:has(:hover)\` and \`:has(:active)\` for interaction states.",
+      "name": "root",
+      "properties": [
+        "background",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {
+        "border-width": "Drawn over the card edges; takes no space.",
+      },
+      "tokens": [
+        "border-color",
+        "border-width",
+        "border-radius",
+        "focus-ring-color",
+        "focus-ring-width",
+        "focus-ring-radius",
+      ],
+    },
+    {
+      "name": "header",
+      "properties": [
+        "background",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
+    },
+  ],
+}
+`;
+
 exports[`Style API docs definition for alert matches the snapshot: alert 1`] = `
 {
   "slots": [
@@ -49,6 +93,26 @@ exports[`Style API docs definition for alert matches the snapshot: alert 1`] = `
         "slot": "root",
       },
       "name": "dismissButton",
+    },
+  ],
+}
+`;
+
+exports[`Style API docs definition for autosuggest matches the snapshot: autosuggest 1`] = `
+{
+  "slots": [
+    {
+      "forwardsTo": {
+        "component": "input",
+      },
+      "name": "input",
+    },
+    {
+      "forwardsTo": {
+        "component": "dropdown",
+        "slot": "root",
+      },
+      "name": "dropdown",
     },
   ],
 }
@@ -352,6 +416,93 @@ exports[`Style API docs definition for dropdown matches the snapshot: dropdown 1
 }
 `;
 
+exports[`Style API docs definition for flashbar matches the snapshot: flashbar 1`] = `
+{
+  "slots": [
+    {
+      "name": "notificationBar",
+      "properties": [
+        "color",
+        "background",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
+        "border-radius",
+        "border-start-start-radius",
+        "border-start-end-radius",
+        "border-end-start-radius",
+        "border-end-end-radius",
+        "box-shadow",
+        "padding",
+        "padding-block",
+        "padding-inline",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [
+        "focus-ring-color",
+        "focus-ring-width",
+        "focus-ring-radius",
+      ],
+    },
+    {
+      "name": "item",
+      "properties": [
+        "color",
+        "background",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
+        "border-radius",
+        "border-start-start-radius",
+        "border-start-end-radius",
+        "border-end-start-radius",
+        "border-end-end-radius",
+        "box-shadow",
+        "padding",
+        "padding-block",
+        "padding-inline",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [
+        "focus-ring-color",
+        "focus-ring-width",
+        "focus-ring-radius",
+      ],
+    },
+    {
+      "name": "icon",
+      "properties": [
+        "color",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
+    },
+    {
+      "forwardsTo": {
+        "component": "button",
+        "slot": "root",
+      },
+      "name": "dismissButton",
+    },
+  ],
+}
+`;
+
 exports[`Style API docs definition for input matches the snapshot: input 1`] = `
 {
   "slots": [
@@ -436,6 +587,65 @@ exports[`Style API docs definition for input matches the snapshot: input 1`] = `
 }
 `;
 
+exports[`Style API docs definition for item-card matches the snapshot: item-card 1`] = `
+{
+  "slots": [
+    {
+      "name": "root",
+      "properties": [
+        "background",
+        "box-shadow",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {
+        "border-width": "Drawn over the card edges; takes no space.",
+      },
+      "tokens": [
+        "border-color",
+        "border-width",
+        "border-radius",
+      ],
+    },
+    {
+      "name": "header",
+      "properties": [
+        "background",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
+    },
+    {
+      "name": "footer",
+      "properties": [
+        "background",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
+    },
+  ],
+}
+`;
+
 exports[`Style API docs definition for link matches the snapshot: link 1`] = `
 {
   "slots": [
@@ -455,6 +665,80 @@ exports[`Style API docs definition for link matches the snapshot: link 1`] = `
         "focus-ring-width",
         "focus-ring-radius",
       ],
+    },
+  ],
+}
+`;
+
+exports[`Style API docs definition for multiselect matches the snapshot: multiselect 1`] = `
+{
+  "slots": [
+    {
+      "name": "trigger",
+      "properties": [
+        "color",
+        "background",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
+        "border-radius",
+        "border-start-start-radius",
+        "border-start-end-radius",
+        "border-end-start-radius",
+        "border-end-end-radius",
+        "box-shadow",
+        "padding",
+        "padding-block",
+        "padding-inline",
+        "font-family",
+        "font-size",
+        "font-weight",
+      ],
+      "propertyDescriptions": {
+        "box-shadow": "Also draws the focus ring.",
+      },
+      "tokenDescriptions": {},
+      "tokens": [
+        "placeholder-color",
+      ],
+    },
+    {
+      "name": "inlineLabel",
+      "properties": [
+        "color",
+        "background",
+        "font-family",
+        "font-size",
+        "font-weight",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
+    },
+    {
+      "forwardsTo": {
+        "component": "input",
+      },
+      "name": "filter",
+    },
+    {
+      "forwardsTo": {
+        "component": "dropdown",
+        "slot": "root",
+      },
+      "name": "dropdown",
+    },
+    {
+      "forwardsTo": {
+        "component": "token",
+      },
+      "name": "token",
     },
   ],
 }
@@ -509,6 +793,111 @@ exports[`Style API docs definition for popover matches the snapshot: popover 1`]
 }
 `;
 
+exports[`Style API docs definition for progress-bar matches the snapshot: progress-bar 1`] = `
+{
+  "slots": [
+    {
+      "name": "root",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [
+        "track-color",
+        "value-color",
+        "bar-block-size",
+        "bar-border-radius",
+      ],
+    },
+    {
+      "name": "valueLabel",
+      "properties": [
+        "color",
+        "font-family",
+        "font-size",
+        "font-weight",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
+    },
+  ],
+}
+`;
+
+exports[`Style API docs definition for prompt-input matches the snapshot: prompt-input 1`] = `
+{
+  "slots": [
+    {
+      "name": "root",
+      "properties": [
+        "background",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
+        "border-radius",
+        "border-start-start-radius",
+        "border-start-end-radius",
+        "border-end-start-radius",
+        "border-end-end-radius",
+        "box-shadow",
+      ],
+      "propertyDescriptions": {
+        "box-shadow": "Also draws the focus ring.",
+      },
+      "tokenDescriptions": {},
+      "tokens": [],
+    },
+    {
+      "name": "textarea",
+      "properties": [
+        "color",
+        "padding",
+        "padding-block",
+        "padding-inline",
+        "font-family",
+        "font-size",
+        "font-weight",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [
+        "placeholder-color",
+        "placeholder-font-size",
+        "placeholder-font-style",
+        "placeholder-font-weight",
+      ],
+    },
+    {
+      "forwardsTo": {
+        "component": "button",
+        "slot": "root",
+      },
+      "name": "actionButton",
+    },
+    {
+      "forwardsTo": {
+        "component": "token",
+        "slot": "root",
+      },
+      "name": "token",
+    },
+    {
+      "forwardsTo": {
+        "component": "dropdown",
+        "slot": "root",
+      },
+      "name": "menu",
+    },
+  ],
+}
+`;
+
 exports[`Style API docs definition for radio-button matches the snapshot: radio-button 1`] = `
 {
   "slots": [
@@ -526,6 +915,197 @@ exports[`Style API docs definition for radio-button matches the snapshot: radio-
         "focus-ring-color",
         "focus-ring-width",
         "focus-ring-radius",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`Style API docs definition for radio-group matches the snapshot: radio-group 1`] = `
+{
+  "slots": [
+    {
+      "forwardsTo": {
+        "component": "radio-button",
+      },
+      "name": "item",
+    },
+  ],
+}
+`;
+
+exports[`Style API docs definition for segmented-control matches the snapshot: segmented-control 1`] = `
+{
+  "slots": [
+    {
+      "name": "root",
+      "properties": [
+        "background",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {
+        "border-radius": "Also applies to the segments.",
+      },
+      "tokens": [
+        "border-radius",
+      ],
+    },
+    {
+      "name": "segment",
+      "properties": [
+        "color",
+        "background",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
+        "border-radius",
+        "border-start-start-radius",
+        "border-start-end-radius",
+        "border-end-start-radius",
+        "border-end-end-radius",
+        "box-shadow",
+        "padding",
+        "padding-block",
+        "padding-inline",
+        "font-family",
+        "font-size",
+        "font-weight",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [
+        "focus-ring-color",
+        "focus-ring-width",
+        "focus-ring-radius",
+      ],
+    },
+    {
+      "name": "divider",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [
+        "line-color",
+        "line-width",
+      ],
+    },
+    {
+      "forwardsTo": {
+        "component": "select",
+      },
+      "name": "select",
+    },
+  ],
+}
+`;
+
+exports[`Style API docs definition for select matches the snapshot: select 1`] = `
+{
+  "slots": [
+    {
+      "name": "trigger",
+      "properties": [
+        "color",
+        "background",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
+        "border-radius",
+        "border-start-start-radius",
+        "border-start-end-radius",
+        "border-end-start-radius",
+        "border-end-end-radius",
+        "box-shadow",
+        "padding",
+        "padding-block",
+        "padding-inline",
+        "font-family",
+        "font-size",
+        "font-weight",
+      ],
+      "propertyDescriptions": {
+        "box-shadow": "Also draws the focus ring.",
+      },
+      "tokenDescriptions": {},
+      "tokens": [
+        "placeholder-color",
+      ],
+    },
+    {
+      "name": "inlineLabel",
+      "properties": [
+        "color",
+        "background",
+        "font-family",
+        "font-size",
+        "font-weight",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
+    },
+    {
+      "forwardsTo": {
+        "component": "input",
+      },
+      "name": "filter",
+    },
+    {
+      "forwardsTo": {
+        "component": "dropdown",
+        "slot": "root",
+      },
+      "name": "dropdown",
+    },
+  ],
+}
+`;
+
+exports[`Style API docs definition for slider matches the snapshot: slider 1`] = `
+{
+  "slots": [
+    {
+      "name": "root",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [
+        "track-color",
+        "value-color",
+      ],
+    },
+    {
+      "name": "handle",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {
+        "halo-color": "Defaults to the fill color.",
+      },
+      "tokens": [
+        "fill-color",
+        "halo-color",
+        "border-radius",
       ],
     },
   ],
@@ -639,6 +1219,99 @@ exports[`Style API docs definition for table matches the snapshot: table 1`] = `
 }
 `;
 
+exports[`Style API docs definition for tabs matches the snapshot: tabs 1`] = `
+{
+  "slots": [
+    {
+      "name": "tabsHeader",
+      "properties": [
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {
+        "divider-color": "The line between two tabs.",
+      },
+      "tokens": [
+        "divider-color",
+        "divider-width",
+      ],
+    },
+    {
+      "name": "tab",
+      "properties": [
+        "background",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
+        "border-radius",
+        "border-start-start-radius",
+        "border-start-end-radius",
+        "border-end-start-radius",
+        "border-end-end-radius",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [
+        "active-indicator-color",
+        "active-indicator-width",
+        "active-indicator-border-radius",
+      ],
+    },
+    {
+      "name": "tabLink",
+      "properties": [
+        "color",
+        "padding",
+        "padding-block",
+        "padding-inline",
+        "font-family",
+        "font-size",
+        "font-weight",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [
+        "focus-ring-color",
+        "focus-ring-width",
+        "focus-ring-radius",
+      ],
+    },
+    {
+      "name": "content",
+      "properties": [],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [
+        "focus-ring-color",
+        "focus-ring-width",
+        "focus-ring-radius",
+      ],
+    },
+    {
+      "forwardsTo": {
+        "component": "button",
+        "slot": "root",
+      },
+      "name": "dismissButton",
+    },
+  ],
+}
+`;
+
 exports[`Style API docs definition for text-filter matches the snapshot: text-filter 1`] = `
 {
   "slots": [
@@ -742,6 +1415,61 @@ exports[`Style API docs definition for toggle matches the snapshot: toggle 1`] =
 }
 `;
 
+exports[`Style API docs definition for toggle-button matches the snapshot: toggle-button 1`] = `
+{
+  "slots": [
+    {
+      "forwardsTo": {
+        "component": "button",
+        "slot": "root",
+      },
+      "name": "root",
+    },
+  ],
+}
+`;
+
+exports[`Style API docs definition for token matches the snapshot: token 1`] = `
+{
+  "slots": [
+    {
+      "name": "root",
+      "properties": [
+        "background",
+        "color",
+        "border-color",
+        "border-width",
+        "border-style",
+        "border-block-color",
+        "border-block-width",
+        "border-block-style",
+        "border-inline-color",
+        "border-inline-width",
+        "border-inline-style",
+        "border-radius",
+        "border-start-start-radius",
+        "border-start-end-radius",
+        "border-end-start-radius",
+        "border-end-end-radius",
+        "padding",
+        "padding-block",
+        "padding-inline",
+      ],
+      "propertyDescriptions": {},
+      "tokenDescriptions": {},
+      "tokens": [],
+    },
+    {
+      "forwardsTo": {
+        "component": "button",
+        "slot": "root",
+      },
+      "name": "dismissButton",
+    },
+  ],
+}
+`;
+
 exports[`Style API docs definition for tooltip matches the snapshot: tooltip 1`] = `
 {
   "slots": [
@@ -786,7 +1514,9 @@ exports[`Style API docs definition for tooltip matches the snapshot: tooltip 1`]
 
 exports[`Style API docs list of components with a Style API doc matches the snapshot 1`] = `
 [
+  "action-card",
   "alert",
+  "autosuggest",
   "badge",
   "button",
   "button-dropdown",
@@ -797,15 +1527,27 @@ exports[`Style API docs list of components with a Style API doc matches the snap
   "date-input",
   "divider",
   "dropdown",
+  "flashbar",
   "input",
+  "item-card",
   "link",
+  "multiselect",
   "popover",
+  "progress-bar",
+  "prompt-input",
   "radio-button",
+  "radio-group",
+  "segmented-control",
+  "select",
+  "slider",
   "table",
+  "tabs",
   "text-filter",
   "textarea",
   "time-input",
   "toggle",
+  "toggle-button",
+  "token",
   "tooltip",
 ]
 `;
