@@ -3,9 +3,8 @@
 import { StyleClassNames as ButtonDropdownStyleClassNames } from '../button-dropdown/internal-interfaces';
 import { StyleClassNames as CheckboxStyleClassNames } from '../checkbox/internal';
 import { StyleClassNames as RadioButtonStyleClassNames } from '../internal/components/radio-button';
+import { Slot } from '../internal/utils/style-slot';
 import { TableProps } from './interfaces';
-
-type Slot<Args> = string | ((args: Args) => string | undefined);
 
 // Style API v2
 export interface StyleClassNames<T = any> {
@@ -30,8 +29,4 @@ export interface StyleClassNames<T = any> {
   cell?: Slot<{ type: 'data'; item: T; column: TableProps.ColumnDefinition<T> } | { type: 'selection'; item: T }>;
   selectionCheckbox?: CheckboxStyleClassNames;
   selectionRadio?: RadioButtonStyleClassNames;
-}
-
-export function getStyleClassName<Args>(slot: Slot<Args> | undefined, args: Args) {
-  return typeof slot === 'function' ? slot(args) : slot;
 }

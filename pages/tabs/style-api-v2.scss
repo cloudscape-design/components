@@ -73,7 +73,8 @@
 
 .link-wide {
   @include tabs.tabLink(
-    $padding: 12px 20px,
+    $padding-block: 12px,
+    $padding-inline: 20px,
     $focus-ring-color: palette.$accent,
     $focus-ring-width: 3px,
     $focus-ring-radius: 6px

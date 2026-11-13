@@ -37,5 +37,5 @@
 }
 
 .menu-info {
-  @include dropdown.container($background: palette.$surface-alt, $border-radius: 4px, $outline-color: palette.$info);
+  @include dropdown.root($background: palette.$surface-alt, $border-radius: 4px, $outline-color: palette.$info);
 }

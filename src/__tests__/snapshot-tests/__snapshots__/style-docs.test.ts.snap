@@ -117,6 +117,9 @@ exports[`Style API docs definition for button matches the snapshot: button 1`] =
         "padding-block",
         "padding-inline",
         "box-shadow",
+        "font-family",
+        "font-size",
+        "font-weight",
       ],
       "propertyDescriptions": {},
       "tokenDescriptions": {},
@@ -150,7 +153,7 @@ exports[`Style API docs definition for button-dropdown matches the snapshot: but
     {
       "forwardsTo": {
         "component": "dropdown",
-        "slot": "container",
+        "slot": "root",
       },
       "name": "dropdown",
     },
@@ -181,7 +184,7 @@ exports[`Style API docs definition for button-group matches the snapshot: button
     {
       "forwardsTo": {
         "component": "dropdown",
-        "slot": "container",
+        "slot": "root",
       },
       "name": "dropdown",
     },
@@ -229,15 +232,12 @@ exports[`Style API docs definition for container matches the snapshot: container
         "box-shadow",
       ],
       "propertyDescriptions": {},
-      "tokenDescriptions": {
-        "border-radius": "Also rounds the header, footer and media corners. Adjoining corners of stacked containers stay square.",
-      },
+      "tokenDescriptions": {},
       "tokens": [
         "border-radius",
       ],
     },
     {
-      "description": "Rendered when \`header\` is set. The block-end border is the divider between the header and the content.",
       "name": "header",
       "properties": [
         "background",
@@ -256,7 +256,6 @@ exports[`Style API docs definition for container matches the snapshot: container
       "tokens": [],
     },
     {
-      "description": "Rendered when \`footer\` is set. The block-start border is the divider between the content and the footer.",
       "name": "footer",
       "properties": [
         "background",
@@ -332,7 +331,7 @@ exports[`Style API docs definition for dropdown matches the snapshot: dropdown 1
 {
   "slots": [
     {
-      "name": "container",
+      "name": "root",
       "properties": [
         "background",
         "border-radius",
@@ -343,10 +342,7 @@ exports[`Style API docs definition for dropdown matches the snapshot: dropdown 1
         "box-shadow",
       ],
       "propertyDescriptions": {},
-      "tokenDescriptions": {
-        "outline-color": "Color of the line drawn over the dropdown edges. Unlike a border, it takes no space.",
-        "outline-width": "Width of the line drawn over the dropdown edges. Unlike a border, it takes no space.",
-      },
+      "tokenDescriptions": {},
       "tokens": [
         "outline-color",
         "outline-width",
@@ -380,7 +376,7 @@ exports[`Style API docs definition for input matches the snapshot: input 1`] = `
         "box-shadow",
       ],
       "propertyDescriptions": {
-        "box-shadow": "Also draws the focus ring under \`:focus-within\`.",
+        "box-shadow": "Also draws the focus ring.",
       },
       "tokenDescriptions": {},
       "tokens": [],
@@ -397,7 +393,7 @@ exports[`Style API docs definition for input matches the snapshot: input 1`] = `
         "font-weight",
       ],
       "propertyDescriptions": {
-        "padding": "Replaces the inline padding reserved for the search icon and the clear button; include that room when styling search inputs.",
+        "padding": "Replaces the padding reserved for the search icon and the clear button.",
       },
       "tokenDescriptions": {},
       "tokens": [
@@ -520,7 +516,9 @@ exports[`Style API docs definition for radio-button matches the snapshot: radio-
       "name": "control",
       "properties": [],
       "propertyDescriptions": {},
-      "tokenDescriptions": {},
+      "tokenDescriptions": {
+        "fill-color": "The inside of the circle; the ring when checked.",
+      },
       "tokens": [
         "fill-color",
         "border-color",
@@ -542,9 +540,7 @@ exports[`Style API docs definition for table matches the snapshot: table 1`] = `
       "properties": [],
       "propertyDescriptions": {},
       "tokenDescriptions": {
-        "selected-row-outline-color": "Line around selected rows, including between consecutive selected rows.",
-        "selected-row-outline-radius": "Corner radius of the outline around selected rows.",
-        "sticky-header-shadow": "Shadow below the header while it is stuck. Its first layer draws the line below the header.",
+        "sticky-header-shadow": "Its first layer draws the line below the header.",
       },
       "tokens": [
         "selected-row-outline-color",
@@ -553,7 +549,6 @@ exports[`Style API docs definition for table matches the snapshot: table 1`] = `
       ],
     },
     {
-      "description": "Column, column group and selection header cells.",
       "name": "headerCell",
       "properties": [
         "background",
@@ -561,13 +556,11 @@ exports[`Style API docs definition for table matches the snapshot: table 1`] = `
         "font-family",
         "font-size",
         "font-weight",
-        "letter-spacing",
       ],
       "propertyDescriptions": {},
       "tokenDescriptions": {
         "border-color": "Line below the cell.",
-        "divider-color": "Line at the inline end of the cell, except while resizing.",
-        "focus-ring-color": "Keyboard navigation focus ring of the cell and its resize handle.",
+        "divider-color": "Line at the inline end of the cell.",
       },
       "tokens": [
         "border-color",
@@ -578,7 +571,6 @@ exports[`Style API docs definition for table matches the snapshot: table 1`] = `
       ],
     },
     {
-      "description": "Sort button of sortable column header cells. Inherits the header cell color; use \`:hover\` for the interaction state.",
       "name": "sortingButton",
       "properties": [
         "color",
@@ -588,7 +580,6 @@ exports[`Style API docs definition for table matches the snapshot: table 1`] = `
       "tokens": [],
     },
     {
-      "description": "Sorting indicator of column header cells, including the multi-column sort priority.",
       "name": "sortingIndicator",
       "properties": [
         "color",
@@ -614,23 +605,17 @@ exports[`Style API docs definition for table matches the snapshot: table 1`] = `
       "name": "row",
       "properties": [],
       "propertyDescriptions": {},
-      "tokenDescriptions": {
-        "background-color": "Background of every cell in the row, including sticky cells.",
-        "divider-color": "Line below the row.",
-      },
+      "tokenDescriptions": {},
       "tokens": [
         "background-color",
         "divider-color",
       ],
     },
     {
-      "description": "Body cells, including selection cells.",
       "name": "cell",
       "properties": [],
       "propertyDescriptions": {},
-      "tokenDescriptions": {
-        "focus-ring-color": "Keyboard navigation focus ring. Focusable cell content keeps its own focus ring.",
-      },
+      "tokenDescriptions": {},
       "tokens": [
         "background-color",
         "focus-ring-color",
@@ -664,7 +649,6 @@ exports[`Style API docs definition for text-filter matches the snapshot: text-fi
       "name": "input",
     },
     {
-      "description": "The results count rendered after the input. It is shown while \`filteringText\` and \`countText\` are set and the filter is not disabled.",
       "name": "countText",
       "properties": [
         "color",
@@ -711,7 +695,7 @@ exports[`Style API docs definition for textarea matches the snapshot: textarea 1
         "font-weight",
       ],
       "propertyDescriptions": {
-        "box-shadow": "Also draws the focus ring under \`:focus\`.",
+        "box-shadow": "Also draws the focus ring.",
       },
       "tokenDescriptions": {},
       "tokens": [
@@ -748,7 +732,7 @@ exports[`Style API docs definition for toggle matches the snapshot: toggle 1`] =
       "tokenDescriptions": {},
       "tokens": [
         "fill-color",
-        "indicator-color",
+        "handle-color",
         "focus-ring-color",
         "focus-ring-width",
         "focus-ring-radius",

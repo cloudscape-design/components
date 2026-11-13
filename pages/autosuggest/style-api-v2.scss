@@ -34,9 +34,8 @@
   }
 }
 
-// Dropdown forwards to Dropdown.container.
 .dropdown {
-  @include dropdown.container(
+  @include dropdown.root(
     $background: palette.$surface-alt,
     $border-radius: 12px,
     $box-shadow: 0 4px 12px palette.$subtle-active,

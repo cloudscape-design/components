@@ -11,17 +11,7 @@
 
 $tokens: style-api.resolve((outline-color, outline-width), carrier);
 @include style-api.register($tokens);
-@include style-api.docs(
-  'container',
-  $tokens,
-  $properties: (background, border-radius, box-shadow),
-  $descriptions: (
-    tokens: (
-      outline-color: 'Color of the line drawn over the dropdown edges. Unlike a border, it takes no space.',
-      outline-width: 'Width of the line drawn over the dropdown edges. Unlike a border, it takes no space.',
-    )
-  )
-);
+@include style-api.docs('root', $tokens, $properties: (background, border-radius, box-shadow));
 
 .root {
   @include styles.styles-reset;

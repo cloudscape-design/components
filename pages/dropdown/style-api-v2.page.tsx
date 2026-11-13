@@ -28,7 +28,7 @@ function StyledDropdown({
       expandToViewport={expandToViewport}
       minWidth={240}
       content={content ?? <ListContent n={4} />}
-      {...{ styleClassNames: { container: styleClassName } }}
+      {...{ styleClassNames: { root: styleClassName } }}
     />
   );
 }

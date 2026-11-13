@@ -21,23 +21,12 @@ $tokens: mixins.$tokens;
   $tokens,
   $properties: (background),
   $descriptions: (
-    slot:
-      'This is NOT a semantic button element. Use `:has(:hover)` or `:has(:active)` to target semantic button states. `disabled` is set by you: pass a different class when it is true.',
     tokens: (
-      border-color: 'The border is drawn over the card edges and takes no space.',
-      border-width: 'The border is drawn over the card edges and takes no space.',
-      border-radius: 'Also rounds the header corners that meet the card corners.',
+      border-width: 'Drawn over the card edges; takes no space.',
     )
   )
 );
-@include style-api.docs(
-  'header',
-  $properties: (background, border),
-  $descriptions: (
-    slot:
-      'Rendered when `header` or `description` is set. The block-end border is the divider between the header and the content. With a top-aligned `icon`, the header spans the full card width, icon included. With a centered `icon`, the icon column stays outside the header.'
-  )
-);
+@include style-api.docs('header', $properties: (background, border));
 .header {
   border-block-end: 0 solid transparent;
   &-inner {

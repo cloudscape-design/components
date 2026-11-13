@@ -124,7 +124,7 @@ export default function TokenMode({
           minWidth={MENU_MIN_WIDTH}
           maxHeight={maxMenuHeight}
           expandToViewport={true}
-          styleClassNames={{ container: styleClassNames?.menu }}
+          styleClassNames={{ root: styleClassNames?.menu }}
           style={
             menuStyle
               ? ({

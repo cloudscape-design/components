@@ -8,8 +8,8 @@ import { SimplePage } from '../app/templates';
 
 import styles from './style-api-v2.scss';
 
-const brand = { styleClassNames: { root: styles['bar-brand'], percentage: styles['percentage-brand'] } };
-const genai = { styleClassNames: { root: styles['bar-genai'], percentage: styles['percentage-genai'] } };
+const brand = { styleClassNames: { root: styles['bar-brand'], valueLabel: styles['percentage-brand'] } };
+const genai = { styleClassNames: { root: styles['bar-genai'], valueLabel: styles['percentage-genai'] } };
 
 export default function () {
   return (
