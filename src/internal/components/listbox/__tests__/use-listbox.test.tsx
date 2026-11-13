@@ -131,8 +131,9 @@ describe('useListbox', () => {
   });
 
   describe('Home and End', () => {
-    test('move the highlight and keep the native action', () => {
+    test('move the highlight and keep the native action in a filter input, to move the text cursor', () => {
       const { hook, keyDown } = renderListbox();
+      expect(hook.result.current.highlightedIndex).toBe(-1);
 
       const end = keyDown(END);
       expect(hook.result.current.highlightedIndex).toBe(4);
@@ -141,6 +142,23 @@ describe('useListbox', () => {
       const home = keyDown(HOME);
       expect(hook.result.current.highlightedIndex).toBe(1);
       expect(home.defaultPrevented).toBe(false);
+    });
+
+    test('move the highlight and prevent the native action on the list, so the page does not scroll', () => {
+      const { hook } = renderListbox();
+      const listKeyDown = (keyCode: number) => {
+        const event = createKeyEvent(keyCode);
+        act(() => hook.result.current.getListProps({ withKeyboard: true }).onKeyDown!(event));
+        return event;
+      };
+      expect(hook.result.current.highlightedIndex).toBe(-1);
+
+      const end = listKeyDown(END);
+      expect(hook.result.current.highlightedIndex).toBe(4);
+      expect(end.defaultPrevented).toBe(true);
+      const home = listKeyDown(HOME);
+      expect(hook.result.current.highlightedIndex).toBe(1);
+      expect(home.defaultPrevented).toBe(true);
     });
   });
 
@@ -270,12 +288,12 @@ describe('useListbox', () => {
     test('adds onKeyDown and aria-activedescendant with withKeyboard', () => {
       const { hook } = renderListbox();
       act(() => hook.result.current.mouseHandlers.onMouseMove(3));
-      const { listId, listRef, mouseHandlers, onKeyDown, getListProps } = hook.result.current;
+      const { listId, listRef, mouseHandlers, getListProps } = hook.result.current;
       expect(getListProps({ withKeyboard: true })).toEqual({
         id: listId,
         ref: listRef,
         ...mouseHandlers,
-        onKeyDown,
+        onKeyDown: expect.any(Function),
         nativeAttributes: { 'aria-activedescendant': getOptionId(listId, 3) },
       });
     });
