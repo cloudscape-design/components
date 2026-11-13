@@ -106,6 +106,17 @@ This property only applies when an \`href\` is provided.",
       "type": "string | boolean",
     },
     {
+      "defaultValue": "false",
+      "description": "Stretches the action card to fill the available height.
+
+Use this property to align heights of multiple action cards displayed in a single row.
+
+Unlike in the [container](/components/container/) component, setting this property to \`true\` does not make the body scrollable if the action card overflows its parent.",
+      "name": "fitHeight",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "description": "Turns the action card into a link, pointing to the given URL. The card is rendered using an \`a\` element instead of a \`button\`.
 For example, use this property if selecting the card should navigate the user to another page.",
       "name": "href",
@@ -18413,6 +18424,17 @@ exports[`Components definition for item-card matches the snapshot: item-card 1`]
       "defaultValue": "false",
       "description": "Removes the default padding from the header area.",
       "name": "disableHeaderPaddings",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "defaultValue": "false",
+      "description": "Stretches the item card to fill the available height.
+
+Use this property to align heights of multiple item cards displayed in a single row.
+
+Unlike in the [container](/components/container/) component, setting this property to \`true\` does not make the body scrollable if the item card overflows its parent.",
+      "name": "fitHeight",
       "optional": true,
       "type": "boolean",
     },

@@ -188,6 +188,10 @@ $tokens: mixins.$tokens;
     }
   }
 
+  &.fit-height {
+    block-size: 100%;
+  }
+
   &.icon-vertical-align-center > .icon {
     align-self: center;
   }
