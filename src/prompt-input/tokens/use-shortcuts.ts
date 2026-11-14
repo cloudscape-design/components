@@ -72,7 +72,12 @@ export function useShortcutsEffects(config: EffectsConfig) {
     const hasTriggers = tokens?.some(isTriggerToken);
 
     if (!hasTriggers || !editableElementRef.current) {
-      state.setCaretInTrigger(null);
+      // The effect runs after every render, because `state` is a new object each time.
+      // Setting state unconditionally here queues an update on every keystroke, which can
+      // reach React's nested update limit when changes arrive without idle time between them.
+      if (state.caretInTrigger !== null) {
+        state.setCaretInTrigger(null);
+      }
       return;
     }
 
