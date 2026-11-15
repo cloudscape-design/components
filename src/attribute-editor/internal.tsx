@@ -105,7 +105,7 @@ const InternalAttributeEditor = React.forwardRef(
     if (!gridLayout) {
       gridLayout = gridDefaults[definition.length];
       if (!gridLayout) {
-        console.warn('AttributeEditor', '`gridLayout` is required for more than 6 attributes. Cannot render.');
+        warnOnce('AttributeEditor', '`gridLayout` is required for more than 6 attributes. Cannot render.');
         gridLayout = [];
       }
     }
@@ -126,13 +126,13 @@ const InternalAttributeEditor = React.forwardRef(
     const gridLayoutForBreakpoint = matchBreakpointMapping(gridLayoutBreakpoints, breakpoint || 'default');
 
     if (!gridLayoutForBreakpoint) {
-      console.warn('AttributeEditor', `No \`gridLayout\` entry found for breakpoint ${breakpoint}. Cannot render.`);
+      warnOnce('AttributeEditor', `No \`gridLayout\` entry found for breakpoint ${breakpoint}. Cannot render.`);
       return <div />;
     }
 
     const totalColumnsInLayout = gridLayoutForBreakpoint.rows.reduce((total, columns) => total + columns.length, 0);
     if (totalColumnsInLayout !== definition.length) {
-      console.warn(
+      warnOnce(
         'AttributeEditor',
         `Incorrect number of columns in layout (${totalColumnsInLayout}) for definition (${definition.length}). Cannot render.`
       );
