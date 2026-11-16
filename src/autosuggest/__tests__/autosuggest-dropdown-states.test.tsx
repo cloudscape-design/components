@@ -140,6 +140,28 @@ describe('footer types', () => {
     expectFooterContent('3 items');
     await expectA11y();
   });
+
+  test('passes matches and total count to filteringResultsText', () => {
+    const filteringResultsText = jest.fn(() => 'results');
+    const { wrapper } = renderAutosuggest({ filteringResultsText });
+    focusInput();
+    wrapper.setInputValue('O');
+    // matches: the "Use value" item and "One"
+    expect(filteringResultsText).toHaveBeenLastCalledWith(2, 2);
+  });
+
+  test('counts grouped options in the total count passed to filteringResultsText', () => {
+    const filteringResultsText = jest.fn(() => 'results');
+    const { wrapper } = renderAutosuggest({
+      filteringResultsText,
+      options: [{ label: 'Group', options: [{ value: 'a1' }, { value: 'a2' }, { value: 'a3' }] }, { value: 'b1' }],
+    });
+    focusInput();
+    wrapper.setInputValue('a');
+    // matches: the "Use value" item, the group and its 3 options
+    // total: the group, its 3 options and "b1"
+    expect(filteringResultsText).toHaveBeenLastCalledWith(5, 5);
+  });
 });
 
 describe.each([true, false])('footer live announcements [expandToViewport=%s]', (expandToViewport: boolean) => {

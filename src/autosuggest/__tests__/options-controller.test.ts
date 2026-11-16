@@ -3,7 +3,7 @@
 
 import { act, renderHook } from '../../__tests__/render-hook';
 import { AutosuggestItem, AutosuggestProps } from '../interfaces';
-import { useAutosuggestItems, UseAutosuggestItemsProps } from '../options-controller';
+import { getTotalOptionsCount, useAutosuggestItems, UseAutosuggestItemsProps } from '../options-controller';
 
 const options = [{ value: 'Option 0' }, { label: 'Group 1', options: [{ value: 'Option 1' }, { value: 'Option 2' }] }];
 
@@ -285,5 +285,19 @@ describe('useAutosuggestItems', () => {
       // label is undefined when no enteredTextLabel prop and no i18n provider
       expect(enteredItem.label).toBeUndefined();
     });
+  });
+});
+
+describe('getTotalOptionsCount', () => {
+  test('counts options without groups', () => {
+    expect(getTotalOptionsCount([{ value: 'Option 0' }, { value: 'Option 1' }])).toBe(2);
+  });
+
+  test('counts groups together with their options, as in the flattened list of items', () => {
+    const { result } = renderHook(useAutosuggestItems, {
+      initialProps: { options, filterValue: '', filterText: '', filteringType: 'auto', onSelectItem: () => undefined },
+    });
+    expect(getTotalOptionsCount(options)).toBe(4);
+    expect(getTotalOptionsCount(options)).toBe(result.current[0].items.length);
   });
 });
