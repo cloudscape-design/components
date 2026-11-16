@@ -31,6 +31,13 @@ export const InternalI18nContext = awsuiPluginsInternal.sharedReactContexts.crea
   'InternalI18nContext'
 );
 
+/**
+ * Public hook for third-party component libraries to read the locale of the
+ * nearest I18nProvider, for example to format values with `Intl` APIs in the
+ * same language as the strings resolved through `useCustomI18n`.
+ *
+ * Returns the provider's locale, lowercased, or `null` outside a provider.
+ */
 export function useLocale(): string | null {
   return (useContext(InternalI18nContext) ?? defaultContextValue).locale;
 }
