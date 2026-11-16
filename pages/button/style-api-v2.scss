@@ -13,7 +13,9 @@
     $border-color: palette.$error,
     $border-radius: 4px,
     $padding-inline: 24px,
-    $padding-block: 10px
+    $padding-block: 10px,
+    $font-family: monospace,
+    $font-weight: 700
   );
 
   &:hover,

@@ -21,7 +21,8 @@
   @include segmented-control.segment(
     $color: palette.$text-muted,
     $background: palette.$surface,
-    $padding: 2px 16px,
+    $padding-block: 2px,
+    $padding-inline: 16px,
     $font-family: monospace,
     $font-size: 12px,
     $font-weight: 700,
@@ -58,7 +59,7 @@
 }
 
 .divider {
-  @include segmented-control.divider($color: palette.$border-accent, $width: 2px);
+  @include segmented-control.divider($line-color: palette.$border-accent, $line-width: 2px);
 }
 
 // Select fallback, rendered below the x-small breakpoint: the trigger and its dropdown.
@@ -72,7 +73,7 @@
 }
 
 .select-dropdown {
-  @include dropdown.container(
+  @include dropdown.root(
     $background: palette.$surface-alt,
     $border-radius: 12px,
     $outline-color: palette.$info,

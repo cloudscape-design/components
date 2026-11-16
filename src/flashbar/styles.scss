@@ -19,17 +19,9 @@ $_item-tokens: style-api.resolve(style-api.$focus-ring, carrier);
 @include style-api.docs(
   'item',
   $_item-tokens,
-  $properties: (color, background, border, border-radius, box-shadow, padding),
-  $descriptions: (
-    slot:
-      'One flash message: its box and focus ring. Accepts a class name, or a function of `{ item }` that returns one, so each `type` can take its own class.'
-  )
+  $properties: (color, background, border, border-radius, box-shadow, padding)
 );
-@include style-api.docs(
-  'icon',
-  $properties: (color),
-  $descriptions: (slot: 'The status icon, or the spinner for `loading`.')
-);
+@include style-api.docs('icon', $properties: (color));
 @include style-api.docs-forward('dismissButton', 'button', 'root');
 
 .flashbar {

@@ -27,5 +27,5 @@
 }
 
 .dropdown-brand {
-  @include dropdown.container($background: palette.$surface-alt, $border-radius: 4px, $outline-color: palette.$accent);
+  @include dropdown.root($background: palette.$surface-alt, $border-radius: 4px, $outline-color: palette.$accent);
 }

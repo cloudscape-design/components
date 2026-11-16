@@ -12,7 +12,7 @@
 $progress-bar-tokens: style-api.resolve((track-color, value-color, bar-block-size, bar-border-radius), carrier);
 @include style-api.register($progress-bar-tokens);
 @include style-api.docs('root', $progress-bar-tokens);
-@include style-api.docs('percentage', $properties: (color, font-family, font-size, font-weight));
+@include style-api.docs('valueLabel', $properties: (color, font-family, font-size, font-weight));
 
 $progress-height: style-api.value(
   $progress-bar-tokens,

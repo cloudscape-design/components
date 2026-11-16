@@ -1,6 +1,6 @@
 {
   "[charts]": {
-    "errorText": "The data couldn't be fetched. Try again later.",
+    "errorText": "The data couldn''t be fetched. Try again later.",
     "i18nStrings.chartAriaRoleDescription": "Chart",
     "i18nStrings.enterZoomModeButtonAriaLabel": "Enter zoom mode",
     "i18nStrings.enterZoomModeButtonText": "Zoom",
@@ -126,7 +126,7 @@
     "contentDensityPreference.description": "Select to display content in a denser, more compact mode",
     "contentDensityPreference.label": "Compact mode",
     "contentDisplayPreference.description": "Customise the visibility and order of the columns.",
-    "contentDisplayPreference.dragHandleAriaDescription": "Use Space or Enter to activate drag for an item, then use the arrow keys to move the item's position. To complete the position move, use Space or Enter, or to discard the move, use Escape. You may need to toggle your browsing mode on your screen reader.",
+    "contentDisplayPreference.dragHandleAriaDescription": "Use Space or Enter to activate drag for an item, then use the arrow keys to move the item''s position. To complete the position move, use Space or Enter, or to discard the move, use Escape. You may need to toggle your browsing mode on your screen reader.",
     "contentDisplayPreference.dragHandleAriaLabel": "Drag handle",
     "contentDisplayPreference.i18nStrings.columnFilteringAriaLabel": "Filter columns",
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "Clear filter",
@@ -266,7 +266,7 @@
     "externalIconAriaLabel": "Opens in a new tab"
   },
   "list": {
-    "dragHandleAriaDescription": "Use Space or Enter to activate drag for an item, then use the arrow keys to move the item's position. To complete the position move, use Space or Enter, or to discard the move, use Escape.",
+    "dragHandleAriaDescription": "Use Space or Enter to activate drag for an item, then use the arrow keys to move the item''s position. To complete the position move, use Space or Enter, or to discard the move, use Escape.",
     "dragHandleAriaLabel": "Drag handle",
     "liveAnnouncementDndDiscarded": "Reordering cancelled",
     "liveAnnouncementDndItemCommitted": "{isInitialPosition, select, false {Item moved from position {initialPosition} to position {finalPosition} of {total}} true {Item moved back to its original position {initialPosition} of {total}} other {}}",
@@ -368,7 +368,7 @@
     "i18nStrings.columnVersionID": "Version ID",
     "i18nStrings.columnVersionLastModified": "Last modified",
     "i18nStrings.columnVersionSize": "Size",
-    "i18nStrings.filteringCantFindMatch": "We can't find a match.",
+    "i18nStrings.filteringCantFindMatch": "We can''t find a match.",
     "i18nStrings.filteringCounterText": "{count, plural, one {1 match} other {{count} matches}}",
     "i18nStrings.filteringNoMatches": "No matches",
     "i18nStrings.inContextBrowseButton": "Browse S3",

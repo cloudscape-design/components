@@ -25,9 +25,9 @@
 }
 
 .percentage-brand {
-  @include progress-bar.percentage($color: palette.$accent, $font-size: 14px, $font-weight: 700);
+  @include progress-bar.valueLabel($color: palette.$accent, $font-size: 14px, $font-weight: 700);
 }
 
 .percentage-genai {
-  @include progress-bar.percentage($color: palette.$genai-text, $font-size: 16px, $font-weight: 600);
+  @include progress-bar.valueLabel($color: palette.$genai-text, $font-size: 16px, $font-weight: 600);
 }

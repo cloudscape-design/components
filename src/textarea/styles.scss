@@ -22,7 +22,7 @@ $tokens: style-api.resolve(
   $properties: (color, background, border, border-radius, box-shadow, padding, font-family, font-size, font-weight),
   $descriptions: (
     properties: (
-      box-shadow: 'Also draws the focus ring under `:focus`.',
+      box-shadow: 'Also draws the focus ring.',
     )
   )
 );
