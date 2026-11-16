@@ -50,7 +50,6 @@ const tokens: StyleDictionary.DensityTypographyDictionary = {
   fontDisplayLabelWeight: '500',
 
   // ── Body text ─────────────────────────────────────────────────────────────
-  fontSizeBodyM: { comfortable: '14px', compact: '13px' },
   fontWeightBold: '600',
 
   // ── Key-value pairs ───────────────────────────────────────────────────────
