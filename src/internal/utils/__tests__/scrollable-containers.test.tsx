@@ -4,7 +4,12 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { getFirstScrollableParent, getScrollableParents, scrollRectangleIntoView } from '../scrollable-containers';
+import {
+  getFirstScrollableParent,
+  getNearestScrollContainer,
+  getScrollableParents,
+  scrollRectangleIntoView,
+} from '../scrollable-containers';
 
 const originalScrollBy = window.scrollBy;
 
@@ -114,5 +119,78 @@ describe('getScrollableParents', () => {
 
     const target = container.querySelector<HTMLElement>('[data-testid="target"]')!;
     expect(getScrollableParents(target)).toEqual([]);
+  });
+});
+
+describe('getNearestScrollContainer', () => {
+  const originalGetComputedStyle = window.getComputedStyle;
+
+  afterEach(() => {
+    window.getComputedStyle = originalGetComputedStyle;
+  });
+
+  function mockOverflow(overflowByTestId: Record<string, { overflowX?: string; overflowY?: string }>) {
+    window.getComputedStyle = ((element: Element, pseudoElt?: string | null) => {
+      const result = originalGetComputedStyle(element as Element, pseudoElt);
+      const testId = (element as HTMLElement).dataset?.testid;
+      const overflow = testId ? overflowByTestId[testId] : undefined;
+      if (overflow?.overflowX) {
+        result.overflowX = overflow.overflowX;
+      }
+      if (overflow?.overflowY) {
+        result.overflowY = overflow.overflowY;
+      }
+      return result;
+    }) as Window['getComputedStyle'];
+  }
+
+  function renderTree() {
+    const { container } = render(
+      <div data-testid="outer">
+        <div data-testid="middle">
+          <div data-testid="parent">
+            <div data-testid="target" />
+          </div>
+        </div>
+      </div>
+    );
+    const get = (testId: string) => container.querySelector<HTMLElement>(`[data-testid="${testId}"]`)!;
+    return { outer: get('outer'), middle: get('middle'), parent: get('parent'), target: get('target') };
+  }
+
+  test.each(['auto', 'scroll', 'overlay'])('returns the nearest ancestor with overflow-y: %s', overflowY => {
+    const { outer, parent, target } = renderTree();
+    mockOverflow({ outer: { overflowY: 'auto' }, parent: { overflowY } });
+    expect(getNearestScrollContainer(target)).toBe(parent);
+    expect(getNearestScrollContainer(parent)).toBe(outer);
+  });
+
+  test('returns the scroll container even when its content does not overflow', () => {
+    const { outer, middle, target } = renderTree();
+    mockOverflow({ outer: { overflowY: 'auto' }, middle: { overflowY: 'auto' } });
+    Object.defineProperty(outer, 'scrollHeight', { configurable: true, value: 1000 });
+    Object.defineProperty(outer, 'clientHeight', { configurable: true, value: 100 });
+    Object.defineProperty(middle, 'scrollHeight', { configurable: true, value: 100 });
+    Object.defineProperty(middle, 'clientHeight', { configurable: true, value: 100 });
+
+    expect(getNearestScrollContainer(target)).toBe(middle);
+    expect(getFirstScrollableParent(target)).toBe(outer);
+  });
+
+  test('ignores the element itself and ancestors that only scroll horizontally or clip', () => {
+    const { outer, target } = renderTree();
+    mockOverflow({
+      target: { overflowY: 'auto' },
+      parent: { overflowX: 'auto', overflowY: 'hidden' },
+      middle: { overflowY: 'clip' },
+      outer: { overflowY: 'scroll' },
+    });
+    expect(getNearestScrollContainer(target)).toBe(outer);
+  });
+
+  test('returns undefined when no ancestor scrolls vertically', () => {
+    const { target } = renderTree();
+    mockOverflow({ outer: { overflowY: 'visible' }, parent: { overflowY: 'hidden' } });
+    expect(getNearestScrollContainer(target)).toBeUndefined();
   });
 });

@@ -317,13 +317,60 @@ describe('List - Sortable', () => {
       expect(canAutoScroll(document.documentElement)).toBe(true);
     });
 
-    test('keeps every container eligible for auto-scroll when the list has no scrollable ancestor', async () => {
-      const { outer, inner, handle } = renderInScrollContainers({ innerScrolls: false });
+    test('limits auto-scroll to the nearest scroll container even when it does not overflow', async () => {
+      const { outer, inner, item, handle } = renderInScrollContainers({ innerScrolls: false });
 
       await interact(() => pressKey(handle, 'Space'));
 
       expect(canAutoScroll(inner)).toBe(true);
+      expect(canAutoScroll(item)).toBe(true);
+      expect(canAutoScroll(outer)).toBe(false);
+      expect(canAutoScroll(document.documentElement)).toBe(false);
+
+      await interact(() => pressKey(handle, 'Escape'));
+
       expect(canAutoScroll(outer)).toBe(true);
+    });
+
+    test('ignores ancestors that only scroll horizontally', async () => {
+      const { container } = render(
+        <div data-testid="outer" style={{ overflowY: 'auto' }}>
+          <div data-testid="inner" style={{ overflowX: 'auto', overflowY: 'hidden' }}>
+            <ControlledList
+              items={defaultItems}
+              renderItem={item => ({ id: item.id, content: item.content })}
+              sortable={true}
+            />
+          </div>
+        </div>
+      );
+      const outer = container.querySelector<HTMLElement>('[data-testid="outer"]')!;
+      const handle = createWrapper(container).findList()!.findItemById('item1')!.findDragHandle()!.getElement();
+
+      await interact(() => pressKey(handle, 'Space'));
+
+      expect(canAutoScroll(outer)).toBe(true);
+      expect(canAutoScroll(document.documentElement)).toBe(false);
+
+      await interact(() => pressKey(handle, 'Escape'));
+    });
+
+    test('keeps every container eligible for auto-scroll when the list has no scroll container ancestor', async () => {
+      const { container } = render(
+        <div data-testid="plain">
+          <ControlledList
+            items={defaultItems}
+            renderItem={item => ({ id: item.id, content: item.content })}
+            sortable={true}
+          />
+        </div>
+      );
+      const plain = container.querySelector<HTMLElement>('[data-testid="plain"]')!;
+      const handle = createWrapper(container).findList()!.findItemById('item1')!.findDragHandle()!.getElement();
+
+      await interact(() => pressKey(handle, 'Space'));
+
+      expect(canAutoScroll(plain)).toBe(true);
       expect(canAutoScroll(document.documentElement)).toBe(true);
 
       await interact(() => pressKey(handle, 'Escape'));

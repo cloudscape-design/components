@@ -11,7 +11,7 @@ import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
 import { fireNonCancelableEvent } from '../../events';
 import { isElement, isHTMLElement } from '../../utils/dom';
-import { getFirstScrollableParent } from '../../utils/scrollable-containers';
+import { getNearestScrollContainer } from '../../utils/scrollable-containers';
 import { joinStrings } from '../../utils/strings';
 import { SortableAreaProps } from './interfaces';
 import { EventName } from './keyboard-sensor/utilities/events';
@@ -123,7 +123,9 @@ export default function SortableArea<Item>({
 
 // dnd-kit auto-scrolls every scrollable ancestor up to the first fixed-position element, outermost first by default
 // (https://github.com/clauderic/dnd-kit/issues/1893). Restrict it to the sortable area's nearest scroll container so
-// that dragging inside e.g. a sticky drawer does not scroll unrelated outer containers. Without a scrollable ancestor,
+// that dragging inside e.g. a sticky drawer does not scroll unrelated outer containers. The boundary is the nearest
+// ancestor with a scrolling overflow-y even if its content does not currently overflow: such a container then simply
+// has nothing to auto-scroll, rather than letting the outer containers scroll instead. Without such an ancestor,
 // all containers (including the window) remain eligible.
 function useScopedAutoScroll() {
   const boundaryRef = useRef<HTMLElement | null>(null);
@@ -136,7 +138,7 @@ function useScopedAutoScroll() {
     while (element && !isHTMLElement(element)) {
       element = element.parentElement;
     }
-    boundaryRef.current = element ? (getFirstScrollableParent(element) ?? null) : null;
+    boundaryRef.current = element ? (getNearestScrollContainer(element) ?? null) : null;
   };
   return { autoScroll, setAutoScrollBoundary };
 }

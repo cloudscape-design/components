@@ -135,6 +135,23 @@ export function getScrollableParents(element: HTMLElement): HTMLElement[] {
   return parents;
 }
 
+/**
+ * Returns the nearest ancestor (excluding the element itself) whose computed `overflow-y` is `auto`, `scroll`
+ * or `overlay`, regardless of whether its content currently overflows. Unlike `getFirstScrollableParent`,
+ * this identifies the scroll container the element lives in even when that container has nothing to scroll yet.
+ * Returns `undefined` when no such ancestor exists.
+ */
+export function getNearestScrollContainer(element: HTMLElement): HTMLElement | undefined {
+  let node = element.parentElement;
+  while (node) {
+    if (isHTMLElement(node) && ['auto', 'scroll', 'overlay'].includes(getComputedStyle(node).overflowY)) {
+      return node;
+    }
+    node = node.parentElement;
+  }
+  return undefined;
+}
+
 export function getFirstScrollableParent(element: HTMLElement): HTMLElement | undefined {
   return (
     findUpUntil(element, el => {
