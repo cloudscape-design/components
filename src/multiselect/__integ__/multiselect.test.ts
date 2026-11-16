@@ -78,7 +78,7 @@ const createSetupTest = (wrapper: MultiselectWrapper) => (testFn: (page: Multise
     );
 
     test(
-      'highlights the second enabled match on search on double keypress with dropdown open',
+      'highlights the second match on search on double keypress with dropdown open',
       setupTest(async page => {
         await page.clickSelect();
         await page.keys(['o', 'o']);
@@ -91,7 +91,8 @@ const createSetupTest = (wrapper: MultiselectWrapper) => (testFn: (page: Multise
       'highlights the first match on search on triple (length of matches + 1) keypress with dropdown open',
       setupTest(async page => {
         await page.clickSelect();
-        await page.keys(['o', 'o', 'o', 'o', 'o', 'o', 'o']);
+        // 8 matches, including the disabled option2 and option5, so the 9th keypress wraps to the first match.
+        await page.keys(['o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o']);
 
         await expect(page.getHighlightedOptionLabel()).resolves.toBe('First category');
       })
