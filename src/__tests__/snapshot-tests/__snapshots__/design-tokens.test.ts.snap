@@ -153,6 +153,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of a selected card.",
           "$value": "1px",
         },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "1px",
@@ -410,6 +414,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#f8f8f8",
           },
         },
         "color-background-container-content": {
@@ -3853,6 +3864,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of a selected card.",
           "$value": "1px",
         },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "1px",
@@ -4110,6 +4125,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#f8f8f8",
           },
         },
         "color-background-container-content": {
@@ -7553,6 +7575,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of a selected card.",
           "$value": "1px",
         },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "1px",
@@ -7810,6 +7836,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#f8f8f8",
           },
         },
         "color-background-container-content": {
@@ -11253,6 +11286,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of a selected card.",
           "$value": "1px",
         },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "1px",
@@ -11510,6 +11547,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#f8f8f8",
           },
         },
         "color-background-container-content": {
@@ -14953,6 +14997,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of a selected card.",
           "$value": "1px",
         },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "1px",
@@ -15210,6 +15258,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#f8f8f8",
           },
         },
         "color-background-container-content": {
@@ -18653,6 +18708,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of a selected card.",
           "$value": "1px",
         },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "1px",
@@ -18910,6 +18969,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#282c34",
           },
         },
         "color-background-container-content": {
@@ -22353,6 +22419,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The border width of a selected card.",
       "$value": "1px",
     },
+    "border-width-code-view": {
+      "$description": "The border width of the code view component.",
+      "$value": "0px",
+    },
     "border-width-dropdown": {
       "$description": "The border width of dropdowns.",
       "$value": "1px",
@@ -22610,6 +22680,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "transparent",
         "light": "transparent",
+      },
+    },
+    "color-background-code-view": {
+      "$description": "The background color of the code view component.",
+      "$value": {
+        "dark": "#282c34",
+        "light": "#f8f8f8",
       },
     },
     "color-background-container-content": {
@@ -26058,6 +26135,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of a selected card.",
           "$value": "2px",
         },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -26315,6 +26396,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#f8f8f8",
           },
         },
         "color-background-container-content": {
@@ -29758,6 +29846,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of a selected card.",
           "$value": "2px",
         },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -30015,6 +30107,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#282c34",
           },
         },
         "color-background-container-content": {
@@ -33458,6 +33557,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of a selected card.",
           "$value": "2px",
         },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -33715,6 +33818,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#f8f8f8",
           },
         },
         "color-background-container-content": {
@@ -37158,6 +37268,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of a selected card.",
           "$value": "2px",
         },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -37415,6 +37529,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#f8f8f8",
           },
         },
         "color-background-container-content": {
@@ -40858,6 +40979,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of a selected card.",
           "$value": "2px",
         },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -41115,6 +41240,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#f8f8f8",
           },
         },
         "color-background-container-content": {
@@ -44558,6 +44690,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of a selected card.",
           "$value": "2px",
         },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -44815,6 +44951,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#f8f8f8",
           },
         },
         "color-background-container-content": {
@@ -48258,6 +48401,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of a selected card.",
           "$value": "2px",
         },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -48515,6 +48662,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#282c34",
           },
         },
         "color-background-container-content": {
@@ -51958,6 +52112,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of a selected card.",
           "$value": "2px",
         },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -52215,6 +52373,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "transparent",
             "light": "transparent",
+          },
+        },
+        "color-background-code-view": {
+          "$description": "The background color of the code view component.",
+          "$value": {
+            "dark": "#282c34",
+            "light": "#282c34",
           },
         },
         "color-background-container-content": {
@@ -55658,6 +55823,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The border width of a selected card.",
       "$value": "2px",
     },
+    "border-width-code-view": {
+      "$description": "The border width of the code view component.",
+      "$value": "0px",
+    },
     "border-width-dropdown": {
       "$description": "The border width of dropdowns.",
       "$value": "2px",
@@ -55915,6 +56084,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "transparent",
         "light": "transparent",
+      },
+    },
+    "color-background-code-view": {
+      "$description": "The background color of the code view component.",
+      "$value": {
+        "dark": "#282c34",
+        "light": "#f8f8f8",
       },
     },
     "color-background-container-content": {
