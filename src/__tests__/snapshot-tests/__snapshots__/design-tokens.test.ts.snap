@@ -1046,6 +1046,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#545b64",
           },
         },
+        "color-border-code-view": {
+          "$description": "The border color of the code view component.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-border-container-top": {
           "$description": "The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.",
           "$value": {
@@ -4755,6 +4762,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#414750",
             "light": "#eaeded",
+          },
+        },
+        "color-border-code-view": {
+          "$description": "The border color of the code view component.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-container-top": {
@@ -8468,6 +8482,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#eaeded",
           },
         },
+        "color-border-code-view": {
+          "$description": "The border color of the code view component.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-border-container-top": {
           "$description": "The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.",
           "$value": {
@@ -12177,6 +12198,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#fafafa",
             "light": "#fafafa",
+          },
+        },
+        "color-border-code-view": {
+          "$description": "The border color of the code view component.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-container-top": {
@@ -15890,6 +15918,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-border-code-view": {
+          "$description": "The border color of the code view component.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-border-container-top": {
           "$description": "The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.",
           "$value": {
@@ -19601,6 +19636,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#414750",
           },
         },
+        "color-border-code-view": {
+          "$description": "The border color of the code view component.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-border-container-top": {
           "$description": "The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.",
           "$value": {
@@ -23310,6 +23352,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#414750",
         "light": "#eaeded",
+      },
+    },
+    "color-border-code-view": {
+      "$description": "The border color of the code view component.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
       },
     },
     "color-border-container-top": {
@@ -27028,6 +27077,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#424650",
           },
         },
+        "color-border-code-view": {
+          "$description": "The border color of the code view component.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-border-container-top": {
           "$description": "The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.",
           "$value": {
@@ -30737,6 +30793,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#dedee3",
             "light": "#dedee3",
+          },
+        },
+        "color-border-code-view": {
+          "$description": "The border color of the code view component.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-container-top": {
@@ -34450,6 +34513,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#c6c6cd",
           },
         },
+        "color-border-code-view": {
+          "$description": "The border color of the code view component.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-border-container-top": {
           "$description": "The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.",
           "$value": {
@@ -38159,6 +38229,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#424650",
             "light": "#c6c6cd",
+          },
+        },
+        "color-border-code-view": {
+          "$description": "The border color of the code view component.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-container-top": {
@@ -41872,6 +41949,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#f9f9fa",
           },
         },
+        "color-border-code-view": {
+          "$description": "The border color of the code view component.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-border-container-top": {
           "$description": "The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.",
           "$value": {
@@ -45581,6 +45665,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#0f141a",
             "light": "#0f141a",
+          },
+        },
+        "color-border-code-view": {
+          "$description": "The border color of the code view component.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
           },
         },
         "color-border-container-top": {
@@ -49294,6 +49385,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#424650",
           },
         },
+        "color-border-code-view": {
+          "$description": "The border color of the code view component.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-border-container-top": {
           "$description": "The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.",
           "$value": {
@@ -53005,6 +53103,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#424650",
           },
         },
+        "color-border-code-view": {
+          "$description": "The border color of the code view component.",
+          "$value": {
+            "dark": "transparent",
+            "light": "transparent",
+          },
+        },
         "color-border-container-top": {
           "$description": "The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.",
           "$value": {
@@ -56714,6 +56819,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#424650",
         "light": "#c6c6cd",
+      },
+    },
+    "color-border-code-view": {
+      "$description": "The border color of the code view component.",
+      "$value": {
+        "dark": "transparent",
+        "light": "transparent",
       },
     },
     "color-border-container-top": {

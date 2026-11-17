@@ -1607,7 +1607,7 @@ const metadata: StyleDictionary.MetadataIndex = {
   colorBorderCodeView: {
     description: 'The border color of the code view component.',
     themeable: true,
-    public: false,
+    public: true,
   },
 };
 
