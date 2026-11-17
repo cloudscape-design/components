@@ -15,7 +15,11 @@
 
 $tokens: style-api.resolve(style-api.$focus-ring, carrier);
 @include style-api.register($tokens);
-@include style-api.docs('root', $tokens, $properties: (color, background, border, border-radius, padding, box-shadow));
+@include style-api.docs(
+  'root',
+  $tokens,
+  $properties: (color, background, border, border-radius, padding, box-shadow, font-family, font-size, font-weight)
+);
 
 @mixin adjust-for-variant($variant) {
   background: var(#{custom-props.$styleBackgroundDefault}, map.get($variant, 'default-background'));

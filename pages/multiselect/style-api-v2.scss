@@ -24,7 +24,7 @@
     $font-family: monospace,
     $font-size: 15px,
     $font-weight: 600,
-    $placeholder-color: palette.$accent
+    $awsui-placeholder-color: palette.$accent
   );
 }
 
@@ -70,7 +70,7 @@
     $background: palette.$control-bg-disabled,
     $border-color: palette.$border-disabled,
     $box-shadow: none,
-    $placeholder-color: palette.$text-disabled
+    $awsui-placeholder-color: palette.$text-disabled
   );
 }
 
@@ -109,14 +109,13 @@
   @include input.searchIcon($color: palette.$accent);
 }
 
-// Dropdown forwards to Dropdown.container.
 .dropdown {
-  @include dropdown.container(
+  @include dropdown.root(
     $background: palette.$surface-alt,
     $border-radius: 12px,
     $box-shadow: 0 4px 12px palette.$subtle-active,
-    $outline-color: palette.$accent,
-    $outline-width: 2px
+    $awsui-outline-color: palette.$accent,
+    $awsui-outline-width: 2px
   );
 }
 
@@ -153,7 +152,11 @@
 
 // Token dismiss button forwards to Button.root; disabled and read-only tokens share one class.
 .token-dismiss {
-  @include button.root($color: palette.$accent, $focus-ring-color: palette.$accent, $focus-ring-radius: 4px);
+  @include button.root(
+    $color: palette.$accent,
+    $awsui-focus-ring-color: palette.$accent,
+    $awsui-focus-ring-radius: 4px
+  );
 
   &:hover {
     @include button.root($color: palette.$accent-hover);

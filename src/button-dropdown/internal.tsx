@@ -612,7 +612,7 @@ const InternalButtonDropdown = React.forwardRef(
         ref={__internalRootRef}
       >
         <Dropdown
-          styleClassNames={{ container: styleClassNames?.dropdown }}
+          styleClassNames={{ root: styleClassNames?.dropdown }}
           open={canBeOpened && isOpen}
           stretchTriggerHeight={variant === 'navigation'}
           minWidth={expandToViewport ? undefined : 'trigger'}

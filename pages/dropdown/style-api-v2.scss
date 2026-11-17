@@ -16,27 +16,31 @@
 }
 
 .dropdown-brand {
-  @include dropdown.container(
+  @include dropdown.root(
     $background: palette.$surface-alt,
     $border-radius: 0px,
-    $outline-color: palette.$border-accent,
-    $outline-width: 2px
+    $awsui-outline-color: palette.$border-accent,
+    $awsui-outline-width: 2px
   );
 }
 
 .dropdown-borderless {
-  @include dropdown.container(
+  @include dropdown.root(
     $background: palette.$subtle,
     $border-radius: 12px,
     $box-shadow: 0 0 24px rgba(0, 0, 0, 0.2),
-    $outline-width: 0px
+    $awsui-outline-width: 0px
   );
 }
 
 .dropdown-focus-within {
-  @include dropdown.container($background: palette.$surface, $outline-color: palette.$border, $outline-width: 2px);
+  @include dropdown.root(
+    $background: palette.$surface,
+    $awsui-outline-color: palette.$border,
+    $awsui-outline-width: 2px
+  );
 
   &:focus-within {
-    @include dropdown.container($outline-color: palette.$accent);
+    @include dropdown.root($awsui-outline-color: palette.$accent);
   }
 }

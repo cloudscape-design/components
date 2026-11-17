@@ -5,10 +5,11 @@ import React from 'react';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
+import { getStyleClassName } from '../../internal/utils/style-slot';
 import { TableTdElement, TableTdElementProps } from '../body-cell/td-element';
 import { TableThElement, TableThElementProps } from '../header-cell/th-element';
 import { Divider } from '../resizer';
-import { getStyleClassName, StyleClassNames } from '../style-api';
+import { StyleClassNames } from '../style-api';
 import { ItemSelectionProps } from './interfaces';
 import { SelectionControl, SelectionControlProps } from './selection-control';
 

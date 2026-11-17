@@ -12,8 +12,8 @@
     $border-block-color: palette.$border-accent,
     $border-block-width: 2px,
     $border-block-style: solid,
-    $divider-color: palette.$accent,
-    $divider-width: 2px
+    $awsui-divider-color: palette.$accent,
+    $awsui-divider-width: 2px
   );
 }
 
@@ -33,7 +33,7 @@
     $border-color: palette.$accent-active,
     $border-style: solid,
     $border-width: 2px,
-    $active-indicator-color: palette.$accent-active
+    $awsui-active-indicator-color: palette.$accent-active
   );
 }
 
@@ -65,21 +65,26 @@
 
 .tab-indicator {
   @include tabs.tab(
-    $active-indicator-color: palette.$accent,
-    $active-indicator-width: 3px,
-    $active-indicator-border-radius: 4px
+    $awsui-active-indicator-color: palette.$accent,
+    $awsui-active-indicator-width: 3px,
+    $awsui-active-indicator-border-radius: 4px
   );
 }
 
 .link-wide {
   @include tabs.tabLink(
-    $padding: 12px 20px,
-    $focus-ring-color: palette.$accent,
-    $focus-ring-width: 3px,
-    $focus-ring-radius: 6px
+    $padding-block: 12px,
+    $padding-inline: 20px,
+    $awsui-focus-ring-color: palette.$accent,
+    $awsui-focus-ring-width: 3px,
+    $awsui-focus-ring-radius: 6px
   );
 }
 
 .content-focus-ring {
-  @include tabs.content($focus-ring-color: palette.$accent, $focus-ring-width: 3px, $focus-ring-radius: 6px);
+  @include tabs.content(
+    $awsui-focus-ring-color: palette.$accent,
+    $awsui-focus-ring-width: 3px,
+    $awsui-focus-ring-radius: 6px
+  );
 }

@@ -76,10 +76,10 @@
     $font-family: monospace,
     $font-size: 15px,
     $font-weight: 600,
-    $placeholder-color: palette.$accent,
-    $placeholder-font-size: 13px,
-    $placeholder-font-style: normal,
-    $placeholder-font-weight: 400
+    $awsui-placeholder-color: palette.$accent,
+    $awsui-placeholder-font-size: 13px,
+    $awsui-placeholder-font-style: normal,
+    $awsui-placeholder-font-weight: 400
   );
 
   &:focus {
@@ -131,7 +131,7 @@
 
 // Clear button forwards to Button.root.
 .input-clear-button {
-  @include button.root($color: palette.$accent, $focus-ring-color: palette.$accent);
+  @include button.root($color: palette.$accent, $awsui-focus-ring-color: palette.$accent);
 
   &:hover,
   &:focus {

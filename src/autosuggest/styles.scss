@@ -6,7 +6,7 @@
 @use '../internal/styles/style-api' as style-api;
 
 @include style-api.docs-forward('input', 'input');
-@include style-api.docs-forward('dropdown', 'dropdown', 'container');
+@include style-api.docs-forward('dropdown', 'dropdown', 'root');
 
 .root {
   inline-size: 100%;

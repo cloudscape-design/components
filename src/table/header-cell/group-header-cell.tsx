@@ -6,9 +6,9 @@ import clsx from 'clsx';
 import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
+import { getStyleClassName } from '../../internal/utils/style-slot';
 import { TableProps } from '../interfaces';
 import { Divider, Resizer } from '../resizer';
-import { getStyleClassName } from '../style-api';
 import { DEFAULT_COLUMN_WIDTH, useColumnWidths } from '../use-column-widths';
 import { BaseHeaderCellProps } from './common-props';
 import { TableThElement } from './th-element';

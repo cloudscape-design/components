@@ -32,7 +32,7 @@ interface ProgressProps {
 // Style API v2
 export interface StyleClassNames {
   root?: string;
-  percentage?: string;
+  valueLabel?: string;
 }
 
 export const Progress = ({
@@ -72,7 +72,7 @@ export const Progress = ({
       />
       <span aria-hidden="true" className={styles['percentage-container']}>
         <small
-          className={clsx(styleClassNames?.percentage, styles.percentage, isInFlash && styles['percentage-flash'])}
+          className={clsx(styleClassNames?.valueLabel, styles.percentage, isInFlash && styles['percentage-flash'])}
           style={progressPercentageStyles}
         >
           {`${progressValue}%`}

@@ -7,7 +7,7 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/style-api' as style-api;
 
-@include style-api.docs-forward('radioButton', 'radio-button');
+@include style-api.docs-forward('item', 'radio-button');
 
 .radio-group {
   @include styles.styles-reset;

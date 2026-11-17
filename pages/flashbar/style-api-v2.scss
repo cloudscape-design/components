@@ -19,9 +19,9 @@
     $box-shadow: 0 4px 12px palette.$subtle-active,
     $padding-block: 12px,
     $padding-inline: 20px,
-    $focus-ring-color: $accent,
-    $focus-ring-width: 3px,
-    $focus-ring-radius: 10px
+    $awsui-focus-ring-color: $accent,
+    $awsui-focus-ring-width: 3px,
+    $awsui-focus-ring-radius: 10px
   );
 }
 
@@ -34,7 +34,7 @@
 }
 
 .dismiss-button {
-  @include button.root($color: palette.$genai-text, $focus-ring-color: palette.$genai);
+  @include button.root($color: palette.$genai-text, $awsui-focus-ring-color: palette.$genai);
 
   &:hover,
   &:focus {
@@ -74,9 +74,9 @@
     $box-shadow: 0 4px 12px palette.$subtle-active,
     $padding-block: 6px,
     $padding-inline: 24px,
-    $focus-ring-color: palette.$genai,
-    $focus-ring-width: 3px,
-    $focus-ring-radius: 10px
+    $awsui-focus-ring-color: palette.$genai,
+    $awsui-focus-ring-width: 3px,
+    $awsui-focus-ring-radius: 10px
   );
 
   &:hover {

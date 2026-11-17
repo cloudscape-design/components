@@ -19,9 +19,9 @@ $transitioning-surface: light-dark(hsl(0, 0%, 96.5%), hsl(0, 0%, 21%));
 
 .table {
   @include table.root(
-    $selected-row-outline-color: palette.$genai,
-    $selected-row-outline-radius: 4px,
-    $sticky-header-shadow: (
+    $awsui-selected-row-outline-color: palette.$genai,
+    $awsui-selected-row-outline-radius: 4px,
+    $awsui-sticky-header-shadow: (
       0 1px 0 0 palette.$text,
       0 16px 16px -12px rgba(0, 7, 22, 0.1),
     )
@@ -34,17 +34,20 @@ $transitioning-surface: light-dark(hsl(0, 0%, 96.5%), hsl(0, 0%, 21%));
     $background: $background,
     $color: $color,
     $font-weight: 800,
-    $letter-spacing: 0.02em,
-    $border-color: $color,
-    $divider-color: $color,
-    $focus-ring-color: palette.$genai,
-    $focus-ring-width: 3px,
-    $focus-ring-radius: 6px
+    $awsui-border-color: $color,
+    $awsui-divider-color: $color,
+    $awsui-focus-ring-color: palette.$genai,
+    $awsui-focus-ring-width: 3px,
+    $awsui-focus-ring-radius: 6px
   );
 }
 
 .cell {
-  @include table.cell($focus-ring-color: palette.$genai, $focus-ring-width: 3px, $focus-ring-radius: 6px);
+  @include table.cell(
+    $awsui-focus-ring-color: palette.$genai,
+    $awsui-focus-ring-width: 3px,
+    $awsui-focus-ring-radius: 6px
+  );
 }
 
 .header-cell {
@@ -69,19 +72,19 @@ $transitioning-surface: light-dark(hsl(0, 0%, 96.5%), hsl(0, 0%, 21%));
 
 .sorting-menu-trigger,
 .clear-sort-button {
-  @include button.root($color: palette.$genai, $focus-ring-color: palette.$genai);
+  @include button.root($color: palette.$genai, $awsui-focus-ring-color: palette.$genai);
 }
 
 .row {
-  @include table.row($divider-color: palette.$border);
+  @include table.row($awsui-divider-color: palette.$border);
 }
 
 .row-selected {
-  @include table.row($background-color: $selected-surface);
+  @include table.row($awsui-background-color: $selected-surface);
 }
 
 .row-nested {
-  @include table.row($background-color: $nested-surface);
+  @include table.row($awsui-background-color: $nested-surface);
 }
 
 @each $status,
@@ -94,45 +97,51 @@ $transitioning-surface: light-dark(hsl(0, 0%, 96.5%), hsl(0, 0%, 21%));
     )
 {
   .status-#{$status}-row {
-    @include table.row($background-color: $surface);
+    @include table.row($awsui-background-color: $surface);
   }
 
   .status-#{$status}-cell {
-    @include table.cell($background-color: $surface);
+    @include table.cell($awsui-background-color: $surface);
   }
 }
 
 // Control looks come from the row and selection header cell classes, as a consumer would write them.
 /* stylelint-disable selector-combinator-disallowed-list */
 .checkbox {
-  @include checkbox.control($border-color: palette.$genai, $focus-ring-color: palette.$genai);
+  @include checkbox.control($awsui-border-color: palette.$genai, $awsui-focus-ring-color: palette.$genai);
 }
 
 .row-selected .checkbox,
 .select-all-selected .checkbox {
   @include checkbox.control(
-    $fill-color: palette.$genai,
-    $border-color: palette.$genai,
-    $indicator-color: palette.$genai-surface
+    $awsui-fill-color: palette.$genai,
+    $awsui-border-color: palette.$genai,
+    $awsui-indicator-color: palette.$genai-surface
   );
 }
 
 .row-disabled .checkbox {
-  @include checkbox.control($fill-color: palette.$control-bg-disabled, $border-color: palette.$border-disabled);
+  @include checkbox.control(
+    $awsui-fill-color: palette.$control-bg-disabled,
+    $awsui-border-color: palette.$border-disabled
+  );
 }
 
 .radio {
-  @include radio-button.control($border-color: palette.$genai, $focus-ring-color: palette.$genai);
+  @include radio-button.control($awsui-border-color: palette.$genai, $awsui-focus-ring-color: palette.$genai);
 }
 
 .row-selected .radio {
   @include radio-button.control(
-    $fill-color: palette.$genai,
-    $border-color: palette.$genai,
-    $indicator-color: palette.$genai-surface
+    $awsui-fill-color: palette.$genai,
+    $awsui-border-color: palette.$genai,
+    $awsui-indicator-color: palette.$genai-surface
   );
 }
 
 .row-disabled .radio {
-  @include radio-button.control($fill-color: palette.$control-bg-disabled, $border-color: palette.$border-disabled);
+  @include radio-button.control(
+    $awsui-fill-color: palette.$control-bg-disabled,
+    $awsui-border-color: palette.$border-disabled
+  );
 }

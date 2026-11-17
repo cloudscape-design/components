@@ -35,6 +35,7 @@ import { useTableInteractionMetrics } from '../internal/hooks/use-table-interact
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isDevelopment } from '../internal/is-development';
 import { SomeRequired } from '../internal/types';
+import { getStyleClassName } from '../internal/utils/style-slot';
 import InternalLiveRegion from '../live-region/internal';
 import { defaultTableContext, TableContextProvider } from '../table-root/context';
 import { GeneratedAnalyticsMetadataTableComponent } from './analytics-metadata/interfaces';
@@ -57,7 +58,7 @@ import { useGroupSelection } from './selection/use-group-selection';
 import { SkeletonRows } from './skeleton-rows';
 import { useStickyColumns } from './sticky-columns';
 import StickyHeader, { StickyHeaderRef } from './sticky-header';
-import { getStyleClassName, StyleClassNames } from './style-api';
+import { StyleClassNames } from './style-api';
 import {
   getTableRoleProps,
   getTableRowRoleProps,

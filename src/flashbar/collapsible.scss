@@ -17,11 +17,7 @@ $_bar-tokens: style-api.resolve(style-api.$focus-ring, carrier);
 @include style-api.docs(
   'notificationBar',
   $_bar-tokens,
-  $properties: (color, background, border, border-radius, box-shadow, padding),
-  $descriptions: (
-    slot:
-      'The bar under the stacked messages that expands and collapses the stack. Rendered for `stackItems` with more than one message; use `:hover` and `:active` for interaction states.'
-  )
+  $properties: (color, background, border, border-radius, box-shadow, padding)
 );
 
 $notification-bar-top-overlap: (

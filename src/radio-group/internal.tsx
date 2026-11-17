@@ -26,7 +26,7 @@ type InternalRadioGroupProps = RadioGroupProps &
 
 // Style API v2
 export interface StyleClassNames {
-  radioButton?: RadioButtonStyleClassNames;
+  item?: RadioButtonStyleClassNames;
 }
 
 const InternalRadioGroup = React.forwardRef(
@@ -92,7 +92,7 @@ const InternalRadioGroup = React.forwardRef(
               controlId={item.controlId}
               readOnly={readOnly}
               style={style}
-              styleClassNames={styleClassNames?.radioButton}
+              styleClassNames={styleClassNames?.item}
               {...getAnalyticsMetadataAttribute(
                 !item.disabled && !readOnly
                   ? {

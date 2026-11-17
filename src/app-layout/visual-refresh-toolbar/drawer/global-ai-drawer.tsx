@@ -226,11 +226,11 @@ export function AppLayoutGlobalAiDrawerImplementation({
                               <div className={styles['drawer-back-to-console-button-wrapper']}>
                                 {activeAiDrawer?.exitExpandedModeTrigger?.customIcon ? (
                                   <button
+                                    type="button"
                                     className={clsx(
                                       testutilStyles['active-ai-drawer-leave-expanded-mode-custom-button'],
                                       styles['drawer-back-to-console-custom-button']
                                     )}
-                                    formAction="none"
                                     onClick={() => setExpandedDrawerId(null)}
                                     aria-label={activeAiDrawer?.ariaLabels?.exitExpandedModeButton}
                                   >
@@ -238,11 +238,11 @@ export function AppLayoutGlobalAiDrawerImplementation({
                                   </button>
                                 ) : (
                                   <button
+                                    type="button"
                                     className={clsx(
                                       testutilStyles['active-ai-drawer-leave-expanded-mode-custom-button'],
                                       styles['drawer-back-to-console-button']
                                     )}
-                                    formAction="none"
                                     onClick={() => setExpandedDrawerId(null)}
                                     aria-label={activeAiDrawer?.ariaLabels?.exitExpandedModeButton}
                                   >
