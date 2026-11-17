@@ -8,33 +8,33 @@
 
 .checkbox-control {
   @include checkbox.control(
-    $fill-color: palette.$control-bg,
-    $border-color: palette.$border-accent,
-    $focus-ring-color: palette.$accent,
-    $focus-ring-width: 3px
+    $awsui-fill-color: palette.$control-bg,
+    $awsui-border-color: palette.$border-accent,
+    $awsui-focus-ring-color: palette.$accent,
+    $awsui-focus-ring-width: 3px
   );
 
   &-checked {
     @include checkbox.control(
-      $fill-color: palette.$control-bg-checked,
-      $border-color: palette.$control-border-checked,
-      $indicator-color: palette.$control-fg
+      $awsui-fill-color: palette.$control-bg-checked,
+      $awsui-border-color: palette.$control-border-checked,
+      $awsui-indicator-color: palette.$control-fg
     );
   }
 
   &.checkbox-control-disabled {
     @include checkbox.control(
-      $fill-color: palette.$control-bg-disabled,
-      $border-color: palette.$border-disabled,
-      $indicator-color: palette.$control-fg-disabled
+      $awsui-fill-color: palette.$control-bg-disabled,
+      $awsui-border-color: palette.$border-disabled,
+      $awsui-indicator-color: palette.$control-fg-disabled
     );
   }
 
   &.checkbox-control-readonly {
     @include checkbox.control(
-      $fill-color: palette.$surface-alt,
-      $border-color: palette.$border,
-      $indicator-color: palette.$text-muted
+      $awsui-fill-color: palette.$surface-alt,
+      $awsui-border-color: palette.$border,
+      $awsui-indicator-color: palette.$text-muted
     );
   }
 }
