@@ -26,12 +26,8 @@ const sizeTokens: StyleDictionary.SizesDictionary = {
   sizeVerticalInput: '26px',
 };
 
-const typographyTokens: StyleDictionary.DensityTypographyDictionary = {
-  fontSizeBodyM: '13px',
-};
-
 const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = expandDensityDictionary(
-  merge({}, parentTokens, { ...spacingTokens, ...sizeTokens, ...typographyTokens })
+  merge({}, parentTokens, { ...spacingTokens, ...sizeTokens })
 );
 
 export { expandedTokens as tokens };

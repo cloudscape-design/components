@@ -112,7 +112,6 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
             nativeAttributes={nativeInputAttributes}
             ref={checkboxRef}
             type="checkbox"
-            role="switch"
             checked={checked}
             name={name}
             aria-disabled={readOnly && !disabled ? 'true' : undefined}
