@@ -17,18 +17,18 @@
   'root',
   seg.$root-tokens,
   $properties: (background, border),
-  $descriptions: (slot: 'The segment group. The radius is also applied to the segments.')
+  $descriptions: (
+    tokens: (
+      border-radius: 'Also applies to the segments.',
+    )
+  )
 );
 @include style-api.docs(
   'segment',
   seg.$segment-tokens,
-  $properties: (color, background, border, border-radius, box-shadow, padding, font-family, font-size, font-weight),
-  $descriptions: (
-    slot:
-      'Every segment button. Target the selected segment with `[aria-pressed=true]`, a disabled segment with `:disabled` or `[aria-disabled=true]`, and the hover state with `:hover`.'
-  )
+  $properties: (color, background, border, border-radius, box-shadow, padding, font-family, font-size, font-weight)
 );
-@include style-api.docs('divider', seg.$divider-tokens, $descriptions: (slot: 'The line between two segments.'));
+@include style-api.docs('divider', seg.$divider-tokens);
 @include style-api.docs-forward('select', 'select');
 
 @function repeatValue($value, $times) {

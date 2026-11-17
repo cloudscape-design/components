@@ -45,7 +45,6 @@ module.exports = mergePresets(cloudscapePreset, {
   },
   setupFilesAfterEnv: [path.join(__dirname, 'build-tools', 'jest', 'setup.js')],
   testRegex: '(/__tests__/.*(\\.|/)test)\\.[jt]sx?$',
-  // Ignored rather than skipped: Jest marks hinted snapshots of skipped tests as obsolete and fails the run.
-  testPathIgnorePatterns: ['/node_modules/', 'snapshot-tests/style-docs\\.test\\.ts$'],
+  testPathIgnorePatterns: ['/node_modules/'],
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json', 'd.ts'],
 });

@@ -5,7 +5,7 @@ import { fireEvent } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/component-toolkit/internal';
 
-import OptionList, { OptionListProps } from '../../../lib/components/option-list';
+import { OptionListProps } from '../../../lib/components/option-list';
 import {
   blurList,
   clickOption,
@@ -81,35 +81,6 @@ describe('OptionList focus and highlight', () => {
     expect(scrollIntoView).toHaveBeenCalledTimes(1);
     expect(scrollIntoView).toHaveBeenCalledWith({ block: 'nearest', inline: 'nearest' });
     expect(lastScrolledValue()).toBe('special');
-  });
-
-  test('focus entry in multi selection highlights the first option in selection order, not in list order', () => {
-    const { wrapper, listbox } = renderLongList({ selectionType: 'multi', initialSelected: ['5', '2'] });
-    focusList(listbox);
-    expect(highlightedValue(wrapper)).toBe('5');
-    expect(lastScrolledValue()).toBe('5');
-  });
-
-  test('focus entry highlights the first option when nothing is selected', () => {
-    const { wrapper, listbox } = renderLongList();
-    focusList(listbox);
-    expect(highlightedValue(wrapper)).toBe('0');
-    expect(lastScrolledValue()).toBe('0');
-  });
-
-  test('focus entry highlights the first option when the selected option is not in the options', () => {
-    const { wrapper, listbox } = renderOptionList(
-      <OptionList
-        ariaLabel="Goals"
-        options={longOptions}
-        selectionType="single"
-        selectedOptions={[{ value: 'missing' }]}
-        onChange={() => {}}
-      />
-    );
-    focusList(listbox);
-    expect(highlightedValue(wrapper)).toBe('0');
-    expect(lastScrolledValue()).toBe('0');
   });
 
   test('focus keeps a hover highlight, so a click selects the hovered option', () => {

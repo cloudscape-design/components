@@ -75,10 +75,10 @@
     $font-family: monospace,
     $font-size: 15px,
     $font-weight: 600,
-    $placeholder-color: palette.$accent,
-    $placeholder-font-size: 13px,
-    $placeholder-font-style: normal,
-    $placeholder-font-weight: 400
+    $awsui-placeholder-color: palette.$accent,
+    $awsui-placeholder-font-size: 13px,
+    $awsui-placeholder-font-style: normal,
+    $awsui-placeholder-font-weight: 400
   );
 }
 
@@ -96,7 +96,7 @@
 
 .textarea-disabled {
   @include text;
-  @include prompt-input.textarea($color: palette.$text-disabled, $placeholder-color: palette.$text-disabled);
+  @include prompt-input.textarea($color: palette.$text-disabled, $awsui-placeholder-color: palette.$text-disabled);
 }
 
 .textarea-readonly {
@@ -105,7 +105,7 @@
 }
 
 .action-button {
-  @include button.root($color: palette.$accent, $focus-ring-color: palette.$accent);
+  @include button.root($color: palette.$accent, $awsui-focus-ring-color: palette.$accent);
 
   &:hover {
     @include button.root($color: palette.$accent-hover);
@@ -131,11 +131,11 @@
 }
 
 .menu {
-  @include dropdown.container(
+  @include dropdown.root(
     $background: palette.$surface-alt,
     $border-radius: 12px,
     $box-shadow: 0 4px 12px palette.$subtle-active,
-    $outline-color: palette.$accent,
-    $outline-width: 2px
+    $awsui-outline-color: palette.$accent,
+    $awsui-outline-width: 2px
   );
 }

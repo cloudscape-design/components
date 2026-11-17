@@ -10,7 +10,7 @@
 
 @include style-api.docs-forward('trigger', 'button', 'root');
 @include style-api.docs-forward('mainAction', 'button', 'root');
-@include style-api.docs-forward('dropdown', 'dropdown', 'container');
+@include style-api.docs-forward('dropdown', 'dropdown', 'root');
 
 $dropdown-trigger-icon-offset: 2px;
 

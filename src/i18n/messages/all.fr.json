@@ -1,6 +1,6 @@
 {
   "[charts]": {
-    "errorText": "Impossible d'extraire les données. Réessayez plus tard.",
+    "errorText": "Impossible d''extraire les données. Réessayez plus tard.",
     "i18nStrings.chartAriaRoleDescription": "Graphique",
     "i18nStrings.enterZoomModeButtonAriaLabel": "Entrer en mode zoom",
     "i18nStrings.enterZoomModeButtonText": "Zoom",
@@ -27,7 +27,7 @@
     "recoveryText": "Réessayer"
   },
   "alert": {
-    "dismissAriaLabel": "Ignorer l'alerte",
+    "dismissAriaLabel": "Ignorer l''alerte",
     "i18nStrings.dismissAriaLabel": "Ignorer l’alerte",
     "i18nStrings.errorIconAriaLabel": "Erreur",
     "i18nStrings.infoIconAriaLabel": "Informations",
@@ -36,7 +36,7 @@
   },
   "annotation-context": {
     "i18nStrings.finishButtonText": "Terminer",
-    "i18nStrings.labelDismissAnnotation": "Ignorer l'annotation",
+    "i18nStrings.labelDismissAnnotation": "Ignorer l''annotation",
     "i18nStrings.labelHotspot": "{openState, select, false {Annotation pour l’étape {stepNumber} de {totalStepCount}} true {Annotation pour l’étape {stepNumber} de {totalStepCount}} other {}}",
     "i18nStrings.nextButtonText": "Suivant",
     "i18nStrings.previousButtonText": "Précédent",
@@ -51,8 +51,8 @@
     "ariaLabels.navigationClose": "Fermer la navigation latérale",
     "ariaLabels.navigationToggle": "Ouvrir la navigation latérale",
     "ariaLabels.notifications": "Notifications",
-    "ariaLabels.tools": "Volet d'aide",
-    "ariaLabels.toolsClose": "Fermer le volet d'aide",
+    "ariaLabels.tools": "Volet d''aide",
+    "ariaLabels.toolsClose": "Fermer le volet d''aide",
     "ariaLabels.toolsToggle": "Ouvrir le panneau d’aide"
   },
   "area-chart": {
@@ -91,7 +91,7 @@
     "i18nStrings.previousYearAriaLabel": "Année précédente",
     "nextMonthAriaLabel": "Mois suivant",
     "previousMonthAriaLabel": "Mois précédent",
-    "todayAriaLabel": "Aujourd'hui"
+    "todayAriaLabel": "Aujourd''hui"
   },
   "cards": {
     "ariaLabels.selectionGroupLabel": "Sélection de l’élément"
@@ -100,10 +100,10 @@
     "i18nStrings.cursorPosition": "Lig {row}, Col {column}",
     "i18nStrings.cursorPositionAriaLabel": "Curseur sur la ligne {row}",
     "i18nStrings.editorGroupAriaLabel": "Éditeur de code",
-    "i18nStrings.errorState": "Une erreur s'est produite lors du chargement de l'éditeur de code.",
+    "i18nStrings.errorState": "Une erreur s''est produite lors du chargement de l''éditeur de code.",
     "i18nStrings.errorStateRecovery": "Réessayer",
     "i18nStrings.errorsTab": "Erreurs",
-    "i18nStrings.loadingState": "Chargement de l'éditeur de code en cours",
+    "i18nStrings.loadingState": "Chargement de l''éditeur de code en cours",
     "i18nStrings.paneCloseButtonAriaLabel": "Fermer",
     "i18nStrings.preferencesButtonAriaLabel": "Préférences",
     "i18nStrings.preferencesModalCancel": "Annuler",
@@ -117,7 +117,7 @@
     "i18nStrings.preferencesModalWrapLines": "Retour à la ligne",
     "i18nStrings.resizeHandleAriaLabel": "Poignée de redimensionnement",
     "i18nStrings.resizeHandleTooltipText": "Faites glisser ou sélectionnez pour redimensionner",
-    "i18nStrings.statusBarGroupAriaLabel": "Barre d'état",
+    "i18nStrings.statusBarGroupAriaLabel": "Barre d''état",
     "i18nStrings.warningsTab": "Avertissements"
   },
   "collection-preferences": {
@@ -135,8 +135,8 @@
     "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": "Filtrer les colonnes",
     "contentDisplayPreference.liveAnnouncementDndDiscarded": "Réorganisation annulée",
     "contentDisplayPreference.liveAnnouncementDndGroupLabel": "{count, plural, one {{label}, 1 élément} other {{label}, {count} éléments} zero {{label}, 0 éléments}}",
-    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, false {L'élément a été déplacé de la position {initialPosition} à {finalPosition} de {total}} true {L'élément a été replacé dans sa position initiale {initialPosition} de {total}} other {}}",
-    "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, false {Déplacer l'élément vers la position {currentPosition} de {total}} true {Remettre l'élément à la position {currentPosition} de {total}} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, false {L''élément a été déplacé de la position {initialPosition} à {finalPosition} de {total}} true {L''élément a été replacé dans sa position initiale {initialPosition} de {total}} other {}}",
+    "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, false {Déplacer l''élément vers la position {currentPosition} de {total}} true {Remettre l''élément à la position {currentPosition} de {total}} other {}}",
     "contentDisplayPreference.liveAnnouncementDndStarted": "Élément sélectionné à la position {position} de {total}",
     "contentDisplayPreference.title": "Préférences de colonne",
     "pageSizePreference.title": "Taille de la page",
@@ -174,7 +174,7 @@
     "i18nStrings.customRelativeRangeUnitLabel": "Unité de temps",
     "i18nStrings.dateConstraintText": "Pour la date, utilisez le format AAAA/MM/JJ.",
     "i18nStrings.datePlaceholder": "AAAA-MM-JJ",
-    "i18nStrings.dateTimeConstraintText": "Pour la date, utilisez le format AAAA/MM/JJ. Pour l'heure, utilisez le format 24 heures.",
+    "i18nStrings.dateTimeConstraintText": "Pour la date, utilisez le format AAAA/MM/JJ. Pour l''heure, utilisez le format 24 heures.",
     "i18nStrings.endDateLabel": "Date de fin",
     "i18nStrings.endMonthLabel": "Mois de fin",
     "i18nStrings.endTimeLabel": "Heure de fin",
@@ -196,7 +196,7 @@
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Plage sélectionnée de {startDate} à {endDate}",
     "i18nStrings.slashedDateConstraintText": "Pour la date, utilisez le format AAAA/MM/JJ.",
     "i18nStrings.slashedDatePlaceholder": "AAAA/MM/JJ",
-    "i18nStrings.slashedDateTimeConstraintText": "Pour la date, utilisez le format AAAA/MM/JJ. Pour l'heure, utilisez le format 24 heures.",
+    "i18nStrings.slashedDateTimeConstraintText": "Pour la date, utilisez le format AAAA/MM/JJ. Pour l''heure, utilisez le format 24 heures.",
     "i18nStrings.slashedMonthConstraintText": "Pour le mois, utilisez le format AAAA/MM.",
     "i18nStrings.startDateLabel": "Date de début",
     "i18nStrings.startMonthLabel": "Mois de début",
@@ -211,8 +211,8 @@
     "i18nStrings.loadingText": "Chargement du contenu en cours"
   },
   "error-boundary": {
-    "i18nStrings.descriptionText": "{hasFeedback, select, true {Actualisez pour réessayer. Nous suivons ce problème mais vous pouvez fournir <Feedback>plus d'informations ici</Feedback>.} other {Actualisez pour réessayer.}}",
-    "i18nStrings.headerText": "Erreur inattendue, le contenu n'a pas pu s'afficher",
+    "i18nStrings.descriptionText": "{hasFeedback, select, true {Actualisez pour réessayer. Nous suivons ce problème mais vous pouvez fournir <Feedback>plus d''informations ici</Feedback>.} other {Actualisez pour réessayer.}}",
+    "i18nStrings.headerText": "Erreur inattendue, le contenu n''a pas pu s''afficher",
     "i18nStrings.refreshActionText": "Actualiser la page"
   },
   "features-notification-drawer": {
@@ -266,11 +266,11 @@
     "externalIconAriaLabel": "S’ouvre dans un nouvel onglet"
   },
   "list": {
-    "dragHandleAriaDescription": "Utilisez Espace ou Entrée pour activer le glissement pour un élément, puis utilisez les touches fléchées pour déplacer la position de l'élément. Pour terminer le déplacement de la position, utilisez Espace ou Entrée. Pour ignorer le déplacement, utilisez Échap.",
+    "dragHandleAriaDescription": "Utilisez Espace ou Entrée pour activer le glissement pour un élément, puis utilisez les touches fléchées pour déplacer la position de l''élément. Pour terminer le déplacement de la position, utilisez Espace ou Entrée. Pour ignorer le déplacement, utilisez Échap.",
     "dragHandleAriaLabel": "Faire glisser",
     "liveAnnouncementDndDiscarded": "Réorganisation annulée",
-    "liveAnnouncementDndItemCommitted": "{isInitialPosition, select, false {L'élément a été déplacé de la position {initialPosition} à {finalPosition} de {total}} true {L'élément a été replacé dans sa position initiale {initialPosition} de {total}} other {}}",
-    "liveAnnouncementDndItemReordered": "{isInitialPosition, select, false {Déplacer l'élément vers la position {currentPosition} de {total}} true {Remettre l'élément à la position {currentPosition} de {total}} other {}}",
+    "liveAnnouncementDndItemCommitted": "{isInitialPosition, select, false {L''élément a été déplacé de la position {initialPosition} à {finalPosition} de {total}} true {L''élément a été replacé dans sa position initiale {initialPosition} de {total}} other {}}",
+    "liveAnnouncementDndItemReordered": "{isInitialPosition, select, false {Déplacer l''élément vers la position {currentPosition} de {total}} true {Remettre l''élément à la position {currentPosition} de {total}} other {}}",
     "liveAnnouncementDndStarted": "Élément sélectionné à la position {position} de {total}"
   },
   "modal": {
@@ -332,7 +332,7 @@
     "i18nStrings.operationOrText": "ou",
     "i18nStrings.operatorContainsText": "Contient",
     "i18nStrings.operatorDoesNotContainText": "Ne contient pas",
-    "i18nStrings.operatorDoesNotEqualText": "N'est pas égal à",
+    "i18nStrings.operatorDoesNotEqualText": "N''est pas égal à",
     "i18nStrings.operatorDoesNotStartWithText": "Ne commence pas par",
     "i18nStrings.operatorEqualsText": "Égal à",
     "i18nStrings.operatorGreaterOrEqualText": "Supérieur ou égal à",
@@ -375,9 +375,9 @@
     "i18nStrings.inContextLoadingText": "Chargement de la ressource",
     "i18nStrings.inContextSelectPlaceholder": "Choisir une version",
     "i18nStrings.inContextUriLabel": "URI S3",
-    "i18nStrings.inContextVersionSelectLabel": "Version de l'objet",
+    "i18nStrings.inContextVersionSelectLabel": "Version de l''objet",
     "i18nStrings.inContextViewButton": "Afficher",
-    "i18nStrings.inContextViewButtonAriaLabel": "Afficher (s'ouvre dans un nouvel onglet)",
+    "i18nStrings.inContextViewButtonAriaLabel": "Afficher (s''ouvre dans un nouvel onglet)",
     "i18nStrings.labelBreadcrumbs": "Pistes de navigation S3",
     "i18nStrings.labelFiltering": "Trouver {itemsType}",
     "i18nStrings.labelIconFolder": "Dossier",
@@ -468,34 +468,34 @@
   "tag-editor": {
     "i18nStrings.addButton": "Ajouter une nouvelle identification",
     "i18nStrings.awsPrefixError": "Impossible de commencer par aws :",
-    "i18nStrings.duplicateKeyError": "Vous devez spécifier une clé d'identification unique.",
-    "i18nStrings.emptyKeyError": "Vous devez spécifier une clé d'identification.",
-    "i18nStrings.emptyTags": "Aucune identification n'est associée à la ressource.",
-    "i18nStrings.invalidKeyError": "Clé non valide. Les clés peuvent contenir uniquement des caractères Unicode, des chiffres, des espaces blancs et l'un des éléments suivants : _.:/=+@-",
-    "i18nStrings.invalidValueError": "Valeur non valide. Les valeurs peuvent contenir uniquement des caractères Unicode, des chiffres, des espaces blancs et l'un des éléments suivants : _.:/=+@-",
+    "i18nStrings.duplicateKeyError": "Vous devez spécifier une clé d''identification unique.",
+    "i18nStrings.emptyKeyError": "Vous devez spécifier une clé d''identification.",
+    "i18nStrings.emptyTags": "Aucune identification n''est associée à la ressource.",
+    "i18nStrings.invalidKeyError": "Clé non valide. Les clés peuvent contenir uniquement des caractères Unicode, des chiffres, des espaces blancs et l''un des éléments suivants : _.:/=+@-",
+    "i18nStrings.invalidValueError": "Valeur non valide. Les valeurs peuvent contenir uniquement des caractères Unicode, des chiffres, des espaces blancs et l''un des éléments suivants : _.:/=+@-",
     "i18nStrings.keyHeader": "Clé",
     "i18nStrings.keyPlaceholder": "Saisir une clé",
-    "i18nStrings.keySuggestion": "Clé d'identification personnalisée",
-    "i18nStrings.keysSuggestionError": "Les clés d'identification n'ont pas pu être récupérées.",
-    "i18nStrings.keysSuggestionLoading": "Chargement des clés d'identification en cours",
+    "i18nStrings.keySuggestion": "Clé d''identification personnalisée",
+    "i18nStrings.keysSuggestionError": "Les clés d''identification n''ont pas pu être récupérées.",
+    "i18nStrings.keysSuggestionLoading": "Chargement des clés d''identification en cours",
     "i18nStrings.loading": "Chargement des identifications associées à cette ressource en cours",
-    "i18nStrings.maxKeyCharLengthError": "Le nombre maximal de caractères que vous pouvez utiliser dans une clé d'identification est de 128.",
-    "i18nStrings.maxValueCharLengthError": "Le nombre maximal de caractères que vous pouvez utiliser dans une valeur d'identification est de 256.",
+    "i18nStrings.maxKeyCharLengthError": "Le nombre maximal de caractères que vous pouvez utiliser dans une clé d''identification est de 128.",
+    "i18nStrings.maxValueCharLengthError": "Le nombre maximal de caractères que vous pouvez utiliser dans une valeur d''identification est de 256.",
     "i18nStrings.optional": "facultatif",
     "i18nStrings.removeButton": "Supprimer",
     "i18nStrings.removeButtonAriaLabel": "Supprimer {tag__key}",
-    "i18nStrings.tagLimit": "{tagLimitAvailable, select, false {{availableTags, plural, one {Vous pouvez ajouter jusqu'à 1 identification supplémentaire.} other {Vous pouvez ajouter jusqu'à {availableTags} identifications supplémentaires.}}} true {{availableTags, plural, other {Vous pouvez ajouter jusqu'à {tagLimit} identifications.}}} other {}}",
+    "i18nStrings.tagLimit": "{tagLimitAvailable, select, false {{availableTags, plural, one {Vous pouvez ajouter jusqu''à 1 identification supplémentaire.} other {Vous pouvez ajouter jusqu''à {availableTags} identifications supplémentaires.}}} true {{availableTags, plural, other {Vous pouvez ajouter jusqu''à {tagLimit} identifications.}}} other {}}",
     "i18nStrings.tagLimitExceeded": "{tagLimit, plural, one {Vous avez dépassé la limite de 1 identification.} other {Vous avez dépassé la limite de {tagLimit} identifications.}}",
     "i18nStrings.tagLimitReached": "{tagLimit, plural, one {Vous avez atteint la limite de 1 identification.} other {Vous avez atteint la limite de {tagLimit} identifications.}}",
     "i18nStrings.tooManyKeysSuggestion": "Vous avez plus de clés que ce qui peut être affiché.",
     "i18nStrings.tooManyValuesSuggestion": "Vous avez plus de valeurs que ce qui peut être affiché.",
     "i18nStrings.undoButton": "Annuler",
-    "i18nStrings.undoPrompt": "Cette identification sera supprimée lors de l'enregistrement des modifications.",
+    "i18nStrings.undoPrompt": "Cette identification sera supprimée lors de l''enregistrement des modifications.",
     "i18nStrings.valueHeader": "Valeur",
     "i18nStrings.valuePlaceholder": "Saisir une valeur",
-    "i18nStrings.valueSuggestion": "Valeur d'identification personnalisée",
-    "i18nStrings.valuesSuggestionError": "Les valeurs d'identification n'ont pas pu être récupérées.",
-    "i18nStrings.valuesSuggestionLoading": "Chargement des valeurs d'identification en cours"
+    "i18nStrings.valueSuggestion": "Valeur d''identification personnalisée",
+    "i18nStrings.valuesSuggestionError": "Les valeurs d''identification n''ont pas pu être récupérées.",
+    "i18nStrings.valuesSuggestionLoading": "Chargement des valeurs d''identification en cours"
   },
   "token-group": {
     "i18nStrings.limitShowFewer": "Afficher moins",
@@ -518,7 +518,7 @@
     "i18nStrings.dismissTutorialButtonText": "Ignorer le didacticiel",
     "i18nStrings.feedbackLinkText": "Commentaires",
     "i18nStrings.labelExitTutorial": "Ignorer le didacticiel",
-    "i18nStrings.labelTotalSteps": "Nombre total d'étapes : {totalStepCount}",
+    "i18nStrings.labelTotalSteps": "Nombre total d''étapes : {totalStepCount}",
     "i18nStrings.labelTutorialListDownloadLink": "Télécharger la version PDF de ce didacticiel",
     "i18nStrings.labelsTaskStatus.in-progress": "En cours",
     "i18nStrings.labelsTaskStatus.pending": "En attente",
@@ -538,7 +538,7 @@
     "i18nStrings.collapsedStepsLabel": "Étape {stepNumber} de {stepsCount}",
     "i18nStrings.navigationAriaLabel": "Étapes",
     "i18nStrings.nextButton": "Suivant",
-    "i18nStrings.nextButtonLoadingAnnouncement": "Chargement de l'étape suivante",
+    "i18nStrings.nextButtonLoadingAnnouncement": "Chargement de l''étape suivante",
     "i18nStrings.optional": "facultatif",
     "i18nStrings.previousButton": "Précédent",
     "i18nStrings.skipToButtonLabel": "Passer à {task__title}",

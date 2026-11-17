@@ -17,11 +17,6 @@ export interface InternalItemCardProps extends ItemCardProps, InternalBaseCompon
   highlighted?: boolean;
 
   /**
-   * Makes the item card stretch to fill the full height of its container.
-   */
-  fullHeight?: boolean;
-
-  /**
    * Specifies metadata for analytics in cards
    */
   metadataAttributes?: Record<string, string | undefined>;

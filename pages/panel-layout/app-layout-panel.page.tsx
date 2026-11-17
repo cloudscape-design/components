@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
 
-import { Box, Checkbox, Drawer, FormField, Header, Input, SegmentedControl, SpaceBetween } from '~components';
+import { Box, Checkbox, Drawer, FormField, Header, Input, SpaceBetween } from '~components';
 import AppLayout from '~components/app-layout';
 import Button from '~components/button';
 import { I18nProvider } from '~components/i18n';
@@ -12,6 +12,7 @@ import PanelLayout, { PanelLayoutProps } from '~components/panel-layout';
 import AppContext, { AppContextType } from '../app/app-context';
 import labels from '../app-layout/utils/labels';
 import ScreenshotArea from '../utils/screenshot-area';
+import { DisplaySetting, PanelPositionSetting } from './common';
 
 interface PanelLayoutContentProps {
   longPanelContent: boolean;
@@ -142,27 +143,11 @@ export default function PanelLayoutPage() {
                     }
                   />
                 </FormField>
-                <FormField label="Panel position">
-                  <SegmentedControl
-                    options={[
-                      { id: 'side-start', text: 'side-start' },
-                      { id: 'side-end', text: 'side-end' },
-                    ]}
-                    selectedId={panelPosition}
-                    onChange={({ detail }) => setUrlParams({ panelPosition: detail.selectedId as any })}
-                  />
-                </FormField>
-                <FormField label="Display">
-                  <SegmentedControl
-                    options={[
-                      { id: 'all', text: 'all' },
-                      { id: 'panel-only', text: 'panel-only' },
-                      { id: 'main-only', text: 'main-only' },
-                    ]}
-                    selectedId={display}
-                    onChange={({ detail }) => setUrlParams({ display: detail.selectedId as any })}
-                  />
-                </FormField>
+                <PanelPositionSetting
+                  value={panelPosition}
+                  onChange={value => setUrlParams({ panelPosition: value })}
+                />
+                <DisplaySetting value={display} onChange={value => setUrlParams({ display: value })} />
               </SpaceBetween>
             </Drawer>
           }

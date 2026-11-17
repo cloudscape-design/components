@@ -14,6 +14,7 @@ import { CustomizableIcon } from '../../internal/components/customizable-icon';
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { KeyCode } from '../../internal/keycode';
+import { getStyleClassName } from '../../internal/utils/style-slot';
 import { GeneratedAnalyticsMetadataTableSort } from '../analytics-metadata/interfaces';
 import { TableProps } from '../interfaces';
 import {
@@ -25,7 +26,6 @@ import {
   toggleDirection,
 } from '../multi-column-sort/utils';
 import { Divider, Resizer } from '../resizer';
-import { getStyleClassName } from '../style-api';
 import { BaseHeaderCellProps } from './common-props';
 import { SortMenu, SortMenuAction } from './sort-menu';
 import { TableThElement } from './th-element';
@@ -261,12 +261,16 @@ export function TableHeaderCell<ItemType>({
         <div
           ref={clickableHeaderRef}
           data-focus-id={`sorting-control-${String(columnId)}`}
-          className={clsx(styles['header-cell-content'], {
-            [styles['header-cell-fake-focus']]: focusedComponent === `sorting-control-${String(columnId)}`,
-            [styles['header-cell-content-expandable']]: isExpandable,
-            [styles['header-cell-content-multi-sorted']]: showPriorityBadge,
-            [styles['header-cell-content-with-menu']]: hasSortMenu,
-          })}
+          className={clsx(
+            sortingStatus && !sortingDisabled && styleClassNames?.sortingButton,
+            styles['header-cell-content'],
+            {
+              [styles['header-cell-fake-focus']]: focusedComponent === `sorting-control-${String(columnId)}`,
+              [styles['header-cell-content-expandable']]: isExpandable,
+              [styles['header-cell-content-multi-sorted']]: showPriorityBadge,
+              [styles['header-cell-content-with-menu']]: hasSortMenu,
+            }
+          )}
           aria-label={
             column.ariaLabel
               ? column.ariaLabel({
@@ -342,6 +346,7 @@ export function TableHeaderCell<ItemType>({
             ariaLabel={ariaLabels?.sortMenuTriggerLabel}
             ariaDescribedby={headerId}
             onAction={handleSortMenuAction}
+            styleClassNames={styleClassNames?.sortingMenu}
           />
         )}
       </div>

@@ -17,7 +17,11 @@
 }
 
 .popover-brand-arrow {
-  @include popover.arrow($fill-color: palette.$genai-surface, $border-color: palette.$genai, $border-width: 3px);
+  @include popover.arrow(
+    $awsui-fill-color: palette.$genai-surface,
+    $awsui-border-color: palette.$genai,
+    $awsui-border-width: 3px
+  );
 }
 
 .popover-borderless {
@@ -30,11 +34,11 @@
 }
 
 .popover-borderless-arrow {
-  @include popover.arrow($fill-color: palette.$info, $border-width: 0px);
+  @include popover.arrow($awsui-fill-color: palette.$info, $awsui-border-width: 0px);
 }
 
 .popover-brand-dismiss {
-  @include button.root($color: palette.$genai, $focus-ring-color: palette.$genai);
+  @include button.root($color: palette.$genai, $awsui-focus-ring-color: palette.$genai);
 
   &:hover {
     @include button.root($color: palette.$genai-hover);

@@ -29,7 +29,7 @@
 }
 
 .dismiss {
-  @include button.root($color: palette.$genai, $focus-ring-color: palette.$genai, $focus-ring-radius: 4px);
+  @include button.root($color: palette.$genai, $awsui-focus-ring-color: palette.$genai, $awsui-focus-ring-radius: 4px);
 
   &:hover {
     @include button.root($color: palette.$genai-hover);

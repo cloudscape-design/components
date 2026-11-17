@@ -9,7 +9,7 @@
 @use '../style-api/palette' as palette;
 
 .item {
-  @include button.root($color: palette.$accent, $border-radius: 4px, $focus-ring-color: palette.$accent);
+  @include button.root($color: palette.$accent, $border-radius: 4px, $awsui-focus-ring-color: palette.$accent);
 
   &:hover {
     @include button.root($background: palette.$subtle, $color: palette.$accent-hover);
@@ -21,7 +21,7 @@
 }
 
 .item-info {
-  @include button.root($color: palette.$info, $border-radius: 4px, $focus-ring-color: palette.$info);
+  @include button.root($color: palette.$info, $border-radius: 4px, $awsui-focus-ring-color: palette.$info);
 
   &:hover {
     @include button.root($background: palette.$subtle, $color: palette.$info);
@@ -33,9 +33,9 @@
 }
 
 .divider {
-  @include button-group.divider($line-color: palette.$border, $line-width: 2px);
+  @include button-group.divider($awsui-line-color: palette.$border, $awsui-line-width: 2px);
 }
 
 .menu-info {
-  @include dropdown.container($background: palette.$surface-alt, $border-radius: 4px, $outline-color: palette.$info);
+  @include dropdown.root($background: palette.$surface-alt, $border-radius: 4px, $awsui-outline-color: palette.$info);
 }

@@ -245,7 +245,7 @@ const InternalMultiselect = React.forwardRef(
         >
           <Dropdown
             {...dropdownProps}
-            styleClassNames={{ container: styleClassNames?.dropdown }}
+            styleClassNames={{ root: styleClassNames?.dropdown }}
             ariaLabelledby={dropdownProps.ariaRole ? joinStrings(ariaLabelId, controlId) : undefined}
             ariaDescribedby={
               dropdownProps.ariaRole

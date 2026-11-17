@@ -22,7 +22,7 @@
     $font-family: monospace,
     $font-size: 15px,
     $font-weight: 600,
-    $placeholder-color: palette.$accent
+    $awsui-placeholder-color: palette.$accent
   );
 }
 
@@ -68,7 +68,7 @@
     $background: palette.$control-bg-disabled,
     $border-color: palette.$border-disabled,
     $box-shadow: none,
-    $placeholder-color: palette.$text-disabled
+    $awsui-placeholder-color: palette.$text-disabled
   );
 }
 
@@ -112,17 +112,16 @@
     $font-family: monospace,
     $font-size: 15px,
     $font-weight: 600,
-    $placeholder-color: palette.$accent
+    $awsui-placeholder-color: palette.$accent
   );
 }
 
-// Dropdown forwards to Dropdown.container.
 .dropdown {
-  @include dropdown.container(
+  @include dropdown.root(
     $background: palette.$surface-alt,
     $border-radius: 12px,
     $box-shadow: 0 4px 12px palette.$subtle-active,
-    $outline-color: palette.$accent,
-    $outline-width: 2px
+    $awsui-outline-color: palette.$accent,
+    $awsui-outline-width: 2px
   );
 }

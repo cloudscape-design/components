@@ -8,6 +8,7 @@ import PanelLayout, { PanelLayoutProps } from '~components/panel-layout';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
+import { PanelPositionSetting } from './common';
 
 interface NestedPanelLayoutProps {
   outerPanelPosition: PanelLayoutProps.PanelPosition;
@@ -95,27 +96,17 @@ export default function NestedPanelLayoutPage() {
           </p>
 
           <SpaceBetween size="s" direction="horizontal">
-            <FormField label="Outer panel position">
-              <SegmentedControl
-                options={[
-                  { id: 'side-start', text: 'side-start' },
-                  { id: 'side-end', text: 'side-end' },
-                ]}
-                selectedId={outerPanelPosition}
-                onChange={({ detail }) => setUrlParams({ outerPanelPosition: detail.selectedId as any })}
-              />
-            </FormField>
+            <PanelPositionSetting
+              label="Outer panel position"
+              value={outerPanelPosition}
+              onChange={value => setUrlParams({ outerPanelPosition: value })}
+            />
 
-            <FormField label="Inner panel position">
-              <SegmentedControl
-                options={[
-                  { id: 'side-start', text: 'side-start' },
-                  { id: 'side-end', text: 'side-end' },
-                ]}
-                selectedId={innerPanelPosition}
-                onChange={({ detail }) => setUrlParams({ innerPanelPosition: detail.selectedId as any })}
-              />
-            </FormField>
+            <PanelPositionSetting
+              label="Inner panel position"
+              value={innerPanelPosition}
+              onChange={value => setUrlParams({ innerPanelPosition: value })}
+            />
 
             <FormField label="Nested location">
               <SegmentedControl
