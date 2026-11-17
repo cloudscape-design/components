@@ -84,7 +84,6 @@ const ButtonTrigger = (
 
   let attributes: ButtonHTMLAttributes<HTMLButtonElement> = {
     ...baseProps,
-    type: 'button',
     className: clsx(
       styles['button-trigger'],
       analyticsSelectors['button-trigger'],
@@ -141,6 +140,7 @@ const ButtonTrigger = (
 
   return (
     <button
+      type="button"
       ref={ref}
       {...attributes}
       data-awsui-motion-trigger="hover"
