@@ -118,8 +118,8 @@ export default function InternalHeader({
               <span className={styles.info}>{info}</span>
             </InfoLinkLabelContext.Provider>
           )}
+          {secondaryContent && <div className={styles['secondary-content']}>{secondaryContent}</div>}
         </div>
-        {secondaryContent && <div className={styles['secondary-content']}>{secondaryContent}</div>}
         {actions && (
           <div
             className={clsx(
