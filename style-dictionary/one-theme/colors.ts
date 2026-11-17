@@ -241,6 +241,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
 
   // ── Code view ─────────────────────────────────────────────────────────────
   colorBackgroundCodeView: { light: '{colorNeutral150}', dark: '{colorNeutral800}' },
+  colorBorderCodeView: '{colorBorderDividerDefault}',
 
   // ── GenAI chat ────────────────────────────────────────────────────────────
   colorBackgroundChatBubbleIncoming: { light: '{colorNeutral250}', dark: '{colorNeutral900}' },

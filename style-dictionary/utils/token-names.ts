@@ -958,7 +958,8 @@ export type ColorsTokenName =
   | 'colorTextBadgeBlue'
   | 'colorTextBadgeRed'
   | 'colorBorderBadge'
-  | 'colorBackgroundCodeView';
+  | 'colorBackgroundCodeView'
+  | 'colorBorderCodeView';
 export type TypographyTokenName =
   | 'fontBoxValueLargeWeight'
   | 'fontButtonLetterSpacing'
