@@ -28,6 +28,11 @@
   }
 
   &.default {
+    // `all: initial` makes the button inline with UA-default font metrics, so the icon would sit on a
+    // font-dependent line box and end up above center. Flex centering removes that dependency.
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-start-start-radius: awsui.$border-radius-button;
     border-start-end-radius: awsui.$border-radius-button;
     border-end-start-radius: awsui.$border-radius-button;
