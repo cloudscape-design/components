@@ -7,33 +7,40 @@
 @use '../style-api/palette' as palette;
 
 .slider {
-  @include slider.root($track-color: palette.$surface-alt, $value-color: palette.$accent);
+  @include slider.root($awsui-track-color: palette.$surface-alt, $awsui-value-color: palette.$accent);
 }
 
 // The handle is the native <input type="range">, so its states are regular selectors.
 .handle {
-  @include slider.handle($fill-color: palette.$accent, $halo-color: palette.$genai, $border-radius: 4px);
+  @include slider.handle(
+    $awsui-fill-color: palette.$accent,
+    $awsui-halo-color: palette.$genai,
+    $awsui-border-radius: 4px
+  );
 
   &:hover {
-    @include slider.handle($fill-color: palette.$accent-hover);
+    @include slider.handle($awsui-fill-color: palette.$accent-hover);
   }
 
   &:is(:focus, :active) {
-    @include slider.handle($fill-color: palette.$accent-active);
+    @include slider.handle($awsui-fill-color: palette.$accent-active);
   }
 
   &:disabled,
   &[aria-disabled='true'] {
-    @include slider.handle($fill-color: palette.$control-bg-disabled, $halo-color: palette.$control-bg-disabled);
+    @include slider.handle(
+      $awsui-fill-color: palette.$control-bg-disabled,
+      $awsui-halo-color: palette.$control-bg-disabled
+    );
   }
 }
 
 // The value fill follows the handle state through :has() on the root slot.
 .slider:has(.handle:is(:focus, :active)) {
-  @include slider.root($value-color: palette.$accent-active);
+  @include slider.root($awsui-value-color: palette.$accent-active);
 }
 
 // After the focus rule: a read-only slider stays focusable, and both rules have the same specificity.
 .slider:has(.handle:disabled, .handle[aria-disabled='true']) {
-  @include slider.root($value-color: palette.$control-bg-disabled);
+  @include slider.root($awsui-value-color: palette.$control-bg-disabled);
 }

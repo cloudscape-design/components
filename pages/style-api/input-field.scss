@@ -75,10 +75,10 @@
     $font-family: monospace,
     $font-size: 15px,
     $font-weight: 600,
-    $placeholder-color: palette.$accent,
-    $placeholder-font-size: 13px,
-    $placeholder-font-style: normal,
-    $placeholder-font-weight: 400
+    $awsui-placeholder-color: palette.$accent,
+    $awsui-placeholder-font-size: 13px,
+    $awsui-placeholder-font-style: normal,
+    $awsui-placeholder-font-weight: 400
   );
 
   &:focus {

@@ -14,9 +14,9 @@
   @include item-card.root(
     $background: palette.$surface,
     $box-shadow: 0 4px 12px palette.$subtle-active,
-    $border-color: palette.$border-accent,
-    $border-width: 2px,
-    $border-radius: 24px
+    $awsui-border-color: palette.$border-accent,
+    $awsui-border-width: 2px,
+    $awsui-border-radius: 24px
   );
 }
 
