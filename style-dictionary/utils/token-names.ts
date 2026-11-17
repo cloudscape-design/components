@@ -1119,6 +1119,7 @@ export type BordersTokenName =
   | 'borderWidthActionCardActive'
   | 'borderWidthActionCardDisabled'
   | 'borderWidthBadge'
+  | 'borderWidthCodeView'
   | 'borderRadiusTokenInline';
 export type MotionTokenName =
   | 'motionDurationExtraFast'

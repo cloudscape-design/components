@@ -1602,12 +1602,12 @@ const metadata: StyleDictionary.MetadataIndex = {
   colorBackgroundCodeView: {
     description: 'The background color of the code view component.',
     themeable: true,
-    public: true,
+    public: false,
   },
   colorBorderCodeView: {
     description: 'The border color of the code view component.',
     themeable: true,
-    public: true,
+    public: false,
   },
 };
 

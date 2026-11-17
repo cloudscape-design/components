@@ -153,6 +153,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of a selected card.",
           "$value": "1px",
         },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "1px",
@@ -3866,6 +3870,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-width-card-selected": {
           "$description": "The border width of a selected card.",
           "$value": "1px",
+        },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
         },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
@@ -7581,6 +7589,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of a selected card.",
           "$value": "1px",
         },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "1px",
@@ -11294,6 +11306,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-width-card-selected": {
           "$description": "The border width of a selected card.",
           "$value": "1px",
+        },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
         },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
@@ -15009,6 +15025,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of a selected card.",
           "$value": "1px",
         },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "1px",
@@ -18723,6 +18743,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border width of a selected card.",
           "$value": "1px",
         },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "1px",
@@ -22436,6 +22460,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "border-width-card-selected": {
       "$description": "The border width of a selected card.",
       "$value": "1px",
+    },
+    "border-width-code-view": {
+      "$description": "The border width of the code view component.",
+      "$value": "0px",
     },
     "border-width-dropdown": {
       "$description": "The border width of dropdowns.",
@@ -26156,6 +26184,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of a selected card.",
           "$value": "2px",
         },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -29869,6 +29901,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-card-selected": {
           "$description": "The border width of a selected card.",
           "$value": "2px",
+        },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
         },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
@@ -33584,6 +33620,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of a selected card.",
           "$value": "2px",
         },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -37297,6 +37337,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-card-selected": {
           "$description": "The border width of a selected card.",
           "$value": "2px",
+        },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
         },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
@@ -41012,6 +41056,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of a selected card.",
           "$value": "2px",
         },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -44725,6 +44773,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-width-card-selected": {
           "$description": "The border width of a selected card.",
           "$value": "2px",
+        },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
         },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
@@ -48440,6 +48492,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of a selected card.",
           "$value": "2px",
         },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -52154,6 +52210,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border width of a selected card.",
           "$value": "2px",
         },
+        "border-width-code-view": {
+          "$description": "The border width of the code view component.",
+          "$value": "0px",
+        },
         "border-width-dropdown": {
           "$description": "The border width of dropdowns.",
           "$value": "2px",
@@ -55867,6 +55927,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "border-width-card-selected": {
       "$description": "The border width of a selected card.",
       "$value": "2px",
+    },
+    "border-width-code-view": {
+      "$description": "The border width of the code view component.",
+      "$value": "0px",
     },
     "border-width-dropdown": {
       "$description": "The border width of dropdowns.",
