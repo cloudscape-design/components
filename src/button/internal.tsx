@@ -60,7 +60,7 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   __emitPerformanceMarks?: boolean;
   __skipNativeAttributesWarnings?: boolean;
   __compact?: boolean;
-  // Shows the focus ring without focus, on a copy of a focused button. Only the table-header variant draws it.
+  // Shows the focus ring without focus, on a copy of a focused button (e.g. the table sticky header copy).
   __fakeFocus?: boolean;
   // A tab index for single tab stop navigation, e.g. the existing Table's grid navigation.
   __tabIndex?: number;

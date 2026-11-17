@@ -86,6 +86,8 @@ const InternalButtonDropdown = React.forwardRef(
       i18nStrings,
       compactTrigger,
       ariaDescribedby,
+      __triggerTabIndex,
+      __triggerFakeFocus,
       ...props
     }: InternalButtonDropdownProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
@@ -287,6 +289,8 @@ const InternalButtonDropdown = React.forwardRef(
       formAction: 'none',
       ariaHaspopup: hasFiltering ? 'dialog' : true,
       nativeButtonAttributes: nativeTriggerAttributes,
+      __tabIndex: __triggerTabIndex,
+      __fakeFocus: __triggerFakeFocus,
     };
 
     const triggerId = useUniqueId('awsui-button-dropdown__trigger');

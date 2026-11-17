@@ -23,6 +23,12 @@ export interface SortMenuProps<T> {
   i18nStrings?: TableProps.I18nStrings;
   ariaLabel?: string;
   ariaDescribedby?: string;
+  /** Mirrored by the sticky header copy, which shows a fake focus ring on the matching trigger. */
+  focusId: string;
+  /** Default tab index of the trigger; -1 in the sticky header copy. */
+  tabIndex?: number;
+  /** Shows the focus ring on the sticky header copy's trigger while the real trigger has focus. */
+  fakeFocus?: boolean;
   onAction: (action: SortMenuAction) => void;
   styleClassNames?: ButtonDropdownStyleClassNames;
 }
@@ -34,6 +40,9 @@ export function SortMenu<T>({
   i18nStrings,
   ariaLabel,
   ariaDescribedby,
+  focusId,
+  tabIndex,
+  fakeFocus,
   onAction,
   styleClassNames,
 }: SortMenuProps<T>) {
@@ -96,6 +105,9 @@ export function SortMenu<T>({
       expandToViewport={true}
       ariaLabel={i18n('ariaLabels.sortMenuTriggerLabel', ariaLabel) ?? ''}
       ariaDescribedby={ariaDescribedby}
+      nativeTriggerAttributes={{ 'data-focus-id': focusId }}
+      __triggerTabIndex={tabIndex}
+      __triggerFakeFocus={fakeFocus}
       onItemClick={({ detail }) => onAction(detail.id as SortMenuAction)}
       styleClassNames={styleClassNames}
     />

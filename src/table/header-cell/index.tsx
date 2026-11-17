@@ -338,6 +338,9 @@ export function TableHeaderCell<ItemType>({
             i18nStrings={i18nStrings}
             ariaLabel={ariaLabels?.sortMenuTriggerLabel}
             ariaDescribedby={headerId}
+            focusId={`sort-menu-${String(columnId)}`}
+            tabIndex={tabIndex}
+            fakeFocus={focusedComponent === `sort-menu-${String(columnId)}`}
             onAction={handleSortMenuAction}
             styleClassNames={styleClassNames?.sortingMenu}
           />

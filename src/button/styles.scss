@@ -96,7 +96,7 @@ $tokens: style-api.resolve(style-api.$focus-ring, carrier);
     text-decoration: none;
   }
 
-  @include focus-visible.when-visible {
+  @mixin focus-ring {
     $radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring);
     $width: var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width);
 
@@ -133,6 +133,18 @@ $tokens: style-api.resolve(style-api.$focus-ring, carrier);
         $width: $width,
         $color: $focus-border-color
       );
+    }
+  }
+
+  @include focus-visible.when-visible {
+    @include focus-ring;
+  }
+
+  // Mirrors focus from another element, for example in the table sticky header copy. The table-header
+  // variant draws its own ring below.
+  &.fake-focus:not(.variant-table-header) {
+    @include focus-visible.when-visible-unfocused {
+      @include focus-ring;
     }
   }
 

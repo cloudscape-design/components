@@ -254,6 +254,60 @@ describe('with stickyHeader=true', () => {
     fireEvent.keyDown(document.body, { key: 'Tab', keyCode: 65 });
     expect(wrapper.findByClassName(resizerStyles['has-focus'])).not.toBeFalsy();
   });
+
+  describe('with multi-column sort', () => {
+    function renderMultiSortTable(props: Partial<TableProps<Item>> = {}) {
+      return renderTable(
+        <Table
+          columnDefinitions={defaultColumns}
+          items={defaultItems}
+          multiColumnSort={{ sortingColumns: [{ sortingColumn: defaultColumns[0] }], onChange: () => {} }}
+          stickyHeader={true}
+          {...props}
+        />
+      );
+    }
+    const stickyCopy = (wrapper: TableWrapper) => wrapper.findByClassName(tableStyles['header-secondary'])!;
+    const menuTriggers = (root: { findAll: TableWrapper['findAll'] }) =>
+      root.findAll('[data-focus-id^="sort-menu-"]').map(w => w.getElement());
+
+    test.each([
+      ['default', {}],
+      ['keyboard navigation', { enableKeyboardNavigation: true }],
+      [
+        'keyboard navigation and column groups',
+        {
+          enableKeyboardNavigation: true,
+          groupDefinitions: [{ id: 'group', header: 'Group' }],
+          columnDisplay: [
+            { type: 'group', id: 'group', visible: true, children: [{ id: 'id', visible: true }] },
+            { id: 'name', visible: true },
+            { id: 'sortable', visible: true },
+          ] as TableProps.ColumnDisplayProperties[],
+        },
+      ],
+    ])('keeps the sticky copy sort menu triggers out of the tab order (%s)', (_, props) => {
+      const { wrapper } = renderMultiSortTable(props);
+      const copyTriggers = menuTriggers(stickyCopy(wrapper));
+      expect(copyTriggers).toHaveLength(2);
+      copyTriggers.forEach(trigger => expect(trigger).toHaveAttribute('tabIndex', '-1'));
+      const realTriggers = menuTriggers(findNativeTable(wrapper)!);
+      expect(realTriggers).toHaveLength(2);
+      // With keyboard navigation the grid has a single tab stop, so the real triggers are -1 too.
+      if (!(props as Partial<TableProps<Item>>).enableKeyboardNavigation) {
+        realTriggers.forEach(trigger => expect(trigger).not.toHaveAttribute('tabIndex', '-1'));
+      }
+    });
+
+    test('mirrors focus of the sort menu trigger on the sticky copy trigger, not on the cell', () => {
+      const { wrapper } = renderMultiSortTable();
+      findNativeTable(wrapper)!.find('[data-focus-id="sort-menu-id"]')!.focus();
+      fireEvent.keyDown(document.body, { key: 'Tab', keyCode: 65 });
+      const copy = stickyCopy(wrapper);
+      expect(copy.find('[data-focus-id="sort-menu-id"]')!.getElement()).toHaveClass(buttonStyles['fake-focus']);
+      expect(copy.findByClassName(headerCellStyles['header-cell-fake-focus'])).toBeNull();
+    });
+  });
 });
 
 test('matches currently sorted column, when `sortingColumn` value is a copy of the column object', () => {

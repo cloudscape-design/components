@@ -176,4 +176,16 @@ export interface InternalButtonDropdownProps
    * on the page (for example a table header cell that disambiguates otherwise-identical triggers).
    */
   ariaDescribedby?: string;
+
+  /**
+   * Default tab index of the trigger button, passed to the button's single tab stop navigation.
+   * Used by the table sticky header copy, whose controls must not be focusable.
+   */
+  __triggerTabIndex?: number;
+
+  /**
+   * Shows the trigger's focus ring while it is not focused. Used by the table sticky header copy
+   * to mirror focus on the matching trigger in the real header.
+   */
+  __triggerFakeFocus?: boolean;
 }
