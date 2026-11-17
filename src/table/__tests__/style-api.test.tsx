@@ -97,7 +97,7 @@ describe('Table Style API v2 (implicit styleClassNames)', () => {
     const table = renderTable({ columnDefinitions: [sortable, columnDefinitions[1]], sortingDisabled }, {
       sortingButton: 'sorting-button',
     } satisfies StyleClassNames<Item>);
-    expect(table.findColumnHeaders()[0].findAll('[role="button"].sorting-button')).toHaveLength(count);
+    expect(table.findColumnHeaders()[0].findAll('button.sorting-button')).toHaveLength(count);
     expect(table.findAll('.sorting-button')).toHaveLength(count);
   });
 

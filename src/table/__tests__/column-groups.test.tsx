@@ -549,7 +549,7 @@ describe('Column grouping sorting', () => {
     const groupCells = thead.findAll('th[scope="colgroup"]');
 
     groupCells.forEach(cell => {
-      expect(cell.find('[role="button"]')).toBeNull();
+      expect(cell.find('[data-focus-id^="sorting-control-"]')).toBeNull();
     });
   });
 });

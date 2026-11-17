@@ -21,6 +21,17 @@ $tokens: style-api.resolve(style-api.$focus-ring, carrier);
   $properties: (color, background, border, border-radius, padding, box-shadow, font-family, font-size, font-weight)
 );
 
+// Shares one selector list between real focus and fake focus (focus mirrored from another element, for example in
+// the table sticky header copy), so the ring's rules are emitted once.
+@mixin when-focus-visible-or-fake {
+  // stylelint-disable selector-combinator-disallowed-list
+  body[data-awsui-focus-visible='true'] &:focus,
+  body[data-awsui-focus-visible='true'] &.fake-focus {
+    @content;
+  }
+  // stylelint-enable selector-combinator-disallowed-list
+}
+
 @mixin adjust-for-variant($variant) {
   background: var(#{custom-props.$styleBackgroundDefault}, map.get($variant, 'default-background'));
   color: var(#{custom-props.$styleColorDefault}, map.get($variant, 'default-color'));
@@ -96,7 +107,7 @@ $tokens: style-api.resolve(style-api.$focus-ring, carrier);
     text-decoration: none;
   }
 
-  @mixin focus-ring {
+  @include when-focus-visible-or-fake {
     $radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring);
     $width: var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width);
 
@@ -133,18 +144,6 @@ $tokens: style-api.resolve(style-api.$focus-ring, carrier);
         $width: $width,
         $color: $focus-border-color
       );
-    }
-  }
-
-  @include focus-visible.when-visible {
-    @include focus-ring;
-  }
-
-  // Mirrors focus from another element, for example in the table sticky header copy. The table-header
-  // variant draws its own ring below.
-  &.fake-focus:not(.variant-table-header) {
-    @include focus-visible.when-visible-unfocused {
-      @include focus-ring;
     }
   }
 
@@ -259,6 +258,8 @@ $tokens: style-api.resolve(style-api.$focus-ring, carrier);
     text-align: start;
     font-size: inherit;
     letter-spacing: normal;
+    // Keeps a header's minimum width at its longest word, so a wrapping header cannot shrink the column below it.
+    word-break: normal;
     border-start-start-radius: 0;
     border-start-end-radius: 0;
     border-end-start-radius: 0;
@@ -295,21 +296,11 @@ $tokens: style-api.resolve(style-api.$focus-ring, carrier);
     // The button spans the full height of the header row, and its ring sits inside it above and below, as on the
     // column resize handle. Inline the ring sits outside the button, as on other buttons; the cell's padding leaves
     // room for it.
-    @mixin table-header-focus-ring {
+    @include when-focus-visible-or-fake {
       @include style-api.focus-highlight(
         $gutter-block: calc(#{awsui.$space-table-header-focus-outline-gutter} - 2px),
         $color: $focus-border-color
       );
-    }
-
-    @include focus-visible.when-visible {
-      @include table-header-focus-ring;
-    }
-
-    &.fake-focus {
-      @include focus-visible.when-visible-unfocused {
-        @include table-header-focus-ring;
-      }
     }
   }
 

@@ -187,6 +187,7 @@ $sort-button-gap-inline-start: calc(
 .sorting-indicator {
   display: flex;
   align-items: center;
+  color: awsui.$color-text-column-sorting-icon;
 }
 
 .sort-priority-badge {
@@ -208,13 +209,6 @@ $sort-button-gap-inline-start: calc(
   .header-cell-group > & {
     padding-block: awsui.$space-xxxs;
   }
-
-  &:focus {
-    outline: none;
-    text-decoration: none;
-  }
-
-  @include header-cell-focus-outline(awsui.$space-table-header-focus-outline-gutter);
 
   .header-cell-grouped > .header-cell-main > &,
   .header-cell-spans-rows > .header-cell-main > & {
@@ -269,19 +263,30 @@ $sort-button-gap-inline-start: calc(
   }
 }
 
+// The indicator sits inside the button, whose classes belong to another module, so it is reached by descendant.
+// stylelint-disable selector-combinator-disallowed-list
+.header-cell-disabled.header-cell-sorted .sorting-indicator {
+  color: awsui.$color-text-interactive-disabled;
+}
+
 .header-cell-sortable:not(.header-cell-disabled) {
   cursor: pointer;
   // The sorted color is set on the cell so that a `headerCell` color applies to sorted cells too.
   &.header-cell-sorted {
     color: awsui.$color-text-interactive-active;
+    & .sorting-indicator {
+      color: awsui.$color-text-interactive-active;
+    }
   }
+  // The button inherits these colors.
   & > .header-cell-main > .header-cell-content:hover {
     color: awsui.$color-text-interactive-active;
-    & > .sorting-icon {
+    & .sorting-indicator {
       color: awsui.$color-text-interactive-active;
     }
   }
 }
+// stylelint-enable selector-combinator-disallowed-list
 
 .header-cell-text {
   line-height: awsui.$line-height-heading-xs;
@@ -336,7 +341,6 @@ settings icon in the pagination slot.
   }
   &:first-child:not(.header-cell-grouped):not(.header-cell-group) > .header-cell-main > .header-cell-content {
     @include cell-offset(0px);
-    @include header-cell-focus-outline-first(awsui.$space-table-header-focus-outline-gutter);
   }
 
   // Opt-in gate: a control header (`disablePaddings`) omits `.with-paddings`, so this high-specificity

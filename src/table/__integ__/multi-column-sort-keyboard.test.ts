@@ -9,8 +9,6 @@ const tableWrapper = createWrapper().findTable();
 
 // Columns on the multi-column-sort dev page, in order: 1=Name, 2=Type, 3=State, 4=CPU %.
 const sortControl = (colIndex: number) => tableWrapper.findColumnSortingArea(colIndex).toSelector();
-// The per-column sort menu renders a single <button> trigger in the header cell (the sort control
-// itself is a role="button" div, not a <button>), so this uniquely targets the sort menu trigger.
 const sortMenuTrigger = (colIndex: number) =>
   tableWrapper.findColumnSortMenu(colIndex).findTriggerButton().toSelector();
 const bodyCell = (rowIndex: number, colIndex: number) => tableWrapper.findBodyCell(rowIndex, colIndex).toSelector();
@@ -18,10 +16,10 @@ const sortPriorityBadge = (colIndex: number) => tableWrapper.findColumnSortPrior
 // The sort menu opts into expandToViewport, so the open dropdown is portaled to the body and matched globally.
 const openSortMenu = (colIndex: number) => tableWrapper.findColumnSortMenu(colIndex).findOpenDropdown().toSelector();
 
-// The page renders seven settings checkboxes, then (because a multi-column sort is active) an
+// The page renders eight settings checkboxes, then (because a multi-column sort is active) an
 // auto-rendered "Clear sort" tools button, ahead of the table. The grid then exposes a single tab
-// stop (grid navigation), so nine Tabs enter the grid on the first column's sort control.
-const TABS_INTO_GRID = ['Tab', 'Tab', 'Tab', 'Tab', 'Tab', 'Tab', 'Tab', 'Tab', 'Tab'];
+// stop (grid navigation), so ten Tabs enter the grid on the first column's sort control.
+const TABS_INTO_GRID = Array<string>(10).fill('Tab');
 
 // Shift+click is issued through performActions (not page.click) so the Shift modifier is held for the
 // whole pointer press; this mirrors the shift-selection.test.ts idiom.
