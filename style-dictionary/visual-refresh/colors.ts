@@ -270,7 +270,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextCalendarMonth: { light: '{colorNeutral600}', dark: '{colorNeutral450}' },
   colorTextCodeEditorGutterActiveLine: { light: '{colorWhite}', dark: '{colorNeutral950}' },
   colorTextCodeEditorGutterDefault: { light: '{colorNeutral950}', dark: '{colorNeutral300}' },
-  colorTextCodeEditorStatusBarDisabled: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
+  colorTextCodeEditorStatusBarDisabled: { light: '{colorNeutral600}', dark: '{colorNeutral450}' },
   colorTextCodeEditorTabButtonError: { light: '{colorWhite}', dark: '{colorNeutral950}' },
   colorTextColumnHeader: { light: '{colorNeutral650}', dark: '{colorNeutral400}' },
   colorTextColumnSortingIcon: '{colorTextColumnHeader}',
