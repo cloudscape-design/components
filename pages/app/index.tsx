@@ -27,6 +27,7 @@ interface GlobalFlags {
   appLayoutWidget?: boolean;
   appLayoutToolbar?: boolean;
   appLayoutHideToolbarBreadcrumbs?: boolean;
+  appLayoutHideToolbar?: boolean;
   oneTheme?: boolean;
 }
 // used for local dev / testing
@@ -107,6 +108,7 @@ const {
   appLayoutWidget,
   appLayoutToolbar,
   appLayoutHideToolbarBreadcrumbs,
+  appLayoutHideToolbar,
   appLayoutDelayedWidget,
 } = parseQuery(history.location.search);
 const oneTheme = theme === Theme.OneTheme;
@@ -125,6 +127,7 @@ if (!window[awsuiCustomFlagsSymbol]) {
 window[awsuiGlobalFlagsSymbol].appLayoutWidget = appLayoutWidget;
 window[awsuiGlobalFlagsSymbol].appLayoutToolbar = appLayoutToolbar;
 window[awsuiGlobalFlagsSymbol].appLayoutHideToolbarBreadcrumbs = appLayoutHideToolbarBreadcrumbs;
+window[awsuiGlobalFlagsSymbol].appLayoutHideToolbar = appLayoutHideToolbar;
 window[awsuiCustomFlagsSymbol].appLayoutDelayedWidget = appLayoutDelayedWidget;
 window[awsuiGlobalFlagsSymbol].oneTheme = oneTheme;
 
