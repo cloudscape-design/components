@@ -43,6 +43,7 @@ export default function () {
             value: (
               <Popover
                 {...shared}
+                data-testid="popover-brand"
                 {...{
                   styleClassNames: {
                     container: styles['popover-brand'],
@@ -61,6 +62,7 @@ export default function () {
             value: (
               <Popover
                 {...shared}
+                data-testid="popover-borderless"
                 {...{
                   styleClassNames: {
                     container: styles['popover-borderless'],

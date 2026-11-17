@@ -11,6 +11,11 @@ const suite: TestSuite = {
       path: 'time-input/permutations',
       screenshotType: 'permutations',
     },
+    {
+      description: 'Style API v2',
+      path: 'time-input/style-api-v2',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 

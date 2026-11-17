@@ -78,6 +78,11 @@ const suite: TestSuite = {
       path: 'tabs/style-permutations',
       screenshotType: 'permutations',
     },
+    {
+      description: 'Style API v2',
+      path: 'tabs/style-api-v2',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 

@@ -45,6 +45,11 @@ const suite: TestSuite = {
       path: 'button-group/style-custom-types',
       screenshotType: 'screenshotArea',
     },
+    {
+      description: 'Style API v2',
+      path: 'button-group/style-api-v2',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 

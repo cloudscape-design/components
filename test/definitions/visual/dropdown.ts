@@ -52,6 +52,11 @@ const suite: TestSuite = {
         },
       ],
     })),
+    {
+      description: 'Style API v2',
+      path: 'dropdown/style-api-v2',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 
