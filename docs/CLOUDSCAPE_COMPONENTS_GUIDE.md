@@ -4,7 +4,8 @@ Reference docs for contributing to [cloudscape-design/components](https://github
 
 - [General Guide](https://github.com/cloudscape-design/components/blob/main/docs/GENERAL_GUIDE.md) — setup, building, running locally, frameworks, versioning
 - [Component Conventions](https://github.com/cloudscape-design/components/blob/main/docs/COMPONENT_CONVENTIONS.md) — component structure, props, events, refs
-- [Styling](https://github.com/cloudscape-design/components/blob/main/docs/STYLING.md) — design tokens, CSS rules, RTL support
+- [Component Styles](https://github.com/cloudscape-design/components/blob/main/docs/COMPONENT_STYLES.md) — design tokens, CSS rules, RTL support
+- [Style API](https://github.com/cloudscape-design/components/blob/main/docs/STYLE_API.md) — adding consumer styling slots (`styleClassNames`) to a component
 - [Writing Tests](https://github.com/cloudscape-design/components/blob/main/docs/WRITING_TESTS.md) — test utils, unit and integration tests
 - [Running Tests](https://github.com/cloudscape-design/components/blob/main/docs/RUNNING_TESTS.md) — test configs and commands
 - [Code Style](https://github.com/cloudscape-design/components/blob/main/docs/CODE_STYLE.md) — prettier, stylelint, eslint

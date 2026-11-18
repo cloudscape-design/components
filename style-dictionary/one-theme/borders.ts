@@ -18,6 +18,7 @@ const tokens: StyleDictionary.BordersDictionary = {
   borderWidthItemSelected: '1px',
   borderWidthCardSelected: '1px',
   borderWidthNotificationStackBar: '1px',
+  borderWidthCodeView: '1px',
 
   // ── Icon stroke widths ────────────────────────────────────────────────────
   borderWidthIconSmall: '1.5px',

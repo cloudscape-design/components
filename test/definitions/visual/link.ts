@@ -31,6 +31,11 @@ const suite: TestSuite = {
       path: 'link/style-custom-types',
       screenshotType: 'screenshotArea',
     },
+    {
+      description: 'Style API v2',
+      path: 'link/style-api-v2',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 

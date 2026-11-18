@@ -10,7 +10,7 @@ const packageJson = JSON.parse(readFileSync(path.join(__dirname, '../../../lib/c
 test('all exports declarations resolve to a file', () => {
   for (const exportPath of Object.values<string>(packageJson.exports)) {
     // context export is a folder, cannot be resolved
-    if (exportPath === './internal/context/') {
+    if (exportPath === './internal/context/' || exportPath.includes('*')) {
       continue;
     }
     expect(() =>

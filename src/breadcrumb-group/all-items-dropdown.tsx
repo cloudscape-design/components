@@ -66,6 +66,7 @@ const getDropdownTrigger =
     };
     return (
       <button
+        type="button"
         ref={triggerRef as Ref<HTMLButtonElement>}
         {...metadataAttributes}
         className={clsx(styles['collapsed-button'], testUtilsClass)}
@@ -76,7 +77,6 @@ const getDropdownTrigger =
         aria-expanded={isOpen}
         aria-haspopup={true}
         aria-label={ariaLabel}
-        formAction="none"
         data-awsui-motion-trigger="hover"
       >
         <InternalIcon

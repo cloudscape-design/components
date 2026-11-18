@@ -13,7 +13,7 @@
     $color: palette.$text-on-accent,
     $border-color: palette.$accent,
     $border-radius: 4px,
-    $focus-ring-color: palette.$accent
+    $awsui-focus-ring-color: palette.$accent
   );
 
   &:hover,
@@ -27,5 +27,5 @@
 }
 
 .dropdown-brand {
-  @include dropdown.root($background: palette.$surface-alt, $border-radius: 4px, $outline-color: palette.$accent);
+  @include dropdown.root($background: palette.$surface-alt, $border-radius: 4px, $awsui-outline-color: palette.$accent);
 }

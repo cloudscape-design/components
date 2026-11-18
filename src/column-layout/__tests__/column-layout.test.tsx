@@ -8,6 +8,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import ColumnLayout, { ColumnLayoutProps } from '../../../lib/components/column-layout';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
+import cssGridStyles from '../../../lib/components/column-layout/flexible-column-layout/styles.css.js';
 import styles from '../../../lib/components/column-layout/styles.css.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
@@ -34,29 +35,23 @@ describe('ColumnLayout component', () => {
 
     [2, 3, 4].forEach(columnCount => {
       it(`can have ${columnCount} columns`, () => {
-        const wrapper = renderColumnLayout({ columns: columnCount as 2 | 3 | 4 });
+        const wrapper = renderColumnLayout({ columns: columnCount });
         expect(wrapper.getElement()).toHaveClass(styles[`grid-columns-${columnCount}`]);
       });
     });
 
-    [1, 2, 3, 4].forEach(columnCount => {
-      it(`does not warn for ${columnCount} columns`, () => {
-        render(<ColumnLayout columns={columnCount} />);
-        expect(warnOnce).not.toHaveBeenCalled();
+    [5, 6, 12].forEach(columnCount => {
+      it(`renders ${columnCount} columns through FlexibleColumnLayout`, () => {
+        const { container } = render(<ColumnLayout columns={columnCount} />);
+        // Above 4 columns, GridColumnLayout must not be used: findGrid() targets its root.
+        expect(createWrapper(container).findGrid()).toBeNull();
+        expect(container.querySelector(`.${cssGridStyles['css-grid']}`)).not.toBeNull();
       });
     });
 
-    [5, 6, 10, 12].forEach(columnCount => {
-      it(`warns that ${columnCount} columns is unsupported without minColumnWidth`, () => {
+    [1, 4, 5, 12, 20].forEach(columnCount => {
+      it(`does not warn for ${columnCount} columns`, () => {
         render(<ColumnLayout columns={columnCount} />);
-        expect(warnOnce).toHaveBeenCalledWith(
-          'ColumnLayout',
-          expect.stringContaining(`\`columns\` (${columnCount}) is not supported without \`minColumnWidth\``)
-        );
-      });
-
-      it(`does not warn for ${columnCount} columns when minColumnWidth is set`, () => {
-        render(<ColumnLayout columns={columnCount} minColumnWidth={100} />);
         expect(warnOnce).not.toHaveBeenCalled();
       });
     });

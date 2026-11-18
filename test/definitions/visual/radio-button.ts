@@ -35,6 +35,11 @@ const suite: TestSuite = {
       path: 'radio-button/style-custom',
       screenshotType: 'permutations',
     },
+    {
+      description: 'Style API v2',
+      path: 'radio-button/style-api-v2',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 

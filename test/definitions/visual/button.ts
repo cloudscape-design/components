@@ -66,6 +66,11 @@ const suite: TestSuite = {
         await page.hoverElement('[data-testid="normal-button-with-href"]');
       },
     },
+    {
+      description: 'Style API v2',
+      path: 'button/style-api-v2',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 

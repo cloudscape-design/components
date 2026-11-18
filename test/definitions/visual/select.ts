@@ -110,6 +110,11 @@ const suite: TestSuite = {
         await page.elementScrollTo(select.findDropdown().findOptionsContainer().toSelector(), { top: 99999 });
       },
     },
+    {
+      description: 'Style API v2',
+      path: 'select/style-api-v2',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 

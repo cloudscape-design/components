@@ -16,6 +16,11 @@ const suite: TestSuite = {
       path: 'date-input/permutations-formats',
       screenshotType: 'permutations',
     },
+    {
+      description: 'Style API v2',
+      path: 'date-input/style-api-v2',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 

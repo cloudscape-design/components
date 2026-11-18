@@ -958,7 +958,8 @@ export type ColorsTokenName =
   | 'colorTextBadgeBlue'
   | 'colorTextBadgeRed'
   | 'colorBorderBadge'
-  | 'colorBackgroundCodeView';
+  | 'colorBackgroundCodeView'
+  | 'colorBorderCodeView';
 export type TypographyTokenName =
   | 'fontBoxValueLargeWeight'
   | 'fontButtonLetterSpacing'
@@ -1118,6 +1119,7 @@ export type BordersTokenName =
   | 'borderWidthActionCardActive'
   | 'borderWidthActionCardDisabled'
   | 'borderWidthBadge'
+  | 'borderWidthCodeView'
   | 'borderRadiusTokenInline';
 export type MotionTokenName =
   | 'motionDurationExtraFast'
