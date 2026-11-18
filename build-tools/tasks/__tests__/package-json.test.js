@@ -20,6 +20,10 @@ describe('getComponentsExports', () => {
     }
   });
 
+  test('exposes the generated Sass slot mixins as a subpath pattern', () => {
+    expect(exportsMap['./styling/*']).toBe('./styling/*.scss');
+  });
+
   test('does not expose the internal test-utils directory as a component wrapper', () => {
     expect(exportsMap['./test-utils/dom/internal']).toBeUndefined();
     expect(exportsMap['./test-utils/selectors/internal']).toBeUndefined();
