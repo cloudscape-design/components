@@ -240,7 +240,8 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorDropzoneBorderHover: { light: '{colorPrimary900}', dark: '{colorPrimary300}' },
 
   // ── Code view ─────────────────────────────────────────────────────────────
-  colorBackgroundCodeView: { light: '{colorNeutral200}', dark: '{colorNeutral800}' },
+  colorBackgroundCodeView: { light: '{colorNeutral150}', dark: '{colorNeutral800}' },
+  colorBorderCodeView: '{colorBorderDividerDefault}',
 
   // ── GenAI chat ────────────────────────────────────────────────────────────
   colorBackgroundChatBubbleIncoming: { light: '{colorNeutral250}', dark: '{colorNeutral900}' },
