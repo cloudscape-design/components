@@ -12,6 +12,7 @@ import customCssProps from '../../../internal/generated/custom-css-properties';
 import { usePrevious } from '../../../internal/hooks/use-previous';
 import { getLimitedValue } from '../../../split-panel/utils/size-utils';
 import { AppLayoutProps } from '../../interfaces';
+import { isAppLayoutSimplifiedView } from '../../utils/feature-flags';
 import { FocusControlState } from '../../utils/use-focus-control';
 import { AppLayoutInternals, InternalDrawer } from '../interfaces';
 import { OnChangeParams } from '../state/use-ai-drawer';
@@ -154,6 +155,7 @@ export function AppLayoutGlobalAiDrawerImplementation({
                         [styles['drawer-hidden']]: !show && drawerTransitionState === 'exited',
                         [testutilStyles['drawer-closed']]: !activeAiDrawer,
                         [styles['drawer-expanded']]: isExpanded,
+                        [styles['simplified-view']]: isAppLayoutSimplifiedView(),
                       }
                     )}
                     ref={drawerRef}

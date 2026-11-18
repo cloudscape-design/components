@@ -443,6 +443,30 @@ $ai-drawer-heider-height: 42px;
         border-start-end-radius: 0;
       }
     }
+
+    &.simplified-view > .drawer-content-container {
+      border-start-end-radius: 0;
+      clip-path: none;
+
+      @include styles.with-direction('rtl') {
+        clip-path: none;
+      }
+
+      > .drawer-content > .drawer-content-header {
+        background-color: awsui.$color-background-container-content;
+
+        // corner filler next to the back-to-console slot follows the container radius
+        > .drawer-back-to-console-slot:after {
+          border-start-end-radius: 0;
+        }
+
+        @include theming.dark-mode-only {
+          > .drawer-content-header-content:has(+ .drawer-back-to-console-slot) {
+            border-start-end-radius: 0;
+          }
+        }
+      }
+    }
   }
 
   &.bottom-drawer {

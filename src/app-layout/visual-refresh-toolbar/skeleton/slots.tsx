@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import { BreadcrumbGroupImplementation } from '../../../breadcrumb-group/implementation';
 import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
+import { isAppLayoutSimplifiedView } from '../../utils/feature-flags';
 import { BreadcrumbsSlotContext, BreadcrumbsSlotContextType } from '../contexts';
 
 import testutilStyles from '../../test-classes/styles.css.js';
@@ -20,7 +21,13 @@ interface ToolbarSlotProps {
 export const ToolbarSlot = React.forwardRef<HTMLElement, ToolbarSlotProps>(({ className, style, children }, ref) => (
   <section
     ref={ref as React.Ref<any>}
-    className={clsx(styles['toolbar-container'], toolbarStyles['universal-toolbar'], testutilStyles.toolbar, className)}
+    className={clsx(
+      styles['toolbar-container'],
+      toolbarStyles['universal-toolbar'],
+      testutilStyles.toolbar,
+      isAppLayoutSimplifiedView() && toolbarStyles['simplified-view'],
+      className
+    )}
     style={{
       insetBlockStart: style?.insetBlockStart ?? 0,
       ...style,
