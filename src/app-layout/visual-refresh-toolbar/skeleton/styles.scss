@@ -137,6 +137,12 @@
   @include desktop-only {
     grid-area: ai-drawer;
     position: sticky;
+
+    // Without the toolbar, the AI drawer draws the separator to the main content right outside its edge
+    // (drawer/styles.scss). The navigation next to it would cover it otherwise.
+    &.with-hidden-toolbar {
+      z-index: constants.$drawer-z-index + 1;
+    }
   }
 }
 

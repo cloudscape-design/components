@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import { AppLayoutBuiltInErrorBoundary } from '../../../error-boundary/internal';
 import { createWidgetizedComponent } from '../../../internal/widgets';
+import { isAppLayoutHideToolbar } from '../../utils/feature-flags';
 import { ActiveDrawersContext } from '../../utils/visibility-context';
 import { AppLayoutGlobalAiDrawerImplementation } from '../drawer/global-ai-drawer';
 import { AppLayoutNavigationImplementation as AppLayoutNavigation } from '../navigation';
@@ -87,6 +88,7 @@ export const BeforeMainSlotImplementationInternal = ({
         <div
           className={clsx(
             styles['ai-drawer'],
+            isAppLayoutHideToolbar() && styles['with-hidden-toolbar'],
             (drawerExpandedMode || drawerExpandedModeInChildLayout) && !aiDrawerExpandedMode && styles.hidden
           )}
         >

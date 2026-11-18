@@ -288,6 +288,7 @@ $ai-drawer-heider-height: 42px;
     }
 
     > .drawer-content-container {
+      box-sizing: border-box;
       min-inline-size: calc(var(#{custom-props.$drawerMinSize}) - #{awsui.$space-xs});
       grid-column: 1 / span 1;
       background-color: awsui.$color-background-layout-panel-content;
@@ -441,6 +442,26 @@ $ai-drawer-heider-height: 42px;
 
       > .drawer-content-container {
         border-start-end-radius: 0;
+      }
+    }
+
+    &.with-hidden-toolbar:not(.drawer-expanded) {
+      @mixin hidden-toolbar-separator {
+        // the drawer cell is raised above the navigation, so the shadow is not covered (see skeleton/styles.scss)
+        box-shadow: awsui.$border-divider-section-width 0 0 0 awsui.$color-border-layout;
+
+        @include styles.with-direction('rtl') {
+          box-shadow: calc(-1 * #{awsui.$border-divider-section-width}) 0 0 0 awsui.$color-border-layout;
+        }
+      }
+
+      @include desktop-only {
+        @include theming.dark-mode-only {
+          @include hidden-toolbar-separator;
+        }
+        @include theming.one-theme-only {
+          @include hidden-toolbar-separator;
+        }
       }
     }
 
