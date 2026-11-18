@@ -33,7 +33,7 @@ $input-tokens: style-api.resolve(
   $properties: (color, padding, font-family, font-size, font-weight),
   $descriptions: (
     properties: (
-      padding: 'Replaces the padding reserved for the search icon and the clear button.',
+      padding-inline: 'Replaces the padding reserved for the search icon and the clear button.',
     )
   )
 );
