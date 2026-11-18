@@ -16,9 +16,11 @@ class HideToolbarPage extends BasePageObject {
     return this.click(`[data-testid="${testId}"]`);
   }
 
-  async getContentTop() {
-    const { top } = await this.getBoundingBox(appLayout.findContentRegion().toSelector());
-    return top;
+  /** Distance from the top of App Layout to its content region. */
+  async getContentOffset() {
+    const { top: rootTop } = await this.getBoundingBox(appLayout.toSelector());
+    const { top: contentTop } = await this.getBoundingBox(appLayout.findContentRegion().toSelector());
+    return contentTop - rootTop;
   }
 }
 
@@ -52,29 +54,28 @@ describe('appLayoutHideToolbar flag', () => {
     })
   );
 
-  test(
-    'does not reserve space for the hidden toolbar',
-    useBrowser(async browser => {
-      const page = new HideToolbarPage(browser);
-      const contentSelector = appLayout.findContentRegion().toSelector();
+  // Global flags are read once on page load, so each toolbar state is measured in its own browser session
+  // instead of switching the URL (and relying on a reload) within one session.
+  test('does not reserve space for the hidden toolbar', async () => {
+    let toolbarHeight = 0;
+    let offsetWithToolbar = 0;
+    let offsetWithHiddenToolbar = 0;
 
-      await browser.url(`#/light/app-layout/global-nav-breadcrumbs?${getUrlParams('refresh-toolbar')}`);
-      await page.waitForVisible(contentSelector);
-      const { height: toolbarHeight } = await page.getBoundingBox(toolbar.toSelector());
-      const topWithToolbar = await page.getContentTop();
+    await setupTest({}, async page => {
+      await expect(page.isDisplayed(toolbar.toSelector())).resolves.toBe(true);
+      ({ height: toolbarHeight } = await page.getBoundingBox(toolbar.toSelector()));
+      offsetWithToolbar = await page.getContentOffset();
+    })();
 
-      await browser.url(
-        `#/light/app-layout/global-nav-breadcrumbs?${getUrlParams('refresh-toolbar', hiddenToolbarParams)}`
-      );
-      await browser.refresh();
-      await page.waitForVisible(contentSelector);
-      const topWithHiddenToolbar = await page.getContentTop();
+    await setupTest(hiddenToolbarParams, async page => {
+      await expect(page.isDisplayed(toolbar.toSelector())).resolves.toBe(false);
+      offsetWithHiddenToolbar = await page.getContentOffset();
+    })();
 
-      expect(toolbarHeight).toBeGreaterThan(0);
-      // allow 1px for sub-pixel rounding
-      expect(Math.abs(topWithToolbar - toolbarHeight - topWithHiddenToolbar)).toBeLessThanOrEqual(1);
-    })
-  );
+    expect(toolbarHeight).toBeGreaterThan(0);
+    // allow 1px for sub-pixel rounding
+    expect(Math.abs(offsetWithToolbar - toolbarHeight - offsetWithHiddenToolbar)).toBeLessThanOrEqual(1);
+  }, 120_000 /* two browser sessions */);
 
   test(
     'publishes breadcrumbs to registerBreadcrumbsConsumer and keeps them updated',
