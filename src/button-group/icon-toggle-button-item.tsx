@@ -17,6 +17,7 @@ import { InternalIconToggleButton } from './internal-interfaces.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
 interface IconToggleButtonItemProps {
+  styleClassName?: string;
   item: InternalIconToggleButton;
   showTooltip: boolean;
   showFeedback: boolean;
@@ -26,7 +27,7 @@ interface IconToggleButtonItemProps {
 
 const IconToggleButtonItem = forwardRef(
   (
-    { item, showTooltip, showFeedback, onTooltipDismiss, onItemClick }: IconToggleButtonItemProps,
+    { styleClassName, item, showTooltip, showFeedback, onTooltipDismiss, onItemClick }: IconToggleButtonItemProps,
     ref: React.Ref<ButtonProps.Ref>
   ) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
@@ -46,6 +47,7 @@ const IconToggleButtonItem = forwardRef(
     return (
       <div ref={containerRef}>
         <InternalToggleButton
+          styleClassNames={{ root: styleClassName }}
           variant="icon"
           pressed={item.pressed}
           loading={item.loading}

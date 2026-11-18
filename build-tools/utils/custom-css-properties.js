@@ -204,5 +204,10 @@ const customCssPropertiesList = [
   'inlineLabelBackgroundColor',
   // Container style API
   'containerStyleBorderRadius',
+  // Resolved Style API values for calc(): postcss-calc 7 fails on deeply nested var() inside calc().
+  'containerBorderRadius',
+  'popoverArrowBorderWidth',
+  // Table style API, read by the container header of the table
+  'tableStickyHeaderShadow',
 ];
 module.exports = customCssPropertiesList;

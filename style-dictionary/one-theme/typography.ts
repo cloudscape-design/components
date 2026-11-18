@@ -39,6 +39,7 @@ const tokens: StyleDictionary.DensityTypographyDictionary = {
   fontWayfindingLinkActiveWeight: '600',
   fontWeightLinkSecondary: 'inherit',
   fontDecorationLineLinkSecondary: 'underline',
+  fontDecorationLineButtonInlineLink: 'underline',
 
   // ── Alerts / flashbars ────────────────────────────────────────────────────
   fontWeightAlertHeader: '500',
@@ -49,7 +50,6 @@ const tokens: StyleDictionary.DensityTypographyDictionary = {
   fontDisplayLabelWeight: '500',
 
   // ── Body text ─────────────────────────────────────────────────────────────
-  fontSizeBodyM: { comfortable: '14px', compact: '13px' },
   fontWeightBold: '600',
 
   // ── Key-value pairs ───────────────────────────────────────────────────────

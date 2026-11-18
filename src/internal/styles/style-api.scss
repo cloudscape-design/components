@@ -57,7 +57,7 @@ $_focus-ring-carriers: toolkit.resolve($focus-ring, carrier);
   }
 }
 
-@mixin docs-forward($name, $component, $slot) {
+@mixin docs-forward($name, $component, $slot: null) {
   @if enabled() {
     @include toolkit.docs-forward($name, $component, $slot);
   }
@@ -90,5 +90,19 @@ $_focus-ring-carriers: toolkit.resolve($focus-ring, carrier);
       $border-radius: $radius,
       $box-shadow: 0 0 0 $width $color
     );
+  }
+}
+
+// A wrapper for forms.container-focus with style API integration.
+@mixin container-focus($radius: awsui.$border-radius-container) {
+  @if enabled() {
+    @include forms.container-focus(
+      $border-radius: var(#{toolkit.read($_focus-ring-carriers, focus-ring-radius)}, #{$radius}),
+      $box-shadow: 0 0 0
+        var(#{toolkit.read($_focus-ring-carriers, focus-ring-width)}, #{foundation.$box-shadow-focused-width})
+        var(#{toolkit.read($_focus-ring-carriers, focus-ring-color)}, #{awsui.$color-border-item-focused})
+    );
+  } @else {
+    @include forms.container-focus($radius);
   }
 }

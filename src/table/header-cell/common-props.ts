@@ -4,6 +4,7 @@
 import { ColumnWidthStyle } from '../column-widths-utils';
 import { TableProps } from '../interfaces';
 import { StickyColumnsModel } from '../sticky-columns';
+import { StyleClassNames } from '../style-api';
 import { TableRole } from '../table-role';
 
 export interface BaseHeaderCellProps {
@@ -24,4 +25,5 @@ export interface BaseHeaderCellProps {
   variant: TableProps.Variant;
   tableVariant?: TableProps.Variant;
   wrapLines?: boolean;
+  styleClassNames?: StyleClassNames;
 }

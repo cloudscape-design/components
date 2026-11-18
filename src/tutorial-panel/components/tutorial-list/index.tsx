@@ -26,7 +26,7 @@ interface TutorialListProps {
   loading?: boolean;
   tutorials: TutorialPanelProps['tutorials'];
   onStartTutorial: HotspotContext['onStartTutorial'];
-  i18nStrings: TutorialPanelProps['i18nStrings'];
+  i18nStrings: TutorialPanelProps.I18nStrings;
   downloadUrl: TutorialPanelProps['downloadUrl'];
   headingId?: string;
 }
@@ -98,7 +98,7 @@ function Tutorial({
 }: {
   tutorial: TutorialPanelProps.Tutorial;
   onStartTutorial: HotspotContext['onStartTutorial'];
-  i18nStrings: TutorialPanelProps['i18nStrings'];
+  i18nStrings: TutorialPanelProps.I18nStrings;
 }) {
   checkSafeUrl('TutorialPanel', tutorial.learnMoreUrl);
   const controlId = useUniqueId();

@@ -6,6 +6,7 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/styles/style-api' as style-api;
 
 @use './tab-header-bar';
 
@@ -20,6 +21,7 @@
 }
 
 .tabs-content {
+  @include style-api.carriers(tab-header-bar.$content-tokens);
   display: none;
 }
 
@@ -33,7 +35,7 @@
   display: block;
   flex: 1;
   @include focus-visible.when-visible {
-    @include styles.container-focus();
+    @include style-api.container-focus();
   }
 }
 

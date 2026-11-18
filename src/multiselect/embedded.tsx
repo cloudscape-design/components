@@ -6,9 +6,9 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { useFormFieldContext } from '../contexts/form-field';
 import DropdownFooter from '../internal/components/dropdown-footer';
+import PlainList from '../internal/components/listbox/parts/plain-list';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { SomeRequired } from '../internal/types';
-import PlainList from '../select/parts/plain-list';
 import VirtualList from '../select/parts/virtual-list';
 import { MultiselectProps } from './interfaces';
 import { useMultiselect } from './use-multiselect';
@@ -77,14 +77,13 @@ const EmbeddedMultiselect = React.forwardRef(
     return (
       <div className={styles.embedded}>
         <ListComponent
-          menuProps={multiselectProps.getMenuProps()}
+          listProps={multiselectProps.getMenuProps()}
           getOptionProps={multiselectProps.getOptionProps}
           filteredOptions={multiselectProps.filteredOptions}
           filteringValue={filteringText}
           ref={multiselectProps.scrollToIndex}
           hasDropdownStatus={status.content !== null}
-          checkboxes={true}
-          useInteractiveGroups={true}
+          selectionType="multi"
           screenReaderContent={multiselectProps.announcement}
           highlightType={multiselectProps.highlightType}
           isMultiSelect={true}

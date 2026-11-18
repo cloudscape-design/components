@@ -20,6 +20,7 @@ import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { useThrottleCallback } from '../internal/hooks/use-throttle-callback';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
+import { getStyleClassName } from '../internal/utils/style-slot';
 import InternalLiveRegion from '../live-region/internal';
 import {
   GeneratedAnalyticsMetadataFlashbarCollapse,
@@ -50,7 +51,7 @@ const maxNonCollapsibleItems = 1;
 
 const resizeListenerThrottleDelay = 100;
 
-export default function CollapsibleFlashbar({ items, style, ...restProps }: InternalFlashbarProps) {
+export default function CollapsibleFlashbar({ items, style, styleClassNames, ...restProps }: InternalFlashbarProps) {
   const visibleItems = useFlashbarVisibility(items);
   const [enteringItems, setEnteringItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [exitingItems, setExitingItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
@@ -228,6 +229,9 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
 
   const getAnimationElementId = (item: StackableItem) => `flash-${getItemId(item)}`;
 
+  // Style API v2
+  const getItemClass = (item: FlashbarProps.MessageDefinition) => getStyleClassName(styleClassNames?.item, { item });
+
   const renderList = () => (
     <ul
       ref={listElementRef}
@@ -272,7 +276,7 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
                         !isFlashbarStackExpanded && styles.item,
                         !collapsedItemRefs.current[getAnimationElementId(item)] && styles['expanded-only']
                       )
-                    : clsx(styles.flash, styles[`flash-type-${item.type ?? 'info'}`], styles.item)
+                    : clsx(getItemClass(item), styles.flash, styles[`flash-type-${item.type ?? 'info'}`], styles.item)
                 }
                 ref={element => {
                   if (isFlashbarStackExpanded) {
@@ -314,6 +318,11 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
                     i18nStrings={iconAriaLabels}
                     style={style}
                     onDismissed={handleFlashDismissed}
+                    styleClassNames={{
+                      item: getItemClass(item),
+                      icon: styleClassNames?.icon,
+                      dismissButton: styleClassNames?.dismissButton,
+                    }}
                     {...item}
                   />
                 )}
@@ -346,6 +355,7 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
       {isCollapsible && (
         <div
           className={clsx(
+            styleClassNames?.notificationBar,
             styles['notification-bar'],
             isVisualRefresh && styles['visual-refresh'],
             isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
@@ -385,6 +395,7 @@ export default function CollapsibleFlashbar({ items, style, ...restProps }: Inte
             ]}
           />
           <button
+            type="button"
             aria-controls={flashbarElementId}
             aria-describedby={itemCountElementId}
             aria-expanded={isFlashbarStackExpanded}

@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import InternalButton from '../button/internal';
+import InternalButton, { StyleClassNames as ButtonStyleClassNames } from '../button/internal';
 import { fireNonCancelableEvent } from '../internal/events';
 import { isDevelopment } from '../internal/is-development';
 import { ToggleButtonProps } from './interfaces';
@@ -27,9 +27,10 @@ export const InternalToggleButton = React.forwardRef(
       nativeButtonAttributes,
       onChange,
       className,
+      styleClassNames,
       analyticsAction = 'click',
       ...rest
-    }: ToggleButtonProps & { __title?: string; analyticsAction?: string },
+    }: ToggleButtonProps & { __title?: string; analyticsAction?: string; styleClassNames?: ButtonStyleClassNames },
     ref: React.Ref<ToggleButtonProps.Ref>
   ) => {
     if (isDevelopment) {
@@ -48,6 +49,7 @@ export const InternalToggleButton = React.forwardRef(
 
     return (
       <InternalButton
+        styleClassNames={styleClassNames}
         className={clsx(className, styles['toggle-button'], styles[`variant-${variant}`], {
           [styles.pressed]: pressed,
         })}

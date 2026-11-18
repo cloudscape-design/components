@@ -7,21 +7,24 @@ import { useResizeObserver, useUniqueId } from '@cloudscape-design/component-too
 
 import Dropdown from '../dropdown/internal';
 import { useInternalI18n } from '../i18n/context';
+import { StyleClassNames as InputStyleClassNames } from '../input/internal';
 import { getBaseProps } from '../internal/base-component';
 import { getBreakpointValue } from '../internal/breakpoints';
 import DropdownFooter from '../internal/components/dropdown-footer/index.js';
+import PlainList from '../internal/components/listbox/parts/plain-list';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { ResetGroupedControlContext, useGroupedControlContext } from '../internal/context/control-group-context';
 import { useFormFieldContext } from '../internal/context/form-field-context';
+import { warnOnUnsupportedGroupedControlProps } from '../internal/grouped-control/dev-warnings';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { SomeRequired } from '../internal/types';
 import { getDropdownMinWidth } from '../internal/utils/get-dropdown-min-width';
 import { joinStrings } from '../internal/utils/strings';
 import Filter from '../select/parts/filter';
-import PlainList from '../select/parts/plain-list';
 import Trigger from '../select/parts/trigger';
 import VirtualList from '../select/parts/virtual-list';
 import { composeDropdownContent } from '../select/utils/dropdown-customization';
+import { StyleClassNames as TokenStyleClassNames } from '../token/internal';
 import { TokenGroupProps } from '../token-group/interfaces';
 import InternalTokenGroup from '../token-group/internal';
 import { MultiselectProps } from './interfaces';
@@ -33,7 +36,18 @@ type InternalMultiselectProps = SomeRequired<
   MultiselectProps,
   'options' | 'selectedOptions' | 'filteringType' | 'statusType' | 'keepOpen' | 'hideTokens'
 > &
-  InternalBaseComponentProps;
+  InternalBaseComponentProps & {
+    styleClassNames?: StyleClassNames;
+  };
+
+// Style API v2
+export interface StyleClassNames {
+  trigger?: string;
+  inlineLabel?: string;
+  filter?: InputStyleClassNames;
+  dropdown?: string;
+  token?: TokenStyleClassNames;
+}
 
 type ExtendedToken = TokenGroupProps.Item & { _readOnly: boolean };
 
@@ -56,7 +70,7 @@ const InternalMultiselect = React.forwardRef(
       tokenLimit,
       i18nStrings,
       virtualScroll,
-      inlineTokens = false,
+      inlineTokens,
       hideTokens,
       expandToViewport,
       tokenLimitShowFewerAriaLabel,
@@ -69,6 +83,7 @@ const InternalMultiselect = React.forwardRef(
       renderDropdownFooter,
       dropdownRole,
       dropdownAriaDescribedby,
+      styleClassNames,
       ...restProps
     }: InternalMultiselectProps,
     externalRef: React.Ref<MultiselectProps.Ref>
@@ -79,6 +94,16 @@ const InternalMultiselect = React.forwardRef(
     const i18n = useInternalI18n('multiselect');
 
     const isGrouped = !!groupedControlProps.position;
+
+    warnOnUnsupportedGroupedControlProps({
+      isGrouped,
+      componentName: 'Multiselect',
+      invalid: formFieldContext.invalid,
+      warning: formFieldContext.warning,
+      readOnly,
+      inlineTokens,
+      expandToViewport,
+    });
 
     // When rendered inside a control group, tokens are always shown inline in the
     // trigger regardless of the `inlineTokens` prop, since there is no room to
@@ -130,6 +155,7 @@ const InternalMultiselect = React.forwardRef(
         ariaLabel={filteringAriaLabel}
         ariaRequired={ariaRequired}
         value={filteringValue}
+        styleClassNames={styleClassNames?.filter}
         {...multiselectProps.getFilterProps()}
       />
     );
@@ -138,7 +164,7 @@ const InternalMultiselect = React.forwardRef(
     const [triggerWidth, setTriggerWidth] = useState<number | null>(null);
     useResizeObserver(
       () => triggerRef.current,
-      entry => entry.borderBoxWidth > 0 && setTriggerWidth(entry.borderBoxWidth)
+      entry => setTriggerWidth(entry.borderBoxWidth)
     );
 
     const trigger = (
@@ -154,6 +180,11 @@ const InternalMultiselect = React.forwardRef(
         isOpen={multiselectProps.isOpen}
         groupedControlProps={groupedControlProps}
         inlineLabelText={inlineLabelText}
+        styleClassNames={{
+          trigger: styleClassNames?.trigger,
+          inlineLabel: styleClassNames?.inlineLabel,
+          token: styleClassNames?.token,
+        }}
         {...formFieldContext}
         controlId={controlId}
         ariaLabelledby={joinStrings(formFieldContext.ariaLabelledby, ariaLabelId)}
@@ -214,6 +245,7 @@ const InternalMultiselect = React.forwardRef(
         >
           <Dropdown
             {...dropdownProps}
+            styleClassNames={{ root: styleClassNames?.dropdown }}
             ariaLabelledby={dropdownProps.ariaRole ? joinStrings(ariaLabelId, controlId) : undefined}
             ariaDescribedby={
               dropdownProps.ariaRole
@@ -237,14 +269,13 @@ const InternalMultiselect = React.forwardRef(
                     <DropdownFooter content={multiselectProps.isOpen ? dropdownStatus.content : null} id={footerId} />
                   ) : null
                 }
-                menuProps={{ ...multiselectProps.getMenuProps(), ariaRequired }}
+                listProps={{ ...multiselectProps.getMenuProps(), ariaRequired }}
                 getOptionProps={multiselectProps.getOptionProps}
                 filteredOptions={multiselectProps.filteredOptions}
                 filteringValue={filteringValue}
                 ref={multiselectProps.scrollToIndex}
                 hasDropdownStatus={dropdownStatus.content !== null}
-                checkboxes={true}
-                useInteractiveGroups={true}
+                selectionType="multi"
                 screenReaderContent={multiselectProps.announcement}
                 highlightType={multiselectProps.highlightType}
                 firstOptionSticky={hasFilteredOptions && enableSelectAll}
@@ -266,6 +297,7 @@ const InternalMultiselect = React.forwardRef(
               disableOuterPadding={true}
               readOnly={readOnly}
               isItemReadOnly={item => (item as ExtendedToken)._readOnly}
+              styleClassNames={{ token: styleClassNames?.token }}
             />
           )}
 

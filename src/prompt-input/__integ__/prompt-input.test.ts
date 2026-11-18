@@ -12,6 +12,16 @@ class PromptInputPage extends BasePageObject {
     const { height } = await this.getBoundingBox(getPromptInputWrapper(testid).toSelector());
     return height;
   }
+
+  setPaddingBlock(selector: string, value: string) {
+    return this.browser.execute(
+      (selector: string, value: string) => {
+        (document.querySelector(selector) as HTMLElement).style.paddingBlock = value;
+      },
+      selector,
+      value
+    );
+  }
 }
 
 interface SetupTestOptions {
@@ -40,7 +50,7 @@ describe('Prompt input', () => {
     setupTest({}, async page => {
       await expect(page.getPromptInputHeight()).resolves.toEqual(32);
       await page.click('#placeholder-text-button');
-      await expect(page.getPromptInputHeight()).resolves.toEqual(94);
+      await expect(page.getPromptInputHeight()).resolves.toEqual(92);
 
       const clientHeight = await page.getElementProperty(
         getPromptInputWrapper().findNativeTextarea().toSelector(),
@@ -52,6 +62,24 @@ describe('Prompt input', () => {
       );
 
       await expect(Number(clientHeight)).toBeLessThan(Number(scrollHeight));
+    })
+  );
+
+  test(
+    'Height follows a padding change made outside React',
+    setupTest({}, async page => {
+      const textarea = getPromptInputWrapper().findNativeTextarea().toSelector();
+      const stockHeight = Number(await page.getElementProperty(textarea, 'clientHeight'));
+      await page.setPaddingBlock(textarea, '10px');
+      await page.pause(100);
+      // 5px -> 10px on each side: the one-row height grows by 10px without any React render.
+      await expect(page.getElementProperty(textarea, 'clientHeight')).resolves.toEqual(stockHeight + 10);
+
+      await page.click('#placeholder-text-button');
+      // maxRows 4: four 20px rows plus the 20px of padding, content beyond that scrolls.
+      await expect(page.getElementProperty(textarea, 'clientHeight')).resolves.toEqual(100);
+      const scrollHeight = await page.getElementProperty(textarea, 'scrollHeight');
+      await expect(Number(scrollHeight)).toBeGreaterThan(100);
     })
   );
 

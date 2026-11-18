@@ -10,8 +10,8 @@ export interface FormFieldProps extends BaseComponentProps {
    * The ID of the primary form control. You can use this to set the
    * `for` attribute of a label for accessibility.
    *
-   * If you don't set this property, the control group automatically sets
-   * the label to the ID of an inner form control (for example, an [input](/components/input) component).
+   * If you don't set this property, the form field automatically generates an ID
+   * and assigns it to the inner form control (for example, an [input](/components/input) component).
    * This only works well if you're using a single control in the form field.
    */
   controlId?: string;

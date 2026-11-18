@@ -9,12 +9,14 @@ import { ButtonDropdownProps } from '../button-dropdown/interfaces.js';
 import { FileInputProps } from '../file-input/interfaces';
 import { fireCancelableEvent } from '../internal/events';
 import { nodeBelongs } from '../internal/utils/node-belongs';
+import { getStyleClassName } from '../internal/utils/style-slot';
 import { NonCancelableEventHandler } from '../types/events';
 import CopyToClipboardItem from './copy-to-clipboard-item.js';
 import FileInputItem from './file-input-item';
 import IconButtonItem from './icon-button-item';
 import IconToggleButtonItem from './icon-toggle-button-item.js';
 import { ButtonGroupProps } from './interfaces';
+import { StyleClassNames } from './internal-interfaces';
 import MenuDropdownItem from './menu-dropdown-item';
 import { getButtonGroupItemStyles } from './style';
 
@@ -31,6 +33,7 @@ interface ItemElementProps {
   onCopyFailure?: NonCancelableEventHandler<ButtonGroupProps.CopyFailureDetail> | undefined;
   position: string;
   style?: ButtonGroupProps.Style;
+  styleClassNames?: StyleClassNames;
 }
 
 const ItemElement = forwardRef(
@@ -46,6 +49,7 @@ const ItemElement = forwardRef(
       onCopySuccess,
       position,
       style,
+      styleClassNames,
     }: ItemElementProps,
     ref: React.Ref<ButtonProps.Ref>
   ) => {
@@ -136,6 +140,7 @@ const ItemElement = forwardRef(
     };
 
     const itemStylePropertiesAndVariables = getButtonGroupItemStyles(style);
+    const itemClassName = getStyleClassName(styleClassNames?.item, { item });
 
     return (
       <div
@@ -160,6 +165,7 @@ const ItemElement = forwardRef(
       >
         {item.type === 'icon-button' && (
           <IconButtonItem
+            styleClassName={itemClassName}
             ref={buttonRef}
             item={item}
             onItemClick={onClickHandler}
@@ -170,6 +176,7 @@ const ItemElement = forwardRef(
         )}
         {item.type === 'icon-toggle-button' && (
           <IconToggleButtonItem
+            styleClassName={itemClassName}
             ref={buttonRef}
             item={item}
             onItemClick={onClickHandler}
@@ -180,6 +187,7 @@ const ItemElement = forwardRef(
         )}
         {item.type === 'icon-file-input' && (
           <FileInputItem
+            styleClassName={itemClassName}
             ref={fileInputRef}
             item={item}
             onFilesChange={onFilesChangeHandler}
@@ -189,6 +197,8 @@ const ItemElement = forwardRef(
         )}
         {item.type === 'menu-dropdown' && (
           <MenuDropdownItem
+            styleClassName={itemClassName}
+            dropdownClassName={styleClassNames?.dropdown}
             ref={buttonDropdownRef}
             item={item}
             showTooltip={tooltip?.item === item.id}
@@ -200,6 +210,7 @@ const ItemElement = forwardRef(
         )}
         {item.type === 'icon-copy-to-clipboard' && (
           <CopyToClipboardItem
+            styleClassName={itemClassName}
             ref={copyToClipboardRef}
             item={item}
             showTooltip={tooltip?.item === item.id}

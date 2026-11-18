@@ -8,6 +8,7 @@ const defaultProps: Record<string, Record<string, any>> = {
   table: { columnDefinitions: [] },
   cards: { cardDefinition: {} },
   autosuggest: { options: [], value: '' },
+  'option-list': { options: [], selectionType: 'single' },
   'anchor-navigation': { anchors: [] },
   'code-editor': { i18nStrings },
   wizard: {
@@ -86,8 +87,8 @@ const defaultProps: Record<string, Record<string, any>> = {
   },
   'tutorial-panel': {
     i18nStrings: {
-      stepTitle: () => '',
-      labelTotalSteps: () => '',
+      tutorialListDescription: '',
+      labelLearnMoreExternalIcon: '',
     },
     tutorials: [],
   },

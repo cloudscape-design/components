@@ -121,6 +121,7 @@
   @include theming.one-theme-only {
     inset-inline-end: calc(-1 * #{awsui.$space-xs});
     inline-size: awsui.$space-s;
+    overflow: hidden;
   }
 
   @include styles.with-motion {

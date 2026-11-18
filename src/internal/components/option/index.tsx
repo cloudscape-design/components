@@ -45,7 +45,7 @@ const Option = ({
   }
   if (customContent) {
     return (
-      <div data-value={option.value} className={clsx(styles.option)}>
+      <div data-value={option.value} className={clsx(styles.option, triggerVariant && styles['in-trigger'])}>
         <div className={clsx(styles['custom-content'])}>{customContent}</div>
       </div>
     );
@@ -72,6 +72,7 @@ const Option = ({
     isGroupOption && styles.parent,
     highlightedOption && styles.highlighted,
     singleLineLabelContent && styles['single-line'],
+    triggerVariant && styles['in-trigger'],
     baseProps.className
   );
 

@@ -10,12 +10,14 @@ import { useFormFieldContext } from '../contexts/form-field';
 import { OptionsLoadItemsDetail } from '../dropdown/interfaces';
 import { useInternalI18n } from '../i18n/context';
 import { BaseChangeDetail } from '../input/interfaces';
+import { StyleClassNames as InputStyleClassNames } from '../input/internal';
 import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
 import { checkOptionValueField } from '../internal/components/listbox/utils/check-option-value-field';
 import { useGroupedControlContext } from '../internal/context/control-group-context';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
+import { warnOnUnsupportedGroupedControlProps } from '../internal/grouped-control/dev-warnings';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { BaseKeyDetail, NonCancelableCustomEvent } from '../types/events';
@@ -27,7 +29,15 @@ import AutosuggestOptionsList from './options-list';
 
 import styles from './styles.css.js';
 
-interface InternalAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {}
+interface InternalAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {
+  styleClassNames?: StyleClassNames;
+}
+
+// Style API v2
+export interface StyleClassNames {
+  input?: InputStyleClassNames;
+  dropdown?: string;
+}
 
 const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, ref: Ref<AutosuggestProps.Ref>) => {
   const {
@@ -61,6 +71,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     renderOption,
     tokens,
     i18nStrings,
+    styleClassNames,
     __internalRootRef,
     ...restProps
   } = props;
@@ -184,6 +195,16 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
 
   const formFieldContext = useFormFieldContext(restProps);
   const groupedControlProps = useGroupedControlContext();
+
+  warnOnUnsupportedGroupedControlProps({
+    isGrouped: !!groupedControlProps.position,
+    componentName: 'Autosuggest',
+    invalid: formFieldContext.invalid,
+    warning: formFieldContext.warning,
+    readOnly,
+    expandToViewport,
+  });
+
   // When grouped, the dropdown is portaled regardless of the public
   // `expandToViewport` prop so it escapes the control slot's stacking context
   // and paints over the group's inline label (which the focus ring stays under).
@@ -244,6 +265,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
       ariaActivedescendant={highlightedOptionId}
       dropdownExpanded={shouldRenderDropdownContent}
       style={style}
+      styleClassNames={styleClassNames}
       tokens={tokens}
       tokenOverflowAriaLabel={tokenI18n.tokenOverflowAriaLabel}
       tokenInsertedAnnouncement={tokenI18n.tokenInsertedAriaLabel}

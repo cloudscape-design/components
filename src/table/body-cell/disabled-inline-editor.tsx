@@ -76,6 +76,7 @@ export function DisabledInlineEditor<ItemType>({
       <div className={styles['body-cell-editor-wrapper']}>
         <div ref={isExpandableColumn ? clickAwayRef : undefined}>
           <button
+            type="button"
             ref={buttonRef}
             tabIndex={tabIndex}
             className={clsx(

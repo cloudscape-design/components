@@ -75,6 +75,7 @@ export function PropertyInput({
           : allPropertiesOption
       }
       onChange={e => onChangePropertyKey(e.detail.selectedOption.value)}
+      filteringAriaLabel={i18nStrings.tokenEditorPropertyFilteringAriaLabel}
       {...asyncPropertySelectProps}
     />
   );
@@ -206,6 +207,7 @@ function ValueInputEnum({
   asyncProps,
   filteringOptions,
   onLoadItems,
+  i18nStrings,
 }: ValueInputPropsEnum) {
   const valueOptions = filteringOptions
     .filter(option => option.property?.propertyKey === property.propertyKey)
@@ -222,6 +224,7 @@ function ValueInputEnum({
           selectedOptions={selectedOptions}
           onChange={e => onChangeValue(e.detail.selectedOptions.map(o => o.value))}
           options={valueOptions.length > 0 ? [{ options: valueOptions, label: property.groupValuesLabel }] : []}
+          filteringAriaLabel={i18nStrings.tokenEditorValueFilteringAriaLabel}
           {...asyncValueAutosuggestProps}
           inlineTokens={true}
           hideTokens={true}

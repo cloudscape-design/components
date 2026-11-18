@@ -117,6 +117,19 @@ describe('getFooterStyles', () => {
     expect(getFooterStyles(allStyles)).toMatchSnapshot();
   });
 
+  test('draws a visible divider when only one of its values is set', () => {
+    expect(getFooterStyles({ footer: { divider: { borderWidth: '2px' } } })).toEqual({
+      borderBlockStartStyle: 'solid',
+      borderBlockStartWidth: '2px',
+      borderBlockStartColor: 'currentcolor',
+    });
+    expect(getFooterStyles({ footer: { divider: { borderColor: 'red' } } })).toEqual({
+      borderBlockStartStyle: 'solid',
+      borderBlockStartWidth: 'medium',
+      borderBlockStartColor: 'red',
+    });
+  });
+
   test('returns empty object when SYSTEM is not core', async () => {
     jest.resetModules();
     jest.doMock('../../internal/environment', () => ({

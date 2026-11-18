@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import ControlGroup, { ControlGroupProps } from '~components/internal/components/control-group';
+import ControlGroup, { ControlGroupProps } from '~components/control-group';
 
 import { PermutationsPage } from '../app/templates';
 import createPermutations from '../utils/permutations';

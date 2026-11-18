@@ -7,13 +7,12 @@ import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { InternalDropdownProps } from '../../dropdown/internal';
 import { ButtonTriggerProps } from '../../internal/components/button-trigger';
-import { connectOptionsByValue } from '../../internal/components/listbox/utils/connect-options';
+import { ListElementProps } from '../../internal/components/listbox/interfaces';
+import { SelectionModel } from '../../internal/components/listbox/selection/interfaces';
+import { singleSelection } from '../../internal/components/listbox/selection/single-selection';
+import { useListbox } from '../../internal/components/listbox/use-listbox';
 import { DropdownOption } from '../../internal/components/option/interfaces';
-import { isGroup, isGroupInteractive, isInteractive } from '../../internal/components/option/utils/filter-options';
-import { OptionsListProps } from '../../internal/components/options-list';
-import { useHighlightedOption } from '../../internal/components/options-list/utils/use-highlight-option';
-import { getOptionId } from '../../internal/components/options-list/utils/use-ids';
-import { useMenuKeyboard, useTriggerKeyboard } from '../../internal/components/options-list/utils/use-keyboard';
+import { useTriggerKeyboard } from '../../internal/components/options-list/utils/use-keyboard';
 import { useOpenState } from '../../internal/components/options-list/utils/use-open-state';
 import { fireNonCancelableEvent } from '../../internal/events';
 import useForwardFocus from '../../internal/hooks/forward-focus';
@@ -23,10 +22,6 @@ import { NonCancelableEventHandler } from '../../types/events';
 import { OptionDefinition, OptionGroup } from '../../types/option';
 import { SelectProps } from '../interfaces';
 import { FilterProps } from '../parts/filter';
-import { ItemProps } from '../parts/item';
-
-export type MenuProps = Omit<OptionsListProps, 'children'> & { ref: React.RefObject<HTMLDivElement> };
-export type GetOptionProps = (option: DropdownOption, index: number) => ItemProps;
 
 interface UseSelectProps {
   selectedOptions: ReadonlyArray<OptionDefinition>;
@@ -42,10 +37,17 @@ interface UseSelectProps {
   setFilteringValue?: (filteringText: string) => void;
   useInteractiveGroups?: boolean;
   statusType: DropdownStatusProps.StatusType;
-  isAllSelected?: boolean;
-  isSomeSelected?: boolean;
+  /**
+   * Source of group and select-all state, built from `selectedOptions`.
+   * Defaults to single selection over `selectedOptions`.
+   */
+  selection?: SelectionModel;
   toggleAll?: () => void;
   dropdownRole?: SelectProps.DropdownRole;
+  /** Group of the option, announced with the highlighted option. Defaults to no group. */
+  getParent?: (option: DropdownOption) => undefined | OptionGroup;
+  selectedAriaLabel?: string;
+  renderHighlightedAriaLive?: SelectProps.ContainingOptionAndGroupString;
 }
 
 export interface SelectTriggerProps extends ButtonTriggerProps {
@@ -66,42 +68,56 @@ export function useSelect({
   setFilteringValue,
   useInteractiveGroups = false,
   statusType,
-  isAllSelected,
-  isSomeSelected,
+  selection = singleSelection(selectedOptions),
   toggleAll,
   dropdownRole,
+  getParent = () => undefined,
+  selectedAriaLabel,
+  renderHighlightedAriaLive,
 }: UseSelectProps) {
-  const interactivityCheck = useInteractiveGroups ? isGroupInteractive : isInteractive;
-
-  const isHighlightable = (option?: DropdownOption) => !!option && (useInteractiveGroups || option.type !== 'parent');
-
   const filterRef = useRef<HTMLInputElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
   const hasFilter = filteringType !== 'none' && !embedded;
   // Filtering always renders a dialog; `dropdownRole` can additionally force dialog semantics without a filter.
   const isDialog = hasFilter || dropdownRole === 'dialog';
-  const activeRef = hasFilter ? filterRef : menuRef;
-  const __selectedOptions = connectOptionsByValue(options, selectedOptions);
-  const __selectedOptionsSet = new Set(__selectedOptions);
-  const __selectedValuesSet = selectedOptions.reduce((selectedValuesSet: Set<string>, item: OptionDefinition) => {
-    if (item.value) {
-      selectedValuesSet.add(item.value);
-    }
-    return selectedValuesSet;
-  }, new Set<string>());
-  const [
-    { highlightType, highlightedOption, highlightedIndex },
-    {
-      moveHighlightWithKeyboard,
+
+  // `onSelect` and `onEscape` run only on user events, after `closeDropdownIfNecessary` and `handleEscape` below
+  // are declared.
+  const listbox = useListbox({
+    options,
+    selectedOptions,
+    selection,
+    interactiveGroups: useInteractiveGroups,
+    onSelect: option => {
+      if (option.type === 'select-all' && toggleAll) {
+        toggleAll();
+      } else {
+        updateSelectedOption(option.option);
+      }
+      closeDropdownIfNecessary();
+    },
+    // With a filter input, Space types into it unless an option has a keyboard highlight.
+    spaceSelects: hasFilter ? 'keyboard-highlight' : 'always',
+    onEscape: () => handleEscape(),
+    getParent,
+    selectedAriaLabel,
+    renderHighlightedAriaLive,
+  });
+  const activeRef = hasFilter ? filterRef : listbox.listRef;
+  const {
+    listId: menuId,
+    highlightType,
+    highlightedOption,
+    highlightedIndex,
+    selectedOptions: __selectedOptions,
+    highlight: {
       resetHighlightWithKeyboard,
       setHighlightedIndexWithMouse,
       highlightOptionWithKeyboard,
       highlightFirstOptionWithMouse,
       goHomeWithKeyboard,
-      goEndWithKeyboard,
     },
-  ] = useHighlightedOption({ options: options, isHighlightable });
+  } = listbox;
 
   const { isOpen, openDropdown, closeDropdown, toggleDropdown, openedWithKeyboard } = useOpenState({
     defaultOpen: embedded,
@@ -122,9 +138,7 @@ export function useSelect({
   };
 
   const hasSelectedOption = __selectedOptions.length > 0;
-  const menuId = useUniqueId('option-list');
   const dialogId = useUniqueId('dialog');
-  const highlightedOptionId = getOptionId(menuId, highlightedIndex);
 
   const closeDropdownIfNecessary = () => {
     if (!keepOpen) {
@@ -133,49 +147,12 @@ export function useSelect({
     }
   };
 
-  const selectOption = (option?: DropdownOption) => {
-    const optionToSelect = option || highlightedOption;
-    if (!optionToSelect || !interactivityCheck(optionToSelect)) {
-      return;
+  const handleEscape = () => {
+    if (!embedded) {
+      triggerRef.current?.focus();
+      closeDropdown();
     }
-    if (optionToSelect.type === 'select-all' && toggleAll) {
-      toggleAll();
-    } else {
-      updateSelectedOption(optionToSelect.option);
-    }
-    closeDropdownIfNecessary();
   };
-
-  const activeKeyDownHandler = useMenuKeyboard({
-    goUp: () => {
-      if (
-        (!useInteractiveGroups && highlightedOption?.type === 'child' && highlightedIndex === 1) ||
-        highlightedIndex === 0
-      ) {
-        goEndWithKeyboard();
-        return;
-      }
-      moveHighlightWithKeyboard(-1);
-    },
-    goDown: () => {
-      if (highlightedIndex === options.length - 1) {
-        goHomeWithKeyboard();
-        return;
-      }
-
-      moveHighlightWithKeyboard(1);
-    },
-    selectOption,
-    goHome: goHomeWithKeyboard,
-    goEnd: goEndWithKeyboard,
-    closeDropdown: () => {
-      if (!embedded) {
-        triggerRef.current?.focus();
-        closeDropdown();
-      }
-    },
-    preventNativeSpace: !hasFilter || (highlightedOption && highlightType.type === 'keyboard'),
-  });
 
   const triggerKeyDownHandler = useTriggerKeyboard({
     openDropdown: () => openDropdown(true),
@@ -220,7 +197,7 @@ export function useSelect({
 
     return {
       ref: filterRef,
-      onKeyDown: activeKeyDownHandler,
+      onKeyDown: listbox.onKeyDown,
       onChange: event => {
         setFilteringValue(event.detail.value);
         resetHighlightWithKeyboard();
@@ -229,7 +206,7 @@ export function useSelect({
         fireLoadItems(event.detail.value);
       },
       nativeInputAttributes: {
-        'aria-activedescendant': highlightedOptionId,
+        'aria-activedescendant': listbox.activeDescendantId,
         ['aria-owns']: menuId,
         ['aria-controls']: menuId,
       },
@@ -237,78 +214,12 @@ export function useSelect({
   };
 
   const getMenuProps = () => {
-    const menuProps: MenuProps = {
-      id: menuId,
-      ref: menuRef,
+    const menuProps: ListElementProps = {
+      ...listbox.getListProps({ withKeyboard: !hasFilter, embedded }),
       open: isOpen,
-      onMouseUp: itemIndex => {
-        if (itemIndex > -1) {
-          selectOption(options[itemIndex]);
-        }
-      },
-      onMouseMove: itemIndex => {
-        if (itemIndex > -1) {
-          setHighlightedIndexWithMouse(itemIndex);
-        }
-      },
       statusType,
     };
-    if (!hasFilter) {
-      menuProps.onKeyDown = activeKeyDownHandler;
-      menuProps.nativeAttributes = {
-        'aria-activedescendant': highlightedOptionId,
-      };
-    }
-    if (embedded) {
-      menuProps.onFocus = () => {
-        if (!highlightedOption) {
-          goHomeWithKeyboard();
-        }
-      };
-      menuProps.onBlur = () => {
-        resetHighlightWithKeyboard();
-      };
-    }
     return menuProps;
-  };
-  const getGroupState = (option: OptionGroup) => {
-    const totalSelected = option.options.filter(item => !!item.value && __selectedValuesSet.has(item.value)).length;
-    const hasSelected = totalSelected > 0;
-    const allSelected = totalSelected === option.options.length;
-    return {
-      selected: hasSelected && allSelected && useInteractiveGroups,
-      indeterminate: hasSelected && !allSelected,
-    };
-  };
-
-  const getOptionProps = (option: DropdownOption, index: number) => {
-    const isSelectAll = option.type === 'select-all';
-    const highlighted = option === highlightedOption;
-    const groupState = isGroup(option.option) ? getGroupState(option.option) : undefined;
-    const selected = isSelectAll ? isAllSelected : __selectedOptionsSet.has(option) || !!groupState?.selected;
-    const nextOption = options[index + 1]?.option;
-    const isNextSelected =
-      !!nextOption && isGroup(nextOption)
-        ? getGroupState(nextOption).selected
-        : __selectedOptionsSet.has(options[index + 1]);
-    const previousOption = options[index - 1]?.option;
-    const isPreviousSelected =
-      !!previousOption && isGroup(previousOption)
-        ? getGroupState(previousOption).selected
-        : __selectedOptionsSet.has(options[index - 1]);
-    const optionProps: any = {
-      key: index,
-      option,
-      highlighted,
-      selected,
-      isNextSelected,
-      isPreviousSelected,
-      indeterminate: !!groupState?.indeterminate || (isSelectAll && !isAllSelected && isSomeSelected),
-      ['data-mouse-target']: isHighlightable(option) ? index : -1,
-      id: getOptionId(menuId, index),
-    };
-
-    return optionProps;
   };
 
   const prevOpen = usePrevious<boolean>(isOpen);
@@ -359,10 +270,6 @@ export function useSelect({
   }, [isOpen, activeRef, embedded, focusActiveRef]);
 
   useForwardFocus(externalRef, triggerRef as React.RefObject<HTMLElement>);
-  const highlightedGroupSelected =
-    !!highlightedOption && isGroup(highlightedOption.option) && getGroupState(highlightedOption.option).selected;
-  const announceSelected =
-    !!highlightedOption && (__selectedOptionsSet.has(highlightedOption) || highlightedGroupSelected);
 
   // Closes the dropdown and returns focus to the trigger, matching the normal close behavior.
   // Exposed to the public dropdown-customization render props via `DropdownContentProps.closeDropdown`.
@@ -387,10 +294,12 @@ export function useSelect({
     getDropdownProps,
     getMenuProps,
     getFilterProps,
-    getOptionProps,
+    getOptionProps: listbox.getOptionProps,
     highlightOption: highlightOptionWithKeyboard,
-    selectOption,
-    announceSelected,
+    selectOption: listbox.selectOption,
+    announceSelected: listbox.announceSelected,
+    announcement: listbox.announcement,
+    scrollToIndex: listbox.scrollToIndex,
     closeDropdown: closeDropdownAndRefocus,
     dialogId,
     focusActiveRef,

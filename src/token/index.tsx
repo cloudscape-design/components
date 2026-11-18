@@ -9,7 +9,7 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { GeneratedAnalyticsMetadataTokenComponent } from './analytics-metadata/interfaces';
 import { TokenProps } from './interfaces';
-import InternalToken from './internal';
+import InternalToken, { StyleClassNames } from './internal';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 
@@ -30,6 +30,7 @@ export default function Token({ variant = 'normal', ...props }: TokenProps) {
     <InternalToken
       {...props}
       variant={variant}
+      styleClassNames={(props as { styleClassNames?: StyleClassNames }).styleClassNames}
       {...baseComponentProps}
       {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
     />

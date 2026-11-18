@@ -27,7 +27,14 @@ import {
 
 import styles from './styles.css.js';
 
+// Style API v2
+export interface StyleClassNames {
+  root?: string;
+  handle?: string;
+}
+
 interface InternalSliderProps extends SliderProps, InternalBaseComponentProps {
+  styleClassNames?: StyleClassNames;
   style?: SliderProps['style'];
 }
 
@@ -47,6 +54,7 @@ export default function InternalSlider({
   valueFormatter,
   i18nStrings,
   style,
+  styleClassNames,
   __internalRootRef,
   ...rest
 }: InternalSliderProps) {
@@ -132,7 +140,7 @@ export default function InternalSlider({
     <div
       {...baseProps}
       ref={__internalRootRef}
-      className={clsx(baseProps.className, styles.root)}
+      className={clsx(baseProps.className, styles.root, styleClassNames?.root)}
       style={getSliderStyles(style)}
     >
       <div
@@ -241,7 +249,7 @@ export default function InternalSlider({
             }
             fireNonCancelableEvent(onChange, { value: Number(event.target.value) });
           }}
-          className={clsx(styles.thumb, {
+          className={clsx(styles.thumb, styleClassNames?.handle, {
             [styles.error]: invalid,
             [styles.warning]: showWarning,
             [styles.disabled]: disabled,

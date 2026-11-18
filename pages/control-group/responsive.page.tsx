@@ -3,9 +3,9 @@
 import React from 'react';
 
 import Box from '~components/box';
+import ControlGroup from '~components/control-group';
 import FormField from '~components/form-field';
 import Input from '~components/input';
-import ControlGroup from '~components/internal/components/control-group';
 import RadioGroup from '~components/radio-group';
 import Select from '~components/select';
 import SpaceBetween from '~components/space-between';

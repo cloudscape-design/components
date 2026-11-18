@@ -29,6 +29,13 @@ export interface CategoryProps extends HighlightProps {
   filteringEnabled?: boolean;
   menuId?: string;
   filteringDescriptionId?: string;
+  asyncLoadingProps?: ButtonDropdownProps.AsyncLoadingProps;
+  getExpandableItemsAsyncLoadingState?: ButtonDropdownProps['getExpandableItemsAsyncLoadingState'];
+  /**
+   * Fires the recovery request for an expandable group in error state. Defined only when the
+   * consumer listens to `onLoadItems`, which is what makes the recovery action available.
+   */
+  onGroupRecoveryClick?: (groupId: string) => void;
 }
 
 export interface ItemListProps extends HighlightProps {
@@ -50,6 +57,13 @@ export interface ItemListProps extends HighlightProps {
   filteringEnabled?: boolean;
   menuId?: string;
   filteringDescriptionId?: string;
+  asyncLoadingProps?: ButtonDropdownProps.AsyncLoadingProps;
+  getExpandableItemsAsyncLoadingState?: ButtonDropdownProps['getExpandableItemsAsyncLoadingState'];
+  /**
+   * Fires the recovery request for an expandable group in error state. Defined only when the
+   * consumer listens to `onLoadItems`, which is what makes the recovery action available.
+   */
+  onGroupRecoveryClick?: (groupId: string) => void;
 }
 
 export interface ItemProps {
@@ -94,9 +108,17 @@ type InternalItems = ReadonlyArray<InternalItemOrGroup>;
 
 export type InternalItemOrGroup = InternalItem | InternalCheckboxItem | InternalItemGroup;
 
+// Style API v2
+export interface StyleClassNames {
+  trigger?: string;
+  mainAction?: string;
+  dropdown?: string;
+}
+
 export interface InternalButtonDropdownProps
   extends Omit<ButtonDropdownProps, 'variant' | 'items'>,
     InternalBaseComponentProps {
+  styleClassNames?: StyleClassNames;
   customTriggerBuilder?: (props: CustomTriggerProps) => React.ReactNode;
   variant?: ButtonDropdownProps['variant'] | 'navigation';
   items: ReadonlyArray<InternalItemOrGroup>;

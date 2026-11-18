@@ -11,7 +11,7 @@ import {
   getAnalyticsMetadataAttribute,
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import InternalButton from '../button/internal';
+import InternalButton, { StyleClassNames as ButtonStyleClassNames } from '../button/internal';
 import { useFormFieldContext } from '../contexts/form-field';
 import { getBaseProps } from '../internal/base-component/index.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
@@ -27,6 +27,7 @@ import styles from './styles.css.js';
 
 interface InternalFileInputProps {
   __inputClassName?: string;
+  styleClassNames?: ButtonStyleClassNames;
   __inputNativeAttributes?: React.InputHTMLAttributes<HTMLInputElement> | Record<`data-${string}`, string>;
   __injectAnalyticsComponentMetadata?: boolean;
 }
@@ -44,6 +45,7 @@ const InternalFileInput = React.forwardRef(
       children,
       __internalRootRef,
       __inputClassName,
+      styleClassNames,
       __inputNativeAttributes,
       __injectAnalyticsComponentMetadata,
       ...restProps
@@ -147,6 +149,7 @@ const InternalFileInput = React.forwardRef(
         {/* The button is decorative. It dispatches clicks to the file input and is ARIA-hidden. */}
         {/* When the input is focused the focus outline is forced on the button. */}
         <InternalButton
+          styleClassNames={styleClassNames}
           iconName="upload"
           variant={variant === 'icon' ? 'icon' : undefined}
           formAction="none"

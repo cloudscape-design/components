@@ -15,7 +15,7 @@
     $border-radius: 4px,
     $padding-block: 12px,
     $padding-inline: 24px,
-    $focus-ring-color: palette.$genai
+    $awsui-focus-ring-color: palette.$genai
   );
 }
 
@@ -29,7 +29,7 @@
     $color: palette.$text-on-accent,
     $border-color: palette.$genai,
     $border-radius: 4px,
-    $focus-ring-color: palette.$genai
+    $awsui-focus-ring-color: palette.$genai
   );
 
   &:hover,
@@ -43,7 +43,7 @@
 }
 
 .alert-genai-dismiss {
-  @include button.root($color: palette.$genai-text, $focus-ring-color: palette.$genai);
+  @include button.root($color: palette.$genai-text, $awsui-focus-ring-color: palette.$genai);
 
   &:hover,
   &:focus {

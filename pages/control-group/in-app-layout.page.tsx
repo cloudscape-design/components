@@ -4,7 +4,7 @@ import React from 'react';
 
 import { Container, ContentLayout, Header, ItemCard, SpaceBetween } from '~components';
 import AppLayout from '~components/app-layout';
-import ControlGroup from '~components/internal/components/control-group';
+import ControlGroup from '~components/control-group';
 
 import labels from '../app-layout/utils/labels';
 import ScreenshotArea from '../utils/screenshot-area';

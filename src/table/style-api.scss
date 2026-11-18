@@ -1,0 +1,52 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/foundation' as foundation;
+@use '../internal/styles/style-api' as style-api;
+
+// The outline of selected rows is painted by the cells of adjacent rows, so it is table-wide. The sticky
+// header shadow is painted by the container header that wraps the table header.
+$root-tokens: style-api.resolve(
+  (selected-row-outline-color, selected-row-outline-radius, sticky-header-shadow),
+  carrier
+);
+// Read by the header cell, its resizer and its focus ring.
+$header-cell-tokens: style-api.resolve(
+  style-api.combine((border-color, divider-color), style-api.$focus-ring),
+  carrier
+);
+// Read by every cell of the row, including sticky cells.
+$row-tokens: style-api.resolve((background-color, divider-color), carrier);
+// Read on the cell itself: a cell carrier would share its name with the row carrier and hide the row value.
+$cell-tokens: style-api.resolve((background-color), public);
+// The focus ring is drawn by the cell's ::before, which only receives inherited values.
+$cell-focus-ring-tokens: style-api.resolve(style-api.$focus-ring, carrier);
+
+@function root($token, $fallback) {
+  @return style-api.value($root-tokens, $token, $fallback);
+}
+
+@function header-cell($token, $fallback) {
+  @return style-api.value($header-cell-tokens, $token, $fallback);
+}
+
+@function row($token, $fallback) {
+  @return style-api.value($row-tokens, $token, $fallback);
+}
+
+// The cell background, then the row background, then the state default.
+@function cell-background($fallback) {
+  @return style-api.value($cell-tokens, background-color, row(background-color, $fallback));
+}
+
+// The keyboard navigation focus ring of a cell or header cell, read from that cell's carriers.
+@mixin focus-highlight($tokens, $gutter) {
+  @include styles.focus-highlight(
+    $gutter,
+    $border-radius: style-api.value($tokens, focus-ring-radius, awsui.$border-radius-control-default-focus-ring),
+    $box-shadow: 0 0 0 style-api.value($tokens, focus-ring-width, foundation.$box-shadow-focused-width)
+      style-api.value($tokens, focus-ring-color, awsui.$color-border-item-focused)
+  );
+}

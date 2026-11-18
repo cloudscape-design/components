@@ -11,14 +11,21 @@ interface ClearSortButtonProps<T> {
   multiColumnSort: TableProps.MultiColumnSort<T>;
   i18nStrings?: TableProps.I18nStrings;
   onClearSort?: () => void;
+  styleClassName?: string;
 }
 
-export function ClearSortButton<T>({ multiColumnSort, i18nStrings, onClearSort }: ClearSortButtonProps<T>) {
+export function ClearSortButton<T>({
+  multiColumnSort,
+  i18nStrings,
+  onClearSort,
+  styleClassName,
+}: ClearSortButtonProps<T>) {
   const i18n = useInternalI18n('table');
   return (
     <InternalButton
       variant="inline-link"
       formAction="none"
+      styleClassNames={{ root: styleClassName }}
       onClick={() => {
         fireNonCancelableEvent(multiColumnSort.onChange, { sortingColumns: [] });
         onClearSort?.();

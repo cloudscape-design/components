@@ -9,6 +9,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import InternalCheckbox from '../../checkbox/internal';
 import RadioButton from '../../internal/components/radio-button';
 import { KeyCode } from '../../internal/keycode';
+import { StyleClassNames } from '../style-api';
 import { ItemSelectionProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -23,6 +24,7 @@ export interface SelectionControlProps extends ItemSelectionProps {
   rowIndex?: number;
   itemKey?: string;
   verticalAlign?: 'middle' | 'top';
+  styleClassNames?: Pick<StyleClassNames, 'selectionCheckbox' | 'selectionRadio'>;
 }
 
 export function SelectionControl({
@@ -38,6 +40,7 @@ export function SelectionControl({
   rowIndex,
   itemKey,
   verticalAlign = 'middle',
+  styleClassNames,
   onChange,
   ...sharedProps
 }: SelectionControlProps) {
@@ -101,6 +104,7 @@ export function SelectionControl({
       indeterminate={indeterminate}
       ariaLabel={ariaLabel}
       ariaDescribedby={ariaDescribedby}
+      styleClassNames={styleClassNames?.selectionCheckbox}
     />
   ) : (
     <RadioButton
@@ -111,6 +115,7 @@ export function SelectionControl({
       onSelect={onChange}
       nativeInputAttributes={Object.keys(nativeInputAttributes).length > 0 ? nativeInputAttributes : undefined}
       __skipNativeAttributesWarnings={['aria-label', 'aria-describedby']}
+      styleClassNames={styleClassNames?.selectionRadio}
     />
   );
 

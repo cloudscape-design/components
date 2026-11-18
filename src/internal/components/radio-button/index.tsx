@@ -24,7 +24,7 @@ export interface InternalRadioButtonProps extends RadioButtonProps, InternalBase
 }
 
 // Style API v2
-interface StyleClassNames {
+export interface StyleClassNames {
   control?: string;
 }
 

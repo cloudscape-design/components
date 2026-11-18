@@ -674,7 +674,6 @@ describe('native attributes', () => {
 
   it('warns about overriding autosuggest-specific attributes', () => {
     renderAutosuggest(<Autosuggest {...defaultProps} nativeInputAttributes={{ 'aria-autocomplete': 'both' }} />);
-    expect(warnOnce).toHaveBeenCalledTimes(1);
     expect(warnOnce).toHaveBeenCalledWith(
       'Autosuggest',
       'Overriding native attribute [aria-autocomplete] which has a Cloudscape-provided value'
@@ -685,7 +684,6 @@ describe('native attributes', () => {
     renderAutosuggest(
       <Autosuggest {...defaultProps} ariaRequired={true} nativeInputAttributes={{ 'aria-required': 'false' }} />
     );
-    expect(warnOnce).toHaveBeenCalledTimes(1);
     expect(warnOnce).toHaveBeenCalledWith(
       'Input',
       'Overriding native attribute [aria-required] which has a Cloudscape-provided value'

@@ -12,6 +12,7 @@ import { ButtonGroupProps } from './interfaces.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
 interface FileInputItemProps {
+  styleClassName?: string;
   item: ButtonGroupProps.IconFileInput;
   showTooltip: boolean;
   onTooltipDismiss: () => void;
@@ -19,7 +20,10 @@ interface FileInputItemProps {
 }
 
 const FileInputItem = forwardRef(
-  ({ item, showTooltip, onTooltipDismiss, onFilesChange }: FileInputItemProps, ref: React.Ref<FileInputProps.Ref>) => {
+  (
+    { styleClassName, item, showTooltip, onTooltipDismiss, onFilesChange }: FileInputItemProps,
+    ref: React.Ref<FileInputProps.Ref>
+  ) => {
     const [files, setFiles] = useState<File[]>([]);
     const containerRef = React.useRef<HTMLDivElement>(null);
 
@@ -28,6 +32,7 @@ const FileInputItem = forwardRef(
     return (
       <div ref={containerRef}>
         <InternalFileInput
+          styleClassNames={{ root: styleClassName }}
           className={testUtilStyles['button-group-item']}
           ref={ref}
           variant="icon"

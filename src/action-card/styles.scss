@@ -8,12 +8,28 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/utils/theming' as theming;
+@use '../internal/styles/style-api' as style-api;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use './constants' as constants;
 @use './mixins' as mixins;
 @use './motion';
 
+$tokens: mixins.$tokens;
+@include style-api.register($tokens);
+@include style-api.docs(
+  'root',
+  $tokens,
+  $properties: (background),
+  $descriptions: (
+    slot: 'Not a button element: use `:has(:hover)` and `:has(:active)` for interaction states.',
+    tokens: (
+      border-width: 'Drawn over the card edges; takes no space.',
+    )
+  )
+);
+@include style-api.docs('header', $properties: (background, border));
 .header {
+  border-block-end: 0 solid transparent;
   &-inner {
     @include styles.font-heading-s;
     &.disabled {
@@ -31,9 +47,13 @@
 .header-row {
   display: flex;
   align-items: flex-start;
+  border-block-end: 0 solid transparent;
   > .header {
     flex: 1;
     min-inline-size: 0;
+  }
+  &:not(:has(+ .body)) {
+    flex: 1;
   }
 }
 
@@ -111,6 +131,7 @@
   min-inline-size: 0;
   text-align: start;
   display: flex;
+  @include style-api.carriers(mixins.$carrier-tokens);
   $default-state: map.get(constants.$states, 'default');
   background: map.get($default-state, 'background');
   box-shadow: map.get($default-state, 'box-shadow');
@@ -122,10 +143,13 @@
 
   &:after {
     @include styles.base-pseudo-element;
+    @include mixins.inherit-border-tokens;
 
     box-shadow: none;
-    border-block: solid map.get($default-state, 'border-width') map.get($default-state, 'border-color');
-    border-inline: solid map.get($default-state, 'border-width') map.get($default-state, 'border-color');
+    $border-width: style-api.value(mixins.$border-tokens, border-width, map.get($default-state, 'border-width'));
+    $border-color: style-api.value(mixins.$border-tokens, border-color, map.get($default-state, 'border-color'));
+    border-block: solid $border-width $border-color;
+    border-inline: solid $border-width $border-color;
   }
 
   &.variant-default,
@@ -154,6 +178,10 @@
     }
   }
 
+  &.fit-height {
+    block-size: 100%;
+  }
+
   &.icon-vertical-align-center > .icon {
     align-self: center;
   }
@@ -175,17 +203,7 @@
 
   &:has(.header-button:focus-visible),
   &:has(.overlay-button:focus-visible) {
-    @include styles.focus-highlight(
-      2px,
-      awsui.$border-radius-control-default-focus-ring,
-      0 0 0 2px awsui.$color-border-item-focused
-    );
-
-    @each $variant in ('embedded', 'default') {
-      &.variant-#{$variant}::before {
-        @include mixins.border-radius-all(awsui.$border-radius-control-default-focus-ring);
-      }
-    }
+    @include style-api.focus-highlight($gutter-block: 2px, $gutter-inline: 2px);
   }
 
   @each $variant in ('embedded', 'default') {
@@ -193,6 +211,32 @@
       &,
       &:after {
         @include mixins.state-border-radius($variant);
+      }
+
+      $border-radius: style-api.value(
+        mixins.$carrier-tokens,
+        border-radius,
+        map.get(mixins.$variant-border-radius, $variant)
+      );
+      > .inner-card > .header,
+      > .inner-card > .header-row {
+        border-start-start-radius: $border-radius;
+      }
+      > .inner-card > .header:not(:has(+ .body)),
+      > .inner-card > .header-row:not(:has(+ .body)) {
+        border-end-start-radius: $border-radius;
+      }
+      &:not(.has-icon) > .inner-card > .header {
+        border-start-end-radius: $border-radius;
+        &:not(:has(+ .body)) {
+          border-end-end-radius: $border-radius;
+        }
+      }
+      > .inner-card > .header-row {
+        border-start-end-radius: $border-radius;
+        &:not(:has(+ .body)) {
+          border-end-end-radius: $border-radius;
+        }
       }
 
       $padding-block: map.get(mixins.$variant-padding-block, $variant);

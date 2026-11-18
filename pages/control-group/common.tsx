@@ -3,9 +3,9 @@
 import React from 'react';
 
 import Autosuggest, { AutosuggestProps } from '~components/autosuggest';
+import { ControlGroupProps } from '~components/control-group/interfaces';
 import FormField from '~components/form-field';
 import Input from '~components/input';
-import { ControlGroupProps } from '~components/internal/components/control-group/interfaces';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
 import RadioGroup from '~components/radio-group';
 import SegmentedControl, { SegmentedControlProps } from '~components/segmented-control';

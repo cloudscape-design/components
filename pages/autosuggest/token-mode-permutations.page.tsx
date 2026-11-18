@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import { Autosuggest, AutosuggestProps, FormField, Icon, IconProvider } from '~components';
+import { Autosuggest, AutosuggestProps, FormField, Icon } from '~components';
 
 import { PermutationsPage } from '../app/templates';
 import PermutationsView from '../utils/permutations-view';
@@ -75,7 +75,6 @@ interface Permutation {
   label: string;
   tokens: ReadonlyArray<string>;
   options?: keyof typeof OPTION_SETS;
-  customSearchIcon?: boolean;
   maxInlineSize?: string;
   disabled?: boolean;
   readOnly?: boolean;
@@ -91,11 +90,6 @@ const permutations: ReadonlyArray<Permutation> = [
     label: 'Tokens with icons (icon on option transfers to token)',
     tokens: ['us-east-1', 'eu-west-1', 'ap-southeast-1'],
     options: 'icons',
-  },
-  {
-    label: 'Custom search icon via IconProvider (settings icon replaces magnifying glass)',
-    tokens: ['us-east-1', 'eu-west-1'],
-    customSearchIcon: true,
   },
   {
     label: 'Many tokens — overflow trigger',
@@ -152,18 +146,7 @@ export default function AutosuggestTokenModePermutationsPage() {
       screenshotArea={{ disableAnimations: true }}
       i18n={{}}
     >
-      <PermutationsView
-        permutations={permutations}
-        render={permutation =>
-          permutation.customSearchIcon ? (
-            <IconProvider icons={{ search: <Icon name="settings" variant="subtle" size="inherit" /> }}>
-              <Scenario {...permutation} />
-            </IconProvider>
-          ) : (
-            <Scenario {...permutation} />
-          )
-        }
-      />
+      <PermutationsView permutations={permutations} render={permutation => <Scenario {...permutation} />} />
     </PermutationsPage>
   );
 }

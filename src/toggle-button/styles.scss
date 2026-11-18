@@ -4,6 +4,9 @@
 */
 
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/style-api' as style-api;
+
+@include style-api.docs-forward('root', 'button', 'root');
 
 .toggle-button.variant-normal {
   background: awsui.$color-background-toggle-button-normal-default;

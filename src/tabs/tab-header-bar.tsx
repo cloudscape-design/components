@@ -25,6 +25,7 @@ import { KeyCode } from '../internal/keycode';
 import { circleIndex } from '../internal/utils/circle-index';
 import { isHTMLElement } from '../internal/utils/dom';
 import handleKey from '../internal/utils/handle-key';
+import { getStyleClassName, Slot } from '../internal/utils/style-slot';
 import Tooltip from '../tooltip/internal.js';
 import {
   GeneratedAnalyticsMetadataTabsComponent,
@@ -45,6 +46,15 @@ import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
+// Style API v2
+export interface StyleClassNames {
+  tabsHeader?: string;
+  tab?: Slot<{ tab: TabsProps.Tab }>;
+  tabLink?: string;
+  content?: string;
+  dismissButton?: string;
+}
+
 const tabSelector = `.${styles['tabs-tab-link']}`;
 const focusedTabSelector = `.${styles['tabs-tab-focused']}`;
 const focusableTabSelector = `.${styles['tabs-tab-focusable']}`;
@@ -54,11 +64,13 @@ function dismissButton({
   dismissDisabled,
   onDismiss,
   tabId,
+  styleClassNames,
 }: {
   dismissLabel?: string;
   dismissDisabled?: boolean;
   onDismiss: ButtonProps['onClick'];
   tabId: string;
+  styleClassNames?: { root?: string };
 }) {
   return (
     <InternalButton
@@ -70,6 +82,7 @@ function dismissButton({
       disabled={dismissDisabled}
       className={clsx(testUtilStyles['tab-dismiss-button'], analyticsSelectors['tab-dismiss-button'])}
       data-testid={`awsui-tab-dismiss-button-${tabId}`}
+      styleClassNames={styleClassNames}
     />
   );
 }
@@ -86,6 +99,7 @@ interface TabHeaderBarProps {
   keyboardActivationMode: Required<TabsProps['keyboardActivationMode']>;
   actions?: TabsProps['actions'];
   style?: TabsProps['style'];
+  styleClassNames?: StyleClassNames;
 }
 
 export function TabHeaderBar({
@@ -100,6 +114,7 @@ export function TabHeaderBar({
   keyboardActivationMode,
   actions,
   style,
+  styleClassNames,
 }: TabHeaderBarProps) {
   const headerBarRef = useRef<HTMLUListElement>(null);
   const activeTabHeaderRef = useRef<null | HTMLElement>(null);
@@ -203,7 +218,7 @@ export function TabHeaderBar({
     }
   };
 
-  const classes = clsx({
+  const classes = clsx(styleClassNames?.tabsHeader, {
     [styles['tabs-header']]: true,
     [styles['tabs-header-with-divider']]: variant === 'default' || isVisualRefresh,
   });
@@ -421,7 +436,9 @@ export function TabHeaderBar({
       onChange({ activeTabId: tab.id, activeTabHref: tab.href });
     };
 
-    const classes = clsx({
+    const tabSlotClass = getStyleClassName(styleClassNames?.tab, { tab });
+
+    const classes = clsx(styleClassNames?.tabLink, {
       [styles['tabs-tab-link']]: true,
       [styles.refresh]: isVisualRefresh,
       [styles['tabs-tab-active']]: activeTabId === tab.id && !tab.disabled,
@@ -432,7 +449,7 @@ export function TabHeaderBar({
       [styles['tabs-tab-focusable']]: !tab.disabled || (tab.disabled && !!tab.disabledReason),
     });
 
-    const tabHeaderContainerClasses = clsx({
+    const tabHeaderContainerClasses = clsx(tabSlotClass, {
       [styles['tabs-tab-header-container']]: true,
       [styles.refresh]: isVisualRefresh,
       [styles['tabs-tab-active']]: isActive,
@@ -544,7 +561,13 @@ export function TabHeaderBar({
           {action && <span className={tabActionClasses}>{action}</span>}
           {dismissible && (
             <span className={styles['tabs-tab-dismiss']} {...getAnalyticsMetadataAttribute(analyticsDismissMetadata)}>
-              {dismissButton({ dismissLabel, dismissDisabled, onDismiss: handleDismiss, tabId: tab.id })}
+              {dismissButton({
+                dismissLabel,
+                dismissDisabled,
+                onDismiss: handleDismiss,
+                tabId: tab.id,
+                styleClassNames: { root: styleClassNames?.dismissButton },
+              })}
             </span>
           )}
         </div>

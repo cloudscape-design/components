@@ -42,9 +42,14 @@ export function isFocusable(element: HTMLElement): boolean {
   return element.matches(tabbables) && isVisible(element);
 }
 
+/** Get all elements that could be focused, including ones that are currently hidden. */
+export function getAllFocusableCandidates(container: HTMLElement): HTMLElement[] {
+  return Array.from(container.querySelectorAll<HTMLElement>(tabbables));
+}
+
 /** Get all elements that can be focused, either programmatically or by the user. */
 export function getAllFocusables(container: HTMLElement): HTMLElement[] {
-  return Array.from(container.querySelectorAll<HTMLElement>(tabbables)).filter(isVisible);
+  return getAllFocusableCandidates(container).filter(isVisible);
 }
 
 /** Get all focusable elements that can be reached with the keyboard. */

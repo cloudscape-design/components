@@ -12,7 +12,7 @@ import { BaseKeyDetail, CancelableEventHandler } from '../../../types/events';
 import { getBaseProps } from '../../base-component';
 import { GroupedControlContextProps } from '../../context/control-group-context';
 import { fireCancelableEvent, fireKeyboardEvent } from '../../events';
-import { getGroupedControlClassNames } from '../control-group/grouped-control-styles';
+import { getGroupedControlClassNames } from '../../grouped-control/grouped-control-styles';
 import {
   GeneratedAnalyticsMetadataButtonTriggerCollapse,
   GeneratedAnalyticsMetadataButtonTriggerExpand,

@@ -33,6 +33,7 @@ import CollectionPreferencesWrapper from './collection-preferences';
 import ColumnLayoutWrapper from './column-layout';
 import ContainerWrapper from './container';
 import ContentLayoutWrapper from './content-layout';
+import ControlGroupWrapper from './control-group';
 import CopyToClipboardWrapper from './copy-to-clipboard';
 import DateInputWrapper from './date-input';
 import DatePickerWrapper from './date-picker';
@@ -66,6 +67,7 @@ import MixedLineBarChartWrapper from './mixed-line-bar-chart';
 import ModalWrapper from './modal';
 import MultiselectWrapper from './multiselect';
 import NavigableGroupWrapper from './navigable-group';
+import OptionListWrapper from './option-list';
 import PaginationWrapper from './pagination';
 import PanelLayoutWrapper from './panel-layout';
 import PieChartWrapper from './pie-chart';
@@ -136,6 +138,7 @@ export { CollectionPreferencesWrapper };
 export { ColumnLayoutWrapper };
 export { ContainerWrapper };
 export { ContentLayoutWrapper };
+export { ControlGroupWrapper };
 export { CopyToClipboardWrapper };
 export { DateInputWrapper };
 export { DatePickerWrapper };
@@ -169,6 +172,7 @@ export { MixedLineBarChartWrapper };
 export { ModalWrapper };
 export { MultiselectWrapper };
 export { NavigableGroupWrapper };
+export { OptionListWrapper };
 export { PaginationWrapper };
 export { PanelLayoutWrapper };
 export { PieChartWrapper };
@@ -889,6 +893,34 @@ findAllContentLayouts(selector?: string): Array<ContentLayoutWrapper>;
  * @returns {ContentLayoutWrapper | null}
  */
 findClosestContentLayout(): ContentLayoutWrapper | null;
+/**
+ * Returns the wrapper of the first ControlGroup that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first ControlGroup.
+ * If no matching ControlGroup is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ControlGroupWrapper | null}
+ */
+findControlGroup(selector?: string): ControlGroupWrapper | null;
+
+/**
+ * Returns an array of ControlGroup wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the ControlGroups inside the current wrapper.
+ * If no matching ControlGroup is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<ControlGroupWrapper>}
+ */
+findAllControlGroups(selector?: string): Array<ControlGroupWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent ControlGroup for the current element,
+ * or the element itself if it is an instance of ControlGroup.
+ * If no ControlGroup is found, returns \`null\`.
+ *
+ * @returns {ControlGroupWrapper | null}
+ */
+findClosestControlGroup(): ControlGroupWrapper | null;
 /**
  * Returns the wrapper of the first CopyToClipboard that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first CopyToClipboard.
@@ -1813,6 +1845,34 @@ findAllNavigableGroups(selector?: string): Array<NavigableGroupWrapper>;
  * @returns {NavigableGroupWrapper | null}
  */
 findClosestNavigableGroup(): NavigableGroupWrapper | null;
+/**
+ * Returns the wrapper of the first OptionList that matches the specified CSS selector.
+ * If no CSS selector is specified, returns the wrapper of the first OptionList.
+ * If no matching OptionList is found, returns \`null\`.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {OptionListWrapper | null}
+ */
+findOptionList(selector?: string): OptionListWrapper | null;
+
+/**
+ * Returns an array of OptionList wrapper that matches the specified CSS selector.
+ * If no CSS selector is specified, returns all of the OptionLists inside the current wrapper.
+ * If no matching OptionList is found, returns an empty array.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {Array<OptionListWrapper>}
+ */
+findAllOptionLists(selector?: string): Array<OptionListWrapper>;
+
+/**
+ * Returns the wrapper of the closest parent OptionList for the current element,
+ * or the element itself if it is an instance of OptionList.
+ * If no OptionList is found, returns \`null\`.
+ *
+ * @returns {OptionListWrapper | null}
+ */
+findClosestOptionList(): OptionListWrapper | null;
 /**
  * Returns the wrapper of the first Pagination that matches the specified CSS selector.
  * If no CSS selector is specified, returns the wrapper of the first Pagination.
@@ -3361,6 +3421,19 @@ ElementWrapper.prototype.findContentLayout = function(selector) {
 ElementWrapper.prototype.findAllContentLayouts = function(selector) {
   return this.findAllComponents(ContentLayoutWrapper, selector);
 };
+ElementWrapper.prototype.findControlGroup = function(selector) {
+  let rootSelector = \`.\${ControlGroupWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ControlGroupWrapper && ControlGroupWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ControlGroupWrapper.rootSelector}, .\${ControlGroupWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ControlGroupWrapper);
+};
+
+ElementWrapper.prototype.findAllControlGroups = function(selector) {
+  return this.findAllComponents(ControlGroupWrapper, selector);
+};
 ElementWrapper.prototype.findCopyToClipboard = function(selector) {
   let rootSelector = \`.\${CopyToClipboardWrapper.rootSelector}\`;
   if("legacyRootSelector" in CopyToClipboardWrapper && CopyToClipboardWrapper.legacyRootSelector){
@@ -3789,6 +3862,19 @@ ElementWrapper.prototype.findNavigableGroup = function(selector) {
 
 ElementWrapper.prototype.findAllNavigableGroups = function(selector) {
   return this.findAllComponents(NavigableGroupWrapper, selector);
+};
+ElementWrapper.prototype.findOptionList = function(selector) {
+  let rootSelector = \`.\${OptionListWrapper.rootSelector}\`;
+  if("legacyRootSelector" in OptionListWrapper && OptionListWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${OptionListWrapper.rootSelector}, .\${OptionListWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, OptionListWrapper);
+};
+
+ElementWrapper.prototype.findAllOptionLists = function(selector) {
+  return this.findAllComponents(OptionListWrapper, selector);
 };
 ElementWrapper.prototype.findPagination = function(selector) {
   let rootSelector = \`.\${PaginationWrapper.rootSelector}\`;
@@ -4483,6 +4569,11 @@ ElementWrapper.prototype.findClosestContentLayout = function() {
   // https://github.com/microsoft/TypeScript/issues/29132
   return (this as any).findClosestComponent(ContentLayoutWrapper);
 };
+ElementWrapper.prototype.findClosestControlGroup = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(ControlGroupWrapper);
+};
 ElementWrapper.prototype.findClosestCopyToClipboard = function() {
   // casting to 'any' is needed to avoid this issue with generics
   // https://github.com/microsoft/TypeScript/issues/29132
@@ -4647,6 +4738,11 @@ ElementWrapper.prototype.findClosestNavigableGroup = function() {
   // casting to 'any' is needed to avoid this issue with generics
   // https://github.com/microsoft/TypeScript/issues/29132
   return (this as any).findClosestComponent(NavigableGroupWrapper);
+};
+ElementWrapper.prototype.findClosestOptionList = function() {
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findClosestComponent(OptionListWrapper);
 };
 ElementWrapper.prototype.findClosestPagination = function() {
   // casting to 'any' is needed to avoid this issue with generics
@@ -4911,6 +5007,7 @@ import CollectionPreferencesWrapper from './collection-preferences';
 import ColumnLayoutWrapper from './column-layout';
 import ContainerWrapper from './container';
 import ContentLayoutWrapper from './content-layout';
+import ControlGroupWrapper from './control-group';
 import CopyToClipboardWrapper from './copy-to-clipboard';
 import DateInputWrapper from './date-input';
 import DatePickerWrapper from './date-picker';
@@ -4944,6 +5041,7 @@ import MixedLineBarChartWrapper from './mixed-line-bar-chart';
 import ModalWrapper from './modal';
 import MultiselectWrapper from './multiselect';
 import NavigableGroupWrapper from './navigable-group';
+import OptionListWrapper from './option-list';
 import PaginationWrapper from './pagination';
 import PanelLayoutWrapper from './panel-layout';
 import PieChartWrapper from './pie-chart';
@@ -5014,6 +5112,7 @@ export { CollectionPreferencesWrapper };
 export { ColumnLayoutWrapper };
 export { ContainerWrapper };
 export { ContentLayoutWrapper };
+export { ControlGroupWrapper };
 export { CopyToClipboardWrapper };
 export { DateInputWrapper };
 export { DatePickerWrapper };
@@ -5047,6 +5146,7 @@ export { MixedLineBarChartWrapper };
 export { ModalWrapper };
 export { MultiselectWrapper };
 export { NavigableGroupWrapper };
+export { OptionListWrapper };
 export { PaginationWrapper };
 export { PanelLayoutWrapper };
 export { PieChartWrapper };
@@ -5503,6 +5603,23 @@ findContentLayout(selector?: string): ContentLayoutWrapper;
  * @returns {MultiElementWrapper<ContentLayoutWrapper>}
  */
 findAllContentLayouts(selector?: string): MultiElementWrapper<ContentLayoutWrapper>;
+/**
+ * Returns a wrapper that matches the ControlGroups with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches ControlGroups.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {ControlGroupWrapper}
+ */
+findControlGroup(selector?: string): ControlGroupWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches ControlGroups with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches ControlGroups.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<ControlGroupWrapper>}
+ */
+findAllControlGroups(selector?: string): MultiElementWrapper<ControlGroupWrapper>;
 /**
  * Returns a wrapper that matches the CopyToClipboards with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches CopyToClipboards.
@@ -6064,6 +6181,23 @@ findNavigableGroup(selector?: string): NavigableGroupWrapper;
  * @returns {MultiElementWrapper<NavigableGroupWrapper>}
  */
 findAllNavigableGroups(selector?: string): MultiElementWrapper<NavigableGroupWrapper>;
+/**
+ * Returns a wrapper that matches the OptionLists with the specified CSS selector.
+ * If no CSS selector is specified, returns a wrapper that matches OptionLists.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {OptionListWrapper}
+ */
+findOptionList(selector?: string): OptionListWrapper;
+
+/**
+ * Returns a multi-element wrapper that matches OptionLists with the specified CSS selector.
+ * If no CSS selector is specified, returns a multi-element wrapper that matches OptionLists.
+ *
+ * @param {string} [selector] CSS Selector
+ * @returns {MultiElementWrapper<OptionListWrapper>}
+ */
+findAllOptionLists(selector?: string): MultiElementWrapper<OptionListWrapper>;
 /**
  * Returns a wrapper that matches the Paginations with the specified CSS selector.
  * If no CSS selector is specified, returns a wrapper that matches Paginations.
@@ -7128,6 +7262,19 @@ ElementWrapper.prototype.findContentLayout = function(selector) {
 ElementWrapper.prototype.findAllContentLayouts = function(selector) {
   return this.findAllComponents(ContentLayoutWrapper, selector);
 };
+ElementWrapper.prototype.findControlGroup = function(selector) {
+  let rootSelector = \`.\${ControlGroupWrapper.rootSelector}\`;
+  if("legacyRootSelector" in ControlGroupWrapper && ControlGroupWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${ControlGroupWrapper.rootSelector}, .\${ControlGroupWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ControlGroupWrapper);
+};
+
+ElementWrapper.prototype.findAllControlGroups = function(selector) {
+  return this.findAllComponents(ControlGroupWrapper, selector);
+};
 ElementWrapper.prototype.findCopyToClipboard = function(selector) {
   let rootSelector = \`.\${CopyToClipboardWrapper.rootSelector}\`;
   if("legacyRootSelector" in CopyToClipboardWrapper && CopyToClipboardWrapper.legacyRootSelector){
@@ -7556,6 +7703,19 @@ ElementWrapper.prototype.findNavigableGroup = function(selector) {
 
 ElementWrapper.prototype.findAllNavigableGroups = function(selector) {
   return this.findAllComponents(NavigableGroupWrapper, selector);
+};
+ElementWrapper.prototype.findOptionList = function(selector) {
+  let rootSelector = \`.\${OptionListWrapper.rootSelector}\`;
+  if("legacyRootSelector" in OptionListWrapper && OptionListWrapper.legacyRootSelector){
+    rootSelector = \`:is(.\${OptionListWrapper.rootSelector}, .\${OptionListWrapper.legacyRootSelector})\`;
+  }
+  // casting to 'any' is needed to avoid this issue with generics
+  // https://github.com/microsoft/TypeScript/issues/29132
+  return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, OptionListWrapper);
+};
+
+ElementWrapper.prototype.findAllOptionLists = function(selector) {
+  return this.findAllComponents(OptionListWrapper, selector);
 };
 ElementWrapper.prototype.findPagination = function(selector) {
   let rootSelector = \`.\${PaginationWrapper.rootSelector}\`;

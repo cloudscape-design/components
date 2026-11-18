@@ -28,6 +28,11 @@ export interface DropdownStatusPropsExtended extends DropdownStatusProps {
    * in case recoveryText was automatically provided by i18n.
    */
   hasRecoveryCallback?: boolean;
+  /**
+   * Optional `id` for the recovery button, so that it can be referenced
+   * through `aria-activedescendant` while focus stays in a filter input.
+   */
+  recoveryButtonId?: string;
 }
 
 function DropdownStatus({ children }: { children: React.ReactNode }) {
@@ -47,6 +52,7 @@ type UseDropdownStatus = ({
   noMatch,
   hasRecoveryCallback,
   onRecoveryClick,
+  recoveryButtonId,
 }: DropdownStatusPropsExtended) => DropdownStatusResult;
 
 export interface DropdownStatusResult {
@@ -69,6 +75,7 @@ export const useDropdownStatus: UseDropdownStatus = ({
   onRecoveryClick,
   hasRecoveryCallback = false,
   errorIconAriaLabel,
+  recoveryButtonId,
 }): DropdownStatusResult => {
   const previousStatusType = usePrevious(statusType);
   const statusResult: DropdownStatusResult = { isSticky: true, content: null, hasRecoveryButton: false };
@@ -89,6 +96,7 @@ export const useDropdownStatus: UseDropdownStatus = ({
         </InternalStatusIndicator>{' '}
         {statusResult.hasRecoveryButton && (
           <InternalLink
+            id={recoveryButtonId}
             onFollow={() => fireNonCancelableEvent(onRecoveryClick)}
             variant="recovery"
             className={styles.recovery}

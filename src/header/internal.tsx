@@ -37,6 +37,7 @@ export default function InternalHeader({
   counter,
   description,
   info,
+  secondaryContent,
   __internalRootRef,
   __disableActionsWrapping,
   __headingTagRef,
@@ -118,6 +119,7 @@ export default function InternalHeader({
             </InfoLinkLabelContext.Provider>
           )}
         </div>
+        {secondaryContent && <div className={styles['secondary-content']}>{secondaryContent}</div>}
         {actions && (
           <div
             className={clsx(

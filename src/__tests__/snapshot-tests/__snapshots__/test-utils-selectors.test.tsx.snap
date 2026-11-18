@@ -102,8 +102,10 @@ exports[`test-utils selectors 1`] = `
     "awsui_disabled_93a1u",
     "awsui_dropdown-trigger_sne0l",
     "awsui_expandable_16mm3",
+    "awsui_group-status_wxf7i",
     "awsui_highlighted_93a1u",
     "awsui_item-element_93a1u",
+    "awsui_root-status_wxf7i",
     "awsui_split-trigger_sne0l",
     "awsui_test-utils-button-trigger_sne0l",
     "awsui_title_sne0l",
@@ -207,6 +209,12 @@ exports[`test-utils selectors 1`] = `
     "awsui_layout_5gtk3",
     "awsui_notifications_64tge",
     "awsui_secondary-header_64tge",
+  ],
+  "control-group": [
+    "awsui_action-button_g8no8",
+    "awsui_control_g8no8",
+    "awsui_inline-label_g8no8",
+    "awsui_root_g8no8",
   ],
   "copy-to-clipboard": [
     "awsui_root_ljpwc",
@@ -370,6 +378,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_heading-text_2qdw9",
     "awsui_info_2qdw9",
     "awsui_root_2qdw9",
+    "awsui_secondary-content_2qdw9",
   ],
   "help-panel": [
     "awsui_content_1d237",
@@ -393,7 +402,6 @@ exports[`test-utils selectors 1`] = `
     "awsui_root_2rhyz",
   ],
   "internal": [
-    "awsui_action-button_1gp1v",
     "awsui_actions_x6dl3",
     "awsui_application_1fcus",
     "awsui_axis-label--x_f0fot",
@@ -403,7 +411,6 @@ exports[`test-utils selectors 1`] = `
     "awsui_button_m5h9f",
     "awsui_chart-filter_1px7g",
     "awsui_content_x6dl3",
-    "awsui_control_1gp1v",
     "awsui_control_1wepg",
     "awsui_custom-content_1p2cx",
     "awsui_description_1p2cx",
@@ -422,7 +429,6 @@ exports[`test-utils selectors 1`] = `
     "awsui_header_dgs8z",
     "awsui_highlighted_15o6u",
     "awsui_icon_x6dl3",
-    "awsui_inline-label_1gp1v",
     "awsui_inner-list-item_10ipo",
     "awsui_key_10ipo",
     "awsui_label-tag_1p2cx",
@@ -442,7 +448,6 @@ exports[`test-utils selectors 1`] = `
     "awsui_root_15oj2",
     "awsui_root_1b522",
     "awsui_root_1fcus",
-    "awsui_root_1gp1v",
     "awsui_root_1kjc7",
     "awsui_root_1om0h",
     "awsui_root_1qprf",
@@ -512,6 +517,11 @@ exports[`test-utils selectors 1`] = `
   ],
   "navigable-group": [
     "awsui_root_efqlv",
+  ],
+  "option-list": [
+    "awsui_group-header_1kbcw",
+    "awsui_option_1kbcw",
+    "awsui_root_1kbcw",
   ],
   "pagination": [
     "awsui_arrow_fvjdu",

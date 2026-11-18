@@ -3,6 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
+
 import { AppLayoutProps } from '../../../app-layout/interfaces';
 import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
 import { BreadcrumbsSlotContextType } from '../contexts';
@@ -70,6 +72,7 @@ interface ToolbarSkeletonStructureProps {
 export const ToolbarSkeletonStructure = React.forwardRef<HTMLElement, ToolbarSkeletonStructureProps>(
   ({ ariaLabels, expandedDrawerId, hasNavigation, navigationOpen, ownBreadcrumbs, discoveredBreadcrumbs }, ref) => {
     const drawerExpandedMode = !!expandedDrawerId;
+    const isOneTheme = isThemeActive(Theme.OneTheme);
     // istanbul ignore next: not interactive during SSR
     const noop = () => {};
     return (
@@ -80,7 +83,7 @@ export const ToolbarSkeletonStructure = React.forwardRef<HTMLElement, ToolbarSke
               <TriggerButton
                 ariaLabel={ariaLabels?.navigationToggle ?? undefined}
                 ariaExpanded={!drawerExpandedMode && navigationOpen}
-                iconName="menu"
+                iconName={isOneTheme ? 'side-bar' : 'menu'}
                 className={testutilStyles['navigation-toggle']}
                 onClick={noop}
                 selected={!drawerExpandedMode && navigationOpen}

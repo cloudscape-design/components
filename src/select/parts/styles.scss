@@ -6,17 +6,30 @@
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/styles/forms/mixins' as forms;
+@use '../../internal/styles/style-api' as style-api;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
+// The placeholder is a span inside the trigger button, so the token set on the button (the `trigger` slot of
+// Select and Multiselect) is re-anchored as a carrier there and read here.
+$trigger-tokens: style-api.resolve((placeholder-color), carrier);
+
+.trigger-button {
+  @include style-api.carriers($trigger-tokens);
+}
+
 .placeholder {
-  @include styles.form-placeholder;
+  @include styles.form-placeholder(
+    $color: style-api.value($trigger-tokens, placeholder-color, awsui.$color-text-input-placeholder)
+  );
   // Placeholder text is purely decorative and not intended to be interacted
   // with. Disable selection so that it doesn't become selectable inside
   // read-only triggers (which enable text selection).
   user-select: none;
 
   &.disabled {
-    @include styles.form-placeholder-disabled;
+    @include styles.form-placeholder-disabled(
+      $color: style-api.value($trigger-tokens, placeholder-color, awsui.$color-text-input-placeholder-disabled)
+    );
   }
 }
 
