@@ -193,4 +193,91 @@ describe('getNearestScrollContainer', () => {
     mockOverflow({ outer: { overflowY: 'visible' }, parent: { overflowY: 'hidden' } });
     expect(getNearestScrollContainer(target)).toBeUndefined();
   });
+
+  describe('when the nearest scroll container is the body', () => {
+    let target: HTMLElement;
+
+    // jsdom does not resolve the initial `visible` value for the root element, so it is set explicitly.
+    function mockRootOverflow(overflowX: string, overflowY: string) {
+      window.getComputedStyle = ((element: Element, pseudoElt?: string | null) => {
+        const result = originalGetComputedStyle(element as Element, pseudoElt);
+        if (element === document.documentElement) {
+          result.overflowX = overflowX;
+          result.overflowY = overflowY;
+        }
+        return result;
+      }) as Window['getComputedStyle'];
+    }
+
+    beforeEach(() => {
+      target = document.createElement('div');
+      document.body.appendChild(target);
+      document.body.style.overflowY = 'auto';
+    });
+
+    afterEach(() => {
+      target.remove();
+      document.body.removeAttribute('style');
+      document.documentElement.removeAttribute('style');
+    });
+
+    function mockDocument(property: 'scrollingElement' | 'compatMode', value: unknown) {
+      Object.defineProperty(document, property, { configurable: true, get: () => value });
+    }
+
+    afterEach(() => {
+      delete (document as unknown as Record<string, unknown>).scrollingElement;
+      delete (document as unknown as Record<string, unknown>).compatMode;
+    });
+
+    test('returns document.scrollingElement when the body overflow propagates to the viewport', () => {
+      mockRootOverflow('visible', 'visible');
+      mockDocument('scrollingElement', document.documentElement);
+      expect(getNearestScrollContainer(target)).toBe(document.documentElement);
+    });
+
+    test('returns the body as document.scrollingElement in quirks mode', () => {
+      mockRootOverflow('visible', 'visible');
+      mockDocument('compatMode', 'BackCompat');
+      mockDocument('scrollingElement', document.body);
+      expect(getNearestScrollContainer(target)).toBe(document.body);
+    });
+
+    test('falls back to the root element in standards mode when scrollingElement is unavailable', () => {
+      mockRootOverflow('visible', 'visible');
+      mockDocument('scrollingElement', null);
+      expect(getNearestScrollContainer(target)).toBe(document.documentElement);
+    });
+
+    test('falls back to the body in quirks mode when scrollingElement is unavailable', () => {
+      mockRootOverflow('visible', 'visible');
+      mockDocument('compatMode', 'BackCompat');
+      mockDocument('scrollingElement', null);
+      expect(getNearestScrollContainer(target)).toBe(document.body);
+    });
+
+    test.each([
+      ['hidden', 'hidden'],
+      ['auto', 'auto'],
+      ['clip', 'clip'],
+      ['hidden', 'visible'],
+      ['visible', 'hidden'],
+    ])('keeps the body as an independent scroller when the root overflow is %s / %s', (overflowX, overflowY) => {
+      mockRootOverflow(overflowX, overflowY);
+      expect(getNearestScrollContainer(target)).toBe(document.body);
+    });
+
+    test('keeps a non-body nearest scroll container unchanged', () => {
+      mockRootOverflow('visible', 'visible');
+      const scroller = document.createElement('div');
+      scroller.style.overflowY = 'auto';
+      document.body.appendChild(scroller);
+      scroller.appendChild(target);
+      try {
+        expect(getNearestScrollContainer(target)).toBe(scroller);
+      } finally {
+        scroller.remove();
+      }
+    });
+  });
 });

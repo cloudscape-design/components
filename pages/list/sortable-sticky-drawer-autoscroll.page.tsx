@@ -1,13 +1,21 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { Box, Input, List, SegmentedControl, SpaceBetween } from '~components';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
 
-type Layout = 'drawer-scroller' | 'drawer' | 'drawer-nested' | 'container' | 'container-x' | 'page';
+type Layout =
+  | 'drawer-scroller'
+  | 'drawer'
+  | 'drawer-nested'
+  | 'container'
+  | 'container-x'
+  | 'page'
+  | 'body-viewport'
+  | 'body-scroller';
 
 type PageContext = React.Context<AppContextType<{ layout: Layout; itemCount: string }>>;
 
@@ -106,6 +114,34 @@ function ContainerLayout({ layout, itemCount }: { layout: Layout; itemCount: num
   );
 }
 
+// body-viewport: body has overflow-y: auto while html keeps overflow: visible, so the body's overflow applies to the
+// viewport and the document scroller scrolls. body-scroller: html clips, so body is an independent scroll container.
+function BodyOverflowLayout({ layout, itemCount }: { layout: Layout; itemCount: number }) {
+  useEffect(() => {
+    const html = document.documentElement;
+    const body = document.body;
+    const previous = { htmlOverflow: html.style.overflow, htmlHeight: html.style.blockSize, body: body.style.cssText };
+    body.style.overflowY = 'auto';
+    if (layout === 'body-scroller') {
+      html.style.overflow = 'hidden';
+      html.style.blockSize = '100%';
+      body.style.blockSize = '100%';
+    }
+    return () => {
+      html.style.overflow = previous.htmlOverflow;
+      html.style.blockSize = previous.htmlHeight;
+      body.style.cssText = previous.body;
+    };
+  }, [layout]);
+  return (
+    <div>
+      <FillerRows count={20} prefix="Page content" />
+      <SortableList itemCount={itemCount} />
+      <FillerRows count={60} prefix="Page content" />
+    </div>
+  );
+}
+
 export default function SortableListAutoScrollPage() {
   const {
     urlParams: { layout = 'drawer-scroller', itemCount = '30' },
@@ -113,7 +149,9 @@ export default function SortableListAutoScrollPage() {
   } = useContext(AppContext as PageContext);
   const parsedItemCount = Math.max(1, parseInt(itemCount, 10) || 30);
   const content =
-    layout === 'page' ? (
+    layout === 'body-viewport' || layout === 'body-scroller' ? (
+      <BodyOverflowLayout layout={layout} itemCount={parsedItemCount} />
+    ) : layout === 'page' ? (
       <SortableList itemCount={parsedItemCount} />
     ) : layout === 'container' || layout === 'container-x' ? (
       <ContainerLayout layout={layout} itemCount={parsedItemCount} />
@@ -137,6 +175,8 @@ export default function SortableListAutoScrollPage() {
               { id: 'container', text: 'Fixed-height container' },
               { id: 'container-x', text: 'Horizontal-only container' },
               { id: 'page', text: 'Page flow' },
+              { id: 'body-viewport', text: 'Body overflow on viewport' },
+              { id: 'body-scroller', text: 'Body as own scroller' },
             ]}
           />
           <Input

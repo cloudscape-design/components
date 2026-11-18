@@ -355,6 +355,67 @@ describe('List - Sortable', () => {
       await interact(() => pressKey(handle, 'Escape'));
     });
 
+    test('keeps the document scroller eligible when the body overflow propagates to the viewport', async () => {
+      const originalGetComputedStyle = window.getComputedStyle;
+      // jsdom neither resolves the root's initial overflow: visible nor implements document.scrollingElement.
+      window.getComputedStyle = ((element: Element, pseudoElt?: string | null) => {
+        const result = originalGetComputedStyle(element, pseudoElt);
+        if (element === document.documentElement) {
+          result.overflowX = 'visible';
+          result.overflowY = 'visible';
+        }
+        return result;
+      }) as Window['getComputedStyle'];
+      Object.defineProperty(document, 'scrollingElement', { configurable: true, get: () => document.documentElement });
+      document.body.style.overflowY = 'auto';
+      try {
+        const { container } = render(
+          <ControlledList
+            items={defaultItems}
+            renderItem={item => ({ id: item.id, content: item.content })}
+            sortable={true}
+          />
+        );
+        const handle = createWrapper(container).findList()!.findItemById('item1')!.findDragHandle()!.getElement();
+
+        await interact(() => pressKey(handle, 'Space'));
+
+        expect(canAutoScroll(document.documentElement)).toBe(true);
+        expect(canAutoScroll(document.body)).toBe(true);
+
+        await interact(() => pressKey(handle, 'Escape'));
+      } finally {
+        window.getComputedStyle = originalGetComputedStyle;
+        delete (document as unknown as Record<string, unknown>).scrollingElement;
+        document.body.style.overflowY = '';
+      }
+    });
+
+    test('limits auto-scroll to the body when it is an independent scroller', async () => {
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflowY = 'auto';
+      try {
+        const { container } = render(
+          <ControlledList
+            items={defaultItems}
+            renderItem={item => ({ id: item.id, content: item.content })}
+            sortable={true}
+          />
+        );
+        const handle = createWrapper(container).findList()!.findItemById('item1')!.findDragHandle()!.getElement();
+
+        await interact(() => pressKey(handle, 'Space'));
+
+        expect(canAutoScroll(document.body)).toBe(true);
+        expect(canAutoScroll(document.documentElement)).toBe(false);
+
+        await interact(() => pressKey(handle, 'Escape'));
+      } finally {
+        document.documentElement.style.overflow = '';
+        document.body.style.overflowY = '';
+      }
+    });
+
     test('keeps every container eligible for auto-scroll when the list has no scroll container ancestor', async () => {
       const { container } = render(
         <div data-testid="plain">
