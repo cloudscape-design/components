@@ -26,6 +26,17 @@ const suite: TestSuite = {
       path: 'item-card/style-custom',
       screenshotType: 'screenshotArea',
     },
+    {
+      description: 'fit height',
+      path: 'item-card/fit-height',
+      screenshotType: 'screenshotArea',
+    },
+    {
+      description: 'fit height with footers',
+      path: 'item-card/fit-height',
+      screenshotType: 'screenshotArea',
+      queryParams: { showFooters: 'true' },
+    },
   ],
 };
 

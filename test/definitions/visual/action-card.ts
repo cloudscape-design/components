@@ -26,6 +26,11 @@ const suite: TestSuite = {
       path: 'action-card/simple',
       screenshotType: 'screenshotArea',
     },
+    {
+      description: 'fit height',
+      path: 'action-card/fit-height',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 
