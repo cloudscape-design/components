@@ -194,6 +194,19 @@ const suite: TestSuite = {
         },
       }))
     ),
+    {
+      description: 'Style API v2',
+      path: 'button-dropdown/style-api-v2',
+      screenshotType: 'screenshotArea',
+    },
+    {
+      description: 'Style API v2 - dropdown open',
+      path: 'button-dropdown/style-api-v2',
+      screenshotType: 'screenshotArea',
+      setup: async ({ page, wrapper }) => {
+        await page.click(wrapper.findButtonDropdown().findNativeButton().toSelector());
+      },
+    },
   ],
 };
 

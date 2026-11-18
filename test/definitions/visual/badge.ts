@@ -16,6 +16,11 @@ const suite: TestSuite = {
       path: 'badge/style-custom-types',
       screenshotType: 'screenshotArea',
     },
+    {
+      description: 'Style API v2',
+      path: 'badge/style-api-v2',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 
