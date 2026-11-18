@@ -10,7 +10,6 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import handleKey from '../internal/utils/handle-key';
 import { SegmentedControlProps } from './interfaces';
-import { StyleClassNames } from './internal';
 import { Segment } from './segment';
 import { getSegmentedControlRootStyles } from './style';
 
@@ -18,7 +17,7 @@ import styles from './styles.css.js';
 
 interface InternalSegmentedControlComponentProps extends SegmentedControlProps {
   groupedControlProps?: GroupedControlContextProps;
-  styleClassNames?: StyleClassNames;
+  styleClassNames?: SegmentedControlProps.StyleClassNames;
 }
 
 export default function InternalSegmentedControl({

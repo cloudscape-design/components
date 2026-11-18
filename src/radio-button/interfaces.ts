@@ -94,7 +94,8 @@ export interface RadioButtonProps extends BaseComponentProps {
 
   /**
    * An object containing CSS properties to customize the radio button's visual appearance.
-   * Refer to the [style](/components/radio-button/?tabId=style) tab for more details.
+   * Refer to the [style docs](/components/radio-button/?tabId=style) for more details.
+   * @deprecated Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: RadioButtonProps.Style;
@@ -106,9 +107,21 @@ export interface RadioButtonProps extends BaseComponentProps {
    * For more details, see the [MDN documentation](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/radio#value).
    */
   value?: string;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: control.
+   * Refer to the [style docs](/components/radio-button/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: RadioButtonProps.StyleClassNames;
 }
 
 export namespace RadioButtonProps {
+  export interface StyleClassNames {
+    control?: string;
+  }
+
   export interface ChangeDetail {
     checked: boolean;
   }

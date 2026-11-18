@@ -7,6 +7,12 @@ import { BaseComponentProps } from '../types/base-component';
 import { NonCancelableEventHandler } from '../types/events';
 
 export namespace AlertProps {
+  export interface StyleClassNames {
+    root?: string;
+    icon?: string;
+    dismissButton?: string;
+  }
+
   export type Type = 'success' | 'error' | 'warning' | 'info';
 
   export interface Ref {
@@ -158,7 +164,8 @@ export interface AlertProps extends BaseComponentProps {
   analyticsMetadata?: AlertProps.AnalyticsMetadata;
   /**
    * An object containing CSS properties to customize the alert's visual appearance.
-   * Refer to the [style](/components/alert/?tabId=style) tab for more details.
+   * Refer to the [style docs](/components/alert/?tabId=style) for more details.
+   * @deprecated Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: AlertProps.Style;
@@ -170,4 +177,12 @@ export interface AlertProps extends BaseComponentProps {
    * @awsuiSystem console
    */
   persistenceConfig?: AlertProps.PersistenceConfig;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: root, icon, dismissButton.
+   * Refer to the [style docs](/components/alert/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: AlertProps.StyleClassNames;
 }

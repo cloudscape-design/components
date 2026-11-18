@@ -6,6 +6,10 @@ import { BaseComponentProps } from '../types/base-component';
 import { CancelableEventHandler, NonCancelableEventHandler } from '../types/events';
 import { Optional } from '../types/utils';
 import ColumnDisplayProperties = TableProps.ColumnDisplayProperties;
+import { ButtonDropdownProps } from '../button-dropdown/interfaces';
+import { CheckboxProps } from '../checkbox/interfaces';
+import { RadioButtonProps } from '../radio-button/interfaces';
+import { StyleSlot } from '../types/utils';
 
 /*
  * HACK: Cast the component to a named parametrized interface.
@@ -509,9 +513,41 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * Renders loader counter that is appended to the loader content in all loader states.
    */
   renderLoaderCounter?: (detail: TableProps.RenderLoaderCounterDetail<T>) => React.ReactNode;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: root, headerCell, sortingButton, sortingIndicator, sortingMenu, clearSortButton, row, cell, selectionCheckbox, selectionRadio.
+   * Refer to the [style docs](/components/table/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: TableProps.StyleClassNames<T>;
 }
 
 export namespace TableProps {
+  export interface StyleClassNames<T = any> {
+    root?: string;
+    headerCell?: StyleSlot<
+      | {
+          type: 'column';
+          column: ColumnDefinition<T>;
+          sortable: boolean;
+          sorted: boolean;
+          sortingDescending: boolean;
+        }
+      | { type: 'group'; group: GroupDefinition<T> }
+      | { type: 'selection' }
+    >;
+    sortingButton?: string;
+    sortingIndicator?: string;
+    sortingMenu?: ButtonDropdownProps.StyleClassNames;
+    clearSortButton?: string;
+    // `index` counts rendered rows, including nested rows.
+    row?: StyleSlot<{ item: T; index: number; selected: boolean }>;
+    cell?: StyleSlot<{ type: 'data'; item: T; column: ColumnDefinition<T> } | { type: 'selection'; item: T }>;
+    selectionCheckbox?: CheckboxProps.StyleClassNames;
+    selectionRadio?: RadioButtonProps.StyleClassNames;
+  }
+
   export interface AnalyticsMetadata {
     instanceIdentifier?: string;
     flowType?: 'view-resource';

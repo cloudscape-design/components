@@ -16,7 +16,7 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { GeneratedAnalyticsMetadataTabsComponent } from './analytics-metadata/interfaces';
 import { TabsProps } from './interfaces';
-import { getTabElementId, StyleClassNames, TabHeaderBar } from './tab-header-bar';
+import { getTabElementId, TabHeaderBar } from './tab-header-bar';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -58,7 +58,7 @@ export default function Tabs({
   style,
   ...rest
 }: TabsProps) {
-  const styleClassNames = (rest as { styleClassNames?: StyleClassNames }).styleClassNames;
+  const styleClassNames = rest.styleClassNames;
   for (const tab of tabs) {
     checkSafeUrl('Tabs', tab.href);
   }

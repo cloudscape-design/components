@@ -11,7 +11,8 @@ import {
   getAnalyticsMetadataAttribute,
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import InternalButton, { StyleClassNames as ButtonStyleClassNames } from '../button/internal';
+import { ButtonProps } from '../button/interfaces';
+import InternalButton from '../button/internal';
 import { useFormFieldContext } from '../contexts/form-field';
 import { getBaseProps } from '../internal/base-component/index.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
@@ -27,7 +28,7 @@ import styles from './styles.css.js';
 
 interface InternalFileInputProps {
   __inputClassName?: string;
-  styleClassNames?: ButtonStyleClassNames;
+  styleClassNames?: ButtonProps.StyleClassNames;
   __inputNativeAttributes?: React.InputHTMLAttributes<HTMLInputElement> | Record<`data-${string}`, string>;
   __injectAnalyticsComponentMetadata?: boolean;
 }

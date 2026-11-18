@@ -10,7 +10,6 @@ import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import Tooltip from '../tooltip/internal.js';
 import { SegmentedControlProps } from './interfaces';
-import { StyleClassNames } from './internal';
 import { getSegmentedControlSegmentStyles } from './style';
 
 import styles from './styles.css.js';
@@ -22,7 +21,7 @@ interface SegmentProps extends SegmentedControlProps.Option {
   tabIndex: number;
   style: SegmentedControlProps['style'];
   fullWidth?: boolean;
-  styleClassNames?: StyleClassNames;
+  styleClassNames?: SegmentedControlProps.StyleClassNames;
 }
 
 export const Segment = React.forwardRef(

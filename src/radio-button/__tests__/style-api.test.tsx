@@ -13,19 +13,12 @@ function renderRadioButton(element: React.ReactElement) {
 
 describe('RadioButton Style API v2', () => {
   test('applies styleClassNames to the control slot', () => {
-    const { container, wrapper } = renderRadioButton(
-      <RadioButton
-        name="plan"
-        value="pro"
-        checked={false}
-        description="Description"
-        {...{ styleClassNames: { control: 'a', unknown: 'b' } }}
-      >
+    const { wrapper } = renderRadioButton(
+      <RadioButton name="plan" value="pro" checked={false} description="Description" styleClassNames={{ control: 'a' }}>
         Label
       </RadioButton>
     );
     expect(wrapper.findNativeInput().getElement().parentElement).toHaveClass('a');
-    expect(container.querySelector('.b')).toBeNull();
   });
 
   test('does not leak the styleClassNames prop to the DOM', () => {

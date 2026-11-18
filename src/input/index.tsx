@@ -8,7 +8,7 @@ import { getBaseProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { InputProps } from './interfaces';
-import InternalInput, { StyleClassNames } from './internal';
+import InternalInput from './internal';
 
 import styles from './styles.css.js';
 
@@ -107,7 +107,7 @@ const Input = React.forwardRef(
           prefix,
           suffix,
           inlineLabelText,
-          styleClassNames: (rest as { styleClassNames?: StyleClassNames }).styleClassNames,
+          styleClassNames: rest.styleClassNames,
         }}
         className={clsx(styles.root, baseProps.className)}
         __inheritFormFieldProps={true}

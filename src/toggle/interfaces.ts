@@ -24,7 +24,8 @@ export interface ToggleProps extends BaseCheckboxProps {
 
   /**
    * An object containing CSS properties to customize the toggle's visual appearance.
-   * Refer to the [style](/components/toggle/?tabId=style) tab for more details.
+   * Refer to the [style docs](/components/toggle/?tabId=style) for more details.
+   * @deprecated Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: ToggleProps.Style;
@@ -44,9 +45,21 @@ export interface ToggleProps extends BaseCheckboxProps {
    * @awsuiSystem core
    */
   nativeInputAttributes?: NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: control.
+   * Refer to the [style docs](/components/toggle/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: ToggleProps.StyleClassNames;
 }
 
 export namespace ToggleProps {
+  export interface StyleClassNames {
+    control?: string;
+  }
+
   export interface Ref {
     /**
      * Sets input focus onto the UI control.

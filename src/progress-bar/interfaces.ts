@@ -85,13 +85,27 @@ export interface ProgressBarProps extends BaseComponentProps {
 
   /**
    * An object containing CSS properties to customize the progress bar's visual appearance.
-   * Refer to the [style](/components/progress-bar/?tabId=style) tab for more details.
+   * Refer to the [style docs](/components/progress-bar/?tabId=style) for more details.
+   * @deprecated Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: ProgressBarProps.Style;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: root, valueLabel.
+   * Refer to the [style docs](/components/progress-bar/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: ProgressBarProps.StyleClassNames;
 }
 
 export namespace ProgressBarProps {
+  export interface StyleClassNames {
+    root?: string;
+    valueLabel?: string;
+  }
+
   export type Status = 'in-progress' | 'success' | 'error';
   export type Variant = 'standalone' | 'flash' | 'key-value';
 

@@ -113,7 +113,8 @@ export interface LinkProps extends BaseComponentProps {
 
   /**
    * An object containing CSS properties to customize the link's visual appearance.
-   * Refer to the [style](/components/link/?tabId=style) tab for more details.
+   * Refer to the [style docs](/components/link/?tabId=style) for more details.
+   * @deprecated Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: LinkProps.Style;
@@ -133,9 +134,21 @@ export interface LinkProps extends BaseComponentProps {
    * @awsuiSystem core
    */
   nativeAttributes?: NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: root.
+   * Refer to the [style docs](/components/link/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: LinkProps.StyleClassNames;
 }
 
 export namespace LinkProps {
+  export interface StyleClassNames {
+    root?: string;
+  }
+
   export type Variant = 'primary' | 'secondary' | 'info' | 'awsui-value-large';
   export type FontSize =
     | 'body-s'

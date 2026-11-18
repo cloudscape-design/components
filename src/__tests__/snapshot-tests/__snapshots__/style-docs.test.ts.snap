@@ -4,7 +4,7 @@ exports[`Style API docs definition for action-card matches the snapshot: action-
 {
   "slots": [
     {
-      "description": "Not a button element: use \`:has(:hover)\` and \`:has(:active)\` for interaction states.",
+      "description": "Not a semantic button element: use \`:has(:hover)\` and \`:has(:active)\` for interaction states.",
       "name": "root",
       "properties": [
         "background",

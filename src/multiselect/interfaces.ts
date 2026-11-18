@@ -3,7 +3,9 @@
 import { ReactNode } from 'react';
 
 import { OptionsLoadItemsDetail } from '../dropdown/interfaces';
+import { InputProps } from '../input/interfaces';
 import { BaseSelectProps, SelectProps } from '../select/interfaces';
+import { TokenProps } from '../token/interfaces';
 import { NonCancelableEventHandler } from '../types/events';
 import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../types/option';
 
@@ -81,9 +83,25 @@ export interface MultiselectProps extends BaseSelectProps {
    * Specifies a render function to render custom options in the dropdown menu.
    */
   renderOption?: MultiselectProps.MultiselectOptionItemRenderer;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: trigger, inlineLabel, filter, dropdown, token.
+   * Refer to the [style docs](/components/multiselect/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: MultiselectProps.StyleClassNames;
 }
 
 export namespace MultiselectProps {
+  export interface StyleClassNames {
+    trigger?: string;
+    inlineLabel?: string;
+    filter?: InputProps.StyleClassNames;
+    dropdown?: string;
+    token?: TokenProps.StyleClassNames;
+  }
+
   export type Option = OptionDefinition;
   export type OptionGroup = OptionGroupDefinition;
   export type Options = ReadonlyArray<Option | OptionGroup>;

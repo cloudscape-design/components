@@ -85,13 +85,27 @@ export interface SliderProps extends BaseComponentProps, FormFieldValidationCont
 
   /**
    * An object containing CSS properties to customize the slider's visual appearance.
-   * Refer to the [style](/components/slider/?tabId=style) tab for more details.
+   * Refer to the [style docs](/components/slider/?tabId=style) for more details.
+   * @deprecated Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: SliderProps.Style;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: root, handle.
+   * Refer to the [style docs](/components/slider/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: SliderProps.StyleClassNames;
 }
 
 export namespace SliderProps {
+  export interface StyleClassNames {
+    root?: string;
+    handle?: string;
+  }
+
   export interface ChangeDetail {
     value: number;
   }

@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { IconProps } from '../icon/interfaces';
+import { SelectProps } from '../select/interfaces';
 import { BaseComponentProps } from '../types/base-component';
 import { NonCancelableEventHandler } from '../types/events';
 
@@ -47,13 +48,29 @@ export interface SegmentedControlProps extends BaseComponentProps {
 
   /**
    * An object containing CSS properties to customize the segmented control's visual appearance.
-   * Refer to the [style](/components/segmented-control/?tabId=style) tab for more details.
+   * Refer to the [style docs](/components/segmented-control/?tabId=style) for more details.
+   * @deprecated Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: SegmentedControlProps.Style;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: root, segment, divider, select.
+   * Refer to the [style docs](/components/segmented-control/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: SegmentedControlProps.StyleClassNames;
 }
 
 export namespace SegmentedControlProps {
+  export interface StyleClassNames {
+    root?: string;
+    segment?: string;
+    divider?: string;
+    select?: SelectProps.StyleClassNames;
+  }
+
   export interface Option {
     id: string;
     disabled?: boolean;

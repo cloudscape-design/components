@@ -27,14 +27,7 @@ import {
 
 import styles from './styles.css.js';
 
-// Style API v2
-export interface StyleClassNames {
-  root?: string;
-  handle?: string;
-}
-
 interface InternalSliderProps extends SliderProps, InternalBaseComponentProps {
-  styleClassNames?: StyleClassNames;
   style?: SliderProps['style'];
 }
 

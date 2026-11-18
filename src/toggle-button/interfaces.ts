@@ -74,9 +74,21 @@ export interface ToggleButtonProps extends BaseComponentProps, Omit<BaseButtonPr
    * The event `detail` contains the current value for the `pressed` property.
    */
   onChange?: NonCancelableEventHandler<ToggleButtonProps.ChangeDetail>;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: root.
+   * Refer to the [style docs](/components/toggle-button/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: ToggleButtonProps.StyleClassNames;
 }
 
 export namespace ToggleButtonProps {
+  export interface StyleClassNames {
+    root?: string;
+  }
+
   export type Variant = 'normal' | 'icon';
 
   export interface ChangeDetail {
