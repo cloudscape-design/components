@@ -19,6 +19,11 @@ const suite: TestSuite = {
         await page.hoverElement('[aria-label="Favorite"][aria-pressed="false"]');
       },
     },
+    {
+      description: 'Style API v2',
+      path: 'toggle-button/style-api-v2',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 

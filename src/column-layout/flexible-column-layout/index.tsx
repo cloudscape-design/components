@@ -31,17 +31,24 @@ export function calculcateCssColumnCount(
   );
 }
 
+/**
+ * Column width assumed when `minColumnWidth` is not set. Without a value to divide the container
+ * width by, the count could not be reduced at all, so the layout would keep every requested column
+ * at any width. Matches the default KeyValuePairs passes to this renderer.
+ */
+export const DEFAULT_MIN_COLUMN_WIDTH = 150;
+
 interface FlexibleColumnLayoutProps
   extends Pick<
     InternalColumnLayoutProps,
-    'minColumnWidth' | 'columns' | 'variant' | 'borders' | 'disableGutters' | '__tagOverride'
+    'minColumnWidth' | 'columns' | 'variant' | 'disableGutters' | '__tagOverride'
   > {
   children: React.ReactNode;
 }
 
 export default function FlexibleColumnLayout({
   columns = 1,
-  minColumnWidth = 0,
+  minColumnWidth = DEFAULT_MIN_COLUMN_WIDTH,
   disableGutters,
   variant,
   children,

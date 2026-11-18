@@ -50,7 +50,14 @@ const InternalPanelLayout = React.forwardRef<PanelLayoutProps.Ref, InternalPanel
 
     const resizeHandleRef = React.useRef<HTMLDivElement>(null);
     const panelRef = React.useRef<HTMLDivElement>(null);
-    const [containerWidth, rootRef] = useContainerWidth();
+    const [measuredContainerWidth, rootRef] = useContainerWidth();
+    // A hidden (display: none) layout measures 0. Keep the last visible width so the panel size
+    // and onLayoutChange don't change while hidden and shift the layout when shown again.
+    const lastVisibleContainerWidth = React.useRef(measuredContainerWidth);
+    if (measuredContainerWidth > 0) {
+      lastVisibleContainerWidth.current = measuredContainerWidth;
+    }
+    const containerWidth = lastVisibleContainerWidth.current;
 
     React.useImperativeHandle(
       ref,

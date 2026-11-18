@@ -24,6 +24,11 @@ const suite: TestSuite = {
       screenshotType: 'screenshotArea',
       configuration: { width: 800 },
     },
+    {
+      description: 'Style API v2',
+      path: 'progress-bar/style-api-v2',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 

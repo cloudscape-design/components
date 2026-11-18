@@ -16,6 +16,11 @@ const suite: TestSuite = {
       path: 'segmented-control/style-permutations',
       screenshotType: 'permutations',
     },
+    {
+      description: 'Style API v2',
+      path: 'segmented-control/style-api-v2',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 

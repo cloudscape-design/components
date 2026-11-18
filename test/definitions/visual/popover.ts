@@ -176,6 +176,14 @@ const suite: TestSuite = {
         },
       })),
     },
+    ...['popover-brand', 'popover-borderless'].map<TestDefinition>(testId => ({
+      description: `Style API v2 - ${testId} open`,
+      path: 'popover/style-api-v2',
+      screenshotType: 'screenshotArea',
+      setup: async ({ page, wrapper }) => {
+        await page.click(wrapper.findPopover(`[data-testid="${testId}"]`).findTrigger().toSelector());
+      },
+    })),
   ],
 };
 

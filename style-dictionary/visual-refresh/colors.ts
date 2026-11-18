@@ -403,6 +403,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextBadgeBlue: '{colorTextNotificationDefault}',
   colorTextBadgeRed: '{colorTextNotificationDefault}',
   colorBackgroundCodeView: { light: '#f8f8f8', dark: '#282c34' },
+  colorBorderCodeView: 'transparent',
 
   // ── Visual accent ───────────────────────────────────
   colorBackgroundVisualAccentRed: {
