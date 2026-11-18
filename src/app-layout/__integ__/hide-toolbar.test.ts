@@ -1,0 +1,103 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
+import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
+
+import createWrapper from '../../../lib/components/test-utils/selectors';
+import { getUrlParams } from './utils';
+
+const appLayout = createWrapper().findAppLayout();
+const toolbar = appLayout.findToolbar();
+const appLayoutBreadcrumbs = appLayout.findBreadcrumbs().findBreadcrumbGroup();
+const consumerBreadcrumbs = createWrapper().find('[data-testid="global-nav-header"]').findBreadcrumbGroup();
+
+class HideToolbarPage extends BasePageObject {
+  clickTestId(testId: string) {
+    return this.click(`[data-testid="${testId}"]`);
+  }
+
+  async getContentTop() {
+    const { top } = await this.getBoundingBox(appLayout.findContentRegion().toSelector());
+    return top;
+  }
+}
+
+function setupTest(params: Record<string, string>, testFn: (page: HideToolbarPage) => Promise<void>) {
+  return useBrowser(async browser => {
+    const page = new HideToolbarPage(browser);
+    await browser.url(`#/light/app-layout/global-nav-breadcrumbs?${getUrlParams('refresh-toolbar', params)}`);
+    await page.waitForVisible(appLayout.findContentRegion().toSelector());
+    await testFn(page);
+  });
+}
+
+const hiddenToolbarParams = { appLayoutHideToolbar: 'true' };
+
+describe('appLayoutHideToolbar flag', () => {
+  test(
+    'renders a visible toolbar without the flag',
+    setupTest({}, async page => {
+      await expect(page.isDisplayed(toolbar.toSelector())).resolves.toBe(true);
+      await expect(page.isDisplayed(appLayoutBreadcrumbs.toSelector())).resolves.toBe(true);
+    })
+  );
+
+  test(
+    'keeps the toolbar and its breadcrumbs in the DOM but not displayed',
+    setupTest(hiddenToolbarParams, async page => {
+      await expect(page.isExisting(toolbar.toSelector())).resolves.toBe(true);
+      await expect(page.isDisplayed(toolbar.toSelector())).resolves.toBe(false);
+      await expect(page.isExisting(appLayoutBreadcrumbs.toSelector())).resolves.toBe(true);
+      await expect(page.isDisplayed(appLayoutBreadcrumbs.toSelector())).resolves.toBe(false);
+    })
+  );
+
+  test(
+    'does not reserve space for the hidden toolbar',
+    useBrowser(async browser => {
+      const page = new HideToolbarPage(browser);
+      const contentSelector = appLayout.findContentRegion().toSelector();
+
+      await browser.url(`#/light/app-layout/global-nav-breadcrumbs?${getUrlParams('refresh-toolbar')}`);
+      await page.waitForVisible(contentSelector);
+      const { height: toolbarHeight } = await page.getBoundingBox(toolbar.toSelector());
+      const topWithToolbar = await page.getContentTop();
+
+      await browser.url(
+        `#/light/app-layout/global-nav-breadcrumbs?${getUrlParams('refresh-toolbar', hiddenToolbarParams)}`
+      );
+      await browser.refresh();
+      await page.waitForVisible(contentSelector);
+      const topWithHiddenToolbar = await page.getContentTop();
+
+      expect(toolbarHeight).toBeGreaterThan(0);
+      // allow 1px for sub-pixel rounding
+      expect(Math.abs(topWithToolbar - toolbarHeight - topWithHiddenToolbar)).toBeLessThanOrEqual(1);
+    })
+  );
+
+  test(
+    'publishes breadcrumbs to registerBreadcrumbsConsumer and keeps them updated',
+    setupTest(hiddenToolbarParams, async page => {
+      await page.clickTestId('toggle-nav-header');
+      await page.waitForVisible(consumerBreadcrumbs.toSelector());
+      await expect(page.getText(consumerBreadcrumbs.toSelector())).resolves.toContain('Resource');
+      await expect(page.getText(consumerBreadcrumbs.toSelector())).resolves.not.toContain('Level 3');
+
+      await page.clickTestId('append-breadcrumb');
+      await page.waitForAssertion(() =>
+        expect(page.getText(consumerBreadcrumbs.toSelector())).resolves.toContain('Level 3')
+      );
+      await expect(page.isDisplayed(toolbar.toSelector())).resolves.toBe(false);
+    })
+  );
+
+  test(
+    'publishes breadcrumbs to a consumer that registers after App Layout rendered',
+    setupTest(hiddenToolbarParams, async page => {
+      await page.clickTestId('delay-nav-header');
+      await page.waitForVisible(consumerBreadcrumbs.toSelector());
+      await expect(page.getText(consumerBreadcrumbs.toSelector())).resolves.toContain('Resource');
+    })
+  );
+});
