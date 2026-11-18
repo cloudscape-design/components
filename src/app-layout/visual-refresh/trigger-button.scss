@@ -35,6 +35,11 @@
   }
 }
 
+.trigger-icon-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
 .trigger-badge-wrapper {
   position: absolute;
   inset-block-start: 0;
@@ -66,6 +71,13 @@ handleSplitPanelMaxWidth function in the context.
   cursor: pointer;
   pointer-events: auto;
   position: relative;
+
+  // WebKit's native block padding is asymmetric (2px/3px), which pushes the icon 0.5px above center.
+  // Badge triggers keep it: their icon wrapper is absolutely positioned, and the padding determines
+  // their baseline and therefore the height of the surrounding wrapper.
+  &:not(.badge) {
+    padding-block: 0;
+  }
 
   @include focus-visible.when-visible {
     @include styles.focus-highlight(3px);
