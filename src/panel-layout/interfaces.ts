@@ -55,9 +55,8 @@ export interface PanelLayoutProps extends BaseComponentProps {
    * Makes the panel and main content areas scrollable.
    *
    * Scrollable panels clip all overflowing content, such as focus rings of interactive elements that are close to panel borders,
-   * and constrain the space available to dropdowns.
-   * If you use this property, make sure there is enough padding between such elements and the panel edge,
-   * and consider rendering dropdowns inside portals if necessary.
+   * and constrain the space available for dropdowns. If you use this property, make sure there is enough padding between such
+   * elements and the panel edge, and consider rendering dropdowns inside portals if necessary.
    */
   scrollable?: boolean;
 
