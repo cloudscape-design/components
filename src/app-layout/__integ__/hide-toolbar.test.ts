@@ -16,10 +16,13 @@ class HideToolbarPage extends BasePageObject {
     return this.click(`[data-testid="${testId}"]`);
   }
 
-  /** Distance from the top of App Layout to its content region. */
+  /**
+   * Distance from the top of App Layout to the first header of the page content.
+   * The content region itself is `display: contents` and has no box to measure.
+   */
   async getContentOffset() {
     const { top: rootTop } = await this.getBoundingBox(appLayout.toSelector());
-    const { top: contentTop } = await this.getBoundingBox(appLayout.findContentRegion().toSelector());
+    const { top: contentTop } = await this.getBoundingBox(appLayout.findContentRegion().findHeader().toSelector());
     return contentTop - rootTop;
   }
 }
