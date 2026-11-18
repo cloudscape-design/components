@@ -37,6 +37,11 @@ const suite: TestSuite = {
       screenshotType: 'screenshotArea',
       queryParams: { showFooters: 'true' },
     },
+    {
+      description: 'Style API v2',
+      path: 'item-card/style-api-v2',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 

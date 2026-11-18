@@ -39,6 +39,11 @@ const suite: TestSuite = {
       path: 'radio-group/style-custom',
       screenshotType: 'screenshotArea',
     },
+    {
+      description: 'Style API v2',
+      path: 'radio-group/style-api-v2',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 

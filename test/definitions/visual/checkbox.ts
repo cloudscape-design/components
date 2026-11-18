@@ -30,6 +30,11 @@ const suite: TestSuite = {
       path: 'checkbox/style-custom',
       screenshotType: 'screenshotArea',
     },
+    {
+      description: 'Style API v2',
+      path: 'checkbox/style-api-v2',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 

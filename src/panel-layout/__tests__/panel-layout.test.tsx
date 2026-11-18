@@ -653,6 +653,30 @@ describe('PanelLayout Component', () => {
       );
     });
 
+    test('keeps the last visible container width while the container is hidden', () => {
+      const onLayoutChange = jest.fn();
+      const element = (
+        <PanelLayout
+          panelContent="Panel"
+          mainContent="Main"
+          panelSize={300}
+          minPanelSize={100}
+          onPanelResize={() => {}}
+          onLayoutChange={onLayoutChange}
+        />
+      );
+      const { container, rerender } = render(element);
+      onLayoutChange.mockClear();
+
+      mockUseContainerWidth.mockReturnValue([0, React.createRef()]);
+      rerender(element);
+
+      expect(onLayoutChange).not.toHaveBeenCalled();
+      expect(createWrapper(container).findPanelLayout()!.findPanelContent()!.getElement().parentElement).toHaveStyle(
+        'inline-size: 300px'
+      );
+    });
+
     test('is called when panelSize prop changes in controlled mode', () => {
       const onLayoutChange = jest.fn();
       const onPanelResize = jest.fn();

@@ -56,6 +56,11 @@ const suite: TestSuite = {
           },
         ] as TestDefinition[]
     ),
+    {
+      description: 'Style API v2',
+      path: 'input/style-api-v2',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 

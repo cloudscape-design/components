@@ -21,6 +21,19 @@ const suite: TestSuite = {
         await page.scrollIntoView('[data-testid="scroll-me"]');
       },
     },
+    {
+      description: 'Style API v2',
+      path: 'copy-to-clipboard/style-api-v2',
+      screenshotType: 'screenshotArea',
+    },
+    {
+      description: 'Style API v2 - status popover open',
+      path: 'copy-to-clipboard/style-api-v2',
+      screenshotType: 'screenshotArea',
+      setup: async ({ page, wrapper }) => {
+        await page.click(wrapper.findCopyToClipboard().findCopyButton().toSelector());
+      },
+    },
   ],
 };
 

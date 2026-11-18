@@ -11,6 +11,11 @@ const suite: TestSuite = {
       path: 'text-filter/permutations',
       screenshotType: 'permutations',
     },
+    {
+      description: 'Style API v2',
+      path: 'text-filter/style-api-v2',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 

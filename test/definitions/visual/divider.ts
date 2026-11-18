@@ -11,6 +11,11 @@ const suite: TestSuite = {
       path: 'divider/permutations',
       screenshotType: 'permutations',
     },
+    {
+      description: 'Style API v2',
+      path: 'divider/style-api-v2',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 

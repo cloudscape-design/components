@@ -97,6 +97,11 @@ const suite: TestSuite = {
         await page.click(wrapper.findAutosuggest().findOverflowTrigger().toSelector());
       },
     },
+    {
+      description: 'Style API v2',
+      path: 'autosuggest/style-api-v2',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 

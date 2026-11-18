@@ -28,6 +28,11 @@ const suite: TestSuite = {
         await page.keys(['Tab', horizontalKey, horizontalKey]);
       },
     },
+    {
+      description: 'Style API v2',
+      path: 'prompt-input/style-api-v2',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 

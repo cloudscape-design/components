@@ -299,6 +299,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  borderWidthCodeView: {
+    description: 'The border width of the code view component.',
+    public: true,
+    themeable: true,
+  },
 };
 
 export default metadata;
