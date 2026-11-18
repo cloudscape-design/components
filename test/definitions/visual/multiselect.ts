@@ -207,6 +207,11 @@ const suite: TestSuite = {
         },
       ],
     },
+    {
+      description: 'Style API v2',
+      path: 'multiselect/style-api-v2',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 

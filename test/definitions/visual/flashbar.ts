@@ -53,6 +53,11 @@ const suite: TestSuite = {
         await page.focusNextElement();
       },
     },
+    {
+      description: 'Style API v2',
+      path: 'flashbar/style-api-v2',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 

@@ -12,6 +12,11 @@ const suite: TestSuite = {
       screenshotType: 'permutations',
       configuration: { width: 800 },
     },
+    {
+      description: 'Style API v2',
+      path: 'slider/style-api-v2',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 
