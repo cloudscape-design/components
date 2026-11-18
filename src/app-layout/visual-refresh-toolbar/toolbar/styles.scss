@@ -29,6 +29,10 @@ $toolbar-height: 42px;
     transition-property: inset-block-start, opacity;
   }
 
+  &.toolbar-hidden {
+    display: none;
+  }
+
   &.with-ai-drawer:not(:has(.universal-toolbar-ai-custom)) {
     &:before,
     &:after {

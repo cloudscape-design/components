@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { BreadcrumbGroupImplementation } from '../../../breadcrumb-group/implementation';
 import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
-import { isAppLayoutSimplifiedView } from '../../utils/feature-flags';
+import { isAppLayoutHideToolbar, isAppLayoutSimplifiedView } from '../../utils/feature-flags';
 import { BreadcrumbsSlotContext, BreadcrumbsSlotContextType } from '../contexts';
 
 import testutilStyles from '../../test-classes/styles.css.js';
@@ -25,6 +25,7 @@ export const ToolbarSlot = React.forwardRef<HTMLElement, ToolbarSlotProps>(({ cl
       styles['toolbar-container'],
       toolbarStyles['universal-toolbar'],
       testutilStyles.toolbar,
+      isAppLayoutHideToolbar() && toolbarStyles['toolbar-hidden'],
       isAppLayoutSimplifiedView() && toolbarStyles['simplified-view'],
       className
     )}

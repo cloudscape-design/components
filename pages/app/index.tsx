@@ -27,6 +27,7 @@ interface GlobalFlags {
   appLayoutWidget?: boolean;
   appLayoutToolbar?: boolean;
   appLayoutHideToolbarBreadcrumbs?: boolean;
+  appLayoutHideToolbar?: boolean;
   appLayoutSimplifiedView?: boolean;
   oneTheme?: boolean;
 }
@@ -108,6 +109,7 @@ const {
   appLayoutWidget,
   appLayoutToolbar,
   appLayoutHideToolbarBreadcrumbs,
+  appLayoutHideToolbar,
   appLayoutSimplifiedView,
   appLayoutDelayedWidget,
 } = parseQuery(history.location.search);
@@ -127,6 +129,7 @@ if (!window[awsuiCustomFlagsSymbol]) {
 window[awsuiGlobalFlagsSymbol].appLayoutWidget = appLayoutWidget;
 window[awsuiGlobalFlagsSymbol].appLayoutToolbar = appLayoutToolbar;
 window[awsuiGlobalFlagsSymbol].appLayoutHideToolbarBreadcrumbs = appLayoutHideToolbarBreadcrumbs;
+window[awsuiGlobalFlagsSymbol].appLayoutHideToolbar = appLayoutHideToolbar;
 window[awsuiGlobalFlagsSymbol].appLayoutSimplifiedView = appLayoutSimplifiedView;
 window[awsuiCustomFlagsSymbol].appLayoutDelayedWidget = appLayoutDelayedWidget;
 window[awsuiGlobalFlagsSymbol].oneTheme = oneTheme;
