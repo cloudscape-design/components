@@ -14,6 +14,8 @@ $radio-size: awsui.$size-control;
 
 $_control-props: style-api.combine((fill-color, border-color, indicator-color), style-api.$focus-ring);
 $_control-tokens: style-api.resolve($_control-props, carrier);
+// Registered here, next to the carrier, so every component that renders this control loads the registration.
+@include style-api.register($_control-tokens);
 
 .radio-control {
   @include style-api.carriers($_control-tokens);

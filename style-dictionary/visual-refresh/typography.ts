@@ -7,6 +7,7 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   fontButtonLetterSpacing: '0.005em',
   fontChartDetailSize: '{fontSizeBodyS}',
   fontDecorationStyleLink: 'solid',
+  fontDecorationLineButtonInlineLink: 'none',
   fontDecorationLineLinkSecondary: 'none',
   fontDecorationThicknessLink: '1px',
   fontDecorationThicknessLinkDisplayL: '2px',

@@ -13,7 +13,9 @@
     $border-color: palette.$error,
     $border-radius: 4px,
     $padding-inline: 24px,
-    $padding-block: 10px
+    $padding-block: 10px,
+    $font-family: monospace,
+    $font-weight: 700
   );
 
   &:hover,
@@ -21,7 +23,7 @@
     @include button.root(
       $background: palette.$error-hover,
       $border-color: palette.$error-hover,
-      $focus-ring-color: palette.$error-hover
+      $awsui-focus-ring-color: palette.$error-hover
     );
   }
 
@@ -38,8 +40,8 @@
     $border-radius: 999px,
     $padding-inline: 16px,
     $padding-block: 8px,
-    $focus-ring-color: palette.$accent,
-    $focus-ring-radius: 99px
+    $awsui-focus-ring-color: palette.$accent,
+    $awsui-focus-ring-radius: 99px
   );
 
   &:hover,
@@ -59,7 +61,7 @@
     $border-radius: 4px,
     $color: palette.$accent,
     $border-color: transparent,
-    $focus-ring-color: palette.$accent
+    $awsui-focus-ring-color: palette.$accent
   );
 
   &:hover,

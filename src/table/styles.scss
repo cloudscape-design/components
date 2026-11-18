@@ -3,14 +3,58 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use 'sass:map';
 @use '../internal/styles/index' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../container/shared' as container;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../internal/styles/typography/constants.scss' as constants;
+@use '../internal/components/sticky-header/mixins' as sticky-header;
+@use '../internal/styles/style-api' as style-api;
+@use './style-api' as table-style-api;
+
+@include style-api.register(
+  table-style-api.$root-tokens,
+  table-style-api.$header-cell-tokens,
+  table-style-api.$row-tokens,
+  table-style-api.$cell-tokens,
+  table-style-api.$cell-focus-ring-tokens
+);
+@include style-api.docs(
+  'root',
+  table-style-api.$root-tokens,
+  $descriptions: (
+    tokens: (
+      sticky-header-shadow: 'Its first layer draws the line below the header.',
+    )
+  )
+);
+@include style-api.docs(
+  'headerCell',
+  table-style-api.$header-cell-tokens,
+  $properties: (background, color, font-family, font-size, font-weight),
+  $descriptions: (
+    tokens: (
+      border-color: 'Line below the cell.',
+      divider-color: 'Line at the inline end of the cell.',
+    )
+  )
+);
+@include style-api.docs('sortingButton', $properties: (color));
+@include style-api.docs('sortingIndicator', $properties: (color));
+@include style-api.docs-forward('sortingMenu', 'button-dropdown');
+@include style-api.docs-forward('clearSortButton', 'button', 'root');
+@include style-api.docs('row', table-style-api.$row-tokens);
+@include style-api.docs('cell', map.merge(table-style-api.$cell-tokens, table-style-api.$cell-focus-ring-tokens));
+@include style-api.docs-forward('selectionCheckbox', 'checkbox');
+@include style-api.docs-forward('selectionRadio', 'radio-button');
 
 .root {
+  @include style-api.carriers(table-style-api.$root-tokens);
+  @if style-api.enabled() {
+    #{custom-props.$tableStickyHeaderShadow}: table-style-api.root(sticky-header-shadow, awsui.$shadow-sticky-embedded);
+  }
   @include styles.default-text-style;
   inline-size: 100%;
 }
@@ -70,6 +114,8 @@
 }
 
 .wrapper {
+  // Keeps the sticky header shadow from reaching containers rendered inside cells.
+  #{custom-props.$tableStickyHeaderShadow}: initial;
   position: relative;
   box-sizing: border-box;
   inline-size: 100%;
@@ -164,8 +210,7 @@ filter search icon.
 }
 
 .header-secondary {
-  overflow: auto;
-  scrollbar-width: none; /* Firefox */
+  @include sticky-header.copy-scroller;
   box-sizing: border-box;
   inline-size: 100%;
   border-start-start-radius: 0;
@@ -186,9 +231,6 @@ filter search icon.
       border-start-start-radius: awsui.$border-radius-container;
       border-start-end-radius: awsui.$border-radius-container;
     }
-  }
-  &::-webkit-scrollbar {
-    display: none; /* Safari and Chrome */
   }
   &.table-has-header {
     border-block-start: awsui.$border-divider-list-width solid awsui.$color-border-container-divider;
@@ -239,6 +281,10 @@ filter search icon.
     // Align the footer pagination on the right
     margin-inline-start: auto;
   }
+}
+
+.row {
+  @include style-api.carriers(table-style-api.$row-tokens);
 }
 
 .thead-active,

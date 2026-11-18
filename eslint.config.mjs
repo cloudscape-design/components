@@ -172,6 +172,7 @@ export default tsEslint.config(
     files: ['src/**'],
     ignores: ['**/__tests__/**', '**/__integ__/**', '**/__motion__/**', '**/__a11y__/**', 'src/internal/vendor/**'],
     rules: {
+      'react/button-has-type': 'error',
       'no-restricted-imports': [
         'error',
         {

@@ -10,9 +10,9 @@
   @include link.root(
     $color: palette.$accent,
     $text-decoration: underline palette.$genai,
-    $focus-ring-color: palette.$accent,
-    $focus-ring-width: 3px,
-    $focus-ring-radius: 4px
+    $awsui-focus-ring-color: palette.$accent,
+    $awsui-focus-ring-width: 3px,
+    $awsui-focus-ring-radius: 4px
   );
 
   &:hover {
@@ -28,9 +28,9 @@
   @include link.root(
     $color: hsl(330, 75%, 78%),
     $text-decoration: underline hsl(265, 85%, 76%),
-    $focus-ring-color: hsl(330, 75%, 78%),
-    $focus-ring-width: 3px,
-    $focus-ring-radius: 4px
+    $awsui-focus-ring-color: hsl(330, 75%, 78%),
+    $awsui-focus-ring-width: 3px,
+    $awsui-focus-ring-radius: 4px
   );
 
   &:hover,

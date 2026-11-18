@@ -4,12 +4,12 @@ import React, { forwardRef, useContext, useImperativeHandle, useRef, useState } 
 import clsx from 'clsx';
 
 import { StickyHeaderContext } from '../container/use-sticky-header';
+import { useStickyHeaderCopy } from '../internal/components/sticky-header/use-sticky-header-copy';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import { TableColGroup } from './column-groups/col-group';
 import { TableProps } from './interfaces';
 import { getTableRoleProps, TableRole } from './table-role';
 import Thead, { TheadProps } from './thead';
-import { useStickyHeader } from './use-sticky-header';
 
 import styles from './styles.css.js';
 
@@ -60,13 +60,13 @@ function StickyHeader(
   const { isStuck } = useContext(StickyHeaderContext);
 
   const [focusedComponent, setFocusedComponent] = useState<null | string>(null);
-  const { scrollToRow, scrollToTop } = useStickyHeader(
+  const { scrollToRow, scrollToTop } = useStickyHeaderCopy({
     tableRef,
     theadRef,
     secondaryTheadRef,
     secondaryTableRef,
-    wrapperRef
-  );
+    tableWrapperRef: wrapperRef,
+  });
 
   useImperativeHandle(ref, () => ({
     scrollToTop,

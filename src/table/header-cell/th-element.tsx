@@ -19,6 +19,7 @@ import tableStyles from '../styles.css.js';
 import styles from './styles.css.js';
 
 export interface TableThElementProps {
+  styleClassName?: string;
   resizableStyle?: ColumnWidthStyle;
   sortingStatus?: SortingStatus;
   sortingDisabled?: boolean;
@@ -58,6 +59,7 @@ export interface TableThElementProps {
 }
 
 export function TableThElement({
+  styleClassName,
   resizableStyle,
   sortingStatus,
   sortingDisabled,
@@ -116,6 +118,7 @@ export function TableThElement({
   return (
     <InternalTableHeaderCell
       className={clsx(
+        styleClassName,
         styles[`header-cell-variant-${variant}`],
         sticky && styles['header-cell-sticky'],
         resizable && styles['header-cell-resizable'],

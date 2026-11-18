@@ -56,7 +56,6 @@ export default function MobileToolbar() {
         <nav
           aria-hidden={navigationOpen}
           aria-label={ariaLabels?.navigation ?? undefined}
-          aria-orientation="horizontal"
           className={clsx(styles['mobile-toolbar-nav'], { [testutilStyles['drawer-closed']]: !navigationOpen })}
         >
           <InternalButton

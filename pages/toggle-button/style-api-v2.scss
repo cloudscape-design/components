@@ -12,8 +12,8 @@
     $color: palette.$accent,
     $border-color: palette.$accent,
     $border-radius: 999px,
-    $focus-ring-color: palette.$accent,
-    $focus-ring-radius: 999px
+    $awsui-focus-ring-color: palette.$accent,
+    $awsui-focus-ring-radius: 999px
   );
 
   &:hover {
@@ -34,7 +34,7 @@
 }
 
 .toggle-icon {
-  @include button.root($color: palette.$text-muted, $focus-ring-color: palette.$accent);
+  @include button.root($color: palette.$text-muted, $awsui-focus-ring-color: palette.$accent);
 
   &:hover {
     @include button.root($color: palette.$text);

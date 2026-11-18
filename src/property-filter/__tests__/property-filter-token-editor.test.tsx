@@ -415,6 +415,65 @@ describe.each([false, true])('with i18n-provider %s', withI18nProvider => {
   });
 });
 
+describe('token editor filtering input labels', () => {
+  const enumFilteringProperties: FilteringProperty[] = [
+    {
+      key: 'state',
+      propertyLabel: 'State',
+      operators: [{ operator: '=', tokenType: 'enum' }],
+      groupValuesLabel: 'State values',
+    },
+  ];
+  const enumFilteringOptions: FilteringOption[] = [
+    { propertyKey: 'state', value: 'running' },
+    { propertyKey: 'state', value: 'stopped' },
+  ];
+  const filteringI18nStrings: PropertyFilterProps.I18nStrings = {
+    tokenEditorPropertyFilteringAriaLabel: 'Filter properties',
+    tokenEditorValueFilteringAriaLabel: 'Filter values',
+  };
+
+  function renderEnumEditor(customI18nStrings: PropertyFilterProps.I18nStrings) {
+    renderComponent({
+      filteringProperties: enumFilteringProperties,
+      filteringOptions: enumFilteringOptions,
+      query: { operation: 'and', tokens: [{ propertyKey: 'state', operator: '=', value: ['running'] }] },
+      i18nStrings: { ...i18nStrings, ...customI18nStrings },
+    });
+    const editor = openEditor(0, { expandToViewport: false });
+    const valueMultiselect = editor.valueField().findControl()!.findMultiselect()!;
+    return { editor, valueMultiselect };
+  }
+
+  test('applies filtering aria label to the property select', () => {
+    const { editor } = renderEnumEditor(filteringI18nStrings);
+
+    editor.propertySelect().openDropdown();
+    const filteringInput = editor.propertySelect().findFilteringInput()!.findNativeInput().getElement();
+    expect(filteringInput).toHaveAccessibleName('Filter properties');
+  });
+
+  test('applies filtering aria label to the enum value multiselect', () => {
+    const { valueMultiselect } = renderEnumEditor(filteringI18nStrings);
+
+    valueMultiselect.openDropdown();
+    const filteringInput = valueMultiselect.findFilteringInput()!.findNativeInput().getElement();
+    expect(filteringInput).toHaveAccessibleName('Filter values');
+  });
+
+  test('does not set filtering aria label when strings are not provided', () => {
+    const { editor, valueMultiselect } = renderEnumEditor({});
+
+    editor.propertySelect().openDropdown();
+    const propertyFilteringInput = editor.propertySelect().findFilteringInput()!.findNativeInput().getElement();
+    expect(propertyFilteringInput).not.toHaveAttribute('aria-label');
+
+    valueMultiselect.openDropdown();
+    const valueFilteringInput = valueMultiselect.findFilteringInput()!.findNativeInput().getElement();
+    expect(valueFilteringInput).not.toHaveAttribute('aria-label');
+  });
+});
+
 const tokenJohn = { propertyKey: 'string', operator: '=', value: 'John' };
 const tokenJane = { propertyKey: 'string', operator: '=', value: 'Jane' };
 const tokenJack = { propertyKey: 'string', operator: '=', value: 'Jack' };

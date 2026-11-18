@@ -379,6 +379,9 @@ export interface I18nFormatArgTypes {
     }
     "i18nStrings.selectAllText": never;
   }
+  "option-list": {
+    "i18nStrings.selectedAriaLabel": never;
+  }
   "pagination": {
     "ariaLabels.jumpToPageButtonLabel": never;
     "ariaLabels.nextPageLabel": never;

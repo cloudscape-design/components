@@ -16,7 +16,10 @@ import styles from './styles.css.js';
 
 export interface OptionsListProps extends BaseComponentProps {
   open?: boolean;
-  statusType: DropdownStatusProps.StatusType;
+  /**
+   * When the list opens with `pending` status, `onLoadMore` fires right away. Defaults to `finished`.
+   */
+  statusType?: DropdownStatusProps.StatusType;
   /**
    * Options list
    */
@@ -60,7 +63,7 @@ const getItemIndex = (containerRef: React.RefObject<HTMLElement>, event: React.M
 const OptionsList = (
   {
     open,
-    statusType,
+    statusType = 'finished',
     children,
     nativeAttributes = {},
     onKeyDown,

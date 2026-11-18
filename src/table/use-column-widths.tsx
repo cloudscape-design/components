@@ -5,6 +5,7 @@ import React, { createContext, useContext, useEffect, useRef, useState } from 'r
 import { useResizeObserver, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
+import { useCellsResizeObserver } from '../internal/components/sticky-header/use-cells-resize-observer';
 import { ColumnWidthStyle, setElementWidths } from './column-widths-utils';
 
 export const DEFAULT_COLUMN_WIDTH = 120;
@@ -216,22 +217,9 @@ export function ColumnWidthsProvider({
     syncStickyColumnWidths();
   });
 
-  // Re-syncs the sticky header copies when the primary cells change width without a
-  // corresponding change to the column definitions. This happens with auto-layout
-  // columns whose widths depend on the rendered content (e.g. paginating or filtering).
-  // Fixed-width and resizable columns don't resize on data changes, so this stays idle.
-  // The effect re-observes when the set of visible columns changes, since that swaps
-  // the underlying cell elements.
-  useEffect(() => {
-    if (typeof ResizeObserver === 'undefined') {
-      return;
-    }
-    const observer = new ResizeObserver(() => syncStickyColumnWidths());
-    for (const element of cellsRef.current.values()) {
-      observer.observe(element);
-    }
-    return () => observer.disconnect();
-  }, [syncStickyColumnWidths, visibleColumns]);
+  // Auto-layout columns change width with their content (e.g. paginating or filtering)
+  // without any change to the column definitions.
+  useCellsResizeObserver(() => Array.from(cellsRef.current.values()), syncStickyColumnWidths);
 
   // Observes container size and requests an update to the last cell width as it depends on the container's width.
   useResizeObserver(containerRef, ({ contentBoxWidth: containerWidth }) => {

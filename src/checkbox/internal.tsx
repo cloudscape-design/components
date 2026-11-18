@@ -31,7 +31,7 @@ interface InternalProps extends CheckboxProps, InternalBaseComponentProps {
 }
 
 // Style API v2
-interface StyleClassNames {
+export interface StyleClassNames {
   control?: string;
 }
 

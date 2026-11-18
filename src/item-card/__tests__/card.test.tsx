@@ -345,16 +345,4 @@ describe('internal props', () => {
       expect(itemCard.getElement()).not.toHaveClass(styles.highlighted);
     });
   });
-
-  describe('fullHeight', () => {
-    it.each([true])('applies full-height class when fullHeight=%s', fullHeight => {
-      const { itemCard } = renderInternalItemCard(<InternalItemCard fullHeight={fullHeight}>content</InternalItemCard>);
-      expect(itemCard.getElement()).toHaveClass(styles['full-height']);
-    });
-
-    it.each([false, undefined])('does not apply full-height class when fullHeight=%s', fullHeight => {
-      const { itemCard } = renderInternalItemCard(<InternalItemCard fullHeight={fullHeight}>content</InternalItemCard>);
-      expect(itemCard.getElement()).not.toHaveClass(styles['full-height']);
-    });
-  });
 });

@@ -17,7 +17,7 @@ describe('ProgressBar Style API v2', () => {
     variant => {
       const { wrapper } = renderProgressBar({
         variant,
-        styleClassNames: { root: 'a', percentage: 'b', unknown: 'c' },
+        styleClassNames: { root: 'a', valueLabel: 'b', unknown: 'c' },
       });
       expect(wrapper.getElement()).toHaveClass('a');
       expect(wrapper.getElement()).not.toHaveClass('c');
@@ -30,7 +30,7 @@ describe('ProgressBar Style API v2', () => {
   );
 
   test('does not leak the styleClassNames prop to the DOM', () => {
-    const { container } = renderProgressBar({ styleClassNames: { root: 'a', percentage: 'b' } });
+    const { container } = renderProgressBar({ styleClassNames: { root: 'a', valueLabel: 'b' } });
     expect(container.querySelector('[styleClassNames]')).toBeNull();
   });
 });

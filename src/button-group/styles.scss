@@ -10,7 +10,7 @@ $divider-tokens: style-api.resolve((line-color, line-width), carrier);
 @include style-api.register($divider-tokens);
 @include style-api.docs('divider', $divider-tokens);
 @include style-api.docs-forward('item', 'button', 'root');
-@include style-api.docs-forward('dropdown', 'dropdown', 'container');
+@include style-api.docs-forward('dropdown', 'dropdown', 'root');
 
 .root {
   @include styles.styles-reset;

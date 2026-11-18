@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
+import { getStyleClassName } from '../../internal/utils/style-slot';
 import { TableProps } from '../interfaces';
 import { Divider, Resizer } from '../resizer';
 import { DEFAULT_COLUMN_WIDTH, useColumnWidths } from '../use-column-widths';
@@ -57,6 +58,7 @@ export function TableGroupHeaderCell({
   stickyBoundaryColumnId,
   isLast,
   wrapLines,
+  styleClassNames,
 }: TableGroupHeaderCellProps) {
   const headerId = useUniqueId('table-group-header-');
   const { columnWidths, getColumnMinWidth } = useColumnWidths();
@@ -74,6 +76,7 @@ export function TableGroupHeaderCell({
 
   return (
     <TableThElement
+      styleClassName={getStyleClassName(styleClassNames?.headerCell, { type: 'group', group })}
       resizableStyle={resizableStyle}
       cellRef={cellRef}
       focusedComponent={focusedComponent}

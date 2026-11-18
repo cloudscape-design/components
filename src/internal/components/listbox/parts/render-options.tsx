@@ -4,13 +4,13 @@ import React from 'react';
 
 import { MultiselectProps } from '../../../../multiselect/interfaces';
 import { SelectProps } from '../../../../select/interfaces';
-import Item, { ItemParentProps } from '../../../../select/parts/item';
-import MultiselectItem, { MultiselectItemParentProps } from '../../../../select/parts/multiselect-item';
 import { VirtualItem } from '../../../vendor/react-virtual';
 import { DropdownOption } from '../../option/interfaces';
 import { NestedDropdownOption, unflattenOptions } from '../../option/utils/unflatten-options';
 import { HighlightType } from '../../options-list/utils/use-highlight-option';
+import { SelectionType } from '../selection/interfaces';
 import { getItemProps } from './get-item-props';
+import Item, { ItemParentProps } from './item';
 import OptionGroup from './option-group';
 
 interface RenderOptionProps {
@@ -19,10 +19,9 @@ interface RenderOptionProps {
   filteringValue: string;
   highlightType: HighlightType;
   idPrefix: string;
-  checkboxes?: boolean;
   hasDropdownStatus?: boolean;
   virtualItems?: VirtualItem[];
-  useInteractiveGroups?: boolean;
+  selectionType?: SelectionType;
   screenReaderContent?: string;
   ariaSetsize?: number;
   withScrollbar: boolean;
@@ -37,10 +36,9 @@ export const renderOptions = ({
   filteringValue,
   highlightType,
   idPrefix,
-  checkboxes = false,
   hasDropdownStatus,
   virtualItems,
-  useInteractiveGroups,
+  selectionType = 'single',
   screenReaderContent,
   ariaSetsize,
   withScrollbar,
@@ -56,21 +54,20 @@ export const renderOptions = ({
       index: globalIndex,
       getOptionProps,
       filteringValue: option.type === 'select-all' ? '' : filteringValue,
-      checkboxes,
     });
   };
 
-  const renderListItem = (props: any, index: number, parentProps?: ItemParentProps | MultiselectItemParentProps) => {
+  const renderListItem = (props: any, index: number, parentProps?: ItemParentProps) => {
     const virtualItem = virtualItems && virtualItems[index];
     const globalIndex = virtualItem ? virtualItem.index : index;
 
     const isLastItem = index === options.length - 1;
     const padBottom = !hasDropdownStatus && isLastItem;
-    const ListItem = useInteractiveGroups ? MultiselectItem : Item;
     const isSticky = firstOptionSticky && globalIndex === 0;
 
     return (
-      <ListItem
+      <Item
+        selectionType={selectionType}
         index={index}
         virtualIndex={virtualItem ? virtualItem.index : undefined}
         key={globalIndex}

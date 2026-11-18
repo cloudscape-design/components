@@ -8,6 +8,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import { useInternalI18n } from '../i18n/context';
 import { Transition } from '../internal/components/transition';
+import { getStyleClassName } from '../internal/utils/style-slot';
 import { getComponentsAnalyticsMetadata, getItemAnalyticsMetadata } from './analytics-metadata/utils';
 import { useFlashbar, useFlashbarVisibility } from './common';
 import { TIMEOUT_FOR_ENTERING_ANIMATION } from './constant';
@@ -19,6 +20,7 @@ import { isRefObject } from './utils';
 import styles from './styles.css.js';
 
 export default function NonCollapsibleFlashbar({ items, i18nStrings, style, ...restProps }: InternalFlashbarProps) {
+  const { styleClassNames } = restProps;
   const visibleItems = useFlashbarVisibility(items);
 
   const { allItemsHaveId, baseProps, isReducedMotion, isVisualRefresh, mergedRef, flashRefs, handleFlashDismissed } =
@@ -45,6 +47,9 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, style, ...r
   const motionDisabled = isReducedMotion || !isVisualRefresh || !allItemsHaveId;
 
   const animateFlash = !isReducedMotion && isVisualRefresh;
+
+  // Style API v2
+  const getItemClass = (item: FlashbarProps.MessageDefinition) => getStyleClassName(styleClassNames?.item, { item });
 
   /**
    * If the flashbar is flat and motion is `enabled` then the adding and removing of items
@@ -132,6 +137,11 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, style, ...r
         i18nStrings={iconAriaLabels}
         style={style}
         onDismissed={handleFlashDismissed}
+        styleClassNames={{
+          item: getItemClass(item),
+          icon: styleClassNames?.icon,
+          dismissButton: styleClassNames?.dismissButton,
+        }}
         {...item}
       />
     );

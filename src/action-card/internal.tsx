@@ -17,7 +17,16 @@ import { ActionCardProps } from './interfaces';
 import styles from './styles.css.js';
 import testStyles from './test-classes/styles.css.js';
 
-export type InternalActionCardProps = ActionCardProps & InternalBaseComponentProps;
+export type InternalActionCardProps = ActionCardProps &
+  InternalBaseComponentProps & {
+    styleClassNames?: StyleClassNames;
+  };
+
+// Style API v2
+export interface StyleClassNames {
+  root?: string;
+  header?: string;
+}
 
 const InternalActionCard = React.forwardRef(
   (
@@ -36,12 +45,14 @@ const InternalActionCard = React.forwardRef(
       disabled,
       disableHeaderPaddings,
       disableContentPaddings,
+      fitHeight,
       icon,
       iconVerticalAlignment,
       variant,
       nativeButtonAttributes,
       nativeAnchorAttributes,
       __internalRootRef,
+      styleClassNames,
       ...rest
     }: InternalActionCardProps,
     ref: React.Ref<ActionCardProps.Ref>
@@ -83,7 +94,7 @@ const InternalActionCard = React.forwardRef(
         {icon}
       </div>
     );
-    const iconInHeaderRow = icon && iconVerticalAlignment === 'top' && !!header;
+    const iconInHeaderRow = icon && iconVerticalAlignment === 'top' && !headerRowEmpty;
 
     const mergedRootRef = useMergeRefs(rootRef, __internalRootRef);
 
@@ -143,7 +154,13 @@ const InternalActionCard = React.forwardRef(
       );
 
     const headerSection = !headerRowEmpty ? (
-      <div className={clsx(styles.header, disableHeaderPaddings && styles['no-padding'])}>
+      <div
+        className={clsx(
+          !iconInHeaderRow && styleClassNames?.header,
+          styles.header,
+          disableHeaderPaddings && styles['no-padding']
+        )}
+      >
         <InternalStructuredItem
           content={
             header && (
@@ -202,7 +219,7 @@ const InternalActionCard = React.forwardRef(
     const contentElement = (
       <div className={styles['inner-card']}>
         {iconInHeaderRow ? (
-          <div className={styles['header-row']}>
+          <div className={clsx(styleClassNames?.header, styles['header-row'])}>
             {headerSection}
             {iconWrapper}
           </div>
@@ -227,8 +244,10 @@ const InternalActionCard = React.forwardRef(
         role="group"
         aria-labelledby={header ? headerId : standaloneButtonId}
         className={clsx(
+          styleClassNames?.root,
           styles.root,
           styles[`variant-${variant}`],
+          fitHeight && styles['fit-height'],
           disabled && styles.disabled,
           disabled && testStyles.disabled,
           !!icon && styles['has-icon'],

@@ -91,6 +91,16 @@ class PromptInputTokenModePage extends BasePageObject {
     const { height } = await this.getBoundingBox(contentEditableSelector);
     return height;
   }
+
+  setContentEditablePaddingBlock(value: string) {
+    return this.browser.execute(
+      (selector: string, value: string) => {
+        (document.querySelector(selector) as HTMLElement).style.paddingBlock = value;
+      },
+      contentEditableSelector,
+      value
+    );
+  }
 }
 
 const setupTest = (testFn: (page: PromptInputTokenModePage) => Promise<void>, urlSearch = '') => {
@@ -617,6 +627,17 @@ const setupTest = (testFn: (page: PromptInputTokenModePage) => Promise<void>, ur
         await page.pause(200);
         const heightAtFour = await page.getContentEditableHeight();
         expect(heightAtFour).toBeGreaterThan(heightAtThree);
+      })
+    );
+
+    test(
+      'height follows a padding change made outside React',
+      setupTest(async page => {
+        const stockHeight = await page.getContentEditableHeight();
+        await page.setContentEditablePaddingBlock('10px');
+        await page.pause(100);
+        // 5px -> 10px on each side: the height grows by 10px without any React render.
+        await expect(page.getContentEditableHeight()).resolves.toEqual(stockHeight + 10);
       })
     );
 

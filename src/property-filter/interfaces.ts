@@ -332,6 +332,8 @@ export namespace PropertyFilterProps {
     tokenEditorAddTokenActionsAriaLabel?: string;
     tokenEditorAddExistingTokenAriaLabel?: (token: FormattedToken) => string;
     tokenEditorAddExistingTokenLabel?: (token: FormattedToken) => string;
+    tokenEditorPropertyFilteringAriaLabel?: string;
+    tokenEditorValueFilteringAriaLabel?: string;
   }
 
   export interface FormattedToken {

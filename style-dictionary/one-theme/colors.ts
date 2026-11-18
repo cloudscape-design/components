@@ -23,7 +23,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundContainerHeader: { light: '{colorWhite}', dark: '{colorNeutral950}' },
   colorBackgroundContainerContent: { light: '{colorWhite}', dark: '{colorNeutral950}' },
   colorBorderDividerDefault: { light: '{colorNeutral300}', dark: '{colorNeutral750}' },
-  colorBorderDividerInteractiveDefault: { light: '{colorNeutral300}', dark: '{colorNeutral750}' },
+  colorBorderDividerInteractiveDefault: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
   colorBorderDividerSecondary: { light: '{colorNeutral250}', dark: '{colorNeutral800}' },
   colorBorderDividerTableGroup: { light: '{colorNeutral500}', dark: '{colorNeutral600}' },
   colorBorderLayout: { light: '{colorNeutral300}', dark: '{colorNeutral750}' },
@@ -155,7 +155,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextInteractiveInvertedHover: { light: '{colorNeutral950}', dark: '{colorWhite}' },
 
   colorTextBadgeGreen: { light: '{colorSuccess600}', dark: '{colorSuccess200}' },
-  colorTextBadgeBlue: { light: '{colorInfo600}', dark: '{colorInfo300}' },
+  colorTextBadgeBlue: { light: '{colorInfo700}', dark: '{colorInfo300}' },
   colorTextBadgeRed: { light: '{colorError700}', dark: '{colorError400}' },
   colorTextBadgeGrey: { light: '{colorNeutral850}', dark: '{colorNeutral300}' },
 
@@ -240,7 +240,8 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorDropzoneBorderHover: { light: '{colorPrimary900}', dark: '{colorPrimary300}' },
 
   // ── Code view ─────────────────────────────────────────────────────────────
-  colorBackgroundCodeView: { light: '{colorNeutral200}', dark: '{colorNeutral800}' },
+  colorBackgroundCodeView: { light: '{colorNeutral150}', dark: '{colorNeutral800}' },
+  colorBorderCodeView: '{colorBorderDividerDefault}',
 
   // ── GenAI chat ────────────────────────────────────────────────────────────
   colorBackgroundChatBubbleIncoming: { light: '{colorNeutral250}', dark: '{colorNeutral900}' },

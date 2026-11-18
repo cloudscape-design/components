@@ -17,10 +17,8 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 
 let mockVisibleCount: number | null = null;
 jest.mock('../../../lib/components/internal/components/autosuggest-input/use-token-overflow', () => ({
-  useTokenOverflow: ({ tokenCount }: { tokenCount: number }) => ({
-    containerRef: () => {},
-    visibleCount: mockVisibleCount === null ? tokenCount : Math.min(mockVisibleCount, tokenCount),
-  }),
+  useTokenOverflow: ({ tokenCount }: { tokenCount: number }) =>
+    mockVisibleCount === null ? tokenCount : Math.min(mockVisibleCount, tokenCount),
 }));
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({

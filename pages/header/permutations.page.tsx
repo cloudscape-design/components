@@ -30,6 +30,21 @@ const permutations = createPermutations<HeaderProps>([
       null,
     ],
   },
+  {
+    variant: ['h1', 'h2', 'h3'],
+    secondaryContent: ['Secondary content'],
+    counter: ['(1/10)', undefined],
+    description: [
+      'A description text with some content to simulate a text shown below the title of this header.',
+      null,
+    ],
+    actions: [
+      <Button key="button" variant="primary">
+        Create Resource
+      </Button>,
+      null,
+    ],
+  },
 ]);
 
 export default function HeaderPermutations() {

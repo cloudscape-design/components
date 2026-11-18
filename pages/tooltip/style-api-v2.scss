@@ -16,5 +16,5 @@
 }
 
 .tooltip-info-arrow {
-  @include tooltip.arrow($fill-color: palette.$info-surface, $border-color: palette.$info-surface);
+  @include tooltip.arrow($awsui-fill-color: palette.$info-surface, $awsui-border-color: palette.$info-surface);
 }

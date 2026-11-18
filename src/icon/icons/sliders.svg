@@ -1,0 +1,8 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+<path d="M1 5H3" class="stroke-linecap-round"/>
+<path d="M7 5H15" class="stroke-linecap-round"/>
+<path d="M1 11H9" class="stroke-linecap-round"/>
+<path d="M13 11H15" class="stroke-linecap-round"/>
+<circle cx="5" cy="5" r="2"/>
+<circle cx="11" cy="11" r="2"/>
+</svg>

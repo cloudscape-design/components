@@ -10,6 +10,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import handleKey from '../internal/utils/handle-key';
 import { SegmentedControlProps } from './interfaces';
+import { StyleClassNames } from './internal';
 import { Segment } from './segment';
 import { getSegmentedControlRootStyles } from './style';
 
@@ -17,6 +18,7 @@ import styles from './styles.css.js';
 
 interface InternalSegmentedControlComponentProps extends SegmentedControlProps {
   groupedControlProps?: GroupedControlContextProps;
+  styleClassNames?: StyleClassNames;
 }
 
 export default function InternalSegmentedControl({
@@ -27,6 +29,7 @@ export default function InternalSegmentedControl({
   onChange,
   style,
   groupedControlProps,
+  styleClassNames,
 }: InternalSegmentedControlComponentProps) {
   const segmentByIdRef = useRef<{ [id: string]: HTMLButtonElement }>({});
   const selectedOptions = (options || []).filter(option => {
@@ -61,10 +64,16 @@ export default function InternalSegmentedControl({
 
   return (
     <div
-      className={clsx(styles['segment-part'], styles[`segment-count-${options?.length}`], groupedControlClassNames, {
-        [styles.refresh]: isVisualRefresh,
-        [styles['grouped-vertical']]: isGroupedVertical,
-      })}
+      className={clsx(
+        styleClassNames?.root,
+        styles['segment-part'],
+        styles[`segment-count-${options?.length}`],
+        groupedControlClassNames,
+        {
+          [styles.refresh]: isVisualRefresh,
+          [styles['grouped-vertical']]: isGroupedVertical,
+        }
+      )}
       aria-label={label}
       aria-labelledby={ariaLabelledby}
       role="toolbar"
@@ -110,6 +119,7 @@ export default function InternalSegmentedControl({
               onKeyDown={event => moveHighlight(event, focusableSegmentIndex)}
               style={style}
               fullWidth={isGroupedVertical}
+              styleClassNames={styleClassNames}
             />
           );
         })}

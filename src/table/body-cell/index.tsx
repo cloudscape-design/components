@@ -121,6 +121,7 @@ function TableCellEditable<ItemType>({
 
           <div className={styles['body-cell-editor-wrapper']}>
             <button
+              type="button"
               className={clsx(styles['body-cell-editor'], isExpandableColumn && styles['body-cell-editor-focusable'])}
               aria-label={ariaLabels?.activateEditLabel?.(column, item)}
               ref={editActivateRef}

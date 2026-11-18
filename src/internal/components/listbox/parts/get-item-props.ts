@@ -8,16 +8,14 @@ interface ItemProps {
   index: number;
   getOptionProps: any;
   filteringValue: string;
-  checkboxes: boolean;
 }
 
-export const getItemProps = ({ option, index, getOptionProps, filteringValue, checkboxes = false }: ItemProps) => {
+export const getItemProps = ({ option, index, getOptionProps, filteringValue }: ItemProps) => {
   const optionProps = getOptionProps(option, index);
   optionProps.filteringValue = filteringValue;
   const { inGroupIndex, groupIndex, throughIndex } = getTestOptionIndexes(option) || {};
   return {
     ...optionProps,
-    hasCheckbox: checkboxes,
     ['data-group-index']: groupIndex,
     ['data-child-index']: inGroupIndex,
     ['data-test-index']: throughIndex,

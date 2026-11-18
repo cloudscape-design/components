@@ -42,3 +42,9 @@
   align-items: center;
   gap: tokens.$space-static-xxs;
 }
+
+// A fixed-height region that scrolls its table in both directions.
+.scroll-container {
+  block-size: 400px;
+  overflow: auto;
+}

@@ -1,18 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs, useResizeObserver, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import Dropdown from '../dropdown/internal';
 import { useInternalI18n } from '../i18n/context.js';
+import { StyleClassNames as InputStyleClassNames } from '../input/internal';
 import { getBaseProps } from '../internal/base-component';
 import { getBreakpointValue } from '../internal/breakpoints';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
+import PlainList from '../internal/components/listbox/parts/plain-list';
 import { singleSelection } from '../internal/components/listbox/selection/single-selection';
-import { useAnnouncement } from '../internal/components/listbox/use-announcement';
+import { useTypeAhead } from '../internal/components/listbox/use-type-ahead';
 import { checkOptionValueField } from '../internal/components/listbox/utils/check-option-value-field';
 import { prepareOptions } from '../internal/components/option/utils/prepare-options.js';
 import { ResetGroupedControlContext, useGroupedControlContext } from '../internal/context/control-group-context';
@@ -21,24 +23,31 @@ import { fireNonCancelableEvent } from '../internal/events';
 import { warnOnUnsupportedGroupedControlProps } from '../internal/grouped-control/dev-warnings';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useLoadItems } from '../internal/hooks/use-load-items';
 import { SomeRequired } from '../internal/types';
 import { getDropdownMinWidth } from '../internal/utils/get-dropdown-min-width';
 import { joinStrings } from '../internal/utils/strings/join-strings.js';
 import { OptionGroup } from '../types/option';
 import { SelectProps } from './interfaces';
 import Filter from './parts/filter';
-import PlainList, { SelectListProps } from './parts/plain-list';
 import Trigger from './parts/trigger';
 import VirtualList from './parts/virtual-list';
 import { composeDropdownContent } from './utils/dropdown-customization';
-import { useLoadItems } from './utils/use-load-items';
-import { useNativeSearch } from './utils/use-native-search';
 import { useSelect } from './utils/use-select';
 
 import styles from './styles.css.js';
 
 export interface InternalSelectProps extends SomeRequired<SelectProps, 'options'>, InternalBaseComponentProps {
   __inFilteringToken?: 'root' | 'nested';
+  styleClassNames?: StyleClassNames;
+}
+
+// Style API v2
+export interface StyleClassNames {
+  trigger?: string;
+  inlineLabel?: string;
+  filter?: InputStyleClassNames;
+  dropdown?: string;
 }
 
 const InternalSelect = React.forwardRef(
@@ -79,6 +88,7 @@ const InternalSelect = React.forwardRef(
       renderDropdownFooter,
       dropdownRole,
       dropdownAriaDescribedby,
+      styleClassNames,
       ...restProps
     }: InternalSelectProps,
     externalRef: React.Ref<SelectProps.Ref>
@@ -112,7 +122,7 @@ const InternalSelect = React.forwardRef(
 
     const { handleLoadMore, handleRecoveryClick, fireLoadItems } = useLoadItems({
       onLoadItems,
-      options,
+      isEmpty: options.length === 0,
       statusType,
     });
 
@@ -133,19 +143,17 @@ const InternalSelect = React.forwardRef(
     const [triggerWidth, setTriggerWidth] = useState<number | null>(null);
     useResizeObserver(
       () => triggerRef.current,
-      entry => entry.borderBoxWidth > 0 && setTriggerWidth(entry.borderBoxWidth)
+      entry => setTriggerWidth(entry.borderBoxWidth)
     );
 
     const selfControlId = useUniqueId('trigger');
     const controlId = formFieldContext.controlId ?? selfControlId;
 
-    const scrollToIndex = useRef<SelectListProps.SelectListRef>(null);
     const selectedOptions = selectedOption ? [selectedOption] : [];
     const {
       isOpen,
       highlightType,
       highlightedOption,
-      highlightedIndex,
       getTriggerProps,
       getDropdownProps,
       getFilterProps,
@@ -153,7 +161,8 @@ const InternalSelect = React.forwardRef(
       getOptionProps,
       highlightOption,
       selectOption,
-      announceSelected,
+      announcement,
+      scrollToIndex,
       focusActiveRef,
       closeDropdown,
     } = useSelect({
@@ -169,21 +178,23 @@ const InternalSelect = React.forwardRef(
       setFilteringValue,
       statusType,
       dropdownRole,
+      getParent: option => parentMap.get(option)?.option as undefined | OptionGroup,
+      selectedAriaLabel,
+      renderHighlightedAriaLive,
     });
 
-    const handleNativeSearch = useNativeSearch({
+    const handleNativeSearch = useTypeAhead({
       isEnabled: filteringType === 'none' && !readOnly,
       options: filteredOptions,
       highlightOption: !isOpen ? selectOption : highlightOption,
       highlightedOption: !isOpen ? selectedOption : highlightedOption?.option,
+      // When closed, type-ahead selects the match, and selecting ignores a disabled option. Skip disabled options,
+      // so typing selects the next enabled match, as a native select does.
+      skipDisabled: !isOpen,
     });
 
     const selectAriaLabelId = useUniqueId('select-arialabel-');
     const footerId = useUniqueId('footer');
-
-    useEffect(() => {
-      scrollToIndex.current?.(highlightedIndex);
-    }, [highlightedIndex]);
 
     const dropdownContentProps: SelectProps.DropdownContentProps = { filterText: filteringValue, closeDropdown };
     const customDropdownHeader = renderDropdownHeader?.(dropdownContentProps);
@@ -197,6 +208,7 @@ const InternalSelect = React.forwardRef(
         ariaLabel={filteringAriaLabel}
         ariaRequired={ariaRequired}
         value={filteringValue}
+        styleClassNames={styleClassNames?.filter}
         {...getFilterProps()}
       />
     );
@@ -215,6 +227,7 @@ const InternalSelect = React.forwardRef(
         inFilteringToken={__inFilteringToken}
         groupedControlProps={groupedControlProps}
         inlineLabelText={inlineLabelText}
+        styleClassNames={{ trigger: styleClassNames?.trigger, inlineLabel: styleClassNames?.inlineLabel }}
         {...formFieldContext}
         controlId={controlId}
         ariaLabelledby={joinStrings(formFieldContext.ariaLabelledby, selectAriaLabelId)}
@@ -266,14 +279,6 @@ const InternalSelect = React.forwardRef(
       ariaRequired,
     };
 
-    const announcement = useAnnouncement({
-      announceSelected,
-      highlightedOption,
-      getParent: option => parentMap.get(option)?.option as undefined | OptionGroup,
-      selectedAriaLabel,
-      renderHighlightedAriaLive,
-    });
-
     const ListComponent = virtualScroll ? VirtualList : PlainList;
 
     const handleMouseDown = (event: React.MouseEvent) => {
@@ -302,6 +307,7 @@ const InternalSelect = React.forwardRef(
         >
           <Dropdown
             {...dropdownProps}
+            styleClassNames={{ root: styleClassNames?.dropdown }}
             ariaLabelledby={dropdownProps.ariaRole ? joinStrings(selectAriaLabelId, controlId) : undefined}
             ariaDescribedby={
               dropdownProps.ariaRole
@@ -327,7 +333,7 @@ const InternalSelect = React.forwardRef(
                   ) : null
                 }
                 renderOption={renderOption}
-                menuProps={menuProps}
+                listProps={menuProps}
                 getOptionProps={getOptionProps}
                 filteredOptions={filteredOptions}
                 filteringValue={filteringValue}

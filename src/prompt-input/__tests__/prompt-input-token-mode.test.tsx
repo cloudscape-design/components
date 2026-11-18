@@ -2751,22 +2751,25 @@ describe('internal.tsx paths', () => {
     expect(getValue(wrapper)).toBe('');
   });
 
-  test('minRows scales the computed height formula in token mode, unlike the single-row textarea fallback', () => {
-    // jsdom's CSSStyleDeclaration doesn't parse CSS min()/max(), so assigning our formula to
-    // `element.style.height` is silently dropped and reading it back is unreliable. Spy on the
-    // `height` setter instead to capture the raw string the component actually assigns.
+  test('minRows scales the pixel height in token mode', () => {
+    // Mock getComputedStyle so the formula has predictable inputs.
+    jest.spyOn(window, 'getComputedStyle').mockImplementation(
+      () =>
+        ({
+          lineHeight: '20px',
+          paddingTop: '5px',
+          paddingBottom: '5px',
+          borderTopWidth: '0px',
+          borderBottomWidth: '0px',
+        }) as unknown as CSSStyleDeclaration
+    );
+
     const assignedValues: string[] = [];
     const heightSetterSpy = jest
       .spyOn(window.CSSStyleDeclaration.prototype, 'height', 'set')
       .mockImplementation(function (this: CSSStyleDeclaration, value: string) {
         assignedValues.push(value);
       });
-    // The height calculation runs inside requestAnimationFrame; run it synchronously here so we
-    // can assert on the resulting formula.
-    const rafSpy = jest.spyOn(window, 'requestAnimationFrame').mockImplementation((callback: FrameRequestCallback) => {
-      callback(0);
-      return 0;
-    });
     try {
       render(
         <PromptInput
@@ -2779,12 +2782,12 @@ describe('internal.tsx paths', () => {
           maxRows={-1}
         />
       );
-      // The height formula in token mode must multiply by minRows (5), not fall back to the
-      // single-line formula used for the native textarea's floor height.
-      expect(assignedValues.some(value => value.includes('5 *'))).toBe(true);
+      // minRows=5, lineHeight=20px, padding=5+5=10px: expected floor = 5*20+10 = 110px.
+      // maxRows=-1 so no cap; jsdom scrollHeight=0 so clamp(0, 110, Infinity)=110.
+      expect(assignedValues.some(value => value === '110px')).toBe(true);
     } finally {
       heightSetterSpy.mockRestore();
-      rafSpy.mockRestore();
+      (window.getComputedStyle as jest.Mock).mockRestore();
     }
   });
 
@@ -5251,27 +5254,47 @@ describe('token mode misc', () => {
 
   test('ResizeObserver triggers height adjustment without error', () => {
     const originalResizeObserver = window.ResizeObserver;
-    let resizeCallback: () => void = () => {};
+    const originalRequestAnimationFrame = window.requestAnimationFrame;
+    // Both the root width observer and the text element's content-box observer are captured and fired.
+    const resizeCallbacks: Array<() => void> = [];
     const MockResizeObserver = jest.fn(cb => ({
       observe: () => {
-        resizeCallback = cb;
+        resizeCallbacks.push(cb);
       },
       unobserve: jest.fn(),
       disconnect: jest.fn(),
     }));
     window.ResizeObserver = MockResizeObserver;
+    window.requestAnimationFrame = (cb: FrameRequestCallback) => {
+      cb(0);
+      return 0;
+    };
 
     const ref = React.createRef<PromptInputProps.Ref>();
     const { wrapper } = renderTokenMode({ props: { tokens: [{ type: 'text', value: 'hello' }] }, ref });
     act(() => {
       ref.current!.focus();
     });
+    expect(resizeCallbacks.length).toBeGreaterThanOrEqual(2);
     act(() => {
-      resizeCallback();
+      resizeCallbacks.forEach(callback => callback());
     });
     // The component should still render correctly and preserve content after resize
     expect(getValue(wrapper)).toBe('hello');
     window.ResizeObserver = originalResizeObserver;
+    window.requestAnimationFrame = originalRequestAnimationFrame;
+  });
+
+  test('renders without ResizeObserver support', () => {
+    const originalResizeObserver = window.ResizeObserver;
+    // @ts-expect-error simulating an environment without ResizeObserver
+    window.ResizeObserver = undefined;
+    try {
+      const { wrapper } = renderTokenMode({ props: { tokens: [{ type: 'text', value: 'hello' }] } });
+      expect(getValue(wrapper)).toBe('hello');
+    } finally {
+      window.ResizeObserver = originalResizeObserver;
+    }
   });
 
   test('Enter key fires onAction through the keyboard handler config', () => {
@@ -8049,12 +8072,32 @@ describe('tokens takes precedence over value', () => {
   });
 
   test('updating the value prop does not trigger the token-mode height effect', () => {
-    const rafSpy = jest.spyOn(window, 'requestAnimationFrame').mockImplementation(() => 0);
+    // Mock getComputedStyle so adjustInputHeight produces a valid pixel height.
+    jest.spyOn(window, 'getComputedStyle').mockImplementation(
+      () =>
+        ({
+          lineHeight: '20px',
+          paddingTop: '5px',
+          paddingBottom: '5px',
+          borderTopWidth: '0px',
+          borderBottomWidth: '0px',
+        }) as unknown as CSSStyleDeclaration
+    );
+
+    const heightsSet: string[] = [];
+    const heightSetterSpy = jest
+      .spyOn(window.CSSStyleDeclaration.prototype, 'height', 'set')
+      .mockImplementation(function (this: CSSStyleDeclaration, value: string) {
+        if (value !== 'auto') {
+          heightsSet.push(value);
+        }
+      });
+
     try {
       const tokens: PromptInputProps['tokens'] = [{ type: 'text', value: 'hello' }];
       const { rerender } = renderTokenMode({ props: { tokens, value: 'initial' } });
-      const callsAfterMount = rafSpy.mock.calls.length;
-      expect(callsAfterMount).toBeGreaterThan(0);
+      const countAfterMount = heightsSet.length;
+      expect(countAfterMount).toBeGreaterThan(0);
 
       rerender(
         <PromptInput
@@ -8067,17 +8110,39 @@ describe('tokens takes precedence over value', () => {
         />
       );
 
-      expect(rafSpy.mock.calls.length).toBe(callsAfterMount);
+      // Value change must not trigger height recalculation in token mode.
+      expect(heightsSet.length).toBe(countAfterMount);
     } finally {
-      rafSpy.mockRestore();
+      heightSetterSpy.mockRestore();
+      (window.getComputedStyle as jest.Mock).mockRestore();
     }
   });
 
   test('updating tokens still triggers the token-mode height effect', () => {
-    const rafSpy = jest.spyOn(window, 'requestAnimationFrame').mockImplementation(() => 0);
+    // Mock getComputedStyle so adjustInputHeight produces a valid pixel height.
+    jest.spyOn(window, 'getComputedStyle').mockImplementation(
+      () =>
+        ({
+          lineHeight: '20px',
+          paddingTop: '5px',
+          paddingBottom: '5px',
+          borderTopWidth: '0px',
+          borderBottomWidth: '0px',
+        }) as unknown as CSSStyleDeclaration
+    );
+
+    const heightsSet: string[] = [];
+    const heightSetterSpy = jest
+      .spyOn(window.CSSStyleDeclaration.prototype, 'height', 'set')
+      .mockImplementation(function (this: CSSStyleDeclaration, value: string) {
+        if (value !== 'auto') {
+          heightsSet.push(value);
+        }
+      });
+
     try {
       const { rerender } = renderTokenMode({ props: { tokens: [{ type: 'text', value: 'hello' }] } });
-      const callsAfterMount = rafSpy.mock.calls.length;
+      const countAfterMount = heightsSet.length;
 
       rerender(
         <PromptInput
@@ -8089,9 +8154,11 @@ describe('tokens takes precedence over value', () => {
         />
       );
 
-      expect(rafSpy.mock.calls.length).toBeGreaterThan(callsAfterMount);
+      // Token change must trigger a height recalculation.
+      expect(heightsSet.length).toBeGreaterThan(countAfterMount);
     } finally {
-      rafSpy.mockRestore();
+      heightSetterSpy.mockRestore();
+      (window.getComputedStyle as jest.Mock).mockRestore();
     }
   });
   describe('switching between textarea mode and token mode after mount', () => {

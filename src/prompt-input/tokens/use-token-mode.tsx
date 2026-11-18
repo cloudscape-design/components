@@ -200,6 +200,8 @@ export interface UseTokenModeConfig {
   i18nStrings?: PromptInputProps['i18nStrings'];
 
   adjustInputHeight: () => void;
+
+  styleClassNames?: { textarea?: string; token?: string };
 }
 
 /** Return value of useTokenMode — state, handlers, and attributes consumed by TokenMode component. */
@@ -382,6 +384,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     onMenuLoadItems,
     i18nStrings,
     adjustInputHeight,
+    styleClassNames,
   } = config;
 
   const shortcutsState = useShortcutsState();
@@ -1097,7 +1100,7 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
     'aria-readonly': readOnly ? 'true' : undefined,
     'aria-required': ariaRequired ? 'true' : undefined,
     'data-placeholder': placeholder,
-    className: clsx(styles.textarea, testutilStyles.textarea, {
+    className: clsx(styleClassNames?.textarea, styles.textarea, testutilStyles.textarea, {
       [styles.invalid]: invalid,
       [styles.warning]: warning,
       [styles['textarea-disabled']]: disabled,
@@ -1144,7 +1147,14 @@ export function useTokenMode(config: UseTokenModeConfig): UseTokenModeResult {
 
   const portals = portalContainers.map(container =>
     ReactDOM.createPortal(
-      <Token key={container.id} variant="inline" label={container.label} disabled={!!disabled} readOnly={!!readOnly} />,
+      <Token
+        key={container.id}
+        variant="inline"
+        label={container.label}
+        disabled={!!disabled}
+        readOnly={!!readOnly}
+        styleClassNames={{ root: styleClassNames?.token }}
+      />,
       container.element
     )
   );

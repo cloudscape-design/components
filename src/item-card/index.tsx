@@ -14,6 +14,7 @@ const ItemCard = ({
   disableHeaderPaddings = false,
   disableContentPaddings = false,
   disableFooterPaddings = false,
+  fitHeight = false,
   variant = 'default',
   ...props
 }: ItemCardProps) => {
@@ -22,6 +23,7 @@ const ItemCard = ({
       disableHeaderPaddings,
       disableContentPaddings,
       disableFooterPaddings,
+      fitHeight,
       variant,
     },
   });
@@ -33,6 +35,7 @@ const ItemCard = ({
       disableHeaderPaddings={disableHeaderPaddings}
       disableContentPaddings={disableContentPaddings}
       disableFooterPaddings={disableFooterPaddings}
+      fitHeight={fitHeight}
       variant={variant}
       {...externalProps}
       {...baseComponentProps}

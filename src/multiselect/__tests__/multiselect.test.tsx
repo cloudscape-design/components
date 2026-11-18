@@ -1008,11 +1008,10 @@ describe('resize observer', () => {
     expect(getDropdownMinWidthSpy).toHaveBeenCalledWith(expect.objectContaining({ triggerWidth: 300 }));
   });
 
-  test('does not set triggerWidth when borderBoxWidth is 0', () => {
+  test('sets triggerWidth to 0 when the trigger is hidden', () => {
     renderMultiselect(<Multiselect selectedOptions={[]} options={defaultOptions} />);
-    getDropdownMinWidthSpy.mockClear();
+    fireResize(300);
     fireResize(0);
-    // borderBoxWidth === 0 short-circuits the callback so triggerWidth stays null and no re-render occurs
-    expect(getDropdownMinWidthSpy).not.toHaveBeenCalled();
+    expect(getDropdownMinWidthSpy).toHaveBeenLastCalledWith(expect.objectContaining({ triggerWidth: 0 }));
   });
 });

@@ -7,11 +7,11 @@
 @use '../style-api/palette' as palette;
 
 .divider-brand {
-  @include divider.root($line-color: palette.$info, $line-width: 2px);
+  @include divider.root($awsui-line-color: palette.$info, $awsui-line-width: 2px);
 }
 
 .divider-labelled {
-  @include divider.root($line-color: palette.$info);
+  @include divider.root($awsui-line-color: palette.$info);
 }
 
 // The label is consumer content, so it is styled directly.

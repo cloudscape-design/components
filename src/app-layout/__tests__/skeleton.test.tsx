@@ -3,11 +3,14 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
+import { isThemeActive } from '@cloudscape-design/component-toolkit/internal';
+
 import AppLayout from '../../../lib/components/app-layout';
 import { BeforeMainSlotSkeleton } from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/skeleton-parts';
 import AppLayoutToolbar from '../../../lib/components/app-layout-toolbar';
 import BreadcrumbGroup from '../../../lib/components/breadcrumb-group';
 import { getFunnelKeySelector } from '../../../lib/components/internal/analytics/selectors';
+import { getIconHTML } from '../../icon/__tests__/utils';
 import { describeEachAppLayout, renderComponent } from './utils';
 
 import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.selectors.js';
@@ -34,6 +37,15 @@ jest.mock('../../../lib/components/internal/widgets', () => ({
   createWidgetizedComponent: createWidgetizedComponentMock,
 }));
 
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  isThemeActive: jest.fn().mockReturnValue(false),
+}));
+
+afterEach(() => {
+  (isThemeActive as jest.Mock).mockReturnValue(false);
+});
+
 describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
   it('renders complete component by default', () => {
     const { wrapper } = renderComponent(
@@ -59,6 +71,17 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
     });
     afterEach(() => {
       widgetMockEnabled = false;
+    });
+
+    it('renders the menu icon on the navigation toggle', () => {
+      const { wrapper } = renderComponent(<AppLayout navigation="test nav" />);
+      expect(wrapper.findNavigationToggle()!.findIcon()!.getElement()).toContainHTML(getIconHTML('menu'));
+    });
+
+    it('renders the side-bar icon on the navigation toggle in One Theme', () => {
+      (isThemeActive as jest.Mock).mockReturnValue(true);
+      const { wrapper } = renderComponent(<AppLayout navigation="test nav" />);
+      expect(wrapper.findNavigationToggle()!.findIcon()!.getElement()).toContainHTML(getIconHTML('side-bar'));
     });
 
     it('renders skeleton parts only', () => {

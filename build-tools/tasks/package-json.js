@@ -139,6 +139,8 @@ module.exports = parallel([
       './components': './components/index.js',
       './test-utils-doc/dom': './test-utils-doc/dom.js',
       './test-utils-doc/selectors': './test-utils-doc/selectors.js',
+      './style-api-doc': './style-api-doc/index.js',
+      './style-api-doc/*.json': './style-api-doc/*.json',
       // this directory is generated down the line in other builds
       './styles/*.json': './styles/*.json',
     },
