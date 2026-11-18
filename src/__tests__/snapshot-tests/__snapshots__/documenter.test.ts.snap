@@ -21926,8 +21926,8 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
-      "description": "Makes the main content area focusable. This should be used if there are no focusable elements
-inside the content, to ensure it is keyboard scrollable when \`scrollable\` is set.
+      "description": "Makes the main content area focusable. Use it when \`scrollable\` is set to \`true\` and the content does not include
+focusable elements, to make sure it is keyboard scrollable.
 
 Provide either \`{ariaLabel: "Main label"}\` or \`{ariaLabelledby: "main-label-id"}\`",
       "inlineType": {
@@ -21963,8 +21963,8 @@ Provide either \`{ariaLabel: "Main label"}\` or \`{ariaLabelledby: "main-label-i
       "type": "number",
     },
     {
-      "description": "Makes the panel content focusable. This should be used if there are no focusable elements
-inside the panel, to ensure it is keyboard scrollable when \`scrollable\` is set.
+      "description": "Makes the panel content focusable. Use it when \`scrollable\` is set to \`true\` and the content does not include
+focusable elements, to make sure it is keyboard scrollable.
 
 Provide either \`{ariaLabel: "Panel label"}\` or \`{ariaLabelledby: "panel-label-id"}\`",
       "inlineType": {
@@ -22022,8 +22022,10 @@ The actual size will be constrained by \`minPanelSize\` and \`maxPanelSize\`, if
       "defaultValue": "false",
       "description": "Makes the panel and main content areas scrollable.
 
-When setting this property to \`true\`, make sure that all content, including focus rings of interactive elements,
-fits within the panels, otherwise it will be clipped.",
+Scrollable panels clip all overflowing content, such as focus rings of interactive elements that are close to panel borders,
+and constrain the space available to dropdowns.
+If you use this property, make sure there is enough padding between such elements and the panel edge,
+and consider rendering dropdowns inside portals if necessary.",
       "name": "scrollable",
       "optional": true,
       "type": "boolean",
