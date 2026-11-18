@@ -1,6 +1,10 @@
-# Styling
+# Component styles
+
+Rules for the CSS of a component's own `styles.scss` files.
 
 Prefer design tokens and custom CSS properties over hardcoded values (colors, spacing, font sizes, etc.). This keeps styles consistent across themes and modes.
+
+To let consumers restyle parts of a component, see [Style API](STYLE_API.md).
 
 ## Rules
 
