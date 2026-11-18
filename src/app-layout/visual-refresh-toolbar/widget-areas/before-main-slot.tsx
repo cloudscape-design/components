@@ -5,7 +5,6 @@ import clsx from 'clsx';
 
 import { AppLayoutBuiltInErrorBoundary } from '../../../error-boundary/internal';
 import { createWidgetizedComponent } from '../../../internal/widgets';
-import { isAppLayoutHideToolbar } from '../../utils/feature-flags';
 import { ActiveDrawersContext } from '../../utils/visibility-context';
 import { AppLayoutGlobalAiDrawerImplementation } from '../drawer/global-ai-drawer';
 import { AppLayoutNavigationImplementation as AppLayoutNavigation } from '../navigation';
@@ -63,10 +62,9 @@ export const BeforeMainSlotImplementationInternal = ({
   // Must use `toolbarProps` because all layouts have to apply this mode, not just the one with toolbar
   const drawerExpandedModeInChildLayout = !!toolbarProps?.expandedDrawerId;
   const { __embeddedViewMode: embeddedViewMode } = appLayoutProps as any;
-  const hideToolbar = isAppLayoutHideToolbar();
   return (
     <>
-      {!!toolbarProps && !embeddedViewMode && !aiDrawerExpandedMode && !hideToolbar && (
+      {!!toolbarProps && !embeddedViewMode && !aiDrawerExpandedMode && (
         <AppLayoutToolbar
           appLayoutInternals={appLayoutState.appLayoutInternals}
           hideBreadcrumbsInToolbar={hideBreadcrumbsInToolbar}
