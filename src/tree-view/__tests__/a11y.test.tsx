@@ -1,12 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import TreeView, { TreeViewProps } from '../../../lib/components/tree-view';
-import { defaultProps, Item } from './items';
+import { KeyCode } from '../../internal/keycode';
+import { defaultProps, Item, itemsWithFocusables } from './items';
 
 import styles from '../../../lib/components/tree-view/styles.css.js';
 
@@ -113,4 +114,88 @@ test('correct aria-level is set', () => {
   expect(rootLevelItem.getElement().getAttribute('aria-level')).toEqual('1');
   expect(level2Item.getElement().getAttribute('aria-level')).toEqual('2');
   expect(level3Item.getElement().getAttribute('aria-level')).toEqual('3');
+});
+
+describe('ariaRole', () => {
+  test('uses tree semantics by default', () => {
+    renderTreeView({ ariaLabel: 'Files', expandedItems: ['1'] });
+
+    const tree = screen.getByRole('tree', { name: 'Files' });
+    expect(within(tree).getAllByRole('treeitem').length).toBeGreaterThan(0);
+    expect(within(tree).getByRole('group', { name: 'Item 1.1' })).toBeTruthy();
+    expect(screen.queryByRole('list')).toBeNull();
+  });
+
+  test('renders nested lists with explicit list roles when set to "list"', () => {
+    const { wrapper } = renderTreeView({ ariaRole: 'list', ariaLabel: 'Files', expandedItems: ['1'] });
+
+    expect(screen.queryByRole('tree')).toBeNull();
+    expect(screen.queryByRole('treeitem')).toBeNull();
+    expect(screen.queryByRole('group')).toBeNull();
+
+    const list = screen.getByRole('list', { name: 'Files' });
+    const nestedList = within(list).getAllByRole('list')[0];
+    expect(within(nestedList).getAllByRole('listitem').length).toBe(2);
+    // Explicit roles are required: Safari drops list semantics from lists styled with `list-style: none`.
+    expect(list).toHaveAttribute('role', 'list');
+    expect(nestedList).toHaveAttribute('role', 'list');
+
+    for (const item of wrapper.findItems()) {
+      expect(item.getElement().tagName).toBe('LI');
+      expect(item.getElement()).toHaveAttribute('role', 'listitem');
+      expect(item.getElement()).not.toHaveAttribute('aria-expanded');
+      expect(item.getElement()).not.toHaveAttribute('aria-level');
+    }
+  });
+
+  test('keeps the expanded state on the toggle button when set to "list"', () => {
+    const { wrapper } = renderTreeView({ ariaRole: 'list' });
+
+    const toggle = wrapper.findItemById('1')!.findItemToggle()!.getElement();
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    toggle.click();
+    expect(wrapper.findItemById('1')!.findItemToggle()!.getElement()).toHaveAttribute('aria-expanded', 'true');
+  });
+
+  test('puts all toggles and actions in the tab order when set to "list"', () => {
+    const renderWithFocusables = (ariaRole: TreeViewProps.AriaRole) =>
+      render(
+        <TreeView
+          ariaRole={ariaRole}
+          items={itemsWithFocusables}
+          getItemId={item => item.id}
+          getItemChildren={item => item.children}
+          renderItem={item => ({ content: item.content, actions: item.actions })}
+        />
+      );
+
+    // In tree mode only one element is in the tab order (roving tabindex).
+    const { unmount } = renderWithFocusables('tree');
+    expect(
+      screen
+        .getAllByRole('button')
+        .filter(button => !button.closest('[role="toolbar"]'))
+        .some(button => button.getAttribute('tabindex') === '-1')
+    ).toBe(true);
+    unmount();
+
+    renderWithFocusables('list');
+    // Button group is a toolbar that manages its own roving tabindex, so its buttons are excluded.
+    const buttons = screen.getAllByRole('button').filter(button => !button.closest('[role="toolbar"]'));
+    expect(buttons.length).toBeGreaterThan(1);
+    for (const button of buttons) {
+      expect(button).not.toHaveAttribute('tabindex', '-1');
+    }
+  });
+
+  test('does not move focus with arrow keys when set to "list"', () => {
+    const { wrapper } = renderTreeView({ ariaRole: 'list' });
+
+    const toggle = wrapper.findItemById('1')!.findItemToggle()!.getElement();
+    toggle.focus();
+    fireEvent.keyDown(toggle, { keyCode: KeyCode.down });
+    fireEvent.keyDown(toggle, { keyCode: KeyCode.right });
+
+    expect(document.activeElement).toBe(toggle);
+  });
 });

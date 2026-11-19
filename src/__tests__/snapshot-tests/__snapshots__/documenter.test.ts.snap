@@ -35465,6 +35465,23 @@ Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     {
+      "defaultValue": "'tree'",
+      "description": "Specifies the semantics of the tree view:
+* \`tree\` (default) - Renders a tree widget. Items have the \`treeitem\` role, the tree view is a single tab stop, and users move between items with the arrow keys.
+* \`list\` - Renders nested lists (\`ul\` and \`li\` elements with the \`list\` and \`listitem\` roles). Expand toggles and item actions are in the normal tab order, and arrow-key navigation is turned off.",
+      "inlineType": {
+        "name": "TreeViewProps.AriaRole",
+        "type": "union",
+        "values": [
+          "list",
+          "tree",
+        ],
+      },
+      "name": "ariaRole",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",

@@ -26,6 +26,7 @@ export default function BasicTreeView() {
     value: 'default',
   });
   const [showConnectorLines, setShowConnectorLines] = useState(true);
+  const [renderAsList, setRenderAsList] = useState(false);
 
   const renderItemToggleIcon = ({ expanded }: TreeViewProps.ItemToggleRenderIconData) => {
     if (toggleIconType.value === 'custom') {
@@ -51,6 +52,10 @@ export default function BasicTreeView() {
         <div>
           <Checkbox checked={showConnectorLines} onChange={({ detail }) => setShowConnectorLines(detail.checked)}>
             Show connector lines
+          </Checkbox>
+
+          <Checkbox checked={renderAsList} onChange={({ detail }) => setRenderAsList(detail.checked)}>
+            Render as list (ariaRole=&quot;list&quot;)
           </Checkbox>
 
           <br />
@@ -115,6 +120,7 @@ export default function BasicTreeView() {
               }}
               renderItemToggleIcon={renderItemToggleIcon}
               connectorLines={showConnectorLines ? 'vertical' : undefined}
+              ariaRole={renderAsList ? 'list' : 'tree'}
             />
           </Container>
         </div>
