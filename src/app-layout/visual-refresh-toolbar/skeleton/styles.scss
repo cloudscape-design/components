@@ -227,6 +227,26 @@
 }
 
 /**
+ * A zero-height sticky element placed in the toolbar grid area when the toolbar is hidden by a feature flag.
+ * Draws a top border for the content area in the toolbar border color, without taking any space.
+ */
+.hidden-toolbar-border {
+  grid-area: toolbar;
+  position: sticky;
+  z-index: constants.$toolbar-z-index;
+
+  &:before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: 0;
+    block-size: awsui.$border-divider-section-width;
+    background-color: awsui.$color-border-layout;
+    pointer-events: none;
+  }
+}
+
+/**
  * A zero-height sticky element placed in the toolbar grid area when the toolbar is absent
  * and the left panel (AI drawer) is open. It reuses the toolbar's pseudo-element technique
  * to render the border-radius corner between the AI drawer and the content area.

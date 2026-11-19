@@ -10,6 +10,7 @@ import { clearInitialMessages } from '../../../lib/components/internal/plugins/w
 import * as widgetPlugins from '../../../lib/components/plugins';
 import { describeEachAppLayout, renderComponent, setPendingGlobalFlag } from './utils';
 
+import skeletonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.css.js';
 import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.css.js';
 
 const breadcrumbItems: BreadcrumbGroupProps['items'] = [
@@ -54,6 +55,20 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
     // toggles are rendered inside the hidden toolbar
     expect(wrapper.findToolbar()!.getElement()).toContainElement(wrapper.findNavigationToggle()!.getElement());
     expect(wrapper.findToolbar()!.getElement()).toContainElement(wrapper.findToolsToggle()!.getElement());
+  });
+
+  test('renders a top border for the content area in place of the hidden toolbar', () => {
+    setPendingGlobalFlag('appLayoutHideToolbar', true);
+    const { wrapper } = renderComponent(<AppLayout navigation="nav" />);
+    const toolbar = wrapper.findToolbar()!.getElement();
+    const border = toolbar.nextElementSibling;
+    expect(border).toHaveClass(skeletonStyles['hidden-toolbar-border']);
+    expect(wrapper.findAllByClassName(skeletonStyles['hidden-toolbar-border'])).toHaveLength(1);
+  });
+
+  test('does not render the content area top border when the flag is not set', () => {
+    const { wrapper } = renderComponent(<AppLayout navigation="nav" />);
+    expect(wrapper.findByClassName(skeletonStyles['hidden-toolbar-border'])).toBeNull();
   });
 
   test('keeps rendering breadcrumbs inside the hidden toolbar', () => {
