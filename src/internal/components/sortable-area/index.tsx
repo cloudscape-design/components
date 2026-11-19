@@ -11,7 +11,7 @@ import { Portal } from '@cloudscape-design/component-toolkit/internal';
 
 import { fireNonCancelableEvent } from '../../events';
 import { isElement, isHTMLElement } from '../../utils/dom';
-import { getNearestScrollContainer } from '../../utils/scrollable-containers';
+import { getFirstScrollableParent } from '../../utils/scrollable-containers';
 import { joinStrings } from '../../utils/strings';
 import { SortableAreaProps } from './interfaces';
 import { EventName } from './keyboard-sensor/utilities/events';
@@ -138,7 +138,7 @@ function useScopedAutoScroll() {
     while (element && !isHTMLElement(element)) {
       element = element.parentElement;
     }
-    boundaryRef.current = element ? (getNearestScrollContainer(element) ?? null) : null;
+    boundaryRef.current = element ? (getFirstScrollableParent(element, { requireOverflow: false }) ?? null) : null;
   };
   return { autoScroll, setAutoScrollBoundary };
 }

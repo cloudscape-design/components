@@ -4,12 +4,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import {
-  getFirstScrollableParent,
-  getNearestScrollContainer,
-  getScrollableParents,
-  scrollRectangleIntoView,
-} from '../scrollable-containers';
+import { getFirstScrollableParent, getScrollableParents, scrollRectangleIntoView } from '../scrollable-containers';
 
 const originalScrollBy = window.scrollBy;
 
@@ -122,7 +117,7 @@ describe('getScrollableParents', () => {
   });
 });
 
-describe('getNearestScrollContainer', () => {
+describe('getFirstScrollableParent with requireOverflow: false', () => {
   const originalGetComputedStyle = window.getComputedStyle;
 
   afterEach(() => {
@@ -161,8 +156,8 @@ describe('getNearestScrollContainer', () => {
   test.each(['auto', 'scroll', 'overlay'])('returns the nearest ancestor with overflow-y: %s', overflowY => {
     const { outer, parent, target } = renderTree();
     mockOverflow({ outer: { overflowY: 'auto' }, parent: { overflowY } });
-    expect(getNearestScrollContainer(target)).toBe(parent);
-    expect(getNearestScrollContainer(parent)).toBe(outer);
+    expect(getFirstScrollableParent(target, { requireOverflow: false })).toBe(parent);
+    expect(getFirstScrollableParent(parent, { requireOverflow: false })).toBe(outer);
   });
 
   test('returns the scroll container even when its content does not overflow', () => {
@@ -173,7 +168,7 @@ describe('getNearestScrollContainer', () => {
     Object.defineProperty(middle, 'scrollHeight', { configurable: true, value: 100 });
     Object.defineProperty(middle, 'clientHeight', { configurable: true, value: 100 });
 
-    expect(getNearestScrollContainer(target)).toBe(middle);
+    expect(getFirstScrollableParent(target, { requireOverflow: false })).toBe(middle);
     expect(getFirstScrollableParent(target)).toBe(outer);
   });
 
@@ -185,13 +180,13 @@ describe('getNearestScrollContainer', () => {
       middle: { overflowY: 'clip' },
       outer: { overflowY: 'scroll' },
     });
-    expect(getNearestScrollContainer(target)).toBe(outer);
+    expect(getFirstScrollableParent(target, { requireOverflow: false })).toBe(outer);
   });
 
   test('returns undefined when no ancestor scrolls vertically', () => {
     const { target } = renderTree();
     mockOverflow({ outer: { overflowY: 'visible' }, parent: { overflowY: 'hidden' } });
-    expect(getNearestScrollContainer(target)).toBeUndefined();
+    expect(getFirstScrollableParent(target, { requireOverflow: false })).toBeUndefined();
   });
 
   describe('when the nearest scroll container is the body', () => {
@@ -233,27 +228,27 @@ describe('getNearestScrollContainer', () => {
     test('returns document.scrollingElement when the body overflow propagates to the viewport', () => {
       mockRootOverflow('visible', 'visible');
       mockDocument('scrollingElement', document.documentElement);
-      expect(getNearestScrollContainer(target)).toBe(document.documentElement);
+      expect(getFirstScrollableParent(target, { requireOverflow: false })).toBe(document.documentElement);
     });
 
     test('returns the body as document.scrollingElement in quirks mode', () => {
       mockRootOverflow('visible', 'visible');
       mockDocument('compatMode', 'BackCompat');
       mockDocument('scrollingElement', document.body);
-      expect(getNearestScrollContainer(target)).toBe(document.body);
+      expect(getFirstScrollableParent(target, { requireOverflow: false })).toBe(document.body);
     });
 
     test('falls back to the root element in standards mode when scrollingElement is unavailable', () => {
       mockRootOverflow('visible', 'visible');
       mockDocument('scrollingElement', null);
-      expect(getNearestScrollContainer(target)).toBe(document.documentElement);
+      expect(getFirstScrollableParent(target, { requireOverflow: false })).toBe(document.documentElement);
     });
 
     test('falls back to the body in quirks mode when scrollingElement is unavailable', () => {
       mockRootOverflow('visible', 'visible');
       mockDocument('compatMode', 'BackCompat');
       mockDocument('scrollingElement', null);
-      expect(getNearestScrollContainer(target)).toBe(document.body);
+      expect(getFirstScrollableParent(target, { requireOverflow: false })).toBe(document.body);
     });
 
     test.each([
@@ -264,7 +259,24 @@ describe('getNearestScrollContainer', () => {
       ['visible', 'hidden'],
     ])('keeps the body as an independent scroller when the root overflow is %s / %s', (overflowX, overflowY) => {
       mockRootOverflow(overflowX, overflowY);
-      expect(getNearestScrollContainer(target)).toBe(document.body);
+      expect(getFirstScrollableParent(target, { requireOverflow: false })).toBe(document.body);
+    });
+
+    test.each(['documentElement', 'body'] as const)(
+      'keeps the body as an independent scroller when %s has CSS containment',
+      element => {
+        mockRootOverflow('visible', 'visible');
+        mockDocument('scrollingElement', document.documentElement);
+        document[element].style.contain = 'layout';
+        expect(getFirstScrollableParent(target, { requireOverflow: false })).toBe(document.body);
+      }
+    );
+
+    test('treats contain: none as no containment', () => {
+      mockRootOverflow('visible', 'visible');
+      mockDocument('scrollingElement', document.documentElement);
+      document.body.style.contain = 'none';
+      expect(getFirstScrollableParent(target, { requireOverflow: false })).toBe(document.documentElement);
     });
 
     test('keeps a non-body nearest scroll container unchanged', () => {
@@ -274,7 +286,7 @@ describe('getNearestScrollContainer', () => {
       document.body.appendChild(scroller);
       scroller.appendChild(target);
       try {
-        expect(getNearestScrollContainer(target)).toBe(scroller);
+        expect(getFirstScrollableParent(target, { requireOverflow: false })).toBe(scroller);
       } finally {
         scroller.remove();
       }

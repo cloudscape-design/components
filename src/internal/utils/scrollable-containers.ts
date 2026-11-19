@@ -135,24 +135,6 @@ export function getScrollableParents(element: HTMLElement): HTMLElement[] {
   return parents;
 }
 
-/**
- * Returns the nearest ancestor (excluding the element itself) whose computed `overflow-y` is `auto`, `scroll`
- * or `overlay`, regardless of whether its content currently overflows. Unlike `getFirstScrollableParent`,
- * this identifies the scroll container the element lives in even when that container has nothing to scroll yet.
- * When that ancestor is a `body` whose overflow is propagated to the viewport, the document's scrolling element
- * is returned instead. Returns `undefined` when no such ancestor exists.
- */
-export function getNearestScrollContainer(element: HTMLElement): HTMLElement | undefined {
-  let node = element.parentElement;
-  while (node) {
-    if (isHTMLElement(node) && ['auto', 'scroll', 'overlay'].includes(getComputedStyle(node).overflowY)) {
-      return isViewportPropagatedBody(node) ? getDocumentScroller(node.ownerDocument) : node;
-    }
-    node = node.parentElement;
-  }
-  return undefined;
-}
-
 // https://drafts.csswg.org/css-overflow-3/#overflow-propagation: when the root element's overflow is visible in
 // both axes, the body's overflow applies to the viewport (in standards and quirks mode alike), so the body itself
 // does not scroll and the viewport is the actual scroll container.
@@ -162,7 +144,9 @@ function isViewportPropagatedBody(node: HTMLElement) {
     return false;
   }
   const rootStyle = getComputedStyle(root);
-  return rootStyle.overflowX === 'visible' && rootStyle.overflowY === 'visible';
+  // Containment on the root or body disables the propagation, so the body scrolls independently.
+  const contained = [rootStyle, getComputedStyle(node)].some(style => !!style.contain && style.contain !== 'none');
+  return !contained && rootStyle.overflowX === 'visible' && rootStyle.overflowY === 'visible';
 }
 
 function getDocumentScroller(document: Document): HTMLElement {
@@ -173,11 +157,42 @@ function getDocumentScroller(document: Document): HTMLElement {
   return compatMode === 'BackCompat' ? body : documentElement;
 }
 
-export function getFirstScrollableParent(element: HTMLElement): HTMLElement | undefined {
+interface FirstScrollableParentOptions {
+  /**
+   * When `false`, returns the nearest ancestor (excluding the element itself) whose computed `overflow-y` is
+   * `auto`, `scroll` or `overlay`, even if its content does not currently overflow. A `body` whose overflow is
+   * propagated to the viewport is normalized to the document's scrolling element. Defaults to `true`.
+   */
+  requireOverflow?: boolean;
+}
+
+/**
+ * Returns the first scrollable element, starting from the element itself, whose `overflow-y` is `auto` or
+ * `scroll` and whose content currently overflows. See `requireOverflow` for finding the scroll container an
+ * element lives in regardless of overflow. Returns `undefined` when none is found.
+ */
+export function getFirstScrollableParent(
+  element: HTMLElement,
+  { requireOverflow = true }: FirstScrollableParentOptions = {}
+): HTMLElement | undefined {
+  if (!requireOverflow) {
+    return getNearestScrollContainer(element);
+  }
   return (
     findUpUntil(element, el => {
       const overflows = el.scrollHeight > el.clientHeight;
       return overflows && ['scroll', 'auto'].includes(getComputedStyle(el).overflowY);
     }) || undefined
   );
+}
+
+function getNearestScrollContainer(element: HTMLElement): HTMLElement | undefined {
+  let node = element.parentElement;
+  while (node) {
+    if (isHTMLElement(node) && ['auto', 'scroll', 'overlay'].includes(getComputedStyle(node).overflowY)) {
+      return isViewportPropagatedBody(node) ? getDocumentScroller(node.ownerDocument) : node;
+    }
+    node = node.parentElement;
+  }
+  return undefined;
 }
