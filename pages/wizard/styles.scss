@@ -1,0 +1,20 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+.step-content {
+  display: inline-block;
+  block-size: 300px;
+}
+
+.scrollable-container {
+  display: inline-block;
+  inline-size: 100%;
+  block-size: 200px;
+  overflow: scroll;
+}
+
+.content-item {
+  block-size: 100px;
+}

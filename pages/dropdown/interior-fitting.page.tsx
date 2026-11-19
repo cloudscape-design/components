@@ -1,0 +1,167 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useState } from 'react';
+import clsx from 'clsx';
+
+import Button from '~components/button';
+import Dropdown from '~components/dropdown/internal';
+
+import ListContent from './list-content';
+
+import styles from './styles.scss';
+
+export default function DropdownScenario() {
+  const [openParent1, setOpenParent1] = useState(false);
+  const [openParent2, setOpenParent2] = useState(false);
+  const [openParent3, setOpenParent3] = useState(false);
+  const [openParent4, setOpenParent4] = useState(false);
+
+  const [openChild1, setOpenChild1] = useState(false);
+  const [openChild2, setOpenChild2] = useState(false);
+  const [openChild3, setOpenChild3] = useState(false);
+  const [openChild4, setOpenChild4] = useState(false);
+
+  return (
+    <article>
+      <h1>Positioning of greedy dropdowns</h1>
+      <ul>
+        <li>Scenario 1. Available space to the bottom-right </li>
+        <li>Scenario 2. Available space to the bottom-left </li>
+        <li>Scenario 3. Available space to the top-right </li>
+        <li>Scenario 4. Available space to the top-left</li>
+      </ul>
+      <div className={clsx(styles.container, styles['container-wide'])}>
+        <div id="parentDropdown1" className={styles['dropdown-container']}>
+          <Dropdown
+            minWidth="trigger"
+            trigger={
+              <Button className="trigger" onClick={() => setOpenParent1(!openParent1)}>
+                Scenario 1
+              </Button>
+            }
+            open={openParent1}
+            onOutsideClick={() => setOpenParent1(false)}
+            content={
+              <ul className={styles.list}>
+                <li id="childDropdown1">
+                  <Dropdown
+                    interior={true}
+                    minWidth="trigger"
+                    trigger={
+                      <div className="trigger" onClick={() => setOpenChild1(!openChild1)}>
+                        Expandable trigger
+                      </div>
+                    }
+                    open={openChild1}
+                    onOutsideClick={() => setOpenChild1(false)}
+                    content={<ListContent n={5} withSpaces={true} repeat={8} />}
+                  />
+                </li>
+              </ul>
+            }
+          />
+        </div>
+      </div>
+      <div className={clsx(styles.container, styles['container-wide'])}>
+        <div id="parentDropdown2" className={styles['dropdown-container']} style={{ insetInlineStart: '270px' }}>
+          <Dropdown
+            minWidth="trigger"
+            trigger={
+              <Button className="trigger" onClick={() => setOpenParent2(!openParent2)}>
+                Scenario 2
+              </Button>
+            }
+            open={openParent2}
+            onOutsideClick={() => setOpenParent2(false)}
+            content={
+              <ul className={styles.list} style={{ overflowY: 'auto', blockSize: '100px' }}>
+                <li id="childDropdown2">
+                  <Dropdown
+                    interior={true}
+                    minWidth="trigger"
+                    trigger={
+                      <div className="trigger" onClick={() => setOpenChild2(!openChild2)}>
+                        Expandable trigger
+                      </div>
+                    }
+                    open={openChild2}
+                    onOutsideClick={() => setOpenChild2(false)}
+                    content={<ListContent n={5} withSpaces={true} repeat={8} />}
+                  />
+                </li>
+              </ul>
+            }
+          />
+        </div>
+      </div>
+      <div className={clsx(styles.container, styles['container-wide'])}>
+        <div id="parentDropdown3" className={styles['dropdown-container']} style={{ top: '170px' }}>
+          <Dropdown
+            minWidth="trigger"
+            trigger={
+              <Button className="trigger" onClick={() => setOpenParent3(!openParent3)}>
+                Scenario 3
+              </Button>
+            }
+            open={openParent3}
+            onOutsideClick={() => setOpenParent3(false)}
+            content={
+              <ul className={styles.list}>
+                <li id="childDropdown3">
+                  <Dropdown
+                    interior={true}
+                    minWidth="trigger"
+                    trigger={
+                      <div className="trigger" onClick={() => setOpenChild3(!openChild3)}>
+                        Expandable trigger
+                      </div>
+                    }
+                    open={openChild3}
+                    onOutsideClick={() => setOpenChild3(false)}
+                    content={<ListContent n={5} withSpaces={true} repeat={8} />}
+                  />
+                </li>
+              </ul>
+            }
+          />
+        </div>
+      </div>
+      <div className={clsx(styles.container, styles['container-wide'])}>
+        <div
+          id="parentDropdown4"
+          className={styles['dropdown-container']}
+          style={{ insetInlineStart: '270px', insetBlockStart: '170px' }}
+        >
+          <Dropdown
+            minWidth="trigger"
+            trigger={
+              <Button className="trigger" onClick={() => setOpenParent4(!openParent4)}>
+                Scenario 4
+              </Button>
+            }
+            open={openParent4}
+            onOutsideClick={() => setOpenParent4(false)}
+            content={
+              <ul className={styles.list}>
+                <li id="childDropdown4">
+                  <Dropdown
+                    interior={true}
+                    minWidth="trigger"
+                    trigger={
+                      <div className="trigger" onClick={() => setOpenChild4(!openChild4)}>
+                        Expandable trigger
+                      </div>
+                    }
+                    open={openChild4}
+                    onOutsideClick={() => setOpenChild4(false)}
+                    content={<ListContent n={5} withSpaces={true} repeat={8} />}
+                  />
+                </li>
+              </ul>
+            }
+          />
+        </div>
+      </div>
+    </article>
+  );
+}

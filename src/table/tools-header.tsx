@@ -1,0 +1,73 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useContext } from 'react';
+import clsx from 'clsx';
+
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
+import { CollectionLabelContext } from '../internal/context/collection-label-context';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries';
+
+import styles from './styles.css.js';
+
+interface ToolsHeaderProps {
+  header: React.ReactNode;
+  filter?: React.ReactNode;
+  clearSort?: React.ReactNode;
+  pagination?: React.ReactNode;
+  preferences?: React.ReactNode;
+  setLastUserAction?: (name: string) => void;
+}
+
+export default function ToolsHeader({
+  header,
+  filter,
+  clearSort,
+  pagination,
+  preferences,
+  setLastUserAction,
+}: ToolsHeaderProps) {
+  const [breakpoint, ref] = useContainerBreakpoints(['xs']);
+  const isHeaderString = typeof header === 'string';
+  const assignHeaderId = useContext(CollectionLabelContext).assignId;
+  const headingId = useUniqueId('heading');
+  if (assignHeaderId !== undefined && isHeaderString) {
+    assignHeaderId(headingId);
+  }
+  const isSmall = breakpoint === 'default';
+  const hasTools = filter || clearSort || pagination || preferences;
+  const hasRightAlignedTools = !!(clearSort || pagination || preferences);
+  return (
+    <>
+      {isHeaderString ? <span id={headingId}>{header}</span> : header}
+      {hasTools && (
+        <div ref={ref} className={clsx(styles.tools, isSmall && styles['tools-small'])}>
+          {filter && (
+            <div
+              className={styles['tools-filtering']}
+              onClickCapture={() => setLastUserAction?.('filter')}
+              onKeyDownCapture={() => setLastUserAction?.('filter')}
+            >
+              {filter}
+            </div>
+          )}
+          {hasRightAlignedTools && (
+            <div className={styles['tools-align-right']}>
+              {clearSort && <div className={styles['tools-clear-sort']}>{clearSort}</div>}
+              {pagination && (
+                <div className={styles['tools-pagination']} onClickCapture={() => setLastUserAction?.('pagination')}>
+                  {pagination}
+                </div>
+              )}
+              {preferences && (
+                <div className={styles['tools-preferences']} onClickCapture={() => setLastUserAction?.('preferences')}>
+                  {preferences}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+    </>
+  );
+}

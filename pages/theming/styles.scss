@@ -1,0 +1,21 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '~design-tokens' as awsui;
+
+.mosaik {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.tile {
+  color: white;
+  flex: 1;
+  padding-block: 4px;
+  padding-inline: 4px;
+  margin-block: 2px;
+  margin-inline: 2px;
+  text-align: center;
+}

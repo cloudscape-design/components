@@ -1,0 +1,130 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use './mixins' as mixins;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/generated/custom-css-properties/index' as custom-props;
+@use '../internal/styles/utils/theming' as theming;
+
+@keyframes spinner-rotator {
+  0% {
+    transform: rotate(var(#{custom-props.$spinnerRotatorFrom}));
+  }
+  100% {
+    transform: rotate(var(#{custom-props.$spinnerRotatorTo}));
+  }
+}
+
+@keyframes spinner-line-left {
+  0% {
+    transform: rotate(var(#{custom-props.$spinnerLineLeftFrom}));
+  }
+
+  50% {
+    transform: rotate(var(#{custom-props.$spinnerLineLeftTo}));
+  }
+
+  100% {
+    transform: rotate(var(#{custom-props.$spinnerLineLeftFrom}));
+  }
+}
+
+@keyframes spinner-line-right {
+  0% {
+    transform: rotate(var(#{custom-props.$spinnerLineRightFrom}));
+  }
+
+  50% {
+    transform: rotate(var(#{custom-props.$spinnerLineRightTo}));
+  }
+
+  100% {
+    transform: rotate(var(#{custom-props.$spinnerLineRightFrom}));
+  }
+}
+
+@mixin awsui-spinner-circle {
+  position: relative;
+  &:after {
+    position: absolute;
+    box-sizing: border-box;
+    content: '';
+    border-start-start-radius: 50%;
+    border-start-end-radius: 50%;
+    border-end-start-radius: 50%;
+    border-end-end-radius: 50%;
+    border-block: 0.2 * styles.$base-size solid;
+    border-inline: 0.2 * styles.$base-size solid;
+    border-inline-end-color: transparent;
+    border-block-end-color: transparent;
+  }
+}
+
+.root {
+  #{custom-props.$spinnerRotatorFrom}: 0deg;
+  #{custom-props.$spinnerRotatorTo}: 360deg;
+  #{custom-props.$spinnerLineLeftFrom}: 0deg;
+  #{custom-props.$spinnerLineLeftTo}: 120deg;
+  #{custom-props.$spinnerLineRightFrom}: 90deg;
+  #{custom-props.$spinnerLineRightTo}: -30deg;
+  display: inline-block;
+  vertical-align: top;
+  // Spinner is an exception from our motion rules, it always has motion
+  /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
+  animation: spinner-rotator 0.7s linear infinite;
+  box-sizing: border-box;
+  line-height: 0;
+
+  @include mixins.make-spinner-sizes;
+  @include mixins.make-spinner-variants;
+
+  @include styles.with-direction('rtl') {
+    #{custom-props.$spinnerRotatorFrom}: 360deg;
+    #{custom-props.$spinnerRotatorTo}: 0deg;
+    #{custom-props.$spinnerLineLeftFrom}: 0deg;
+    #{custom-props.$spinnerLineLeftTo}: -120deg;
+    #{custom-props.$spinnerLineRightFrom}: -90deg;
+    #{custom-props.$spinnerLineRightTo}: 30deg;
+  }
+}
+
+.circle {
+  display: inline-block;
+  inline-size: 50%;
+  block-size: 100%;
+  overflow: hidden;
+  @include awsui-spinner-circle;
+  &:after {
+    /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
+    animation: 1.5s ease-in-out infinite;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    block-size: 100%;
+    inline-size: 200%;
+  }
+  &.circle-left:after {
+    inset-inline-start: 0;
+    /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
+    animation-name: spinner-line-left;
+  }
+  &.circle-right:after {
+    inset-inline-start: -100%;
+    /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
+    animation-name: spinner-line-right;
+  }
+}
+
+// One Theme renders x-small/normal status icons with a 1.5px stroke.
+// Match the spinner ring for those sizes only; big/large keep 2px.
+.root.size-x-small,
+.root.size-normal {
+  @include theming.one-theme-only {
+    & > .circle::after {
+      border-block-width: awsui.$border-width-icon-x-small;
+      border-inline-width: awsui.$border-width-icon-x-small;
+    }
+  }
+}

@@ -1,0 +1,604 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react';
+import clsx from 'clsx';
+
+import { isThemeActive, Theme, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
+import InternalHeader, { Description as HeaderDescription } from '../header/internal';
+import { useInternalComponentIcons } from '../icon-provider/use-component-icons';
+import { CustomizableIcon } from '../internal/components/customizable-icon';
+import { isDevelopment } from '../internal/is-development';
+import {
+  GeneratedAnalyticsMetadataExpandableSectionCollapse,
+  GeneratedAnalyticsMetadataExpandableSectionExpand,
+} from './analytics-metadata/interfaces';
+import { ExpandableSectionProps } from './interfaces';
+import { InternalVariant } from './internal-interfaces';
+import {
+  variantRequiresActionsDivider,
+  variantSupportsActions,
+  variantSupportsDescription,
+  variantSupportsHeaderSecondaryContent,
+  variantSupportsInfoLink,
+} from './utils';
+
+import analyticsSelectors from './analytics-metadata/styles.css.js';
+import styles from './styles.css.js';
+
+const componentName = 'ExpandableSection';
+
+interface ExpandIconButtonProps {
+  icon: JSX.Element;
+  ariaLabel?: string;
+  ariaLabelledBy?: string;
+  ariaDescribedBy?: string;
+  ariaControls: string;
+  expanded: boolean;
+  onClick: MouseEventHandler;
+  stopPropagation?: boolean;
+  className?: string;
+}
+
+/**
+ * Standalone expand/collapse caret button used when the icon renders OUTSIDE
+ * the main clickable header area (navigation variant) or outside the headerButton
+ * (end-position with actions/container). This is always an independent interactive
+ * element with its own ARIA attributes.
+ */
+const ExpandIconButton = ({
+  icon,
+  ariaLabel,
+  ariaLabelledBy,
+  ariaDescribedBy,
+  ariaControls,
+  expanded,
+  onClick,
+  stopPropagation,
+  className,
+}: ExpandIconButtonProps) => {
+  const stopKeyPropagation = stopPropagation
+    ? (event: React.KeyboardEvent) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.stopPropagation();
+        }
+      }
+    : undefined;
+  return (
+    <button
+      className={clsx(styles['icon-container'], styles['expand-button'], className)}
+      type="button"
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledBy}
+      aria-describedby={ariaDescribedBy}
+      aria-controls={ariaControls}
+      aria-expanded={expanded}
+      data-awsui-motion-trigger="hover"
+      onClick={
+        stopPropagation
+          ? event => {
+              event.stopPropagation();
+              onClick(event);
+            }
+          : onClick
+      }
+      onKeyUp={stopKeyPropagation}
+      onKeyDown={stopKeyPropagation}
+      {...getExpandActionAnalyticsMetadataAttribute(expanded)}
+    >
+      {icon}
+    </button>
+  );
+};
+
+interface ExpandableDefaultHeaderProps {
+  id: string;
+  descriptionId?: string;
+  className?: string;
+  children?: ReactNode;
+  expanded: boolean;
+  ariaControls: string;
+  ariaLabel?: string;
+  onKeyUp: KeyboardEventHandler;
+  onKeyDown: KeyboardEventHandler;
+  onClick: MouseEventHandler;
+  icon: JSX.Element;
+  variant: InternalVariant;
+  expandIconPosition: 'start' | 'end';
+}
+
+interface ExpandableNavigationHeaderProps extends Omit<ExpandableDefaultHeaderProps, 'onKeyUp' | 'onKeyDown'> {
+  ariaLabelledBy?: string;
+  hideExpandIcon?: boolean;
+}
+
+interface ExpandableHeaderTextWrapperProps extends ExpandableDefaultHeaderProps {
+  headerDescription?: ReactNode;
+  headerCounter?: string;
+  headerInfo?: ReactNode;
+  headerActions?: ReactNode;
+  headerEndInfo?: ReactNode;
+  headerSecondaryContent?: ReactNode;
+  secondaryContentId?: string;
+  hideHeaderText?: boolean;
+  headingTagOverride?: ExpandableSectionProps.HeadingTag;
+}
+
+interface ExpandableSectionHeaderProps extends Omit<ExpandableDefaultHeaderProps, 'children' | 'icon'> {
+  header?: ReactNode;
+  headerText?: ReactNode;
+  headerDescription?: ReactNode;
+  headerCounter?: string;
+  headerInfo?: ReactNode;
+  headerActions?: ReactNode;
+  headerSecondaryContent?: ReactNode;
+  secondaryContentId?: string;
+  hideHeaderText?: boolean;
+  headingTagOverride?: ExpandableSectionProps.HeadingTag;
+  ariaLabelledBy?: string;
+  hideExpandIcon?: boolean;
+  headerEndInfo?: ReactNode;
+}
+
+const getExpandActionAnalyticsMetadataAttribute = (expanded: boolean) => {
+  const metadata:
+    | GeneratedAnalyticsMetadataExpandableSectionExpand
+    | GeneratedAnalyticsMetadataExpandableSectionCollapse = {
+    action: !expanded ? 'expand' : 'collapse',
+    detail: {
+      label: { rootSelector: `.${analyticsSelectors.root}` },
+    },
+  };
+  return getAnalyticsMetadataAttribute(metadata);
+};
+const ExpandableDeprecatedHeader = ({
+  id,
+  className,
+  onClick,
+  ariaLabel,
+  ariaControls,
+  expanded,
+  children,
+  icon,
+  onKeyUp,
+  onKeyDown,
+  variant,
+}: ExpandableDefaultHeaderProps) => {
+  return (
+    <div
+      id={id}
+      role="button"
+      className={clsx(
+        className,
+        styles['expand-button'],
+        styles['click-target'],
+        styles['header-deprecated'],
+        analyticsSelectors['header-label']
+      )}
+      tabIndex={0}
+      onKeyUp={onKeyUp}
+      onKeyDown={onKeyDown}
+      onClick={onClick}
+      aria-label={ariaLabel}
+      aria-controls={ariaControls}
+      aria-expanded={expanded}
+      data-awsui-motion-trigger="hover"
+      {...getExpandActionAnalyticsMetadataAttribute(expanded)}
+    >
+      <div className={clsx(styles['icon-container'], styles[`icon-container-${variant}`])}>{icon}</div>
+      {children}
+    </div>
+  );
+};
+
+const ExpandableNavigationHeader = ({
+  id,
+  className,
+  onClick,
+  ariaLabelledBy,
+  ariaLabel,
+  ariaControls,
+  expanded,
+  children,
+  icon,
+  expandIconPosition,
+  hideExpandIcon,
+}: ExpandableNavigationHeaderProps) => {
+  const expandButton = hideExpandIcon ? null : (
+    <ExpandIconButton
+      icon={icon}
+      ariaLabelledBy={ariaLabelledBy}
+      ariaLabel={ariaLabel}
+      ariaControls={ariaControls}
+      expanded={expanded}
+      onClick={onClick}
+      className={clsx(expandIconPosition === 'end' && styles['icon-container-end'], analyticsSelectors['header-label'])}
+    />
+  );
+  return (
+    <div
+      id={id}
+      className={clsx(
+        className,
+        hideExpandIcon && analyticsSelectors['header-label'],
+        expandIconPosition === 'end' && styles['header-icon-end']
+      )}
+      data-awsui-motion-trigger="hover"
+    >
+      {expandIconPosition === 'end' ? (
+        <>
+          {children}
+          {expandButton}
+        </>
+      ) : (
+        <>
+          {expandButton}
+          {children}
+        </>
+      )}
+    </div>
+  );
+};
+
+const ExpandableHeaderTextWrapper = ({
+  id,
+  descriptionId,
+  className,
+  onClick,
+  ariaLabel,
+  ariaControls,
+  expanded,
+  children,
+  icon,
+  headerDescription,
+  headerCounter,
+  headerInfo,
+  headerActions,
+  headerEndInfo,
+  headerSecondaryContent,
+  secondaryContentId,
+  hideHeaderText,
+  variant,
+  headingTagOverride,
+  onKeyUp,
+  onKeyDown,
+  expandIconPosition,
+}: ExpandableHeaderTextWrapperProps) => {
+  const isContainer = variant === 'container';
+  const supportsInteractiveElements = variantSupportsActions(variant);
+  const supportsSecondaryContent = variantSupportsHeaderSecondaryContent(variant);
+  const hideText = supportsSecondaryContent && hideHeaderText;
+  const HeadingTag = hideText ? 'div' : headingTagOverride || 'div';
+  const secondaryContent = supportsSecondaryContent && headerSecondaryContent;
+  const describedById = secondaryContent ? secondaryContentId : undefined;
+  const restrictClickableArea =
+    (supportsInteractiveElements && (!!headerInfo || !!headerActions || !!secondaryContent)) || !!headerEndInfo;
+  const actions = supportsInteractiveElements && headerActions;
+  const endInfo = !isContainer && headerEndInfo;
+  const description = variantSupportsDescription(variant) && headerDescription && (
+    <span id={descriptionId} className={styles[`description-${variant}`]}>
+      {headerDescription}
+    </span>
+  );
+  const ariaDescribedBy = clsx(description && descriptionId, describedById) || undefined;
+  const listeners = { onClick, onKeyDown, onKeyUp };
+  const iconAtEnd = expandIconPosition === 'end';
+  // For the variants that allow actions, when end placement is active, the icon is rendered outside the
+  // InternalHeader so it appears at the inline-end of the wrapper, past any header actions.
+  // Other variants render the icon at the end of the headerButton itself.
+  const renderIconOutsideHeader = iconAtEnd && (isContainer || !!actions || !!endInfo || !!secondaryContent);
+
+  // If interactive elements are present, constrain the clickable area to only the icon and the header text
+  // to prevent nesting interactive elements.
+  const headerButtonListeners = restrictClickableArea ? listeners : undefined;
+  // For the default and footer variants with description,
+  // include also the immediate wrapper around it to include the entire row for backwards compatibility,
+  // but exclude the description.
+  const headingTagListeners = !headerButtonListeners && !isContainer && description ? listeners : undefined;
+  // For all other cases, make the entire header clickable for backwards compatibility.
+  const wrapperListeners = !headerButtonListeners && !headingTagListeners ? listeners : undefined;
+
+  // The hover-motion trigger follows whichever element actually owns the click handler above —
+  // that element is the real interactive surface, so it's also the sane hover boundary for the caret.
+  const motionTriggerAttribute = { 'data-awsui-motion-trigger': 'hover' } as const;
+  const headerButtonMotionTrigger = headerButtonListeners ? motionTriggerAttribute : undefined;
+  const headingTagMotionTrigger = headingTagListeners ? motionTriggerAttribute : undefined;
+  const wrapperMotionTrigger = wrapperListeners ? motionTriggerAttribute : undefined;
+
+  // Standalone caret button — used when the icon is rendered OUTSIDE the headerButton
+  // (end-position with container or actions). Must be its own <button> for accessibility.
+  const expandButton = (
+    <ExpandIconButton
+      icon={icon}
+      ariaLabel={ariaLabel}
+      ariaLabelledBy={!ariaLabel ? id : undefined}
+      ariaDescribedBy={ariaDescribedBy}
+      ariaControls={ariaControls}
+      expanded={expanded}
+      onClick={onClick}
+      stopPropagation={true}
+      className={clsx(styles[`icon-container-${variant}`], styles['icon-container-end'])}
+    />
+  );
+
+  // Decorative inline icon — used when the caret is INSIDE the headerButton
+  // (which itself is the interactive element). A nested <button> would be illegal.
+  const expandIcon = (
+    <span
+      className={clsx(
+        styles['icon-container'],
+        styles[`icon-container-${variant}`],
+        iconAtEnd && styles['icon-container-end']
+      )}
+    >
+      {icon}
+    </span>
+  );
+
+  const outsideIcon = renderIconOutsideHeader ? expandButton : null;
+
+  const textElement = (
+    <span
+      id={id}
+      className={clsx(
+        styles['header-text'],
+        hideText && styles['header-text-hidden'],
+        analyticsSelectors['header-label']
+      )}
+    >
+      {children}
+    </span>
+  );
+  const headerButton =
+    renderIconOutsideHeader && hideText ? (
+      textElement
+    ) : (
+      <span
+        className={clsx(
+          styles['expand-button'],
+          isContainer ? styles['header-container-button'] : styles['header-button'],
+          iconAtEnd && styles['header-button-icon-end'],
+          headerButtonListeners && styles['click-target']
+        )}
+        role="button"
+        tabIndex={0}
+        aria-label={ariaLabel}
+        aria-labelledby={!ariaLabel && (hideText || description) ? id : undefined}
+        aria-describedby={ariaDescribedBy}
+        aria-controls={ariaControls}
+        aria-expanded={expanded}
+        {...headerButtonListeners}
+        {...headerButtonMotionTrigger}
+        {...(headerButtonListeners ? getExpandActionAnalyticsMetadataAttribute(expanded) : {})}
+      >
+        {renderIconOutsideHeader ? (
+          textElement
+        ) : iconAtEnd ? (
+          <>
+            {textElement}
+            {expandIcon}
+          </>
+        ) : (
+          <>
+            {expandIcon}
+            {textElement}
+          </>
+        )}
+      </span>
+    );
+
+  return (
+    <div
+      className={clsx(
+        className,
+        wrapperListeners && styles['click-target'],
+        iconAtEnd && styles['header-icon-end'],
+        iconAtEnd && endInfo && styles['header-icon-end-with-info']
+      )}
+      {...wrapperListeners}
+      {...wrapperMotionTrigger}
+      {...(wrapperListeners ? getExpandActionAnalyticsMetadataAttribute(expanded) : {})}
+    >
+      {isContainer ? (
+        <>
+          <InternalHeader
+            variant="h2"
+            description={description}
+            counter={headerCounter}
+            info={headerInfo}
+            actions={actions}
+            headingTagOverride={hideText ? 'div' : headingTagOverride}
+            __inExpandableSection={true}
+            secondaryContent={secondaryContent ? <span id={describedById}>{secondaryContent}</span> : undefined}
+          >
+            {headerButton}
+          </InternalHeader>
+          {outsideIcon}
+        </>
+      ) : (
+        <>
+          <div
+            className={clsx(
+              styles['header-content'],
+              (actions || secondaryContent) && styles['header-actions-wrapper'],
+              endInfo && styles['header-content-with-info']
+            )}
+          >
+            <div className={styles['header-main']}>
+              <HeadingTag
+                className={clsx(styles['header-wrapper'], headingTagListeners && styles['click-target'])}
+                {...headingTagListeners}
+                {...headingTagMotionTrigger}
+                {...(headingTagListeners ? getExpandActionAnalyticsMetadataAttribute(expanded) : {})}
+              >
+                {headerButton}
+              </HeadingTag>
+              {secondaryContent && (
+                <div id={describedById} className={styles['header-secondary-content']}>
+                  {secondaryContent}
+                </div>
+              )}
+            </div>
+            {endInfo}
+            {actions}
+          </div>
+          {description && <HeaderDescription variantOverride="h3">{description}</HeaderDescription>}
+          {outsideIcon}
+        </>
+      )}
+    </div>
+  );
+};
+
+export const ExpandableSectionHeader = ({
+  id,
+  descriptionId,
+  className,
+  variant,
+  header,
+  headerText,
+  headerDescription,
+  headerCounter,
+  headerInfo,
+  headerActions,
+  headerSecondaryContent,
+  secondaryContentId,
+  hideHeaderText,
+  headingTagOverride,
+  expanded,
+  ariaControls,
+  ariaLabel,
+  ariaLabelledBy,
+  onKeyUp,
+  onKeyDown,
+  onClick,
+  expandIconPosition,
+  hideExpandIcon,
+  headerEndInfo,
+}: ExpandableSectionHeaderProps) => {
+  const alwaysShowDivider = variantRequiresActionsDivider(variant) && headerActions;
+  const icons = useInternalComponentIcons('expandable-section');
+  const icon = (
+    <CustomizableIcon
+      customIcon={icons?.expandToggle?.({ expanded: !!expanded })}
+      size={isThemeActive(Theme.OneTheme) ? 'x-small' : variant === 'container' ? 'medium' : 'normal'}
+      className={styles['icon-position']}
+      fallback={{
+        name: isThemeActive(Theme.OneTheme) ? 'angle-down' : 'caret-down-filled',
+        className: clsx(styles.icon, expanded && styles.expanded),
+        nativeAttributes: { 'data-awsui-motion-target': '' },
+      }}
+    />
+  );
+  const defaultHeaderProps = {
+    id: id,
+    icon: icon,
+    expanded: expanded,
+    ariaControls: ariaControls,
+    ariaLabel: ariaLabel,
+    onClick: onClick,
+    variant,
+    expandIconPosition,
+  };
+
+  if ((headerCounter || headerInfo) && !variantSupportsInfoLink(variant) && isDevelopment) {
+    warnOnce(
+      componentName,
+      'The `headerCounter` and `headerInfo` props are only supported for the "container" variant.'
+    );
+  }
+
+  if (headerActions && !variantSupportsActions(variant) && isDevelopment) {
+    warnOnce(componentName, `The \`headerActions\` prop is only supported for the "container" and "default" variants.`);
+  }
+
+  if (headerSecondaryContent && !variantSupportsHeaderSecondaryContent(variant) && isDevelopment) {
+    warnOnce(
+      componentName,
+      `The \`headerSecondaryContent\` prop is only supported for the "container" and "default" variants.`
+    );
+  }
+
+  if (hideHeaderText && !headerText && isDevelopment) {
+    warnOnce(componentName, 'The `hideHeaderText` prop requires `headerText` to be set.');
+  }
+
+  if (hideHeaderText && !variantSupportsHeaderSecondaryContent(variant) && isDevelopment) {
+    warnOnce(
+      componentName,
+      `The \`hideHeaderText\` prop is only supported for the "container" and "default" variants.`
+    );
+  }
+
+  if (headerDescription && !variantSupportsDescription(variant) && isDevelopment) {
+    warnOnce(componentName, `The \`headerDescription\` prop is not supported for the ${variant} variant.`);
+  }
+
+  const wrapperClassName = clsx(
+    styles.wrapper,
+    styles[`wrapper-${variant}`],
+    (expanded || alwaysShowDivider) && styles['wrapper-expanded']
+  );
+  if (variant === 'navigation') {
+    return (
+      <ExpandableNavigationHeader
+        className={clsx(className, wrapperClassName)}
+        ariaLabelledBy={ariaLabelledBy}
+        hideExpandIcon={hideExpandIcon}
+        {...defaultHeaderProps}
+      >
+        <span className={styles['header-navigation-content']}>{headerText ?? header}</span>
+      </ExpandableNavigationHeader>
+    );
+  }
+
+  if (headerText || variant === 'inline') {
+    if (!headerText && header && variant === 'inline') {
+      warnOnce(componentName, 'Only `headerText` instead of `header` is supported for `inline` variant.');
+    }
+    return (
+      <ExpandableHeaderTextWrapper
+        className={clsx(
+          className,
+          wrapperClassName,
+          expanded && styles.expanded,
+          !expanded &&
+            (!headerActions || headerDescription) &&
+            !(headerSecondaryContent && variantSupportsHeaderSecondaryContent(variant)) &&
+            styles['wrapper-not-expanded-without-actions']
+        )}
+        descriptionId={descriptionId}
+        headerDescription={headerDescription}
+        headerCounter={headerCounter}
+        headerInfo={headerInfo}
+        headerActions={headerActions}
+        headerEndInfo={headerEndInfo}
+        headerSecondaryContent={headerSecondaryContent}
+        secondaryContentId={secondaryContentId}
+        hideHeaderText={hideHeaderText}
+        headingTagOverride={headingTagOverride}
+        onKeyUp={onKeyUp}
+        onKeyDown={onKeyDown}
+        {...defaultHeaderProps}
+      >
+        {headerText}
+      </ExpandableHeaderTextWrapper>
+    );
+  }
+
+  if (variant === 'container' && header && isDevelopment) {
+    warnOnce(componentName, 'Use `headerText` instead of `header` to provide the button within the heading for a11y.');
+  }
+
+  return (
+    <ExpandableDeprecatedHeader
+      className={clsx(className, wrapperClassName, styles.focusable, expanded && styles.expanded)}
+      onKeyUp={onKeyUp}
+      onKeyDown={onKeyDown}
+      {...defaultHeaderProps}
+    >
+      {header}
+    </ExpandableDeprecatedHeader>
+  );
+};

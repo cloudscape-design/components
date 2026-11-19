@@ -1,0 +1,279 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use 'sass:map';
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/utils/theming' as theming;
+@use '../internal/styles/style-api' as style-api;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use './constants' as constants;
+@use './mixins' as mixins;
+@use './motion';
+
+$tokens: mixins.$tokens;
+@include style-api.register($tokens);
+@include style-api.docs(
+  'root',
+  $tokens,
+  $properties: (background),
+  $descriptions: (
+    slot: 'Not a button element: use `:has(:hover)` and `:has(:active)` for interaction states.',
+    tokens: (
+      border-width: 'Drawn over the card edges; takes no space.',
+    )
+  )
+);
+@include style-api.docs('header', $properties: (background, border));
+.header {
+  border-block-end: 0 solid transparent;
+  &-inner {
+    @include styles.font-heading-s;
+    &.disabled {
+      color: map.get(constants.$states, 'disabled', 'text-color');
+    }
+    @include theming.one-theme-only {
+      color: awsui.$color-text-heading-default;
+    }
+  }
+  &:not(:has(+ .body)) {
+    flex: 1;
+  }
+}
+
+.header-row {
+  display: flex;
+  align-items: flex-start;
+  border-block-end: 0 solid transparent;
+  > .header {
+    flex: 1;
+    min-inline-size: 0;
+  }
+  &:not(:has(+ .body)) {
+    flex: 1;
+  }
+}
+
+.body {
+  flex: 1;
+}
+
+.description {
+  @include styles.font-body-s;
+  color: awsui.$color-text-body-secondary;
+  &.has-header {
+    padding-block-start: awsui.$space-action-card-description-padding-top;
+  }
+  &.disabled {
+    color: map.get(constants.$states, 'disabled', 'text-color');
+  }
+}
+
+.icon {
+  flex-shrink: 0;
+  display: flex;
+  color: map.get(constants.$states, 'default', 'icon-color');
+  pointer-events: none;
+}
+
+.header-button,
+.overlay-button {
+  all: unset;
+  cursor: pointer;
+  &.disabled {
+    cursor: default;
+  }
+}
+
+.header-button {
+  color: inherit;
+  font: inherit;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  @each $variant in ('embedded', 'default') {
+    &.variant-#{$variant} {
+      &::after {
+        @include mixins.state-border-radius($variant);
+      }
+      &.disabled::after {
+        @include mixins.state-border-radius($variant, 'disabled');
+      }
+    }
+  }
+}
+
+.overlay-button {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  @each $variant in ('embedded', 'default') {
+    &.variant-#{$variant} {
+      @include mixins.state-border-radius($variant);
+      &.disabled {
+        @include mixins.state-border-radius($variant, 'disabled');
+      }
+    }
+  }
+}
+
+.root {
+  @include styles.styles-reset();
+  box-sizing: border-box;
+  position: relative;
+  inline-size: 100%;
+  min-inline-size: 0;
+  text-align: start;
+  display: flex;
+  @include style-api.carriers(mixins.$carrier-tokens);
+  $default-state: map.get(constants.$states, 'default');
+  background: map.get($default-state, 'background');
+  box-shadow: map.get($default-state, 'box-shadow');
+  color: map.get($default-state, 'text-color');
+  padding-inline: 0;
+  padding-block: 0;
+  border-block: none;
+  border-inline: none;
+
+  &:after {
+    @include styles.base-pseudo-element;
+    @include mixins.inherit-border-tokens;
+
+    box-shadow: none;
+    $border-width: style-api.value(mixins.$border-tokens, border-width, map.get($default-state, 'border-width'));
+    $border-color: style-api.value(mixins.$border-tokens, border-color, map.get($default-state, 'border-color'));
+    border-block: solid $border-width $border-color;
+    border-inline: solid $border-width $border-color;
+  }
+
+  &.variant-default,
+  &.variant-embedded {
+    > .inner-card {
+      display: flex;
+      flex-direction: column;
+      block-size: 100%;
+      inline-size: 100%;
+      min-inline-size: 0;
+
+      > .header + .body,
+      > .header-row + .body {
+        &:not(.no-padding) {
+          padding-block-start: awsui.$space-xxs;
+        }
+      }
+
+      > .header:not(.no-padding):has(+ .body) {
+        padding-block-end: awsui.$space-xxs;
+      }
+
+      > .header-row:has(+ .body) > .header:not(.no-padding) {
+        padding-block-end: awsui.$space-xxs;
+      }
+    }
+  }
+
+  &.fit-height {
+    block-size: 100%;
+  }
+
+  &.icon-vertical-align-center > .icon {
+    align-self: center;
+  }
+
+  &.disabled {
+    cursor: default;
+    @include mixins.apply-state-styles('disabled');
+  }
+
+  &:not(.disabled):has(.header-button:hover),
+  &:not(.disabled):has(.overlay-button:hover) {
+    @include mixins.apply-state-styles('hover');
+  }
+
+  &:not(.disabled):has(.header-button:active),
+  &:not(.disabled):has(.overlay-button:active) {
+    @include mixins.apply-state-styles('active');
+  }
+
+  &:has(.header-button:focus-visible),
+  &:has(.overlay-button:focus-visible) {
+    @include style-api.focus-highlight($gutter-block: 2px, $gutter-inline: 2px);
+  }
+
+  @each $variant in ('embedded', 'default') {
+    &.variant-#{$variant} {
+      &,
+      &:after {
+        @include mixins.state-border-radius($variant);
+      }
+
+      $border-radius: style-api.value(
+        mixins.$carrier-tokens,
+        border-radius,
+        map.get(mixins.$variant-border-radius, $variant)
+      );
+      > .inner-card > .header,
+      > .inner-card > .header-row {
+        border-start-start-radius: $border-radius;
+      }
+      > .inner-card > .header:not(:has(+ .body)),
+      > .inner-card > .header-row:not(:has(+ .body)) {
+        border-end-start-radius: $border-radius;
+      }
+      &:not(.has-icon) > .inner-card > .header {
+        border-start-end-radius: $border-radius;
+        &:not(:has(+ .body)) {
+          border-end-end-radius: $border-radius;
+        }
+      }
+      > .inner-card > .header-row {
+        border-start-end-radius: $border-radius;
+        &:not(:has(+ .body)) {
+          border-end-end-radius: $border-radius;
+        }
+      }
+
+      $padding-block: map.get(mixins.$variant-padding-block, $variant);
+      $padding-inline: map.get(mixins.$variant-padding-inline, $variant);
+
+      > .inner-card > .header,
+      > .inner-card > .body,
+      > .inner-card > .header-row > .header {
+        &:not(.no-padding) {
+          padding-block: $padding-block;
+          padding-inline: $padding-inline;
+        }
+      }
+
+      > .icon,
+      > .inner-card > .header-row > .icon {
+        padding-block-start: $padding-block;
+      }
+
+      > .icon {
+        padding-block-end: $padding-block;
+      }
+
+      &.icon-align-end {
+        > .icon,
+        > .inner-card > .header-row > .icon {
+          padding-inline-end: $padding-inline;
+        }
+
+        > .inner-card > .header,
+        > .inner-card > .body,
+        > .inner-card > .header-row > .header {
+          &:not(.no-padding) {
+            padding-inline-end: awsui.$space-xs;
+          }
+        }
+      }
+    }
+  }
+}

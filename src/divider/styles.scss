@@ -1,0 +1,63 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/style-api' as style-api;
+
+$tokens: style-api.resolve((line-color, line-width), carrier);
+$line-color: style-api.value($tokens, line-color, awsui.$color-border-divider-default);
+$line-width: style-api.value($tokens, line-width, awsui.$border-divider-section-width);
+@include style-api.register($tokens);
+@include style-api.docs('root', $tokens);
+
+.divider {
+  @include styles.styles-reset;
+  @include style-api.carriers($tokens);
+
+  border-block: none;
+  border-inline: none;
+  margin-block: 0;
+  margin-inline: 0;
+}
+
+// Horizontal (default)
+.divider-horizontal {
+  display: block;
+  border-block-start: $line-width solid $line-color;
+  inline-size: 100%;
+  block-size: 0;
+}
+
+// Horizontal with label — flex row with two lines flanking the text
+.divider-has-label {
+  display: flex;
+  align-items: center;
+  gap: awsui.$space-xs;
+  border-block: none;
+  border-inline: none;
+  block-size: auto;
+}
+
+.divider-line {
+  flex: 1;
+  block-size: 0;
+  min-inline-size: awsui.$space-m;
+  border-block-start: $line-width solid $line-color;
+}
+
+.divider-label {
+  flex: 0 1 auto;
+  @include styles.text-wrapping;
+}
+
+// Vertical
+.divider-vertical {
+  display: inline-block;
+  border-inline-start: $line-width solid $line-color;
+  inline-size: 0;
+  block-size: 100%;
+  align-self: stretch;
+}

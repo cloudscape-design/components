@@ -1,0 +1,741 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import * as React from 'react';
+import { act, fireEvent, render } from '@testing-library/react';
+
+import Autosuggest from '../../../lib/components/autosuggest';
+import Button from '../../../lib/components/button/index.js';
+import ButtonDropdown from '../../../lib/components/button-dropdown';
+import DatePicker from '../../../lib/components/date-picker';
+import DateRangePicker from '../../../lib/components/date-range-picker';
+import FormField from '../../../lib/components/form-field';
+import Input from '../../../lib/components/input';
+import Modal, { ModalProps } from '../../../lib/components/modal';
+import Multiselect from '../../../lib/components/multiselect';
+import Popover from '../../../lib/components/popover';
+import Select from '../../../lib/components/select';
+import StatusIndicator from '../../../lib/components/status-indicator';
+import createWrapper, { ElementWrapper, ModalWrapper } from '../../../lib/components/test-utils/dom';
+import { PerformanceMetrics } from '../../internal/analytics';
+import { KeyCode } from '../../internal/keycode';
+
+import styles from '../../../lib/components/modal/styles.css.js';
+class ModalInternalWrapper extends ModalWrapper {
+  findDialog(): ElementWrapper {
+    return this.findByClassName(styles.dialog)!;
+  }
+
+  findFocusLock(): ElementWrapper {
+    return this.findByClassName(styles['focus-lock'])!;
+  }
+}
+
+function renderModal(props: Partial<ModalProps> = {}) {
+  const modalRoot = document.createElement('div');
+  document.body.appendChild(modalRoot);
+  const { container } = render(<Modal visible={false} {...props} modalRoot={modalRoot} />, {
+    container: modalRoot,
+  });
+
+  const element = createWrapper(container).findModal()!.getElement();
+  return new ModalInternalWrapper(element);
+}
+
+describe('Modal component', () => {
+  describe('structure', () => {
+    it('displays header - string', () => {
+      const wrapper = renderModal({ header: 'Some header text' });
+      expect(wrapper.findHeader().getElement()).toHaveTextContent('Some header text');
+    });
+    it('displays header - custom html', () => {
+      const header = <b>Some header text</b>;
+      const wrapper = renderModal({ header });
+      expect(wrapper.findHeader().getElement()).toHaveTextContent('Some header text');
+    });
+    it('displays body', () => {
+      const content = <b>Some text</b>;
+      const wrapper = renderModal({ children: content });
+      expect(wrapper.findContent().getElement()).toHaveTextContent('Some text');
+    });
+    it('displays footer - string', () => {
+      const wrapper = renderModal({ footer: 'Some footer text' });
+      expect(wrapper.findFooter()!.getElement()).toHaveTextContent('Some footer text');
+    });
+    it('displays footer - custom html', () => {
+      const footer = <b>Some footer text</b>;
+      const wrapper = renderModal({ footer });
+      expect(wrapper.findFooter()!.getElement()).toHaveTextContent('Some footer text');
+    });
+    it('renders no footer, if no footer is defined', () => {
+      const wrapper = renderModal({ footer: null });
+      expect(wrapper.findFooter()).toBe(null);
+    });
+    it('shows a dismiss icon', () => {
+      const wrapper = renderModal({});
+      expect(wrapper.findDismissButton()).not.toBe(null);
+    });
+  });
+
+  describe('visibility', () => {
+    it('hides the modal by default', () => {
+      const wrapper = renderModal();
+      expect(wrapper.isVisible()).toEqual(false);
+    });
+    it('hides the modal when visible is false', () => {
+      const wrapper = renderModal({ visible: false });
+      expect(wrapper.isVisible()).toEqual(false);
+    });
+    it('shows the modal when visible is true', () => {
+      const wrapper = renderModal({ visible: true });
+      expect(wrapper.getElement()).toBeVisible();
+      expect(wrapper.isVisible()).toEqual(true);
+    });
+    it('calls onDismiss when the dismiss button is clicked', () => {
+      const onDismissSpy = jest.fn();
+      const wrapper = renderModal({ onDismiss: onDismissSpy });
+      wrapper.findDismissButton().click();
+      expect(onDismissSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('no paddings', () => {
+    it('renders content without paddings', () => {
+      const wrapper = renderModal({ disableContentPaddings: true });
+      expect(wrapper.findContent().getElement()).toHaveClass(styles['no-paddings']);
+    });
+
+    it('renders content paddings by default', () => {
+      const wrapper = renderModal();
+      expect(wrapper.findContent().getElement()).not.toHaveClass(styles['no-paddings']);
+    });
+  });
+
+  describe('size property', () => {
+    it('displays correct size', () => {
+      (['small', 'medium', 'large', 'x-large', 'xx-large', 'max'] as ModalProps.Size[]).forEach(size => {
+        const wrapper = renderModal({ size });
+        expect(wrapper.findDialog().getElement()).toHaveClass(styles[size]);
+      });
+    });
+  });
+
+  describe('position property', () => {
+    it('defaults to center position', () => {
+      const wrapper = renderModal();
+      expect(wrapper.findFocusLock().getElement()).toHaveClass(styles['position-center']);
+    });
+
+    it('displays correct position', () => {
+      (['center', 'top'] as ModalProps.Position[]).forEach(position => {
+        const wrapper = renderModal({ position });
+        expect(wrapper.findFocusLock().getElement()).toHaveClass(styles[`position-${position}`]);
+      });
+    });
+  });
+
+  describe('dismiss on click', () => {
+    it('closes the dialog when clicked on the overlay section of the container', () => {
+      const onDismissSpy = jest.fn();
+      const wrapper = renderModal({ onDismiss: onDismissSpy, visible: true });
+
+      wrapper.findDismissButton().click();
+      expect(onDismissSpy).toHaveBeenCalled();
+    });
+
+    it('stays open when the dialog is clicked', () => {
+      const onDismissSpy = jest.fn();
+      const wrapper = renderModal({ onDismiss: onDismissSpy, visible: true });
+
+      wrapper.findDialog().click();
+      expect(onDismissSpy).not.toHaveBeenCalled();
+    });
+
+    it('stays open when the click begins in the dialog but it is released outside', () => {
+      const onDismissSpy = jest.fn();
+      const wrapper = renderModal({ onDismiss: onDismissSpy, visible: true });
+
+      expect(wrapper.getElement()).toBeVisible();
+      fireEvent.mouseDown(wrapper.getElement());
+      fireEvent.click(wrapper.findDialog().getElement());
+      expect(onDismissSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('focus behavior', () => {
+    it('focuses first focusable element after render', () => {
+      const wrapper = renderModal({ visible: true });
+      expect(document.activeElement).toBe(wrapper.findDismissButton().getElement());
+    });
+
+    it('restores focus to previous element on unmount', async () => {
+      const textfield = document.createElement('input');
+      textfield.type = 'text';
+      document.body.appendChild(textfield);
+
+      textfield.focus();
+      expect(document.activeElement).toBe(textfield);
+
+      const { rerender } = render(<Modal onDismiss={() => null} visible={true} />);
+      expect(document.activeElement).not.toBe(textfield);
+
+      rerender(<></>);
+      // react-focus-lock returns focus asyncronousy as Promise.resolve().then(() => element.focus())
+      // so need to wait before checking the active element.
+      await new Promise(resolve => setTimeout(resolve, 0));
+      expect(document.activeElement).toBe(textfield);
+    });
+  });
+
+  describe('ESC key behavior', () => {
+    it('dismisses modal when visible', () => {
+      const onDismissSpy = jest.fn();
+      const wrapper = renderModal({ visible: true, onDismiss: onDismissSpy });
+      act(() => {
+        wrapper.findDialog().keydown(KeyCode.escape);
+      });
+      expect(onDismissSpy).toHaveBeenCalled();
+    });
+    it('dismisses modal when focus is on child element', () => {
+      let textFieldRef: HTMLInputElement | null = null;
+
+      const onDismissSpy = jest.fn();
+
+      const textfield = <input ref={input => (textFieldRef = input)} />;
+      renderModal({ visible: true, onDismiss: onDismissSpy, children: textfield });
+
+      act(() => {
+        textFieldRef!.focus();
+        createWrapper(textFieldRef!).keydown(KeyCode.escape);
+      });
+
+      expect(onDismissSpy).toHaveBeenCalled();
+    });
+
+    it('does not dismiss modal if ESC pressed with child select opened', () => {
+      const onDismissSpy = jest.fn();
+      const select = (
+        <Select
+          selectedOption={{
+            label: 'Option 1',
+            value: '1',
+          }}
+          onChange={() => {}}
+          options={[
+            { label: 'Option 1', value: '1' },
+            { label: 'Option 2', value: '2' },
+          ]}
+        />
+      );
+      const wrapper = renderModal({ visible: true, onDismiss: onDismissSpy, children: select });
+      const selectWrapper = wrapper.findContent().findSelect()!;
+
+      act(() => selectWrapper.findTrigger()!.keydown(KeyCode.space));
+
+      act(() => selectWrapper.findDropdown().findOptionByValue('1')!.keydown(KeyCode.escape));
+      expect(selectWrapper.findDropdown()!.findOpenDropdown()).toBeFalsy();
+      expect(onDismissSpy).not.toHaveBeenCalled();
+
+      act(() => wrapper.findContent()!.keydown(KeyCode.escape));
+      expect(onDismissSpy).toHaveBeenCalled();
+    });
+
+    it('does not dismiss modal if ESC pressed with child multiselect opened', () => {
+      const onDismissSpy = jest.fn();
+      const multiselect = (
+        <Multiselect
+          selectedOptions={[]}
+          onChange={() => {}}
+          options={[
+            { label: 'Option 1', value: '1' },
+            { label: 'Option 2', value: '2' },
+          ]}
+        />
+      );
+      const wrapper = renderModal({ visible: true, onDismiss: onDismissSpy, children: multiselect });
+      const multiselectWrapper = wrapper.findContent().findMultiselect()!;
+
+      act(() => multiselectWrapper.findTrigger()!.keydown(KeyCode.space));
+
+      act(() => multiselectWrapper.findDropdown().findOptionByValue('1')!.keydown(KeyCode.escape));
+      expect(multiselectWrapper.findDropdown()!.findOpenDropdown()).toBeFalsy();
+      expect(onDismissSpy).not.toHaveBeenCalled();
+
+      act(() => wrapper.findContent()!.keydown(KeyCode.escape));
+      expect(onDismissSpy).toHaveBeenCalled();
+    });
+
+    it('does not dismiss modal if ESC pressed with child autosuggest opened', () => {
+      const onDismissSpy = jest.fn();
+      const autosuggest = (
+        <Autosuggest
+          value={'opt'}
+          onChange={() => {}}
+          options={[
+            { label: 'Option 1', value: '1' },
+            { label: 'Option 2', value: '2' },
+          ]}
+        />
+      );
+      const wrapper = renderModal({ visible: true, onDismiss: onDismissSpy, children: autosuggest });
+      const autosuggestWrapper = wrapper.findContent().findAutosuggest()!;
+
+      act(() => autosuggestWrapper.focus());
+
+      act(() => autosuggestWrapper.findNativeInput().keydown(KeyCode.escape));
+      expect(autosuggestWrapper.findDropdown()!.findOpenDropdown()).toBeFalsy();
+      expect(onDismissSpy).not.toHaveBeenCalled();
+
+      act(() => wrapper.findContent()!.keydown(KeyCode.escape));
+      expect(onDismissSpy).toHaveBeenCalled();
+    });
+
+    it('does not dismiss modal if ESC pressed with child button dropdown opened', () => {
+      const onDismissSpy = jest.fn();
+      const buttonDropdown = (
+        <ButtonDropdown
+          items={[
+            { text: 'Delete', id: 'rm', disabled: false },
+            { text: 'Move', id: 'mv', disabled: false },
+          ]}
+        >
+          Short
+        </ButtonDropdown>
+      );
+      const wrapper = renderModal({ visible: true, onDismiss: onDismissSpy, children: buttonDropdown });
+      const btnDropdownWrapper = wrapper.findContent().findButtonDropdown()!;
+
+      act(() => btnDropdownWrapper.findNativeButton().keydown(KeyCode.enter));
+      expect(btnDropdownWrapper.findOpenDropdown()).toBeTruthy();
+
+      act(() => btnDropdownWrapper.findItemById('rm')!.keydown(KeyCode.escape));
+      expect(btnDropdownWrapper.findOpenDropdown()).toBeFalsy();
+      expect(onDismissSpy).not.toHaveBeenCalled();
+
+      act(() => wrapper.findContent()!.keydown(KeyCode.escape));
+      expect(onDismissSpy).toHaveBeenCalled();
+    });
+
+    it('does not dismiss modal if ESC pressed with child datepicker opened', () => {
+      const onDismissSpy = jest.fn();
+      const datePicker = <DatePicker onChange={() => {}} value={''} />;
+      const wrapper = renderModal({ visible: true, onDismiss: onDismissSpy, children: datePicker });
+      const datePickerWrapper = wrapper.findContent().findDatePicker()!;
+
+      fireEvent.click(datePickerWrapper.findOpenCalendarButton().getElement());
+
+      act(() => datePickerWrapper.findCalendar()!.keydown(KeyCode.escape));
+      expect(datePickerWrapper.findCalendar()).toBeFalsy();
+      expect(onDismissSpy).not.toHaveBeenCalled();
+
+      act(() => wrapper.findContent()!.keydown(KeyCode.escape));
+      expect(onDismissSpy).toHaveBeenCalled();
+    });
+
+    it('does not dismiss modal if ESC pressed with child date range picker opened', () => {
+      const onDismissSpy = jest.fn();
+      const dateRangePicker = (
+        <DateRangePicker
+          onChange={() => {}}
+          value={null}
+          isValidRange={() => {
+            return { valid: true };
+          }}
+          relativeOptions={[
+            {
+              key: 'previous-5-minutes',
+              amount: 5,
+              unit: 'minute',
+              type: 'relative',
+            },
+          ]}
+        />
+      );
+      const wrapper = renderModal({ visible: true, onDismiss: onDismissSpy, children: dateRangePicker });
+      const dateRangePickerWrapper = wrapper.findContent().findDateRangePicker()!;
+
+      dateRangePickerWrapper.openDropdown();
+
+      act(() => dateRangePickerWrapper.findDropdown()!.findCancelButton()!.keydown(KeyCode.escape));
+      expect(dateRangePickerWrapper.findDropdown()).toBeFalsy();
+      expect(onDismissSpy).not.toHaveBeenCalled();
+
+      act(() => wrapper.findContent()!.keydown(KeyCode.escape));
+      expect(onDismissSpy).toHaveBeenCalled();
+    });
+
+    it('does not dismiss modal if ESC pressed with child popover opened', () => {
+      const onDismissSpy = jest.fn();
+      const popover = (
+        <Popover
+          header="Memory Error"
+          content="This instance contains insufficient memory. Stop the instance, choose a different instance type with more memory, and restart it."
+        >
+          <StatusIndicator>Error</StatusIndicator>
+        </Popover>
+      );
+      const wrapper = renderModal({ visible: true, onDismiss: onDismissSpy, children: popover });
+      const popoverWrapper = wrapper.findContent().findPopover()!;
+
+      fireEvent.click(popoverWrapper.findTrigger().getElement());
+
+      act(() => popoverWrapper.findDismissButton()!.keydown(KeyCode.escape));
+      expect(popoverWrapper.findContent()).toBeFalsy();
+      expect(onDismissSpy).not.toHaveBeenCalled();
+
+      act(() => wrapper.findContent()!.keydown(KeyCode.escape));
+      expect(onDismissSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('Dismiss event', () => {
+    it('informs about dismiss by clicking overlay', () => {
+      const onDismissSpy = jest.fn();
+      const wrapper = renderModal({ visible: true, onDismiss: onDismissSpy });
+      fireEvent.mouseDown(wrapper.getElement());
+      fireEvent.click(wrapper.getElement());
+      expect(onDismissSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { reason: 'overlay' } }));
+    });
+
+    it('informs about dismiss by pressing ESC', () => {
+      const onDismissSpy = jest.fn();
+      const wrapper = renderModal({ visible: true, onDismiss: onDismissSpy });
+      act(() => wrapper.findDialog().keydown(KeyCode.escape));
+      expect(onDismissSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { reason: 'keyboard' } }));
+    });
+
+    it('informs about dismiss by clicking close button', () => {
+      const onDismissSpy = jest.fn();
+      const wrapper = renderModal({ visible: true, onDismiss: onDismissSpy });
+      wrapper.findDismissButton().click();
+      expect(onDismissSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { reason: 'closeButton' } }));
+    });
+  });
+
+  describe('hideDismissButton property', () => {
+    it('does not render the dismiss button when set', () => {
+      const wrapper = renderModal({ visible: true, hideDismissButton: true });
+      expect(wrapper.findDismissButton()).toBeNull();
+    });
+
+    it('renders the dismiss button when unset or false', () => {
+      expect(renderModal({ visible: true }).findDismissButton()).not.toBeNull();
+      expect(renderModal({ visible: true, hideDismissButton: false }).findDismissButton()).not.toBeNull();
+    });
+
+    it('still dismisses when pressing ESC', () => {
+      const onDismissSpy = jest.fn();
+      const wrapper = renderModal({ visible: true, hideDismissButton: true, onDismiss: onDismissSpy });
+      act(() => wrapper.findDialog().keydown(KeyCode.escape));
+      expect(onDismissSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { reason: 'keyboard' } }));
+    });
+
+    it('still dismisses when pressing ESC with focus on a child element', () => {
+      let textFieldRef: HTMLInputElement | null = null;
+      const onDismissSpy = jest.fn();
+      renderModal({
+        visible: true,
+        hideDismissButton: true,
+        onDismiss: onDismissSpy,
+        children: <input ref={input => (textFieldRef = input)} />,
+      });
+
+      act(() => {
+        textFieldRef!.focus();
+        createWrapper(textFieldRef!).keydown(KeyCode.escape);
+      });
+
+      expect(onDismissSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { reason: 'keyboard' } }));
+    });
+
+    it('still dismisses when clicking the overlay', () => {
+      const onDismissSpy = jest.fn();
+      const wrapper = renderModal({ visible: true, hideDismissButton: true, onDismiss: onDismissSpy });
+      fireEvent.mouseDown(wrapper.getElement());
+      fireEvent.click(wrapper.getElement());
+      expect(onDismissSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { reason: 'overlay' } }));
+    });
+
+    it('never reports the closeButton reason, because there is no button to activate', () => {
+      const onDismissSpy = jest.fn();
+      const wrapper = renderModal({ visible: true, hideDismissButton: true, onDismiss: onDismissSpy });
+
+      act(() => wrapper.findDialog().keydown(KeyCode.escape));
+      fireEvent.mouseDown(wrapper.getElement());
+      fireEvent.click(wrapper.getElement());
+
+      const reasons = onDismissSpy.mock.calls.map(([event]) => event.detail.reason);
+      expect(reasons).toEqual(['keyboard', 'overlay']);
+    });
+
+    it('lets consumers block dismissal by ignoring the keyboard and overlay reasons', () => {
+      // The documented way to force a choice: the component reports the intent,
+      // the consumer decides whether to act on it.
+      const setVisible = jest.fn();
+      const wrapper = renderModal({
+        visible: true,
+        hideDismissButton: true,
+        onDismiss: ({ detail }) => {
+          if (detail.reason === 'keyboard' || detail.reason === 'overlay') {
+            return;
+          }
+          setVisible(false);
+        },
+      });
+
+      act(() => wrapper.findDialog().keydown(KeyCode.escape));
+      fireEvent.mouseDown(wrapper.getElement());
+      fireEvent.click(wrapper.getElement());
+
+      expect(setVisible).not.toHaveBeenCalled();
+    });
+
+    it('still traps focus', () => {
+      const wrapper = renderModal({ visible: true, hideDismissButton: true });
+      expect(wrapper.findFocusLock()).not.toBeNull();
+    });
+  });
+
+  describe('overlay cursor', () => {
+    it('does not present the overlay as clickable when hideDismissButton is set', () => {
+      const wrapper = renderModal({ visible: true, hideDismissButton: true });
+      expect(wrapper.getElement()).toHaveClass(styles['hide-dismiss-button']);
+    });
+
+    it('presents the overlay as clickable by default', () => {
+      const wrapper = renderModal({ visible: true });
+      expect(wrapper.getElement()).not.toHaveClass(styles['hide-dismiss-button']);
+    });
+  });
+
+  describe('focus retention on overlay press', () => {
+    it('prevents the default action when pressing the overlay, so focus is not lost to the body', () => {
+      const wrapper = renderModal({ visible: true });
+      const prevented = !fireEvent.mouseDown(wrapper.getElement());
+      expect(prevented).toBe(true);
+    });
+
+    it('does not prevent the default action when pressing inside the dialog', () => {
+      const wrapper = renderModal({ visible: true });
+      const prevented = !fireEvent.mouseDown(wrapper.findDialog().getElement());
+      expect(prevented).toBe(false);
+    });
+
+    it('still dismisses on an overlay click', () => {
+      const onDismissSpy = jest.fn();
+      const wrapper = renderModal({ visible: true, onDismiss: onDismissSpy });
+      fireEvent.mouseDown(wrapper.getElement());
+      fireEvent.click(wrapper.getElement());
+      expect(onDismissSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { reason: 'overlay' } }));
+    });
+
+    it('still stays open when the press starts in the dialog and is released on the overlay', () => {
+      const onDismissSpy = jest.fn();
+      const wrapper = renderModal({ visible: true, onDismiss: onDismissSpy });
+      fireEvent.mouseDown(wrapper.findDialog().getElement());
+      fireEvent.click(wrapper.getElement());
+      expect(onDismissSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('initial focus when hideDismissButton is set', () => {
+    it('focuses the header heading', () => {
+      const wrapper = renderModal({ visible: true, hideDismissButton: true, header: 'Assign a region' });
+      const heading = wrapper.findHeader().find('h2')!.getElement();
+      expect(document.activeElement).toBe(heading);
+      expect(heading).toHaveAttribute('tabindex', '-1');
+    });
+
+    it('focuses the header heading in preference to focusable content', () => {
+      let textFieldRef: HTMLInputElement | null = null;
+      const wrapper = renderModal({
+        visible: true,
+        hideDismissButton: true,
+        header: 'Assign a region',
+        children: <input ref={input => (textFieldRef = input)} />,
+      });
+      expect(document.activeElement).toBe(wrapper.findHeader().find('h2')!.getElement());
+      expect(document.activeElement).not.toBe(textFieldRef);
+    });
+
+    it('falls back to the dialog when no header is provided', () => {
+      const wrapper = renderModal({ visible: true, hideDismissButton: true, header: undefined });
+      expect(document.activeElement).toBe(wrapper.findDialog().getElement());
+      expect(wrapper.findDialog().getElement()).toHaveAttribute('tabindex', '-1');
+    });
+
+    it('falls back to the dialog when the header is an empty string', () => {
+      const wrapper = renderModal({ visible: true, hideDismissButton: true, header: '' });
+      expect(document.activeElement).toBe(wrapper.findDialog().getElement());
+    });
+
+    it('leaves focus on the dismiss button when the dismiss button is rendered', () => {
+      const wrapper = renderModal({ visible: true, header: 'Assign a region' });
+      expect(document.activeElement).toBe(wrapper.findDismissButton().getElement());
+    });
+
+    it('keeps the heading out of the tab order even though it is programmatically focusable', () => {
+      // The heading carries tabIndex={-1} unconditionally. -1 is load-bearing: it must stay
+      // reachable for autoFocus without becoming a tab stop for keyboard users.
+      for (const hideDismissButton of [true, false]) {
+        const wrapper = renderModal({ visible: true, hideDismissButton, header: 'Assign a region' });
+        expect(wrapper.findHeader().find('h2')!.getElement()).toHaveAttribute('tabindex', '-1');
+      }
+    });
+
+    it('keeps the dialog focusable so focus stays inside it when a non-focusable area is clicked', () => {
+      // Regression guard for 0180c66aa, which removed this and silently broke ESC after clicking
+      // non-focusable modal content: focus fell through to the document body, outside the element
+      // that carries the ESC handler.
+      expect(renderModal({ visible: true }).findDialog().getElement()).toHaveAttribute('tabindex', '-1');
+      expect(renderModal({ visible: true, hideDismissButton: true }).findDialog().getElement()).toHaveAttribute(
+        'tabindex',
+        '-1'
+      );
+    });
+  });
+
+  describe('Tab traps', () => {
+    it('exists', () => {
+      const wrapper = renderModal({ visible: true });
+      expect(wrapper.findFocusLock()).not.toBeNull();
+    });
+  });
+
+  describe('Scroll position on reopening', () => {
+    it('resets scroll position on default modal', () => {
+      // Phantomjs doesn't understand calc() value that we use, so there is a mock // FIXME is this still required?
+
+      const content = <div style={{ height: 3000 }} />;
+
+      const modalRoot = document.createElement('div');
+      document.body.appendChild(modalRoot);
+      const { container, rerender } = render(
+        <Modal onDismiss={() => null} visible={true} modalRoot={modalRoot}>
+          {content}
+        </Modal>,
+        {
+          container: modalRoot,
+        }
+      );
+      const wrapper = createWrapper(container).findModal()!;
+
+      wrapper.getElement().style.maxHeight = '500px';
+      wrapper.getElement().scrollTop = 100;
+
+      rerender(
+        <Modal onDismiss={() => null} visible={false} modalRoot={modalRoot}>
+          {content}
+        </Modal>
+      );
+      rerender(
+        <Modal onDismiss={() => null} visible={true} modalRoot={modalRoot}>
+          {content}
+        </Modal>
+      );
+
+      expect(wrapper.getElement().scrollTop).toBe(0);
+    });
+
+    describe('Close label property', () => {
+      it('does not pass the label to the close button if not defined', () => {
+        const wrapper = renderModal({ visible: true });
+        expect(wrapper.findDismissButton().getElement().getAttribute('aria-label')).toBe(null);
+      });
+
+      it('passes the label to the close button if defined', () => {
+        const wrapper = renderModal({ visible: true, closeAriaLabel: 'Close' });
+        expect(wrapper.findDismissButton().getElement().getAttribute('aria-label')).toBe('Close');
+      });
+    });
+  });
+
+  describe('disable body scroll behavior', () => {
+    // const getBodyComputedStyle = () => window.getComputedStyle(document.body);
+
+    it('disables body scroll when modal is initially visible', () => {
+      renderModal({ visible: true });
+      expect(document.body).toHaveClass(styles['modal-open']);
+    });
+
+    it('sets overflow:hidden on document body based on visible property', () => {
+      const { rerender } = render(<Modal onDismiss={() => null} visible={false} />);
+      expect(document.body).not.toHaveClass(styles['modal-open']);
+
+      rerender(<Modal onDismiss={() => null} visible={true} />);
+      expect(document.body).toHaveClass(styles['modal-open']);
+
+      rerender(<Modal onDismiss={() => null} visible={false} />);
+      expect(document.body).not.toHaveClass(styles['modal-open']);
+    });
+
+    it('adjusts body padding to avoid resizing due to removed scroll bar', () => {
+      const tallElement = document.createElement('div');
+      tallElement.style.height = '100000px';
+      tallElement.innerText = 'some content text';
+      document.body.appendChild(tallElement);
+
+      const getBodyPaddingRightInPixels = () =>
+        parseInt(window.getComputedStyle(document.body).getPropertyValue('padding-right') || '0', 10);
+      const hasBodyScrollbar = () => 0 < document.body.clientWidth && document.body.clientWidth < window.innerWidth;
+
+      const initialBodyPaddingRight = getBodyPaddingRightInPixels();
+
+      // JsDOM does not appear to render elements in document body, so skip test in this case
+      // This test passes in other browsers (e.g. Firefox, Chrome).  Screenshot tests may be a
+      // better solution for testing scrollbar padding behavior.
+      if (hasBodyScrollbar()) {
+        const { rerender } = render(<Modal onDismiss={() => null} visible={true} />);
+
+        expect(getBodyPaddingRightInPixels()).toBeGreaterThan(initialBodyPaddingRight);
+        expect(document.body).toHaveClass(styles['modal-open']);
+
+        rerender(<Modal onDismiss={() => null} visible={false} />);
+        expect(getBodyPaddingRightInPixels()).toBe(initialBodyPaddingRight);
+        expect(document.body).not.toHaveClass(styles['modal-open']);
+      } else {
+        console.info('[skipped] Verification of document.body padding-right adjustments for scrollbar');
+      }
+
+      document.body.removeChild(tallElement);
+    });
+
+    it('cleans up document body state at attach and detach lifecycle events', () => {
+      const { unmount } = render(<Modal onDismiss={() => null} visible={true} />);
+      expect(document.body).toHaveClass(styles['modal-open']);
+
+      unmount();
+      expect(document.body).not.toHaveClass(styles['modal-open']);
+    });
+  });
+
+  describe('contexts', () => {
+    it('should not label inputs using a FormField context outside the modal', () => {
+      const modalRoot = document.createElement('div');
+      document.body.appendChild(modalRoot);
+      const { container } = render(
+        <FormField label="Outer label">
+          <Modal onDismiss={() => null} visible={true} modalRoot={modalRoot}>
+            <Input value="input" />
+          </Modal>
+        </FormField>,
+        {
+          container: modalRoot,
+        }
+      );
+      const wrapper = createWrapper(container).findModal()!;
+
+      expect(wrapper.findContent().findInput()!.getElement()).not.toHaveAccessibleName('Outer label');
+    });
+  });
+  describe('validates if modal performance metric is logged', () => {
+    it('validates if modal performance metric is logged', () => {
+      const modalPerformanceDataSpy = jest.spyOn(PerformanceMetrics, 'modalPerformanceData');
+      const button = <Button variant="primary" />;
+      const wrapper = renderModal({ visible: true, children: button });
+      wrapper.findDismissButton().click();
+      setTimeout(() => {
+        expect(modalPerformanceDataSpy).toHaveBeenCalled();
+      }, 10);
+    });
+  });
+});

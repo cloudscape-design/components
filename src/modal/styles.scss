@@ -1,0 +1,201 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../container/shared' as container;
+@use './motion';
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+
+$modal-z-index: 5000;
+
+.root {
+  @include styles.styles-reset;
+  background-color: awsui.$color-background-modal-overlay;
+
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  inset: 0;
+  position: fixed;
+  z-index: $modal-z-index;
+
+  outline: 0;
+  overflow: auto;
+
+  cursor: pointer;
+
+  // Without a dismiss button the modal is asking the user to choose one of the footer actions,
+  // so the overlay shouldn't suggest that clicking it will close the modal.
+  &.hide-dismiss-button {
+    cursor: default;
+  }
+
+  &.hidden {
+    display: none;
+  }
+}
+
+.focus-lock {
+  align-self: flex-start;
+  margin-inline: auto;
+  padding-block: awsui.$space-s;
+  padding-inline: 0;
+  z-index: $modal-z-index;
+  pointer-events: none;
+
+  &.position-top {
+    margin-block-start: 0;
+  }
+
+  &.position-center {
+    margin-block: auto;
+  }
+}
+
+.dialog {
+  position: static;
+  inset-block-start: 0;
+  transform: translate(0, 0);
+
+  inline-size: calc(100vw - #{awsui.$space-s} * 2);
+
+  box-sizing: border-box;
+  outline: none; // prevent highlight when focus set for ESC support
+
+  z-index: $modal-z-index;
+  pointer-events: all;
+
+  &.small {
+    max-inline-size: 320px;
+  }
+
+  &.medium {
+    max-inline-size: 600px;
+  }
+
+  &.large {
+    max-inline-size: 820px;
+  }
+
+  &.x-large {
+    max-inline-size: 1024px;
+  }
+
+  &.xx-large {
+    max-inline-size: 1280px;
+  }
+
+  &.custom-width {
+    max-inline-size: var(#{custom-props.$modalCustomWidth});
+  }
+
+  &.max.breakpoint-xs {
+    // viewport - (closed app layout panel widths + 20px on each side)
+    max-inline-size: calc(100vw - (2 * 4 * #{styles.$base-size} + #{awsui.$space-xxxl}));
+    margin-block: auto;
+    margin-inline: auto;
+  }
+
+  &.custom-height {
+    block-size: var(#{custom-props.$modalCustomHeight});
+    max-block-size: calc(100vh - (2 * #{awsui.$space-s}));
+  }
+}
+
+.container {
+  @include styles.styles-reset;
+  display: block;
+  background-color: awsui.$color-background-container-content;
+  word-wrap: break-word;
+  border-block-start: awsui.$border-container-top-width solid awsui.$color-border-container-top;
+  border-start-start-radius: awsui.$border-radius-container;
+  border-start-end-radius: awsui.$border-radius-container;
+  border-end-start-radius: awsui.$border-radius-container;
+  border-end-end-radius: awsui.$border-radius-container;
+  box-shadow: awsui.$shadow-modal;
+
+  &.custom-height-container {
+    display: flex;
+    flex-direction: column;
+    block-size: 100%;
+  }
+}
+
+.content {
+  padding-block-start: awsui.$space-container-content-top;
+  padding-block-end: awsui.$space-modal-content-bottom;
+  padding-inline: awsui.$space-modal-horizontal;
+
+  &.no-paddings {
+    padding-block: 0;
+    padding-inline: 0;
+  }
+
+  // When custom height is set, make content scrollable
+  &.custom-height-content {
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+}
+
+.header {
+  padding-block-start: awsui.$space-container-header-top;
+  padding-block-end: awsui.$space-container-header-bottom;
+  padding-inline: awsui.$space-modal-horizontal;
+  background-color: awsui.$color-background-container-header;
+  border-block-end: 1px solid awsui.$color-border-container-divider;
+  border-start-start-radius: awsui.$border-radius-container;
+  border-start-end-radius: awsui.$border-radius-container;
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+}
+
+.header--text {
+  /* used in test-utils */
+}
+
+.footer {
+  @include container.divider;
+  padding-block: awsui.$space-scaled-s;
+  padding-inline: awsui.$space-container-horizontal;
+  background-color: awsui.$color-background-container-content;
+
+  // Make sure that the footer is always visible
+  position: sticky;
+  inset-block-end: 0;
+  z-index: 800;
+
+  &--rounded {
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+    border-end-start-radius: awsui.$border-radius-container;
+    border-end-end-radius: awsui.$border-radius-container;
+  }
+
+  &:after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
+.dismiss-control {
+  /* used in test-utils */
+}
+
+// Added to `document.body` to disable body scroll
+.modal-open {
+  overflow: hidden;
+
+  /*
+   * When padding-right is added to account for scrollbar being turned
+   * off by overflow:hidden, that padding will go offscreen and have no
+   * effect if box-sizing is content-box and body width is 100%.  Set
+   * border-box to avoid this; this should be safe as box-sizing isn't
+   * inherited by child elements normally.
+   */
+  box-sizing: border-box;
+}

@@ -1,0 +1,66 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { forwardRef, useState } from 'react';
+
+import { FileInputProps } from '../file-input/interfaces.js';
+import InternalFileInput from '../file-input/internal.js';
+import { fireCancelableEvent } from '../internal/events/index.js';
+import Tooltip from '../tooltip/internal.js';
+import { CancelableEventHandler } from '../types/events';
+import { ButtonGroupProps } from './interfaces.js';
+
+import testUtilStyles from './test-classes/styles.css.js';
+
+interface FileInputItemProps {
+  styleClassName?: string;
+  item: ButtonGroupProps.IconFileInput;
+  showTooltip: boolean;
+  onTooltipDismiss: () => void;
+  onFilesChange?: CancelableEventHandler<ButtonGroupProps.FilesChangeDetails>;
+}
+
+const FileInputItem = forwardRef(
+  (
+    { styleClassName, item, showTooltip, onTooltipDismiss, onFilesChange }: FileInputItemProps,
+    ref: React.Ref<FileInputProps.Ref>
+  ) => {
+    const [files, setFiles] = useState<File[]>([]);
+    const containerRef = React.useRef<HTMLDivElement>(null);
+
+    const canShowTooltip = Boolean(showTooltip);
+
+    return (
+      <div ref={containerRef}>
+        <InternalFileInput
+          styleClassNames={{ root: styleClassName }}
+          className={testUtilStyles['button-group-item']}
+          ref={ref}
+          variant="icon"
+          ariaLabel={item.text}
+          accept={item.accept}
+          multiple={item.multiple}
+          value={files}
+          onChange={event => {
+            fireCancelableEvent(onFilesChange, { id: item.id, files: event.detail.value });
+            setFiles(event.detail.value);
+          }}
+          data-testid={item.id}
+          __inputNativeAttributes={{
+            'data-itemid': item.id,
+          }}
+          __inputClassName={testUtilStyles.item}
+        />
+        {canShowTooltip && (
+          <Tooltip
+            className={testUtilStyles['button-group-tooltip']}
+            getTrack={() => containerRef.current}
+            content={item.text}
+            onEscape={onTooltipDismiss}
+          />
+        )}
+      </div>
+    );
+  }
+);
+
+export default FileInputItem;

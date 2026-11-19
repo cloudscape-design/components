@@ -1,0 +1,74 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+.button {
+  @include styles.styles-reset;
+  @include styles.text-wrapping;
+  @include styles.font-button;
+
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  white-space: nowrap;
+
+  block-size: 100%;
+  padding-inline: awsui.$space-xs;
+  text-decoration: none;
+  cursor: pointer;
+
+  border-block: transparent;
+  border-inline: transparent;
+  background: transparent;
+  color: awsui.$color-text-interactive-default;
+
+  &:hover {
+    color: awsui.$color-text-interactive-hover;
+    text-decoration: none;
+  }
+
+  &:active,
+  &.expanded {
+    background: transparent;
+    color: awsui.$color-text-interactive-active;
+  }
+
+  &.expanded {
+    color: awsui.$color-text-accent;
+  }
+
+  &:focus {
+    outline: none;
+    text-decoration: none;
+  }
+
+  &.offset-right-none {
+    margin-inline-end: 0;
+  }
+
+  &.offset-right-l {
+    margin-inline-end: awsui.$space-s;
+  }
+
+  &.offset-right-xxl {
+    margin-inline-end: awsui.$space-xl;
+  }
+
+  @include focus-visible.when-visible {
+    // -1px because the button touches the edges of the top navigation.
+    @include styles.focus-highlight(-1px);
+  }
+}
+
+.text {
+  margin-inline-end: awsui.$space-xs;
+}
+
+.icon + .text {
+  margin-inline-start: awsui.$space-xs;
+}

@@ -1,0 +1,352 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import { useMouseHover, UseMouseHoverProps } from '../../../lib/components/mixed-line-bar-chart/hooks/use-mouse-hover';
+import { ChartDataTypes } from '../../../lib/components/mixed-line-bar-chart/interfaces';
+import { act, renderHook } from '../../__tests__/render-hook';
+
+const SVGElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+
+const series = { type: 'threshold', title: 'Threshold', y: 5 };
+
+const datum = { x: 0, y: 0 } as any;
+
+const commonProps = {
+  plotRef: { current: { svg: SVGElement, focusApplication: jest.fn(), focusPlot: jest.fn() } },
+  popoverRef: { current: null },
+  scaledSeries: [{ color: 'blue', x: 100, y: 100, datum, series }],
+  barGroups: [],
+  highlightSeries: jest.fn(),
+  highlightPoint: jest.fn(),
+  highlightGroup: jest.fn(),
+  clearHighlightedSeries: jest.fn(),
+  isGroupNavigation: false,
+  isHandlersDisabled: false,
+  setPlotFocused: jest.fn(),
+  highlightX: jest.fn(),
+  isPopoverPinned: false,
+};
+
+const renderMouseHoverHook = <T extends ChartDataTypes>(props?: Partial<UseMouseHoverProps<T>>) => {
+  const { result } = renderHook(useMouseHover, {
+    initialProps: { ...(commonProps as UseMouseHoverProps<T>), ...props },
+  });
+
+  return {
+    hook: result,
+  };
+};
+
+describe('Mouse hover hook', () => {
+  beforeEach(() => jest.clearAllMocks());
+
+  test('returns correct properties', () => {
+    const { hook } = renderMouseHoverHook();
+    // eslint-disable-next-line no-restricted-syntax -- Test assertion: checking hook return shape
+    expect('onSVGMouseMove' in hook.current).toBeTruthy();
+    // eslint-disable-next-line no-restricted-syntax -- Test assertion: checking hook return shape
+    expect('onSVGMouseOut' in hook.current).toBeTruthy();
+    // eslint-disable-next-line no-restricted-syntax -- Test assertion: checking hook return shape
+    expect('onPopoverLeave' in hook.current).toBeTruthy();
+  });
+
+  test('calls highlightX', () => {
+    const customProps = {
+      highlightX: jest.fn(),
+    };
+    const { hook } = renderMouseHoverHook(customProps);
+    const event = {
+      target: SVGElement,
+      clientX: 110,
+      clientY: 110,
+    } as any;
+
+    act(() => hook.current.onSVGMouseMove(event));
+    expect(customProps.highlightX).toHaveBeenCalledWith({ scaledX: 100, label: 0 });
+  });
+
+  test('clears verticalMarkerLeft', () => {
+    const customProps = {
+      highlightX: jest.fn(),
+    };
+    const { hook } = renderMouseHoverHook(customProps);
+    const event = {
+      relatedTarget: null,
+    } as any;
+    act(() => hook.current.onSVGMouseOut(event));
+    expect(customProps.highlightX).toHaveBeenCalledWith(null);
+  });
+
+  test('does not clear highlighted X on mouseOut if moving within SVG', () => {
+    const SvgElementDummy = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    const lineElement = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    SvgElementDummy.appendChild(lineElement);
+
+    const customProps = {
+      highlightX: jest.fn(),
+      plotRef: { current: { svg: SvgElementDummy, focusApplication: jest.fn(), focusPlot: jest.fn() } },
+    };
+    const { hook } = renderMouseHoverHook(customProps);
+
+    // set marker first
+    const mouseMoveEvent = {
+      target: SvgElementDummy,
+      clientX: 110,
+      clientY: 110,
+    } as any;
+
+    act(() => hook.current.onSVGMouseMove(mouseMoveEvent));
+
+    expect(customProps.highlightX).toHaveBeenCalledWith({ scaledX: 100, label: 0 });
+    expect(customProps.highlightX).toHaveBeenCalledTimes(1);
+
+    const mouseOutEvent = {
+      relatedTarget: lineElement,
+    } as any;
+
+    act(() => hook.current.onSVGMouseOut(mouseOutEvent));
+    expect(customProps.highlightX).toHaveBeenCalledTimes(1);
+  });
+
+  test('does not clear highlighted X on mouseOut if moving into popover', () => {
+    const SvgElementDummy = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    const lineElement = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+
+    SvgElementDummy.appendChild(lineElement);
+    // Simulate the real DOM structure: transition wrapper > popover element > popover content
+    const transitionWrapper = document.createElement('div');
+    const popoverElement = document.createElement('div');
+    const popoverContent = document.createElement('div');
+    transitionWrapper.appendChild(popoverElement);
+    popoverElement.appendChild(popoverContent);
+
+    const customProps = {
+      highlightX: jest.fn(),
+      popoverRef: { current: popoverElement },
+      plotRef: { current: { svg: SvgElementDummy, focusApplication: jest.fn(), focusPlot: jest.fn() } },
+    };
+    const { hook } = renderMouseHoverHook(customProps);
+
+    // set marker first
+    const mouseMoveEvent = {
+      target: SvgElementDummy,
+      clientX: 110,
+      clientY: 110,
+    } as any;
+
+    act(() => hook.current.onSVGMouseMove(mouseMoveEvent));
+
+    expect(customProps.highlightX).toHaveBeenCalledWith({ scaledX: 100, label: 0 });
+    expect(customProps.highlightX).toHaveBeenCalledTimes(1);
+
+    // relatedTarget is inside the popover DOM tree (child of popover)
+    const mouseOutEvent = {
+      relatedTarget: popoverContent,
+    } as any;
+
+    act(() => hook.current.onSVGMouseOut(mouseOutEvent));
+    expect(customProps.highlightX).toHaveBeenCalledTimes(1);
+  });
+
+  test('does not clear highlighted X on mouseOut if moving into popover transition wrapper', () => {
+    const SvgElementDummy = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+
+    // Simulate: transition wrapper > popover element
+    const transitionWrapper = document.createElement('div');
+    const popoverElement = document.createElement('div');
+    transitionWrapper.appendChild(popoverElement);
+
+    const customProps = {
+      highlightX: jest.fn(),
+      popoverRef: { current: popoverElement },
+      plotRef: { current: { svg: SvgElementDummy, focusApplication: jest.fn(), focusPlot: jest.fn() } },
+    };
+    const { hook } = renderMouseHoverHook(customProps);
+
+    // relatedTarget is the transition wrapper (parent of popoverRef)
+    const mouseOutEvent = {
+      relatedTarget: transitionWrapper,
+    } as any;
+
+    act(() => hook.current.onSVGMouseOut(mouseOutEvent));
+    expect(customProps.highlightX).not.toHaveBeenCalled();
+  });
+
+  test('clears highlighted X on mouseOut when leaving SVG near popover but not into it', () => {
+    const SvgElementDummy = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+
+    // Simulate: transition wrapper > popover element
+    const transitionWrapper = document.createElement('div');
+    const popoverElement = document.createElement('div');
+    transitionWrapper.appendChild(popoverElement);
+
+    const customProps = {
+      highlightX: jest.fn(),
+      clearHighlightedSeries: jest.fn(),
+      popoverRef: { current: popoverElement },
+      plotRef: { current: { svg: SvgElementDummy, focusApplication: jest.fn(), focusPlot: jest.fn() } },
+    };
+    const { hook } = renderMouseHoverHook(customProps);
+
+    // relatedTarget is an element outside both SVG and popover (e.g. y-axis area, page body)
+    const outsideElement = document.createElement('div');
+    const mouseOutEvent = {
+      relatedTarget: outsideElement,
+    } as any;
+
+    act(() => hook.current.onSVGMouseOut(mouseOutEvent));
+    expect(customProps.highlightX).toHaveBeenCalledWith(null);
+    expect(customProps.clearHighlightedSeries).toHaveBeenCalledTimes(1);
+  });
+
+  test('clears highlightX when onPopoverLeave is called', () => {
+    const customProps = {
+      highlightX: jest.fn(),
+      clearHighlightedSeries: jest.fn(),
+    };
+    const { hook } = renderMouseHoverHook(customProps);
+    act(() => hook.current.onPopoverLeave());
+    expect(customProps.highlightX).toHaveBeenCalledWith(null);
+    expect(customProps.clearHighlightedSeries).toHaveBeenCalledTimes(1);
+  });
+
+  test('does not clear highlightX when onPopoverLeave is called if isHandlersDisabled is true', () => {
+    const customProps = {
+      highlightX: jest.fn(),
+      clearHighlightedSeries: jest.fn(),
+      isHandlersDisabled: true,
+    };
+    const { hook } = renderMouseHoverHook(customProps);
+    act(() => hook.current.onPopoverLeave());
+    expect(customProps.highlightX).not.toHaveBeenCalled();
+    expect(customProps.clearHighlightedSeries).not.toHaveBeenCalled();
+  });
+
+  test('highlights point when moving close', () => {
+    const { hook } = renderMouseHoverHook();
+    const event = {
+      target: SVGElement,
+      clientX: 103,
+      clientY: 102,
+    } as any;
+
+    act(() => hook.current.onSVGMouseMove(event));
+    expect(commonProps.highlightPoint).toHaveBeenCalledTimes(1);
+    expect(commonProps.highlightPoint).toHaveBeenCalledWith(
+      expect.objectContaining({ x: 100, y: 100, color: 'blue', datum })
+    );
+  });
+
+  test('highlights group when moving close', () => {
+    const props = {
+      plotRef: commonProps.plotRef,
+      scaledSeries: [],
+      barGroups: [
+        {
+          x: 'Potatoes',
+          hasData: true,
+          isValid: true,
+          position: {
+            x: 0,
+            y: 0,
+            width: 100,
+            height: 200,
+          },
+        },
+        {
+          x: 'Apples',
+          hasData: true,
+          isValid: true,
+          position: {
+            x: 120,
+            y: 0,
+            width: 100,
+            height: 200,
+          },
+        },
+      ],
+      highlightSeries: jest.fn(),
+      highlightPoint: jest.fn(),
+      highlightGroup: jest.fn(),
+      clearHighlightedSeries: jest.fn(),
+      isGroupNavigation: true,
+      isHandlersDisabled: false,
+    };
+    const { hook } = renderMouseHoverHook(props);
+
+    [
+      { target: SVGElement, clientX: 0, clientY: 0 },
+      { target: SVGElement, clientX: 100, clientY: 200 },
+      { target: SVGElement, clientX: 170, clientY: 100 },
+    ].forEach((event: any) => {
+      act(() => hook.current.onSVGMouseMove(event));
+    });
+
+    expect(props.highlightGroup).toHaveBeenCalledTimes(3);
+    expect(props.highlightGroup).toHaveBeenCalledWith(0);
+    expect(props.highlightGroup).toHaveBeenCalledWith(0);
+    expect(props.highlightGroup).toHaveBeenCalledWith(1);
+  });
+
+  test('calls highlightX when moving far from any point', () => {
+    const { hook } = renderMouseHoverHook();
+    const event = {
+      target: SVGElement,
+      clientX: 110,
+      clientY: 110,
+    } as any;
+
+    act(() => hook.current.onSVGMouseMove(event));
+    expect(commonProps.highlightX).toHaveBeenCalledTimes(1);
+    expect(commonProps.highlightX).toHaveBeenCalledWith({ scaledX: 100, label: 0 });
+  });
+
+  test('clears highlighted group when moving far from any point', () => {
+    const props = {
+      plotRef: commonProps.plotRef,
+      scaledSeries: [],
+      barGroups: [
+        {
+          x: 'Potatoes',
+          hasData: true,
+          isValid: true,
+          position: {
+            x: 0,
+            y: 0,
+            width: 100,
+            height: 200,
+          },
+        },
+        {
+          x: 'Apples',
+          hasData: true,
+          isValid: true,
+          position: {
+            x: 120,
+            y: 0,
+            width: 100,
+            height: 200,
+          },
+        },
+      ],
+      highlightSeries: jest.fn(),
+      highlightPoint: jest.fn(),
+      highlightGroup: jest.fn(),
+      clearHighlightedSeries: jest.fn(),
+      isGroupNavigation: true,
+      isHandlersDisabled: false,
+    };
+    const { hook } = renderMouseHoverHook(props);
+
+    [
+      { target: SVGElement, clientX: -1, clientY: 100 },
+      { target: SVGElement, clientX: 101, clientY: 100 },
+      { target: SVGElement, clientX: 50, clientY: -1 },
+      { target: SVGElement, clientX: 50, clientY: 201 },
+      { target: SVGElement, clientX: 110, clientY: 100 },
+    ].forEach((event: any) => {
+      act(() => hook.current.onSVGMouseMove(event));
+    });
+
+    expect(props.clearHighlightedSeries).toHaveBeenCalledTimes(5);
+  });
+});

@@ -1,0 +1,194 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useContext, useLayoutEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
+
+import { useMergeRefs, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import generatedIcons from '../icon/generated/icons';
+import { InternalIconContext } from '../icon-provider/context';
+import { getBaseProps } from '../internal/base-component';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import WithNativeAttributes from '../internal/utils/with-native-attributes';
+import { IconProps } from './interfaces';
+
+import styles from './styles.css.js';
+
+type InternalIconProps = IconProps &
+  InternalBaseComponentProps & {
+    badge?: boolean;
+    override?: React.ReactNode;
+  };
+
+function iconSizeMap(height: number | null, fontSize?: number | null) {
+  if (height === null) {
+    // This is the best guess for the contextual height while server rendering.
+    return 'normal';
+  }
+
+  // Only display medium size icon when both line-height >= 24px AND font-size >= 20px
+  // This prevents icons from becoming medium size inappropriately
+  if (height >= 50) {
+    return 'large';
+  } else if (height >= 36) {
+    return 'big';
+  } else if (height >= 24 && !!fontSize && fontSize >= 20) {
+    return 'medium';
+  } else if (height <= 16) {
+    return !!fontSize && fontSize <= 12 ? 'x-small' : 'small';
+  } else {
+    return 'normal';
+  }
+}
+
+const InternalIcon = ({
+  name,
+  override,
+  size = 'normal',
+  variant = 'normal',
+  url,
+  alt,
+  ariaLabel,
+  svg,
+  badge,
+  nativeAttributes,
+  __internalRootRef,
+  ...props
+}: InternalIconProps) => {
+  const icons = useContext(InternalIconContext);
+  const iconRef = useRef<HTMLElement>(null);
+  // To ensure a re-render is triggered on visual mode changes
+  useVisualRefresh();
+  const [parentHeight, setParentHeight] = useState<number | null>(null);
+  const [parentFontSize, setParentFontSize] = useState<number | null>(null);
+  const contextualSize = size === 'inherit';
+  const iconSize = contextualSize ? iconSizeMap(parentHeight, parentFontSize) : size;
+  const inlineStyles = contextualSize && parentHeight !== null ? { height: `${parentHeight}px` } : {};
+  const baseProps = getBaseProps(props);
+
+  baseProps.className = clsx(
+    baseProps.className,
+    styles.icon,
+    contextualSize && styles['icon-flex-height'],
+    badge && styles.badge,
+    !contextualSize && styles[`size-${iconSize}-mapped-height`],
+    styles[`size-${iconSize}`],
+    styles[`variant-${variant}`],
+    styles[`name-${name}`]
+  );
+
+  // Possible infinite loop is not a concern here because line
+  // height should not change without an external state update.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useLayoutEffect(() => {
+    if (!contextualSize || !iconRef.current) {
+      return;
+    }
+    const computedStyle = getComputedStyle(iconRef.current);
+    const { lineHeight, fontSize } = computedStyle;
+    const newParentHeight = parseInt(lineHeight, 10);
+    const newParentFontSize = parseInt(fontSize, 10);
+    setParentHeight(newParentHeight);
+    setParentFontSize(newParentFontSize);
+  });
+
+  const mergedRef = useMergeRefs(iconRef, __internalRootRef);
+  const hasAriaLabel = typeof ariaLabel === 'string';
+  const labelAttributes = hasAriaLabel ? { role: 'img', 'aria-label': ariaLabel } : {};
+
+  if (svg) {
+    if (url) {
+      warnOnce(
+        'Icon',
+        'You have specified both `url` and `svg`. `svg` will take precedence and `url` will be ignored.'
+      );
+    }
+    return (
+      <WithNativeAttributes
+        {...baseProps}
+        {...labelAttributes}
+        tag="span"
+        componentName="Icon"
+        nativeAttributes={nativeAttributes}
+        ref={mergedRef}
+        aria-hidden={!hasAriaLabel}
+        style={inlineStyles}
+      >
+        {svg}
+      </WithNativeAttributes>
+    );
+  }
+
+  if (url) {
+    return (
+      <WithNativeAttributes
+        {...baseProps}
+        tag="span"
+        componentName="Icon"
+        nativeAttributes={nativeAttributes}
+        ref={mergedRef}
+        style={inlineStyles}
+      >
+        <img src={url} alt={ariaLabel ?? alt} />
+      </WithNativeAttributes>
+    );
+  }
+
+  const validIcon = name && Object.prototype.hasOwnProperty.call(icons, name);
+
+  function iconMap(name: IconProps.Name) {
+    if (name === 'gen-ai' && (iconSize === 'small' || iconSize === 'x-small')) {
+      return (
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 16 16"
+          xmlns="http://www.w3.org/2000/svg"
+          focusable="false"
+          aria-hidden="true"
+          data-testid="gen-ai-filled"
+        >
+          <path
+            d="m8 4.4 1.018 2.582L11.6 8 9.018 9.018 8 11.6 6.982 9.018 4.4 8l2.582-1.018L8 4.4ZM2.405 2.41l.002-.003.003-.002-.003-.002-.002-.003-.002.003-.003.002.003.002.002.003Z"
+            className="filled"
+          />
+        </svg>
+      );
+    } else {
+      const icon = icons[name];
+      if (!icon) {
+        warnOnce(
+          'Icon',
+          `You have specified \`name="${name}"\` but no icon with that name was found in the current IconProvider context. If this is a custom icon, ensure your app is wrapped in an \`IconProvider\` with the icon defined via \`defineIcons\`.`
+        );
+      }
+      return icon;
+    }
+  }
+
+  let content = override ?? (validIcon ? iconMap(name) : undefined);
+  const isOverridden = override ?? (validIcon ? icons[name] !== generatedIcons[name] : false);
+  if (content !== undefined && isOverridden) {
+    // The boxless span provides text metrics so a nested `<Icon size="inherit" />` resolves to the
+    // wrapper's size, without affecting the wrapper's own placement.
+    content = <span className={clsx(styles.icon, styles['custom-icon'], styles[`size-${iconSize}`])}>{content}</span>;
+  }
+
+  return (
+    <WithNativeAttributes
+      {...baseProps}
+      {...labelAttributes}
+      tag="span"
+      componentName="Icon"
+      nativeAttributes={nativeAttributes}
+      ref={mergedRef}
+      style={inlineStyles}
+    >
+      {content}
+    </WithNativeAttributes>
+  );
+};
+
+export { InternalIconProps };
+export default InternalIcon;

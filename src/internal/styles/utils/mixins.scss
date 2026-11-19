@@ -1,0 +1,78 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use '../tokens' as awsui;
+@use '../typography' as typography;
+
+@mixin awsui-util-hide {
+  position: absolute !important;
+  inset-block-start: -9999px !important;
+  inset-inline-start: -9999px !important;
+}
+
+@mixin measurement-ghost {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  block-size: 0;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+// A zero-height relative anchor for the absolutely-positioned measurement ghost.
+@mixin measurement-ghost-anchor {
+  position: relative;
+  block-size: 0;
+}
+
+@mixin text-wrapping {
+  // When using with Flexbox, a flex item has min-width set to "auto" by default, which
+  // prevents the text wrapping. We need to override the min-width by setting it to "0"
+  min-inline-size: 0;
+
+  // `word-break: break-word` is deprecated.
+  // But its replacement, `overflow-wrap: anywhere`, is not supported in Safari 14.0 and 15.0.
+  word-break: break-word;
+}
+
+@mixin text-flex-wrapping {
+  word-wrap: break-word;
+  max-inline-size: 100%;
+  overflow: hidden;
+}
+
+@mixin code-highlight {
+  @include typography.font-body-s;
+  font-family: typography.$font-family-monospace;
+  background-color: awsui.$color-background-layout-main;
+  padding-block: 0;
+  padding-inline: awsui.$space-xxs;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+@mixin text-overflow-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin logical-radius($radius) {
+  border-start-start-radius: $radius;
+  border-start-end-radius: $radius;
+  border-end-start-radius: $radius;
+  border-end-end-radius: $radius;
+}
+
+@mixin base-pseudo-element {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0px;
+  inset-block-start: 0px;
+  inline-size: 100%;
+  block-size: 100%;
+  pointer-events: none;
+  background: transparent;
+  box-sizing: border-box;
+}

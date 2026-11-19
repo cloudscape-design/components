@@ -1,0 +1,155 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+import React, { Suspense, useContext, useEffect } from 'react';
+import { HashRouter } from 'react-router-dom';
+import { createHashHistory } from 'history';
+
+import { applyDensity, applyMode, disableMotion } from '@cloudscape-design/global-styles';
+
+import { mount } from '~mount';
+
+import AppContext, { AppContextProvider, applyThemeClass, parseQuery, Theme } from './app-context';
+import Header from './components/header';
+import IndexPage from './components/index-page';
+import PageView from './components/page-view';
+import StrictModeWrapper from './components/strict-mode-wrapper';
+
+// import font-size reset and Ember font
+import '@cloudscape-design/global-styles/index.css';
+// core-update theme stylesheet, pregenerated at build time and scoped under .awsui-core-update
+// (the dev pages' CSP blocks runtime-injected style nodes, see build-tools/tasks/styles.js)
+import './generated/core-update-theme.css';
+// screenshot test overrides
+import styles from './styles.scss';
+
+interface GlobalFlags {
+  appLayoutWidget?: boolean;
+  appLayoutToolbar?: boolean;
+  appLayoutHideToolbarBreadcrumbs?: boolean;
+  oneTheme?: boolean;
+}
+// used for local dev / testing
+interface CustomFlags {
+  appLayoutDelayedWidget?: boolean;
+}
+const awsuiVisualRefreshFlag = Symbol.for('awsui-visual-refresh-flag');
+const awsuiGlobalFlagsSymbol = Symbol.for('awsui-global-flags');
+const awsuiCustomFlagsSymbol = Symbol.for('awsui-custom-flags');
+
+interface ExtendedWindow extends Window {
+  [awsuiVisualRefreshFlag]?: () => boolean;
+  [awsuiGlobalFlagsSymbol]?: GlobalFlags;
+  [awsuiCustomFlagsSymbol]?: CustomFlags;
+}
+declare const window: ExtendedWindow;
+
+function isAppLayoutPage(pageId?: string) {
+  const appLayoutPages = [
+    'app-layout',
+    'content-layout',
+    'grid-navigation-custom',
+    'expandable-rows-test',
+    'container/sticky-permutations',
+    'copy-to-clipboard/scenario-split-panel',
+    'prompt-input/simple',
+    'funnel-analytics/static-single-page-flow',
+    'funnel-analytics/static-multi-page-flow',
+    'charts.test',
+    'error-boundary/demo-async-load',
+    'error-boundary/demo-components',
+    'feature-notifications',
+  ];
+  return pageId !== undefined && appLayoutPages.some(match => pageId.includes(match));
+}
+
+function App() {
+  const {
+    mode,
+    pageId,
+    urlParams: { density, motionDisabled },
+  } = useContext(AppContext);
+
+  // AppLayout already contains <main>
+  // Also, AppLayout pages should resemble the ConsoleNav 2.0 styles
+  const isAppLayout = isAppLayoutPage(pageId);
+  const ContentTag = isAppLayout ? 'div' : 'main';
+
+  useEffect(() => {
+    applyMode(mode ?? null);
+  }, [mode]);
+
+  useEffect(() => {
+    applyDensity(density ?? null);
+  }, [density]);
+
+  useEffect(() => {
+    disableMotion(motionDisabled);
+  }, [motionDisabled]);
+
+  return (
+    <StrictModeWrapper pageId={pageId}>
+      <Suspense fallback={<span>Loading...</span>}>
+        <ContentTag>
+          <Header sticky={isAppLayout && pageId !== undefined && pageId.indexOf('legacy') === -1} />
+          {pageId ? <PageView pageId={pageId} /> : <IndexPage />}
+        </ContentTag>
+      </Suspense>
+    </StrictModeWrapper>
+  );
+}
+
+const history = createHashHistory();
+const {
+  direction,
+  visualRefresh,
+  theme,
+  appLayoutWidget,
+  appLayoutToolbar,
+  appLayoutHideToolbarBreadcrumbs,
+  appLayoutDelayedWidget,
+} = parseQuery(history.location.search);
+const oneTheme = theme === Theme.OneTheme;
+// core-update is an override on top of visual refresh, so it always requires the visual refresh base.
+const coreNew = theme === Theme.CoreUpdate;
+const effectiveVisualRefresh = (visualRefresh || coreNew) && !oneTheme;
+
+// The VR class needs to be set before any React rendering occurs.
+window[awsuiVisualRefreshFlag] = () => effectiveVisualRefresh;
+if (!window[awsuiGlobalFlagsSymbol]) {
+  window[awsuiGlobalFlagsSymbol] = {};
+}
+if (!window[awsuiCustomFlagsSymbol]) {
+  window[awsuiCustomFlagsSymbol] = {};
+}
+window[awsuiGlobalFlagsSymbol].appLayoutWidget = appLayoutWidget;
+window[awsuiGlobalFlagsSymbol].appLayoutToolbar = appLayoutToolbar;
+window[awsuiGlobalFlagsSymbol].appLayoutHideToolbarBreadcrumbs = appLayoutHideToolbarBreadcrumbs;
+window[awsuiCustomFlagsSymbol].appLayoutDelayedWidget = appLayoutDelayedWidget;
+window[awsuiGlobalFlagsSymbol].oneTheme = oneTheme;
+
+// Apply the active theme's body class (extensible via the Theme enum).
+applyThemeClass(theme);
+// useRuntimeVisualRefresh() detects .awsui-visual-refresh on body and short-circuits before its Symbol fallback.
+document.body.classList.toggle('awsui-visual-refresh', effectiveVisualRefresh);
+
+// Apply the direction value to the HTML element dir attribute
+document.documentElement.setAttribute('dir', direction);
+
+// Apply Safari-specific class to hide flaky scrollbars in tests
+const lowerCaseUserAgent = navigator.userAgent.toLowerCase();
+const isSafari = lowerCaseUserAgent.indexOf('safari') > -1 && lowerCaseUserAgent.indexOf('chrome') === -1;
+if (isSafari) {
+  document.body.classList.add(styles.safari);
+} else {
+  document.body.classList.remove(styles.safari);
+}
+
+mount(
+  <HashRouter>
+    <AppContextProvider>
+      <App />
+    </AppContextProvider>
+  </HashRouter>,
+  document.getElementById('app')!
+);

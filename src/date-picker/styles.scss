@@ -1,0 +1,46 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/index' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/styles/typography/index' as typographyConstants;
+
+.root {
+  @include styles.styles-reset;
+}
+
+.focus-lock {
+  display: contents;
+}
+
+.calendar {
+  overflow: auto;
+
+  &:focus {
+    outline: none;
+  }
+  @include focus-visible.when-visible {
+    @include styles.container-focus(awsui.$border-radius-dropdown);
+  }
+}
+
+.date-picker-container {
+  position: relative;
+  max-inline-size: 234px;
+}
+
+.date-picker-trigger {
+  display: flex;
+}
+
+.date-picker-input {
+  padding-inline-end: awsui.$space-xs;
+  inline-size: 100%;
+}
+
+.open-calendar-button {
+  /* used in test-utils */
+}

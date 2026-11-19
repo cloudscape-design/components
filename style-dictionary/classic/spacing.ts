@@ -1,0 +1,83 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import merge from 'lodash/merge.js';
+
+import { expandDensityDictionary } from '../utils/index.js';
+import { StyleDictionary } from '../utils/interfaces.js';
+import { tokens as parentTokens } from '../visual-refresh/spacing.js';
+
+const tokens: StyleDictionary.SpacingDictionary = {
+  spaceAlertActionLeft: '{spaceL}',
+  spaceAlertHorizontal: '{spaceL}',
+  spaceAlertMessageRight: '0px',
+  spaceAlertVertical: '{spaceScaledS}',
+  spaceButtonFocusOutlineGutter: '3px',
+  spaceExpandToggleFocusOutlineGutter: '{spaceButtonFocusOutlineGutter}',
+  spaceButtonInlineLinkFocusOutlineGutter: '{spaceButtonFocusOutlineGutter}',
+  spaceButtonHorizontal: '{spaceL}',
+  spaceFieldVertical: { comfortable: '4px', compact: '2px' },
+  spaceButtonIconFocusOutlineGutterVertical: '{spaceButtonFocusOutlineGutter}',
+  spaceButtonIconOnlyHorizontal: '{spaceM}',
+  spaceButtonInlineIconFocusOutlineGutter: '{spaceButtonFocusOutlineGutter}',
+  spaceButtonModalDismissVertical: '{spaceScaledXxs}',
+  spaceCalendarGridFocusOutlineGutter: '0px',
+  spaceCalendarGridSelectedFocusOutlineGutter: '2px',
+  spaceCalendarGridGutter: '0px',
+  spaceCardHorizontalDefault: '{spaceContainerHorizontal}',
+  spaceCardHorizontalEmbedded: { comfortable: '{spaceS}', compact: '10px' },
+  spaceCardVerticalDefault: '{spaceScaledL}',
+  spaceCardVerticalEmbedded: { comfortable: '10px', compact: '{spaceXs}' },
+  spaceCodeEditorStatusFocusOutlineGutter: '3px',
+  spaceContainerContentTop: '{spaceScaledM}',
+  spaceContainerContentVertical: '{spaceScaledL}',
+  spaceContainerHeaderTop: '{spaceScaledS}',
+  spaceContainerHeaderBottom: '{spaceScaledS}',
+  spaceContainerHorizontal: '{spaceL}',
+  spaceContentHeaderPaddingBottom: '{spaceScaledM}',
+  spaceDarkHeaderOverlapDistance: '0px',
+  spaceExpandableSectionIconOffsetTop: '{spaceScaledXs}',
+  spaceFieldHorizontal: '{spaceXs}',
+  spaceFieldIconOffset: '32px',
+  spaceFilteringTokenDismissButtonFocusOutlineGutter: '0px',
+  spaceFilteringTokenOperationSelectFocusOutlineGutter: '0px',
+  spaceFlashbarActionLeft: '{spaceM}',
+  spaceFlashbarDismissRight: '{spaceXxs}',
+  spaceFlashbarHorizontal: '{spaceS}',
+  spaceKeyValueGap: '{spaceScaledXxxs}',
+  spaceLayoutContentBottom: '{spaceScaledL}',
+  spaceLayoutContentHorizontal: '{spaceScaled2xXxxl}',
+  spaceModalContentBottom: '{spaceScaledL}',
+  spacePanelContentBottom: '{spaceScaledXxxl}',
+  spacePanelContentTop: '{spaceScaledL}',
+  spacePanelDividerMarginHorizontal: '{spaceS}',
+  spacePanelHeaderVertical: '{spaceScaledL}',
+  spacePanelNavLeft: '{spaceXxl}',
+  spacePanelSideLeft: '{spaceScaledXxl}',
+  spacePanelSideRight: '{spaceScaledXxl}',
+  spacePanelSplitTop: '0px',
+  spaceSegmentedControlFocusOutlineGutter: '3px',
+  spaceTabsContentTop: '{spaceScaledM}',
+  spaceTabsFocusOutlineGutter: '0px',
+  spaceTableContentBottom: '0px',
+  spaceTableEmbeddedHeaderTop: '{spaceContainerHeaderTop}',
+  spaceTableHeaderFocusOutlineGutter: { compact: '0px' },
+  spaceTableHeaderHorizontal: '{spaceContainerHorizontal}',
+  spaceTableHeaderToolsBottom: '{spaceScaledXxs}',
+  spaceTableHorizontal: '0px',
+  spaceTableCellVertical: '{spaceScaledXs}',
+  spaceTokenVertical: '{spaceScaledXxs}',
+  spaceActionCardHorizontalDefault: '{spaceCardHorizontalDefault}',
+  spaceActionCardHorizontalEmbedded: '{spaceCardHorizontalEmbedded}',
+  spaceActionCardVerticalDefault: '{spaceCardVerticalDefault}',
+  spaceActionCardVerticalEmbedded: '{spaceCardVerticalEmbedded}',
+  spaceActionCardDescriptionPaddingTop: '{spaceScaledXxs}',
+  spaceActionCardContentPaddingTop: '{spaceScaledS}',
+};
+
+const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = merge(
+  {},
+  parentTokens,
+  expandDensityDictionary(tokens)
+);
+export { expandedTokens as tokens };
+export const mode: StyleDictionary.ModeIdentifier = 'density';

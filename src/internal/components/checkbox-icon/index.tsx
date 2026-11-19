@@ -1,0 +1,116 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useState } from 'react';
+import clsx from 'clsx';
+
+import { BaseComponentProps } from '../../../types/base-component';
+import { getBaseProps } from '../../base-component';
+import { useOneTheme, useVisualRefresh } from '../../hooks/use-visual-mode';
+
+import styles from './styles.css.js';
+
+interface CheckboxIconProps extends BaseComponentProps {
+  checked?: boolean;
+  indeterminate?: boolean;
+  disabled?: boolean;
+  readOnly?: boolean;
+  style?: {
+    box?: {
+      fill?: string;
+      stroke?: string;
+    };
+    line?: {
+      stroke?: string;
+    };
+  };
+}
+interface Dimension {
+  viewBox: string;
+  indeterminate: string;
+  checked: string;
+  xy: number;
+  r: number;
+  size: number;
+}
+
+// Can't use css variables for svg attributes
+const dimensionsByTheme: Record<NonNullable<'default' | 'refresh' | 'one'>, Dimension> = {
+  default: {
+    viewBox: '0 0 14 14',
+    indeterminate: '2.5,7 11.5,7',
+    checked: '2.5,7 6,10 11,3',
+    xy: 0.5,
+    r: 1.5,
+    size: 13,
+  },
+  refresh: {
+    viewBox: '0 0 16 16',
+    indeterminate: '3.5,8 12.5,8',
+    checked: '3.5,8 7,11 12,4',
+    xy: 0.5,
+    r: 3,
+    size: 15,
+  },
+  one: {
+    viewBox: '0 0 16 16',
+    indeterminate: '3.5,8 12.5,8',
+    checked: '3.5,8 7,11 12,4',
+    xy: 0.5,
+    r: 2,
+    size: 15,
+  },
+};
+
+const CheckboxIcon = ({
+  checked,
+  indeterminate,
+  disabled = false,
+  readOnly = false,
+  style,
+  ...restProps
+}: CheckboxIconProps) => {
+  const baseProps = getBaseProps(restProps);
+  const oneTheme = useOneTheme();
+  const theme = useVisualRefresh() ? (oneTheme ? 'one' : 'refresh') : 'default';
+  const dimensions = dimensionsByTheme[theme];
+
+  // The draw-in animation only plays once the state has changed since mount.
+  const [initialState] = useState({ checked: !!checked, indeterminate: !!indeterminate });
+  const [hasChanged, setHasChanged] = useState(false);
+  if (!hasChanged && (!!checked !== initialState.checked || !!indeterminate !== initialState.indeterminate)) {
+    setHasChanged(true);
+  }
+
+  return (
+    <svg className={styles.root} viewBox={dimensions.viewBox} aria-hidden="true" focusable="false" {...baseProps}>
+      <rect
+        className={clsx(styles['styled-box'], {
+          [styles['styled-box-checked']]: checked,
+          [styles['styled-box-indeterminate']]: indeterminate,
+          [styles['styled-box-disabled']]: disabled,
+          [styles['styled-box-readonly']]: readOnly,
+        })}
+        x={dimensions.xy}
+        y={dimensions.xy}
+        rx={dimensions.r}
+        ry={dimensions.r}
+        width={dimensions.size}
+        height={dimensions.size}
+        style={{ fill: style?.box?.fill, stroke: style?.box?.stroke }}
+      />
+      {checked || indeterminate ? (
+        <polyline
+          className={clsx(styles['styled-line'], {
+            [styles['styled-line-disabled']]: disabled,
+            [styles['styled-line-readonly']]: readOnly,
+          })}
+          data-awsui-motion-ready={hasChanged ? '' : undefined}
+          points={indeterminate ? dimensions.indeterminate : dimensions.checked}
+          style={{ stroke: style?.line?.stroke }}
+        />
+      ) : null}
+    </svg>
+  );
+};
+
+export default CheckboxIcon;

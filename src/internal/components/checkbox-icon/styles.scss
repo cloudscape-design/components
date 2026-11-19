@@ -1,0 +1,53 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+@use '../../styles/style-api' as style-api;
+@use './motion' as motion;
+
+$_control-tokens: style-api.resolve((fill-color, border-color, indicator-color), carrier);
+
+.root {
+  position: absolute;
+  inline-size: 100%;
+  block-size: 100%;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+
+  > .styled-box {
+    fill: style-api.value($_control-tokens, fill-color, awsui.$color-background-control-default);
+    stroke: style-api.value($_control-tokens, border-color, awsui.$color-border-control-default);
+    stroke-width: awsui.$border-width-field;
+    @include styles.with-motion {
+      transition:
+        fill awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick,
+        stroke awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
+    }
+    &-checked,
+    &-indeterminate {
+      fill: style-api.value($_control-tokens, fill-color, awsui.$color-background-control-checked);
+      stroke: style-api.value($_control-tokens, border-color, awsui.$color-border-control-checked);
+    }
+    &-disabled,
+    &-readonly {
+      fill: style-api.value($_control-tokens, fill-color, awsui.$color-background-control-disabled);
+      stroke: style-api.value($_control-tokens, border-color, awsui.$color-border-control-disabled);
+    }
+  }
+
+  > .styled-line {
+    stroke: style-api.value($_control-tokens, indicator-color, awsui.$color-foreground-control-default);
+    stroke-width: 2;
+    fill: none;
+    &-disabled {
+      stroke: style-api.value($_control-tokens, indicator-color, awsui.$color-foreground-control-disabled);
+    }
+    &-readonly {
+      stroke: style-api.value($_control-tokens, indicator-color, awsui.$color-foreground-control-read-only);
+    }
+    @include motion.draw-in;
+  }
+}

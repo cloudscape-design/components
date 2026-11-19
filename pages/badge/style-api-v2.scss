@@ -1,0 +1,29 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~components/styling/badge';
+@use '../style-api/palette' as palette;
+
+.badge {
+  @include badge.root(
+    $border-color: transparent,
+    $border-width: 3px,
+    $border-radius: 4px,
+    $padding-block: 6px,
+    $padding-inline: 12px
+  );
+}
+
+.badge-info-pill {
+  @include badge.root($background: palette.$accent, $color: palette.$text-on-accent, $border-radius: 77px);
+}
+
+.badge-error-square {
+  @include badge.root($background: palette.$error-surface, $color: palette.$error, $border-color: palette.$error);
+}
+
+.badge-label {
+  @include badge.root($font-family: monospace, $font-size: 14px, $font-weight: 400);
+}

@@ -1,0 +1,41 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/style-api' as style-api;
+
+$trigger-tokens: style-api.resolve((placeholder-color), carrier);
+@include style-api.register($trigger-tokens);
+@include style-api.docs(
+  'trigger',
+  $trigger-tokens,
+  $properties: (color, background, border, border-radius, box-shadow, padding, font-family, font-size, font-weight),
+  $descriptions: (
+    properties: (
+      box-shadow: 'Also draws the focus ring.',
+    )
+  )
+);
+@include style-api.docs('inlineLabel', $properties: (color, background, font-family, font-size, font-weight));
+@include style-api.docs-forward('filter', 'input');
+@include style-api.docs-forward('dropdown', 'dropdown', 'root');
+
+.root {
+  @include styles.styles-reset;
+}
+
+// Custom dropdown header/footer regions (renderDropdownHeader / renderDropdownFooter). Duplicated in the
+// Multiselect stylesheet. The header can sit directly above the options list, so it is lifted with z-index
+// to keep focusable content's focus ring above the list; the footer sits below the list with natural
+// clearance and needs no lift.
+.dropdown-header {
+  inline-size: 100%;
+  position: relative;
+  z-index: 4;
+}
+
+.dropdown-footer {
+  inline-size: 100%;
+}

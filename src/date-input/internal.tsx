@@ -1,0 +1,126 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+import React, { Ref, useMemo, useRef, useState } from 'react';
+import clsx from 'clsx';
+
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
+import { StyleClassNames as InputStyleClassNames } from '../input/internal';
+import MaskedInput from '../internal/components/masked-input';
+import { fireNonCancelableEvent } from '../internal/events';
+import useForwardFocus from '../internal/hooks/forward-focus';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { displayToIso, isoToDisplay } from '../internal/utils/date-time';
+import formatDateIso from '../internal/utils/date-time/format-date-iso';
+import formatDateLocalized from '../internal/utils/date-time/format-date-localized';
+import { NonCancelableCustomEvent } from '../types/events';
+import { GeneratedAnalyticsMetadataDateInputComponent } from './analytics-metadata/interfaces';
+import { DateInputProps } from './interfaces';
+import { generateMaskArgs, normalizeIsoDateString } from './utils';
+
+import styles from './styles.css.js';
+
+type InternalDateInputProps = DateInputProps &
+  InternalBaseComponentProps & {
+    __injectAnalyticsComponentMetadata?: boolean;
+    styleClassNames?: StyleClassNames;
+  };
+
+// Style API v2
+interface StyleClassNames {
+  input?: InputStyleClassNames;
+}
+
+const InternalDateInput = React.forwardRef(
+  (
+    {
+      value,
+      onChange,
+      onBlur,
+      onFocus,
+      granularity = 'day',
+      locale,
+      format = 'slashed',
+      inputFormat = 'slashed',
+      styleClassNames,
+      __internalRootRef,
+      __injectAnalyticsComponentMetadata = false,
+      ...props
+    }: InternalDateInputProps,
+    ref: Ref<DateInputProps.Ref>
+  ) => {
+    const [isFocused, setIsFocused] = useState(false);
+    const inputRef = useRef<HTMLInputElement>(null);
+    const isIso = format === 'iso' || (format === 'long-localized' && inputFormat === 'iso');
+
+    useForwardFocus(ref, inputRef);
+
+    const onInputFocus = (event: NonCancelableCustomEvent<null>) => {
+      setIsFocused(true);
+      onFocus?.(event);
+    };
+
+    const onInputBlur = (event: NonCancelableCustomEvent<null>) => {
+      setIsFocused(false);
+      onBlur?.(event);
+    };
+
+    const onInputChange = (event: NonCancelableCustomEvent<{ value: string }>) => {
+      const isNonFocusedLongLocalized = format === 'long-localized' && !(isFocused || props.readOnly);
+      if (!isNonFocusedLongLocalized) {
+        fireNonCancelableEvent(onChange, { value: displayToIso(event.detail.value) });
+      }
+    };
+
+    const usesLongLocalizedValue = format === 'long-localized' && !(isFocused && !props.readOnly);
+    const displayedValue = useMemo(() => {
+      if (!value) {
+        return '';
+      }
+      const isoValue = displayToIso(value);
+      const formatProps = { hideTimeOffset: true, isDateOnly: true, isMonthOnly: granularity === 'month', locale };
+      const normalizedValue = normalizeIsoDateString(isoValue, granularity);
+      if (usesLongLocalizedValue && normalizedValue) {
+        return formatDateLocalized({ date: normalizedValue, ...formatProps });
+      }
+      if (isIso) {
+        return normalizedValue === isoValue ? formatDateIso({ date: normalizedValue, ...formatProps }) : isoValue;
+      }
+      return isoToDisplay(isoValue);
+    }, [value, isIso, granularity, locale, usesLongLocalizedValue]);
+
+    const componentAnalyticsMetadata: GeneratedAnalyticsMetadataDateInputComponent = {
+      name: 'awsui.DateInput',
+      label: 'input',
+      properties: {
+        value: value || '',
+      },
+    };
+
+    return (
+      <MaskedInput
+        ref={inputRef}
+        {...props}
+        value={displayedValue}
+        onChange={onInputChange}
+        onFocus={onInputFocus}
+        onBlur={onInputBlur}
+        className={clsx(styles.root, props.className)}
+        mask={generateMaskArgs({ granularity, isIso })}
+        autofix={!usesLongLocalizedValue}
+        disableAutocompleteOnBlur={false}
+        disableBrowserAutocorrect={true}
+        showUnmaskedValue={usesLongLocalizedValue}
+        autoComplete={false}
+        styleClassNames={styleClassNames?.input}
+        __internalRootRef={__internalRootRef}
+        {...(__injectAnalyticsComponentMetadata
+          ? getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })
+          : {})}
+      />
+    );
+  }
+);
+
+export default InternalDateInput;

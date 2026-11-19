@@ -1,0 +1,143 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use 'sass:map';
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/utils/theming';
+
+@use './motion';
+
+$_status-colors: (
+  'error': awsui.$color-text-status-error,
+  'warning': awsui.$color-text-status-warning,
+  'success': awsui.$color-text-status-success,
+  'info': awsui.$color-text-status-info,
+  'stopped': awsui.$color-text-status-inactive,
+  'pending': awsui.$color-text-status-inactive,
+  'in-progress': awsui.$color-text-status-inactive,
+  'loading': awsui.$color-text-status-inactive,
+  'not-started': awsui.$color-text-status-inactive,
+  'log': awsui.$color-text-status-inactive,
+);
+
+$_color-overrides: (
+  'red': awsui.$color-text-status-error,
+  'grey': awsui.$color-text-status-inactive,
+  'blue': awsui.$color-text-status-info,
+  'green': awsui.$color-text-status-success,
+  'yellow': awsui.$color-text-status-warning,
+);
+
+$_status-backgrounds: (
+  'error': awsui.$color-background-status-indicator-error,
+  'warning': awsui.$color-background-status-indicator-warning,
+  'success': awsui.$color-background-status-indicator-success,
+  'info': awsui.$color-background-status-indicator-info,
+  'stopped': awsui.$color-background-status-indicator-neutral,
+  'pending': awsui.$color-background-status-indicator-neutral,
+  'in-progress': awsui.$color-background-status-indicator-neutral,
+  'loading': awsui.$color-background-status-indicator-neutral,
+  'not-started': awsui.$color-background-status-indicator-neutral,
+  'log': awsui.$color-background-status-indicator-neutral,
+);
+
+$_background-overrides: (
+  'red': awsui.$color-background-status-indicator-error,
+  'grey': awsui.$color-background-status-indicator-neutral,
+  'blue': awsui.$color-background-status-indicator-info,
+  'green': awsui.$color-background-status-indicator-success,
+  'yellow': awsui.$color-background-status-indicator-warning,
+);
+
+.root {
+  @include styles.default-text-style;
+  @each $status in map.keys($_status-colors) {
+    &.status-#{$status} {
+      color: #{map.get($_status-colors, $status)};
+    }
+  }
+  @each $color in map.keys($_color-overrides) {
+    &.color-override-#{$color} {
+      color: #{map.get($_color-overrides, $color)};
+    }
+  }
+
+  @each $status in map.keys($_status-backgrounds) {
+    &.status-#{$status}:not(.embedded) > .container {
+      background: #{map.get($_status-backgrounds, $status)};
+    }
+  }
+  @each $color in map.keys($_background-overrides) {
+    &.color-override-#{$color}:not(.embedded) > .container {
+      background: #{map.get($_background-overrides, $color)};
+    }
+  }
+}
+
+.container {
+  padding-inline: awsui.$space-status-indicator-padding-horizontal;
+  border-start-start-radius: awsui.$border-radius-status-indicator;
+  border-start-end-radius: awsui.$border-radius-status-indicator;
+  border-end-start-radius: awsui.$border-radius-status-indicator;
+  border-end-end-radius: awsui.$border-radius-status-indicator;
+
+  .root.status-loading > & {
+    @include theming.one-theme-only {
+      background: transparent;
+      align-items: center;
+      color: awsui.$color-text-body-secondary;
+    }
+  }
+  &.display-inline {
+    @include styles.text-wrapping;
+    display: inline;
+
+    > .icon {
+      white-space: nowrap;
+      @include theming.one-theme-only {
+        vertical-align: middle;
+      }
+    }
+  }
+
+  &.display-inline-block {
+    display: inline-block;
+    word-wrap: break-word;
+    word-break: break-all;
+    @include theming.one-theme-only {
+      display: inline-flex;
+      vertical-align: top;
+    }
+
+    > .icon {
+      padding-inline-end: awsui.$space-xxs;
+
+      @include theming.one-theme-only {
+        display: inline-flex;
+        align-items: center;
+        block-size: awsui.$line-height-body-m;
+      }
+    }
+  }
+}
+
+.overflow-ellipsis {
+  max-inline-size: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: text-bottom;
+
+  @include theming.one-theme-only {
+    text-overflow: unset;
+
+    > span:last-child {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}

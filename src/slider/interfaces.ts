@@ -1,0 +1,124 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
+import { FormFieldValidationControlProps } from '../types/form-field';
+
+export interface SliderProps extends BaseComponentProps, FormFieldValidationControlProps {
+  /**
+   * Indicates the current value.
+   */
+  value?: number;
+
+  /**
+   * Indicates the minimum value.
+   */
+  min: number;
+
+  /**
+   * Indicates the maximum value.
+   */
+  max: number;
+
+  /**
+   * Formats the values. This will format both the labels and the tooltip.
+   */
+  valueFormatter?: (value: number) => string;
+
+  /**
+   * Called when the user selects a value.
+   * The event `detail` contains the current `value`.
+   */
+  onChange?: NonCancelableEventHandler<SliderProps.ChangeDetail>;
+
+  /**
+   * How big the step size is.
+   */
+  step?: number;
+
+  /**
+   * Hides the colored fill line, so only the handle is visible.
+   */
+  hideFillLine?: boolean;
+
+  /**
+   * Show the tick marks along the slider line. Use with stepped sliders, except in extreme cases.
+   */
+  tickMarks?: boolean;
+
+  /**
+   * Whether or not the slider is disabled.
+   */
+  disabled?: boolean;
+
+  /**
+   * Labels shown between the minimum and maximum values.
+   */
+  referenceValues?: ReadonlyArray<number>;
+
+  /**
+   * Adds an `aria-label` to the native control.
+   *
+   * Use this if you don't have a visible label for this control.
+   */
+  ariaLabel?: string;
+
+  /**
+   * Adds an aria-description for slider labels.
+   *
+   * Use when sliders have formatted reference values.
+   */
+  ariaDescription?: string;
+
+  /**
+   * An object containing all the necessary localized strings required by the component.
+   * @i18n
+   */
+  i18nStrings?: SliderProps.I18nStrings;
+
+  /**
+   * Specifies if the control is read-only, which prevents the
+   * user from modifying the value, but does not prevent the value from
+   * being included in a form submission. A read-only control is still focusable.
+   */
+  readOnly?: boolean;
+
+  /**
+   * An object containing CSS properties to customize the slider's visual appearance.
+   * Refer to the [style](/components/slider/?tabId=style) tab for more details.
+   * @awsuiSystem core
+   */
+  style?: SliderProps.Style;
+}
+
+export namespace SliderProps {
+  export interface ChangeDetail {
+    value: number;
+  }
+  export interface I18nStrings {
+    /**
+      The aria value text displayed when the slider value is between two labeled values.
+     */
+    valueTextRange: (previousValue: string, value: number, nextValue: string) => string;
+  }
+
+  export interface Style {
+    track?: {
+      backgroundColor?: string;
+    };
+    range?: {
+      backgroundColor?: {
+        default?: string;
+        active?: string;
+      };
+    };
+    handle?: {
+      backgroundColor?: {
+        default?: string;
+        hover?: string;
+        active?: string;
+      };
+      borderRadius?: string;
+    };
+  }
+}

@@ -1,0 +1,25 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+const { RuleTester } = require('eslint');
+const useLiveRegionOverAriaLive = require('../prefer-live-region');
+
+const ruleTester = new RuleTester({ languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } } });
+
+ruleTester.run('no-aria-live', useLiveRegionOverAriaLive, {
+  valid: ['<div></div>', '<div aria-live="off"></div>'],
+
+  invalid: [
+    {
+      code: '<div aria-live></div>',
+      errors: [{ messageId: 'prefer-live-region' }],
+    },
+    {
+      code: '<div aria-live="polite"></div>',
+      errors: [{ messageId: 'prefer-live-region' }],
+    },
+    {
+      code: '<div aria-live="assertive"></div>',
+      errors: [{ messageId: 'prefer-live-region' }],
+    },
+  ],
+});

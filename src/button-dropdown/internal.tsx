@@ -1,0 +1,724 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useEffect, useImperativeHandle, useMemo, useRef } from 'react';
+import clsx from 'clsx';
+
+import { isThemeActive, Theme, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
+import InternalBox from '../box/internal';
+import { ButtonProps } from '../button/interfaces';
+import { InternalButton, InternalButtonProps } from '../button/internal';
+import Dropdown from '../dropdown/internal';
+import { useInternalI18n } from '../i18n/context';
+import { IconProps } from '../icon/interfaces';
+import { useFunnel } from '../internal/analytics/hooks/use-funnel.js';
+import { getBaseProps } from '../internal/base-component';
+import { useDropdownStatus } from '../internal/components/dropdown-status';
+import OptionsList from '../internal/components/options-list';
+import useHiddenDescription from '../internal/hooks/use-hidden-description';
+import { useMobile } from '../internal/hooks/use-mobile';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
+import { isDevelopment } from '../internal/is-development';
+import { spinWhenOpen } from '../internal/styles/motion/utils';
+import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import {
+  GeneratedAnalyticsMetadataButtonDropdownCollapse,
+  GeneratedAnalyticsMetadataButtonDropdownExpand,
+} from './analytics-metadata/interfaces.js';
+import { getGroupStatusIds } from './category-elements/use-expandable-group-status';
+import ButtonDropdownFilter from './filter';
+import { ButtonDropdownProps } from './interfaces';
+import { InternalButtonDropdownProps, InternalItem } from './internal-interfaces';
+import ItemsList from './items-list';
+import StatusFooter from './status-footer';
+import { countLeafItems } from './utils/filter-items';
+import { useButtonDropdown } from './utils/use-button-dropdown';
+import { useLoadItems } from './utils/use-load-items';
+import { isItemGroup, isLinkItem } from './utils/utils.js';
+
+import analyticsSelectors from './analytics-metadata/styles.css.js';
+import styles from './styles.css.js';
+
+const InternalButtonDropdown = React.forwardRef(
+  (
+    {
+      items,
+      variant = 'normal',
+      loading = false,
+      loadingText,
+      disabled = false,
+      disabledReason,
+      expandableGroups = false,
+      children,
+      onItemClick,
+      onItemFollow,
+      customTriggerBuilder,
+      styleClassNames,
+      expandToViewport,
+      ariaLabel,
+      iconName,
+      iconAlt,
+      iconUrl,
+      iconSvg,
+      title,
+      description,
+      preferCenter,
+      mainAction,
+      showMainActionOnly,
+      __internalRootRef,
+      analyticsMetadataTransformer,
+      linkStyle,
+      fullWidth,
+      position,
+      nativeMainActionAttributes,
+      nativeTriggerAttributes,
+      renderItem,
+      filteringType,
+      filteringPlaceholder,
+      filteringAriaLabel,
+      filteringClearAriaLabel,
+      filteringResultsText,
+      noMatch,
+      onLoadItems,
+      asyncLoadingProps,
+      getExpandableItemsAsyncLoadingState,
+      i18nStrings,
+      compactTrigger,
+      ariaDescribedby,
+      ...props
+    }: InternalButtonDropdownProps,
+    ref: React.Ref<ButtonDropdownProps.Ref>
+  ) => {
+    const isInRestrictedView = useMobile();
+    const dropdownId = useUniqueId('dropdown');
+    const menuId = useUniqueId('button-dropdown-menu');
+    const hasFiltering = filteringType === 'auto' || filteringType === 'manual';
+    for (const item of items) {
+      if (isLinkItem(item)) {
+        checkSafeUrl('ButtonDropdown', item.href);
+      }
+    }
+    if (mainAction) {
+      checkSafeUrl('ButtonDropdown', mainAction.href);
+    }
+
+    const hasCustomTriggerIcon = !!(iconName || iconUrl || iconSvg);
+
+    if (isDevelopment) {
+      if (mainAction && variant !== 'primary' && variant !== 'normal') {
+        warnOnce('ButtonDropdown', 'Main action is only supported for "primary" and "normal" component variant.');
+      }
+      if (hasCustomTriggerIcon && variant !== 'icon' && variant !== 'inline-icon') {
+        warnOnce('ButtonDropdown', 'Custom icon is only supported for "icon" and "inline-icon" component variant.');
+      }
+    }
+    const hasMainAction = mainAction && (variant === 'primary' || variant === 'normal');
+    const isVisualRefresh = useVisualRefresh();
+    const isOneTheme = isThemeActive(Theme.OneTheme);
+
+    const i18n = useInternalI18n('button-dropdown');
+    const errorIconAriaLabel = i18n('errorIconAriaLabel', asyncLoadingProps?.errorIconAriaLabel);
+    const recoveryText = i18n('recoveryText', asyncLoadingProps?.recoveryText);
+
+    if (isDevelopment) {
+      if (asyncLoadingProps?.recoveryText && !onLoadItems) {
+        warnOnce('ButtonDropdown', '`onLoadItems` must be provided for `recoveryText` to be displayed.');
+      }
+    }
+
+    const statusType = asyncLoadingProps?.statusType ?? 'finished';
+
+    const { fireLoadItems, handleLoadMore, handleRecoveryClick, fireGroupLoadItems } = useLoadItems({
+      onLoadItems,
+      items,
+      statusType,
+    });
+
+    // Whether a recovery button is rendered anywhere in the dropdown. It is derived from the
+    // dropdown status below, which in turn depends on the hook output, so the hook reads the
+    // latest value through a ref instead of receiving it as an argument.
+    const hasRecoveryButtonRef = useRef(false);
+    const hasRootRecoveryButtonRef = useRef(false);
+
+    const {
+      isOpen,
+      targetItem,
+      isHighlighted,
+      isKeyboardHighlight,
+      isExpanded,
+      highlightItem,
+      onKeyDown,
+      onKeyUp,
+      onKeyDownCapture,
+      onItemActivate,
+      onGroupToggle,
+      onDropdownFocusLeave,
+      onDropdownBlur,
+      toggleDropdown,
+      closeDropdown,
+      setIsUsingMouse,
+      filteringValue,
+      setFilteringValue,
+      filteredItems,
+      isExpandable,
+      isHighlightPending,
+      expandedGroup,
+    } = useButtonDropdown({
+      items,
+      onItemClick,
+      onItemFollow,
+      // Scroll is unnecessary when moving focus back to the dropdown trigger.
+      onReturnFocus: () => triggerRef.current?.focus({ preventScroll: true }),
+      // Whether the given element is (or is inside) the dropdown trigger.
+      isTriggerElement: element => !!triggerWrapperRef.current?.contains(element),
+      expandToViewport,
+      hasExpandableGroups: expandableGroups,
+      isInRestrictedView,
+      filteringType,
+      fireLoadItems,
+      onGroupExpand: group => {
+        if (!onLoadItems) {
+          return;
+        }
+        if (group.id) {
+          fireGroupLoadItems(group.id);
+        } else if (getExpandableItemsAsyncLoadingState) {
+          warnOnce('ButtonDropdown', 'Expandable groups need an `id` for `onLoadItems` to fire when they expand.');
+        }
+      },
+      hasRecoveryButton: () => hasRecoveryButtonRef.current,
+      hasRootRecoveryButton: () => hasRootRecoveryButtonRef.current,
+      // Enter on a failed group's status retries loading it. The highlight stays on the status,
+      // which then reads the loading text, and moves to the first item once the items arrive.
+      onPendingHighlightActivate: () => {
+        if (pendingGroupStatus === 'error' && expandedGroup?.id && hasGroupRecoveryButton) {
+          onGroupRecoveryClick?.(expandedGroup.id);
+        }
+      },
+    });
+
+    const filterRef = useRef<HTMLInputElement>(null);
+    const isOpenRef = useRef(isOpen);
+    isOpenRef.current = isOpen;
+    const filteringValueRef = useRef(filteringValue);
+    filteringValueRef.current = filteringValue;
+
+    useEffect(() => {
+      // Focus the filter input when it opens.
+      if (isOpen && hasFiltering) {
+        filterRef.current?.focus();
+      }
+    }, [isOpen, hasFiltering]);
+
+    const handleMouseEvent = () => {
+      setIsUsingMouse(true);
+    };
+
+    const baseProps = getBaseProps(props);
+
+    const mainActionRef = useRef<HTMLElement>(null);
+    const triggerRef = useRef<HTMLElement>(null);
+    // Wraps the dropdown trigger button (all trigger variants). InternalButton exposes an
+    // imperative handle rather than a DOM node, so trigger containment is tested against this
+    // wrapper element instead of triggerRef.
+    const triggerWrapperRef = useRef<HTMLDivElement>(null);
+
+    useImperativeHandle(
+      ref,
+      () => ({
+        focus(...args) {
+          (hasMainAction ? mainActionRef : triggerRef).current?.focus(...args);
+        },
+        focusDropdownTrigger(...args) {
+          triggerRef.current?.focus(...args);
+        },
+      }),
+      [mainActionRef, triggerRef, hasMainAction]
+    );
+
+    const clickHandler = () => {
+      if (!loading && !disabled) {
+        // Prevent moving highlight on mobiles to avoid disabled state reason popup if defined.
+        toggleDropdown({ moveHighlightOnOpen: !isInRestrictedView });
+      }
+    };
+
+    const canBeOpened = !loading && !disabled;
+
+    const canBeFullWidth = !!fullWidth && (variant === 'primary' || variant === 'normal');
+
+    const triggerVariant = variant === 'navigation' ? undefined : variant === 'inline-icon' ? 'inline-icon' : variant;
+    const iconProps: Partial<ButtonProps & { __iconClass?: string; __iconSize?: IconProps.Size }> =
+      variant === 'icon' || variant === 'inline-icon'
+        ? {
+            iconName: hasCustomTriggerIcon ? iconName : 'ellipsis',
+            iconAlt,
+            iconUrl,
+            iconSvg,
+          }
+        : {
+            iconName: isOneTheme ? 'angle-down' : 'caret-down-filled',
+            __iconSize: isOneTheme ? 'x-small' : 'normal',
+            iconAlign: 'right',
+            __iconClass: spinWhenOpen(styles, 'rotate', canBeOpened && isOpen),
+          };
+
+    const baseTriggerProps: InternalButtonProps = {
+      styleClassNames: { root: styleClassNames?.trigger },
+      className: clsx(
+        styles['trigger-button'],
+        styles['test-utils-button-trigger'],
+        analyticsSelectors['trigger-label']
+      ),
+      ...iconProps,
+      variant: triggerVariant,
+      loading,
+      loadingText,
+      disabled,
+      disabledReason,
+      onClick: (event: Event) => {
+        event.preventDefault();
+        clickHandler();
+      },
+      ariaLabel,
+      ariaExpanded: canBeOpened && isOpen,
+      ariaDescribedby,
+      formAction: 'none',
+      ariaHaspopup: hasFiltering ? 'dialog' : true,
+      nativeButtonAttributes: nativeTriggerAttributes,
+    };
+
+    const triggerId = useUniqueId('awsui-button-dropdown__trigger');
+
+    const triggerHasBadge = () => {
+      const groupKey: keyof ButtonDropdownProps.ItemGroup = 'items';
+      const flatItems = items.flatMap(item => {
+        if (groupKey in item) {
+          return item.items;
+        }
+        return item;
+      });
+
+      const badgeKey: keyof InternalItem = 'badge';
+      return (
+        variant === 'icon' &&
+        !!flatItems?.find(item => {
+          if (badgeKey in item) {
+            return (item as InternalItem).badge;
+          }
+        })
+      );
+    };
+
+    let trigger: React.ReactNode = null;
+
+    const analyticsMetadata:
+      | GeneratedAnalyticsMetadataButtonDropdownExpand
+      | GeneratedAnalyticsMetadataButtonDropdownCollapse
+      | Record<string, never> = disabled
+      ? {}
+      : {
+          action: !isOpen ? 'expand' : 'collapse',
+          detail: {
+            label: `.${analyticsSelectors['trigger-label']}`,
+          },
+        };
+
+    if (customTriggerBuilder) {
+      trigger = (
+        <div
+          ref={triggerWrapperRef}
+          className={styles['dropdown-trigger']}
+          {...getAnalyticsMetadataAttribute(analyticsMetadata)}
+        >
+          {customTriggerBuilder({
+            testUtilsClass: styles['test-utils-button-trigger'],
+            ariaExpanded: canBeOpened && isOpen,
+            onClick: clickHandler,
+            triggerRef,
+            ariaLabel,
+            disabled,
+            disabledReason,
+            isOpen,
+          })}
+        </div>
+      );
+    } else if (hasMainAction) {
+      const { text, iconName, iconAlt, iconSvg, iconUrl, external, externalIconAriaLabel, ...mainActionProps } =
+        mainAction;
+      const mainActionIconProps = external
+        ? ({ iconName: 'external', iconAlign: 'right', target: '_blank', rel: 'noopener noreferrer' } as const)
+        : ({ iconName, iconAlt, iconSvg, iconUrl } as const);
+      const mainActionAriaLabel = externalIconAriaLabel
+        ? `${mainAction.ariaLabel ?? mainAction.text} ${mainAction.externalIconAriaLabel}`
+        : mainAction.ariaLabel;
+      const hasNoText = !text;
+      const mainActionButton = (
+        <InternalButton
+          ref={mainActionRef}
+          {...mainActionProps}
+          {...mainActionIconProps}
+          fullWidth={canBeFullWidth}
+          styleClassNames={{ root: styleClassNames?.mainAction }}
+          className={clsx(
+            styles['trigger-button'],
+            hasNoText && styles['has-no-text'],
+            isVisualRefresh && styles['visual-refresh'],
+            canBeFullWidth && styles['main-action-full-width']
+          )}
+          variant={variant}
+          ariaLabel={mainActionAriaLabel}
+          formAction="none"
+          nativeAnchorAttributes={nativeMainActionAttributes?.anchor}
+          nativeButtonAttributes={nativeMainActionAttributes?.button}
+        >
+          {text}
+        </InternalButton>
+      );
+      trigger = (
+        <div role="group" aria-label={ariaLabel} className={styles['split-trigger-wrapper']}>
+          <div
+            className={clsx(
+              styles['trigger-item'],
+              styles['split-trigger'],
+              styles[`variant-${variant}`],
+              mainActionProps.loading && styles.loading
+            )}
+            // Close dropdown upon main action click unless event is cancelled.
+            onClick={closeDropdown}
+            // Prevent keyboard events from propagation to the button dropdown handler.
+            onKeyDown={e => e.stopPropagation()}
+            onKeyUp={e => e.stopPropagation()}
+            {...getAnalyticsMetadataAttribute({
+              action: 'click',
+              detail: {
+                label: `.${analyticsSelectors['main-action-label']}`,
+              },
+            })}
+          >
+            {mainActionButton}
+          </div>
+          {!showMainActionOnly && (
+            <div
+              ref={triggerWrapperRef}
+              className={clsx(
+                styles['trigger-item'],
+                styles['dropdown-trigger'],
+                isVisualRefresh && styles['visual-refresh'],
+                !!children && styles['has-trigger-text'],
+                styles[`variant-${variant}`],
+                baseTriggerProps.loading && styles.loading
+              )}
+              {...getAnalyticsMetadataAttribute(analyticsMetadata)}
+            >
+              <InternalButton
+                ref={triggerRef}
+                {...baseTriggerProps}
+                className={clsx(baseTriggerProps.className, {
+                  [styles['main-action-trigger-full-width']]: canBeFullWidth,
+                })}
+                __emitPerformanceMarks={false}
+              >
+                {children}
+              </InternalButton>
+            </div>
+          )}
+        </div>
+      );
+    } else {
+      trigger = (
+        <div
+          ref={triggerWrapperRef}
+          className={styles['dropdown-trigger']}
+          {...getAnalyticsMetadataAttribute(analyticsMetadata)}
+        >
+          <InternalButton
+            ref={triggerRef}
+            id={triggerId}
+            {...baseTriggerProps}
+            className={clsx(baseTriggerProps.className, {
+              [styles['full-width']]: canBeFullWidth,
+              [styles.loading]: canBeFullWidth && !!loading,
+            })}
+            __compact={compactTrigger}
+            badge={triggerHasBadge()}
+            fullWidth={fullWidth}
+          >
+            {children}
+          </InternalButton>
+        </div>
+      );
+    }
+
+    const hasHeader = title || description;
+    const headerId = useUniqueId('awsui-button-dropdown__header');
+    const footerId = useUniqueId('awsui-button-dropdown__footer');
+
+    const isNoMatch = hasFiltering && !!filteringValue && filteredItems.length === 0;
+    const isFiltered = hasFiltering && !!filteringValue && filteredItems.length > 0;
+
+    const totalCount = useMemo(() => countLeafItems(items), [items]);
+    const matchesCount = useMemo(() => countLeafItems(filteredItems), [filteredItems]);
+    const filteredText = isFiltered ? filteringResultsText?.(matchesCount, totalCount) : undefined;
+
+    // Only treat as "truly empty" (no data at all) when the user is not actively filtering.
+    // When filteringValue is set, zero items means "no match" not "empty".
+    // `empty` is only shown once loading has finished (unset statusType is normalized to `finished`),
+    // so a `pending` list with no items yet doesn't announce an empty result.
+    const isEmpty = statusType === 'finished' && (!items || items.length === 0) && !filteringValue;
+
+    const hasItems = filteredItems.length > 0;
+
+    const dropdownStatus = useDropdownStatus({
+      statusType,
+      empty: asyncLoadingProps?.empty?.(),
+      loadingText: asyncLoadingProps?.loadingText?.(),
+      finishedText: asyncLoadingProps?.finishedText?.(),
+      errorText: asyncLoadingProps?.errorText?.(),
+      recoveryText,
+      errorIconAriaLabel,
+      isEmpty,
+      isNoMatch,
+      noMatch,
+      filteringResultsText: filteredText,
+      hasRecoveryCallback: !!onLoadItems,
+      onRecoveryClick: () => {
+        handleRecoveryClick();
+        // The recovery button disappears once loading starts, so move focus back to the
+        // element that owns keyboard interaction to keep the dropdown open.
+        if (hasFiltering) {
+          filterRef.current?.focus();
+        } else {
+          triggerRef.current?.focus({ preventScroll: true });
+        }
+      },
+    });
+
+    // Recovery inside an expanded group. In filtering mode the recovery button is reached with Tab
+    // from the filter input, so focus returns there; in menu mode the group keeps focus on its header.
+    const onGroupRecoveryClick = onLoadItems
+      ? (groupId: string) => {
+          handleRecoveryClick(groupId);
+          if (hasFiltering) {
+            filterRef.current?.focus();
+          }
+        }
+      : undefined;
+
+    // A recovery button inside an expanded group is rendered by the category element with the
+    // same conditions as the main status (error state, recovery text, onLoadItems callback).
+    const expandedGroupHasRecoveryButton =
+      !!recoveryText &&
+      !!onLoadItems &&
+      items.some(
+        item =>
+          isItemGroup(item) &&
+          !!item.id &&
+          isExpandable(item) &&
+          isExpanded(item) &&
+          getExpandableItemsAsyncLoadingState?.({ item }) === 'error'
+      );
+    const pendingGroupStatus =
+      hasFiltering && isHighlightPending && expandedGroup?.id
+        ? getExpandableItemsAsyncLoadingState?.({ item: expandedGroup })
+        : undefined;
+    // Same conditions under which the group renders its recovery button.
+    const hasGroupRecoveryButton = !!recoveryText && !!onLoadItems;
+
+    hasRecoveryButtonRef.current = dropdownStatus.hasRecoveryButton || expandedGroupHasRecoveryButton;
+    hasRootRecoveryButtonRef.current = !!dropdownStatus.hasRecoveryButton;
+
+    // Only create a filteringDescription element if filtering is actually enabled,
+    // not just if the string is provided.
+    const filteringItemDescription = hasFiltering ? i18nStrings?.filteringItemAriaDescription : undefined;
+    const { descriptionEl: filteringDescriptionEl, descriptionId: filteringDescriptionId } = useHiddenDescription(
+      hasFiltering ? i18nStrings?.filteringItemAriaDescription : undefined
+    );
+
+    const shouldLabelWithTrigger = !ariaLabel && !mainAction && variant !== 'icon' && variant !== 'inline-icon';
+
+    // While the highlight points into an expanded group whose items haven't arrived, it sits on
+    // the group's status instead: the Retry button when loading failed, otherwise the status
+    // text (for example "Loading"). Focus stays in the filter input the whole time.
+    let highlightedItemId: string | undefined;
+    if (targetItem) {
+      highlightedItemId = targetItem.id ? `${menuId}-${targetItem.id}` : undefined;
+    } else if (isHighlightPending && expandedGroup?.id) {
+      const groupId = expandedGroup.id;
+      const { statusId, recoveryButtonId } = getGroupStatusIds(menuId, groupId);
+      const groupStatus = pendingGroupStatus ?? 'finished';
+      const hasGroupStatusContent =
+        groupStatus === 'loading' ||
+        groupStatus === 'error' ||
+        (groupStatus === 'finished' &&
+          (!!asyncLoadingProps?.empty?.(groupId) || !!asyncLoadingProps?.finishedText?.(groupId)));
+      if (groupStatus === 'error' && hasGroupRecoveryButton) {
+        highlightedItemId = recoveryButtonId;
+      } else {
+        highlightedItemId = hasGroupStatusContent ? statusId : `${menuId}-${groupId}`;
+      }
+    }
+
+    const filterElement = hasFiltering ? (
+      <ButtonDropdownFilter
+        ref={filterRef}
+        value={filteringValue}
+        onChange={event => setFilteringValue(event.detail.value)}
+        __onDelayedInput={event => {
+          // The input's debounce outlives a close/reopen or a filter reset, and the portalled input
+          // may already be unmounted. Only fire for the query that is still current.
+          if (isOpenRef.current && event.detail.value === filteringValueRef.current) {
+            fireLoadItems(event.detail.value);
+          }
+        }}
+        placeholder={filteringPlaceholder}
+        ariaLabel={filteringAriaLabel}
+        clearAriaLabel={filteringClearAriaLabel}
+        nativeInputAttributes={{
+          'aria-activedescendant': highlightedItemId ?? '',
+          'aria-owns': menuId,
+          'aria-controls': menuId,
+        }}
+      />
+    ) : null;
+
+    const { loadingButtonCount } = useFunnel();
+    useEffect(() => {
+      if (loading) {
+        loadingButtonCount.current++;
+        return () => {
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+          loadingButtonCount.current--;
+        };
+      }
+    }, [loading, loadingButtonCount]);
+
+    return (
+      <div
+        {...baseProps}
+        onKeyDown={onKeyDown}
+        onKeyDownCapture={onKeyDownCapture}
+        onKeyUp={onKeyUp}
+        onMouseDown={handleMouseEvent}
+        onMouseMove={handleMouseEvent}
+        className={clsx(
+          styles['button-dropdown'],
+          styles[`variant-${variant}`],
+          canBeFullWidth && styles['full-width'],
+          baseProps.className
+        )}
+        aria-owns={expandToViewport && isOpen ? dropdownId : undefined}
+        ref={__internalRootRef}
+      >
+        <Dropdown
+          styleClassNames={{ root: styleClassNames?.dropdown }}
+          open={canBeOpened && isOpen}
+          stretchTriggerHeight={variant === 'navigation'}
+          minWidth={expandToViewport ? undefined : 'trigger'}
+          hideBlockBorder={false}
+          expandToViewport={expandToViewport}
+          preferredAlignment={preferCenter ? 'center' : 'start'}
+          onOutsideClick={() => toggleDropdown()}
+          onFocusLeave={onDropdownFocusLeave}
+          onBlur={onDropdownBlur}
+          trigger={trigger}
+          dropdownId={dropdownId}
+          header={filterElement}
+          ariaRole={hasFiltering ? 'dialog' : undefined}
+          ariaLabel={hasFiltering ? ariaLabel : undefined}
+          footer={
+            dropdownStatus.content && dropdownStatus.isSticky ? (
+              <StatusFooter
+                content={isOpen ? dropdownStatus.content : null}
+                id={footerId}
+                hasItems={hasItems}
+                scope="root"
+              />
+            ) : null
+          }
+          content={
+            <>
+              {hasHeader && (
+                <div className={styles.header} id={headerId}>
+                  {title && (
+                    <div className={styles.title}>
+                      <InternalBox
+                        fontSize="heading-s"
+                        fontWeight="bold"
+                        color="inherit"
+                        tagOverride="h2"
+                        margin={{ vertical: 'n', horizontal: 'n' }}
+                      >
+                        {title}
+                      </InternalBox>
+                    </div>
+                  )}
+                  {description && (
+                    <InternalBox fontSize="body-s">
+                      <span className={styles.description}>{description}</span>
+                    </InternalBox>
+                  )}
+                </div>
+              )}
+              <OptionsList
+                open={canBeOpened && isOpen}
+                position="static"
+                role="menu"
+                nativeAttributes={{ id: menuId }}
+                tagOverride="ul"
+                decreaseBlockMargin={true}
+                ariaLabel={ariaLabel}
+                ariaLabelledby={hasHeader ? headerId : shouldLabelWithTrigger ? triggerId : undefined}
+                ariaDescribedby={dropdownStatus.content ? footerId : undefined}
+                statusType={statusType}
+                onLoadMore={handleLoadMore}
+              >
+                <ItemsList
+                  items={filteredItems}
+                  onItemActivate={onItemActivate}
+                  onGroupToggle={onGroupToggle}
+                  isExpandable={isExpandable}
+                  targetItem={targetItem}
+                  isHighlighted={isHighlighted}
+                  isKeyboardHighlight={isKeyboardHighlight}
+                  isExpanded={isExpanded}
+                  lastInDropdown={true}
+                  highlightItem={highlightItem}
+                  expandToViewport={expandToViewport}
+                  variant={variant}
+                  analyticsMetadataTransformer={analyticsMetadataTransformer}
+                  linkStyle={linkStyle}
+                  position={position}
+                  renderItem={renderItem}
+                  filteringText={filteringValue}
+                  filteringEnabled={hasFiltering}
+                  menuId={hasFiltering ? menuId : undefined}
+                  filteringDescriptionId={filteringItemDescription ? filteringDescriptionId : undefined}
+                  asyncLoadingProps={asyncLoadingProps}
+                  getExpandableItemsAsyncLoadingState={getExpandableItemsAsyncLoadingState}
+                  onGroupRecoveryClick={onGroupRecoveryClick}
+                />
+                {dropdownStatus.content && !dropdownStatus.isSticky ? (
+                  // Non-sticky status (finished text) scrolls together with the items, like the
+                  // list bottom in Select, instead of covering the last item.
+                  <li role="menuitem" aria-disabled="true">
+                    <StatusFooter
+                      content={isOpen ? dropdownStatus.content : null}
+                      id={footerId}
+                      hasItems={hasItems}
+                      scope="root"
+                    />
+                  </li>
+                ) : null}
+              </OptionsList>
+              {filteringDescriptionEl}
+            </>
+          }
+        />
+      </div>
+    );
+  }
+);
+
+export default InternalButtonDropdown;

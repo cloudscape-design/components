@@ -1,0 +1,24 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~design-tokens' as tokens;
+
+.border-box-outer,
+.box {
+  border-block: 1px solid tokens.$color-border-status-info;
+  border-inline: 1px solid tokens.$color-border-status-info;
+}
+
+.border-box-inner {
+  border-block: 1px solid tokens.$color-border-status-error;
+  border-inline: 1px solid tokens.$color-border-status-error;
+}
+
+.box {
+  background-color: tokens.$color-background-status-info;
+  display: inline-block;
+  padding-block: 1rem;
+  padding-inline: 1rem;
+}

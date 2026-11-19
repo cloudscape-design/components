@@ -1,0 +1,13 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+.scenario {
+  padding-block: 200px;
+  padding-inline: 0;
+  text-align: center;
+}
+
+.containing-block {
+  contain: layout;
+}

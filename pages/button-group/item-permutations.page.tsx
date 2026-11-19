@@ -1,0 +1,179 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+import React from 'react';
+
+import ButtonGroup, { ButtonGroupProps } from '~components/button-group';
+import SpaceBetween from '~components/space-between';
+import StatusIndicator from '~components/status-indicator';
+
+import createPermutations from '../utils/permutations';
+import PermutationsView from '../utils/permutations-view';
+import ScreenshotArea from '../utils/screenshot-area';
+
+const itemPermutations = createPermutations<ButtonGroupProps.Item>([
+  // Undefined icon
+  {
+    type: ['icon-button'],
+    id: ['test'],
+    iconName: [undefined, 'treeview-expand'],
+    text: ['Expand'],
+  },
+  // Disabled and loading
+  {
+    type: ['icon-button'],
+    id: ['test'],
+    iconName: ['settings'],
+    text: ['Settings'],
+    disabled: [false, true],
+    loading: [false, true],
+    popoverFeedback: ['Text feedback'],
+  },
+  // Disabled reason
+  {
+    type: ['icon-button'],
+    id: ['test'],
+    iconName: ['settings'],
+    text: ['Settings'],
+    disabled: [true],
+    disabledReason: ['Disabled reason'],
+  },
+  // Popover feedback
+  {
+    type: ['icon-button'],
+    id: ['test'],
+    iconName: ['copy'],
+    text: ['Feedback'],
+    popoverFeedback: [
+      'Text feedback',
+      <StatusIndicator type="success" key="success">
+        Status indicator feedback
+      </StatusIndicator>,
+    ],
+  },
+  // Link (href)
+  {
+    type: ['icon-button'],
+    id: ['test'],
+    iconName: ['external'],
+    text: ['Open in a new tab'],
+    href: ['#'],
+    target: ['_blank'],
+  },
+  // Toggle button
+  {
+    type: ['icon-toggle-button'],
+    id: ['test'],
+    iconName: ['star'],
+    pressedIconName: ['star-filled'],
+    text: ['Add to favorites'],
+    pressed: [false, true],
+  },
+  // Disabled reason
+  {
+    type: ['icon-toggle-button'],
+    id: ['test'],
+    iconName: ['star'],
+    pressedIconName: ['star-filled'],
+    text: ['Add to favorites'],
+    pressed: [false, true],
+    disabled: [true],
+    disabledReason: ['Disabled reason'],
+  },
+]);
+
+const menuDropdownPermutations = createPermutations<ButtonGroupProps.MenuDropdown>([
+  // Loading and disabled
+  {
+    type: ['menu-dropdown'],
+    id: ['more-actions'],
+    text: ['More actions'],
+    loading: [false, true],
+    loadingText: ['Loading'],
+    disabled: [false, true],
+    items: [
+      [
+        {
+          id: 'cut',
+          iconName: 'delete-marker',
+          text: 'Cut',
+        },
+        {
+          id: 'paste',
+          iconName: 'add-plus',
+          text: 'Paste',
+          disabled: true,
+          disabledReason: 'No content to paste',
+        },
+        {
+          text: 'Misc',
+          items: [
+            { id: 'edit', iconName: 'edit', text: 'Edit' },
+            { id: 'open', iconName: 'file-open', text: 'Open' },
+            { id: 'search', iconName: 'search', text: 'Search' },
+          ],
+        },
+      ],
+    ],
+  },
+  // Disabled reason
+  {
+    type: ['menu-dropdown'],
+    id: ['more-actions'],
+    text: ['More actions'],
+    disabled: [true],
+    disabledReason: ['Disabled reason'],
+    items: [
+      [
+        {
+          id: 'cut',
+          iconName: 'delete-marker',
+          text: 'Cut',
+        },
+      ],
+    ],
+  },
+  // Custom icon
+  {
+    type: ['menu-dropdown'],
+    id: ['more-actions'],
+    text: ['More actions'],
+    iconName: [undefined, 'settings'],
+    iconSvg: [
+      undefined,
+      <svg key="custom-icon" focusable="false" viewBox="0 0 16 16">
+        <circle cx="8" cy="8" r="7" stroke="currentColor" fill="none" strokeWidth="2" />
+      </svg>,
+    ],
+    items: [
+      [
+        {
+          id: 'cut',
+          iconName: 'delete-marker',
+          text: 'Cut',
+        },
+      ],
+    ],
+  },
+]);
+
+export default function () {
+  return (
+    <ScreenshotArea disableAnimations={true}>
+      <article>
+        <h1>ButtonGroup item permutations</h1>
+        <SpaceBetween size="m">
+          <PermutationsView
+            permutations={itemPermutations}
+            render={permutation => <ButtonGroup variant="icon" items={[permutation]} ariaLabel="Test" />}
+          />
+
+          <PermutationsView
+            permutations={menuDropdownPermutations}
+            render={permutation => <ButtonGroup variant="icon" items={[permutation]} ariaLabel="Test" />}
+          />
+        </SpaceBetween>
+      </article>
+    </ScreenshotArea>
+  );
+}

@@ -1,0 +1,515 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../../../internal/styles/tokens' as awsui;
+@use '../../../internal/styles' as styles;
+@use '../../../internal/styles/utils/theming' as theming;
+@use '../../constants.scss' as constants;
+@use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
+
+@mixin desktop-only {
+  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+    @content;
+  }
+}
+
+@mixin mobile-only {
+  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+    @content;
+  }
+}
+
+$global-drawer-gap-size: 8px;
+$global-drawer-expanded-mode-motion: #{awsui.$motion-duration-refresh-only-slow} #{awsui.$motion-easing-refresh-only-a};
+$drawer-resize-handle-size: awsui.$space-m;
+$ai-drawer-heider-height: 42px;
+
+.drawer {
+  position: sticky;
+  z-index: constants.$drawer-z-index;
+  background-color: awsui.$color-background-layout-panel-content;
+  display: grid;
+  grid-template-columns: awsui.$space-m 1fr;
+  inline-size: var(#{custom-props.$drawerSize});
+
+  block-size: 100%;
+  overflow: hidden;
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+  overscroll-behavior-y: contain;
+  pointer-events: auto;
+  word-wrap: break-word;
+
+  &.with-expanded-motion {
+    @include styles.with-motion {
+      transition:
+        inline-size #{$global-drawer-expanded-mode-motion},
+        block-size #{$global-drawer-expanded-mode-motion},
+        min-inline-size #{$global-drawer-expanded-mode-motion};
+    }
+  }
+
+  @include desktop-only {
+    &:not(.legacy):not(.ai-drawer):not(.bottom-drawer) {
+      border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+    }
+  }
+
+  @include mobile-only {
+    inline-size: 100%;
+    &.last-opened {
+      z-index: constants.$drawer-z-index-mobile;
+    }
+  }
+
+  &.drawer-global {
+    display: block;
+
+    @include desktop-only {
+      inline-size: var(#{custom-props.$drawerSize});
+    }
+
+    @include mobile-only {
+      &:not(.last-opened):not(.drawer-expanded) {
+        display: none;
+      }
+    }
+  }
+
+  &.drawer-hidden {
+    display: none;
+  }
+
+  &.drawer-expanded {
+    inline-size: 100%;
+
+    @include desktop-only {
+      border-inline-start: none;
+
+      &.has-next-siblings {
+        > .global-drawer-wrapper {
+          &:after {
+            content: '';
+            position: absolute;
+            block-size: 100%;
+            inline-size: $global-drawer-gap-size;
+            inset-inline-end: 0;
+            background: awsui.$color-gap-global-drawer;
+            border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+            box-sizing: border-box;
+          }
+        }
+      }
+
+      > .global-drawer-wrapper {
+        inline-size: 100%;
+        grid-template-columns: $global-drawer-gap-size 1fr;
+
+        > .drawer-content-container {
+          grid-column: 2;
+        }
+
+        > .drawer-gap {
+          grid-column: 1;
+          grid-row: 1;
+          block-size: 100%;
+          inline-size: $global-drawer-gap-size;
+          background: awsui.$color-gap-global-drawer;
+          border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+        }
+      }
+    }
+  }
+
+  > .drawer-content-container {
+    grid-column: 1 / span 2;
+    grid-row: 1;
+    display: grid;
+    grid-template-columns: awsui.$space-m 1fr auto awsui.$space-m;
+    grid-template-rows: constants.$toolbar-vertical-panel-icon-offset auto 1fr;
+    overflow-y: auto;
+    min-inline-size: var(#{custom-props.$drawerSize});
+
+    > .drawer-close-button {
+      grid-column: 3;
+      grid-row: 2;
+      z-index: 1;
+      align-self: start;
+    }
+
+    > .drawer-expanded-mode-button {
+      grid-column: 2;
+      grid-row: 2;
+      z-index: 1;
+      align-self: start;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    > .drawer-content {
+      grid-column: 1 / span 4;
+      grid-row: 1 / span 2;
+      &.drawer-content-hidden {
+        display: none;
+      }
+    }
+  }
+
+  > .drawer-slider {
+    z-index: 850;
+    grid-column: 1;
+    grid-row: 1;
+    block-size: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  > .global-drawer-wrapper {
+    display: grid;
+    min-inline-size: var(#{custom-props.$drawerSize});
+    grid-template-columns: $global-drawer-gap-size $drawer-resize-handle-size 1fr;
+    overflow: hidden;
+
+    @include mobile-only {
+      grid-template-columns: 1fr;
+    }
+
+    > .drawer-gap {
+      grid-column: 1;
+      grid-row: 1;
+      block-size: 100%;
+      inline-size: $global-drawer-gap-size;
+      background: awsui.$color-gap-global-drawer;
+      border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+      box-sizing: border-box;
+    }
+
+    > .drawer-slider {
+      z-index: 850;
+      grid-column: 2;
+      grid-row: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    > .drawer-content-container {
+      grid-row: 1;
+      display: grid;
+      grid-template-columns: $drawer-resize-handle-size 1fr auto $drawer-resize-handle-size;
+      grid-template-rows: constants.$toolbar-vertical-panel-icon-offset auto 1fr;
+      overflow-y: auto;
+
+      @include desktop-only {
+        grid-column: 2 / span 2;
+      }
+
+      @include mobile-only {
+        grid-column: 1 / span 2;
+      }
+
+      > .drawer-actions {
+        position: absolute;
+        display: flex;
+        inset-block-start: 0;
+        inset-inline-end: 0;
+        padding-inline-end: awsui.$space-m;
+        padding-block-start: constants.$toolbar-vertical-panel-icon-offset;
+      }
+
+      > .drawer-close-button {
+        grid-column: 3;
+        grid-row: 2;
+        z-index: 1;
+        align-self: start;
+      }
+
+      > .drawer-expanded-mode-button {
+        grid-column: 2;
+        grid-row: 2;
+        z-index: 1;
+        align-self: start;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      > .drawer-content {
+        grid-column: 1 / span 4;
+        grid-row: 1 / span 2;
+
+        &.drawer-content-hidden {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &:not(.ai-drawer) {
+    @include mobile-only {
+      @include theming.dark-mode-only {
+        border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+      }
+    }
+  }
+
+  &.ai-drawer {
+    grid-template-columns: 1fr awsui.$space-xs;
+    background: constants.$ai-drawer-background;
+
+    @include mobile-only {
+      grid-template-columns: 1fr;
+      z-index: constants.$drawer-z-index-mobile;
+    }
+
+    > .drawer-slider {
+      z-index: 850;
+      display: flex;
+      justify-content: center;
+      inline-size: awsui.$space-xs;
+      overflow: hidden;
+      grid-column: 2;
+    }
+
+    // to override styles in PanelResizeHandle component
+    // maybe we need to introduce an additional prop in the component to make it more flexible?
+    // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant
+    .ai-drawer-slider-handle {
+      color: awsui.$color-text-interactive-inverted-default;
+
+      &:hover {
+        stroke: awsui.$color-text-interactive-inverted-hover;
+      }
+      @include theming.one-theme-only {
+        color: awsui.$color-text-interactive-default;
+
+        &:hover {
+          stroke: awsui.$color-text-interactive-hover;
+        }
+      }
+    }
+
+    > .drawer-content-container {
+      min-inline-size: calc(var(#{custom-props.$drawerMinSize}) - #{awsui.$space-xs});
+      grid-column: 1 / span 1;
+      background-color: awsui.$color-background-layout-panel-content;
+
+      @include desktop-only {
+        border-start-end-radius: awsui.$space-xxs;
+      }
+
+      > .drawer-content {
+        grid-row: 1 / span 4;
+
+        > .drawer-content-header {
+          block-size: $ai-drawer-heider-height;
+          position: sticky;
+          z-index: 1000;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          inset-block-start: 0;
+          background-color: awsui.$color-background-layout-panel-content;
+          border-block-end: 2px solid;
+          border-image: linear-gradient(90deg, #962eff 0%, #5c7fff 30%, #09f 50%, #b8e7ff 70%, #8575ff 100%) 1;
+          box-sizing: border-box;
+          @include theming.one-theme-only {
+            align-items: flex-start;
+          }
+
+          > .drawer-content-header-content {
+            display: flex;
+            flex: 1;
+            align-items: center;
+            justify-content: space-between;
+            block-size: 100%;
+            padding-inline-start: awsui.$space-l;
+            padding-inline-end: awsui.$space-m;
+
+            @include theming.one-theme-only {
+              border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+            }
+
+            @include theming.dark-mode-only {
+              border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+
+              @include desktop-only {
+                &:has(+ .drawer-back-to-console-slot) {
+                  border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+                  border-start-end-radius: awsui.$space-xxs;
+                }
+              }
+            }
+
+            > .drawer-actions {
+              display: flex;
+            }
+          }
+
+          > .drawer-back-to-console-slot {
+            position: relative;
+            display: flex;
+            align-items: center;
+            box-sizing: border-box;
+            block-size: 100%;
+            padding-inline: awsui.$space-static-m;
+            background-color: constants.$ai-drawer-background;
+
+            &:before,
+            &:after {
+              content: '';
+              position: absolute;
+              inset-block-start: 0;
+              inset-inline-start: -5px;
+              inline-size: 5px;
+              block-size: 5px;
+              background: constants.$ai-drawer-background;
+
+              @include theming.dark-mode-only {
+                display: none;
+              }
+            }
+
+            &:after {
+              background-color: awsui.$color-background-layout-panel-content;
+              border-start-end-radius: awsui.$space-xxs;
+            }
+
+            > .drawer-back-to-console-button-wrapper {
+              position: relative;
+              &:has(:focus-visible) {
+                @include styles.focus-highlight(3px);
+              }
+
+              > .drawer-back-to-console-button {
+                @include styles.styles-reset;
+                @include styles.text-wrapping;
+                @include styles.font-body-s;
+                border-start-start-radius: awsui.$space-static-xxs;
+                border-start-end-radius: awsui.$space-static-xxs;
+                border-end-start-radius: awsui.$space-static-xxs;
+                border-end-end-radius: awsui.$space-static-xxs;
+                border-width: 0;
+                padding-inline: awsui.$space-static-xs;
+                padding-block: awsui.$space-static-xxs;
+                background: radial-gradient(203.69% 159.19% at 95% -11.67%, #ffbb45 0%, #f90 30%, #fa6f00 60%);
+                color: #ffffff;
+                cursor: pointer;
+
+                &:focus {
+                  // custom outline attached on the wrapping element
+                  outline: none;
+                }
+              }
+
+              > .drawer-back-to-console-custom-button {
+                all: initial;
+                display: flex;
+                cursor: pointer;
+                text-align: center;
+              }
+            }
+          }
+        }
+
+        > .drawer-content-content {
+          display: flex;
+          flex-direction: column;
+          block-size: calc(100% - #{$ai-drawer-heider-height});
+        }
+      }
+    }
+
+    &:not(.drawer-expanded) {
+      > .drawer-content-container {
+        @include desktop-only {
+          clip-path: inset(0 0 -9999px 0 round 0 awsui.$space-xxs 0 0);
+
+          @include styles.with-direction('rtl') {
+            clip-path: inset(0 0 -9999px 0 round awsui.$space-xxs 0 0 0);
+          }
+          @include theming.dark-mode-only {
+            border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+          }
+          @include theming.one-theme-only {
+            border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+          }
+        }
+      }
+    }
+
+    &.drawer-expanded {
+      grid-template-columns: 1fr;
+
+      > .drawer-content-container {
+        border-start-end-radius: 0;
+      }
+    }
+  }
+
+  &.bottom-drawer {
+    display: block;
+    inline-size: 100%;
+    block-size: var(#{custom-props.$bottomDrawerSize});
+
+    @include mobile-only {
+      block-size: 100%;
+      &.last-opened {
+        z-index: constants.$drawer-z-index-mobile;
+      }
+    }
+
+    &.drawer-hidden {
+      display: none;
+    }
+
+    > .global-drawer-wrapper {
+      display: block;
+
+      > .drawer-gap {
+        block-size: $global-drawer-gap-size;
+        inline-size: 100%;
+        border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+        border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+        box-sizing: content-box;
+      }
+
+      > .drawer-slider {
+        block-size: auto;
+        justify-content: center;
+      }
+
+      > .bottom-drawer-content-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        inset-block-start: 0;
+        box-sizing: border-box;
+
+        > .bottom-drawer-content-header-content {
+          display: flex;
+          flex: 1;
+          align-items: center;
+          justify-content: space-between;
+          block-size: 100%;
+          padding-inline-end: awsui.$space-m;
+
+          > .bottom-drawer-actions {
+            display: flex;
+          }
+        }
+      }
+
+      > .drawer-content-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+    }
+  }
+}
+
+.runtime-feature-notifications-drawer-content {
+  border-block-start: 1px solid awsui.$color-border-divider-default;
+}
+
+.runtime-feature-notifications-footer {
+  border-block-start: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
+}

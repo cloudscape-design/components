@@ -1,0 +1,439 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use 'sass:map';
+@use 'sass:meta';
+@use '../tokens' as awsui;
+@use '../typography' as typography;
+@use '../foundation' as foundation;
+@use '../utils' as utils;
+@use './constants' as constants;
+@use '../../generated/custom-css-properties/index.scss' as custom-props;
+
+// Use a special transparent outline only visible in Windows High Contrast Mode.
+// This mode removes all box shadows, se we can only use outline to display focus indicators.
+// When High Contrast Mode is activated, it will change all outline colors, even if they
+// are transparent.
+@mixin windows-high-contrast-outline($offset: 0) {
+  outline: 2px dotted transparent;
+  @if $offset != 0 {
+    outline-offset: $offset;
+  }
+}
+
+@mixin link-focus(
+  $border-color: awsui.$color-border-item-focused,
+  $border-radius: awsui.$border-radius-control-default-focus-ring,
+  $box-shadow: 0 0 0 awsui.$border-link-focus-ring-shadow-spread awsui.$color-border-item-focused
+) {
+  // For classic
+  outline: thin dotted;
+  outline: awsui.$border-link-focus-ring-outline;
+  outline-offset: 2px;
+  outline-color: $border-color;
+  // For visual refresh
+  border-start-start-radius: $border-radius;
+  border-start-end-radius: $border-radius;
+  border-end-start-radius: $border-radius;
+  border-end-end-radius: $border-radius;
+  box-shadow: $box-shadow;
+}
+
+@mixin container-focus($border-radius: awsui.$border-radius-container, $box-shadow: foundation.$box-shadow-focused) {
+  // This mixin is different to `focus-highlight` because it needs to supports overflowing
+  // content. Using a pseudo element does not take the width or height of the overflowing
+  // children.
+
+  @include windows-high-contrast-outline($offset: 2px);
+  border-start-start-radius: $border-radius;
+  border-start-end-radius: $border-radius;
+  border-end-start-radius: $border-radius;
+  border-end-end-radius: $border-radius;
+  box-shadow: $box-shadow;
+}
+
+@mixin focus-highlight(
+  $gutter,
+  $border-radius: awsui.$border-radius-control-default-focus-ring,
+  $box-shadow: foundation.$box-shadow-focused,
+  $z-index: null
+) {
+  $gutter-vertical: $gutter;
+  $gutter-horizontal: $gutter;
+  @if meta.type-of($gutter) == 'map' {
+    $gutter-vertical: map.get($gutter, 'vertical');
+    $gutter-horizontal: map.get($gutter, 'horizontal');
+  }
+  $gutter-top: $gutter-vertical;
+  $gutter-bottom: $gutter-vertical;
+  @if meta.type-of($gutter-vertical) == 'map' {
+    $gutter-top: map.get($gutter-vertical, 'top');
+    $gutter-bottom: map.get($gutter-vertical, 'bottom');
+  }
+  $gutter-left: $gutter-horizontal;
+  $gutter-right: $gutter-horizontal;
+  @if meta.type-of($gutter-horizontal) == 'map' {
+    $gutter-left: map.get($gutter-horizontal, 'left');
+    $gutter-right: map.get($gutter-horizontal, 'right');
+  }
+
+  position: relative;
+  & {
+    @include windows-high-contrast-outline(calc(#{$gutter-left} - 1px));
+  }
+
+  // Regular rounded outline for all other browsers and modes
+  &::before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    inset-inline-start: calc(-1 * #{$gutter-left});
+    inset-block-start: calc(-1 * #{$gutter-top});
+    inline-size: calc(100% + #{$gutter-left} + #{$gutter-right});
+    block-size: calc(100% + #{$gutter-top} + #{$gutter-bottom});
+    border-start-start-radius: $border-radius;
+    border-start-end-radius: $border-radius;
+    border-end-start-radius: $border-radius;
+    border-end-end-radius: $border-radius;
+    box-shadow: $box-shadow;
+    @if $z-index {
+      z-index: $z-index;
+    }
+  }
+}
+
+// Use for elements that have inline buttons without borders
+// like pagination, token list and expandable section
+@mixin focus-element-without-border($border-radius: constants.$control-border-radius) {
+  @include windows-high-contrast-outline;
+  border-block: awsui.$border-width-button solid awsui.$color-border-item-focused;
+  border-inline: awsui.$border-width-button solid awsui.$color-border-item-focused;
+  border-start-start-radius: $border-radius;
+  border-start-end-radius: $border-radius;
+  border-end-start-radius: $border-radius;
+  border-end-end-radius: $border-radius;
+  box-shadow: foundation.$box-shadow-focused-light;
+}
+
+// Use for form input elements, excluding buttons
+// or for elements that have a light border and light background
+@mixin form-focus-element(
+  $border-color: awsui.$color-border-input-focused,
+  $box-shadow: foundation.$box-shadow-focused-light
+) {
+  @include windows-high-contrast-outline;
+
+  border-block-color: $border-color;
+  border-inline-color: $border-color;
+
+  box-shadow: $box-shadow;
+}
+
+@mixin form-disabled-element(
+  $background-color: awsui.$color-background-input-disabled,
+  $border-color: awsui.$color-border-input-disabled,
+  $color: awsui.$color-text-input-disabled,
+  $cursor: auto
+) {
+  background-color: $background-color;
+  border-block: awsui.$border-width-field solid $border-color;
+  border-inline: awsui.$border-width-field solid $border-color;
+  color: $color;
+  cursor: $cursor;
+}
+
+@mixin button-trigger-disabled-element {
+  background-color: awsui.$color-background-input-disabled;
+  border-block: awsui.$border-width-token solid awsui.$color-border-input-disabled;
+  border-inline: awsui.$border-width-token solid awsui.$color-border-input-disabled;
+  color: awsui.$color-text-input-disabled;
+  cursor: auto;
+}
+
+@mixin form-readonly-element(
+  $background-color: awsui.$color-background-input-default,
+  $border-color: awsui.$color-border-input-disabled
+) {
+  background-color: $background-color;
+  border-block: awsui.$border-width-field solid $border-color;
+  border-inline: awsui.$border-width-field solid $border-color;
+}
+
+@mixin button-trigger-readonly-element {
+  background-color: awsui.$color-background-input-default;
+  border-block: awsui.$border-width-token solid awsui.$color-border-input-disabled;
+  border-inline: awsui.$border-width-token solid awsui.$color-border-input-disabled;
+}
+
+@mixin form-placeholder(
+  $color: awsui.$color-text-input-placeholder,
+  $font-size: null,
+  $font-style: italic,
+  $font-weight: null
+) {
+  color: $color;
+  @if $font-size {
+    font-size: $font-size;
+  }
+  font-style: $font-style;
+  @if $font-weight {
+    font-weight: $font-weight;
+  }
+}
+
+@mixin form-placeholder-disabled($color: awsui.$color-text-input-placeholder-disabled) {
+  color: $color;
+}
+
+@mixin form-control-description($color: awsui.$color-text-form-secondary) {
+  color: $color;
+  @include typography.font-body-s;
+}
+
+@mixin form-invalid-control(
+  $color: awsui.$color-text-status-error,
+  $border-color: awsui.$color-text-status-error,
+  $focus-box-shadow: foundation.$box-shadow-focused-light-invalid
+) {
+  color: $color;
+  border-color: $border-color;
+  padding-inline-start: constants.$invalid-control-left-padding;
+  border-inline-start-width: constants.$invalid-control-left-border;
+  &:focus {
+    box-shadow: $focus-box-shadow;
+  }
+  @content;
+}
+
+@mixin form-warning-control(
+  $color: awsui.$color-text-status-warning,
+  $border-color: awsui.$color-text-status-warning,
+  $focus-box-shadow: foundation.$box-shadow-focused-light-invalid
+) {
+  color: $color;
+  border-color: $border-color;
+  padding-inline-start: constants.$invalid-control-left-padding;
+  border-inline-start-width: constants.$invalid-control-left-border;
+  &:focus {
+    box-shadow: $focus-box-shadow;
+  }
+  @content;
+}
+
+@mixin input-default-styles {
+  background-color: var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default);
+  border-block: awsui.$border-width-field solid
+    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default);
+  border-inline: awsui.$border-width-field solid
+    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default);
+  box-shadow: var(#{custom-props.$styleBoxShadowDefault});
+}
+
+@mixin input-hover-background-styles {
+  background-color: var(
+    #{custom-props.$styleBackgroundHover},
+    var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+  );
+}
+
+@mixin input-hover-styles {
+  border-color: var(
+    #{custom-props.$styleBorderColorHover},
+    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default)
+  );
+  @include input-hover-background-styles();
+  box-shadow: var(#{custom-props.$styleBoxShadowHover}, var(#{custom-props.$styleBoxShadowDefault}));
+}
+
+@mixin input-readonly-styles {
+  @include form-readonly-element(
+    $background-color: var(
+        #{custom-props.$styleBackgroundReadonly},
+        var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+      ),
+    $border-color: var(
+        #{custom-props.$styleBorderColorReadonly},
+        var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-disabled)
+      )
+  );
+}
+
+@mixin input-focus-styles {
+  @include form-focus-element(
+    $border-color: var(#{custom-props.$styleBorderColorFocus}, awsui.$color-border-input-focused),
+    $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
+  );
+}
+
+@mixin label-info-link {
+  margin-inline-start: typography.$base-size;
+}
+
+@mixin info-link-spacing {
+  margin-inline-end: awsui.$space-xs;
+  &:only-child {
+    margin-block: 0;
+    margin-inline: 0;
+  }
+}
+
+// Custom radius from the container style API if set, otherwise the token. Stacked
+// containers still flatten adjacent corners because those rules set a literal 0.
+@mixin container-style($radius: var(#{custom-props.$containerStyleBorderRadius}, #{awsui.$border-radius-container})) {
+  border-start-start-radius: $radius;
+  border-start-end-radius: $radius;
+  border-end-start-radius: $radius;
+  border-end-end-radius: $radius;
+  box-sizing: border-box;
+
+  &.refresh {
+    border-block: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
+    border-inline: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
+  }
+
+  &:not(.refresh)::before {
+    @include utils.base-pseudo-element;
+    // Reset border color to prevent it from flashing black during card selection animation
+    border-color: transparent;
+    border-block-start: awsui.$border-container-top-width solid awsui.$color-border-container-top;
+    border-start-start-radius: $radius;
+    border-start-end-radius: $radius;
+    border-end-start-radius: $radius;
+    border-end-end-radius: $radius;
+    z-index: 1;
+  }
+
+  &:not(.refresh)::after {
+    @include utils.base-pseudo-element;
+    border-start-start-radius: $radius;
+    border-start-end-radius: $radius;
+    border-end-start-radius: $radius;
+    border-end-end-radius: $radius;
+    box-shadow: awsui.$shadow-container;
+  }
+}
+
+@mixin dropdown-shadow(
+  $border-color: awsui.$color-border-dropdown-container,
+  $border-width: awsui.$border-width-popover,
+  $border-radius: awsui.$border-radius-dropdown
+) {
+  box-shadow: awsui.$shadow-dropdown;
+  border-start-start-radius: $border-radius;
+  border-start-end-radius: $border-radius;
+  border-end-start-radius: $border-radius;
+  border-end-end-radius: $border-radius;
+  border-block: awsui.$border-divider-list-width solid awsui.$color-border-container-top;
+  box-sizing: border-box;
+
+  &::after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    inset-block-start: -1px;
+    inset-block-end: -1px;
+    inset-inline-start: 0px;
+    inset-inline-end: 0px;
+    background-color: transparent;
+    border-block: $border-width solid $border-color;
+    border-inline: $border-width solid $border-color;
+    border-start-start-radius: inherit;
+    border-start-end-radius: inherit;
+    border-end-start-radius: inherit;
+    border-end-end-radius: inherit;
+    pointer-events: none;
+  }
+}
+
+@mixin make-control-size($height, $width: $height) {
+  margin-block-start: calc((#{awsui.$line-height-body-m} - #{$height}) / 2);
+  min-block-size: $height;
+  min-inline-size: $width;
+  block-size: $height;
+  inline-size: $width;
+}
+
+@mixin control-border-radius-full {
+  border-start-start-radius: constants.$control-border-radius;
+  border-start-end-radius: constants.$control-border-radius;
+  border-end-start-radius: constants.$control-border-radius;
+  border-end-end-radius: constants.$control-border-radius;
+}
+
+$inline-label-border-radius: 2px;
+
+@mixin inline-label-trigger-wrapper {
+  margin-block-start: -7px;
+}
+
+@mixin inline-label-wrapper {
+  margin-block-start: calc(awsui.$space-scaled-xs * -1);
+}
+
+@mixin inline-label {
+  background: linear-gradient(
+    to bottom,
+    var(#{custom-props.$inlineLabelBackgroundColor}, awsui.$color-background-layout-main),
+    awsui.$color-background-input-default
+  );
+  border-start-start-radius: $inline-label-border-radius;
+  border-start-end-radius: $inline-label-border-radius;
+  border-end-start-radius: $inline-label-border-radius;
+  border-end-end-radius: $inline-label-border-radius;
+  box-sizing: border-box;
+  display: inline-block;
+  color: awsui.$color-text-form-label;
+  font-weight: awsui.$font-display-label-weight;
+  font-size: awsui.$font-size-body-s;
+  line-height: 14px;
+  letter-spacing: awsui.$letter-spacing-body-s;
+  position: relative;
+  inset-inline-start: calc(awsui.$border-width-field + awsui.$space-field-horizontal - awsui.$space-scaled-xxs);
+  margin-block-start: awsui.$space-scaled-xs;
+  padding-block-end: 2px;
+  padding-inline: awsui.$space-scaled-xxs;
+  max-inline-size: calc(100% - (2 * awsui.$space-field-horizontal));
+  z-index: 1;
+}
+
+// Adjusts an inline label's vertical position so it does not overlap inline tokens.
+@mixin inline-label-inline-tokens {
+  padding-block-end: 0;
+  transform: translateY(-1.5px);
+}
+
+@mixin inline-label-disabled {
+  background: linear-gradient(
+    to bottom,
+    var(#{custom-props.$inlineLabelBackgroundColor}, awsui.$color-background-layout-main),
+    awsui.$color-background-input-disabled
+  );
+}
+
+// Resets the generic v1 style properties that the button reads. They inherit, so a button nested in another
+// styled component picks them up; the button's own v1 style is set inline and still applies.
+@mixin reset-v1-button-styles {
+  @each $property
+    in (
+      custom-props.$styleBackgroundActive,
+      custom-props.$styleBackgroundDefault,
+      custom-props.$styleBackgroundDisabled,
+      custom-props.$styleBackgroundHover,
+      custom-props.$styleBorderColorActive,
+      custom-props.$styleBorderColorDefault,
+      custom-props.$styleBorderColorDisabled,
+      custom-props.$styleBorderColorHover,
+      custom-props.$styleBoxShadowActive,
+      custom-props.$styleBoxShadowDefault,
+      custom-props.$styleBoxShadowDisabled,
+      custom-props.$styleBoxShadowFocus,
+      custom-props.$styleBoxShadowHover,
+      custom-props.$styleColorActive,
+      custom-props.$styleColorDefault,
+      custom-props.$styleColorDisabled,
+      custom-props.$styleColorHover
+    )
+  {
+    #{$property}: initial;
+  }
+}

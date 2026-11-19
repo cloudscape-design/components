@@ -1,0 +1,79 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+.container {
+  padding-block: 10px;
+  padding-inline: 10px;
+}
+
+.layout-wrapper {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.overflow-container {
+  inline-size: 300px;
+  block-size: 300px;
+  border-block: 1px solid red;
+  border-inline: 1px solid red;
+
+  &.scroll,
+  &.auto {
+    overflow: scroll;
+    > .inner-container {
+      position: relative;
+      inset-inline-start: 300px;
+    }
+    > :first-child {
+      block-size: 300px;
+      inline-size: 1200px;
+    }
+    > :last-child {
+      block-size: 300px;
+    }
+  }
+
+  &.hidden {
+    overflow: hidden;
+    > .inner-container {
+      position: relative;
+      inset-inline-start: 50px;
+      inset-block-start: 75px;
+    }
+  }
+}
+
+.wide-container {
+  padding-block: 10px;
+  padding-inline: 10px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  block-size: calc(80vh);
+  box-sizing: border-box;
+  > .row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+}
+.restricting-container {
+  padding-block: 10px;
+  padding-inline: 10px;
+  border-block: red 1px solid;
+  border-inline: red 1px solid;
+  inline-size: 600px;
+  block-size: 600px;
+  overflow: hidden;
+}
+
+.positioning-container {
+  inset-inline-start: 200px;
+  position: relative;
+}
+
+.dropdown-permutation {
+  block-size: 50px;
+}

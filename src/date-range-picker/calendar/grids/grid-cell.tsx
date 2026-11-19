@@ -1,0 +1,86 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { forwardRef, TdHTMLAttributes, useRef, useState } from 'react';
+
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+
+import useHiddenDescription from '../../../internal/hooks/use-hidden-description';
+import { applyDisplayName } from '../../../internal/utils/apply-display-name';
+import Tooltip from '../../../tooltip/internal.js';
+
+import testutilStyles from '../../test-classes/styles.css.js';
+
+interface GridCellProps extends TdHTMLAttributes<HTMLTableCellElement> {
+  disabledReason?: React.ReactNode;
+  referrerId?: string;
+}
+
+export const GridCell = forwardRef((props: GridCellProps, focusedDateRef: React.Ref<HTMLTableCellElement>) => {
+  const { disabledReason, referrerId, ...rest } = props;
+  const isDisabledWithReason = !!disabledReason;
+  const { targetProps, descriptionEl } = useHiddenDescription(disabledReason);
+  const ref = useRef<HTMLTableCellElement>(null);
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  return (
+    <td
+      ref={useMergeRefs(focusedDateRef, ref)}
+      {...rest}
+      {...(isDisabledWithReason ? targetProps : {})}
+      onFocus={event => {
+        if (rest.onFocus) {
+          rest.onFocus(event);
+        }
+
+        if (isDisabledWithReason) {
+          setShowTooltip(true);
+        }
+      }}
+      onBlur={event => {
+        if (rest.onBlur) {
+          rest.onBlur(event);
+        }
+
+        if (isDisabledWithReason) {
+          setShowTooltip(false);
+        }
+      }}
+      onMouseEnter={event => {
+        if (rest.onMouseEnter) {
+          rest.onMouseEnter(event);
+        }
+
+        if (isDisabledWithReason) {
+          setShowTooltip(true);
+        }
+      }}
+      onMouseLeave={event => {
+        if (rest.onMouseLeave) {
+          rest.onMouseLeave(event);
+        }
+
+        if (isDisabledWithReason) {
+          setShowTooltip(false);
+        }
+      }}
+    >
+      {props.children}
+      {isDisabledWithReason && (
+        <>
+          {descriptionEl}
+          {showTooltip && (
+            <Tooltip
+              className={testutilStyles['disabled-reason-tooltip']}
+              getTrack={() => ref.current}
+              content={disabledReason!}
+              onEscape={() => setShowTooltip(false)}
+              referrerId={referrerId}
+            />
+          )}
+        </>
+      )}
+    </td>
+  );
+});
+
+applyDisplayName(GridCell, 'GridCell');

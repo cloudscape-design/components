@@ -1,0 +1,321 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+
+.root {
+  @include styles.styles-reset;
+}
+
+.wizard.refresh {
+  column-gap: awsui.$space-xl;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  row-gap: awsui.$space-scaled-xxs;
+
+  &.small-container {
+    grid-template-columns: minmax(0, 1fr) 0;
+    grid-template-rows: auto auto 1fr;
+    row-gap: awsui.$space-scaled-xxs;
+  }
+}
+
+.wizard:not(.refresh) {
+  display: flex;
+
+  &.small-container {
+    flex-direction: column;
+    gap: awsui.$space-s;
+  }
+}
+
+.navigation.refresh {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  padding-block-start: calc(awsui.$space-xs + awsui.$space-scaled-xxs);
+
+  /* stylelint-disable selector-max-type */
+  > ul.refresh {
+    position: relative;
+    margin-block: 0;
+    margin-inline: 0;
+    padding-block-start: awsui.$space-scaled-xxs;
+    padding-block-end: 0;
+    padding-inline: 0;
+    inline-size: 260px;
+    box-sizing: border-box;
+
+    > li {
+      display: grid;
+      column-gap: awsui.$space-xs;
+      grid-template-columns: awsui.$space-l 1fr;
+      grid-template-rows: repeat(2, auto);
+      padding-block: 0;
+      padding-inline: 0;
+
+      > hr {
+        background-color: awsui.$color-border-divider-default;
+        border-block: 0;
+        border-inline: 0;
+        grid-column: 1;
+        block-size: 100%;
+        inline-size: awsui.$space-xxxs;
+      }
+
+      > .number {
+        color: awsui.$color-text-small;
+        font-size: awsui.$font-size-body-s;
+        grid-column: 2;
+        grid-row: 1;
+      }
+
+      > a {
+        align-items: start;
+        column-gap: awsui.$space-xs;
+        cursor: pointer;
+        display: grid;
+        font-size: awsui.$font-size-body-m;
+        grid-column: 1 / span 2;
+        grid-row: 2;
+        grid-template-columns: awsui.$space-l 1fr;
+
+        > .circle {
+          border-start-start-radius: 100%;
+          border-start-end-radius: 100%;
+          border-end-start-radius: 100%;
+          border-end-end-radius: 100%;
+          grid-column: 1;
+          block-size: 10px;
+          justify-self: center;
+          margin-block-start: 6px;
+          inline-size: 10px;
+        }
+
+        > .title {
+          @include styles.text-wrapping;
+          grid-column: 2;
+        }
+
+        @include focus-visible.when-visible {
+          @include styles.link-focus;
+        }
+      }
+    }
+
+    > li:first-child > hr {
+      grid-row: 2 / span 2;
+    }
+
+    > li:not(:first-child) > .number {
+      margin-block-start: awsui.$space-m;
+    }
+
+    > li:last-child > hr {
+      grid-row: 1;
+    }
+
+    > li:only-of-type > hr {
+      display: none;
+    }
+
+    > li:not(:first-child):not(:last-child) > hr {
+      grid-row: 1 / span 3;
+    }
+
+    > li.active > a {
+      cursor: text;
+    }
+
+    > li.active > a > .circle {
+      background-color: awsui.$color-background-control-checked;
+      box-shadow:
+        0 0 0 3px awsui.$color-background-container-content,
+        0 0 0 5px awsui.$color-background-control-checked,
+        0 0 0 7px awsui.$color-background-container-content;
+    }
+
+    > li.active > a > .title {
+      color: awsui.$color-background-control-checked;
+      font-weight: styles.$font-weight-bold;
+    }
+
+    > li.disabled > a {
+      cursor: text;
+    }
+
+    > li.disabled > a > .circle {
+      background-color: awsui.$color-background-container-content;
+      box-shadow:
+        0 0 0 2px awsui.$color-text-interactive-disabled,
+        0 0 0 4px awsui.$color-background-container-content;
+    }
+
+    > li.disabled > a > .title {
+      color: awsui.$color-text-status-inactive;
+    }
+
+    > li.enabled > a > .circle {
+      background-color: awsui.$color-text-interactive-default;
+      box-shadow:
+        0 0 0 2px awsui.$color-text-interactive-default,
+        0 0 0 4px awsui.$color-background-container-content;
+    }
+
+    > li.enabled > a > .title {
+      color: awsui.$color-text-interactive-default;
+    }
+
+    > li.enabled > a:hover > .circle {
+      background-color: awsui.$color-background-control-checked;
+      box-shadow:
+        0 0 0 2px awsui.$color-background-control-checked,
+        0 0 0 4px awsui.$color-background-container-content;
+    }
+
+    > li.enabled > a:hover > .title {
+      color: awsui.$color-background-control-checked;
+    }
+  }
+  /* stylelint-enable selector-max-type */
+}
+
+.navigation:not(.refresh) {
+  color: awsui.$color-text-disabled;
+  display: inline-block;
+  margin-inline-end: calc(2 * #{awsui.$space-xxxl});
+  min-inline-size: 20 * styles.$base-size;
+  padding-block-start: awsui.$space-xxs;
+  inline-size: 20 * styles.$base-size;
+
+  /* stylelint-disable selector-max-type */
+  > ul:not(.refresh) {
+    list-style: none;
+    padding-block: 0;
+    padding-inline: 0;
+    margin-block: 0;
+    margin-inline: 0;
+
+    > li {
+      @include styles.text-wrapping;
+      padding-block: 0 awsui.$space-scaled-m;
+    }
+
+    > li:not(:first-child) {
+      margin-block-start: awsui.$space-scaled-m;
+    }
+
+    > li:not(:last-child) {
+      border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-layout;
+    }
+  }
+  /* stylelint-enable selector-max-type */
+}
+
+.form:not(.refresh) {
+  @include styles.text-wrapping;
+  inline-size: 100%;
+
+  > .form-header {
+    position: relative;
+    margin-block-end: awsui.$space-scaled-m;
+  }
+}
+
+.form.refresh {
+  @include styles.text-wrapping;
+  display: contents;
+
+  > .form-header {
+    grid-column: 2;
+    grid-row: 1;
+    color: awsui.$color-text-body-default;
+  }
+
+  > .form-header > .form-header-content {
+    padding-block-start: calc(awsui.$space-xl + awsui.$space-scaled-xxxs);
+    padding-block-end: awsui.$space-scaled-s;
+  }
+
+  > .form-component {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  &.small-container {
+    > .form-header {
+      grid-column: 1 / span 2;
+      grid-row: 2;
+    }
+
+    > .form-header > .form-header-content {
+      padding-block-start: 0;
+    }
+
+    > .form-component {
+      grid-column: 1 / span 2;
+      grid-row: 3;
+    }
+  }
+}
+
+.navigation.hidden {
+  display: none;
+}
+
+.collapsed-steps {
+  grid-column: 1 / span 2;
+  grid-row: 1;
+}
+
+/* Override fixed sidebar width for expandable navigation */
+.navigation.refresh.collapsed-steps-navigation {
+  grid-column: unset;
+  grid-row: unset;
+  padding-block-start: 0;
+
+  > ul.refresh {
+    inline-size: 100%;
+  }
+}
+
+.form-header-component {
+  &-wrapper {
+    outline: none;
+    @include focus-visible.when-visible {
+      @include styles.link-focus;
+    }
+  }
+}
+
+.form-header-component,
+.navigation-link,
+.navigation-link-item,
+.navigation-link-label {
+  /* used in test-utils */
+}
+
+.navigation-link-active {
+  font-weight: styles.$font-weight-bold;
+  color: awsui.$color-text-body-default;
+}
+.navigation-link-disabled {
+  color: awsui.$color-text-status-inactive;
+}
+
+.cancel-button,
+.previous-button,
+.primary-button,
+.skip-to-button {
+  /* used in test-utils */
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+}

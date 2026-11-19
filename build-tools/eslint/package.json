@@ -1,0 +1,7 @@
+{
+  "name": "@cloudscape-design/eslint-plugin",
+  "version": "1.0.0",
+  "devDependencies": {
+    "micromatch": "^4.0.4"
+  }
+}

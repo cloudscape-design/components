@@ -1,0 +1,38 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/foundation' as foundation;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../internal/styles/style-api' as style-api;
+
+$checkbox-size: awsui.$size-control;
+
+$control-props: style-api.combine((fill-color, border-color, indicator-color), style-api.$focus-ring);
+$control-tokens: style-api.resolve($control-props, carrier);
+@include style-api.register($control-tokens);
+@include style-api.docs('control', $control-tokens);
+
+// double selector bumps specificity of this rule above the rule in the abstract switch styles applied to the same element
+.root.root {
+  @include styles.styles-reset;
+  display: flex;
+}
+
+.checkbox-control {
+  @include style-api.carriers($control-tokens);
+  @include styles.make-control-size($checkbox-size);
+}
+
+.outline {
+  @include style-api.focus-highlight(
+    $gutter-block: 2px,
+    $gutter-inline: 2px,
+    $radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
+    $width: var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width),
+    $color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused)
+  );
+}

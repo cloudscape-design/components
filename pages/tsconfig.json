@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "lib": ["ES2020", "DOM"],
+    "target": "ES2019",
+    "declaration": false,
+    "declarationMap": false,
+    "rootDir": ".",
+    "incremental": true,
+    "jsx": "react",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "importHelpers": true,
+    "strict": true,
+    "paths": {
+      "~components": ["../lib/components"],
+      "~components/*": ["../lib/components/*"],
+      "~design-tokens": ["../lib/design-tokens"]
+    },
+    "types": ["node", "webpack-env"]
+  },
+  "include": ["**/*.ts", "**/*.tsx", "./mount.d.ts"],
+  "exclude": ["icon-provider/custom-icons"]
+}

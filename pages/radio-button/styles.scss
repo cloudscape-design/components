@@ -1,0 +1,19 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~design-tokens' as awsui;
+
+.radio-group {
+  display: flex;
+  column-gap: awsui.$space-scaled-m;
+  row-gap: awsui.$space-scaled-xs;
+  &--horizontal {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  &--vertical {
+    flex-direction: column;
+  }
+}

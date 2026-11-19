@@ -1,0 +1,133 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use 'sass:math';
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+
+.root {
+  @include styles.styles-reset();
+}
+
+.header {
+  &:not(.header-variant-full-page) {
+    #{custom-props.$inlineLabelBackgroundColor}: awsui.$color-background-container-header;
+  }
+  &-variant-full-page.header-refresh {
+    padding-block-start: 0;
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+    padding-block-end: calc(
+      #{awsui.$space-container-header-bottom} + #{awsui.$space-table-header-tools-full-page-bottom}
+    );
+  }
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  // reset styles from OL
+  padding-block: 0;
+  padding-inline: 0;
+  list-style: none;
+  margin-block: 0;
+  margin-inline-start: calc(#{awsui.$space-grid-gutter} * -1);
+  margin-inline-end: 0;
+
+  @for $i from 1 through 20 {
+    &.list-grid-#{$i} {
+      > .card {
+        inline-size: math.div(100%, $i);
+      }
+    }
+  }
+}
+
+.selection-control {
+  position: absolute;
+  box-sizing: border-box;
+  inline-size: calc(#{awsui.$size-control} + (2 * #{awsui.$space-card-horizontal-default}));
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  padding-block: awsui.$space-card-vertical-default;
+  padding-inline: awsui.$space-card-horizontal-default;
+}
+
+.loading,
+.empty {
+  overflow: hidden;
+  text-align: center;
+  color: awsui.$color-text-empty;
+  margin-block-end: awsui.$space-scaled-l;
+}
+
+.has-header {
+  // Unfortunately, we don't have access to the header of InternalContainer
+  // in order to use margin-bottom instead.
+  margin-block-start: awsui.$space-grid-gutter;
+  &.refresh {
+    &.header-variant-full-page {
+      margin-block-start: awsui.$space-scaled-s;
+    }
+  }
+}
+
+.card {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  box-sizing: border-box;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block-start: 0;
+  padding-block-end: awsui.$space-grid-gutter;
+  padding-inline-start: awsui.$space-grid-gutter;
+  padding-inline-end: 0;
+  list-style: none;
+  &-header {
+    @include styles.font-heading-m;
+    &-inner {
+      /* used in test-utils */
+      &-selectable {
+        inline-size: 90%;
+      }
+    }
+  }
+  &-selected {
+    /* Used in test utils */
+  }
+}
+
+.section {
+  display: inline-block;
+  box-sizing: border-box;
+  padding-block-end: awsui.$space-scaled-xs;
+  padding-inline: 0;
+  vertical-align: top;
+  &-header {
+    @include styles.font-label;
+    color: awsui.$color-text-label;
+  }
+  &-content {
+    /* used in test-utils */
+  }
+}
+
+.section:not(:first-child) {
+  // The space above the first section is already given by the paddings of the card header and the card body.
+  // Only scale bottom padding to reduce padding between sections and after the last section.
+  padding-block-start: awsui.$space-xs;
+}
+
+.section:last-child {
+  padding-block-end: 0;
+}
+
+.footer-pagination {
+  display: flex;
+  justify-content: flex-end;
+}

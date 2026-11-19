@@ -1,0 +1,122 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+@use '../internal/styles/style-api' as style-api;
+@use './style-api' as popover-style-api;
+
+@use './arrow';
+@use './body';
+@use './container';
+@use './motion';
+
+@include style-api.register(popover-style-api.$arrow-tokens);
+@include style-api.docs('container', $properties: popover-style-api.$container-properties);
+@include style-api.docs('arrow', popover-style-api.$arrow-tokens);
+@include style-api.docs-forward('dismissButton', 'button', 'root');
+
+$trigger-underline-offset: 0.25em;
+
+.root {
+  @include styles.styles-reset;
+  color: inherit;
+  &.no-wrap {
+    white-space: nowrap;
+  }
+
+  // When the trigger text is set to be ellipsized, render the focus ring on the root element instead of the trigger,
+  // to prevent it from being cropped by its `overflow: hidden` rule.
+  // We do this in only this case because when the trigger has multiple lines of texts its height can differ from the root element.
+  &:has(.trigger-type-text-inline.overflow-ellipsis:focus, .trigger-type-text.overflow-ellipsis:focus) {
+    @include focus-visible.when-visible-unfocused {
+      @include styles.focus-highlight(1px);
+    }
+  }
+}
+
+.root-filtering-token {
+  display: flex;
+}
+
+.trigger {
+  display: inline-block;
+  max-inline-size: 100%;
+  color: inherit;
+  text-align: inherit;
+}
+
+.overflow-ellipsis {
+  @include styles.text-overflow-ellipsis;
+  @include styles.text-wrapping;
+}
+
+.trigger-type-text-inline {
+  @include styles.default-text-style;
+  border-block: 0;
+  /*
+    This transparent border is necessary to maintain space between the trigger and the bottom-positioned popover.
+  */
+  border-block-end: awsui.$border-divider-list-width dashed transparent;
+  text-decoration: underline dashed currentColor;
+  text-decoration-thickness: awsui.$border-divider-list-width;
+  text-underline-offset: $trigger-underline-offset;
+
+  &.overflow-ellipsis {
+    /*
+      This style needs because of the overflow: hidden would otherwise conceal the underline styles.
+    */
+    padding-block-end: calc(#{$trigger-underline-offset} + #{awsui.$border-divider-list-width});
+  }
+
+  &.in-inline-token {
+    text-underline-offset: 0.15em;
+  }
+}
+
+.trigger-type-text {
+  border-block: 0;
+  border-block-end: awsui.$border-divider-list-width dashed currentColor;
+}
+
+.trigger-type-text-inline,
+.trigger-type-text {
+  border-inline: 0;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
+  background-color: transparent;
+
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:not(.overflow-ellipsis) {
+    @include focus-visible.when-visible {
+      @include styles.focus-highlight(1px);
+    }
+  }
+}
+
+.trigger-type-filtering-token {
+  display: flex;
+}
+
+.popover-inline-content {
+  display: inline;
+}
+
+.hover-area {
+  pointer-events: none;
+  padding-block: awsui.$space-static-s;
+  padding-inline: awsui.$space-static-s;
+  margin-block: calc(-1 * #{awsui.$space-static-s});
+  margin-inline: calc(-1 * #{awsui.$space-static-s});
+}

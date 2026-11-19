@@ -1,0 +1,79 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/utils/theming' as theming;
+@use './motion';
+
+.root {
+  @include styles.styles-reset;
+  display: grid;
+  grid-template-rows: min-content;
+  gap: awsui.$space-grid-gutter;
+  align-items: start;
+
+  @include theming.one-theme-only {
+    gap: awsui.$space-scaled-s;
+  }
+}
+
+.empty {
+  @include styles.font-body-m;
+  color: awsui.$color-text-empty;
+  grid-column: 1 / -1;
+}
+
+.row {
+  display: contents;
+}
+
+.divider {
+  grid-column: 1 / -1;
+  border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+}
+
+.row-control {
+  /* used in test-utils */
+}
+
+.field {
+  // needed for select truncation and to prevent fields from clashing
+  min-inline-size: 40px;
+}
+
+.additional-info {
+  @include styles.form-control-description;
+  display: block;
+  word-wrap: break-word;
+  margin-block-start: awsui.$space-xxs;
+
+  /* stylelint-disable-next-line selector-max-type */
+  > a {
+    @include styles.link-inline('body-s');
+  }
+}
+
+.add-row {
+  grid-column: 1 / -1;
+}
+
+.add-button {
+  /* used in test-utils */
+}
+
+.remove-button-container {
+  display: inline-block;
+}
+.remove-button-field-padding {
+  padding-block-start: calc(#{awsui.$space-xxs} + #{awsui.$line-height-body-m});
+}
+.remove-button-own-row {
+  justify-self: end;
+}
+
+.remove-button {
+  /* used in test-utils */
+}

@@ -1,0 +1,468 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+import { act, render } from '@testing-library/react';
+
+import {
+  setTestSingleTabStopNavigationTarget,
+  TestSingleTabStopNavigationProvider,
+} from '@cloudscape-design/component-toolkit/internal/testing';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
+
+import '../../__a11y__/to-validate-a11y';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
+import Popover, { PopoverProps } from '../../../lib/components/popover';
+import createWrapper, { ElementWrapper, PopoverWrapper } from '../../../lib/components/test-utils/dom';
+
+import styles from '../../../lib/components/popover/styles.selectors.js';
+
+jest.mock('../../../lib/components/popover/utils/positions', () => ({
+  ...jest.requireActual('../../../lib/components/popover/utils/positions'),
+  getOffsetDimensions: () => ({ offsetWidth: 200, offsetHeight: 300 }), // Approximate mock value for the popover dimensions
+}));
+
+let originalGetComputedStyle: Window['getComputedStyle'];
+const fakeGetComputedStyle: Window['getComputedStyle'] = (...args) => {
+  const result = originalGetComputedStyle(...args);
+  result.borderWidth = '2px'; // Approximate mock value for the popover body' border width
+  result.inlineSize = '10px'; // Approximate mock value for the popover arrow's width
+  result.blockSize = '10px'; // Approximate mock value for the popover arrow's height
+  return result;
+};
+
+beforeEach(() => {
+  originalGetComputedStyle = window.getComputedStyle;
+  window.getComputedStyle = fakeGetComputedStyle;
+});
+afterEach(() => {
+  window.getComputedStyle = originalGetComputedStyle;
+});
+
+class PopoverInternalWrapper extends PopoverWrapper {
+  findBody({ renderWithPortal } = { renderWithPortal: false }): ElementWrapper | null {
+    if (renderWithPortal) {
+      return createWrapper().findByClassName(styles.body);
+    }
+    return this.findByClassName(styles.body);
+  }
+}
+
+function renderPopover(props: PopoverProps & { ref?: React.Ref<PopoverProps.Ref> }) {
+  const { container } = render(<Popover {...props} />);
+  return new PopoverInternalWrapper(container);
+}
+
+describe('Slots', () => {
+  it('renders text trigger correctly', () => {
+    const wrapper = renderPopover({ children: 'Trigger', triggerAriaLabel: 'Test aria label' });
+    expect(wrapper.findTrigger().getElement().tagName).toBe('BUTTON');
+    expect(wrapper.findTrigger().getElement()).toHaveTextContent('Trigger');
+    expect(wrapper.findTrigger().getElement()).toHaveAccessibleName('Test aria label');
+  });
+
+  it('renders custom trigger correctly', () => {
+    const wrapper = renderPopover({ triggerType: 'custom', children: <button type="button">Trigger</button> });
+    expect(wrapper.findTrigger().getElement().tagName).not.toBe('BUTTON');
+    expect(wrapper.findTrigger().getElement()).toHaveTextContent('Trigger');
+  });
+
+  it('renders the popover header correctly', () => {
+    const wrapper = renderPopover({ children: 'Trigger', header: 'Memory error' });
+    wrapper.findTrigger().click();
+    expect(wrapper.findHeader()!.getElement()).toHaveTextContent('Memory error');
+  });
+
+  it('renders the popover content correctly', () => {
+    const wrapper = renderPopover({ children: 'Trigger', content: 'There was an error.' });
+    wrapper.findTrigger().click();
+    expect(wrapper.findContent()!.getElement()).toHaveTextContent('There was an error.');
+  });
+
+  it('renders the popover header correctly with portal', () => {
+    const wrapper = renderPopover({ children: 'Trigger', header: 'Memory error', renderWithPortal: true });
+    wrapper.findTrigger().click();
+    expect(wrapper.findHeader({ renderWithPortal: true })!.getElement()).toHaveTextContent('Memory error');
+  });
+
+  it('renders the popover content correctly with portal', () => {
+    const wrapper = renderPopover({ children: 'Trigger', content: 'There was an error.', renderWithPortal: true });
+    wrapper.findTrigger().click();
+    expect(wrapper.findContent({ renderWithPortal: true })!.getElement()).toHaveTextContent('There was an error.');
+  });
+});
+
+describe('Dismiss button', () => {
+  it('renders a dismiss button by default', () => {
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Hello!' });
+    wrapper.findTrigger().click();
+    expect(wrapper.findDismissButton()).not.toBeNull();
+  });
+
+  it('does not render a dismiss button if dismissButton is false', () => {
+    const wrapper = renderPopover({ children: 'Trigger', dismissButton: false });
+    wrapper.findTrigger().click();
+    expect(wrapper.findDismissButton()).toBeNull();
+  });
+
+  it('renders a dismiss button in portal', () => {
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Hello!', renderWithPortal: true });
+    wrapper.findTrigger().click();
+    expect(wrapper.findDismissButton({ renderWithPortal: true })).not.toBeNull();
+  });
+});
+
+[false, true].forEach(renderWithPortal => {
+  describe(`Visibility renderWithPortal=${renderWithPortal}`, () => {
+    it('does not initially render the popover body', () => {
+      const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', renderWithPortal });
+      expect(wrapper.findBody({ renderWithPortal })).toBeNull();
+    });
+
+    it('renders the popover body when a click is fired from the trigger', () => {
+      const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', renderWithPortal });
+      wrapper.findTrigger().click();
+      expect(wrapper.findBody({ renderWithPortal })).toBeTruthy();
+    });
+
+    it('hides the popover body when an element outside the popover is clicked', () => {
+      const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', renderWithPortal });
+      wrapper.findTrigger().click();
+      act(() => {
+        document.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+      });
+      expect(wrapper.findBody({ renderWithPortal })).toBeNull();
+    });
+
+    it('does not hide the popover body when a click event is fired inside the body', () => {
+      const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', renderWithPortal });
+      wrapper.findTrigger().click();
+      act(() => {
+        wrapper
+          .findBody({ renderWithPortal })!
+          .getElement()
+          .dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+      });
+      expect(wrapper.findBody({ renderWithPortal })).toBeTruthy();
+    });
+
+    it('does not hide the popover body when a click is fired on the trigger', () => {
+      const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', renderWithPortal });
+      wrapper.findTrigger().click();
+      act(() => {
+        wrapper
+          .findTrigger()
+          .getElement()
+          .dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+      });
+      expect(wrapper.findBody({ renderWithPortal })).toBeTruthy();
+    });
+  });
+});
+
+describe('Focus behavior', () => {
+  it('moves focus to the dismiss button on open if dismiss button is present', () => {
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover' });
+    act(() => {
+      wrapper.findTrigger().click();
+    });
+    expect(document.activeElement).toBe(wrapper.findDismissButton()!.getElement());
+  });
+
+  it('does not move focus on open if dismiss button is not present', () => {
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', dismissButton: false });
+    act(() => {
+      wrapper.findTrigger().click();
+    });
+    expect(document.activeElement).not.toBe(wrapper.findBody()!.getElement());
+  });
+
+  it('moves focus back to trigger on dismiss', () => {
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover' });
+    act(() => {
+      wrapper.findTrigger().click();
+    });
+    act(() => {
+      wrapper.findDismissButton()?.click();
+    });
+    expect(document.activeElement).toBe(wrapper.findTrigger().getElement());
+  });
+
+  it('moves focus back to custom trigger on dismiss', () => {
+    const wrapper = renderPopover({ children: <button>Trigger</button>, content: 'Popover', triggerType: 'custom' });
+    act(() => {
+      wrapper.findTrigger().click();
+    });
+    act(() => {
+      wrapper.findDismissButton()?.click();
+    });
+    expect(document.activeElement).toBe(wrapper.findTrigger().getElement().querySelector('button'));
+  });
+
+  it('moves focus to the dismiss button on open if dismiss button is present - with portal', () => {
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', renderWithPortal: true });
+    act(() => {
+      wrapper.findTrigger().click();
+    });
+    expect(document.activeElement).toBe(wrapper.findDismissButton({ renderWithPortal: true })!.getElement());
+  });
+
+  it('does not move focus on open if dismiss button is not present - with portal', () => {
+    const wrapper = renderPopover({
+      children: 'Trigger',
+      content: 'Popover',
+      dismissButton: false,
+      renderWithPortal: true,
+    });
+    act(() => {
+      wrapper.findTrigger().click();
+    });
+    expect(document.activeElement).not.toBe(wrapper.findBody({ renderWithPortal: true })!.getElement());
+  });
+});
+
+describe('Keyboard interaction', () => {
+  it('hides the popover body on tab if dismiss button is not present', () => {
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', dismissButton: false });
+    wrapper.findTrigger().click();
+    wrapper.findTrigger().keydown(KeyCode.tab);
+    expect(wrapper.findBody()).toBeNull();
+  });
+
+  it('hides the popover body on esc', () => {
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover' });
+    wrapper.findTrigger().click();
+    wrapper.findTrigger().keydown(KeyCode.escape);
+    expect(wrapper.findBody()).toBeNull();
+  });
+
+  it('hides the popover body on esc when dismiss button is not present', () => {
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', dismissButton: false });
+    wrapper.findTrigger().click();
+    wrapper.findTrigger().keydown(KeyCode.escape);
+    expect(wrapper.findBody()).toBeNull();
+  });
+});
+
+describe('i18n', () => {
+  it('uses dismissAriaLabel from i18n provider', () => {
+    const { container } = render(
+      <TestI18nProvider messages={{ popover: { dismissAriaLabel: 'Custom dismiss' } }}>
+        <Popover content="Content">Trigger</Popover>
+      </TestI18nProvider>
+    );
+    const wrapper = createWrapper(container).findPopover()!;
+    wrapper.findTrigger().click();
+    expect(wrapper.findDismissButton()!.getElement()).toHaveAttribute('aria-label', 'Custom dismiss');
+  });
+});
+
+describe('ARIA labels', () => {
+  it('adds aria-haspopup to the trigger button if triggerType is text', () => {
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover' });
+    expect(wrapper.findTrigger().getElement()).toHaveAttribute('aria-haspopup');
+  });
+
+  it('sets the body aria-labelledby to the header container id if dismissButton is true and header is present', () => {
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', header: 'Header time' });
+    wrapper.findTrigger().click();
+    const headerId = wrapper.findHeader()!.getElement().id;
+    expect(wrapper.findBody()!.getElement()).toHaveAttribute('aria-labelledby', headerId);
+  });
+
+  it('does not set aria-labelledby when there is no header', () => {
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover' });
+    wrapper.findTrigger().click();
+    expect(wrapper.findBody()!.getElement()).not.toHaveAttribute('aria-labelledby');
+  });
+
+  it('does not use aria-live if dismissButton is true', () => {
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover' });
+    wrapper.findTrigger().click();
+    expect(wrapper.find('[aria-live]')).toBeNull();
+  });
+
+  it('uses aria-live if dismissButton is false', () => {
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover content', dismissButton: false });
+    wrapper.findTrigger().click();
+
+    const liveRegion = createWrapper().findLiveRegion()!;
+    expect(liveRegion).toBeDefined();
+    expect(liveRegion.getElement()).toHaveTextContent('Popover content');
+  });
+
+  it('does not pass the dismissAriaLabel to the dismiss button if not defined', () => {
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover' });
+    wrapper.findTrigger().click();
+    expect(wrapper.findDismissButton()!.getElement()).not.toHaveAttribute('aria-label');
+  });
+
+  it('passes the dismissAriaLabel to the dismiss button if defined', () => {
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', dismissAriaLabel: 'Close' });
+    wrapper.findTrigger().click();
+    expect(wrapper.findDismissButton()!.getElement()).toHaveAttribute('aria-label', 'Close');
+  });
+
+  it('sets role="dialog" if dismissButton is true', () => {
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', dismissButton: true });
+    wrapper.findTrigger().click();
+    expect(wrapper.findBody()!.getElement()).toHaveAttribute('role', 'dialog');
+  });
+
+  it('does not set role="dialog" if dismissButton is false', () => {
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', dismissButton: false });
+    wrapper.findTrigger().click();
+    expect(wrapper.findBody()!.getElement()).not.toHaveAttribute('role', 'dialog');
+  });
+
+  describe('live region', () => {
+    it('do not render live region when closed', () => {
+      renderPopover({
+        children: 'Trigger',
+        content: 'Popover',
+        dismissButton: false,
+        renderWithPortal: true,
+      });
+      expect(createWrapper().findLiveRegion()).toBeNull();
+    });
+
+    it('render live region when opened and dismissButton = false', () => {
+      const wrapper = renderPopover({
+        children: 'Trigger',
+        content: 'Popover',
+        dismissButton: false,
+        renderWithPortal: true,
+      });
+      wrapper.findTrigger().click();
+      const liveRegion = createWrapper().findLiveRegion()!.getElement()!;
+      expect(liveRegion).toHaveTextContent('Popover');
+    });
+
+    it('do not render live region when opened and dismissButton = true', () => {
+      const wrapper = renderPopover({
+        children: 'Trigger',
+        content: 'Popover',
+        dismissButton: true,
+        renderWithPortal: true,
+      });
+      wrapper.findTrigger().click();
+      expect(createWrapper().findLiveRegion()).toBeNull();
+    });
+  });
+
+  it('accessibility validation for popover with dismiss button and header', async () => {
+    const wrapper = renderPopover({
+      children: 'Trigger',
+      header: 'Popover',
+      content: 'Content',
+      dismissButton: true,
+      dismissAriaLabel: 'Dismiss',
+      renderWithPortal: true,
+    });
+    wrapper.findTrigger().click();
+    await expect(document.body).toValidateA11y();
+  });
+});
+
+describe('table grid navigation support', () => {
+  function getTrigger(selector?: string) {
+    return createWrapper().findPopover(selector)!.findTrigger()!.getElement();
+  }
+
+  test('does not override tab index when keyboard navigation is not active', () => {
+    render(
+      <TestSingleTabStopNavigationProvider navigationActive={false}>
+        <Popover>Trigger</Popover>
+      </TestSingleTabStopNavigationProvider>
+    );
+    expect(getTrigger()).not.toHaveAttribute('tabIndex');
+  });
+
+  test('overrides tab index when keyboard navigation is active', () => {
+    render(
+      <TestSingleTabStopNavigationProvider navigationActive={true}>
+        <Popover id="popover1">Trigger</Popover>
+        <Popover id="popover2">Trigger</Popover>
+      </TestSingleTabStopNavigationProvider>
+    );
+    setTestSingleTabStopNavigationTarget(getTrigger('#popover1'));
+    expect(getTrigger('#popover1')).toHaveAttribute('tabIndex', '0');
+    expect(getTrigger('#popover2')).toHaveAttribute('tabIndex', '-1');
+  });
+
+  test('does not override tab index for custom trigger', () => {
+    render(
+      <TestSingleTabStopNavigationProvider navigationActive={true}>
+        <Popover triggerType="custom">Trigger</Popover>
+      </TestSingleTabStopNavigationProvider>
+    );
+    setTestSingleTabStopNavigationTarget(getTrigger());
+    expect(getTrigger()).not.toHaveAttribute('tabIndex');
+  });
+});
+
+describe('ref support', () => {
+  test('focuses when focus() is called on the ref', () => {
+    const ref: React.RefObject<PopoverProps.Ref> = { current: null };
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', ref });
+    ref.current?.focus();
+    expect(document.activeElement).toBe(wrapper.findTrigger().getElement());
+    expect(wrapper.findContent()?.getElement()).toBeFalsy();
+  });
+
+  test('focuses the first interactive element when focus() is called with a custom trigger', () => {
+    const ref: React.RefObject<PopoverProps.Ref> = { current: null };
+    const wrapper = renderPopover({
+      triggerType: 'custom',
+      children: <button id="test">Custom</button>,
+      content: 'Popover',
+      ref,
+    });
+    ref.current?.focus();
+    expect(document.activeElement).toBe(document.getElementById('test'));
+    expect(wrapper.findContent()?.getElement()).toBeFalsy();
+  });
+
+  test('closes an open popover when focus() is called on the ref', () => {
+    const ref: React.RefObject<PopoverProps.Ref> = { current: null };
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', ref });
+    wrapper.findTrigger().getElement().click();
+    expect(wrapper.findContent()?.getElement()).toBeInTheDocument();
+    act(() => {
+      ref.current?.focus();
+    });
+    expect(wrapper.findContent()?.getElement()).toBeFalsy();
+    expect(document.activeElement).toBe(wrapper.findTrigger().getElement());
+  });
+
+  test('Calling dismiss should close the popover', () => {
+    const ref: React.RefObject<PopoverProps.Ref> = { current: null };
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', ref });
+
+    wrapper.findTrigger().click();
+    expect(wrapper.findBody()).toBeTruthy();
+
+    act(() => {
+      ref.current?.dismiss();
+    });
+    expect(wrapper.findBody()).toBeNull();
+    expect(document.activeElement).toBe(document.body);
+  });
+});
+
+test('does not add portal to the body unless visible', () => {
+  const { unmount } = render(
+    <Popover content="Content" renderWithPortal={true}>
+      Trigger
+    </Popover>
+  );
+
+  expect(document.querySelectorAll('body > div')).toHaveLength(1);
+
+  createWrapper().findPopover()!.findTrigger().getElement().click();
+
+  expect(document.querySelectorAll('body > div')).toHaveLength(2);
+
+  unmount();
+
+  expect(document.querySelectorAll('body > div')).toHaveLength(1);
+});

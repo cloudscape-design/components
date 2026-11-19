@@ -1,0 +1,254 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+import React from 'react';
+import { render } from '@testing-library/react';
+import * as IntlMessageFormat from 'intl-messageformat';
+import range from 'lodash/range';
+
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import { I18nProvider, I18nProviderProps } from '../../../lib/components/i18n';
+import { namespace } from '../../../lib/components/i18n/context';
+import { MESSAGES, TestComponent } from './test-component';
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  warnOnce: jest.fn(),
+}));
+
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
+describe('with custom "lang" on <html>', () => {
+  afterEach(() => {
+    document.documentElement.lang = '';
+  });
+
+  it('detects locale from the html tag', () => {
+    document.documentElement.lang = 'es';
+
+    const spanishMessages: I18nProviderProps.Messages = {
+      [namespace]: {
+        es: {
+          'test-component': {
+            topLevelString: 'Custom Spanish string',
+          },
+        },
+      },
+    };
+
+    const { container } = render(
+      <I18nProvider messages={[MESSAGES, spanishMessages]}>
+        <TestComponent />
+      </I18nProvider>
+    );
+
+    expect(container.querySelector('#top-level-string')).toHaveTextContent('Custom Spanish string');
+    // Shouldn't default to English for non-existent strings.
+    expect(container.querySelector('#nested-string')).toHaveTextContent('');
+  });
+});
+
+it('provides top-level and dot-notation values for static strings', () => {
+  const { container } = render(
+    <I18nProvider messages={[MESSAGES]} locale="en">
+      <TestComponent />
+    </I18nProvider>
+  );
+
+  expect(container.querySelector('#top-level-string')).toHaveTextContent('top level string');
+  expect(container.querySelector('#nested-string')).toHaveTextContent('nested string');
+});
+
+it('falls back to "en" if no locale is provided', () => {
+  const { container } = render(
+    <I18nProvider messages={[MESSAGES]}>
+      <TestComponent />
+    </I18nProvider>
+  );
+
+  expect(container.querySelector('#top-level-string')).toHaveTextContent('top level string');
+  expect(container.querySelector('#nested-string')).toHaveTextContent('nested string');
+});
+
+it('falls back to a less specific language tag if a string is not provided for a language', () => {
+  const britishEnglishMessages: I18nProviderProps.Messages = {
+    [namespace]: {
+      'en-GB': {
+        'test-component': {
+          topLevelString: 'Custom string - colour',
+        },
+      },
+    },
+  };
+
+  const { container } = render(
+    <I18nProvider messages={[MESSAGES, britishEnglishMessages]} locale="en-GB">
+      <TestComponent />
+    </I18nProvider>
+  );
+
+  expect(container.querySelector('#top-level-string')).toHaveTextContent('Custom string - colour');
+  expect(container.querySelector('#nested-string')).toHaveTextContent('nested string');
+});
+
+it('provides top-level and dot-notation values for i18n functions', () => {
+  const { container } = render(
+    <I18nProvider messages={[MESSAGES]} locale="en">
+      <TestComponent />
+    </I18nProvider>
+  );
+
+  expect(container.querySelector('#top-level-function')).toHaveTextContent('top level function');
+  expect(container.querySelector('#nested-function')).toHaveTextContent('nested function');
+});
+
+it("doesn't override existing strings", () => {
+  const { container } = render(
+    <I18nProvider messages={[MESSAGES]} locale="en">
+      <TestComponent topLevelString="My custom string" nested={{ nestedString: 'My custom string' }} />
+    </I18nProvider>
+  );
+
+  expect(container.querySelector('#top-level-string')).toHaveTextContent('My custom string');
+  expect(container.querySelector('#nested-string')).toHaveTextContent('My custom string');
+  expect(container.querySelector('#nested-function')).toHaveTextContent('nested function');
+});
+
+it('merges provided message objects in order', () => {
+  const messageOverride: I18nProviderProps.Messages = {
+    [namespace]: {
+      en: {
+        'test-component': {
+          topLevelString: 'My custom string',
+        },
+      },
+    },
+  };
+
+  const { container } = render(
+    <I18nProvider messages={[MESSAGES, messageOverride]} locale="en">
+      <TestComponent />
+    </I18nProvider>
+  );
+
+  expect(container.querySelector('#top-level-string')).toHaveTextContent('My custom string');
+});
+
+it('allows nesting providers', () => {
+  const messageOverride: I18nProviderProps.Messages = {
+    [namespace]: {
+      en: {
+        'test-component': {
+          topLevelString: 'My custom string',
+        },
+      },
+    },
+  };
+
+  const { container } = render(
+    <I18nProvider messages={[MESSAGES]} locale="en">
+      <I18nProvider messages={[messageOverride]} locale="en">
+        <TestComponent />
+      </I18nProvider>
+    </I18nProvider>
+  );
+
+  expect(container.querySelector('#top-level-string')).toHaveTextContent('My custom string');
+  expect(container.querySelector('#nested-string')).toHaveTextContent('nested string');
+});
+
+it('initializes an IntlMessageFormat instance once per message per render', () => {
+  const constructorSpy = jest.spyOn(IntlMessageFormat, 'default');
+  const { rerender } = render(
+    <I18nProvider messages={[MESSAGES]} locale="en">
+      {range(100).map(i => (
+        <TestComponent key={i} />
+      ))}
+    </I18nProvider>
+  );
+
+  // TestComponent uses four different strings
+  expect(constructorSpy).toHaveBeenCalledTimes(4);
+
+  // Rerendering will reset the internal cache.
+  rerender(
+    <I18nProvider messages={[MESSAGES]} locale="en">
+      {range(100).map(i => (
+        <TestComponent key={i} />
+      ))}
+    </I18nProvider>
+  );
+  expect(constructorSpy).toHaveBeenCalledTimes(8);
+});
+
+describe('resilience against malformed messages', () => {
+  // AWSUI-62316: a message with a stale variable contract used to crash the whole page.
+
+  it('renders the component tree when a message references variables the component does not provide', () => {
+    const brokenMessages: I18nProviderProps.Messages = {
+      [namespace]: {
+        en: {
+          'test-component': {
+            topLevelFunction: '{operator, select, equals {equals} other {other}} label',
+          },
+        },
+      },
+    };
+
+    const { container } = render(
+      <I18nProvider messages={[brokenMessages]} locale="en">
+        <TestComponent />
+      </I18nProvider>
+    );
+
+    // Broken message degrades to empty string; the rest of the tree still renders.
+    expect(container.querySelector('#top-level-function')).toHaveTextContent('');
+    expect(container.querySelector('#top-level-string')).toBeInTheDocument();
+    expect(warnOnce).toHaveBeenCalledWith('I18nProvider', expect.stringContaining('Failed to format message'));
+  });
+
+  it('renders the component tree when a message has invalid ICU syntax', () => {
+    const brokenMessages: I18nProviderProps.Messages = {
+      [namespace]: {
+        en: {
+          'test-component': {
+            topLevelString: 'Unclosed {argument',
+          },
+        },
+      },
+    };
+
+    const { container } = render(
+      <I18nProvider messages={[MESSAGES, brokenMessages]} locale="en">
+        <TestComponent />
+      </I18nProvider>
+    );
+
+    // Unparseable message falls back; sibling messages are unaffected.
+    expect(container.querySelector('#top-level-string')).toHaveTextContent('');
+    expect(container.querySelector('#nested-string')).toHaveTextContent('nested string');
+  });
+
+  it('renders the component tree when a message is malformed and the value is provided via props', () => {
+    const brokenMessages: I18nProviderProps.Messages = {
+      [namespace]: {
+        en: {
+          'test-component': {
+            topLevelString: 'Unclosed {argument',
+          },
+        },
+      },
+    };
+
+    const { container } = render(
+      <I18nProvider messages={[brokenMessages]} locale="en">
+        <TestComponent topLevelString="Provided string" />
+      </I18nProvider>
+    );
+
+    expect(container.querySelector('#top-level-string')).toHaveTextContent('Provided string');
+  });
+});

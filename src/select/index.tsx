@@ -1,0 +1,80 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+'use client';
+import React from 'react';
+
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
+import useBaseComponent from '../internal/hooks/use-base-component';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { getExternalProps } from '../internal/utils/external-props';
+import { GeneratedAnalyticsMetadataSelectComponent } from './analytics-metadata/interfaces';
+import { SelectProps } from './interfaces';
+import InternalSelect, { StyleClassNames } from './internal';
+
+export { SelectProps };
+
+import analyticsSelectors from '../internal/components/button-trigger/analytics-metadata/styles.css.js';
+
+const Select = React.forwardRef(
+  (
+    {
+      options = [],
+      filteringType = 'none',
+      statusType = 'finished',
+      triggerVariant = 'label',
+      renderOption,
+      ...restProps
+    }: SelectProps,
+    ref: React.Ref<SelectProps.Ref>
+  ) => {
+    const baseComponentProps = useBaseComponent('Select', {
+      props: {
+        autoFocus: restProps.autoFocus,
+        expandToViewport: restProps.expandToViewport,
+        filteringType,
+        triggerVariant,
+        virtualScroll: restProps.virtualScroll,
+        readOnly: restProps.readOnly,
+        dropdownRole: restProps.dropdownRole,
+      },
+      metadata: {
+        hasInlineLabel: Boolean(restProps.inlineLabelText),
+        hasDisabledReasons: options.some(option => Boolean(option.disabledReason)),
+        hasDropdownHeader: Boolean(restProps.renderDropdownHeader),
+        hasDropdownFooter: Boolean(restProps.renderDropdownFooter),
+        hasDropdownAriaDescribedby: Boolean(restProps.dropdownAriaDescribedby),
+      },
+    });
+    const externalProps = getExternalProps(restProps);
+
+    const componentAnalyticsMetadata: GeneratedAnalyticsMetadataSelectComponent = {
+      name: 'awsui.Select',
+      label: `.${analyticsSelectors['button-trigger']}`,
+      properties: {
+        disabled: `${!!externalProps.disabled}`,
+        selectedOptionValue: `${externalProps.selectedOption && externalProps.selectedOption.value ? externalProps.selectedOption.value : null}`,
+        // Use label for display if available, fallback to value because that's what gets shown in dropdown when label is not provided
+        selectedOption: `${externalProps.selectedOption?.label ?? externalProps.selectedOption?.value ?? null}`,
+      },
+    };
+
+    return (
+      <InternalSelect
+        renderOption={renderOption}
+        options={options}
+        filteringType={filteringType}
+        statusType={statusType}
+        triggerVariant={triggerVariant}
+        {...externalProps}
+        {...baseComponentProps}
+        styleClassNames={(restProps as { styleClassNames?: StyleClassNames }).styleClassNames}
+        ref={ref}
+        {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
+      />
+    );
+  }
+);
+
+applyDisplayName(Select, 'Select');
+export default Select;

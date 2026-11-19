@@ -1,0 +1,239 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use 'sass:map';
+@use 'sass:math';
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../internal/styles/style-api' as style-api;
+@use './motion';
+
+$border-tokens: style-api.resolve((border-color, border-width), public);
+// A carrier, because the nested `.inner-card` reads the radius.
+$radius-tokens: style-api.resolve((border-radius), carrier);
+@include style-api.register($border-tokens, $radius-tokens);
+@include style-api.docs(
+  'root',
+  map.merge($border-tokens, $radius-tokens),
+  $properties: (background, box-shadow),
+  $descriptions: (
+    tokens: (
+      border-width: 'Drawn over the card edges; takes no space.',
+    )
+  )
+);
+@include style-api.docs('header', $properties: (background, border));
+@include style-api.docs('footer', $properties: (background, border));
+
+// Variant configuration maps — adjust values here for easy customization
+$variant-border-radius: (
+  'embedded': awsui.$border-radius-item-card-embedded,
+  'default': awsui.$border-radius-item-card-default,
+);
+
+$variant-padding-block: (
+  'embedded': awsui.$space-item-card-vertical-embedded,
+  'default': awsui.$space-item-card-vertical-default,
+);
+
+$variant-padding-inline: (
+  'embedded': awsui.$space-item-card-horizontal-embedded,
+  'default': awsui.$space-item-card-horizontal-default,
+);
+
+$action-padding-vertical: awsui.$space-scaled-xxs;
+$action-padding-horizontal: awsui.$space-xxs;
+
+@function border-radius($variant) {
+  $radius: map.get($variant-border-radius, $variant);
+  @return style-api.value($radius-tokens, border-radius, var(#{custom-props.$styleItemCardBorderRadius}, #{$radius}));
+}
+
+@mixin apply-border-radius($variant: 'default') {
+  $radius: border-radius($variant);
+  border-start-start-radius: $radius;
+  border-start-end-radius: $radius;
+  border-end-start-radius: $radius;
+  border-end-end-radius: $radius;
+}
+
+@mixin inherit-start-radius {
+  border-start-start-radius: inherit;
+  border-start-end-radius: inherit;
+}
+
+@mixin inherit-end-radius {
+  border-end-start-radius: inherit;
+  border-end-end-radius: inherit;
+}
+
+@function border-width($fallback) {
+  @return style-api.value(
+    $border-tokens,
+    border-width,
+    var(#{custom-props.$styleItemCardBorderWidthDefault}, #{$fallback})
+  );
+}
+
+@function border-color($fallback) {
+  @return style-api.value(
+    $border-tokens,
+    border-color,
+    var(#{custom-props.$styleItemCardBorderColorDefault}, #{$fallback})
+  );
+}
+
+.header {
+  // Solid on the divider side only, so a consumer border draws only the divider; zero width keeps the default.
+  border-block-end: 0 solid transparent;
+  &-inner {
+    @include styles.font-heading-s;
+  }
+  &:not(:has(+ .body)) {
+    flex: 1;
+  }
+}
+
+.body {
+  flex: 1;
+}
+
+.footer {
+  // Solid on the divider side only, so a consumer border draws only the divider; zero width keeps the default.
+  border-block-start: 0 solid transparent;
+  &:first-child {
+    margin-block-start: auto;
+  }
+}
+
+.root {
+  @include style-api.carriers($radius-tokens);
+  @include styles.styles-reset();
+  box-sizing: border-box;
+  position: relative;
+  background: var(#{custom-props.$styleItemCardBackgroundDefault}, awsui.$color-background-item-card);
+  min-inline-size: 0;
+  box-shadow: var(#{custom-props.$styleItemCardBoxShadowDefault}, awsui.$shadow-item-card);
+
+  &:before {
+    @include styles.base-pseudo-element;
+    @if style-api.enabled() {
+      // Public tokens do not inherit, so `::before` takes them from the root.
+      --awsui-style-border-color: inherit;
+      --awsui-style-border-width: inherit;
+    }
+    box-shadow: none;
+    border-color: transparent;
+    border-block: solid border-width(awsui.$border-width-item-card) border-color(awsui.$color-border-item-card);
+    border-inline: solid border-width(awsui.$border-width-item-card) border-color(awsui.$color-border-item-card);
+  }
+
+  &::after {
+    @include styles.base-pseudo-element;
+  }
+
+  &:not(.refresh)::before {
+    border-block-start: solid border-width(awsui.$border-container-top-width)
+      border-color(awsui.$color-border-container-top);
+  }
+
+  &.highlighted {
+    background: awsui.$color-background-item-selected;
+
+    &:before {
+      border-block: solid style-api.value($border-tokens, border-width, awsui.$border-width-card-selected)
+        style-api.value($border-tokens, border-color, awsui.$color-border-item-card-highlighted);
+      border-inline: solid style-api.value($border-tokens, border-width, awsui.$border-width-card-selected)
+        style-api.value($border-tokens, border-color, awsui.$color-border-item-card-highlighted);
+    }
+  }
+
+  &.variant-embedded,
+  &.variant-default {
+    > .inner-card {
+      display: flex;
+      flex-direction: column;
+      block-size: 100%;
+      inline-size: 100%;
+
+      > .header + .body,
+      > .header + .footer,
+      > .body + .footer {
+        &:not(.no-padding) {
+          padding-block-start: awsui.$space-xxs;
+        }
+      }
+
+      > .header,
+      > .body {
+        &:not(.no-padding):has(+ .body, + .footer) {
+          padding-block-end: awsui.$space-xxs;
+        }
+      }
+    }
+  }
+
+  // Generate variant styles from the configuration maps
+  @each $variant in ('embedded', 'default') {
+    &.variant-#{$variant} {
+      &,
+      &:before,
+      &::after,
+      > .inner-card {
+        @include apply-border-radius($variant);
+      }
+
+      // So a header or footer background stays inside the rounded card.
+      > .inner-card > .header {
+        @include inherit-start-radius;
+        &:last-child {
+          @include inherit-end-radius;
+        }
+      }
+      > .inner-card > .footer {
+        @include inherit-end-radius;
+        &:first-child {
+          @include inherit-start-radius;
+        }
+      }
+
+      $padding-block: map.get($variant-padding-block, $variant);
+      $padding-inline: map.get($variant-padding-inline, $variant);
+
+      > .inner-card > .header,
+      > .inner-card > .body,
+      > .inner-card > .footer {
+        &:not(.no-padding) {
+          padding-block: $padding-block;
+          padding-inline-start: $padding-inline;
+          &:not(.with-actions) {
+            padding-inline-end: $padding-inline;
+          }
+          &.with-actions {
+            padding-inline-end: calc($padding-inline - $action-padding-horizontal);
+          }
+        }
+      }
+
+      > .inner-card > .header:not(.no-padding).with-actions {
+        padding-block: calc($padding-block - $action-padding-vertical);
+        &:has(+ .body, + .footer) {
+          padding-block-end: awsui.$space-xxs;
+        }
+      }
+    }
+  }
+}
+
+.fit-height {
+  block-size: 100%;
+}
+
+.description {
+  color: awsui.$color-text-heading-secondary;
+  @include styles.font-body-s;
+}

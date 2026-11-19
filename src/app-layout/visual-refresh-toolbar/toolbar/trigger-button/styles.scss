@@ -1,0 +1,86 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../../../internal/styles' as styles;
+@use '../../../../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+.trigger {
+  // reset native <button> tag styles
+  all: initial;
+
+  cursor: pointer;
+  color: awsui.$color-text-interactive-default;
+  text-align: center;
+
+  &.custom {
+    display: flex;
+    block-size: 100%;
+    inline-size: 100%;
+    box-sizing: border-box;
+  }
+
+  &:focus {
+    // custom outline attached on the wrapping element
+    outline: none;
+  }
+
+  &.default {
+    // `all: initial` makes the button inline with UA-default font metrics, so the icon would sit on a
+    // font-dependent line box and end up above center. Flex centering removes that dependency.
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-start-start-radius: awsui.$border-radius-button;
+    border-start-end-radius: awsui.$border-radius-button;
+    border-end-start-radius: awsui.$border-radius-button;
+    border-end-end-radius: awsui.$border-radius-button;
+    block-size: 30px;
+    inline-size: 30px;
+
+    &:hover {
+      background: awsui.$color-background-input-disabled;
+      color: awsui.$color-text-interactive-hover;
+    }
+
+    &:active {
+      background: awsui.$color-background-control-disabled;
+      color: awsui.$color-text-interactive-hover;
+    }
+
+    &.selected {
+      background: awsui.$color-background-layout-toggle-selected-default;
+      color: awsui.$color-text-layout-toggle-selected;
+
+      &:hover {
+        background: awsui.$color-background-layout-toggle-selected-hover;
+      }
+      &:active {
+        background: awsui.$color-background-layout-toggle-selected-active;
+      }
+    }
+  }
+}
+
+.trigger-wrapper {
+  position: relative;
+  &:has(:focus-visible) {
+    @include styles.focus-highlight(3px);
+  }
+}
+
+.dot {
+  position: absolute;
+  inline-size: 8px;
+  block-size: 8px;
+  border-start-start-radius: 8px;
+  border-start-end-radius: 8px;
+  border-end-start-radius: 8px;
+  border-end-end-radius: 8px;
+  background-color: awsui.$color-background-badge-icon;
+  inset-block-start: -1px;
+  inset-inline-end: -1px;
+  outline: solid 2px awsui.$color-background-layout-toolbar;
+}

@@ -1,0 +1,416 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { Ref, useRef } from 'react';
+import clsx from 'clsx';
+
+import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import {
+  copyAnalyticsMetadataAttribute,
+  getAnalyticsMetadataAttribute,
+} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
+import InternalButton from '../button/internal';
+import { useInternalI18n } from '../i18n/context';
+import { IconProps } from '../icon/interfaces';
+import InternalIcon from '../icon/internal';
+import { getBaseProps } from '../internal/base-component';
+import { ResetGroupedControlContext, useGroupedControlContext } from '../internal/context/control-group-context';
+import { useFormFieldContext } from '../internal/context/form-field-context';
+import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
+import { warnOnUnsupportedGroupedControlProps } from '../internal/grouped-control/dev-warnings';
+import { getGroupedControlClassNames } from '../internal/grouped-control/grouped-control-styles';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
+import { isDevelopment } from '../internal/is-development';
+import WithNativeAttributes, { SkipWarnings } from '../internal/utils/with-native-attributes';
+import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
+import { FormFieldValidationControlProps } from '../types/form-field';
+import {
+  GeneratedAnalyticsMetadataInputClearInput,
+  GeneratedAnalyticsMetadataInputComponent,
+} from './analytics-metadata/interfaces';
+import { BaseChangeDetail, BaseInputProps, InputAutoCorrect, InputProps } from './interfaces';
+import { getInputStyles } from './styles';
+import { convertAutoComplete, useSearchProps } from './utils';
+
+import styles from './styles.css.js';
+
+export interface InternalInputProps
+  extends BaseComponentProps,
+    BaseInputProps,
+    Omit<InputProps, 'type'>,
+    InputAutoCorrect,
+    FormFieldValidationControlProps,
+    InternalBaseComponentProps {
+  type?: InputProps['type'] | 'visualSearch';
+  __startIcon?: IconProps['name'];
+  __onStartIconClick?: () => void;
+
+  __endIcon?: IconProps['name'];
+  __onEndIconClick?: () => void;
+
+  __noBorderRadius?: boolean;
+
+  // Rendered inside the field, between the start icon and the native input.
+  __inlineContent?: React.ReactNode;
+
+  __onDelayedInput?: NonCancelableEventHandler<BaseChangeDetail>;
+  __onBlurWithDetail?: NonCancelableEventHandler<{ relatedTarget: Node | null }>;
+
+  __inheritFormFieldProps?: boolean;
+  __injectAnalyticsComponentMetadata?: boolean;
+  __skipNativeAttributesWarnings?: SkipWarnings;
+  __fullWidth?: boolean;
+  styleClassNames?: StyleClassNames;
+}
+
+// Style API v2
+export interface StyleClassNames {
+  root?: string;
+  input?: string;
+  inlineLabel?: string;
+  searchIcon?: string;
+  clearButton?: string;
+}
+
+function InternalInput(
+  {
+    type = 'text',
+    step,
+    inputMode,
+    autoComplete = true,
+    ariaLabel,
+    clearAriaLabel: clearAriaLabelOverride,
+    name,
+    value,
+    placeholder,
+    autoFocus,
+    disabled,
+    readOnly,
+    disableBrowserAutocorrect,
+    spellcheck,
+    __noBorderRadius,
+    __inlineContent,
+
+    __startIcon,
+    __onStartIconClick,
+
+    ariaRequired,
+
+    __endIcon,
+    __onEndIconClick,
+
+    onKeyDown,
+    onKeyUp,
+    onChange,
+    __onDelayedInput,
+    __onBlurWithDetail,
+    onBlur,
+    onFocus,
+    nativeInputAttributes,
+    __internalRootRef,
+    __inheritFormFieldProps,
+    __injectAnalyticsComponentMetadata,
+    __skipNativeAttributesWarnings,
+    __fullWidth,
+    style,
+    styleClassNames,
+    prefix,
+    suffix,
+    inlineLabelText,
+    ...rest
+  }: InternalInputProps,
+  ref: Ref<HTMLInputElement>
+) {
+  const baseProps = getBaseProps(rest);
+  const groupedControlProps = useGroupedControlContext();
+  const i18n = useInternalI18n('input');
+  const fireDelayedInput = useDebounceCallback((value: string) => fireNonCancelableEvent(__onDelayedInput, { value }));
+
+  const handleChange = (value: string) => {
+    fireDelayedInput(value);
+    fireNonCancelableEvent(onChange, { value });
+  };
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const searchProps = useSearchProps(type, disabled, readOnly, value, inputRef, handleChange);
+  __startIcon = __startIcon ?? searchProps.__startIcon;
+  __endIcon = __endIcon ?? searchProps.__endIcon;
+  __onEndIconClick = __onEndIconClick ?? searchProps.__onEndIconClick;
+
+  // Search inputs use built-in search and clear icons that would overlap adornments.
+  const isSearch = type === 'search' || type === 'visualSearch';
+  if (isDevelopment) {
+    if (isSearch && (prefix !== undefined || suffix !== undefined)) {
+      warnOnce('Input', 'prefix and suffix are ignored when type is search.');
+    }
+  }
+  if (isSearch) {
+    prefix = undefined;
+    suffix = undefined;
+  }
+
+  const formFieldContext = useFormFieldContext(rest);
+  const {
+    ariaLabelledby,
+    ariaDescribedby,
+    controlId: controlIdFromFormFieldContext,
+    invalid,
+    warning,
+  } = __inheritFormFieldProps ? formFieldContext : rest;
+
+  // When an inline label is rendered, the native input must have an id so the
+  // label's htmlFor can reference it. Fall back to a generated id if none was provided.
+  const generatedControlId = useUniqueId('input');
+  const controlId = controlIdFromFormFieldContext ?? (inlineLabelText ? generatedControlId : undefined);
+
+  warnOnUnsupportedGroupedControlProps({
+    isGrouped: !!groupedControlProps.position,
+    componentName: 'Input',
+    invalid: invalid,
+    warning: warning,
+    readOnly,
+  });
+
+  const hasPrefix = !!prefix;
+  const hasSuffix = !!suffix;
+  const hasAdornments = hasPrefix || hasSuffix;
+
+  const groupedControlClasses = getGroupedControlClassNames(styles, groupedControlProps);
+
+  // The field box owns the border, the native input owns the text padding. Custom properties
+  // are set on both so each element resolves its own state tokens.
+  const inputStyles = getInputStyles(style);
+  const nativeInputStyles = inputStyles && { ...inputStyles, borderRadius: undefined, borderWidth: undefined };
+  const fieldStyles = inputStyles && { ...inputStyles, paddingBlock: undefined, paddingInline: undefined };
+
+  const attributes: React.InputHTMLAttributes<HTMLInputElement> = {
+    'aria-label': ariaLabel,
+    // aria-labelledby has precedence over aria-label in accessible name calculation.
+    // When aria-label is provided for Input, it should override aria-labelledBy from form-field context.
+    // If both aria-label and aria-labelledby come from Input props, aria-labelledby will be used in accessible name
+    'aria-labelledby': ariaLabel && !rest.ariaLabelledby ? undefined : ariaLabelledby,
+    'aria-describedby': ariaDescribedby,
+    name,
+    placeholder,
+    autoFocus,
+    id: controlId,
+    className: clsx(
+      styleClassNames?.input,
+      styles.input,
+      type && styles[`input-type-${type}`],
+      __endIcon && styles['input-has-icon-end'],
+      __startIcon && styles['input-has-icon-start'],
+      {
+        [styles['input-readonly']]: readOnly,
+        // With adornments the status color goes to the prefix/suffix only and the value keeps the default text color.
+        [styles['input-invalid']]: invalid && !hasAdornments,
+        [styles['input-warning']]: warning && !invalid && !hasAdornments,
+      }
+    ),
+    autoComplete: convertAutoComplete(autoComplete),
+    disabled,
+    readOnly,
+    type,
+    step,
+    inputMode,
+    spellCheck: spellcheck,
+    onKeyDown: onKeyDown && (event => fireKeyboardEvent(onKeyDown, event)),
+    onKeyUp: onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
+    // We set a default value on the component in order to force it into the controlled mode.
+    value: value ?? '',
+    onChange: onChange && (event => handleChange(event.target.value)),
+    onBlur: e => {
+      fireNonCancelableEvent(onBlur);
+      fireNonCancelableEvent(__onBlurWithDetail, { relatedTarget: e.relatedTarget });
+    },
+    onFocus: onFocus && (() => fireNonCancelableEvent(onFocus)),
+  };
+
+  if (type === 'number') {
+    // Chrome and Safari have a weird built-in behavior of letting focused
+    // number inputs be controlled by scrolling on them. However, they don't
+    // lock the browser's scroll, so it's very easy to accidentally increment
+    // the input while scrolling down the page.
+    attributes.onWheel = event => event.currentTarget.blur();
+  }
+
+  if (disableBrowserAutocorrect) {
+    attributes.autoCorrect = 'off';
+    attributes.autoCapitalize = 'off';
+  }
+
+  // ensure aria properties are string literal "true"
+  if (ariaRequired) {
+    attributes['aria-required'] = 'true';
+  }
+  if (invalid) {
+    attributes['aria-invalid'] = 'true';
+  }
+
+  const mergedRef = useMergeRefs(ref, inputRef);
+
+  // type = "visualSearch" renders a type="text' input
+  if (attributes.type === 'visualSearch') {
+    attributes.type = 'text';
+  }
+
+  const componentAnalyticsMetadata: GeneratedAnalyticsMetadataInputComponent = {
+    name: 'awsui.Input',
+    label: 'input',
+    properties: {
+      value: value || '',
+    },
+  };
+
+  const mainInput = (
+    <WithNativeAttributes
+      {...attributes}
+      tag="input"
+      componentName="Input"
+      nativeAttributes={nativeInputAttributes}
+      skipWarnings={__skipNativeAttributesWarnings}
+      ref={mergedRef}
+      style={nativeInputStyles}
+    />
+  );
+
+  const renderedId = nativeInputAttributes?.id ?? controlId;
+
+  const endIcon = __endIcon ? (
+    <span
+      className={styles['input-icon-end']}
+      {...(__endIcon === 'close'
+        ? getAnalyticsMetadataAttribute({
+            action: 'clearInput',
+          } as Partial<GeneratedAnalyticsMetadataInputClearInput>)
+        : {})}
+    >
+      <InternalButton
+        // Used for test utils
+        className={styles['input-button-right']}
+        variant="inline-icon-pointer-target"
+        formAction="none"
+        iconName={__endIcon}
+        onClick={__onEndIconClick}
+        ariaLabel={i18n('clearAriaLabel', clearAriaLabelOverride)}
+        disabled={disabled}
+        styleClassNames={{ root: styleClassNames?.clearButton }}
+      />
+    </span>
+  ) : null;
+
+  // Root-level props (base component props, root class/ref, and analytics metadata)
+  // are applied to the outermost rendered element so the component root always
+  // contains the whole component, including the inline label when present.
+  const rootProps = {
+    ...baseProps,
+    className: baseProps.className,
+    ref: __internalRootRef,
+    ...(__injectAnalyticsComponentMetadata
+      ? getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })
+      : copyAnalyticsMetadataAttribute(rest)),
+  };
+
+  const renderInputField = (
+    extraProps: React.HTMLAttributes<HTMLDivElement> & { ref?: React.Ref<HTMLDivElement> } = {}
+  ) => (
+    <div
+      {...extraProps}
+      className={clsx(extraProps.className, styles['input-container'])}
+      dir={type === 'email' ? 'ltr' : undefined}
+    >
+      {__startIcon && (
+        <span
+          onClick={__onStartIconClick}
+          className={clsx(
+            styleClassNames?.searchIcon,
+            styles['input-icon-start'],
+            disabled && styles['input-icon-start-disabled']
+          )}
+        >
+          <InternalIcon name={__startIcon} />
+        </span>
+      )}
+      <div
+        className={clsx(
+          styleClassNames?.root,
+          styles['input-field'],
+          invalid && styles['input-field-invalid'],
+          warning && !invalid && styles['input-field-warning'],
+          disabled && styles['input-field-disabled'],
+          readOnly && !disabled && styles['input-field-readonly'],
+          __noBorderRadius && styles['input-field-no-border-radius'],
+          !!__inlineContent && styles['input-field-has-inline-content'],
+          groupedControlClasses
+        )}
+        aria-disabled={disabled || undefined}
+        style={fieldStyles}
+      >
+        {hasPrefix && (
+          <>
+            <span className={styles['input-prefix']} aria-hidden="true">
+              <span className={styles['input-adornment-content']}>
+                <ResetGroupedControlContext>{prefix}</ResetGroupedControlContext>
+              </span>
+            </span>
+            <span className={styles['input-adornment-divider']} />
+          </>
+        )}
+        {__inlineContent && (
+          <div className={styles['input-inline-content']}>
+            <ResetGroupedControlContext>{__inlineContent}</ResetGroupedControlContext>
+          </div>
+        )}
+        {mainInput}
+        {hasSuffix && (
+          <>
+            <span className={styles['input-adornment-divider']} />
+            <span className={styles['input-suffix']} aria-hidden="true">
+              <span className={styles['input-adornment-content']}>
+                <ResetGroupedControlContext>{suffix}</ResetGroupedControlContext>
+              </span>
+            </span>
+          </>
+        )}
+      </div>
+      {endIcon}
+    </div>
+  );
+
+  const inputWithLabel = inlineLabelText ? (
+    <div
+      {...rootProps}
+      className={clsx(
+        rootProps.className,
+        styles['inline-label-wrapper'],
+        __fullWidth && styles['inline-label-wrapper-full-width']
+      )}
+    >
+      <label
+        htmlFor={renderedId}
+        className={clsx(
+          styleClassNames?.inlineLabel,
+          styles['inline-label'],
+          disabled && styles['inline-label-disabled']
+        )}
+      >
+        {inlineLabelText}
+      </label>
+      <div
+        className={clsx(
+          styles['inline-label-trigger-wrapper'],
+          __fullWidth && styles['inline-label-trigger-wrapper-full-width']
+        )}
+      >
+        {renderInputField()}
+      </div>
+    </div>
+  ) : (
+    renderInputField(rootProps)
+  );
+  return inputWithLabel;
+}
+
+export default React.forwardRef(InternalInput);

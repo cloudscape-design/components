@@ -1,0 +1,419 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
+import { useOpenState } from '../../internal/components/options-list/utils/use-open-state';
+import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
+import { KeyCode } from '../../internal/keycode';
+import { isElement } from '../../internal/utils/dom';
+import { isKeyboardInteraction } from '../../internal/utils/focus-visible';
+import { CancelableEventHandler, NonCancelableCustomEvent } from '../../types/events';
+import { ButtonDropdownProps, ButtonDropdownSettings, GroupToggle, HighlightProps, ItemActivate } from '../interfaces';
+import { RECOVERY_FOOTER_ATTRIBUTE } from '../status-footer';
+import { filterItems } from './filter-items';
+import useHighlightedMenu from './use-highlighted-menu';
+import { getItemTarget, isCheckboxItem, isGroupExpandable, isItemGroup, isLinkItem } from './utils';
+
+type DropdownFocusLeaveEvent = NonCancelableCustomEvent<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
+
+interface UseButtonDropdownOptions extends ButtonDropdownSettings {
+  items: ButtonDropdownProps.Items;
+  onItemClick?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
+  onItemFollow?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
+  onReturnFocus: () => void;
+  // Returns whether the given element is (or is inside) the dropdown trigger.
+  isTriggerElement: (element: Element) => boolean;
+  expandToViewport?: boolean;
+  filteringType?: ButtonDropdownProps.FilteringType;
+  fireLoadItems?: (filteringText: string) => void;
+  /**
+   * Called whenever an expandable group gets expanded, regardless of whether it was
+   * expanded with the pointer or with the keyboard.
+   */
+  onGroupExpand?: (group: ButtonDropdownProps.ItemGroup) => void;
+  /**
+   * Returns whether a recovery button is currently rendered inside the dropdown.
+   * While it is, Tab moves focus to it instead of closing the dropdown.
+   */
+  hasRecoveryButton?: () => boolean;
+  /**
+   * Returns whether the root list currently renders a recovery button. It comes after any group
+   * recovery button in the focus order, so Tab from a group recovery button must not close the dropdown.
+   */
+  hasRootRecoveryButton?: () => boolean;
+  /**
+   * Called on Enter in filtering mode while the highlight points into an expanded group
+   * that has no items yet, so the highlight sits on the group's status.
+   */
+  onPendingHighlightActivate?: () => void;
+}
+
+interface UseButtonDropdownApi extends HighlightProps {
+  isOpen: boolean;
+  onKeyDown: (event: React.KeyboardEvent) => void;
+  onKeyUp: (event: React.KeyboardEvent) => void;
+  onItemActivate: ItemActivate;
+  onGroupToggle: GroupToggle;
+  onDropdownFocusLeave: (event: DropdownFocusLeaveEvent) => void;
+  onDropdownBlur: () => void;
+  toggleDropdown: (options?: { moveHighlightOnOpen?: boolean }) => void;
+  closeDropdown: () => void;
+  setIsUsingMouse: (isUsingMouse: boolean) => void;
+  filteringValue: string;
+  setFilteringValue: (value: string) => void;
+  filteredItems: ButtonDropdownProps.Items;
+  isExpandable: (item: ButtonDropdownProps.ItemOrGroup) => boolean;
+  isHighlightPending: boolean;
+  expandedGroup: ButtonDropdownProps.ItemGroup | null;
+  onKeyDownCapture: (event: React.KeyboardEvent) => void;
+}
+
+export function useButtonDropdown({
+  items,
+  onItemClick,
+  onItemFollow,
+  onReturnFocus,
+  isTriggerElement,
+  hasExpandableGroups,
+  isInRestrictedView = false,
+  expandToViewport = false,
+  filteringType,
+  fireLoadItems,
+  onGroupExpand,
+  hasRecoveryButton,
+  hasRootRecoveryButton,
+  onPendingHighlightActivate,
+}: UseButtonDropdownOptions): UseButtonDropdownApi {
+  const [filteringValue, setFilteringValue] = useState('');
+  const hasFiltering = filteringType === 'auto' || filteringType === 'manual';
+
+  const filteredItems = useMemo(
+    () => (filteringType === 'auto' && filteringValue ? filterItems(items, filteringValue) : items),
+    [filteringType, filteringValue, items]
+  );
+
+  // an active filter flattens every group; otherwise a group's own `expandable` flag wins, falling
+  // back to the dropdown-level `expandableGroups` default
+  const isExpandable = useCallback(
+    (item: ButtonDropdownProps.ItemOrGroup) => !filteringValue && isGroupExpandable(item, hasExpandableGroups),
+    [filteringValue, hasExpandableGroups]
+  );
+
+  const {
+    targetItem,
+    isHighlightPending,
+    expandedGroup,
+    isHighlighted,
+    isKeyboardHighlight,
+    isExpanded,
+    highlightItem,
+    moveHighlight,
+    expandGroup,
+    collapseGroup,
+    reset,
+    setIsUsingMouse,
+  } = useHighlightedMenu({
+    items: filteredItems,
+    isExpandable,
+    isInRestrictedView,
+  });
+
+  // If the filtering input changes, the options list also changes,
+  // so the highlight isn't valid anymore.
+  const prevFilteringValue = useRef(filteringValue);
+  useEffect(() => {
+    if (prevFilteringValue.current !== filteringValue) {
+      prevFilteringValue.current = filteringValue;
+      reset();
+    }
+  }, [filteringValue, reset]);
+
+  const {
+    isOpen,
+    closeDropdown: closeDropdownState,
+    ...openStateProps
+  } = useOpenState({
+    onOpen: () => fireLoadItems?.(''),
+    onClose: reset,
+  });
+
+  const closeDropdown = () => {
+    setFilteringValue('');
+    closeDropdownState();
+  };
+
+  const toggleDropdown = (options: { moveHighlightOnOpen?: boolean } = {}) => {
+    const moveHighlightOnOpen = options.moveHighlightOnOpen ?? true;
+    if (!isOpen && moveHighlightOnOpen && !hasFiltering) {
+      moveHighlight(1);
+    }
+    if (isOpen) {
+      setFilteringValue('');
+    }
+    openStateProps.toggleDropdown();
+  };
+
+  const onDropdownFocusLeave = (event: DropdownFocusLeaveEvent) => {
+    if (hasFiltering && isOpen) {
+      const { relatedTarget } = event.detail;
+      // When focus moves from the filter input to the trigger via a mouse click, the trigger's
+      // own click handler already closes the dropdown.
+      const clickedTrigger =
+        !!relatedTarget &&
+        isElement(relatedTarget) &&
+        isTriggerElement(relatedTarget) &&
+        !isKeyboardInteraction(relatedTarget);
+      if (clickedTrigger) {
+        return;
+      }
+      if (expandToViewport) {
+        // When expanded to viewport the focus can't move naturally to the next element.
+        // Returning the focus to the trigger instead.
+        onReturnFocus();
+      }
+      closeDropdown();
+    }
+  };
+
+  // Close when focus leaves the entire widget (trigger and menu), for example when focus
+  // moves to an app layout drawer or an element in a different frame. The filtering variant
+  // keeps focus inside the dropdown content and closes via onDropdownFocusLeave instead.
+  const onDropdownBlur = () => {
+    if (isOpen && !hasFiltering) {
+      closeDropdown();
+    }
+  };
+
+  // Single entry point for expanding a group so that pointer and keyboard expansion
+  // both notify the consumer (used to load the group's items asynchronously).
+  const expandGroupAndNotify = (group: ButtonDropdownProps.ItemGroup) => {
+    expandGroup(group);
+    onGroupExpand?.(group);
+  };
+
+  const onGroupToggle: GroupToggle = item => (!isExpanded(item) ? expandGroupAndNotify(item) : collapseGroup());
+
+  const onItemActivate: ItemActivate = (item, event) => {
+    const isCheckbox = isCheckboxItem(item);
+    const isLink = isLinkItem(item);
+    const details = {
+      id: item.id || 'undefined',
+      href: isLink ? item.href : undefined,
+      external: isLink ? item.external : undefined,
+      target: isLink ? getItemTarget(item) : undefined,
+      checked: isCheckbox ? !item.checked : undefined,
+    };
+    onReturnFocus();
+    if (onItemFollow && isLink && isPlainLeftClick(event)) {
+      fireCancelableEvent(onItemFollow, details, event);
+    }
+    if (onItemClick) {
+      fireCancelableEvent(onItemClick, details, event);
+    }
+    closeDropdown();
+  };
+
+  const openAndSelectFirst = (event: React.KeyboardEvent) => {
+    toggleDropdown();
+    event.preventDefault();
+  };
+
+  const actOnParentDropdown = (event: React.KeyboardEvent) => {
+    // The highlight points into an expanded group whose items haven't loaded yet. There is
+    // nothing to activate, and the dropdown must stay open so the items can arrive.
+    if (isHighlightPending) {
+      return;
+    }
+    // if there is no highlighted item we act on the trigger by opening or closing dropdown
+    if (!targetItem) {
+      if (isOpen && !isInRestrictedView) {
+        toggleDropdown();
+      } else {
+        openAndSelectFirst(event);
+      }
+    } else {
+      if (isItemGroup(targetItem)) {
+        onGroupToggle(targetItem, event);
+      } else {
+        onItemActivate(targetItem, event);
+      }
+    }
+  };
+
+  const activate = (event: React.KeyboardEvent, isEnter?: boolean) => {
+    setIsUsingMouse(false);
+
+    // if item is a link we rely on default behavior of an anchor, no need to prevent
+    if (targetItem && isLinkItem(targetItem) && isEnter) {
+      return;
+    }
+
+    event.preventDefault();
+    actOnParentDropdown(event);
+  };
+
+  // A recovery button activates on Space keydown and then moves focus out of the status footer,
+  // so the matching keyup reaches onKeyUp. It must not also activate the highlighted item. The
+  // flag is cleared by the next keydown that reaches this handler.
+  const ignoreNextSpaceKeyUpRef = useRef(false);
+  const isRecoveryTarget = (event: React.KeyboardEvent) =>
+    isElement(event.target) && !!event.target.closest(`[${RECOVERY_FOOTER_ATTRIBUTE}]`);
+  const isGroupRecoveryTarget = (event: React.KeyboardEvent) =>
+    isElement(event.target) && !!event.target.closest(`[${RECOVERY_FOOTER_ATTRIBUTE}="group"]`);
+
+  const onKeyDownCapture = (event: React.KeyboardEvent) => {
+    if (event.keyCode === KeyCode.space && isRecoveryTarget(event)) {
+      ignoreNextSpaceKeyUpRef.current = true;
+    }
+  };
+
+  const onKeyDown = (event: React.KeyboardEvent) => {
+    setIsUsingMouse(false);
+    ignoreNextSpaceKeyUpRef.current = false;
+    switch (event.keyCode) {
+      case KeyCode.down: {
+        if (!isOpen) {
+          toggleDropdown();
+          if (!hasFiltering) {
+            moveHighlight(1, true);
+          }
+        } else {
+          moveHighlight(1);
+        }
+        event.preventDefault();
+        break;
+      }
+      case KeyCode.up: {
+        if (!isOpen) {
+          toggleDropdown();
+          if (!hasFiltering) {
+            moveHighlight(-1, true);
+          }
+        } else {
+          moveHighlight(-1);
+        }
+        event.preventDefault();
+        break;
+      }
+      case KeyCode.space: {
+        // Prevent scrolling the list of items and highlighting the trigger when filtering
+        // isn't active. Hitting space when filtering is active should just type a space
+        // character into the input, or activate the clear button.
+        if (!hasFiltering && !isOpen) {
+          event.preventDefault();
+        }
+        break;
+      }
+      case KeyCode.enter: {
+        // While filtering, pressing Enter without a highlighted item should not select
+        // any item or close the dropdown.
+        if (isOpen && hasFiltering && !targetItem) {
+          // The highlight sits on an expanded group's status (loading or error) instead of an
+          // item. Enter acts on that status, for example to retry a failed group.
+          if (isHighlightPending) {
+            onPendingHighlightActivate?.();
+            event.preventDefault();
+          }
+          break;
+        }
+        if (!targetItem?.disabled) {
+          activate(event, true);
+        }
+        break;
+      }
+      case KeyCode.left:
+      case KeyCode.right: {
+        // When filtering is enabled and there's text in the filter input, left/right
+        // arrow keys should move the caret between the characters.
+        if (hasFiltering && filteringValue) {
+          break;
+        }
+        if (targetItem && !targetItem.disabled && isItemGroup(targetItem) && !isExpanded(targetItem)) {
+          expandGroupAndNotify(targetItem);
+        } else {
+          collapseGroup();
+        }
+
+        event.preventDefault();
+        break;
+      }
+      case KeyCode.escape: {
+        onReturnFocus();
+        closeDropdown();
+        event.preventDefault();
+        if (isOpen) {
+          event.stopPropagation();
+        }
+        break;
+      }
+      case KeyCode.tab: {
+        // In filtering mode the dropdown contains multiple focusable elements (the filter
+        // input and its clear button). Tabbing between them must not close the dropdown, so
+        // closing on Tab is handled by onDropdownFocusLeave instead, which only fires once
+        // focus actually leaves the dropdown.
+        if (hasFiltering) {
+          break;
+        }
+        // A recovery button rendered in the status footer must be reachable with Tab. Tab from the
+        // recovery button itself (the last focusable element) leaves the widget: when expanded to
+        // viewport the portalled dropdown would otherwise trap focus, so it is handed back to the
+        // trigger below and the browser moves it on.
+        if (hasRecoveryButton?.() && (event.shiftKey || !isRecoveryTarget(event))) {
+          break;
+        }
+        // Tab from a group recovery button moves focus to the root recovery button if there's one
+        if (isGroupRecoveryTarget(event) && hasRootRecoveryButton?.()) {
+          break;
+        }
+        // When expanded to viewport the focus can't move naturally to the next element.
+        // Returning the focus to the trigger instead.
+        if (expandToViewport) {
+          onReturnFocus();
+        }
+        closeDropdown();
+        break;
+      }
+    }
+  };
+  const onKeyUp = (event: React.KeyboardEvent) => {
+    // When using a roving tabindex (filtering disabled), we need to handle activating items
+    // with Space separately because there is a bug in Firefox where changing the focus during
+    // a Space keydown event it will trigger unexpected click events on the new element.
+    // See https://bugzilla.mozilla.org/show_bug.cgi?id=1220143
+    if (event.keyCode !== KeyCode.space) {
+      return;
+    }
+    if (ignoreNextSpaceKeyUpRef.current) {
+      ignoreNextSpaceKeyUpRef.current = false;
+      return;
+    }
+    if (!targetItem?.disabled && !hasFiltering) {
+      activate(event);
+    }
+  };
+
+  return {
+    isOpen,
+    targetItem,
+    isHighlighted,
+    isKeyboardHighlight,
+    isExpanded,
+    highlightItem,
+    onKeyDown,
+    onKeyUp,
+    onItemActivate,
+    onGroupToggle,
+    onDropdownFocusLeave,
+    onDropdownBlur,
+    toggleDropdown,
+    closeDropdown,
+    setIsUsingMouse,
+    filteringValue,
+    setFilteringValue,
+    filteredItems,
+    isExpandable,
+    isHighlightPending,
+    expandedGroup,
+    onKeyDownCapture,
+  };
+}

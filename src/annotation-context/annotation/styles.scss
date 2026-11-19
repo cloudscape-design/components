@@ -1,0 +1,91 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/styles' as styles;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
+
+.annotation,
+.next-button,
+.previous-button,
+.finish-button,
+.header,
+.step-counter-content,
+.content {
+  /* used in test-utils */
+}
+
+.description {
+  overflow: hidden;
+  margin-block-start: awsui.$space-xxs;
+}
+
+.actionBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.stepCounter {
+  margin-inline-end: 2 * styles.$base-size;
+}
+
+.divider {
+  border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+}
+
+.hotspot {
+  @include styles.styles-reset;
+  background: transparent;
+  border-block: none;
+  border-inline: none;
+  padding-block: 0;
+  padding-inline: 0;
+  cursor: pointer;
+  scroll-margin: var(#{custom-props.$contentScrollMargin}, 40px 0 0 0);
+  position: relative;
+
+  // These dimensions match the dimensions of the contained SVG icon.
+  inline-size: 16px;
+  block-size: 16px;
+
+  // Extends the clickable area beyond the actual size of the button
+  &:before {
+    content: '';
+    position: absolute;
+    inset: calc(-1 * #{awsui.$space-xxs});
+
+    // By default, elements later in the DOM order have a higher precedence.
+    // This increases the z-index just to cancel out that rule, so that elements
+    // immediately following the button are also overlapped by this click target.
+    z-index: 1;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(2px, awsui.$border-radius-control-circular-focus-ring);
+  }
+
+  > .icon {
+    position: relative;
+    stroke: awsui.$color-text-tutorial-hotspot-default;
+  }
+
+  &:hover {
+    > .icon {
+      stroke: awsui.$color-text-tutorial-hotspot-hover;
+    }
+  }
+  &:active {
+    > .icon {
+      stroke: awsui.$color-text-tutorial-hotspot-default;
+    }
+  }
+}

@@ -1,0 +1,111 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles/tokens' as awsui;
+@use '../../styles' as styles;
+@use '../../../file-token-group/constants' as constants;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+.root {
+  gap: awsui.$space-scaled-xs;
+
+  &.horizontal {
+    display: flex;
+    gap: awsui.$space-xs;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  &.vertical {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.list {
+  display: contents;
+  list-style: none;
+  padding-block: 0;
+  padding-inline: 0;
+  margin-block: 0;
+  margin-inline: 0;
+
+  &.horizontal,
+  &.vertical {
+    display: flex;
+    gap: awsui.$space-xs;
+  }
+  &.horizontal {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  &.vertical {
+    flex-direction: column;
+  }
+  &.grid {
+    display: grid;
+    gap: awsui.$space-xs;
+    grid-template-columns: repeat(auto-fill, constants.$compact-token-width);
+
+    @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
+
+.list-item {
+  // To override v2.1 list styling
+  padding-block: 0;
+  padding-inline: 0;
+  margin-block: 0;
+  margin-inline: 0;
+}
+
+.toggle-container-inline {
+  padding-inline-start: awsui.$space-xs;
+  display: flex;
+  align-items: center;
+}
+
+.toggle {
+  @include styles.styles-reset;
+
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border-block: awsui.$border-width-button solid transparent;
+  border-inline: awsui.$border-width-button solid transparent;
+
+  padding-block: 0;
+  padding-inline: 0;
+
+  // Icon svg has one pixel around it. We need to shift the button one
+  // pixel to the left to vertically align it with the input field
+  margin-inline-start: -1px;
+
+  @include styles.link-default('body-m');
+
+  &:active,
+  &:focus,
+  &:hover {
+    text-decoration: none;
+    text-decoration-color: transparent;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.focus-element-without-border(awsui.$border-radius-control-default-focus-ring);
+  }
+
+  > .description {
+    margin-inline-start: awsui.$space-xxs;
+  }
+}
+
+.separator {
+  margin-block: 0;
+  margin-inline: awsui.$space-scaled-m;
+  inline-size: awsui.$border-divider-section-width;
+  background-color: awsui.$color-border-divider-default;
+}

@@ -1,0 +1,780 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useLayoutEffect } from 'react';
+import { render, screen, waitFor } from '@testing-library/react';
+import times from 'lodash/times';
+
+import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
+
+import Table, { TableProps } from '../../../lib/components/table';
+import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
+import InternalDragHandleWrapper from '../../../lib/components/test-utils/dom/internal/drag-handle';
+import { fakeBoundingClientRect, firePointerdown, firePointermove, firePointerup } from './utils/resize-actions';
+
+import resizerStyles from '../../../lib/components/table/resizer/styles.css.js';
+import tableStyles from '../../../lib/components/table/styles.css.js';
+
+jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => ({
+  ...jest.requireActual('../../../lib/components/internal/utils/scrollable-containers'),
+  browserScrollbarSize: () => ({ width: 20, height: 20 }),
+  getOverflowParents: jest.fn(() => {
+    const overflowParent = document.createElement('div');
+    overflowParent.style.width = '400px';
+    overflowParent.getBoundingClientRect = fakeBoundingClientRect;
+    return [overflowParent];
+  }),
+}));
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  useResizeObserver: jest.fn(),
+}));
+
+interface Item {
+  id: number;
+  description: string;
+}
+
+const defaultProps: TableProps<Item> = {
+  resizableColumns: true,
+  columnDefinitions: [
+    { id: 'id', header: 'Id', cell: item => item.id, width: 150, minWidth: 80 },
+    { id: 'description', header: 'Description', cell: item => item.description, width: 300 },
+  ],
+  items: times(20, index => ({ id: index + 1, description: 'Description' })),
+  ariaLabels: {
+    resizerRoleDescription: 'resize button',
+  },
+};
+
+function renderTable(jsx: React.ReactElement) {
+  const { container, rerender } = render(jsx);
+  const wrapper = createWrapper(container).findTable()!;
+  return { wrapper, rerender };
+}
+
+function hasGlobalResizeClass() {
+  return document.body.classList.contains(resizerStyles['resize-active']);
+}
+
+function findActiveDivider(wrapper: TableWrapper) {
+  return wrapper.findByClassName(resizerStyles['divider-active']);
+}
+
+function findDragHandle() {
+  return new InternalDragHandleWrapper(document.body);
+}
+
+async function waitForResizeThrottle() {
+  await new Promise(resolve => setTimeout(resolve, 50));
+}
+
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
+test('should be disabled by default', () => {
+  const props = { ...defaultProps };
+  delete props.resizableColumns;
+  const { wrapper } = renderTable(<Table {...props} />);
+  expect(wrapper.findColumnResizer(1)).toBeNull();
+  expect(wrapper.findColumnResizer(2)).toBeNull();
+});
+
+test('should render resizers when enabled', () => {
+  const { wrapper } = renderTable(<Table {...defaultProps} />);
+  expect(wrapper.findColumnResizer(1)).not.toBeNull();
+  expect(wrapper.findColumnResizer(2)).not.toBeNull();
+});
+
+test('should not submit surrounding forms when activated', () => {
+  const { wrapper } = renderTable(<Table {...defaultProps} />);
+  expect(wrapper.findColumnResizer(1)!.getElement()).toHaveAttribute('type', 'button');
+});
+
+test('should allow dragging a column only with the left mouse button', () => {
+  const { wrapper } = renderTable(<Table {...defaultProps} />);
+  const leftButton = 0;
+  const rightButton = 1;
+  expect(hasGlobalResizeClass()).toEqual(false);
+
+  firePointerdown(wrapper.findColumnResizer(1)!, rightButton);
+  expect(hasGlobalResizeClass()).toEqual(false);
+
+  firePointerdown(wrapper.findColumnResizer(1)!, leftButton);
+  expect(hasGlobalResizeClass()).toEqual(true);
+});
+
+test('should not allow the table selection to be resized', () => {
+  const { wrapper } = renderTable(<Table {...defaultProps} selectionType="single" />);
+  expect(wrapper.findColumnResizer(1)).toBeNull();
+  expect(wrapper.findColumnResizer(2)).not.toBeNull();
+});
+
+test('should use the default width if it is not provided to a column and the column was not initially visible', () => {
+  const props: TableProps<Item> = {
+    ...defaultProps,
+    columnDefinitions: [...defaultProps.columnDefinitions, { id: 'extra', header: 'Extra', cell: () => '-' }],
+  };
+  const { wrapper, rerender } = renderTable(<Table {...props} visibleColumns={['id', 'description']} />);
+
+  expect(wrapper.findColumnHeaders()).toHaveLength(2);
+
+  rerender(<Table {...props} visibleColumns={['id', 'description', 'extra']} />);
+
+  expect(wrapper.findColumnHeaders()).toHaveLength(3);
+  expect(wrapper.findColumnHeaders()[2].getElement()).toHaveStyle({ width: '120px' });
+});
+
+test('should show the tracking line and activate resizer onPointerDown', () => {
+  const { wrapper } = renderTable(<Table {...defaultProps} />);
+  expect(findActiveDivider(wrapper)).toBeNull();
+  expect(hasGlobalResizeClass()).toEqual(false);
+
+  firePointerdown(wrapper.findColumnResizer(1)!);
+  expect(findActiveDivider(wrapper)).not.toBeNull();
+  expect(hasGlobalResizeClass()).toEqual(true);
+
+  firePointerup(150);
+  expect(findActiveDivider(wrapper)).toBeNull();
+  expect(hasGlobalResizeClass()).toEqual(false);
+});
+
+test('should attach event listeners to the body on pointerdown and remove on pointerup', () => {
+  const { wrapper } = renderTable(<Table {...defaultProps} />);
+  jest.spyOn(document, 'addEventListener');
+  jest.spyOn(AbortController.prototype, 'abort');
+  expect(document.addEventListener).toHaveBeenCalledTimes(0);
+
+  firePointerdown(wrapper.findColumnResizer(1)!);
+  expect(document.addEventListener).toHaveBeenCalledTimes(2);
+  expect(document.addEventListener).toHaveBeenCalledWith('pointermove', expect.any(Function), expect.any(Object));
+  expect(document.addEventListener).toHaveBeenCalledWith('pointerup', expect.any(Function), expect.any(Object));
+  expect(AbortController.prototype.abort).toHaveBeenCalledTimes(0);
+
+  (document.addEventListener as jest.Mock).mockReset();
+  firePointerup(200);
+  expect(document.addEventListener).toHaveBeenCalledTimes(0);
+  expect(AbortController.prototype.abort).toHaveBeenCalledTimes(1);
+});
+
+test('should correctly handle a column with special character', () => {
+  const props: TableProps<Item> = {
+    ...defaultProps,
+    columnDefinitions: [
+      { id: 'special:column', header: 'Special', cell: item => item.id },
+      ...defaultProps.columnDefinitions,
+    ],
+  };
+  const { wrapper } = renderTable(<Table {...props} />);
+  firePointerdown(wrapper.findColumnResizer(1)!);
+  firePointerup(150);
+});
+
+test('should resize column to grow', () => {
+  const { wrapper } = renderTable(<Table {...defaultProps} />);
+  expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '150px' });
+
+  firePointerdown(wrapper.findColumnResizer(1)!);
+  firePointermove(200);
+  firePointerup(200);
+  expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '200px' });
+});
+
+test('should resize column to shrink', () => {
+  const { wrapper } = renderTable(<Table {...defaultProps} />);
+  expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '150px' });
+
+  firePointerdown(wrapper.findColumnResizer(1)!);
+  firePointermove(130);
+  firePointerup(130);
+  expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '130px' });
+});
+
+test('should not allow to resize column below the min width', () => {
+  const { wrapper } = renderTable(<Table {...defaultProps} />);
+  expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '150px' });
+
+  firePointerdown(wrapper.findColumnResizer(1)!);
+  firePointermove(10);
+  firePointerup(10);
+  expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '80px' });
+});
+
+test('should to resize column beyond the screen bounds', () => {
+  const { wrapper } = renderTable(<Table {...defaultProps} />);
+  expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '150px' });
+
+  firePointerdown(wrapper.findColumnResizer(1)!);
+  firePointermove(-10);
+  expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '150px' });
+});
+
+test('should not allow to resize column below 120px if min width is not defined', () => {
+  const props: TableProps<Item> = {
+    ...defaultProps,
+    columnDefinitions: [{ header: 'id', cell: item => item.id, width: 150 }, defaultProps.columnDefinitions[1]],
+  };
+  const { wrapper } = renderTable(<Table {...props} />);
+  expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '150px' });
+
+  firePointerdown(wrapper.findColumnResizer(1)!);
+  firePointermove(100);
+  firePointerup(100);
+  expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '120px' });
+});
+
+test('takes width as min width if it is less than 120px and min width is not set', () => {
+  const props: TableProps<Item> = {
+    ...defaultProps,
+    columnDefinitions: [{ header: 'id', cell: item => item.id, width: 100 }, defaultProps.columnDefinitions[1]],
+  };
+  const { wrapper } = renderTable(<Table {...props} />);
+  expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '100px' });
+
+  firePointerdown(wrapper.findColumnResizer(1)!);
+  firePointermove(100);
+  firePointerup(100);
+  expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '100px' });
+});
+
+test('should follow along each mouse move event', async () => {
+  const { wrapper } = renderTable(<Table {...defaultProps} />);
+  expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '150px' });
+
+  firePointerdown(wrapper.findColumnResizer(1)!);
+  firePointermove(200);
+  await waitForResizeThrottle();
+  expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '200px' });
+
+  firePointermove(250);
+  await waitForResizeThrottle();
+  expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '250px' });
+
+  firePointermove(200);
+  await waitForResizeThrottle();
+  expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '200px' });
+
+  firePointerup(200);
+  await waitForResizeThrottle();
+  expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '200px' });
+});
+
+test('should trigger the columnWidthsChange event after a column is resized', () => {
+  const onChange = jest.fn();
+  const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
+
+  firePointerdown(wrapper.findColumnResizer(1)!);
+  firePointermove(100);
+  firePointerup(100);
+
+  expect(onChange).toHaveBeenCalledTimes(1);
+  expect(onChange).toHaveBeenCalledWith({ widths: [100, 300] });
+});
+
+test('should provide the value for the last column when it was not defined', () => {
+  const props: TableProps<Item> = {
+    ...defaultProps,
+    columnDefinitions: [...defaultProps.columnDefinitions, { id: 'extra', header: 'Extra', cell: () => '-' }],
+  };
+  const onChange = jest.fn();
+  const { wrapper } = renderTable(<Table {...props} onColumnWidthsChange={event => onChange(event.detail)} />);
+
+  firePointerdown(wrapper.findColumnResizer(1)!);
+  firePointermove(100);
+  firePointerup(100);
+
+  expect(onChange).toHaveBeenCalledTimes(1);
+  expect(onChange).toHaveBeenCalledWith({ widths: [100, 300, 120] });
+});
+
+test('should include hidden columns into the event detail', () => {
+  const onChange = jest.fn();
+  const props: TableProps<Item> = {
+    ...defaultProps,
+    visibleColumns: ['id', 'last'],
+    columnDefinitions: [
+      ...defaultProps.columnDefinitions,
+      { id: 'no-width', header: 'No width', cell: () => '-' },
+      { id: 'last', header: 'Last', cell: () => '-' },
+    ],
+  };
+  const { wrapper } = renderTable(<Table {...props} onColumnWidthsChange={event => onChange(event.detail)} />);
+
+  firePointerdown(wrapper.findColumnResizer(2)!);
+  firePointermove(140);
+  firePointerup(140);
+
+  expect(onChange).toHaveBeenCalledTimes(1);
+  expect(onChange).toHaveBeenCalledWith({ widths: [150, 300, 120, 140] });
+});
+
+test('should update the value for the last column when it is resized', () => {
+  const onChange = jest.fn();
+  const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
+
+  firePointerdown(wrapper.findColumnResizer(2)!);
+  firePointermove(400);
+  firePointerup(400);
+
+  expect(onChange).toHaveBeenCalledTimes(1);
+  expect(onChange).toHaveBeenCalledWith({ widths: [150, 400] });
+});
+
+test('should not trigger if the previous and the current widths are the same', () => {
+  const onChange = jest.fn();
+  const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
+
+  firePointerdown(wrapper.findColumnResizer(1)!);
+  firePointermove(150);
+  firePointerup(150);
+
+  expect(onChange).toHaveBeenCalledTimes(0);
+});
+
+describe('resize with keyboard', () => {
+  let mockWidth = 150;
+
+  const originalBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
+  beforeEach(() => {
+    HTMLElement.prototype.getBoundingClientRect = function () {
+      const rect = originalBoundingClientRect.apply(this);
+      if (this.tagName === 'TH') {
+        rect.width = mockWidth;
+      }
+      return rect;
+    };
+  });
+
+  afterEach(() => {
+    mockWidth = 150;
+    HTMLElement.prototype.getBoundingClientRect = originalBoundingClientRect;
+  });
+
+  test('ignores arrow keys before entering the dragging mode', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
+    const columnResizerWrapper = wrapper.findColumnResizer(1)!;
+
+    columnResizerWrapper.focus();
+    columnResizerWrapper.keydown(KeyCode.right);
+    columnResizerWrapper.keydown(KeyCode.enter);
+
+    expect(onChange).toHaveBeenCalledTimes(0);
+  });
+
+  test.each([KeyCode.space, KeyCode.enter])('activates and commits keyboard resize with keyCode="%s"', keyCode => {
+    const onChange = jest.fn();
+    const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
+    const columnResizerWrapper = wrapper.findColumnResizer(1)!;
+
+    columnResizerWrapper.focus();
+    columnResizerWrapper.keydown(keyCode);
+    columnResizerWrapper.keydown(KeyCode.left);
+    columnResizerWrapper.keydown(keyCode);
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith({ widths: [140, 300] });
+  });
+
+  test('activates keyboard resize with click', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
+    const columnResizerWrapper = wrapper.findColumnResizer(1)!;
+
+    columnResizerWrapper.focus();
+    columnResizerWrapper.click();
+    columnResizerWrapper.keydown(KeyCode.right);
+    columnResizerWrapper.keydown(KeyCode.enter);
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith({ widths: [160, 300] });
+  });
+
+  test('submits resize with escape', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
+    const columnResizerWrapper = wrapper.findColumnResizer(1)!;
+
+    columnResizerWrapper.focus();
+    columnResizerWrapper.keydown(KeyCode.enter);
+    columnResizerWrapper.keydown(KeyCode.right);
+    columnResizerWrapper.keydown(KeyCode.escape);
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith({ widths: [160, 300] });
+  });
+
+  test('submits resize on blur', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderTable(<Table {...defaultProps} onColumnWidthsChange={event => onChange(event.detail)} />);
+    const columnResizerWrapper = wrapper.findColumnResizer(1)!;
+
+    columnResizerWrapper.focus();
+    columnResizerWrapper.keydown(KeyCode.enter);
+    columnResizerWrapper.keydown(KeyCode.right);
+    wrapper.findColumnResizer(2)!.focus();
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith({ widths: [160, 300] });
+  });
+
+  test('prevents resizing to below the min-width', () => {
+    mockWidth = 80;
+    const { wrapper } = renderTable(<Table {...defaultProps} />);
+    const columnResizerWrapper = wrapper.findColumnResizer(1)!;
+    const columnResizerSliderWrapper = wrapper.findColumnHeaders()[0].find('[role="slider"]')!;
+
+    columnResizerWrapper.focus();
+    columnResizerWrapper.keydown(KeyCode.enter);
+    columnResizerWrapper.keydown(KeyCode.left);
+
+    expect(columnResizerSliderWrapper.getElement()).toHaveAttribute('aria-valuenow', '80');
+  });
+});
+
+describe('column header content', () => {
+  test('resizable columns headers have expected text content', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} />);
+
+    expect(wrapper.findColumnHeaders()[0].getElement()!.textContent).toEqual('Id');
+    expect(wrapper.findColumnHeaders()[1].getElement()!.textContent).toEqual('Description');
+  });
+
+  test('resizable columns can be queries with columnheader role', () => {
+    renderTable(<Table {...defaultProps} />);
+
+    expect(screen.getByRole('columnheader', { name: 'Id' })).toBeTruthy();
+    expect(screen.getByRole('columnheader', { name: 'Description' })).toBeTruthy();
+  });
+
+  test('resize handles have expected accessible names', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} />);
+    const getResizeHandle = (columnIndex: number) =>
+      wrapper.findColumnHeaders()[columnIndex].findByClassName(resizerStyles.resizer)!.getElement();
+
+    expect(getResizeHandle(0)).toHaveAccessibleName('Id');
+    expect(getResizeHandle(1)).toHaveAccessibleName('Description');
+  });
+
+  test('resize handles have aria-roledescription', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} />);
+    const getResizeHandle = (columnIndex: number) =>
+      wrapper.findColumnHeaders()[columnIndex].findByClassName(resizerStyles.resizer)!.getElement();
+
+    expect(getResizeHandle(0)).toHaveAttribute('aria-roledescription', 'resize button');
+    expect(getResizeHandle(1)).toHaveAttribute('aria-roledescription', 'resize button');
+  });
+});
+
+test('should set last column width to "auto" when container width exceeds total column width', async () => {
+  const totalColumnsWidth = 150 + 300;
+
+  const callbacks: ((entry: ContainerQueryEntry) => void)[] = [];
+  const fireCallbacks = (entry: ContainerQueryEntry) => callbacks.forEach(cb => cb(entry));
+  jest.mocked(useResizeObserver).mockImplementation((_target, cb) => {
+    if (!_target || (typeof _target === 'function' && !_target())) {
+      return;
+    }
+    // The table uses more than one resize observer.
+    // The callback must be triggered for all to ensure the expected one is targeted as well.
+    callbacks.push(cb);
+
+    useLayoutEffect(() => {
+      cb({ contentBoxWidth: totalColumnsWidth + 1 } as unknown as ContainerQueryEntry);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+  });
+
+  const { wrapper } = renderTable(<Table {...defaultProps} />);
+  await waitFor(() => {
+    expect(wrapper.findColumnHeaders().map(w => w.getElement().style.width)).toEqual(['150px', 'auto']);
+  });
+
+  fireCallbacks({ contentBoxWidth: totalColumnsWidth } as unknown as ContainerQueryEntry);
+  await waitFor(() => {
+    expect(wrapper.findColumnHeaders().map(w => w.getElement().style.width)).toEqual(['150px', '300px']);
+  });
+
+  fireCallbacks({ contentBoxWidth: totalColumnsWidth + 1 } as unknown as ContainerQueryEntry);
+  await waitFor(() => {
+    expect(wrapper.findColumnHeaders().map(w => w.getElement().style.width)).toEqual(['150px', 'auto']);
+  });
+});
+
+describe('resize in rtl', () => {
+  beforeEach(() => {
+    document.body.style.direction = 'rtl';
+  });
+
+  test('should resize column to grow', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} />);
+    expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '150px' });
+
+    firePointerdown(wrapper.findColumnResizer(1)!);
+    firePointermove(-200);
+    firePointerup(-200);
+    expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '200px' });
+  });
+
+  test('should resize column to shrink', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} />);
+    expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '150px' });
+
+    firePointerdown(wrapper.findColumnResizer(1)!);
+    firePointermove(-130);
+    firePointerup(-130);
+    expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '130px' });
+  });
+
+  test('should not allow to resize column below the min width', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} />);
+    expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '150px' });
+
+    firePointerdown(wrapper.findColumnResizer(1)!);
+    firePointermove(-10);
+    firePointerup(-10);
+    expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '80px' });
+  });
+});
+
+describe('Auto-grow behavior when dragging beyond scroll parent edge', () => {
+  test('triggers auto-grow timeout when pointer moves beyond right edge', () => {
+    const setTimeoutSpy = jest.spyOn(global, 'setTimeout');
+    const { wrapper } = renderTable(<Table {...defaultProps} />);
+
+    firePointerdown(wrapper.findColumnResizer(1)!);
+
+    // Move pointer beyond the right edge (inlineEndEdge is 400 from fakeBoundingClientRect)
+    // This triggers the onPointerMove timeout in resizer/index.tsx
+    firePointermove(450);
+
+    expect(setTimeoutSpy).toHaveBeenCalledTimes(1);
+
+    firePointerup(450);
+  });
+
+  test('clears auto-grow timeout when pointer moves back within bounds', () => {
+    const clearTimeoutSpy = jest.spyOn(global, 'clearTimeout');
+    const { wrapper } = renderTable(<Table {...defaultProps} />);
+
+    firePointerdown(wrapper.findColumnResizer(1)!);
+
+    // Move pointer beyond the right edge to trigger auto-grow (inlineEndEdge is 400 from fakeBoundingClientRect)
+    firePointermove(450);
+
+    // Move back within bounds - should clear the timeout
+    firePointermove(200);
+    expect(clearTimeoutSpy).toHaveBeenCalled();
+
+    firePointerup(200);
+  });
+});
+
+describe('UAP buttons', () => {
+  // Makes the drag buttons (which are positioned in a portal) easier to find if there's only one set.
+  const singleColumnDefinition = [{ id: 'id', header: 'Id', cell: (item: any) => item.id, width: 150, minWidth: 80 }];
+
+  let mockWidth = 150;
+
+  const originalBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
+  beforeEach(() => {
+    HTMLElement.prototype.getBoundingClientRect = function () {
+      const rect = originalBoundingClientRect.apply(this);
+      if (this.tagName === 'TH') {
+        rect.width = mockWidth;
+      }
+      return rect;
+    };
+  });
+
+  afterEach(() => {
+    mockWidth = 150;
+    HTMLElement.prototype.getBoundingClientRect = originalBoundingClientRect;
+  });
+
+  test('hides UAP buttons by default', () => {
+    renderTable(<Table {...defaultProps} columnDefinitions={singleColumnDefinition} />);
+    expect(findDragHandle().findVisibleDirectionButtonInlineStart()).toBeNull();
+    expect(findDragHandle().findVisibleDirectionButtonInlineEnd()).toBeNull();
+  });
+
+  test('shows UAP buttons when clicked', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} columnDefinitions={singleColumnDefinition} />);
+    firePointerdown(wrapper.findColumnResizer(1)!);
+    firePointerup(0);
+
+    expect(findDragHandle().findVisibleDirectionButtonInlineStart()).toBeTruthy();
+    expect(findDragHandle().findVisibleDirectionButtonInlineEnd()).toBeTruthy();
+  });
+
+  test('shows UAP buttons when activated with keyboard', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} columnDefinitions={singleColumnDefinition} />);
+
+    wrapper.findColumnResizer(1)!.focus();
+    wrapper.findColumnResizer(1)!.keydown(KeyCode.enter);
+
+    expect(findDragHandle().findVisibleDirectionButtonInlineStart()).toBeTruthy();
+    expect(findDragHandle().findVisibleDirectionButtonInlineEnd()).toBeTruthy();
+  });
+
+  test('hides UAP buttons when Escape is pressed after a pointer interaction', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} columnDefinitions={singleColumnDefinition} />);
+
+    wrapper.findColumnResizer(1)!.click();
+    wrapper.findColumnResizer(1)!.focus();
+    expect(findDragHandle().findVisibleDirectionButtonInlineStart()).toBeTruthy();
+    expect(findDragHandle().findVisibleDirectionButtonInlineEnd()).toBeTruthy();
+
+    wrapper.findColumnResizer(1)!.keydown(KeyCode.escape);
+    expect(findDragHandle().findVisibleDirectionButtonInlineStart()).toBeNull();
+    expect(findDragHandle().findVisibleDirectionButtonInlineEnd()).toBeNull();
+  });
+
+  test('hides UAP buttons when arrow keys are pressed before the resizer button is activated', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} columnDefinitions={singleColumnDefinition} />);
+
+    wrapper.findColumnResizer(1)!.click();
+    wrapper.findColumnResizer(1)!.focus();
+    expect(findDragHandle().findVisibleDirectionButtonInlineStart()).toBeTruthy();
+    expect(findDragHandle().findVisibleDirectionButtonInlineEnd()).toBeTruthy();
+
+    wrapper.findColumnResizer(1)!.keydown(KeyCode.left);
+    expect(findDragHandle().findVisibleDirectionButtonInlineStart()).toBeNull();
+    expect(findDragHandle().findVisibleDirectionButtonInlineEnd()).toBeNull();
+  });
+
+  test('hides UAP buttons when the button is blurred before the resizer button is activated', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} columnDefinitions={singleColumnDefinition} />);
+
+    wrapper.findColumnResizer(1)!.click();
+    wrapper.findColumnResizer(1)!.focus();
+    expect(findDragHandle().findVisibleDirectionButtonInlineStart()).toBeTruthy();
+    expect(findDragHandle().findVisibleDirectionButtonInlineEnd()).toBeTruthy();
+
+    wrapper.findColumnResizer(1)!.blur();
+    expect(findDragHandle().findVisibleDirectionButtonInlineStart()).toBeNull();
+    expect(findDragHandle().findVisibleDirectionButtonInlineEnd()).toBeNull();
+  });
+
+  test('does not show UAP buttons when the pointer is moved between pointerdown and pointerup', () => {
+    const { wrapper } = renderTable(<Table {...defaultProps} columnDefinitions={singleColumnDefinition} />);
+
+    firePointerdown(wrapper.findColumnResizer(1)!);
+    firePointermove(200);
+    firePointerup(200);
+
+    expect(findDragHandle().findVisibleDirectionButtonInlineStart()).toBeNull();
+    expect(findDragHandle().findVisibleDirectionButtonInlineEnd()).toBeNull();
+  });
+
+  test('resizes the column when inline-start button is pressed', async () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderTable(
+      <Table
+        {...defaultProps}
+        columnDefinitions={singleColumnDefinition}
+        onColumnWidthsChange={event => onChange(event.detail)}
+      />
+    );
+
+    wrapper.findColumnResizer(1)!.click();
+    findDragHandle().findVisibleDirectionButtonInlineStart()!.click();
+    await waitFor(() => expect(onChange).toHaveBeenCalledWith({ widths: [130] }));
+  });
+
+  test('resizes the column when inline-end button is pressed', async () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderTable(
+      <Table
+        {...defaultProps}
+        columnDefinitions={singleColumnDefinition}
+        onColumnWidthsChange={event => onChange(event.detail)}
+      />
+    );
+
+    wrapper.findColumnResizer(1)!.click();
+    findDragHandle().findVisibleDirectionButtonInlineEnd()!.click();
+    await waitFor(() => expect(onChange).toHaveBeenCalledWith({ widths: [170] }));
+  });
+});
+
+describe('with column groups', () => {
+  const columnDefinitions: TableProps.ColumnDefinition<Item>[] = [
+    { id: 'id', header: 'Id', cell: item => item.id, width: 100 },
+    { id: 'description', header: 'Description', cell: item => item.description, width: 100, minWidth: 50 },
+  ];
+  const groupDefinitions: TableProps.GroupDefinition<Item>[] = [{ id: 'group', header: 'Group' }];
+  const columnDisplay: TableProps.ColumnDisplayProperties[] = [
+    {
+      type: 'group',
+      id: 'group',
+      visible: true,
+      children: [
+        { id: 'id', visible: true },
+        { id: 'description', visible: true },
+      ],
+    },
+  ];
+
+  let columnWidth = 100;
+  const originalBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
+  beforeEach(() => {
+    HTMLElement.prototype.getBoundingClientRect = function () {
+      const rect = originalBoundingClientRect.apply(this);
+      if (this.tagName === 'TH') {
+        rect.width = this.getAttribute('scope') === 'colgroup' ? columnWidth * 2 : columnWidth;
+      }
+      return rect;
+    };
+  });
+
+  afterEach(() => {
+    columnWidth = 100;
+    HTMLElement.prototype.getBoundingClientRect = originalBoundingClientRect;
+  });
+
+  test('uses the rightmost column min width for the group min width', () => {
+    const { wrapper } = renderTable(
+      <Table
+        {...defaultProps}
+        columnDefinitions={columnDefinitions}
+        groupDefinitions={groupDefinitions}
+        columnDisplay={columnDisplay}
+      />
+    );
+
+    expect(wrapper.find('th[scope="colgroup"] [role="slider"]')!.getElement()).toHaveAttribute('aria-valuemin', '150');
+  });
+
+  test('keeps sticky header columns in sync with the table when the container resizes', async () => {
+    const containerCallbacks: ((entry: ContainerQueryEntry) => void)[] = [];
+    jest.mocked(useResizeObserver).mockImplementation((target, cb) => {
+      const element = typeof target === 'function' ? target() : target?.current;
+      if (element?.classList.contains(tableStyles['wrapper-content-measure'])) {
+        containerCallbacks.push(cb);
+      }
+    });
+    const { wrapper } = renderTable(
+      <Table
+        {...defaultProps}
+        columnDefinitions={columnDefinitions}
+        groupDefinitions={groupDefinitions}
+        columnDisplay={columnDisplay}
+        stickyHeader={true}
+      />
+    );
+    const getStickyColWidths = () =>
+      wrapper
+        .findAllByClassName(tableStyles['header-secondary'])[0]
+        .findAll('col')
+        .map(col => col.getElement().style.width);
+    expect(getStickyColWidths()).toEqual(['100px', '100px']);
+
+    columnWidth = 150;
+    containerCallbacks.forEach(cb => cb({ contentBoxWidth: 1000 } as unknown as ContainerQueryEntry));
+    await waitFor(() => expect(getStickyColWidths()).toEqual(['150px', '150px']));
+  });
+});

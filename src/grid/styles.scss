@@ -1,0 +1,77 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use 'sass:math';
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+$grid-columns: 12;
+$grid-gutter-width: awsui.$space-grid-gutter;
+
+.grid {
+  @include styles.styles-reset;
+  display: flex;
+  flex-wrap: wrap;
+  margin-block: calc(#{$grid-gutter-width} / -2);
+  margin-inline: calc(#{$grid-gutter-width} / -2);
+  pointer-events: none;
+
+  &.no-gutters {
+    margin-block: 0;
+    margin-inline: 0;
+  }
+}
+
+.grid-column {
+  box-sizing: border-box;
+  position: relative;
+  padding-block: calc(#{$grid-gutter-width} / 2);
+  padding-inline: calc(#{$grid-gutter-width} / 2);
+  display: flex;
+
+  .grid.no-gutters > & {
+    padding-block: 0;
+    padding-inline: 0;
+  }
+
+  @for $i from 1 through $grid-columns {
+    &.colspan-#{$i} {
+      flex: 0 0 math.percentage(math.div($i, $grid-columns));
+      max-inline-size: math.percentage(math.div($i, $grid-columns));
+    }
+
+    &.push-#{$i} {
+      inset-inline-start: math.percentage(math.div($i, $grid-columns));
+    }
+
+    &.pull-#{$i} {
+      inset-inline-end: math.percentage(math.div($i, $grid-columns));
+    }
+  }
+
+  &.push-0 {
+    inset-inline-start: auto;
+  }
+
+  &.pull-0 {
+    inset-inline-end: auto;
+  }
+
+  // `$grid-columns - 1` because offsetting by the width of an entire row isn't possible
+  @for $i from 0 through ($grid-columns - 1) {
+    // Avoid emitting useless .offset-0
+    @if $i != 0 {
+      &.offset-#{$i} {
+        margin-inline-start: math.percentage(math.div($i, $grid-columns));
+      }
+    }
+  }
+}
+
+.restore-pointer-events {
+  pointer-events: auto;
+  inline-size: 100%;
+}

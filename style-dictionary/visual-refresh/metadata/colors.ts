@@ -1,0 +1,1614 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import { StyleDictionary } from '../../utils/interfaces.js';
+
+const metadata: StyleDictionary.MetadataIndex = {
+  colorBackgroundBackdrop: {
+    description: 'The background color of the backdrop shown behind overlay surfaces such as modals and drawers.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundButtonNormalActive: {
+    description: 'The background color of normal buttons in active state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundButtonNormalDefault: {
+    description: 'The default background color of normal buttons.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundButtonNormalDisabled: {
+    description: 'The background color of normal buttons in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundButtonNormalHover: {
+    description: 'The background color of normal buttons in hover state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundButtonLinkActive: {
+    description: 'The background color of link buttons in active state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundButtonLinkDefault: {
+    description: 'The background color of link buttons in default state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundButtonLinkHover: {
+    description: 'The background color of link buttons in hover state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundButtonLinkDisabled: {
+    description: 'The background color of link buttons in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundToggleButtonNormalPressed: {
+    description: 'The background color of normal toggle buttons in pressed state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundToggleButtonNormalDefault: {
+    description: 'The default background color of normal toggle buttons.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundToggleButtonNormalHover: {
+    description: 'The background color of normal toggle buttons in hover state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundButtonPrimaryActive: {
+    description: 'The background color of primary buttons in active state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundButtonPrimaryDefault: {
+    description: 'The default background color of primary buttons.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundButtonPrimaryDisabled: {
+    description: 'The background color of primary buttons in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundButtonPrimaryHover: {
+    description: 'The background color of primary buttons in hover state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundCellShaded: {
+    description: 'The background color of shaded table cells.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundCard: {
+    description: 'The background color of a card.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundContainerContent: {
+    description:
+      'The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundContainerHeader: {
+    description:
+      'The background color of container headers. For example: headers of form sections, containers, tables, and card collections.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundControlChecked: {
+    description:
+      'The background color of a checked form control. For example: background fill of a selected radio button, checked checkbox, and toggle that is switched on.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundControlDefault: {
+    description:
+      'The default background color of form controls. For example: radio buttons and checkboxes default background fill color.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundControlDisabled: {
+    description:
+      'The background color of a disabled form control. For example: background fill of a disabled radio button and checkbox.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundDropdownItemDefault: {
+    description:
+      'The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundDropdownItemFilterMatch: {
+    description:
+      "The background color of text that matches a user's query. For example: the background of text matching a query entered into a table filter, select, multiselect, or autosuggest.",
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundDropdownItemHover: {
+    description:
+      'The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundDropdownItemSelected: {
+    description:
+      'The background color of selected dropdown items. For example: background of selected items in select, multiselect, autosuggest, and datepicker dropdowns.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundHomeHeader: {
+    description: "The background color of the home header, displayed on the Service's home page.",
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundInputDefault: {
+    description:
+      'The default background color of form inputs. For example: background fill of an input, textarea, autosuggest, and trigger of a select and multiselect.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundInputDisabled: {
+    description:
+      'The background color of a disabled form input. For example: background fill of a disabled input, textarea, autosuggest, and trigger of a select and multiselect.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundItemSelected: {
+    description:
+      'The background color of a selected item. For example: tokens, selected table rows, cards, and tile backgrounds.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundSideNavigationItemActive: {
+    description: 'The background color of an active (highlighted) side navigation item.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundSideNavigationItemActiveCollapsed: {
+    description: 'The background color of an active side navigation item while the navigation is collapsed.',
+    public: false,
+    themeable: true,
+  },
+  colorBackgroundLayoutMain: {
+    description: 'The background color of the main content area on a page. For example: content area in app layout.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundLayoutAiDrawer: {
+    description: 'The background color of the AI assistant drawer in the app layout.',
+    public: false,
+    themeable: true,
+  },
+  colorBackgroundLayoutPanel: {
+    description:
+      'The background color of the selected (active) drawer panel in the app layout. Use this token to theme the background of the open drawer.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundLayoutPanelContent: {
+    description:
+      'The background color of app layout panel content area. For example: The side navigation and tools panel content background color.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundLayoutToolbar: {
+    description:
+      "The background color of the app layout's toolbar. For example: The toolbar bar containing breadcrumbs and toggle buttons.",
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundLayoutToggleActive: {
+    description: "The background color of the app layout toggle button when it's active.",
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundLayoutToggleDefault: {
+    description: 'The default background color of the app layout toggle button.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundLayoutToggleHover: {
+    description: 'The background color of the app layout toggle button on hover.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundLayoutToggleSelectedActive: {
+    description: "The background color of the app layout toggle button when it's selected and active.",
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundLayoutToggleSelectedDefault: {
+    description: "The default background color of the app layout toggle button when it's selected.",
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundLayoutToggleSelectedHover: {
+    description: "The background color of the app layout toggle button on hover when it's selected.",
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundNotificationBlue: {
+    description: 'Background color for blue notifications. For example: blue badges and info flash messages.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundNotificationGreen: {
+    description: 'Background color for green notifications. For example: green badges and success flash messages.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundNotificationRed: {
+    description: 'Background color for red notifications. For example: red badges and error flash messages.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundNotificationYellow: {
+    description: 'Background color for yellow notifications. For example: yellow badges and warning flash messages.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundFlashbarSuccess: {
+    description: 'The background color of success flash messages.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundAlertError: {
+    description: 'The background color of error alerts.',
+    public: false,
+    themeable: false,
+  },
+  colorBackgroundAlertInfo: {
+    description: 'The background color of info alerts.',
+    public: false,
+    themeable: false,
+  },
+  colorBackgroundAlertSuccess: {
+    description: 'The background color of success alerts.',
+    public: false,
+    themeable: false,
+  },
+  colorBackgroundAlertWarning: {
+    description: 'The background color of warning alerts.',
+    public: false,
+    themeable: false,
+  },
+  colorBackgroundFlashbarError: {
+    description: 'The background color of error flash messages.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundFlashbarInfo: {
+    description: 'The background color of info and in-progress flash messages.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundFlashbarWarning: {
+    description: 'The background color of warning flash messages.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundNotificationGrey: {
+    description: 'Background color for grey notifications. For example: grey badges.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundVisualAccentRed: {
+    description: 'The background color of the red accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorBackgroundVisualAccentYellow: {
+    description: 'The background color of the yellow accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorBackgroundVisualAccentIndigo: {
+    description: 'The background color of the indigo accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorBackgroundVisualAccentGreen: {
+    description: 'The background color of the green accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorBackgroundVisualAccentOrange: {
+    description: 'The background color of the orange accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorBackgroundVisualAccentPurple: {
+    description: 'The background color of the purple accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorBackgroundVisualAccentLime: {
+    description: 'The background color of the lime accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorBackgroundVisualAccentGrey: {
+    description: 'The background color of the grey accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorBackgroundVisualAccentTeal: {
+    description: 'The background color of the teal accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorBackgroundVisualAccentBlue: {
+    description: 'The background color of the blue accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorBackgroundVisualAccentViolet: {
+    description: 'The background color of the violet accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorBackgroundVisualAccentMagenta: {
+    description: 'The background color of the magenta accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorBackgroundVisualAccentPink: {
+    description: 'The background color of the pink accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorBackgroundVisualAccentAmber: {
+    description: 'The background color of the amber accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorTextVisualAccentRed: {
+    description: 'The content color of the red accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorTextVisualAccentYellow: {
+    description: 'The content color of the yellow accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorTextVisualAccentIndigo: {
+    description: 'The content color of the indigo accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorTextVisualAccentGreen: {
+    description: 'The content color of the green accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorTextVisualAccentOrange: {
+    description: 'The content color of the orange accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorTextVisualAccentPurple: {
+    description: 'The content color of the purple accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorTextVisualAccentLime: {
+    description: 'The content color of the lime accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorTextVisualAccentGrey: {
+    description: 'The content color of the grey accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorTextVisualAccentTeal: {
+    description: 'The content color of the teal accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorTextVisualAccentBlue: {
+    description: 'The content color of the blue accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorTextVisualAccentViolet: {
+    description: 'The content color of the violet accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorTextVisualAccentMagenta: {
+    description: 'The content color of the magenta accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorTextVisualAccentPink: {
+    description: 'The content color of the pink accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorTextVisualAccentAmber: {
+    description: 'The content color of the amber accent in the Box `awsui-accent` variant.',
+    public: false,
+    themeable: false,
+  },
+  colorBackgroundPopover: {
+    description: 'Background color for the popover container.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundProgressBarValueDefault: {
+    description: 'The default background color of the progress bar value.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundProgressBarValueFlash: {
+    description: 'The background color of the progress bar value inside flash messages.',
+    public: false,
+    themeable: false,
+  },
+  colorBackgroundProgressBarFlash: {
+    description: 'The background color of the progress bar track inside flash messages.',
+    public: false,
+    themeable: false,
+  },
+  colorBackgroundProgressBarDefault: {
+    description: 'The default background color of the progress bar.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundSegmentActive: {
+    description: 'The background color of the active segment in a segmented control.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundSegmentDefault: {
+    description: 'The background color of inactive segments in a segmented control.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundSegmentDisabled: {
+    description: 'The background color of disabled segments in a segmented control.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundSegmentHover: {
+    description: 'The background color of inactive segments in a segmented control on hover.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundSegmentWrapper: {
+    description: 'The background color of segmented control wrapper.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundSliderHandleDefault: {
+    description: 'The default background color of the slider handle.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundSliderHandleActive: {
+    description: 'The background color of the slider handle in active state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundSliderRangeDefault: {
+    description: 'The default background color of the slider range.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundSliderRangeActive: {
+    description: 'The background color of the slider range in active state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundSliderTrackDefault: {
+    description: 'The default background color of the slider track.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundStatusError: {
+    description: 'The background color of an item in error state. For example: error alerts.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundStatusInfo: {
+    description: 'The background color of an informational item. For example: information alerts.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundDialog: {
+    description: 'The background color of the feedback/input dialogue box.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundDialogDefault: {
+    description: 'The background color of the Dialog surface.',
+    public: false,
+    themeable: true,
+  },
+  colorBackgroundStatusSuccess: {
+    description: 'The background color of an item in success state. For example: success alerts.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundStatusWarning: {
+    description: 'The background color of an item in warning state. For example: warning alerts.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundBadgeIcon: {
+    description: 'The background color of the badge indicator on navigation and panel buttons.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundToggleCheckedDisabled: {
+    description: 'The background color of checked toggles in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundToggleDefault: {
+    description: 'The default background color of the toggle track in its unchecked state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundTilesDisabled: {
+    description: 'The background color of disabled tiles.',
+    themeable: true,
+    public: true,
+  },
+  colorShadowToggleHandle: {
+    description: 'The color of the drop shadow under the toggle handle.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundAvatarDefault: {
+    description: 'The default background color of avatars.',
+    themeable: false,
+    public: true,
+  },
+  colorBackgroundAvatarGenAi: {
+    description: 'The gen-ai background color of avatars.',
+    themeable: false,
+    public: true,
+  },
+  colorTextAvatar: {
+    description: 'The text and icon color of avatars.',
+    themeable: false,
+    public: true,
+  },
+  colorBackgroundLoadingBarGenAi: {
+    description: 'The background color of gen-ai loading bars.',
+    themeable: false,
+    public: true,
+  },
+  colorBackgroundChatBubbleOutgoing: {
+    description: 'The background color of `outgoing` chat bubble.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundChatBubbleIncoming: {
+    description: 'The background color of `incoming` chat bubble.',
+    themeable: true,
+    public: true,
+  },
+  colorTextChatBubbleOutgoing: {
+    description: 'Text color of `outgoing` chat bubble.',
+    themeable: true,
+    public: true,
+  },
+  colorTextChatBubbleIncoming: {
+    description: 'Text color of `incoming` chat bubble.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderButtonNormalActive: {
+    description: 'The border color of normal buttons in active state.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderButtonLinkDisabled: {
+    description: 'The border color of link buttons in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderButtonNormalDefault: { description: 'The border color of normal buttons.', themeable: true, public: true },
+  colorBorderToggleButtonNormalPressed: {
+    description: 'The border color of normal toggle buttons in pressed state.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderToggleButtonNormalDefault: {
+    description: 'The default border color of normal toggle buttons.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderToggleButtonNormalHover: {
+    description: 'The border color of normal toggle buttons in hover state.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderButtonNormalDisabled: {
+    description: 'The border color of normal buttons in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorTextButtonNormalDisabled: {
+    description: 'The text color of normal buttons in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderButtonNormalHover: {
+    description: 'The border color of normal buttons in hover state.',
+    themeable: true,
+    public: true,
+  },
+  colorTextButtonIconDisabled: {
+    description: 'The color of icon buttons in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderButtonPrimaryActive: {
+    description: 'The border color of primary buttons in active state.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderButtonPrimaryDefault: {
+    description: 'The border color of primary buttons.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderButtonPrimaryDisabled: {
+    description: 'The border color of primary buttons in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderButtonPrimaryHover: {
+    description: 'The border color of primary buttons in hover state.',
+    themeable: true,
+    public: true,
+  },
+  colorTextButtonPrimaryDisabled: {
+    description: 'The text color of primary buttons in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorItemSelected: {
+    description:
+      'The highlight color for selected items. For example: borders of tokens and selected table rows, and check icons in selected dropdown items.',
+    public: true,
+    themeable: true,
+  },
+  colorTextSideNavigationItemActive: {
+    description: 'The text color of an active (highlighted) side navigation item.',
+    public: true,
+    themeable: true,
+  },
+  colorTextSideNavigationItemActiveCollapsed: {
+    description: 'The text (and icon) color of an active side navigation item while the navigation is collapsed.',
+    public: false,
+    themeable: true,
+  },
+  colorTextSideNavigationItemDefault: {
+    description: 'The text (and icon) color of a non-active side navigation item.',
+    public: false,
+    themeable: true,
+  },
+  colorBorderCard: {
+    description: 'The border color of a card.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderContainerTop: {
+    description:
+      'The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderControlDefault: {
+    description: 'The default border color of form controls. For example: radio buttons and checkboxes.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderControlDisabled: {
+    description: 'The border color of disabled form controls. For example: disabled radio buttons and checkboxes.',
+  },
+  colorBorderDividerDefault: {
+    description:
+      'The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderDividerNotification: {
+    description: 'The border color for dividers inside flash messages and alerts.',
+    public: false,
+    themeable: false,
+  },
+  colorBorderDividerSecondary: {
+    description: 'The border color for row dividers. For example: row dividers for table and collection preferences.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderDropdownContainer: {
+    description:
+      'The border color of the dropdown container. For example: border color of the dropdown container in button dropdown, select, and multi-select.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderPopover: {
+    description: 'The border color of the popover.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderDropdownItemHover: {
+    description:
+      'The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderControlGroupDefault: {
+    description:
+      'The default border color of control group action buttons that sit next to form inputs. Independent from the input border color.',
+    public: false,
+    themeable: false,
+  },
+  colorBorderInputDefault: {
+    description:
+      'The default border color of form inputs. For example: input, textarea, autosuggest, datepicker, select, and multiselect.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderItemFocused: {
+    description: 'The color of focus states. For example: the focus ring around interactive elements.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderInputFocused: {
+    description:
+      'The color of focus states for form inputs. For example: input, textarea, autosuggest, datepicker, select, and multiselect.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderItemPlaceholder: {
+    description: 'The border color for dividers.',
+  },
+  colorBorderItemSelected: {
+    description:
+      'The border color of a selected item. For example: tokens, selected table rows, selected cards, and selected tile borders.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderDropdownItemFocused: {
+    description:
+      'The color of focus states for dropdown items. For example: the focus ring around selectable elements in the dropdown of button dropdown, select, and multi-select.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderSegmentActive: {
+    description: 'Deprecated - this token is no longer in use.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderSegmentDefault: {
+    description: 'Deprecated - this token is no longer in use.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderSegmentDisabled: {
+    description: 'Deprecated - this token is no longer in use.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderSegmentDivider: {
+    description: 'The color of the dividers between segments in a segmented control.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderSegmentHover: {
+    description: 'Deprecated - this token is no longer in use.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderSegmentWrapper: {
+    description: 'The border color of the segmented control wrapper.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderStatusError: {
+    description: 'The border color of an item in error state. For example: error alerts.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderStatusInfo: {
+    description: 'The border color of an informational item. For example: information alerts.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderStatusSuccess: {
+    description: 'The border color of an item in success state. For example: success alerts.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderStatusWarning: {
+    description: 'The border color of an item in warning state. For example: warning alerts.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderDialog: {
+    description: 'The border color of the feedback/input dialogue box.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderDialogDefault: {
+    description: 'The border color of the Dialog surface.',
+    public: false,
+    themeable: true,
+  },
+  colorBorderLayout: {
+    description: 'The border color of layout elements. For example: toolbar, panel dividers.',
+    public: false,
+    themeable: true,
+  },
+  colorBorderLayoutSideNavigation: {
+    description: 'The border color of the side navigation divider in the app layout.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderTutorial: { description: 'The border color of tutorials in the tutorials list in the tutorial panel.' },
+  colorForegroundControlDefault: {
+    description:
+      'The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.',
+    public: true,
+    themeable: true,
+  },
+  colorForegroundControlDisabled: {
+    description:
+      'The color used to mark disabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.',
+    public: true,
+    themeable: true,
+  },
+  colorForegroundControlReadOnly: {
+    description:
+      'The color used to mark readonly form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.',
+    public: true,
+    themeable: true,
+  },
+  colorTextAccent: {
+    description:
+      'The accent text color used to guide a user. For example: the highlighted page in the side navigation, active tab text, selected day text color in date picker, and hover state in expandable section.',
+    public: true,
+    themeable: true,
+  },
+  colorTextBodyDefault: {
+    description:
+      'The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.',
+    public: true,
+    themeable: true,
+  },
+  colorTextBodySecondary: {
+    description:
+      'The color of text that is secondary to base text. For example: text in the navigation and tools panels.',
+    public: true,
+    themeable: true,
+  },
+  colorTextBreadcrumbCurrent: {
+    description: 'The text color that marks the breadcrumb item for the page the user is currently viewing.',
+    themeable: true,
+    public: true,
+  },
+  colorTextBreadcrumbIcon: {
+    description: 'The color used for the icon delimiter between breadcrumb items.',
+    themeable: true,
+    public: true,
+  },
+  colorTextCalendarDateSelected: {
+    description: 'The text color of selected dates in the calendar.',
+    themeable: true,
+    public: true,
+  },
+  colorTextButtonInlineIconDefault: {
+    description: 'The default color of inline button icons.',
+    themeable: true,
+    public: true,
+  },
+  colorTextButtonInlineIconDisabled: {
+    description: 'The color of inline button icons in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorTextButtonInlineIconHover: {
+    description: 'The color of inline button icons in hover state.',
+    themeable: true,
+    public: true,
+  },
+  colorTextButtonInlineLinkHover: {
+    description: 'The hover text color of inline link buttons.',
+    themeable: true,
+    public: false,
+  },
+  colorTextButtonIconHover: {
+    description: 'The hover color of icon buttons.',
+    themeable: true,
+    public: false,
+  },
+  colorTextButtonNormalActive: {
+    description: 'The active text color of normal buttons. For example: Active text color in normal and link buttons.',
+    themeable: true,
+    public: true,
+  },
+  colorTextToggleButtonNormalPressed: {
+    description: 'The pressed text color of normal toggle buttons.',
+    themeable: true,
+    public: true,
+  },
+  colorTextButtonNormalDefault: {
+    description: 'The default text color of normal buttons.',
+    themeable: true,
+    public: true,
+  },
+  colorTextButtonNormalHover: {
+    description: 'The hover text color of normal buttons.',
+    themeable: true,
+    public: true,
+  },
+  colorTextButtonPrimaryActive: {
+    description: 'The active text color of primary buttons.',
+    themeable: true,
+    public: true,
+  },
+  colorTextLinkButtonNormalDefault: {
+    description: 'The default text color of link buttons.',
+    themeable: true,
+    public: false,
+  },
+  colorTextLinkButtonNormalHover: {
+    description: 'The hover text color of link buttons.',
+    themeable: true,
+    public: false,
+  },
+  colorTextLinkButtonNormalActive: {
+    description: 'The active text color of link buttons.',
+    themeable: true,
+    public: false,
+  },
+  colorTextButtonLinkActive: {
+    description: 'The text color of link buttons in active state.',
+    themeable: true,
+    public: true,
+  },
+  colorTextButtonLinkDefault: {
+    description: 'The default text color of link buttons.',
+    themeable: true,
+    public: true,
+  },
+  colorTextButtonLinkHover: {
+    description: 'The text color of link buttons in hover state.',
+    themeable: true,
+    public: true,
+  },
+  colorTextButtonLinkDisabled: {
+    description: 'The text color of link buttons in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorTextButtonPrimaryDefault: {
+    description: 'The default text color of primary buttons.',
+    themeable: true,
+    public: true,
+  },
+  colorTextButtonPrimaryHover: {
+    description: 'The hover text color of primary buttons.',
+    themeable: true,
+    public: true,
+  },
+  colorTextControlDisabled: {
+    description:
+      'The text color of a disabled control. For example: the label and description on a disabled checkbox, radio button, or toggle.',
+  },
+  colorTextCounter: {
+    description: 'The default color for counters. For example: counters in table headers',
+    themeable: true,
+    public: true,
+  },
+  colorTextDropdownFooter: {
+    description:
+      'The default color of dropdown footer text. For example: end of results text in an asynchrounous select and autosuggest.',
+  },
+  colorTextDropdownItemDefault: {
+    description:
+      'The default text color of dropdown items. For example: label and label tag text color for autosuggest, select, and multiselect.',
+    themeable: true,
+    public: true,
+  },
+  colorTextDropdownItemDisabled: {
+    description:
+      'The text color of disabled dropdown items. For example: label, label tag, description, and tag text color of a disabled item in a select, multiselect, and autosuggest.',
+    themeable: true,
+    public: true,
+  },
+  colorTextDropdownItemFilterMatch: {
+    description:
+      "The color of text matching a user's query. For example: the text matching a query entered into a table filter, select, multiselect, or autosuggest.",
+    public: true,
+    themeable: true,
+  },
+  colorTextDropdownItemHighlighted: {
+    description:
+      'The text color of hovered or selected dropdown items. For example: label text color of the item on hover in a select, multiselect, and autosuggest.',
+    public: true,
+    themeable: true,
+  },
+  colorTextDropdownItemSecondary: {
+    description:
+      'The text color of secondary information in dropdown items. For example: descriptions and tags text color in a select, multiselect, and autosuggest.',
+    public: true,
+    themeable: true,
+  },
+  colorTextEmpty: {
+    description:
+      'The color of text in non-dropdown empty states. For example: tables, card collections, and attribute editor empty state text.',
+    public: true,
+    themeable: true,
+  },
+  colorTextExpandableSectionDefault: {
+    description: 'The default color of the expandable section header text.',
+    public: true,
+    themeable: true,
+  },
+  colorTextExpandableSectionHover: {
+    description: 'The color of the expandable section header text in hover state.',
+    public: true,
+    themeable: true,
+  },
+  colorTextExpandableSectionNavigationIconDefault: {
+    description: 'The default color of the expand icon in the navigation variant of the expandable section.',
+    public: true,
+    themeable: true,
+  },
+  colorTextFlashbarIconError: {
+    description: 'The icon color inside error flash messages.',
+    public: false,
+    themeable: false,
+  },
+  colorTextFlashbarIconInfo: {
+    description: 'The icon color inside info and in-progress flash messages.',
+    public: false,
+    themeable: false,
+  },
+  colorTextFlashbarIconSuccess: {
+    description: 'The icon color inside success flash messages.',
+    public: false,
+    themeable: false,
+  },
+  colorTextFlashbarIconWarning: {
+    description: 'The icon color inside warning flash messages.',
+    public: false,
+    themeable: false,
+  },
+  colorTextFormDefault: {
+    description:
+      'The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.',
+    public: true,
+    themeable: true,
+  },
+  colorTextFormLabel: {
+    description: 'The color of form field labels.',
+    public: false,
+    themeable: true,
+  },
+  colorTextFormSecondary: {
+    description:
+      'The color of secondary text in form fields and controls. For example: the description and constraint text in form fields, the descriptions in checkboxes, radio buttons, toggles, and any additional info in an attribute editor.',
+    public: true,
+    themeable: true,
+  },
+  colorTextGroupLabel: {
+    description:
+      "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
+    public: true,
+    themeable: true,
+  },
+  colorTextLabelGenAi: {
+    description: 'The default color for labels indicating that content is produced by generative AI.',
+    public: true,
+    themeable: false,
+  },
+  colorTextHeadingDefault: {
+    description:
+      'The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.',
+    public: true,
+    themeable: true,
+  },
+  colorTextHeadingSecondary: {
+    description:
+      'The default color for secondary heading text such as page and container descriptions. For example: descriptions in containers such as form sections, tables, and card collections, as well as form page descriptions.',
+    public: true,
+    themeable: true,
+  },
+  colorTextHomeHeaderDefault: {
+    description: "The color of the home header's text, displayed on the Service's home page.",
+    public: true,
+    themeable: true,
+  },
+  colorTextHomeHeaderSecondary: {
+    description: "The color of the home header's secondary text, displayed on the Service's home page.",
+    public: true,
+    themeable: true,
+  },
+  colorTextInputDisabled: {
+    description:
+      'The color of the text value in a disabled input. For example: text in a disabled input, autosuggest, datepicker, and the trigger of a select and multiselect.',
+    public: true,
+    themeable: true,
+  },
+  colorTextInputPlaceholder: {
+    description:
+      'The color of placeholder text in an input. For example: placeholder text in an input, autosuggest, datepicker, and the trigger of a select and multiselect.',
+    public: true,
+    themeable: true,
+  },
+  colorTextInteractiveActive: {
+    description: 'The color of clickable elements in their active state. For example: tabs and icons.',
+    public: true,
+    themeable: true,
+  },
+  colorTextInteractiveDefault: {
+    description: 'The color of clickable elements in their default state. For example: tabs, and icons.',
+    public: true,
+    themeable: true,
+  },
+  colorTextInteractiveDisabled: {
+    description:
+      'The color of clickable elements in their disabled state. For example: disabled tabs, button text, and icons.',
+    public: true,
+    themeable: true,
+  },
+  colorTextInteractiveHover: {
+    description: 'The color of clickable elements on hover. For example: icons on hover.',
+    public: true,
+    themeable: true,
+  },
+  colorTextToggleButtonIconPressed: {
+    description: 'The pressed text color of icon toggle buttons.',
+    public: true,
+    themeable: true,
+  },
+  colorTextInteractiveInvertedDefault: {
+    description:
+      'The default color of clickable elements in the flashbar. For example: The dismiss icon button in a flashbar.',
+    themeable: true,
+    public: true,
+  },
+  colorTextInteractiveInvertedHover: {
+    description:
+      'The hover color of clickable elements in the flashbar. For example: The dismiss icon button in a flashbar.',
+    themeable: true,
+    public: true,
+  },
+  colorTextLayoutToggle: {
+    description: 'The default color of the app layout toggle.',
+    public: true,
+    themeable: true,
+  },
+  colorTextLayoutToggleActive: {
+    description: "The color of the app layout toggle button when it's active.",
+    public: true,
+    themeable: true,
+  },
+  colorTextLayoutToggleHover: {
+    description: 'The color of the app layout toggle button on hover.',
+    public: true,
+    themeable: true,
+  },
+  colorTextLayoutToggleSelected: {
+    description: "The color of the app layout toggle button when it's selected.",
+    public: true,
+    themeable: true,
+  },
+  colorTextLabel: {
+    description:
+      "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
+    public: true,
+    themeable: true,
+  },
+  colorTextKeyValuePairsValue: {
+    description: 'The text color of the value in key-value pairs.',
+    public: false,
+    themeable: true,
+  },
+  colorTextLinkDefault: {
+    description:
+      'The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.',
+    public: true,
+    themeable: true,
+  },
+  colorTextLinkHover: {
+    description:
+      'The hover color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.',
+    public: true,
+    themeable: true,
+  },
+  colorTextLinkDecorationDefault: {
+    description: 'The default color of the text decoration (underline) of links. Defaults to the link text color.',
+    public: true,
+    themeable: true,
+  },
+  colorTextLinkDecorationHover: {
+    description: 'The hover color of the text decoration (underline) of links. Defaults to the link hover text color.',
+    public: true,
+    themeable: true,
+  },
+  colorTextLinkSecondaryDefault: {
+    description:
+      'The default color for secondary links. For example: links with lower visual emphasis or supplementary content.',
+    public: true,
+    themeable: true,
+  },
+  colorTextLinkSecondaryHover: {
+    description:
+      'The hover color for secondary links. For example: links with lower visual emphasis or supplementary content.',
+    public: true,
+    themeable: true,
+  },
+  colorTextLinkSecondaryDecorationDefault: {
+    description: 'The default color of the text decoration (underline) of secondary links.',
+    public: false,
+    themeable: false,
+  },
+  colorTextLinkInfoDefault: {
+    description: 'The default color for info links.',
+    public: true,
+    themeable: true,
+  },
+  colorTextLinkInfoHover: {
+    description: 'The hover color for info links.',
+    public: true,
+    themeable: true,
+  },
+  colorTextLinkInvertedDefault: {
+    description:
+      'The default text color of links rendered on an inverted (dark) surface. For example: a link inside a flashbar.',
+    public: false,
+    themeable: false,
+  },
+  colorTextNotificationDefault: {
+    description: 'Default text color for notifications. For example: the text on badges and flashes.',
+    public: true,
+    themeable: true,
+  },
+  colorTextAlertDefault: {
+    description: 'Default text color inside alerts.',
+    public: false,
+    themeable: false,
+  },
+  colorTextAlertIconError: {
+    description: 'The icon color inside error alerts.',
+    public: false,
+    themeable: false,
+  },
+  colorTextAlertIconInfo: {
+    description: 'The icon color inside info alerts.',
+    public: false,
+    themeable: false,
+  },
+  colorTextAlertIconSuccess: {
+    description: 'The icon color inside success alerts.',
+    public: false,
+    themeable: false,
+  },
+  colorTextAlertIconWarning: {
+    description: 'The icon color inside warning alerts.',
+    public: false,
+    themeable: false,
+  },
+  colorTextNotificationLinkDefault: {
+    description: 'The default text color of links inside flash messages and alerts.',
+    public: false,
+    themeable: false,
+  },
+  colorTextNotificationLinkHover: {
+    description: 'The text color of hovered links inside flash messages and alerts.',
+    public: false,
+    themeable: false,
+  },
+  colorTextNotificationYellow: {
+    description: 'The text and foreground color used on warning flash messages (yellow notification surface).',
+    public: true,
+    themeable: true,
+  },
+  colorTextSegmentActive: {
+    description: 'The text color of the active segment in a segmented control.',
+    public: true,
+    themeable: true,
+  },
+  colorTextSegmentDefault: {
+    description: 'The text color of inactive segments in a segmented control.',
+    public: true,
+    themeable: true,
+  },
+  colorTextSegmentHover: {
+    description: 'The text color of inactive segments in a segmented control on hover.',
+    public: true,
+    themeable: true,
+  },
+  colorTextStatusError: {
+    description: 'The color of error text and icons. For example: form field error text and error status indicators.',
+    public: true,
+    themeable: true,
+  },
+  colorTextStatusInactive: {
+    description:
+      'The color of inactive and loading text and icons. For example: table and card collection loading states icon and text and inactive and pending status indicators.',
+    public: true,
+    themeable: true,
+  },
+  colorTextStatusInfo: {
+    description: 'The color of info text and icons. For example: info status indicators and info alert icon.',
+    public: true,
+    themeable: true,
+  },
+  colorTextStatusSuccess: {
+    description: 'The color of success text and icons. For example: success status indicators and success alert icon.',
+    public: true,
+    themeable: true,
+  },
+  colorTextStatusWarning: {
+    description: 'The color of warning icons.',
+    themeable: true,
+    public: true,
+  },
+  colorTextTopNavigationTitle: {
+    description: 'The color of the title in the top navigation.',
+    public: true,
+    themeable: true,
+  },
+  colorTreeViewConnectorLine: {
+    description: 'The color of the tree view connector lines.',
+    public: true,
+    themeable: true,
+  },
+  colorBoardPlaceholderActive: {
+    description: 'The color of board placeholder in active state.',
+    themeable: false,
+    public: true,
+  },
+  colorBoardPlaceholderHover: {
+    description: 'The color of board placeholder in hovered state.',
+    themeable: false,
+    public: true,
+  },
+  colorDragPlaceholderActive: {
+    description: 'The color of drag placeholder in active state.',
+    themeable: false,
+    public: true,
+  },
+  colorDragPlaceholderHover: {
+    description: 'The color of drag placeholder in hovered state.',
+    themeable: false,
+    public: true,
+  },
+  colorDropzoneBackgroundDefault: {
+    description: 'The default color of file upload dropzone background.',
+    themeable: true,
+    public: true,
+  },
+  colorDropzoneBackgroundHover: {
+    description: 'The color of file upload dropzone background in hovered state.',
+    themeable: true,
+    public: true,
+  },
+  colorDropzoneTextDefault: {
+    description: 'The default color of file upload dropzone text.',
+    themeable: true,
+    public: true,
+  },
+  colorDropzoneTextHover: {
+    description: 'The color of file upload dropzone text in hovered state.',
+    themeable: true,
+    public: true,
+  },
+  colorDropzoneBorderDefault: {
+    description: 'The default color of file upload dropzone border.',
+    themeable: true,
+    public: true,
+  },
+  colorDropzoneBorderHover: {
+    description: 'The color of file upload dropzone border in hovered state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundActionCardDefault: {
+    description: 'The default background color of action cards.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundActionCardHover: {
+    description: 'The background color of action cards in hover state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundActionCardActive: {
+    description: 'The background color of action cards in active state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundActionCardDisabled: {
+    description: 'The background color of action cards in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderActionCardDefault: {
+    description: 'The default border color of action cards.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderActionCardHover: {
+    description: 'The border color of action cards in hover state.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderActionCardActive: {
+    description: 'The border color of action cards in active state.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderActionCardDisabled: {
+    description: 'The border color of action cards in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorTextActionCardDisabled: {
+    description: 'The text color of action cards in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorTextActionCardIconDefault: {
+    description: 'The default color of icons in action cards.',
+    themeable: true,
+    public: true,
+  },
+  colorTextActionCardIconHover: {
+    description: 'The color of icons in action cards in hover state.',
+    themeable: true,
+    public: true,
+  },
+  colorTextActionCardIconActive: {
+    description: 'The color of icons in action cards in active state.',
+    themeable: true,
+    public: true,
+  },
+  colorTextActionCardIconDisabled: {
+    description: 'The color of icons in action cards in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorTextIconSubtle: {
+    description: 'The color of subtle icons. For example: secondary icons with lower visual emphasis.',
+    public: true,
+    themeable: true,
+  },
+  colorBackgroundStatusIndicatorError: {
+    description: 'The background color of the status indicator in error state.',
+    public: false,
+    themeable: true,
+  },
+  colorBackgroundStatusIndicatorWarning: {
+    description: 'The background color of the status indicator in warning state.',
+    public: false,
+    themeable: true,
+  },
+  colorBackgroundStatusIndicatorSuccess: {
+    description: 'The background color of the status indicator in success state.',
+    public: false,
+    themeable: true,
+  },
+  colorBackgroundStatusIndicatorInfo: {
+    description: 'The background color of the status indicator in info state.',
+    public: false,
+    themeable: true,
+  },
+  colorBackgroundStatusIndicatorNeutral: {
+    description:
+      'The background color of the status indicator in neutral state. For example: stopped, pending, in-progress, loading, and not-started statuses.',
+    public: false,
+    themeable: true,
+  },
+  colorBorderExpandableSectionDefault: {
+    description: 'The border color of the expandable section divider shown when the section is expanded.',
+    themeable: true,
+    public: false,
+  },
+  colorBackgroundBadgeGreen: {
+    description: 'The background color of green badges.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundBadgeBlue: {
+    description: 'The background color of blue badges.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundBadgeRed: {
+    description: 'The background color of red badges.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundBadgeYellow: {
+    description: 'The background color of yellow badges.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundBadgeGrey: {
+    description: 'The background color of grey badges.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderBadge: {
+    description: 'The default border color of badges.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderBadgeGrey: {
+    description: 'The border color of grey badges.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderBadgeGreen: {
+    description: 'The border color of green badges.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderBadgeBlue: {
+    description: 'The border color of blue badges.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderBadgeRed: {
+    description: 'The border color of red badges.',
+    themeable: true,
+    public: true,
+  },
+  colorTextBadgeGrey: {
+    description: 'The text color of grey badges.',
+    themeable: true,
+    public: true,
+  },
+  colorTextBadgeGreen: {
+    description: 'The text color of green badges.',
+    themeable: true,
+    public: true,
+  },
+  colorTextBadgeBlue: {
+    description: 'The text color of blue badges.',
+    themeable: true,
+    public: true,
+  },
+  colorTextBadgeRed: {
+    description: 'The text color of red badges.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundCodeView: {
+    description: 'The background color of the code view component.',
+    themeable: true,
+    public: true,
+  },
+  colorBorderCodeView: {
+    description: 'The border color of the code view component.',
+    themeable: true,
+    public: true,
+  },
+};
+
+export default metadata;

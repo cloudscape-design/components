@@ -1,0 +1,411 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+import { act, render } from '@testing-library/react';
+
+import AppLayout from '../../../lib/components/app-layout';
+import { metrics } from '../../../lib/components/internal/metrics';
+import * as awsuiWidgetPlugins from '../../../lib/components/internal/plugins/widget';
+import * as awsuiWidgetInternal from '../../../lib/components/internal/plugins/widget/core';
+import { DrawerPayload } from '../../../lib/components/internal/plugins/widget/interfaces';
+import createWrapper from '../../../lib/components/test-utils/dom';
+import { describeEachAppLayout, getGlobalDrawersTestUtils } from './utils';
+
+const drawerDefaults: DrawerPayload = {
+  id: 'test',
+  ariaLabels: {},
+  trigger: { customIcon: 'custom icon' },
+  mountContent: container => (container.textContent = 'widgetized drawer content'),
+  unmountContent: () => {},
+};
+
+beforeEach(() => {
+  awsuiWidgetInternal.clearInitialMessages();
+  jest.resetAllMocks();
+});
+
+jest.mock('@cloudscape-design/component-toolkit', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit'),
+  useContainerQuery: () => [1300, () => {}],
+}));
+
+function renderComponent(jsx: React.ReactElement) {
+  const { container, rerender, ...rest } = render(jsx);
+  const wrapper = createWrapper(container).findAppLayout()!;
+  const globalDrawersWrapper = getGlobalDrawersTestUtils(wrapper);
+  return {
+    wrapper,
+    globalDrawersWrapper,
+    rerender,
+    ...rest,
+  };
+}
+
+describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
+  test('renders ai drawer when registered', () => {
+    awsuiWidgetPlugins.registerLeftDrawer(drawerDefaults);
+    const { globalDrawersWrapper } = renderComponent(<AppLayout />);
+
+    expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)).toBeFalsy();
+    expect(globalDrawersWrapper.findAiDrawerTrigger()).toBeTruthy();
+
+    globalDrawersWrapper.findAiDrawerTrigger()!.click();
+
+    expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
+  });
+
+  test('dedup ai drawer when registered in nested app layouts', () => {
+    awsuiWidgetPlugins.registerLeftDrawer({ ...drawerDefaults, defaultActive: true });
+    const { globalDrawersWrapper } = renderComponent(<AppLayout content={<AppLayout />} />);
+
+    expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
+    expect(globalDrawersWrapper.findActiveDrawers().length).toBe(1);
+  });
+
+  test('isAppLayoutReady returns true when app layout is ready', async () => {
+    expect(awsuiWidgetPlugins.isAppLayoutReady()).toBe(false);
+    const { rerender } = renderComponent(<AppLayout />);
+
+    expect(awsuiWidgetPlugins.isAppLayoutReady()).toBe(true);
+    await expect(awsuiWidgetPlugins.whenAppLayoutReady()).resolves.toBe(undefined);
+
+    rerender(<></>);
+
+    expect(awsuiWidgetPlugins.isAppLayoutReady()).toBe(false);
+  });
+
+  test('whenAppLayoutReady resolves when app layout is ready', async () => {
+    const readyPromise = awsuiWidgetPlugins.whenAppLayoutReady();
+
+    let isResolved = false;
+    readyPromise.then(() => {
+      isResolved = true;
+    });
+
+    expect(isResolved).toBe(false);
+
+    const { rerender } = renderComponent(<AppLayout />);
+
+    rerender(<></>);
+
+    await readyPromise;
+    expect(isResolved).toBe(true);
+  });
+
+  test('adds ai drawer to an already rendered component', () => {
+    const { globalDrawersWrapper } = renderComponent(<AppLayout />);
+    expect(globalDrawersWrapper.findAiDrawerTrigger()).toBeFalsy();
+
+    act(() => awsuiWidgetPlugins.registerLeftDrawer(drawerDefaults));
+    expect(globalDrawersWrapper.findAiDrawerTrigger()).toBeTruthy();
+  });
+
+  test('should render custom header in global-ai drawer', () => {
+    awsuiWidgetPlugins.registerLeftDrawer({
+      ...drawerDefaults,
+      mountHeader: container => {
+        container.innerHTML = 'custom header';
+      },
+      unmountHeader: () => {},
+    });
+    const { globalDrawersWrapper } = renderComponent(<AppLayout />);
+
+    globalDrawersWrapper.findAiDrawerTrigger()!.click();
+    expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.getElement()).toHaveTextContent('custom header');
+  });
+
+  test('can update drawer config dynamically for left drawer', () => {
+    awsuiWidgetPlugins.registerLeftDrawer(drawerDefaults);
+    const { globalDrawersWrapper } = renderComponent(<AppLayout />);
+
+    expect(globalDrawersWrapper.findAiDrawerTrigger()!.getElement()).not.toHaveAttribute('aria-label');
+    act(() =>
+      awsuiWidgetPlugins.updateDrawer({
+        type: 'updateDrawerConfig',
+        payload: { id: drawerDefaults.id, ariaLabels: { triggerButton: 'trigger button label' } },
+      })
+    );
+
+    expect(globalDrawersWrapper.findAiDrawerTrigger()!.getElement()).toHaveAttribute(
+      'aria-label',
+      'trigger button label'
+    );
+  });
+
+  test('updated config should persist between application remounts', () => {
+    awsuiWidgetPlugins.registerLeftDrawer({ ...drawerDefaults, defaultActive: false });
+    const { globalDrawersWrapper: globalDrawersWrapperInitial, unmount } = renderComponent(<AppLayout />);
+
+    expect(globalDrawersWrapperInitial.findDrawerById(drawerDefaults.id)).toBeFalsy();
+
+    act(() =>
+      awsuiWidgetPlugins.updateDrawer({
+        type: 'updateDrawerConfig',
+        payload: { id: drawerDefaults.id, defaultActive: true },
+      })
+    );
+
+    unmount();
+
+    const { globalDrawersWrapper } = renderComponent(<AppLayout />);
+
+    expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
+  });
+
+  test('can update drawer config dynamically for bottom drawer', () => {
+    awsuiWidgetPlugins.registerBottomDrawer(drawerDefaults);
+    const { wrapper } = renderComponent(<AppLayout />);
+
+    expect(wrapper.findDrawerTriggerById(drawerDefaults.id)!.getElement()).not.toHaveAttribute('aria-label');
+    act(() =>
+      awsuiWidgetPlugins.updateDrawer({
+        type: 'updateDrawerConfig',
+        payload: { id: drawerDefaults.id, ariaLabels: { triggerButton: 'trigger button label' } },
+      })
+    );
+
+    expect(wrapper.findDrawerTriggerById(drawerDefaults.id)!.getElement()).toHaveAttribute(
+      'aria-label',
+      'trigger button label'
+    );
+  });
+
+  test('should open global ai drawer by default when defaultActive is set', () => {
+    awsuiWidgetPlugins.registerLeftDrawer({
+      ...drawerDefaults,
+      defaultActive: true,
+    });
+
+    const { globalDrawersWrapper } = renderComponent(<AppLayout />);
+
+    expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
+  });
+
+  test('should open global ai drawer by default if it is dynamically registered', () => {
+    const { globalDrawersWrapper } = renderComponent(<AppLayout />);
+
+    awsuiWidgetPlugins.registerLeftDrawer({
+      ...drawerDefaults,
+      defaultActive: true,
+    });
+
+    expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
+  });
+
+  test('should open global ai drawer via API', () => {
+    awsuiWidgetPlugins.registerLeftDrawer(drawerDefaults);
+
+    const { globalDrawersWrapper } = renderComponent(<AppLayout />);
+    expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)).toBeFalsy();
+
+    act(() => awsuiWidgetPlugins.updateDrawer({ type: 'openDrawer', payload: { id: drawerDefaults.id } }));
+
+    expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
+  });
+
+  test('should enter and exit focus mode in global ai drawer via API', () => {
+    awsuiWidgetPlugins.registerLeftDrawer({ ...drawerDefaults, isExpandable: true, defaultActive: true });
+
+    const { globalDrawersWrapper } = renderComponent(<AppLayout />);
+    expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)).toBeTruthy();
+
+    act(() => awsuiWidgetPlugins.updateDrawer({ type: 'expandDrawer', payload: { id: drawerDefaults.id } }));
+
+    expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isDrawerInExpandedMode()).toBe(true);
+    expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(true);
+
+    act(() => awsuiWidgetPlugins.updateDrawer({ type: 'exitExpandedMode' }));
+
+    expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isDrawerInExpandedMode()).toBe(false);
+    expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
+  });
+
+  test('onResize functionality', () => {
+    const onResize = jest.fn();
+    awsuiWidgetPlugins.registerLeftDrawer({
+      ...drawerDefaults,
+      resizable: true,
+      onResize: event => onResize(event.detail),
+    });
+    const { wrapper, globalDrawersWrapper } = renderComponent(<AppLayout />);
+    globalDrawersWrapper.findAiDrawerTrigger()!.click();
+
+    if (size === 'mobile') {
+      expect(wrapper.findActiveDrawerResizeHandle()).toBeFalsy();
+    } else {
+      const handle = wrapper.findActiveDrawerResizeHandle()!;
+      handle.fireEvent(new MouseEvent('pointerdown', { bubbles: true }));
+      handle.fireEvent(new MouseEvent('pointermove', { bubbles: true }));
+      handle.fireEvent(new MouseEvent('pointerup', { bubbles: true }));
+
+      expect(onResize).toHaveBeenCalledWith({ size: expect.any(Number), id: drawerDefaults.id });
+    }
+  });
+
+  test.each(['standard', 'custom', 'custom-invalid'] as const)(
+    'should exit focus mode by clicking on a %s exit button in the AI global drawer',
+    type => {
+      awsuiWidgetPlugins.registerLeftDrawer({
+        ...drawerDefaults,
+        ariaLabels: {
+          exitExpandedModeButton: 'exitExpandedModeButton',
+        },
+        isExpandable: true,
+        ...(type === 'custom' && {
+          exitExpandedModeTrigger: {
+            customIcon: `
+              <svg width="94" height="24" viewBox="0 0 94 24" fill="none" focusable="false" aria-hidden="true"></svg>
+            `,
+          },
+        }),
+        ...(type === 'custom-invalid' && {
+          exitExpandedModeTrigger: {},
+        }),
+      });
+      const { globalDrawersWrapper } = renderComponent(<AppLayout />);
+
+      globalDrawersWrapper.findAiDrawerTrigger()!.click();
+      if (size === 'mobile') {
+        expect(globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerDefaults.id)).toBeFalsy();
+      } else {
+        createWrapper().findButtonGroup()!.findButtonById('expand')!.click();
+        expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isDrawerInExpandedMode()).toBe(true);
+        expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(true);
+        globalDrawersWrapper.findLeaveExpandedModeButtonInAIDrawer()!.click();
+        expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
+      }
+    }
+  );
+
+  test(`calls onToggleFocusMode handler by entering / exiting focus mode in left runtime drawer)`, () => {
+    const drawerId = 'global-drawer';
+    const onToggleFocusMode = jest.fn();
+    awsuiWidgetPlugins.registerLeftDrawer({
+      ...drawerDefaults,
+      id: drawerId,
+      isExpandable: true,
+      onToggleFocusMode: event => onToggleFocusMode(event.detail),
+    });
+    const renderProps = renderComponent(<AppLayout />);
+    const { globalDrawersWrapper } = renderProps;
+
+    globalDrawersWrapper.findAiDrawerTrigger()!.click();
+    if (size === 'mobile') {
+      expect(globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)).toBeFalsy();
+    } else {
+      createWrapper().findButtonGroup()!.findButtonById('expand')!.click();
+      expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInExpandedMode()).toBe(true);
+      expect(onToggleFocusMode).toHaveBeenCalledWith({ isExpanded: true });
+      createWrapper().findButtonGroup()!.findButtonById('expand')!.click();
+      expect(globalDrawersWrapper.isLayoutInDrawerExpandedMode()).toBe(false);
+      expect(onToggleFocusMode).toHaveBeenCalledWith({ isExpanded: false });
+    }
+  });
+
+  describe('left drawer without toolbar', () => {
+    test('should not render left drawer when toolbar is not present', () => {
+      awsuiWidgetPlugins.registerLeftDrawer({ ...drawerDefaults, trigger: undefined, defaultActive: true });
+      const { globalDrawersWrapper, wrapper } = renderComponent(<AppLayout navigationHide={true} toolsHide={true} />);
+
+      expect(wrapper.findToolbar()).toBeFalsy();
+      expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)).toBeFalsy();
+    });
+
+    test('should render left drawer when toolbar is not present (__forceEnableRuntimeMessages is provided)', () => {
+      awsuiWidgetPlugins.registerLeftDrawer({ ...drawerDefaults, trigger: undefined, defaultActive: true });
+      const { globalDrawersWrapper, wrapper } = renderComponent(
+        <AppLayout {...{ __forceEnableRuntimeMessages: true }} navigationHide={true} toolsHide={true} />
+      );
+
+      expect(wrapper.findToolbar()).toBeFalsy();
+      expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
+    });
+
+    test('should open left drawer via API when toolbar is not present (__forceEnableRuntimeMessages is provided)', () => {
+      awsuiWidgetPlugins.registerLeftDrawer({ ...drawerDefaults, trigger: undefined });
+      const { globalDrawersWrapper, wrapper } = renderComponent(
+        <AppLayout {...{ __forceEnableRuntimeMessages: true }} navigationHide={true} toolsHide={true} />
+      );
+
+      expect(wrapper.findToolbar()).toBeFalsy();
+      expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)).toBeFalsy();
+
+      act(() => awsuiWidgetPlugins.updateDrawer({ type: 'openDrawer', payload: { id: drawerDefaults.id } }));
+
+      expect(globalDrawersWrapper.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
+    });
+
+    test('should render left drawer when toolbar is not present and has a nested app layout (__forceEnableRuntimeMessages is provided)', () => {
+      awsuiWidgetPlugins.registerLeftDrawer({ ...drawerDefaults, trigger: undefined, defaultActive: true });
+      const { container } = render(
+        <AppLayout
+          {...{ __forceEnableRuntimeMessages: true }}
+          data-testid="outer"
+          navigationHide={true}
+          toolsHide={true}
+          content={<AppLayout data-testid="inner" navigationHide={true} toolsHide={true} />}
+        />
+      );
+
+      const outerWrapper = createWrapper(container).find('[data-testid="outer"]')!.findAppLayout()!;
+      const innerWrapper = createWrapper(container).find('[data-testid="inner"]')!.findAppLayout()!;
+      const outerDrawersUtils = getGlobalDrawersTestUtils(outerWrapper);
+      const innerDrawersUtils = getGlobalDrawersTestUtils(innerWrapper);
+
+      expect(outerWrapper.findToolbar()).toBeFalsy();
+      expect(innerWrapper.findToolbar()).toBeFalsy();
+      expect(outerDrawersUtils.findDrawerById(drawerDefaults.id)!.isActive()).toBe(true);
+      expect(outerDrawersUtils.findActiveDrawers().length).toBe(1);
+      expect(innerDrawersUtils.findDrawerById(drawerDefaults.id)).toBeFalsy();
+      expect(innerDrawersUtils.findActiveDrawers().length).toBe(0);
+    });
+  });
+
+  describe('metrics', () => {
+    let sendPanoramaMetricSpy: jest.SpyInstance;
+    beforeEach(() => {
+      sendPanoramaMetricSpy = jest.spyOn(metrics, 'sendOpsMetricObject').mockImplementation(() => {});
+    });
+
+    test('should report ops metric when unknown id is provided (openDrawer)', () => {
+      awsuiWidgetPlugins.registerLeftDrawer(drawerDefaults);
+      renderComponent(<AppLayout />);
+
+      act(() => awsuiWidgetPlugins.updateDrawer({ type: 'openDrawer', payload: { id: 'unknown' } }));
+
+      expect(sendPanoramaMetricSpy).toHaveBeenCalledWith('awsui-widget-drawer-incorrect-id', {
+        id: 'unknown',
+        type: 'openDrawer',
+        aiDrawer: 'test',
+        bottomDrawers: '',
+      });
+    });
+
+    test('should report ops metric when unknown id is provided (expandDrawer)', () => {
+      awsuiWidgetPlugins.registerLeftDrawer(drawerDefaults);
+      renderComponent(<AppLayout />);
+
+      act(() => awsuiWidgetPlugins.updateDrawer({ type: 'expandDrawer', payload: { id: 'unknown' } }));
+
+      expect(sendPanoramaMetricSpy).toHaveBeenCalledWith('awsui-widget-drawer-incorrect-id', {
+        id: 'unknown',
+        type: 'expandDrawer',
+        aiDrawer: 'test',
+        bottomDrawers: '',
+      });
+    });
+
+    test('should report ops metric when no id is provided', () => {
+      awsuiWidgetPlugins.registerLeftDrawer(drawerDefaults);
+      renderComponent(<AppLayout />);
+
+      act(() => awsuiWidgetPlugins.updateDrawer({ type: 'openDrawer' } as any));
+
+      expect(sendPanoramaMetricSpy).toHaveBeenCalledWith('awsui-widget-drawer-incorrect-payload', {
+        type: 'openDrawer',
+        aiDrawer: 'test',
+        bottomDrawers: '',
+      });
+    });
+  });
+});

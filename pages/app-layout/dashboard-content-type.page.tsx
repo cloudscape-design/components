@@ -1,0 +1,61 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useEffect, useRef, useState } from 'react';
+
+import AppLayout, { AppLayoutProps } from '~components/app-layout';
+import Button from '~components/button';
+import Header from '~components/header';
+import SpaceBetween from '~components/space-between';
+import SplitPanel from '~components/split-panel';
+
+import ScreenshotArea from '../utils/screenshot-area';
+import { Breadcrumbs, Containers, Navigation, Tools } from './utils/content-blocks';
+import labels from './utils/labels';
+import { discreetSplitPanelI18nStrings } from './utils/strings';
+import * as toolsContent from './utils/tools-content';
+
+export default function () {
+  const [splitPanelOpen, setSplitPanelOpen] = useState(false);
+  const appLayoutRef = useRef<AppLayoutProps.Ref>(null);
+
+  useEffect(() => {
+    if (splitPanelOpen) {
+      appLayoutRef.current!.focusSplitPanel();
+    }
+  }, [splitPanelOpen]);
+
+  return (
+    <ScreenshotArea gutters={false}>
+      <AppLayout
+        ref={appLayoutRef}
+        contentType="dashboard"
+        ariaLabels={labels}
+        breadcrumbs={<Breadcrumbs />}
+        navigation={<Navigation />}
+        tools={<Tools>{toolsContent.long}</Tools>}
+        content={
+          <SpaceBetween size="m">
+            <Header variant="h1" actions={<Button onClick={() => setSplitPanelOpen(true)}>Add widget</Button>}>
+              Dashboard page
+            </Header>
+            <Containers />
+          </SpaceBetween>
+        }
+        splitPanelPreferences={{ position: 'side' }}
+        onSplitPanelPreferencesChange={() => {}}
+        splitPanelOpen={splitPanelOpen}
+        splitPanel={
+          <SplitPanel
+            header="Add something"
+            closeBehavior="hide"
+            hidePreferencesButton={true}
+            i18nStrings={discreetSplitPanelI18nStrings}
+          >
+            Hello!
+          </SplitPanel>
+        }
+        onSplitPanelToggle={event => setSplitPanelOpen(event.detail.open)}
+      />
+    </ScreenshotArea>
+  );
+}

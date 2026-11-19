@@ -1,0 +1,83 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../../internal/styles' as styles;
+@use '../../../internal/styles/tokens' as awsui;
+@use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../../constants.scss' as constants;
+
+$collapsed-width: var(#{custom-props.$navigationCollapsedWidth}, awsui.$size-side-navigation-collapsed-width);
+
+.hide-navigation {
+  position: absolute;
+  inset-inline-end: awsui.$space-m;
+  inset-block-start: constants.$toolbar-vertical-panel-icon-offset;
+}
+
+// This wrapper clips the actual navigation content during the enter animation.
+.navigation-container {
+  position: sticky;
+  z-index: constants.$drawer-z-index;
+  background-color: awsui.$color-background-layout-panel-content;
+  inset-block-end: 0;
+  overflow-x: hidden;
+  word-wrap: break-word;
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+
+  & > .navigation {
+    flex-grow: 1;
+    block-size: 100%;
+    overflow-y: auto;
+    /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+    overscroll-behavior-y: contain;
+    // Needs to have a fixed width during the enter animation, in which it will be cropped by its parent.
+    inline-size: var(#{custom-props.$navigationWidth});
+    // Necessary for the hide-navigation button to be positioned correctly when a scrollbar is present.
+    position: relative;
+  }
+
+  // Closed panel: collapsed to zero width and removed from the layout so its
+  // focusable children are no longer reachable. The .is-navigation-collapsed
+  // rule below overrides this to render the icon rail instead.
+  &:not(.is-navigation-open) {
+    inline-size: 0px;
+    display: none;
+  }
+
+  // Closed but showing the collapsed icon rail. This class is only ever set while
+  // the panel is closed, so it always overrides the rule above (equal specificity,
+  // later in source order).
+  &.is-navigation-collapsed {
+    display: flex;
+    align-items: center;
+    inline-size: $collapsed-width;
+
+    & > .navigation {
+      inline-size: $collapsed-width;
+      overflow-x: hidden;
+    }
+
+    // In the rail, replace the top-right close button with a centered expand toggle.
+    & > .navigation > .hide-navigation {
+      display: none;
+
+      &.expand-navigation-toggle {
+        display: flex;
+        position: static;
+        align-items: center;
+        justify-content: center;
+        padding-block: awsui.$space-s;
+      }
+    }
+  }
+
+  // The Navigation drawer will take up the entire viewport on mobile
+  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+    #{custom-props.$navigationWidth}: 100vw;
+    z-index: constants.$drawer-z-index-mobile;
+  }
+}

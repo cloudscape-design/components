@@ -1,0 +1,163 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+
+.axis,
+%axis {
+  stroke: awsui.$color-charts-line-axis;
+  stroke-width: 1px;
+}
+
+.axis--emphasized {
+  stroke-width: 2px;
+}
+
+.axis-label {
+  font-weight: styles.$font-weight-bold;
+  fill: awsui.$color-text-body-default;
+}
+
+.axis-label--x,
+.axis-label--y {
+  /* used in test-utils */
+}
+
+.grid {
+  stroke: awsui.$color-charts-line-grid;
+  stroke-width: 1px;
+}
+
+.ticks__line {
+  stroke: awsui.$color-charts-line-tick;
+  stroke-width: 1px;
+}
+
+.ticks__text {
+  font-size: awsui.$font-chart-detail-size;
+  fill: awsui.$color-text-body-secondary;
+}
+
+.ticks--y,
+.ticks--x {
+  /* used in test-utils */
+}
+
+.ticks--bottom > .ticks__text {
+  text-anchor: middle;
+  dominant-baseline: hanging;
+}
+
+.labels-inline-start > .ticks > .ticks__text {
+  text-anchor: end;
+  dominant-baseline: central;
+}
+
+.labels-inline-start {
+  position: relative;
+  margin-inline-end: 12px;
+
+  > .axis-label {
+    position: absolute;
+    visibility: visible;
+    white-space: nowrap;
+  }
+}
+
+.labels-inline-start__label {
+  position: absolute;
+}
+
+.labels-inline-start--hidden {
+  visibility: hidden;
+
+  > .labels-inline-start__label {
+    position: relative;
+    white-space: nowrap;
+  }
+}
+
+.labels-block-end {
+  position: relative;
+  display: block;
+  inline-size: 100%;
+  overflow: visible;
+}
+
+.vertical-marker {
+  @extend %axis;
+  pointer-events: none;
+}
+
+.vertical-marker-circle {
+  fill: awsui.$color-background-container-content;
+  pointer-events: none;
+  stroke-width: awsui.$border-line-chart-width;
+}
+
+.vertical-marker-circle-active {
+  cursor: pointer;
+  stroke-width: awsui.$border-line-chart-width;
+}
+
+.focus-outline {
+  outline: none;
+  pointer-events: none;
+  fill: none;
+  stroke: awsui.$color-border-item-focused;
+  stroke-width: 2px;
+}
+
+.chart-container {
+  display: flex;
+  inline-size: 100%;
+  flex-direction: column;
+
+  &.fit-height {
+    block-size: 100%;
+    min-block-size: inherit;
+  }
+}
+
+.chart-container-outer {
+  display: flex;
+
+  &.fit-height {
+    flex: 1;
+    &:not(.axis-label + &, &.has-filters) {
+      margin-block-start: calc(0.5 * #{awsui.$font-chart-detail-size});
+    }
+  }
+}
+
+.chart-container-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
+}
+
+.chart-container-plot-wrapper {
+  &.fit-height {
+    display: block;
+    position: relative;
+    flex: 1;
+  }
+}
+
+.chart-container-plot {
+  &.fit-height {
+    display: block;
+    position: absolute;
+    inset: 0;
+  }
+}
+
+.chart-container-bottom-labels {
+  &.fit-height {
+    display: block;
+  }
+}

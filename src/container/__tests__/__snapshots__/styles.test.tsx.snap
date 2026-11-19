@@ -1,0 +1,151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getContentStyles handles all possible style configurations 1`] = `
+{
+  "paddingBlock": undefined,
+  "paddingInline": undefined,
+}
+`;
+
+exports[`getContentStyles handles all possible style configurations 2`] = `
+{
+  "paddingBlock": undefined,
+  "paddingInline": undefined,
+}
+`;
+
+exports[`getContentStyles handles all possible style configurations 3`] = `
+{
+  "paddingBlock": "16px",
+  "paddingInline": "20px",
+}
+`;
+
+exports[`getFooterStyles handles all possible style configurations 1`] = `
+{
+  "borderColor": undefined,
+  "borderWidth": undefined,
+  "paddingBlock": undefined,
+  "paddingInline": undefined,
+}
+`;
+
+exports[`getFooterStyles handles all possible style configurations 2`] = `
+{
+  "borderColor": undefined,
+  "borderWidth": undefined,
+  "paddingBlock": undefined,
+  "paddingInline": undefined,
+}
+`;
+
+exports[`getFooterStyles handles all possible style configurations 3`] = `
+{
+  "borderColor": "#e0e0e0",
+  "borderWidth": "1px",
+  "paddingBlock": "12px",
+  "paddingInline": "20px",
+}
+`;
+
+exports[`getHeaderStyles handles all possible style configurations 1`] = `
+{
+  "paddingBlock": undefined,
+  "paddingInline": undefined,
+}
+`;
+
+exports[`getHeaderStyles handles all possible style configurations 2`] = `
+{
+  "paddingBlock": undefined,
+  "paddingInline": undefined,
+}
+`;
+
+exports[`getHeaderStyles handles all possible style configurations 3`] = `
+{
+  "--awsui-container-style-border-radius-6xj2gg": "8px",
+  "background": "transparent",
+  "paddingBlock": "12px",
+  "paddingInline": "20px",
+}
+`;
+
+exports[`getMediaStyles handles all possible style configurations 1`] = `
+{
+  "borderEndEndRadius": "0px",
+  "borderEndStartRadius": "0px",
+  "borderRadius": undefined,
+}
+`;
+
+exports[`getMediaStyles handles all possible style configurations 2`] = `
+{
+  "borderEndEndRadius": "0px",
+  "borderEndStartRadius": "0px",
+  "borderRadius": undefined,
+}
+`;
+
+exports[`getMediaStyles handles all possible style configurations 3`] = `
+{
+  "borderEndEndRadius": "0px",
+  "borderEndStartRadius": "0px",
+  "borderRadius": "8px",
+}
+`;
+
+exports[`getMediaStyles handles all possible style configurations 4`] = `
+{
+  "borderEndEndRadius": "0px",
+  "borderRadius": undefined,
+  "borderStartEndRadius": "0px",
+}
+`;
+
+exports[`getMediaStyles handles all possible style configurations 5`] = `
+{
+  "borderEndEndRadius": "0px",
+  "borderRadius": undefined,
+  "borderStartEndRadius": "0px",
+}
+`;
+
+exports[`getMediaStyles handles all possible style configurations 6`] = `
+{
+  "borderEndEndRadius": "0px",
+  "borderRadius": "8px",
+  "borderStartEndRadius": "0px",
+}
+`;
+
+exports[`getRootStyles handles all possible style configurations 1`] = `
+{
+  "background": undefined,
+  "borderColor": undefined,
+  "borderWidth": undefined,
+  "boxShadow": undefined,
+  "color": undefined,
+}
+`;
+
+exports[`getRootStyles handles all possible style configurations 2`] = `
+{
+  "background": undefined,
+  "borderColor": undefined,
+  "borderWidth": undefined,
+  "boxShadow": undefined,
+  "color": undefined,
+}
+`;
+
+exports[`getRootStyles handles all possible style configurations 3`] = `
+{
+  "--awsui-container-style-border-radius-6xj2gg": "8px",
+  "background": "#ffffff",
+  "borderColor": "#e0e0e0",
+  "borderWidth": "1px",
+  "boxShadow": "0 1px 3px rgba(0,0,0,0.1)",
+  "color": "#000000",
+}
+`;

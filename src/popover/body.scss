@@ -1,0 +1,71 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+$header-row-margin-block-end: awsui.$space-xs;
+
+.body {
+  @include styles.styles-reset;
+  @include styles.text-flex-wrapping;
+
+  padding-block: awsui.$space-s;
+  padding-inline: awsui.$space-m;
+
+  &-overflow-visible {
+    overflow: visible;
+  }
+
+  &-variant-chart {
+    padding-block: awsui.$space-static-s;
+    padding-inline: awsui.$space-static-s;
+  }
+}
+
+.has-dismiss {
+  display: flex;
+  align-items: baseline;
+}
+
+.dismiss {
+  margin-block: calc(-1 * $header-row-margin-block-end);
+  margin-inline-start: 0;
+  margin-inline-end: calc(-1 * (#{awsui.$space-xxs} + #{awsui.$border-width-popover}));
+  flex: 0 0 auto;
+  order: 1;
+}
+
+.dismiss-control {
+  /* used in test-utils */
+}
+
+.header-row {
+  margin-block-end: $header-row-margin-block-end;
+}
+
+.header {
+  @include styles.text-flex-wrapping;
+  @include styles.font-heading-xs;
+  flex: 1 1 auto;
+
+  /* stylelint-disable-next-line selector-max-type */
+  > h2 {
+    @include styles.font-heading-xs;
+    display: inline;
+  }
+}
+
+.content {
+  @include styles.text-flex-wrapping;
+  // This prevents word-break style of the parent components to have an effect on the popover content.
+  word-break: normal;
+
+  color: awsui.$color-text-body-secondary;
+  flex: 1 1 auto;
+  min-inline-size: 0;
+
+  &-overflow-visible {
+    overflow: visible;
+  }
+}

@@ -1,0 +1,41 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+import { LabelIdentifier } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
+export interface GeneratedAnalyticsMetadataButtonDropdownClick {
+  action: 'click';
+  detail: {
+    label: string;
+    position?: string;
+    id?: string;
+    href?: string;
+  };
+}
+
+export interface GeneratedAnalyticsMetadataButtonDropdownExpand {
+  action: 'expand';
+  detail: {
+    label: string | LabelIdentifier;
+    position?: string;
+    id?: string;
+  };
+}
+
+export interface GeneratedAnalyticsMetadataButtonDropdownCollapse {
+  action: 'collapse';
+  detail: {
+    label: string | LabelIdentifier;
+    position?: string;
+    id?: string;
+  };
+}
+
+export interface GeneratedAnalyticsMetadataButtonDropdownComponent {
+  name: 'awsui.ButtonDropdown';
+  label: string;
+  properties: {
+    variant: string;
+    disabled: string;
+  };
+}

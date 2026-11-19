@@ -1,0 +1,311 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useRef, useState } from 'react';
+import clsx from 'clsx';
+
+import { useResizeObserver, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
+import Dropdown from '../dropdown/internal';
+import { useInternalI18n } from '../i18n/context';
+import { StyleClassNames as InputStyleClassNames } from '../input/internal';
+import { getBaseProps } from '../internal/base-component';
+import { getBreakpointValue } from '../internal/breakpoints';
+import DropdownFooter from '../internal/components/dropdown-footer/index.js';
+import PlainList from '../internal/components/listbox/parts/plain-list';
+import ScreenreaderOnly from '../internal/components/screenreader-only';
+import { ResetGroupedControlContext, useGroupedControlContext } from '../internal/context/control-group-context';
+import { useFormFieldContext } from '../internal/context/form-field-context';
+import { warnOnUnsupportedGroupedControlProps } from '../internal/grouped-control/dev-warnings';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { SomeRequired } from '../internal/types';
+import { getDropdownMinWidth } from '../internal/utils/get-dropdown-min-width';
+import { joinStrings } from '../internal/utils/strings';
+import Filter from '../select/parts/filter';
+import Trigger from '../select/parts/trigger';
+import VirtualList from '../select/parts/virtual-list';
+import { composeDropdownContent } from '../select/utils/dropdown-customization';
+import { StyleClassNames as TokenStyleClassNames } from '../token/internal';
+import { TokenGroupProps } from '../token-group/interfaces';
+import InternalTokenGroup from '../token-group/internal';
+import { MultiselectProps } from './interfaces';
+import { useMultiselect } from './use-multiselect';
+
+import styles from './styles.css.js';
+
+type InternalMultiselectProps = SomeRequired<
+  MultiselectProps,
+  'options' | 'selectedOptions' | 'filteringType' | 'statusType' | 'keepOpen' | 'hideTokens'
+> &
+  InternalBaseComponentProps & {
+    styleClassNames?: StyleClassNames;
+  };
+
+// Style API v2
+export interface StyleClassNames {
+  trigger?: string;
+  inlineLabel?: string;
+  filter?: InputStyleClassNames;
+  dropdown?: string;
+  token?: TokenStyleClassNames;
+}
+
+type ExtendedToken = TokenGroupProps.Item & { _readOnly: boolean };
+
+const InternalMultiselect = React.forwardRef(
+  (
+    {
+      options,
+      filteringType,
+      filteringPlaceholder,
+      filteringAriaLabel,
+      filteringClearAriaLabel,
+      ariaRequired,
+      placeholder,
+      disabled,
+      readOnly,
+      ariaLabel,
+      inlineLabelText,
+      selectedOptions,
+      deselectAriaLabel,
+      tokenLimit,
+      i18nStrings,
+      virtualScroll,
+      inlineTokens,
+      hideTokens,
+      expandToViewport,
+      tokenLimitShowFewerAriaLabel,
+      tokenLimitShowMoreAriaLabel,
+      __internalRootRef,
+      autoFocus,
+      enableSelectAll,
+      renderOption,
+      renderDropdownHeader,
+      renderDropdownFooter,
+      dropdownRole,
+      dropdownAriaDescribedby,
+      styleClassNames,
+      ...restProps
+    }: InternalMultiselectProps,
+    externalRef: React.Ref<MultiselectProps.Ref>
+  ) => {
+    const baseProps = getBaseProps(restProps);
+    const formFieldContext = useFormFieldContext(restProps);
+    const groupedControlProps = useGroupedControlContext();
+    const i18n = useInternalI18n('multiselect');
+
+    const isGrouped = !!groupedControlProps.position;
+
+    warnOnUnsupportedGroupedControlProps({
+      isGrouped,
+      componentName: 'Multiselect',
+      invalid: formFieldContext.invalid,
+      warning: formFieldContext.warning,
+      readOnly,
+      inlineTokens,
+      expandToViewport,
+    });
+
+    // When rendered inside a control group, tokens are always shown inline in the
+    // trigger regardless of the `inlineTokens` prop, since there is no room to
+    // display tokens below the control within a group.
+    const showTokensInline = inlineTokens || isGrouped;
+
+    // When grouped, the dropdown is portaled regardless of the public
+    // `expandToViewport` prop so it escapes the control slot's stacking context
+    // and paints over the group's inline label (which the focus ring stays under).
+    const effectiveExpandToViewport = expandToViewport || isGrouped;
+
+    const selfControlId = useUniqueId('trigger');
+    const controlId = formFieldContext.controlId ?? selfControlId;
+    const ariaLabelId = useUniqueId('multiselect-ariaLabel-');
+    const footerId = useUniqueId('multiselect-footer-');
+
+    const [filteringValue, setFilteringValue] = useState('');
+    const multiselectProps = useMultiselect({
+      options,
+      selectedOptions,
+      filteringType,
+      disabled,
+      deselectAriaLabel,
+      controlId,
+      ariaLabelId,
+      footerId,
+      filteringValue,
+      setFilteringValue,
+      externalRef,
+      enableSelectAll,
+      i18nStrings,
+      dropdownRole,
+      dropdownAriaDescribedby,
+      ...restProps,
+    });
+
+    const dropdownContentProps: MultiselectProps.DropdownContentProps = {
+      filterText: filteringValue,
+      closeDropdown: multiselectProps.closeDropdown,
+    };
+    const customDropdownHeader = renderDropdownHeader?.(dropdownContentProps);
+    const customDropdownFooter = renderDropdownFooter?.(dropdownContentProps);
+
+    const filter = (
+      <Filter
+        clearAriaLabel={filteringClearAriaLabel}
+        filteringType={filteringType}
+        placeholder={filteringPlaceholder}
+        ariaLabel={filteringAriaLabel}
+        ariaRequired={ariaRequired}
+        value={filteringValue}
+        styleClassNames={styleClassNames?.filter}
+        {...multiselectProps.getFilterProps()}
+      />
+    );
+
+    const triggerRef = useRef<HTMLButtonElement>(null);
+    const [triggerWidth, setTriggerWidth] = useState<number | null>(null);
+    useResizeObserver(
+      () => triggerRef.current,
+      entry => setTriggerWidth(entry.borderBoxWidth)
+    );
+
+    const trigger = (
+      <Trigger
+        ref={triggerRef}
+        placeholder={placeholder}
+        disabled={disabled}
+        readOnly={readOnly}
+        triggerProps={multiselectProps.getTriggerProps(disabled, autoFocus)}
+        selectedOption={null}
+        selectedOptions={selectedOptions}
+        triggerVariant={showTokensInline ? 'tokens' : 'placeholder'}
+        isOpen={multiselectProps.isOpen}
+        groupedControlProps={groupedControlProps}
+        inlineLabelText={inlineLabelText}
+        styleClassNames={{
+          trigger: styleClassNames?.trigger,
+          inlineLabel: styleClassNames?.inlineLabel,
+          token: styleClassNames?.token,
+        }}
+        {...formFieldContext}
+        controlId={controlId}
+        ariaLabelledby={joinStrings(formFieldContext.ariaLabelledby, ariaLabelId)}
+      />
+    );
+
+    const tokens: Array<ExtendedToken> = selectedOptions.map(option => ({
+      label: option.label,
+      disabled,
+      labelTag: option.labelTag,
+      description: option.description,
+      iconAlt: option.iconAlt,
+      iconName: option.iconName,
+      iconUrl: option.iconUrl,
+      iconSvg: option.iconSvg,
+      tags: option.tags,
+      dismissLabel: i18n('deselectAriaLabel', deselectAriaLabel?.(option), format =>
+        format({ option__label: option.label ?? '' })
+      ),
+      _readOnly: !!option.disabled,
+    }));
+
+    const ListComponent = virtualScroll ? VirtualList : PlainList;
+
+    const showTokens = !hideTokens && !showTokensInline && tokens.length > 0;
+
+    const tokenGroupI18nStrings: TokenGroupProps.I18nStrings = {
+      limitShowFewer: i18nStrings?.tokenLimitShowFewer,
+      limitShowMore: i18nStrings?.tokenLimitShowMore,
+    };
+
+    const dropdownStatus = multiselectProps.dropdownStatus;
+    const dropdownProps = multiselectProps.getDropdownProps();
+    const hasFilteredOptions = multiselectProps.filteredOptions.length > 0;
+
+    const statusFooter = dropdownStatus.isSticky ? (
+      <DropdownFooter content={multiselectProps.isOpen ? dropdownStatus.content : null} id={footerId} />
+    ) : null;
+    const { header: dropdownHeader, footer: dropdownFooter } = composeDropdownContent({
+      filter,
+      customDropdownHeader,
+      customDropdownFooter,
+      statusFooter,
+      dropdownHeaderClass: styles['dropdown-header'],
+      dropdownFooterClass: styles['dropdown-footer'],
+    });
+
+    const hasOptions = useRef(options.length > 0);
+    hasOptions.current = hasOptions.current || options.length > 0;
+
+    return (
+      <ResetGroupedControlContext>
+        <div
+          {...baseProps}
+          ref={__internalRootRef}
+          className={clsx(styles.root, baseProps.className)}
+          {...multiselectProps.getWrapperProps()}
+        >
+          <Dropdown
+            {...dropdownProps}
+            styleClassNames={{ root: styleClassNames?.dropdown }}
+            ariaLabelledby={dropdownProps.ariaRole ? joinStrings(ariaLabelId, controlId) : undefined}
+            ariaDescribedby={
+              dropdownProps.ariaRole
+                ? joinStrings(dropdownStatus.content ? footerId : undefined, dropdownAriaDescribedby)
+                : undefined
+            }
+            open={multiselectProps.isOpen}
+            minWidth={getDropdownMinWidth({ expandToViewport: effectiveExpandToViewport, triggerWidth })}
+            maxWidth={getBreakpointValue('xxs')} // AWSUI-19898
+            trigger={trigger}
+            header={dropdownHeader}
+            footer={dropdownFooter}
+            expandToViewport={effectiveExpandToViewport}
+            // Forces dropdown position recalculation when new options are loaded
+            contentKey={hasOptions.current.toString()}
+            content={
+              <ListComponent
+                renderOption={renderOption}
+                listBottom={
+                  !dropdownStatus.isSticky ? (
+                    <DropdownFooter content={multiselectProps.isOpen ? dropdownStatus.content : null} id={footerId} />
+                  ) : null
+                }
+                listProps={{ ...multiselectProps.getMenuProps(), ariaRequired }}
+                getOptionProps={multiselectProps.getOptionProps}
+                filteredOptions={multiselectProps.filteredOptions}
+                filteringValue={filteringValue}
+                ref={multiselectProps.scrollToIndex}
+                hasDropdownStatus={dropdownStatus.content !== null}
+                selectionType="multi"
+                screenReaderContent={multiselectProps.announcement}
+                highlightType={multiselectProps.highlightType}
+                firstOptionSticky={hasFilteredOptions && enableSelectAll}
+                isMultiSelect={true}
+              />
+            }
+          />
+
+          {showTokens && (
+            <InternalTokenGroup
+              {...multiselectProps.getTokenProps()}
+              className={styles.tokens}
+              alignment="horizontal"
+              limit={tokenLimit}
+              items={tokens}
+              i18nStrings={tokenGroupI18nStrings}
+              limitShowMoreAriaLabel={tokenLimitShowMoreAriaLabel}
+              limitShowFewerAriaLabel={tokenLimitShowFewerAriaLabel}
+              disableOuterPadding={true}
+              readOnly={readOnly}
+              isItemReadOnly={item => (item as ExtendedToken)._readOnly}
+              styleClassNames={{ token: styleClassNames?.token }}
+            />
+          )}
+
+          <ScreenreaderOnly id={ariaLabelId}>{ariaLabel || inlineLabelText}</ScreenreaderOnly>
+        </div>
+      </ResetGroupedControlContext>
+    );
+  }
+);
+
+export default InternalMultiselect;

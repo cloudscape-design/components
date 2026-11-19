@@ -1,0 +1,117 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import { addMinutes } from 'date-fns';
+
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import { formatTimeOffsetISOInternal, parseTimezoneOffset, shiftTimezoneOffset } from '../internal/utils/date-time';
+import { DateRangePickerProps } from './interfaces';
+
+/**
+ * Appends a time zone offset to a date string, replacing any existing timezone information.
+ */
+export function setTimeOffset(
+  value: DateRangePickerProps.Value | null,
+  timeOffset: { startDate?: number; endDate?: number }
+): DateRangePickerProps.Value | null {
+  if (!(value?.type === 'absolute')) {
+    return value;
+  }
+
+  const stripTimezone = (dateString: string): string => {
+    // Remove existing timezone info: Z, +HH:MM, -HH:MM, +HHMM, -HHMM
+    return dateString.replace(/[Z]$|[+-]\d{2}:?\d{2}$/, '');
+  };
+
+  return {
+    type: 'absolute',
+    startDate: stripTimezone(value.startDate) + formatTimeOffsetISOInternal(value.startDate, timeOffset.startDate),
+    endDate: stripTimezone(value.endDate) + formatTimeOffsetISOInternal(value.endDate, timeOffset.endDate),
+  };
+}
+
+/**
+ * Re-formats an absolute date range so that it is expressed using the
+ * target time offset. The returned value still represents the same range
+ * in time, but contains no visible offset.
+ */
+export function shiftTimeOffset(
+  value: null | DateRangePickerProps.Value,
+  timeOffset: { startDate?: number; endDate?: number }
+): DateRangePickerProps.Value | null {
+  if (!value || value.type !== 'absolute') {
+    return value;
+  }
+
+  /*
+    This regex matches an ISO date-time (non date-only or month-only) with
+    - optional seconds;
+    - optional milliseconds;
+    - optional time offset or 'Z'.
+  */
+  const dateTimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?(\.\d{1,3})?(((\+|-)\d{2}(:\d{2})?)|Z)?$/;
+
+  if (!dateTimeRegex.test(value.startDate) || !dateTimeRegex.test(value.endDate)) {
+    warnOnce(
+      'DateRangePicker',
+      'You have provided a misformatted start or end date. The component will fall back to an empty value. ' +
+        'Dates have to be ISO8601-formatted with an optional time zone offset.'
+    );
+    return null;
+  }
+
+  return {
+    type: 'absolute',
+    startDate: shiftTimezoneOffset(value.startDate, timeOffset.startDate),
+    endDate: shiftTimezoneOffset(value.endDate, timeOffset.endDate),
+  };
+}
+
+export type NormalizedTimeOffset =
+  | {
+      startDate: number;
+      endDate: number;
+    }
+  | {
+      startDate: undefined;
+      endDate: undefined;
+    };
+
+export function normalizeTimeOffset(
+  value: null | DateRangePickerProps.Value,
+  getTimeOffset?: DateRangePickerProps.GetTimeOffsetFunction,
+  timeOffset?: number
+): NormalizedTimeOffset {
+  if (value && value.type === 'absolute') {
+    if (getTimeOffset) {
+      return {
+        startDate: getTimeOffset(parseDateUTC(value.startDate)),
+        endDate: getTimeOffset(parseDateUTC(value.endDate)),
+      };
+    } else if (timeOffset !== undefined) {
+      return { startDate: timeOffset, endDate: timeOffset };
+    }
+  }
+  return { startDate: undefined, endDate: undefined };
+}
+
+/*
+  Before the getTimeOffset function is used there is no information on the preferred time offset.
+  
+  Besides, the ISO date string might or might not contain the offset:
+  - 2021-02-03T01:02:03
+  - 2021-02-03T01:02:03Z
+  - 2021-02-03T01:02:03+01:00
+  
+  For every value above the date is converted to UTC and the following is true:
+  date.getUTCFullYear() === 2021
+  date.getUTCMonth() === 1
+  date.getUTCDate() === 3
+  date.getUTCHours() === 1
+  date.getUTCMinutes() === 2
+  date.getUTCSeconds() === 3
+*/
+function parseDateUTC(isoDateString: string): Date {
+  const date = new Date(isoDateString);
+  return addMinutes(date, parseTimezoneOffset(isoDateString));
+}

@@ -1,0 +1,71 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use './constants' as constants;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  color: awsui.$color-text-body-default;
+}
+
+.root-no-scroll {
+  position: relative;
+  z-index: 1;
+}
+
+.layout {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: stretch;
+  background-color: awsui.$color-background-layout-main;
+
+  &-no-scroll {
+    overflow: hidden;
+  }
+}
+
+.layout-main {
+  flex: 1;
+  min-inline-size: 0;
+  background-color: awsui.$color-background-layout-main;
+  position: relative;
+
+  &-scrollable {
+    overflow: auto;
+  }
+}
+
+/* stylelint-disable-next-line selector-combinator-disallowed-list, selector-max-universal */
+.unfocusable * {
+  // Prevent content that is visually hidden behind drawers in mobile view from receiving focus
+  visibility: hidden;
+}
+
+.breadcrumbs-desktop {
+  padding-block-start: awsui.$space-scaled-m;
+  padding-block-end: awsui.$space-scaled-s;
+}
+
+.content-header-wrapper {
+  padding-block-end: awsui.$space-content-header-padding-bottom;
+}
+
+.content-wrapper {
+  padding-block-end: awsui.$space-layout-content-bottom;
+}
+
+.content-overlapped {
+  margin-block-start: calc(-1 * #{awsui.$space-dark-header-overlap-distance});
+}
+
+.content-extra-top-padding {
+  // extra top padding when there are no breadcrumbs above,
+  // applied to content or content header, whatever comes first
+  padding-block-start: awsui.$space-scaled-m;
+}

@@ -1,0 +1,138 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useRef, useState } from 'react';
+import clsx from 'clsx';
+
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
+import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
+import { RadioButtonProps } from '../../../radio-button/interfaces';
+import { getBaseProps } from '../../base-component';
+import AbstractSwitch from '../../components/abstract-switch';
+import { fireNonCancelableEvent } from '../../events';
+import { InternalBaseComponentProps } from '../../hooks/use-base-component';
+import WithNativeAttributes, { SkipWarnings } from '../../utils/with-native-attributes';
+import { getAbstractSwitchStyles, getInnerCircleStyle, getOuterCircleStyle } from './style';
+
+import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
+
+export interface InternalRadioButtonProps extends RadioButtonProps, InternalBaseComponentProps {
+  styleClassNames?: StyleClassNames;
+  __skipNativeAttributesWarnings?: SkipWarnings;
+}
+
+// Style API v2
+export interface StyleClassNames {
+  control?: string;
+}
+
+export default React.forwardRef(function RadioButton(
+  {
+    name,
+    children,
+    value,
+    checked,
+    ariaLabel,
+    ariaLabelledby,
+    ariaDescribedby,
+    description,
+    disabled,
+    controlId,
+    readOnly,
+    className,
+    style,
+    styleClassNames,
+    nativeInputAttributes,
+    onSelect,
+    __skipNativeAttributesWarnings,
+    ...rest
+  }: InternalRadioButtonProps,
+  ref: React.Ref<HTMLInputElement>
+) {
+  const radioButtonRef = useRef<HTMLInputElement>(null);
+  const mergedRefs = useMergeRefs(radioButtonRef, ref);
+
+  const { tabIndex } = useSingleTabStopNavigation(radioButtonRef);
+  const baseProps = getBaseProps(rest);
+
+  // The select animation only plays once the state has changed since mount.
+  const [initialChecked] = useState(!!checked);
+  const [hasChanged, setHasChanged] = useState(false);
+  if (!hasChanged && !!checked !== initialChecked) {
+    setHasChanged(true);
+  }
+
+  return (
+    <AbstractSwitch
+      {...baseProps}
+      className={clsx(testUtilStyles.root, className)}
+      controlClassName={clsx(styleClassNames?.control, styles['radio-control'])}
+      outlineClassName={styles.outline}
+      label={children}
+      ariaLabel={ariaLabel}
+      ariaLabelledby={ariaLabelledby}
+      ariaDescribedby={ariaDescribedby}
+      description={description}
+      disabled={disabled}
+      readOnly={readOnly}
+      controlId={controlId}
+      style={getAbstractSwitchStyles(style, checked, disabled, readOnly)}
+      __internalRootRef={rest.__internalRootRef}
+      {...copyAnalyticsMetadataAttribute(rest)}
+      nativeControl={nativeControlProps => (
+        <WithNativeAttributes<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>
+          {...nativeControlProps}
+          tag="input"
+          componentName="RadioButton"
+          nativeAttributes={nativeInputAttributes}
+          skipWarnings={__skipNativeAttributesWarnings}
+          tabIndex={tabIndex}
+          type="radio"
+          ref={mergedRefs}
+          name={name}
+          value={value}
+          checked={checked}
+          aria-disabled={readOnly && !disabled ? 'true' : undefined}
+          // empty handler to suppress React controllability warning
+          onChange={() => {}}
+        />
+      )}
+      onClick={() => {
+        radioButtonRef.current?.focus();
+        if (!checked) {
+          fireNonCancelableEvent(onSelect);
+        }
+      }}
+      styledControl={
+        <svg viewBox="0 0 100 100" focusable="false" aria-hidden="true">
+          <circle
+            className={clsx(styles['styled-circle-border'], {
+              [styles['styled-circle-disabled']]: disabled,
+              [styles['styled-circle-readonly']]: readOnly,
+            })}
+            strokeWidth={6.25}
+            cx={50}
+            cy={50}
+            r={46}
+            style={getOuterCircleStyle(style, checked, disabled, readOnly)}
+          />
+          <circle
+            className={clsx(styles['styled-circle-fill'], {
+              [styles['styled-circle-disabled']]: disabled,
+              [styles['styled-circle-checked']]: checked,
+              [styles['styled-circle-readonly']]: readOnly,
+            })}
+            data-awsui-motion-ready={hasChanged ? '' : undefined}
+            strokeWidth={30}
+            cx={50}
+            cy={50}
+            r={35}
+            style={getInnerCircleStyle(style, checked, disabled, readOnly)}
+          />
+        </svg>
+      }
+    />
+  );
+});

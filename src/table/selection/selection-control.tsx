@@ -1,0 +1,150 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { KeyboardEvent, KeyboardEventHandler, MouseEvent } from 'react';
+import clsx from 'clsx';
+
+import { useSingleTabStopNavigation, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
+import InternalCheckbox from '../../checkbox/internal';
+import RadioButton from '../../internal/components/radio-button';
+import { KeyCode } from '../../internal/keycode';
+import { StyleClassNames } from '../style-api';
+import { ItemSelectionProps } from './interfaces';
+
+import styles from './styles.css.js';
+
+export interface SelectionControlProps extends ItemSelectionProps {
+  onShiftToggle?(shiftPressed: boolean): void;
+  onFocusUp?: KeyboardEventHandler;
+  onFocusDown?: KeyboardEventHandler;
+  ariaLabel?: string;
+  tabIndex?: -1;
+  focusedComponent?: null | string;
+  rowIndex?: number;
+  itemKey?: string;
+  verticalAlign?: 'middle' | 'top';
+  styleClassNames?: Pick<StyleClassNames, 'selectionCheckbox' | 'selectionRadio'>;
+}
+
+export function SelectionControl({
+  selectionType,
+  indeterminate = false,
+  onShiftToggle,
+  onFocusUp,
+  onFocusDown,
+  name,
+  ariaLabel,
+  ariaDescribedby,
+  focusedComponent,
+  rowIndex,
+  itemKey,
+  verticalAlign = 'middle',
+  styleClassNames,
+  onChange,
+  ...sharedProps
+}: SelectionControlProps) {
+  const controlId = useUniqueId();
+  const isMultiSelection = selectionType === 'multi';
+  const { navigationActive } = useSingleTabStopNavigation(null);
+
+  const setShiftState = (event: KeyboardEvent | MouseEvent) => {
+    if (isMultiSelection) {
+      onShiftToggle?.(event.shiftKey);
+    }
+  };
+
+  const onMouseDownHandler = (event: MouseEvent) => {
+    setShiftState(event);
+    if (isMultiSelection) {
+      // To overcome an issue
+      // If you shift+click or ctrl+click on a label for a checkbox, checkbox is not checked.
+      // https://bugzilla.mozilla.org/show_bug.cgi?id=559506
+      event.preventDefault();
+    }
+  };
+
+  // native checkboxes do not have focus move via keyboard, we implement it here programmatically
+  const handleKeyDown = (event: KeyboardEvent) => {
+    setShiftState(event);
+    if (isMultiSelection && !navigationActive) {
+      if (event.keyCode === KeyCode.up) {
+        event.preventDefault();
+        onFocusUp?.(event);
+      }
+      if (event.keyCode === KeyCode.down) {
+        event.preventDefault();
+        onFocusDown?.(event);
+      }
+    }
+  };
+
+  const handleClick = (event: MouseEvent) => {
+    const target = event.currentTarget;
+    const nativeInput = (target.tagName === 'INPUT' ? target : target.querySelector('input')) as HTMLInputElement;
+    // Clicking on input, does not focus it on Firefox (AWSUI-11345)
+    nativeInput?.focus();
+  };
+
+  const nativeInputAttributes: Record<string, string> = {};
+  if (ariaLabel) {
+    nativeInputAttributes['aria-label'] = ariaLabel;
+  }
+  if (ariaDescribedby) {
+    nativeInputAttributes['aria-describedby'] = ariaDescribedby;
+  }
+
+  const selector = isMultiSelection ? (
+    <InternalCheckbox
+      {...sharedProps}
+      onChange={onChange}
+      showOutline={focusedComponent === 'selection-control'}
+      controlId={controlId}
+      data-focus-id="selection-control"
+      indeterminate={indeterminate}
+      ariaLabel={ariaLabel}
+      ariaDescribedby={ariaDescribedby}
+      styleClassNames={styleClassNames?.selectionCheckbox}
+    />
+  ) : (
+    <RadioButton
+      {...sharedProps}
+      controlId={controlId}
+      name={name}
+      value={''}
+      onSelect={onChange}
+      nativeInputAttributes={Object.keys(nativeInputAttributes).length > 0 ? nativeInputAttributes : undefined}
+      __skipNativeAttributesWarnings={['aria-label', 'aria-describedby']}
+      styleClassNames={styleClassNames?.selectionRadio}
+    />
+  );
+
+  return (
+    <>
+      <label
+        onKeyDown={handleKeyDown}
+        onKeyUp={setShiftState}
+        onMouseDown={onMouseDownHandler}
+        onMouseUp={setShiftState}
+        onClick={handleClick}
+        htmlFor={controlId}
+        className={clsx(styles.label, styles.root, verticalAlign === 'top' && styles['label-top'])}
+        aria-label={ariaLabel}
+        title={ariaLabel}
+        {...(rowIndex !== undefined && !sharedProps.disabled
+          ? getAnalyticsMetadataAttribute({
+              detail: {
+                position: `${rowIndex + 1}`,
+                item: itemKey || '',
+              },
+            })
+          : {})}
+      >
+        {selector}
+      </label>
+      <span className={styles.stud} aria-hidden={true}>
+        &nbsp;
+      </span>
+    </>
+  );
+}

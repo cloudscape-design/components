@@ -1,0 +1,117 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useState } from 'react';
+
+import Button from '~components/button';
+import Dropdown from '~components/dropdown/internal';
+
+import ListContent from './list-content';
+
+import styles from './styles.scss';
+
+export default function DropdownScenario() {
+  const [open1, setOpen1] = useState(false);
+  const [open2, setOpen2] = useState(false);
+  const [open3, setOpen3] = useState(false);
+  const [open4, setOpen4] = useState(false);
+  const [open5, setOpen5] = useState(false);
+  return (
+    <article>
+      <h1>Positioning of greedy dropdowns</h1>
+      <ul>
+        <li>
+          Scenario 1. Dropdown opens to the right. There is enough space to fit content on the right without wrapping
+        </li>
+        <li>Scenario 2. Dropdown opens to the left. Not enough space on the right. No need to wrap text.</li>
+        <li>
+          Scenario 3. Dropdown content is narrower than trigger. Therefore dropdown width is equal to trigger width.
+        </li>
+        <li>
+          Scenario 4. Not enough space on both sides. However, more space available on the right. Wrapping is needed
+        </li>
+        <li>
+          Scenario 5. Not enough space on both sides. However, more space available on the left. Wrapping is needed
+        </li>
+      </ul>
+      <div className={styles.container}>
+        <div id="topLeftDropDown" className={styles['dropdown-container']}>
+          <Dropdown
+            minWidth="trigger"
+            trigger={
+              <Button className="trigger" onClick={() => setOpen1(!open1)}>
+                Scenario 1
+              </Button>
+            }
+            open={open1}
+            onOutsideClick={() => setOpen1(false)}
+            content={<ListContent n={10} withSpaces={true} repeat={12} />}
+          />
+        </div>
+      </div>
+      <div className={styles.container}>
+        <div id="topRightDropDown" className={styles['dropdown-container']} style={{ insetInlineStart: '80px' }}>
+          <Dropdown
+            minWidth="trigger"
+            trigger={
+              <Button className="trigger" onClick={() => setOpen2(!open2)}>
+                Scenario 2
+              </Button>
+            }
+            open={open2}
+            onOutsideClick={() => setOpen2(false)}
+            content={<ListContent n={10} withSpaces={true} repeat={12} />}
+          />
+        </div>
+      </div>
+      <div className={styles.container}>
+        <div id="bottomLeftDropDown" className={styles['dropdown-container']} style={{ top: '170px' }}>
+          <Dropdown
+            minWidth="trigger"
+            trigger={
+              <Button className="trigger" onClick={() => setOpen3(!open3)}>
+                Scenario 3
+              </Button>
+            }
+            open={open3}
+            onOutsideClick={() => setOpen3(false)}
+            content={<ListContent n={10} withSpaces={true} repeat={2} />}
+          />
+        </div>
+      </div>
+      <div className={styles.container}>
+        <div id="topMiddleDropDown" className={styles['dropdown-container']} style={{ insetInlineStart: '20px' }}>
+          <Dropdown
+            minWidth="trigger"
+            trigger={
+              <Button className="trigger" onClick={() => setOpen4(!open4)}>
+                Scenario 4
+              </Button>
+            }
+            open={open4}
+            onOutsideClick={() => setOpen4(false)}
+            content={<ListContent n={10} withSpaces={true} repeat={22} />}
+          />
+        </div>
+      </div>
+      <div className={styles.container}>
+        <div
+          id="bottomRightDropDown"
+          className={styles['dropdown-container']}
+          style={{ insetInlineStart: '80px', insetBlockStart: '170px' }}
+        >
+          <Dropdown
+            minWidth="trigger"
+            trigger={
+              <Button className="trigger" onClick={() => setOpen5(!open5)}>
+                Scenario 5
+              </Button>
+            }
+            open={open5}
+            onOutsideClick={() => setOpen5(false)}
+            content={<ListContent n={10} withSpaces={true} repeat={18} />}
+          />
+        </div>
+      </div>
+    </article>
+  );
+}

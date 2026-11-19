@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+   "lib": ["ES2020", "DOM"],
+    "target": "ES2019",
+    "strict": true,
+    "incremental": true,
+    "types": [],
+    "module": "CommonJS",
+    "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "outDir": "../../lib/components/test-utils",
+    "experimentalDecorators": true
+  },
+  "include": ["./", "../../types"]
+}

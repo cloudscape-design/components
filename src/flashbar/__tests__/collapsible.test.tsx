@@ -1,0 +1,699 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+const scrollElementIntoViewMock = jest.fn();
+jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => {
+  const originalModule = jest.requireActual('../../../lib/components/internal/utils/scrollable-containers');
+  return {
+    __esModule: true,
+    ...originalModule,
+    scrollElementIntoView: scrollElementIntoViewMock,
+  };
+});
+
+import React from 'react';
+import { render, within } from '@testing-library/react';
+
+import { disableMotion } from '@cloudscape-design/global-styles';
+
+import Flashbar from '../../../lib/components/flashbar';
+import createWrapper, { FlashbarWrapper } from '../../../lib/components/test-utils/dom';
+import customCssProps from '../../internal/generated/custom-css-properties';
+import { FlashbarProps } from '../interfaces';
+import { createFlashbarWrapper, findList, testFlashDismissal } from './common';
+
+import stylesCss from '../../../lib/components/flashbar/styles.css.js';
+
+const sampleItems: Record<FlashbarProps.Type, FlashbarProps.MessageDefinition> = {
+  error: { type: 'error', header: 'Error', content: 'There was an error', dismissible: true },
+  success: { type: 'success', header: 'Success', content: 'Everything went fine', dismissible: true },
+  warning: { type: 'warning', header: 'Warning', dismissible: true },
+  info: { type: 'info', header: 'Information', dismissible: true },
+  'in-progress': { type: 'in-progress', header: 'Operation in progress', dismissible: true },
+};
+
+const defaultStrings = {
+  ariaLabel: 'Notifications',
+  notificationBarText: 'Notifications',
+  notificationBarAriaLabel: 'View all notifications',
+  errorIconAriaLabel: 'Error',
+  warningIconAriaLabel: 'Warning',
+  successIconAriaLabel: 'Success',
+  infoIconAriaLabel: 'Information',
+  inProgressIconAriaLabel: 'In progress',
+};
+
+const defaultItems = [sampleItems.error, sampleItems.success];
+
+const defaultProps = {
+  stackItems: true,
+  i18nStrings: defaultStrings,
+};
+
+describe('Collapsible Flashbar', () => {
+  describe.each([true, false])('withAnimations=%s', withAnimations => {
+    beforeEach(() => {
+      disableMotion(!withAnimations);
+    });
+
+    afterEach(() => {
+      disableMotion(false);
+    });
+
+    describe('Basic behavior', () => {
+      it('shows only the header and content of the first item in the array when collapsed', () => {
+        const flashbar = renderFlashbar();
+        const items = flashbar.findItems();
+        expect(items.length).toBe(1);
+        expect(items[0].findHeader()!.getElement()).toHaveTextContent(defaultItems[0].header!.toString());
+        expect(items[0].findContent()!.getElement()).toHaveTextContent(defaultItems[0].content!.toString());
+      });
+
+      it('shows toggle element with desired text', () => {
+        const customToggleButtonText = 'Custom text';
+        const flashbar = renderFlashbar({
+          i18nStrings: {
+            notificationBarText: customToggleButtonText,
+          },
+        });
+        const toggleElement = findNotificationBar(flashbar);
+        expect(toggleElement).toBeTruthy();
+        expect(toggleElement).toHaveTextContent(customToggleButtonText);
+      });
+
+      it('does not show toggle element if there is only one item', () => {
+        const flashbar = renderFlashbar({ items: [{ type: 'error' }] });
+        expect(findNotificationBar(flashbar)).toBeFalsy();
+      });
+
+      it('expands and collapses by clicking on notification bar', () => {
+        const flashbar = renderFlashbar();
+        const items = flashbar.findItems();
+        expect(items.length).toBe(1);
+        expect(items[0].findHeader()!.getElement()).toHaveTextContent(defaultItems[0].header!.toString());
+        expect(items[0].findContent()!.getElement()).toHaveTextContent(defaultItems[0].content!.toString());
+
+        findNotificationBar(flashbar)!.click();
+
+        const expandedItems = flashbar.findItems();
+        expect(expandedItems.length).toBe(2);
+        expect(expandedItems[0].findHeader()!.getElement()).toHaveTextContent(defaultItems[0].header!.toString());
+        expect(expandedItems[0].findContent()!.getElement()).toHaveTextContent(defaultItems[0].content!.toString());
+        expect(expandedItems[1].findHeader()!.getElement()).toHaveTextContent(defaultItems[1].header!.toString());
+        expect(expandedItems[1].findContent()!.getElement()).toHaveTextContent(defaultItems[1].content!.toString());
+
+        findNotificationBar(flashbar)!.click();
+
+        const collapsedItems = flashbar.findItems();
+        expect(collapsedItems.length).toBe(1);
+        expect(collapsedItems[0].findHeader()!.getElement()).toHaveTextContent(defaultItems[0].header!.toString());
+        expect(collapsedItems[0].findContent()!.getElement()).toHaveTextContent(defaultItems[0].content!.toString());
+      });
+
+      it('collapses automatically when enough items are added', () => {
+        const item1 = { ...sampleItems.success, id: '0' };
+        const item2 = { ...sampleItems.error, id: '1' };
+
+        const { container, rerender } = render(
+          <Flashbar items={[item1]} {...{ stackItems: true, i18nStrings: defaultStrings }} />
+        );
+        const wrapper = createWrapper(container);
+        const flashbar = wrapper.findFlashbar()!;
+        expect(flashbar.findItems()).toHaveLength(1);
+        expect(findNotificationBar(flashbar)).toBeFalsy();
+
+        rerender(<Flashbar items={[item1, item2]} {...{ stackItems: true, i18nStrings: defaultStrings }} />);
+        expect(wrapper.findFlashbar()!.findItems()).toHaveLength(1);
+        const toggleElement = findNotificationBar(wrapper.findFlashbar()!);
+        expect(toggleElement).toBeTruthy();
+      });
+
+      it('collapses automatically again when enough items are added even if it had been expanded before', () => {
+        const item1 = { ...sampleItems.success, id: '0' };
+        const item2 = { ...sampleItems.error, id: '1' };
+
+        const { container, rerender } = render(
+          <Flashbar items={[item1, item2]} {...{ stackItems: true, i18nStrings: defaultStrings }} />
+        );
+        const wrapper = createWrapper(container);
+        const flashbar = wrapper.findFlashbar()!;
+        expect(flashbar.findItems()).toHaveLength(1);
+        expect(findNotificationBar(flashbar)).toBeTruthy();
+        const toggleElement = findNotificationBar(wrapper.findFlashbar()!);
+        expect(toggleElement).toBeTruthy();
+        toggleElement!.click();
+        expect(flashbar.findItems()).toHaveLength(2);
+
+        rerender(<Flashbar items={[item1]} {...{ stackItems: true, i18nStrings: defaultStrings }} />);
+        expect(wrapper.findFlashbar()!.findItems()).toHaveLength(1);
+        expect(findNotificationBar(wrapper.findFlashbar()!)).toBeFalsy();
+
+        rerender(<Flashbar items={[item1, item2]} {...{ stackItems: true, i18nStrings: defaultStrings }} />);
+        expect(wrapper.findFlashbar()!.findItems()).toHaveLength(1);
+        expect(findNotificationBar(wrapper.findFlashbar()!)).toBeTruthy();
+      });
+    });
+
+    test('findItemsByType', () => {
+      {
+        const wrapper = createFlashbarWrapper(
+          <Flashbar
+            stackItems={true}
+            items={[
+              { content: 'Flash', type: 'success' },
+              { content: 'Flash', type: 'warning' },
+            ]}
+          />
+        );
+        expect(wrapper.findItemsByType('success')).toHaveLength(1);
+        expect(wrapper.findItemsByType('warning')).toHaveLength(0);
+
+        findNotificationBar(wrapper)!.click();
+
+        expect(wrapper.findItemsByType('success')).toHaveLength(1);
+        expect(wrapper.findItemsByType('warning')).toHaveLength(1);
+      }
+      {
+        const wrapper = createFlashbarWrapper(
+          <Flashbar
+            stackItems={true}
+            items={[
+              { content: 'Flash', type: 'warning' },
+              { content: 'Flash', type: 'warning' },
+            ]}
+          />
+        );
+        expect(wrapper.findItemsByType('warning')).toHaveLength(1);
+
+        findNotificationBar(wrapper)!.click();
+
+        expect(wrapper.findItemsByType('warning')).toHaveLength(2);
+      }
+    });
+
+    describe('Accessibility', () => {
+      it('renders items in an unordered list', () => {
+        const flashbar = renderFlashbar();
+        const list = flashbar.find('ul')!;
+        expect(list).toBeTruthy();
+        expect(list.findAll('li')).toHaveLength(2);
+      });
+
+      it('applies ARIA label to the unordered list', () => {
+        const customAriaLabel = 'Custom text';
+        const flashbar = renderFlashbar({
+          i18nStrings: {
+            ariaLabel: customAriaLabel,
+          },
+        });
+        const list = findList(flashbar)!;
+        expect(list).toBeTruthy();
+        expect(list.getElement().getAttribute('aria-label')).toEqual(customAriaLabel);
+      });
+
+      it('applies ARIA role "group" to the flash messages and labels them by their icon and content', () => {
+        const flashbar = renderFlashbar({
+          items: [sampleItems.success, sampleItems.warning, sampleItems.error],
+        });
+
+        findNotificationBar(flashbar)!.click();
+
+        const [successItem, warningItem, errorItem] = flashbar.findItems()!;
+        const flashItemsWithExpectedLabels = [
+          {
+            item: successItem,
+            // Label is computed by: Icon Header Content
+            expectedLabel: 'Success Success Everything went fine',
+          },
+          {
+            item: warningItem,
+            // Label is computed by: Icon Header Content
+            expectedLabel: 'Warning Warning',
+          },
+          {
+            item: errorItem,
+            // Label is computed by: Icon Header Content
+            expectedLabel: 'Error Error There was an error',
+          },
+        ];
+
+        for (const { item, expectedLabel } of flashItemsWithExpectedLabels) {
+          const focusContainer = within(item.getElement()!).getByRole('group', {
+            name: expectedLabel,
+          });
+          expect(focusContainer).toBeInTheDocument();
+          expect(focusContainer).toHaveClass(stylesCss['flash-focus-container']);
+        }
+      });
+
+      it('hides collapsed items from the accessibility tree', () => {
+        const flashbar = renderFlashbar();
+        const accessibleItems = flashbar
+          .findAll('li')
+          .filter(item => item.getElement().getAttribute('aria-hidden') !== 'true');
+        expect(accessibleItems.length).toBe(1);
+      });
+
+      it('does not render outer toggle element as HTML button element', () => {
+        const flashbar = renderFlashbar();
+        const toggle = findNotificationBar(flashbar);
+        expect(toggle!.tagName).not.toEqual('BUTTON');
+      });
+
+      it('applies desired ARIA label to toggle element', () => {
+        const customToggleButtonAriaLabel = 'Custom toggle button ARIA label';
+        const flashbar = renderFlashbar({
+          i18nStrings: {
+            notificationBarAriaLabel: customToggleButtonAriaLabel,
+          },
+        });
+        const button = flashbar.findToggleButton()?.getElement();
+        expect(button).toHaveAttribute('aria-label', customToggleButtonAriaLabel);
+      });
+
+      it('applies aria-expanded attribute to toggle button', () => {
+        const flashbar = renderFlashbar();
+        const button = flashbar.findToggleButton()!;
+        expect(button?.getElement()).toHaveAttribute('aria-expanded', 'false');
+
+        button.click();
+        expect(button?.getElement()).toHaveAttribute('aria-expanded', 'true');
+      });
+
+      it('applies aria-controls attribute to toggle button referring to the unordered list', () => {
+        const flashbar = renderFlashbar();
+        const listId = findList(flashbar)!.getElement().id;
+        expect(listId).toBeTruthy();
+        const button = flashbar.findToggleButton()?.getElement();
+        expect(button).toHaveAttribute('aria-controls', listId);
+      });
+
+      it('hovering the notification bar or focusing the toggle button plays the caret motion', () => {
+        const flashbar = renderFlashbar();
+        const button = flashbar.findToggleButton()!.getElement();
+        const bar = button.closest('[data-awsui-motion-trigger~="hover"]');
+
+        expect(bar).toBeTruthy();
+        expect(button).toHaveAttribute('data-awsui-motion-trigger', 'focus');
+        expect(button.querySelector('[data-awsui-motion-target]')).toBeTruthy();
+      });
+
+      it('applies aria-describedby attribute to the list, referencing the item counter', () => {
+        const flashbar = renderFlashbar();
+        const list = findList(flashbar)!;
+        expect(list).toBeTruthy();
+        const counter = findOuterCounter(flashbar);
+        expect(counter).toBeTruthy();
+        const itemCounterElementId = findOuterCounter(flashbar)!.id;
+        expect(itemCounterElementId).toBeTruthy();
+        expect(list.getElement()).toHaveAttribute('aria-describedby', itemCounterElementId);
+      });
+
+      it('does not apply aria-describedby to the list when the toggle element is not rendered', () => {
+        const flashbar = renderFlashbar({ items: [sampleItems.error] });
+        const list = findList(flashbar)!;
+        expect(list).toBeTruthy();
+        const itemCounterElement = findOuterCounter(flashbar);
+        expect(itemCounterElement).toBeFalsy();
+        expect(list.getElement()).not.toHaveAttribute('aria-describedby');
+      });
+
+      it('applies aria-describedby to the toggle button, referencing the item counter', () => {
+        const flashbar = renderFlashbar();
+        const itemCounterElementId = findOuterCounter(flashbar)!.id;
+        expect(itemCounterElementId).toBeTruthy();
+        const toggleButton = flashbar.findToggleButton()?.getElement();
+        expect(toggleButton).toHaveAttribute('aria-describedby', itemCounterElementId);
+      });
+
+      it('announces updates to the item counter with aria-live', () => {
+        // Fake timers to bypass the live region delay.
+        const { rerender } = render(<Flashbar {...defaultProps} items={defaultItems} />);
+        jest.useFakeTimers();
+        rerender(<Flashbar {...defaultProps} items={[...defaultItems, { type: 'info', content: 'Info' }]} />);
+        jest.runAllTimers();
+        jest.useRealTimers();
+        const liveRegion = document.querySelector('[aria-live=polite]')!;
+        expect(liveRegion).toHaveTextContent('Notifications Error 1 Warning 0 Success 1 Information 1 In progress 0');
+      });
+
+      it('renders the toggle element header as H2 element', () => {
+        const customToggleButtonText = 'Custom text';
+        const flashbar = renderFlashbar({
+          i18nStrings: {
+            notificationBarText: customToggleButtonText,
+          },
+        });
+        const h2 = findNotificationBar(flashbar)!.querySelector('h2');
+        expect(h2).toHaveTextContent(customToggleButtonText);
+      });
+
+      it('applies ARIA labels and title attributes to the item counter', () => {
+        const customLabels = {
+          errorIconAriaLabel: 'Custom error ARIA label',
+          successIconAriaLabel: 'Custom success ARIA label',
+          infoIconAriaLabel: 'Custom info ARIA label',
+          inProgressIconAriaLabel: 'Custom progress ARIA label',
+          warningIconAriaLabel: 'Custom warning ARIA label',
+        };
+        const flashbar = renderFlashbar({ i18nStrings: { ...customLabels } });
+        const innerCounter = findInnerCounterElement(flashbar);
+        for (const ariaLabel of Object.values(customLabels)) {
+          expect(innerCounter!.querySelector(`[aria-label="${ariaLabel}"]`)).toBeTruthy();
+          expect(innerCounter!.querySelector(`[title="${ariaLabel}"]`)).toBeTruthy();
+        }
+      });
+
+      test.each([['success'], ['error'], ['info'], ['warning'], ['in-progress']] as FlashbarProps.Type[][])(
+        'item icon has aria-label from i18nStrings when no statusIconAriaLabel provided: type %s',
+        type => {
+          const wrapper = renderFlashbar({
+            i18nStrings: {
+              successIconAriaLabel: 'success',
+              errorIconAriaLabel: 'error',
+              infoIconAriaLabel: 'info',
+              warningIconAriaLabel: 'warning',
+              inProgressIconAriaLabel: 'in-progress',
+            },
+            items: [
+              {
+                header: 'The header',
+                content: 'The content',
+                type: type === 'in-progress' ? 'info' : type,
+                loading: type === 'in-progress',
+              },
+            ],
+          });
+
+          expect(wrapper.findItems()[0].find('[role="img"]')?.getElement()).toHaveAccessibleName(type);
+        }
+      );
+    });
+
+    describe('Sticky', () => {
+      it('scrolls the button into view when collapsing', () => {
+        scrollElementIntoViewMock.mockClear();
+        const button = renderFlashbar().findToggleButton()!;
+        button.click(); // Expand
+        button.click(); // Collapse
+        expect(scrollElementIntoViewMock).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('Style API', () => {
+      test('custom properties', () => {
+        const flashbar = renderFlashbar({
+          style: {
+            item: {
+              root: {
+                background: {
+                  error: 'magenta',
+                  info: 'blue',
+                  inProgress: 'yellow',
+                  success: 'orange',
+                  warning: 'brown',
+                },
+                borderColor: {
+                  error: 'magenta',
+                  info: 'blue',
+                  inProgress: 'yellow',
+                  success: 'orange',
+                  warning: 'brown',
+                },
+                color: {
+                  error: 'magenta',
+                  info: 'blue',
+                  inProgress: 'yellow',
+                  success: 'orange',
+                  warning: 'brown',
+                },
+                focusRing: {
+                  borderColor: {
+                    error: 'magenta',
+                    info: 'blue',
+                    inProgress: 'yellow',
+                    success: 'orange',
+                    warning: 'brown',
+                  },
+                  borderRadius: '10px',
+                  borderWidth: '5px',
+                },
+              },
+              dismissButton: {
+                color: {
+                  active: {
+                    error: 'magenta',
+                    info: 'blue',
+                    inProgress: 'yellow',
+                    success: 'orange',
+                    warning: 'brown',
+                  },
+                  default: {
+                    error: 'magenta',
+                    info: 'blue',
+                    inProgress: 'yellow',
+                    success: 'orange',
+                    warning: 'brown',
+                  },
+                  hover: {
+                    error: 'magenta',
+                    info: 'blue',
+                    inProgress: 'yellow',
+                    success: 'orange',
+                    warning: 'brown',
+                  },
+                },
+                focusRing: {
+                  borderColor: {
+                    error: 'magenta',
+                    info: 'blue',
+                    inProgress: 'yellow',
+                    success: 'orange',
+                    warning: 'brown',
+                  },
+                  borderRadius: '10px',
+                  borderWidth: '90px',
+                },
+              },
+            },
+            notificationBar: {
+              root: {
+                background: {
+                  active: 'magenta',
+                  default: 'red',
+                  hover: 'brown',
+                },
+                borderColor: {
+                  active: 'magenta',
+                  default: 'purple',
+                  hover: 'blue',
+                },
+                color: {
+                  active: 'magenta',
+                  default: 'orange',
+                  hover: 'green',
+                },
+              },
+              expandButton: {
+                focusRing: {
+                  borderColor: 'magenta',
+                  borderRadius: '10px',
+                  borderWidth: '90px',
+                },
+              },
+            },
+          },
+          items: [
+            { type: 'in-progress', header: 'In progress', dismissible: true },
+            { type: 'error', header: 'Error', dismissible: true },
+            { type: 'in-progress', header: 'In progress', dismissible: true },
+          ],
+        });
+
+        expect(getComputedStyle(flashbar.findItems()[0].find('li > div')?.getElement() as HTMLElement).background).toBe(
+          'yellow'
+        );
+
+        findNotificationBar(flashbar)!.click();
+
+        expect(
+          getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
+            customCssProps.styleBackgroundActive
+          )
+        ).toBe('magenta');
+        expect(
+          getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
+            customCssProps.styleBackgroundDefault
+          )
+        ).toBe('red');
+        expect(
+          getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
+            customCssProps.styleBackgroundHover
+          )
+        ).toBe('brown');
+        expect(
+          getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
+            customCssProps.styleBorderColorActive
+          )
+        ).toBe('magenta');
+        expect(
+          getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
+            customCssProps.styleBorderColorDefault
+          )
+        ).toBe('purple');
+        expect(
+          getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
+            customCssProps.styleBorderColorHover
+          )
+        ).toBe('blue');
+        expect(
+          getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
+            customCssProps.styleColorActive
+          )
+        ).toBe('magenta');
+        expect(
+          getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
+            customCssProps.styleColorDefault
+          )
+        ).toBe('orange');
+        expect(
+          getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
+            customCssProps.styleColorHover
+          )
+        ).toBe('green');
+        expect(
+          getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
+            customCssProps.styleFocusRingBorderColor
+          )
+        ).toBe('magenta');
+        expect(
+          getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
+            customCssProps.styleFocusRingBorderRadius
+          )
+        ).toBe('10px');
+        expect(
+          getComputedStyle(findNotificationBar(flashbar) as HTMLElement).getPropertyValue(
+            customCssProps.styleFocusRingBorderWidth
+          )
+        ).toBe('90px');
+        expect(
+          getComputedStyle(flashbar.findItems()[0].findDismissButton()!.getElement()).getPropertyValue(
+            customCssProps.styleColorActive
+          )
+        ).toBe('yellow');
+        expect(
+          getComputedStyle(flashbar.find('li > div')?.getElement() as HTMLElement).getPropertyValue(
+            customCssProps.styleFocusRingBorderColor
+          )
+        ).toBe('yellow');
+        expect(
+          getComputedStyle(flashbar.find('li > div')?.getElement() as HTMLElement).getPropertyValue(
+            customCssProps.styleFocusRingBorderRadius
+          )
+        ).toBe('10px');
+        expect(
+          getComputedStyle(flashbar.find('li > div')?.getElement() as HTMLElement).getPropertyValue(
+            customCssProps.styleFocusRingBorderWidth
+          )
+        ).toBe('5px');
+        expect(
+          getComputedStyle(flashbar.findItems()[0].findDismissButton()!.getElement()).getPropertyValue(
+            customCssProps.styleColorDefault
+          )
+        ).toBe('yellow');
+        expect(
+          getComputedStyle(flashbar.findItems()[0].findDismissButton()!.getElement()).getPropertyValue(
+            customCssProps.styleColorHover
+          )
+        ).toBe('yellow');
+        expect(
+          getComputedStyle(flashbar.findItems()[0].findDismissButton()!.getElement()).getPropertyValue(
+            customCssProps.styleFocusRingBorderColor
+          )
+        ).toBe('yellow');
+        expect(
+          getComputedStyle(flashbar.findItems()[0].findDismissButton()!.getElement()).getPropertyValue(
+            customCssProps.styleFocusRingBorderRadius
+          )
+        ).toBe('10px');
+        expect(
+          getComputedStyle(flashbar.findItems()[0].findDismissButton()!.getElement()).getPropertyValue(
+            customCssProps.styleFocusRingBorderWidth
+          )
+        ).toBe('90px');
+      });
+    });
+  });
+
+  test('dismisses items', () => {
+    // Test this feature only without animations because TransitionGroup delays item removals by one frame.
+    // Customers should disable animations in their tests too:
+    // https://cloudscape.design/foundation/visual-foundation/motion/#implementation
+    disableMotion(true);
+    testFlashDismissal({ stackItems: true });
+  });
+
+  test('findItemById', () => {
+    const wrapper = createFlashbarWrapper(
+      <Flashbar
+        stackItems={true}
+        items={[
+          { content: 'Flash 1', id: 'flash-1', type: 'success' },
+          { content: 'Flash 2', id: 'flash-2', type: 'error' },
+        ]}
+      />
+    );
+    expect(wrapper.findItemById('flash-1')).not.toBeNull();
+    expect(wrapper.findItemById('flash-2')).toBeNull();
+
+    findNotificationBar(wrapper)!.click();
+
+    expect(wrapper.findItemById('flash-1')).not.toBeNull();
+    expect(wrapper.findItemById('flash-2')).not.toBeNull();
+  });
+});
+
+// Entire interactive element including the counter and the actual <button/> element
+function findNotificationBar(flashbar: FlashbarWrapper): HTMLElement | undefined {
+  const element = Array.from(flashbar.getElement().children).find(
+    element => element instanceof HTMLElement && element.tagName !== 'UL'
+  );
+  if (element) {
+    return element as HTMLElement;
+  }
+}
+
+// Item counter including the header
+function findOuterCounter(flashbar: FlashbarWrapper) {
+  const toggleElement = findNotificationBar(flashbar);
+  if (toggleElement) {
+    return Array.from(toggleElement.children)[0];
+  }
+}
+
+// Inner counter including only the icons and the number of items for each type
+function findInnerCounterElement(flashbar: FlashbarWrapper) {
+  const outerCounter = findOuterCounter(flashbar);
+  if (outerCounter) {
+    const element = Array.from(outerCounter.children).find(
+      element => element instanceof HTMLElement && element.tagName !== 'H2'
+    );
+    if (element) {
+      return element as HTMLElement;
+    }
+  }
+}
+
+function renderFlashbar(
+  customProps: Partial<
+    Omit<FlashbarProps, 'i18nStrings' | 'stackItems'> & {
+      i18nStrings?: Partial<FlashbarProps.I18nStrings>;
+    }
+  > = {
+    items: defaultItems,
+  }
+) {
+  const { items, ...restProps } = customProps;
+  const props = { ...defaultProps, ...restProps, i18nStrings: { ...defaultStrings, ...restProps.i18nStrings } };
+  return createFlashbarWrapper(<Flashbar {...props} items={items || defaultItems} />);
+}

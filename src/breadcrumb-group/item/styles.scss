@@ -1,0 +1,58 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../../internal/styles/utils/theming' as theming;
+
+.link:after {
+  display: none;
+}
+
+.breadcrumb,
+.ghost-breadcrumb {
+  display: flex;
+
+  > .icon {
+    margin-block: 0;
+    margin-inline: awsui.$space-xs;
+    color: awsui.$color-text-breadcrumb-icon;
+  }
+
+  @include theming.one-theme-only {
+    > .icon {
+      margin-inline: awsui.$space-xxs;
+    }
+  }
+
+  > .anchor {
+    min-inline-size: 0;
+    overflow: hidden;
+    @include styles.link-inline('body-m');
+    > .text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: block;
+    }
+
+    @include focus-visible.when-visible {
+      @include styles.link-focus;
+    }
+  }
+
+  &.last {
+    > .icon {
+      display: none;
+    }
+    > .anchor {
+      color: awsui.$color-text-breadcrumb-current;
+      font-weight: awsui.$font-weight-breadcrumb-current;
+      text-decoration: none;
+      cursor: default;
+    }
+  }
+}

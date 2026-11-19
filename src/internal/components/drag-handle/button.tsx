@@ -1,0 +1,96 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { forwardRef, useRef } from 'react';
+import clsx from 'clsx';
+
+import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
+
+import { IconProps } from '../../../icon/interfaces';
+import InternalIcon from '../../../icon/internal';
+import { DragHandleProps } from './interfaces';
+import { ResizeIcon } from './resize-icon';
+
+import styles from './styles.css.js';
+import testUtilsStyles from './test-classes/styles.css.js';
+
+const DragHandleButton = forwardRef(
+  (
+    {
+      variant = 'drag-indicator',
+      size = 'normal',
+      active = false,
+      className,
+      ariaLabel,
+      ariaLabelledBy,
+      ariaDescribedby,
+      ariaValue,
+      disabled,
+      onPointerDown,
+      onClick,
+      onKeyDown,
+    }: DragHandleProps,
+    ref: React.Ref<Element>
+  ) => {
+    const dragHandleRefObject = useRef<HTMLDivElement>(null);
+
+    const iconProps: IconProps = (() => {
+      const shared = {
+        variant: disabled ? ('disabled' as const) : undefined,
+        size,
+      };
+      switch (variant) {
+        case 'drag-indicator':
+          return { ...shared, name: 'drag-indicator' };
+        case 'resize-area':
+          return { ...shared, name: 'resize-area' };
+        case 'resize-horizontal':
+          return { ...shared, svg: <ResizeIcon variant="horizontal" /> };
+        case 'resize-vertical':
+          return { ...shared, svg: <ResizeIcon variant="vertical" /> };
+      }
+    })();
+
+    return (
+      // We need to use a div with button role instead of a button
+      // so that Safari will focus on it when clicking it.
+      // (See https://bugs.webkit.org/show_bug.cgi?id=22261)
+      // Otherwise, we can't reliably catch keyboard events coming from the handle
+      // when it is being dragged.
+      <div
+        ref={useMergeRefs(ref, dragHandleRefObject)}
+        role={ariaValue ? 'slider' : 'button'}
+        tabIndex={0}
+        className={clsx(
+          className,
+          styles.handle,
+          testUtilsStyles.root,
+          styles[`handle-${variant}`],
+          styles[`handle-size-${size}`],
+          disabled && styles['handle-disabled'],
+          active && styles.active
+        )}
+        aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledBy}
+        aria-describedby={ariaDescribedby}
+        aria-disabled={disabled}
+        aria-pressed={ariaValue ? undefined : active}
+        aria-valuemax={ariaValue?.valueMax}
+        aria-valuemin={ariaValue?.valueMin}
+        aria-valuenow={ariaValue?.valueNow}
+        onPointerDown={onPointerDown}
+        onClick={onClick}
+        onKeyDown={onKeyDown}
+        {...(variant === 'drag-indicator'
+          ? { 'data-awsui-motion-trigger': 'hover', 'data-awsui-motion-target': '' }
+          : {})}
+      >
+        {/* ensure that events happen on the parent div, not the icon */}
+        <div className={styles['prevent-pointer']}>
+          <InternalIcon {...iconProps} />
+        </div>
+      </div>
+    );
+  }
+);
+
+export default DragHandleButton;

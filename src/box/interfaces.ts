@@ -1,0 +1,260 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import { BaseComponentProps } from '../types/base-component';
+/**
+ * @awsuiSystem core
+ */
+import { NativeAttributes } from '../types/native-attributes';
+
+export interface BoxProps extends BaseComponentProps {
+  /**
+   * Defines the style of element to display.
+   *
+   * - If you set it to `'div'`, `'span'`, `'h1'`, `'h2'`, `'h3'`, `'h4'`, `'h5'`, `'p'`, `'strong'`, `'small'`, `'code'`, `'pre'`, or `'samp'`, the variant is also used as the HTML tag name.
+   * - If you set it to `awsui-key-label`, the component will render a `div`,
+   *   styled for use as a key label in key-value pairs.
+   * - If you set it to `awsui-gen-ai-label`, the component will render a `div`,
+   *   styled for use as a label indicating that content is produced by generative AI.
+   * - If you set it to `awsui-value-large`, the component will render a `span`,
+   *   styled using "Display large light" typography.
+   * - If you set it to `awsui-inline-code`, the component will render a `code` element,
+   *   styled with a background and padding for inline code snippets.
+   *
+   * Override the HTML tag by using property `tagOverride`.
+   */
+  variant?: BoxProps.Variant;
+  /**
+   * Renders the box as a visual accent wrapper to emphasize its content.
+   *
+   * Setting this property activates the accent styling: a coordinated background and content
+   * color combination that works in both light and dark modes. A `variant` is not required to
+   * activate the accent. The accent styling is applied on top of the element determined by
+   * `variant` (or `tagOverride`), so the rendered HTML tag is unaffected.
+   *
+   * The object accepts the following fields:
+   * - `color` (required) — the coordinated background and foreground color pair. The foreground
+   *   color is applied as the wrapper's CSS `color`, so it only affects content that inherits
+   *   the current color (for example an `Icon`, or a nested `Box` with `color="inherit"`).
+   *   Content that sets its own color is not overridden.
+   * - `aspectRatio` — `auto` (default) lets the wrapper's width follow its content;
+   *   `equal` forces equal width and height, suitable for wrapping icons.
+   * - `borderRadius` — the corner rounding applied to the wrapper, using a t-shirt size keyword
+   *   from the Box spacing scale (`xxxs`, `xxs`, `xs`, `s`, `m`, `l`, `xl`, `xxl`, `xxxl`), or
+   *   `full` for fully rounded corners. When not set, the wrapper has no border radius. Set it to
+   *   `full` together with `aspectRatio: 'equal'` to render a circle.
+   *
+   * Composes with existing Box props such as `padding` and `margin`.
+   *
+   * This is a One Theme only feature and must not be used in VR.
+   * @awsuiSystem one-theme
+   */
+  visualAccent?: BoxProps.VisualAccent;
+  /**
+   * Overrides the default HTML tag provided by the variant.
+   */
+  tagOverride?: string;
+  /**
+   * Overrides the display of the element. You can set it to the following values:
+   *
+   * - `block` - Specifies block display.
+   * - `inline` - Specifies inline display.
+   * - `inline-block` - Specifies inline-block display.
+   * - `none` - Hides the box.
+   *
+   * Note: If you don't set it, the display depends on the variant.
+   */
+  display?: BoxProps.Display;
+  /**
+   * Adds margins to the element. It can be the following:
+   *
+   * - A single string with a size. This applies the same margin to all sides (that is, top, right, bottom, left).
+   * - An object specifying the size of the margin per side. The object has the following format:
+   * ```
+   * {
+   *   top: "size of top margin",
+   *   right: "size of right margin",
+   *   bottom: "size of bottom margin",
+   *   left: "size of left margin",
+   *   horizontal: "size of left and right margin",
+   *   vertical: "size of top and bottom margin",
+   * }
+   * ```
+   *
+   * The size can be `n`, `xxxs`, `xxs`, `xs`, `s`, `m`, `l`, `xl`, `xxl`, `xxxl`, where `n` stands for none.
+   * Sizes are automatically scaled down in compact mode.
+   *
+   *  For example, `margin="s"` adds a small margin to all sides.
+   * `margin={{ right: "l", bottom: "s" }}` adds a small margin to the bottom and a large margin to the right.
+   */
+  margin?: BoxProps.SpacingSize | BoxProps.Spacing;
+  /**
+   * Adds padding to the element. It can be the following:
+   *
+   * - A single string with a size. This applies the same padding to all sides (that is, top, right, bottom, left).
+   * - An object specifying the size of padding per side. The object has the following format:
+   * ```
+   * {
+   *   top: "size of top padding",
+   *   right: "size of right padding",
+   *   bottom: "size of bottom padding",
+   *   left: "size of left padding",
+   *   horizontal: "size of left and right padding",
+   *   vertical: "size of top and bottom padding",
+   * }
+   * ```
+   *
+   * The size can be `n`, `xxxs`, `xxs`, `xs`, `s`, `m`, `l`, `xl`, `xxl`, `xxxl`, where `n` stands for none.
+   * Sizes are automatically scaled down in compact mode.
+   *
+   *  For example, `padding="s"` adds small padding to all sides.
+   * `padding={{ right: "l", bottom: "s" }}` adds small padding to the bottom and large padding to the right.
+   */
+  padding?: BoxProps.SpacingSize | BoxProps.Spacing;
+  /**
+   * Defines the text alignment within the element. You can set it to `left`, `center`, or `right`.
+   */
+  textAlign?: BoxProps.TextAlign;
+  /**
+   * Defines the floating behavior. You can set it to `left` or `right`.
+   */
+  float?: BoxProps.Float;
+  /**
+   * Overrides the font size and line height. If not set, the font size and line height depend on the variant.
+   */
+  fontSize?: BoxProps.FontSize;
+  /**
+   * Overrides the font weight. If not set, the value depends on the variant.
+   * @visualrefresh 'heavy'
+   */
+  fontWeight?: BoxProps.FontWeight;
+  /**
+   * Overrides the text color. You can set it to the following values:
+   *
+   * - `inherit` - Inherits the color from the parent element. For example, use this to style content
+   *      in Flashbars and to style the `empty` and `noMatch` slots of the Table and Cards components.
+   * - `text-label` - Specifies the text color for non-form labels. For example, use it for the key in key/value pairs.
+   * - `text-body-secondary` - Specifies the color for secondary text.
+   * - `text-status-error` - Specifies the color for error text and icons.
+   * - `text-status-success` - Specifies the color for success text and icons.
+   * - `text-status-info` - Specifies the color for info text and icon.
+   * - `text-status-inactive` - Specifies the color for inactive and loading text and icons.
+   * - `text-status-warning` - Specifies the color for warning text and icons.
+   *
+   * Note: If you don't set it, the text color depends on the variant.
+   */
+  color?: BoxProps.Color;
+  /**
+   * Content of the box.
+   * @displayname content
+   */
+  children?: React.ReactNode;
+
+  /**
+   * Attributes to add to the native element.
+   * Some attributes will be automatically combined with internal attribute values:
+   * - `className` will be appended.
+   * - Event handlers will be chained, unless the default is prevented.
+   *
+   * We do not support using this attribute to apply custom styling.
+   *
+   * Pass a `ref` to access the native element for measurement, observation, or third-party integration.
+   *
+   * @awsuiSystem core
+   */
+  nativeAttributes?: NativeAttributes<React.HTMLAttributes<HTMLElement>>;
+}
+
+export namespace BoxProps {
+  export type Variant =
+    | 'div'
+    | 'span'
+    | 'h1'
+    | 'h2'
+    | 'h3'
+    | 'h4'
+    | 'h5'
+    | 'p'
+    | 'strong'
+    | 'small'
+    | 'code'
+    | 'pre'
+    | 'samp'
+    | 'awsui-key-label'
+    | 'awsui-gen-ai-label'
+    | 'awsui-value-large'
+    | 'awsui-inline-code';
+
+  export interface VisualAccent {
+    /**
+     * The coordinated background and foreground color pair applied to the accent wrapper.
+     * Each color works in both light and dark modes.
+     *
+     * Use one of the following color options: `indigo`, `yellow`, `red`, `green`, `grey`,
+     * `purple`, `orange`, or `teal`.
+     *
+     * The background color is applied directly to the wrapper. The foreground color is applied
+     * as the wrapper's CSS `color` and is therefore only picked up by content that inherits the
+     * current color, such as an `Icon` or a nested `Box` with `color="inherit"`. Content that
+     * defines its own color (for example a `Box` with an explicit `color`, or a `Link`) keeps that
+     * color and is not recolored by the accent.
+     */
+    color: BoxProps.VisualAccent.Color;
+    /**
+     * Controls the aspect ratio of the accent wrapper.
+     *
+     * - `auto` (default) — the wrapper's width follows its content.
+     * - `equal` — the wrapper has equal width and height, suitable for wrapping icons.
+     *
+     * Combine `aspectRatio: 'equal'` with `borderRadius: 'full'` to render a circle.
+     */
+    aspectRatio?: BoxProps.VisualAccent.AspectRatio;
+    /**
+     * The corner rounding applied to the accent wrapper. When not set, the wrapper has no
+     * border radius.
+     *
+     * Use one of the curated t-shirt size keywords, which map to the same spacing scale used by
+     * `padding` and `margin`: `xxxs`, `xxs`, `xs`, `s`, `m`, `l`, `xl`, `xxl`, or `xxxl`. Use
+     * `full` for fully rounded corners; combine it with `aspectRatio: 'equal'` to render a circle.
+     */
+    borderRadius?: BoxProps.VisualAccent.BorderRadius;
+  }
+
+  export namespace VisualAccent {
+    export type Color = 'red' | 'yellow' | 'indigo' | 'green' | 'orange' | 'purple' | 'grey' | 'teal';
+    export type AspectRatio = 'auto' | 'equal';
+    export type BorderRadius = 'xxxs' | 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl' | 'full';
+  }
+
+  export type Display = 'block' | 'inline' | 'inline-block' | 'none';
+  export type TextAlign = 'left' | 'center' | 'right';
+  export type Float = 'left' | 'right';
+  export type FontSize =
+    | 'body-s'
+    | 'body-m'
+    | 'heading-xs'
+    | 'heading-s'
+    | 'heading-m'
+    | 'heading-l'
+    | 'heading-xl'
+    | 'display-l'
+    | 'display-xl';
+  export type FontWeight = 'light' | 'normal' | 'bold' | 'heavy';
+  export type Color =
+    | 'inherit'
+    | 'text-label'
+    | 'text-body-secondary'
+    | 'text-status-error'
+    | 'text-status-success'
+    | 'text-status-info'
+    | 'text-status-inactive'
+    | 'text-status-warning';
+  export type SpacingSize = 'n' | 'xxxs' | 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl';
+  export interface Spacing {
+    top?: BoxProps.SpacingSize;
+    right?: BoxProps.SpacingSize;
+    bottom?: BoxProps.SpacingSize;
+    left?: BoxProps.SpacingSize;
+    horizontal?: BoxProps.SpacingSize;
+    vertical?: BoxProps.SpacingSize;
+  }
+}

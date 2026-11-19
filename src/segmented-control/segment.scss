@@ -1,0 +1,164 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use 'sass:map';
+@use '../internal/styles' as styles;
+@use '../button/constants' as constants;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/foundation' as foundation;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../internal/styles/utils/theming' as theming;
+@use '../internal/styles/style-api' as style-api;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+// Style API v2. The root radius is a carrier so the segments can derive their own radius from it; the segment
+// focus ring and the divider (the ::after of the segment) read carriers re-anchored on the segment.
+$root-tokens: style-api.resolve((border-radius), carrier);
+$segment-tokens: style-api.resolve(style-api.$focus-ring, carrier);
+$divider-tokens: style-api.resolve((line-color, line-width), carrier);
+@include style-api.register($segment-tokens, $divider-tokens);
+
+$default-background: var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-segment-default);
+$default-color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-segment-default);
+$hover-background: var(#{custom-props.$styleBackgroundHover}, awsui.$color-background-segment-hover);
+$hover-color: var(#{custom-props.$styleColorHover}, awsui.$color-text-segment-hover);
+$disabled-background: var(#{custom-props.$styleBackgroundDisabled}, awsui.$color-background-segment-disabled);
+$disabled-color: var(#{custom-props.$styleColorDisabled}, awsui.$color-text-interactive-disabled);
+$selected-background: var(#{custom-props.$styleBackgroundActive}, awsui.$color-background-segment-active);
+$selected-color: var(#{custom-props.$styleColorActive}, awsui.$color-text-segment-active);
+$segment-border-width-prop: --awsui-internal-style-segment-border-width;
+$segment-border-width: var(#{$segment-border-width-prop}, 0);
+$segment-gap: awsui.$space-static-xxs;
+$segment-divider-width: 1px;
+$one-theme-segment-gap: calc(#{$segment-gap} - #{$segment-divider-width});
+$root-radius: style-api.value($root-tokens, border-radius, awsui.$border-radius-button);
+$segment-radius: calc($root-radius - (#{awsui.$border-width-field} + #{awsui.$border-width-button}));
+
+.segment {
+  @include style-api.carriers($segment-tokens);
+  @include style-api.carriers($divider-tokens);
+  @include styles.font-body-m;
+  @include styles.text-flex-wrapping;
+  @include styles.font-button;
+  letter-spacing: 0.25px;
+  padding-block: calc(awsui.$space-field-vertical - awsui.$border-width-field);
+  padding-inline: calc(awsui.$space-button-horizontal - $segment-gap);
+
+  background: $default-background;
+  color: $default-color;
+  overflow: visible;
+
+  border-start-start-radius: $segment-radius;
+  border-start-end-radius: $segment-radius;
+  border-end-start-radius: $segment-radius;
+  border-end-end-radius: $segment-radius;
+
+  position: relative;
+  block-size: calc(100% - $segment-gap);
+  display: flex;
+  align-items: center;
+
+  border-inline: none;
+  border-block: none;
+
+  // Center the text when the segment stretches to full width
+  &.full-width {
+    justify-content: center;
+  }
+
+  &:not(.refresh) {
+    block-size: calc(100% - $segment-gap - (2 * awsui.$border-width-field));
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &.disabled {
+    background: $disabled-background;
+    color: $disabled-color;
+  }
+
+  #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
+    style-api.value(
+      $segment-tokens,
+      focus-ring-width,
+      var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
+    )
+    style-api.value(
+      $segment-tokens,
+      focus-ring-color,
+      var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused)
+    );
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(
+      $gutter: awsui.$space-segmented-control-focus-outline-gutter,
+      $border-radius: style-api.value(
+          $segment-tokens,
+          focus-ring-radius,
+          var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring)
+        ),
+      $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow}),
+      $z-index: 1 // Prevents adjacent segments from overlapping the focus ring
+    );
+  }
+
+  &:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    inset-inline-end: calc(-1 * ($segment-gap + $segment-divider-width));
+    block-size: calc(100% - (($segment-gap + awsui.$space-static-xxxs) * 2));
+    min-block-size: calc(awsui.$line-height-body-m - $segment-gap * 2);
+    inline-size: style-api.value($divider-tokens, line-width, $segment-divider-width);
+    background: style-api.value($divider-tokens, line-color, awsui.$color-border-segment-divider);
+    z-index: 1;
+  }
+  &:not(.refresh):not(:last-child)::after {
+    inset-inline-end: calc(-1 * $segment-gap);
+  }
+  @include theming.one-theme-only {
+    #{$segment-border-width-prop}: #{awsui.$border-width-field};
+
+    &:not(:last-child)::after {
+      content: none;
+    }
+  }
+
+  @for $i from 1 through 6 {
+    &:nth-child(#{$i}) {
+      grid-column: $i;
+    }
+  }
+
+  &.selected {
+    background: $selected-background;
+    color: $selected-color;
+    box-shadow: inset 0 0 0 $segment-border-width awsui.$color-border-segment-active;
+  }
+
+  &:hover:not(.selected):not(.disabled):not(:focus) {
+    background: $hover-background;
+    color: $hover-color;
+    box-shadow: inset 0 0 0 $segment-border-width awsui.$color-border-segment-hover;
+    cursor: pointer;
+  }
+}
+
+.icon {
+  /* used in test-utils */
+}
+
+.with-text {
+  position: relative;
+  inset-inline-start: calc(-1 * #{awsui.$space-xxs});
+  margin-inline-end: awsui.$space-xxs;
+  @include theming.one-theme-only {
+    inset-inline-start: calc(-1 * #{awsui.$space-xxxs});
+  }
+}
+
+.with-no-text {
+  margin-inline: auto;
+  inset-inline: 0;
+}

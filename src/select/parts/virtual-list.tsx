@@ -1,0 +1,137 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
+
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
+import { ScrollToIndexRef } from '../../internal/components/listbox/interfaces';
+import { fallbackItemHeight } from '../../internal/components/listbox/parts/common';
+import { ListProps } from '../../internal/components/listbox/parts/plain-list';
+import { renderOptions } from '../../internal/components/listbox/parts/render-options';
+import customScrollToIndex from '../../internal/components/listbox/parts/scroll-to-index';
+import OptionsList from '../../internal/components/options-list';
+import { useVirtual } from '../../internal/hooks/use-virtual';
+
+import styles from './styles.css.js';
+
+const VirtualList = (props: ListProps, ref: React.Ref<ScrollToIndexRef>) => {
+  return props.listProps.open ? <VirtualListOpen {...props} ref={ref} /> : <VirtualListClosed {...props} ref={ref} />;
+};
+
+const VirtualListOpen = forwardRef(
+  (
+    {
+      listProps,
+      getOptionProps,
+      filteredOptions,
+      filteringValue,
+      highlightType,
+      hasDropdownStatus,
+      listBottom,
+      selectionType,
+      screenReaderContent,
+      firstOptionSticky,
+      isMultiSelect,
+      renderOption,
+    }: ListProps,
+    ref: React.Ref<ScrollToIndexRef>
+  ) => {
+    // update component, when it gets wider or narrower to reposition items
+    const [width, menuMeasureRef] = useContainerQuery(
+      rect => ({ inner: rect.contentBoxWidth, outer: rect.borderBoxWidth }),
+      []
+    );
+    const menuRefObject = useRef(null);
+    const menuRef = useMergeRefs(menuMeasureRef, menuRefObject, listProps.ref);
+    const previousHighlightedIndex = useRef<number>();
+    const { virtualItems, totalSize, scrollToIndex } = useVirtual({
+      items: filteredOptions,
+      parentRef: menuRefObject,
+      // estimateSize is a dependency of measurements memo. We update it to force full recalculation
+      // when the height of any option could have changed:
+      // 1: because the component got resized (width property got updated)
+      // 2: because the option changed its content (filteringValue property controls the highlight and the visibility of hidden tags)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      estimateSize: useCallback(() => fallbackItemHeight, [width?.inner, filteringValue]),
+      firstItemSticky: firstOptionSticky,
+    });
+
+    useImperativeHandle(
+      ref,
+      () => (index: number) => {
+        if (highlightType.moveFocus) {
+          const movingUp = previousHighlightedIndex.current !== undefined && index < previousHighlightedIndex.current;
+          if (firstOptionSticky && movingUp && index !== 0 && menuRefObject.current) {
+            // React-Virtual v2 does not offer a proper way to handle sticky elements when scrolling,
+            // so until we upgrade to v3, use our own scroll implementation
+            // to prevent newly highlighted element from being covered by the sticky element
+            // when moving the highlight upwards in the list.
+
+            // Scrolling behavior is covered by integration tests.
+            // istanbul ignore next
+            customScrollToIndex({
+              index,
+              menuEl: menuRefObject?.current,
+            });
+          } else {
+            // Fix for AWSUI-61506. Defer scroll to next frame to ensure
+            // virtual items are measured after re-render. When called from
+            // parent's useEffect, measurements may not be ready yet.
+            requestAnimationFrame(() => scrollToIndex(index));
+          }
+        }
+        previousHighlightedIndex.current = index;
+      },
+      [firstOptionSticky, highlightType.moveFocus, scrollToIndex]
+    );
+
+    const stickySize = firstOptionSticky ? virtualItems[0].size : 0;
+    const withScrollbar = !!width && width.inner < width.outer;
+
+    const idPrefix = useUniqueId('select-list-');
+    const finalOptions = renderOptions({
+      options: virtualItems.map(({ index }) => filteredOptions[index]),
+      renderOption,
+      getOptionProps,
+      filteringValue,
+      highlightType,
+      idPrefix,
+      hasDropdownStatus,
+      virtualItems,
+      selectionType,
+      screenReaderContent,
+      firstOptionSticky,
+      withScrollbar,
+    });
+
+    return (
+      <OptionsList {...listProps} stickyItemBlockSize={stickySize} ref={menuRef} isMultiSelect={isMultiSelect}>
+        {finalOptions}
+        <div aria-hidden="true" key="total-size" className={styles['layout-strut']} style={{ height: totalSize }} />
+        {listBottom ? (
+          <div role="option" className={styles['list-bottom']}>
+            {listBottom}
+          </div>
+        ) : null}
+      </OptionsList>
+    );
+  }
+);
+
+const VirtualListClosed = forwardRef(
+  ({ listProps, listBottom, isMultiSelect }: ListProps, ref: React.Ref<ScrollToIndexRef>) => {
+    useImperativeHandle(ref, () => () => {}, []);
+    return (
+      <OptionsList {...listProps} ref={listProps.ref} isMultiSelect={isMultiSelect}>
+        {listBottom ? (
+          <div role="option" className={styles['list-bottom']}>
+            {listBottom}
+          </div>
+        ) : null}
+      </OptionsList>
+    );
+  }
+);
+
+export default forwardRef(VirtualList);

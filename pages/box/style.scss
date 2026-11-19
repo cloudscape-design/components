@@ -1,0 +1,26 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~design-tokens' as awsui;
+
+.permutation-box {
+  border-block: 1px solid awsui.$color-text-body-default;
+  border-inline: 1px solid awsui.$color-text-body-default;
+  background-color: awsui.$color-background-container-content;
+}
+.inverted {
+  background-color: awsui.$color-background-notification-red;
+}
+
+.inherit {
+  background-color: white;
+  color: blue;
+}
+
+.default,
+.text-label,
+.text-body-secondary {
+  background-color: awsui.$color-background-container-content;
+}

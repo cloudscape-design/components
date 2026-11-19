@@ -1,0 +1,369 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
+
+import Box from '~components/box';
+import Drawer from '~components/drawer';
+import awsuiPlugins from '~components/internal/plugins';
+import { registerBottomDrawer } from '~components/internal/plugins/widget/index';
+import { mount, unmount } from '~mount';
+
+import { IframeWrapper } from '../../utils/iframe-wrapper';
+import { Counter, CustomDrawerContent } from './content-blocks';
+
+const searchParams = new URL(location.hash.substring(1), location.href).searchParams;
+
+const Content = React.forwardRef((props, ref) => {
+  const [resized, setResized] = useState(false);
+
+  useImperativeHandle(ref, () => setResized);
+
+  useEffect(() => {
+    console.log('mounted');
+    return () => console.log('unmounted');
+  }, []);
+  return (
+    <Drawer header={<h2>Security</h2>}>
+      I am runtime drawer, <span data-testid="current-size">resized: {`${resized}`}</span>
+    </Drawer>
+  );
+});
+
+const setSizeRef = React.createRef<(resized: boolean) => void>();
+
+awsuiPlugins.appLayout.registerDrawer({
+  id: 'security',
+
+  ariaLabels: {
+    closeButton: 'Security close button',
+    content: 'Security drawer content',
+    triggerButton: 'Security trigger button',
+    resizeHandle: 'Security resize handle',
+  },
+
+  trigger: {
+    iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+      <rect x="2" y="7" width="12" height="7" fill="none" stroke="currentColor" stroke-width="2" />
+      <path d="M4,7V5a4,4,0,0,1,8,0V7" fill="none" stroke="currentColor" stroke-width="2" />
+    </svg>`,
+  },
+
+  defaultActive: !!searchParams.get('force-default-active'),
+  onToggle: event => {
+    console.log('security drawer on toggle', event.detail);
+    awsuiPlugins.appLayout.updateDrawer({ id: 'security', defaultActive: event.detail.isOpen });
+  },
+
+  resizable: true,
+  defaultSize: 320,
+
+  onResize: event => {
+    setSizeRef.current?.(true);
+    console.log('resize', event.detail);
+    awsuiPlugins.appLayout.updateDrawer({ id: 'security', defaultSize: event.detail.size });
+  },
+
+  mountContent: container => {
+    mount(<Content ref={setSizeRef} />, container);
+  },
+  unmountContent: container => unmount(container),
+  headerActions: [
+    {
+      type: 'icon-button',
+      id: 'add',
+      iconName: 'add-plus',
+      text: 'Add',
+    },
+  ],
+  onHeaderActionClick: ({ detail }) => {
+    console.log('onHeaderActionClick: ', detail);
+  },
+});
+
+awsuiPlugins.appLayout.registerDrawer({
+  id: 'circle',
+
+  ariaLabels: {
+    closeButton: 'Close button',
+    content: 'Content',
+    triggerButton: 'Trigger button',
+    resizeHandle: 'Resize handle',
+  },
+
+  trigger: {
+    iconSvg: `<svg viewBox="0 0 16 16" focusable="false">
+      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="7" />
+      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="3" />
+    </svg>`,
+  },
+
+  mountContent: container => {
+    mount(<div>Nothing to see here</div>, container);
+  },
+  unmountContent: container => unmount(container),
+});
+
+const AutoIncrementCounter: React.FC<{
+  onVisibilityChange?: (callback: (isVisible: boolean) => void) => void;
+}> = ({ children, onVisibilityChange }) => {
+  const [count, setCount] = useState(0);
+  const isPaused = useRef(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isPaused.current) {
+        setCount(prevCount => prevCount + 1);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (onVisibilityChange) {
+      onVisibilityChange((isVisible: boolean) => {
+        isPaused.current = !isVisible;
+      });
+    }
+  }, [onVisibilityChange]);
+
+  return (
+    <div>
+      <h3>Auto Increment Counter</h3>
+      <div>Count: {count}</div>
+      {children}
+    </div>
+  );
+};
+
+awsuiPlugins.appLayout.registerDrawer({
+  id: 'circle-global',
+  type: 'global',
+  defaultActive: false,
+  resizable: true,
+  defaultSize: 350,
+  preserveInactiveContent: true,
+
+  isExpandable: true,
+
+  ariaLabels: {
+    closeButton: 'Close button',
+    content: 'Content',
+    triggerButton: 'Trigger button',
+    resizeHandle: 'Resize handle',
+    expandedModeButton: 'Expanded mode button',
+  },
+  onToggle: event => {
+    console.log('circle-global drawer on toggle', event.detail);
+  },
+
+  trigger: {
+    iconSvg: `<svg viewBox="0 0 16 16" focusable="false">
+      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="7" />
+      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="3" />
+    </svg>`,
+  },
+
+  onResize: event => {
+    console.log('resize', event.detail);
+  },
+
+  mountContent: (container, mountContext) => {
+    mount(
+      <Drawer header={<Box variant="h2">Global drawer</Box>}>
+        <AutoIncrementCounter onVisibilityChange={mountContext?.onVisibilityChange}>
+          global widget content circle 1
+          {new Array(100).fill(null).map((_, index) => (
+            <div key={index}>{index}</div>
+          ))}
+          <div data-testid="circle-global-bottom-content">circle-global bottom content</div>
+        </AutoIncrementCounter>
+      </Drawer>,
+      container
+    );
+  },
+  unmountContent: container => unmount(container),
+  headerActions: [
+    {
+      type: 'icon-button',
+      id: 'add',
+      iconName: 'add-plus',
+      text: 'Add',
+    },
+  ],
+  onHeaderActionClick: ({ detail }) => {
+    console.log('onHeaderActionClick: ', detail);
+  },
+});
+
+awsuiPlugins.appLayout.registerDrawer({
+  id: 'global-with-stored-state',
+  type: 'global',
+  defaultActive: false,
+  resizable: true,
+  defaultSize: 320,
+
+  ariaLabels: {
+    closeButton: 'Close button',
+    content: 'Drawer with counter',
+    triggerButton: 'Trigger button',
+    resizeHandle: 'Resize handle',
+  },
+
+  trigger: {
+    iconSvg: `<svg viewBox="0 0 16 16" focusable="false">
+      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="7" />
+      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="3" />
+    </svg>`,
+  },
+
+  onToggle(event) {
+    awsuiPlugins.appLayout.updateDrawer({ id: 'global-with-stored-state', defaultActive: event.detail.isOpen });
+  },
+
+  mountContent: container => {
+    mount(
+      <>
+        <Counter id="global-with-stored-state" />
+        global widget content circle 2
+      </>,
+      container
+    );
+  },
+  unmountContent: container => unmount(container),
+});
+
+awsuiPlugins.appLayout.registerDrawer({
+  id: 'circle3-global',
+  type: 'global',
+  defaultActive: false,
+  resizable: true,
+  defaultSize: 320,
+
+  isExpandable: true,
+
+  ariaLabels: {
+    closeButton: 'Close button',
+    content: 'Content',
+    triggerButton: 'Trigger button',
+    resizeHandle: 'Resize handle',
+  },
+
+  trigger: {
+    iconSvg: `<svg viewBox="0 0 16 16" focusable="false">
+      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="7" />
+      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="3" />
+    </svg>`,
+  },
+
+  mountContent: container => {
+    mount(
+      <IframeWrapper
+        id="circle3-global"
+        AppComponent={() => (
+          <>
+            <Counter id="circle3-global" />
+            global widget content circle 3
+          </>
+        )}
+      />,
+      container
+    );
+  },
+  unmountContent: container => unmount(container),
+});
+
+awsuiPlugins.appLayout.registerDrawer({
+  id: 'circle4-global',
+  type: 'global',
+  defaultActive: false,
+  resizable: true,
+  defaultSize: 320,
+
+  ariaLabels: {
+    closeButton: 'Close button',
+    content: 'Content',
+    triggerButton: 'Trigger button',
+    resizeHandle: 'Resize handle',
+  },
+  onToggle: event => {
+    console.log('circle4-global drawer on toggle', event.detail);
+  },
+
+  mountContent: container => {
+    mount(<CustomDrawerContent />, container);
+  },
+  unmountContent: container => unmount(container),
+});
+
+export const registerRuntimeBottomDrawer = () => {
+  registerBottomDrawer({
+    id: 'circle5-global-bottom',
+    position: 'bottom',
+    defaultActive: false,
+    resizable: true,
+    defaultSize: 350,
+    preserveInactiveContent: true,
+
+    isExpandable: true,
+
+    ariaLabels: {
+      closeButton: 'Close button',
+      content: 'Content bottom',
+      triggerButton: 'Trigger button',
+      resizeHandle: 'Resize handle',
+      expandedModeButton: 'Expanded mode button',
+      resizeHandleTooltipText: 'Drag or select to resize',
+    },
+    onToggle: event => {
+      console.log('circle-global drawer on toggle', event.detail);
+    },
+
+    trigger: {
+      iconSvg: `<svg viewBox="0 0 16 16" focusable="false">
+      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="7" />
+      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="3" />
+    </svg>`,
+    },
+
+    onResize: event => {
+      console.log('resize', event.detail);
+    },
+
+    mountContent: (container, mountContext) => {
+      mount(
+        <Box padding={{ left: 'm' }}>
+          <AutoIncrementCounter onVisibilityChange={mountContext?.onVisibilityChange}>
+            global bottom panel
+            {new Array(100).fill(null).map((_, index) => (
+              <div key={index}>{index}</div>
+            ))}
+            <div data-testid="circle-global-bottom-content">circle-global bottom content</div>
+          </AutoIncrementCounter>
+        </Box>,
+        container
+      );
+    },
+    unmountContent: container => unmount(container),
+    mountHeader: container => {
+      mount(
+        <Box variant="h2" padding="m">
+          Global drawer
+        </Box>,
+        container
+      );
+    },
+    unmountHeader: container => unmount(container),
+    headerActions: [
+      {
+        type: 'icon-button',
+        id: 'add',
+        iconName: 'add-plus',
+        text: 'Add',
+      },
+    ],
+    onHeaderActionClick: ({ detail }) => {
+      console.log('onHeaderActionClick: ', detail);
+    },
+  });
+};

@@ -1,0 +1,52 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~components/styling/alert';
+@use '~components/styling/button';
+@use '../style-api/palette' as palette;
+
+.alert-genai {
+  @include alert.root(
+    $background: palette.$genai-surface,
+    $color: palette.$genai-text,
+    $border-color: palette.$genai,
+    $border-radius: 4px,
+    $padding-block: 12px,
+    $padding-inline: 24px,
+    $awsui-focus-ring-color: palette.$genai
+  );
+}
+
+.alert-genai-icon {
+  @include alert.icon($color: palette.$genai);
+}
+
+.alert-genai-action {
+  @include button.root(
+    $background: palette.$genai,
+    $color: palette.$text-on-accent,
+    $border-color: palette.$genai,
+    $border-radius: 4px,
+    $awsui-focus-ring-color: palette.$genai
+  );
+
+  &:hover,
+  &:focus {
+    @include button.root($background: palette.$genai-hover, $border-color: palette.$genai-hover);
+  }
+
+  &:active {
+    @include button.root($background: palette.$genai-active, $border-color: palette.$genai-active);
+  }
+}
+
+.alert-genai-dismiss {
+  @include button.root($color: palette.$genai-text, $awsui-focus-ring-color: palette.$genai);
+
+  &:hover,
+  &:focus {
+    @include button.root($color: palette.$genai);
+  }
+}

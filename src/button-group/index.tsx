@@ -1,0 +1,89 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+'use client';
+import React from 'react';
+
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
+import { getBaseProps } from '../internal/base-component';
+import useBaseComponent from '../internal/hooks/use-base-component';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { getExternalProps } from '../internal/utils/external-props';
+import { GeneratedAnalyticsMetadataButtonGroupComponent } from './analytics-metadata/interfaces';
+import { ButtonGroupProps } from './interfaces';
+import InternalButtonGroup from './internal';
+import { StyleClassNames } from './internal-interfaces';
+
+export { ButtonGroupProps };
+
+const ButtonGroup = React.forwardRef(
+  (
+    { variant, dropdownExpandToViewport = false, style, ...rest }: ButtonGroupProps,
+    ref: React.Ref<ButtonGroupProps.Ref>
+  ) => {
+    const baseProps = getBaseProps(rest);
+    const itemCounts = getItemCounts(rest.items);
+    const baseComponentProps = useBaseComponent('ButtonGroup', {
+      props: {
+        variant,
+        dropdownExpandToViewport,
+      },
+      metadata: {
+        iconButtonsCount: itemCounts['icon-button'],
+        iconToggleButtonsCount: itemCounts['icon-toggle-button'],
+        iconFileInputsCount: itemCounts['icon-file-input'],
+        iconCopyToClipboardsCount: itemCounts['icon-copy-to-clipboard'],
+        menuDropdownsCount: itemCounts['menu-dropdown'],
+        groupsCount: itemCounts.group,
+      },
+    });
+
+    const externalProps = getExternalProps(rest);
+
+    const componentMetadata: GeneratedAnalyticsMetadataButtonGroupComponent = {
+      name: 'awsui.ButtonGroup',
+      label: { root: 'self' },
+    };
+
+    return (
+      <InternalButtonGroup
+        {...baseProps}
+        styleClassNames={(rest as { styleClassNames?: StyleClassNames }).styleClassNames}
+        {...baseComponentProps}
+        {...externalProps}
+        ref={ref}
+        variant={variant}
+        dropdownExpandToViewport={dropdownExpandToViewport}
+        style={style}
+        {...getAnalyticsMetadataAttribute({ component: componentMetadata })}
+      />
+    );
+  }
+);
+
+function getItemCounts(allItems: readonly ButtonGroupProps.ItemOrGroup[] = []) {
+  const counters = {
+    'icon-button': 0,
+    'icon-toggle-button': 0,
+    'icon-file-input': 0,
+    'icon-copy-to-clipboard': 0,
+    'menu-dropdown': 0,
+    group: 0,
+  };
+
+  function count(items: readonly ButtonGroupProps.ItemOrGroup[]) {
+    for (const item of items) {
+      counters[item.type] += 1;
+
+      if (item.type === 'group') {
+        count(item.items);
+      }
+    }
+  }
+  count(allItems);
+
+  return counters;
+}
+
+applyDisplayName(ButtonGroup, 'ButtonGroup');
+export default ButtonGroup;

@@ -1,0 +1,168 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/index' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/styles/typography/index' as typographyConstants;
+@use './motion';
+
+$calendar-grid-width: awsui.$size-calendar-grid-width;
+$calendar-header-color: awsui.$color-text-body-default;
+
+.root {
+  @include styles.styles-reset;
+  &:not(.wide) {
+    max-inline-size: 32em;
+  }
+  &.wide {
+    max-inline-size: 39em;
+  }
+}
+
+.focus-lock {
+  display: contents;
+}
+
+.trigger-flexbox {
+  display: flex;
+}
+
+.calendar-container {
+  inline-size: calc(2 * #{$calendar-grid-width} + #{awsui.$space-xs});
+
+  &.one-grid {
+    inline-size: $calendar-grid-width;
+  }
+}
+
+.calendar {
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+  }
+
+  &-header-pages-wrapper {
+    position: absolute;
+    inset: 0;
+
+    margin-block: 0;
+    margin-inline: 0;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex: 1;
+
+    pointer-events: none;
+  }
+
+  &-header-page {
+    @include styles.font-body-m;
+    font-weight: typographyConstants.$font-weight-bold;
+    color: $calendar-header-color;
+
+    display: flex;
+
+    pointer-events: auto;
+  }
+}
+
+.date-and-time-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax($calendar-grid-width, 1fr));
+  gap: awsui.$space-xs;
+}
+.date-and-time-wrapper {
+  inline-size: $calendar-grid-width;
+  display: grid;
+  gap: awsui.$space-xs;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  border-block-start: 1px solid #{awsui.$color-border-dropdown-item-default};
+  padding-block-start: 0;
+  padding-block-end: awsui.$space-s;
+  padding-inline: awsui.$space-l;
+
+  &.has-clear-button {
+    justify-content: space-between;
+  }
+
+  &.one-grid {
+    padding-block-start: 0;
+    padding-block-end: awsui.$space-s;
+    padding-inline: awsui.$space-xs;
+  }
+}
+
+.footer-button-wrapper {
+  padding-block-start: awsui.$space-s;
+
+  &:last-child {
+    margin-inline-start: auto;
+  }
+}
+
+.icon-wrapper {
+  color: awsui.$color-text-interactive-default;
+  margin-inline-end: awsui.$space-xs;
+}
+
+.label {
+  cursor: default;
+}
+
+.label.label-enabled:hover > .trigger-flexbox > .icon-wrapper {
+  color: awsui.$color-text-interactive-hover;
+}
+
+.label-text {
+  @include styles.form-placeholder;
+  // Placeholder text is purely decorative and not intended to be interacted
+  // with. Disable selection so that it doesn't become selectable inside the
+  // read-only trigger (which enables text selection).
+  user-select: none;
+}
+
+.label-token-nowrap {
+  white-space: nowrap;
+}
+
+.dropdown {
+  // There needs to be an outer container because we set a fixed width on the
+  // actual dropdown and calendar grid, so the scrollbar would mess up the
+  // widths.
+  overflow: auto;
+
+  border-block-start: 1px solid #{awsui.$color-border-container-top};
+  border-block-end: 1px solid #{awsui.$color-border-container-top};
+  border-start-start-radius: awsui.$border-radius-dropdown;
+  border-start-end-radius: awsui.$border-radius-dropdown;
+  border-end-start-radius: awsui.$border-radius-dropdown;
+  border-end-end-radius: awsui.$border-radius-dropdown;
+
+  &:focus {
+    outline: none;
+  }
+  @include focus-visible.when-visible {
+    @include styles.container-focus(awsui.$border-radius-dropdown);
+  }
+}
+
+.dropdown-content {
+  background-color: awsui.$color-background-container-content;
+  inline-size: calc(2 * #{$calendar-grid-width} + #{awsui.$space-xs} + 2 * #{awsui.$space-l});
+
+  &.one-grid {
+    inline-size: calc(#{$calendar-grid-width} + 2 * #{awsui.$space-l});
+  }
+}

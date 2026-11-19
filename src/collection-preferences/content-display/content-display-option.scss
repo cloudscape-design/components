@@ -1,0 +1,39 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as awsui;
+
+.content-display-option-toggle {
+  /* used in test-utils */
+}
+
+.content-display-option-content {
+  @include styles.styles-reset;
+  display: flex;
+  align-items: flex-start;
+  padding-block: awsui.$space-scaled-xs;
+  padding-inline-end: awsui.$space-xs;
+  border-start-start-radius: awsui.$border-radius-item;
+  border-start-end-radius: awsui.$border-radius-item;
+  border-end-start-radius: awsui.$border-radius-item;
+  border-end-end-radius: awsui.$border-radius-item;
+}
+
+.content-display-option-label {
+  flex-grow: 1;
+  @include styles.text-wrapping;
+  padding-inline-end: awsui.$space-l;
+}
+
+.content-display-group-header {
+  @include styles.styles-reset;
+  display: flex;
+  align-items: flex-start;
+  padding-block: awsui.$space-scaled-xs;
+  padding-inline-end: awsui.$space-xs;
+  border-start-start-radius: awsui.$border-radius-item;
+  border-start-end-radius: awsui.$border-radius-item;
+  border-end-start-radius: awsui.$border-radius-item;
+  border-end-end-radius: awsui.$border-radius-item;
+}

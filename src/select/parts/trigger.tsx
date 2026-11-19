@@ -1,0 +1,190 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+import clsx from 'clsx';
+
+import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
+import ButtonTrigger from '../../internal/components/button-trigger';
+import Option from '../../internal/components/option';
+import { GroupedControlContextProps } from '../../internal/context/control-group-context';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
+import { joinStrings } from '../../internal/utils/strings';
+import { MultiselectProps } from '../../multiselect/interfaces';
+import InternalToken, { StyleClassNames as TokenStyleClassNames } from '../../token/internal';
+import { FormFieldValidationControlProps } from '../../types/form-field';
+import { OptionDefinition } from '../../types/option';
+import { SelectProps } from '../interfaces';
+import { SelectTriggerProps } from '../utils/use-select';
+
+import styles from './styles.css.js';
+
+export interface TriggerProps extends FormFieldValidationControlProps {
+  placeholder: string | undefined;
+  disabled: boolean | undefined;
+  readOnly?: boolean;
+  triggerProps: SelectTriggerProps;
+  selectedOption: OptionDefinition | null;
+  inlineLabelText?: string;
+  isOpen?: boolean;
+  triggerVariant?: SelectProps.TriggerVariant | MultiselectProps.TriggerVariant;
+  inFilteringToken?: 'root' | 'nested';
+  selectedOptions?: ReadonlyArray<OptionDefinition>;
+  renderOption?: SelectProps.SelectOptionItemRenderer;
+  groupedControlProps?: GroupedControlContextProps;
+  styleClassNames?: { trigger?: string; inlineLabel?: string; token?: TokenStyleClassNames };
+}
+
+const Trigger = React.forwardRef(
+  (
+    {
+      ariaLabelledby,
+      ariaDescribedby,
+      controlId,
+      invalid,
+      inlineLabelText,
+      warning,
+      triggerProps,
+      selectedOption,
+      selectedOptions,
+      triggerVariant,
+      inFilteringToken,
+      isOpen,
+      placeholder,
+      disabled,
+      readOnly,
+      renderOption,
+      groupedControlProps,
+      styleClassNames,
+    }: TriggerProps,
+    ref: React.Ref<HTMLButtonElement>
+  ) => {
+    const isVisualRefresh = useVisualRefresh();
+    const generatedId = useUniqueId();
+    const id = controlId ?? generatedId;
+    const triggerContentId = useUniqueId('trigger-content-');
+
+    let ariaLabelledbyIds = joinStrings(ariaLabelledby, triggerContentId);
+
+    let triggerContent = null;
+    let hasCustomContent = false;
+    if (triggerVariant === 'tokens') {
+      if (selectedOptions?.length) {
+        triggerContent = (
+          <span
+            className={clsx(
+              styles['inline-token-trigger'],
+              disabled && styles['inline-token-trigger--disabled'],
+              isVisualRefresh && styles['visual-refresh']
+            )}
+          >
+            <span className={styles['inline-token-list']}>
+              {selectedOptions.map(({ label }, i) => (
+                <InternalToken
+                  key={i}
+                  label={label}
+                  variant="inline"
+                  disabled={disabled}
+                  styleClassNames={styleClassNames?.token}
+                />
+              ))}
+            </span>
+            <span className={styles['inline-token-counter']} id={triggerContentId}>
+              <span className={styles['inline-token-hidden-placeholder']}>{placeholder}</span>
+              <span>({selectedOptions.length})</span>
+            </span>
+          </span>
+        );
+        ariaLabelledbyIds = ariaLabelledby;
+      } else {
+        triggerContent = (
+          <span className={clsx(styles.placeholder, styles.trigger, disabled && styles.disabled)} id={triggerContentId}>
+            {placeholder}
+          </span>
+        );
+      }
+    } else if (!selectedOption) {
+      triggerContent = (
+        <span className={clsx(styles.placeholder, styles.trigger, disabled && styles.disabled)} id={triggerContentId}>
+          {placeholder}
+        </span>
+      );
+    } else if (triggerVariant === 'option') {
+      const triggerCustomContent = renderOption?.({
+        filterText: undefined,
+        item: {
+          type: 'trigger',
+          option: selectedOption,
+        },
+      });
+      if (triggerCustomContent) {
+        hasCustomContent = true;
+        triggerContent = (
+          <Option
+            customContent={triggerCustomContent}
+            id={triggerContentId}
+            option={{ ...selectedOption, disabled }}
+            triggerVariant={true}
+          />
+        );
+      } else {
+        triggerContent = (
+          <Option id={triggerContentId} option={{ ...selectedOption, disabled }} triggerVariant={true} />
+        );
+      }
+    } else {
+      triggerContent = (
+        <span id={triggerContentId} className={styles.trigger}>
+          {selectedOption.label || selectedOption.value}
+        </span>
+      );
+    }
+
+    const mergedRef = useMergeRefs(triggerProps.ref, ref);
+    const triggerButton = (
+      <ButtonTrigger
+        {...triggerProps}
+        id={id}
+        ref={mergedRef}
+        className={clsx(styleClassNames?.trigger, styles['trigger-button'])}
+        pressed={!!isOpen}
+        disabled={disabled}
+        readOnly={readOnly}
+        invalid={invalid}
+        warning={warning && !invalid}
+        inFilteringToken={inFilteringToken}
+        inlineTokens={triggerVariant === 'tokens'}
+        hasCustomContent={hasCustomContent}
+        ariaDescribedby={ariaDescribedby}
+        ariaLabelledby={ariaLabelledbyIds}
+        groupedControlProps={groupedControlProps}
+      >
+        {triggerContent}
+      </ButtonTrigger>
+    );
+    return (
+      <>
+        {inlineLabelText ? (
+          <div className={styles['inline-label-wrapper']}>
+            <label
+              htmlFor={controlId}
+              className={clsx(
+                styleClassNames?.inlineLabel,
+                styles['inline-label'],
+                disabled && styles['inline-label-disabled'],
+                triggerVariant === 'tokens' && styles['inline-label-inline-tokens']
+              )}
+            >
+              {inlineLabelText}
+            </label>
+            <div className={styles['inline-label-trigger-wrapper']}>{triggerButton}</div>
+          </div>
+        ) : (
+          <>{triggerButton}</>
+        )}
+      </>
+    );
+  }
+);
+
+export default Trigger;

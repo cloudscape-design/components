@@ -1,0 +1,179 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+import React, { ChangeEvent, Ref, useEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
+
+import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
+import {
+  GeneratedAnalyticsMetadataFragment,
+  getAnalyticsMetadataAttribute,
+} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
+import InternalButton, { StyleClassNames as ButtonStyleClassNames } from '../button/internal';
+import { useFormFieldContext } from '../contexts/form-field';
+import { getBaseProps } from '../internal/base-component/index.js';
+import ScreenreaderOnly from '../internal/components/screenreader-only';
+import { fireNonCancelableEvent } from '../internal/events';
+import checkControlled from '../internal/hooks/check-controlled';
+import useForwardFocus from '../internal/hooks/forward-focus';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { joinStrings } from '../internal/utils/strings';
+import { GeneratedAnalyticsMetadataFileInputComponent } from './analytics-metadata/interfaces';
+import { FileInputProps } from './interfaces';
+
+import styles from './styles.css.js';
+
+interface InternalFileInputProps {
+  __inputClassName?: string;
+  styleClassNames?: ButtonStyleClassNames;
+  __inputNativeAttributes?: React.InputHTMLAttributes<HTMLInputElement> | Record<`data-${string}`, string>;
+  __injectAnalyticsComponentMetadata?: boolean;
+}
+
+const InternalFileInput = React.forwardRef(
+  (
+    {
+      accept,
+      ariaRequired,
+      ariaLabel,
+      multiple = false,
+      value,
+      onChange,
+      variant = 'button',
+      children,
+      __internalRootRef,
+      __inputClassName,
+      styleClassNames,
+      __inputNativeAttributes,
+      __injectAnalyticsComponentMetadata,
+      ...restProps
+    }: FileInputProps & InternalBaseComponentProps & InternalFileInputProps,
+    ref: Ref<FileInputProps.Ref>
+  ) => {
+    const baseProps = getBaseProps(restProps);
+    const uploadInputRef = useRef<HTMLInputElement>(null);
+    const containerRef = useRef<HTMLButtonElement>(null);
+    const mergedRef = useMergeRefs(__internalRootRef, containerRef);
+
+    const uploadButtonLabelId = useUniqueId('upload-button-label');
+    const formFieldContext = useFormFieldContext(restProps);
+    const selfControlId = useUniqueId('upload-input');
+    const controlId = formFieldContext.controlId ?? selfControlId;
+
+    useForwardFocus(ref, uploadInputRef);
+
+    const [isFocused, setIsFocused] = useState(false);
+    const onUploadButtonClick = () => uploadInputRef.current?.click();
+    const onUploadInputFocus = () => {
+      setIsFocused(true);
+    };
+    const onUploadInputBlur = () => setIsFocused(false);
+
+    const onUploadInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
+      fireNonCancelableEvent(onChange, { value: target.files ? Array.from(target.files) : [] });
+    };
+
+    checkControlled('FileInput', 'value', value, 'onChange', onChange);
+
+    const nativeAttributes: React.HTMLAttributes<HTMLInputElement> = {
+      'aria-label': ariaLabel || children,
+      'aria-labelledby': joinStrings(formFieldContext.ariaLabelledby, uploadButtonLabelId),
+      'aria-describedby': formFieldContext.ariaDescribedby,
+      ...__inputNativeAttributes,
+    };
+    if (formFieldContext.invalid) {
+      nativeAttributes['aria-invalid'] = true;
+    }
+    if (ariaRequired) {
+      nativeAttributes['aria-required'] = true;
+    }
+
+    if (variant === 'icon' && !ariaLabel) {
+      warnOnce('FileInput', 'Aria label is required with icon variant.');
+    }
+
+    // Synchronizing component's value with the native file input state.
+    useEffect(() => {
+      /* istanbul ignore next: The DataTransfer is not available in jsdom. */
+      if (window.DataTransfer) {
+        const dataTransfer = new DataTransfer();
+        for (const file of value) {
+          dataTransfer.items.add(file);
+        }
+        uploadInputRef.current!.files = dataTransfer.files;
+      }
+      if (uploadInputRef.current) {
+        uploadInputRef.current.value = ''; // reset value to allow calling onChange when the same file is uploaded again
+      }
+    }, [value]);
+
+    const { tabIndex } = useSingleTabStopNavigation(uploadInputRef);
+
+    const analyticsLabel = variant === 'button' && children ? 'button' : 'input';
+    const componentAnalyticsMetadata: GeneratedAnalyticsMetadataFileInputComponent = {
+      name: 'awsui.FileInput',
+      label: analyticsLabel,
+    };
+
+    const analyticsMetadata: GeneratedAnalyticsMetadataFragment = { detail: { label: analyticsLabel } };
+    if (__injectAnalyticsComponentMetadata) {
+      analyticsMetadata.component = componentAnalyticsMetadata;
+    }
+
+    return (
+      <div
+        {...baseProps}
+        ref={mergedRef}
+        className={clsx(baseProps.className, styles.root)}
+        {...getAnalyticsMetadataAttribute(analyticsMetadata)}
+      >
+        {/* This is the actual interactive and accessible file-upload element. */}
+        {/* It is visually hidden to achieve the desired UX design. */}
+        <input
+          id={controlId}
+          ref={uploadInputRef}
+          type="file"
+          hidden={false}
+          multiple={multiple}
+          accept={accept}
+          onChange={onUploadInputChange}
+          onFocus={onUploadInputFocus}
+          onBlur={onUploadInputBlur}
+          className={clsx(styles['file-input'], styles.hidden, __inputClassName)}
+          tabIndex={tabIndex}
+          {...nativeAttributes}
+        />
+
+        {/* The button is decorative. It dispatches clicks to the file input and is ARIA-hidden. */}
+        {/* When the input is focused the focus outline is forced on the button. */}
+        <InternalButton
+          styleClassNames={styleClassNames}
+          iconName="upload"
+          variant={variant === 'icon' ? 'icon' : undefined}
+          formAction="none"
+          onClick={onUploadButtonClick}
+          className={clsx(styles['file-input-button'], {
+            [styles['force-focus-outline-button']]: isFocused && variant === 'button',
+            [styles['force-focus-outline-icon']]: isFocused && variant === 'icon',
+          })}
+          nativeButtonAttributes={{
+            tabIndex: -1,
+            'aria-hidden': true,
+            // AWSUI-61771 Prevent focus on the decorative button to avoid aria-hidden focus warning
+            onMouseDown: (event: React.MouseEvent) => event.preventDefault(),
+          }}
+          __skipNativeAttributesWarnings={true}
+        >
+          {variant === 'button' && children}
+        </InternalButton>
+
+        {/* The file input needs to be labelled with provided content. Can't use the button because it is ARIA-hidden. */}
+        <ScreenreaderOnly id={uploadButtonLabelId}>{ariaLabel || children}</ScreenreaderOnly>
+      </div>
+    );
+  }
+);
+
+export default InternalFileInput;

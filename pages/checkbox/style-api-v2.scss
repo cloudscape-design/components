@@ -1,0 +1,40 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~components/styling/checkbox';
+@use '../style-api/palette' as palette;
+
+.checkbox-control {
+  @include checkbox.control(
+    $awsui-fill-color: palette.$control-bg,
+    $awsui-border-color: palette.$border-accent,
+    $awsui-focus-ring-color: palette.$accent,
+    $awsui-focus-ring-width: 3px
+  );
+
+  &-checked {
+    @include checkbox.control(
+      $awsui-fill-color: palette.$control-bg-checked,
+      $awsui-border-color: palette.$control-border-checked,
+      $awsui-indicator-color: palette.$control-fg
+    );
+  }
+
+  &.checkbox-control-disabled {
+    @include checkbox.control(
+      $awsui-fill-color: palette.$control-bg-disabled,
+      $awsui-border-color: palette.$border-disabled,
+      $awsui-indicator-color: palette.$control-fg-disabled
+    );
+  }
+
+  &.checkbox-control-readonly {
+    @include checkbox.control(
+      $awsui-fill-color: palette.$surface-alt,
+      $awsui-border-color: palette.$border,
+      $awsui-indicator-color: palette.$text-muted
+    );
+  }
+}

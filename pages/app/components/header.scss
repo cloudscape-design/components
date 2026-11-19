@@ -1,0 +1,29 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+.header {
+  box-sizing: border-box;
+  background: #232f3e;
+  padding-block-start: 12px;
+  padding-block-end: 11px;
+  padding-inline: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 17px;
+  display: flex;
+  color: #eee;
+  justify-content: space-between;
+  &-sticky {
+    inline-size: 100%;
+    z-index: 1000;
+    inset-block-start: 0;
+    position: sticky;
+  }
+
+  /* stylelint-disable-next-line selector-max-type */
+  & > a {
+    text-decoration: none;
+    color: #eee;
+  }
+}

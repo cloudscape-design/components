@@ -1,0 +1,15 @@
+{
+  "extends": "@tsconfig/node16/tsconfig.json",
+  "compilerOptions": {
+    "lib": ["es2020", "dom"],
+    "types": ["jest"],
+    "noEmit": true,
+    "strict": true,
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node"
+  },
+  "include": ["**/__integ__/**/*.ts", "**/__a11y__/**/*.ts", "**/__motion__/**/*.ts", "types"]
+}

@@ -1,0 +1,20 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~design-tokens' as awsui;
+
+.test-button {
+  background: awsui.$color-background-button-normal-default;
+  padding-block: awsui.$space-scaled-xxl;
+  padding-inline: awsui.$space-scaled-xxl;
+
+  &:hover {
+    background: awsui.$color-background-button-normal-hover;
+  }
+
+  &:focus {
+    background: awsui.$color-background-button-normal-active;
+  }
+}

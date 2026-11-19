@@ -1,0 +1,145 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/styles/forms/mixins' as forms;
+@use '../../internal/styles/style-api' as style-api;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+// The placeholder is a span inside the trigger button, so the token set on the button (the `trigger` slot of
+// Select and Multiselect) is re-anchored as a carrier there and read here.
+$trigger-tokens: style-api.resolve((placeholder-color), carrier);
+
+.trigger-button {
+  @include style-api.carriers($trigger-tokens);
+}
+
+.placeholder {
+  @include styles.form-placeholder(
+    $color: style-api.value($trigger-tokens, placeholder-color, awsui.$color-text-input-placeholder)
+  );
+  // Placeholder text is purely decorative and not intended to be interacted
+  // with. Disable selection so that it doesn't become selectable inside
+  // read-only triggers (which enable text selection).
+  user-select: none;
+
+  &.disabled {
+    @include styles.form-placeholder-disabled(
+      $color: style-api.value($trigger-tokens, placeholder-color, awsui.$color-text-input-placeholder-disabled)
+    );
+  }
+}
+
+$checkbox-size: awsui.$size-control;
+
+.item {
+  display: flex;
+  align-items: center;
+
+  > .checkbox {
+    position: relative;
+    min-block-size: $checkbox-size;
+    min-inline-size: $checkbox-size;
+    block-size: $checkbox-size;
+    inline-size: $checkbox-size;
+    margin-inline-end: styles.$control-padding-horizontal;
+  }
+}
+
+.option-group {
+  // Mirrors the negative margin styling of the selectable item.
+  &:not(:first-child) {
+    margin-block-start: calc(-1 * #{awsui.$border-item-width});
+  }
+}
+
+.filter {
+  z-index: 4;
+
+  // Prevents the input container from shrinking below its minimum size
+  // See AWSUI-12019
+  flex-shrink: 0;
+}
+
+.trigger {
+  @include styles.text-overflow-ellipsis;
+}
+
+.layout-strut {
+  inline-size: 100%;
+  position: relative;
+  // Prevent incorrect layer ordering in Safari by making sure
+  // this element is also offloaded to the GPU along with the virtual items
+  transform: translate3d(0, 0, 0);
+}
+
+.list-bottom {
+  /* used in unit-tests */
+}
+
+.selected-icon {
+  color: awsui.$color-item-selected;
+  padding-inline-start: awsui.$space-xs;
+}
+
+.show-label-tag > .selected-icon {
+  padding-inline-start: awsui.$space-scaled-s;
+}
+
+.inline-token-trigger {
+  display: flex;
+  flex-wrap: nowrap;
+  column-gap: awsui.$space-xxs;
+  inline-size: 100%;
+}
+
+.inline-token-list {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: awsui.$space-xxs;
+  inline-size: 100%;
+  overflow-x: hidden;
+
+  // Fade out any overflow tokens
+  mask-image: linear-gradient(270deg, transparent, white 20px, white);
+
+  @include styles.with-direction('rtl') {
+    mask-image: linear-gradient(-270deg, transparent, white 20px, white);
+  }
+}
+
+.inline-token-hidden-placeholder {
+  @include styles.awsui-util-hide;
+}
+
+.inline-token-counter {
+  white-space: nowrap;
+}
+
+.inline-label-trigger-wrapper {
+  @include forms.inline-label-trigger-wrapper;
+}
+
+.inline-label-wrapper {
+  @include forms.inline-label-wrapper;
+}
+
+.inline-label {
+  @include forms.inline-label;
+  &-disabled {
+    @include forms.inline-label-disabled;
+  }
+}
+
+// Specific Styling for Inline Label Text to not overlap with Inline Tokens
+.inline-label-inline-tokens {
+  @include forms.inline-label-inline-tokens;
+}
+
+.disabled-reason-tooltip {
+  /* used in test-utils or tests */
+}

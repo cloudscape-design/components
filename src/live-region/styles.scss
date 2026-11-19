@@ -1,0 +1,18 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+
+.root {
+  display: contents;
+}
+
+.root[hidden] {
+  display: none;
+}
+
+.announcer {
+  @include styles.awsui-util-hide;
+}

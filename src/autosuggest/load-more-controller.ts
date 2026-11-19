@@ -1,0 +1,62 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+import { useRef } from 'react';
+
+import { OptionsLoadItemsDetail } from '../dropdown/interfaces';
+import { DropdownStatusProps } from '../types/dropdown-status';
+import { AutosuggestProps } from './interfaces';
+
+interface UseAutosuggestLoadMoreProps {
+  options?: AutosuggestProps.Options;
+  statusType: DropdownStatusProps.StatusType;
+  onLoadItems: (detail: OptionsLoadItemsDetail) => void;
+}
+
+interface AutosuggestLoadMoreHandlers {
+  fireLoadMoreOnScroll(): void;
+  fireLoadMoreOnRecoveryClick(): void;
+  fireLoadMoreOnInputFocus(): void;
+  fireLoadMoreOnInputChange(filteringText: string): void;
+}
+
+export const useAutosuggestLoadMore = ({
+  options = [],
+  statusType,
+  onLoadItems,
+}: UseAutosuggestLoadMoreProps): AutosuggestLoadMoreHandlers => {
+  const lastFilteringText = useRef<string | null>(null);
+
+  const fireLoadMore = ({
+    firstPage,
+    samePage,
+    filteringText,
+  }: {
+    firstPage: boolean;
+    samePage: boolean;
+    filteringText?: string;
+  }) => {
+    if (filteringText === undefined || lastFilteringText.current !== filteringText) {
+      if (filteringText !== undefined) {
+        lastFilteringText.current = filteringText;
+      }
+      onLoadItems({ filteringText: lastFilteringText.current ?? '', firstPage, samePage });
+    }
+  };
+
+  const fireLoadMoreOnScroll = () => {
+    if (options.length > 0 && statusType === 'pending') {
+      fireLoadMore({ firstPage: false, samePage: false });
+    }
+  };
+
+  const fireLoadMoreOnRecoveryClick = () => fireLoadMore({ firstPage: false, samePage: true });
+
+  const fireLoadMoreOnInputFocus = () =>
+    fireLoadMore({ firstPage: true, samePage: false, filteringText: lastFilteringText.current ?? '' });
+
+  const fireLoadMoreOnInputChange = (filteringText: string) =>
+    fireLoadMore({ firstPage: true, samePage: false, filteringText });
+
+  return { fireLoadMoreOnScroll, fireLoadMoreOnRecoveryClick, fireLoadMoreOnInputFocus, fireLoadMoreOnInputChange };
+};

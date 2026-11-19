@@ -1,0 +1,14 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../constants' as constants;
+
+.drawer-displayed {
+  min-inline-size: constants.$sidebar-size-closed;
+}
+
+.drawer-content {
+  position: fixed;
+  z-index: constants.$drawer-z-index;
+}

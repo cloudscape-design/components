@@ -1,0 +1,317 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+import React, { Ref, useImperativeHandle, useRef } from 'react';
+import clsx from 'clsx';
+
+import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import { useFormFieldContext } from '../contexts/form-field';
+import { OptionsLoadItemsDetail } from '../dropdown/interfaces';
+import { useInternalI18n } from '../i18n/context';
+import { BaseChangeDetail } from '../input/interfaces';
+import { StyleClassNames as InputStyleClassNames } from '../input/internal';
+import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
+import DropdownFooter from '../internal/components/dropdown-footer';
+import { useDropdownStatus } from '../internal/components/dropdown-status';
+import { checkOptionValueField } from '../internal/components/listbox/utils/check-option-value-field';
+import { useGroupedControlContext } from '../internal/context/control-group-context';
+import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
+import { warnOnUnsupportedGroupedControlProps } from '../internal/grouped-control/dev-warnings';
+import checkControlled from '../internal/hooks/check-controlled';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { BaseKeyDetail, NonCancelableCustomEvent } from '../types/events';
+import { useAutosuggestTokenI18n } from './i18n-utils';
+import { AutosuggestItem, AutosuggestProps } from './interfaces';
+import { useAutosuggestLoadMore } from './load-more-controller';
+import { useAutosuggestItems } from './options-controller';
+import AutosuggestOptionsList from './options-list';
+
+import styles from './styles.css.js';
+
+interface InternalAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {
+  styleClassNames?: StyleClassNames;
+}
+
+// Style API v2
+export interface StyleClassNames {
+  input?: InputStyleClassNames;
+  dropdown?: string;
+}
+
+const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, ref: Ref<AutosuggestProps.Ref>) => {
+  const {
+    value,
+    onChange,
+    onBlur,
+    onFocus,
+    onKeyUp,
+    onLoadItems,
+    options,
+    filteringType = 'auto',
+    statusType = 'finished',
+    placeholder,
+    clearAriaLabel,
+    name,
+    disabled,
+    disableBrowserAutocorrect = false,
+    autoFocus,
+    readOnly,
+    ariaLabel,
+    ariaRequired,
+    enteredTextLabel,
+    hideEnteredTextOption,
+    filteringResultsText,
+    onKeyDown,
+    virtualScroll,
+    expandToViewport,
+    onSelect,
+    renderHighlightedAriaLive,
+    style,
+    renderOption,
+    tokens,
+    i18nStrings,
+    styleClassNames,
+    __internalRootRef,
+    ...restProps
+  } = props;
+
+  checkControlled('Autosuggest', 'value', value, 'onChange', onChange);
+  checkOptionValueField('Autosuggest', 'options', options);
+
+  const autosuggestInputRef = useRef<AutosuggestInputRef>(null);
+  useImperativeHandle(
+    ref,
+    () => ({
+      focus: () => autosuggestInputRef.current?.focus(),
+      select: () => autosuggestInputRef.current?.select(),
+    }),
+    []
+  );
+
+  const i18n = useInternalI18n('autosuggest');
+  const errorIconAriaLabel = i18n('errorIconAriaLabel', restProps.errorIconAriaLabel);
+  const selectedAriaLabel = i18n('selectedAriaLabel', restProps.selectedAriaLabel);
+  const recoveryText = i18n('recoveryText', restProps.recoveryText);
+
+  const isTokenMode = tokens !== undefined;
+
+  if (restProps.recoveryText && !onLoadItems) {
+    warnOnce('Autosuggest', '`onLoadItems` must be provided for `recoveryText` to be displayed.');
+  }
+
+  const tokenI18n = useAutosuggestTokenI18n(i18nStrings);
+
+  const [autosuggestItemsState, autosuggestItemsHandlers] = useAutosuggestItems({
+    options: options || [],
+    filterValue: value,
+    filterText: value,
+    filteringType,
+    enteredTextLabel: i18nStrings?.enteredTextLabel ?? enteredTextLabel,
+    hideEnteredTextLabel: hideEnteredTextOption,
+    isTokenMode,
+    onSelectItem: (option: AutosuggestItem) => {
+      const selectedValue = option.value || '';
+      if (isTokenMode) {
+        autosuggestInputRef.current?.addToken(option.type === 'use-entered' ? selectedValue.trim() : selectedValue);
+      } else {
+        fireNonCancelableEvent(onChange, { value: selectedValue });
+      }
+      fireNonCancelableEvent(onSelect, {
+        value: selectedValue,
+        selectedOption: option.type !== 'use-entered' ? option.option : undefined,
+      });
+      autosuggestInputRef.current?.close();
+    },
+  });
+
+  const autosuggestLoadMoreHandlers = useAutosuggestLoadMore({
+    options,
+    statusType,
+    onLoadItems: (detail: OptionsLoadItemsDetail) => fireNonCancelableEvent(onLoadItems, detail),
+  });
+
+  const handleChange = (event: NonCancelableCustomEvent<AutosuggestProps.ChangeDetail>) => {
+    autosuggestItemsHandlers.setShowAll(false);
+    autosuggestItemsHandlers.resetHighlightWithKeyboard();
+    fireNonCancelableEvent(onChange, event.detail);
+  };
+
+  const handleDelayedInput = (event: NonCancelableCustomEvent<BaseChangeDetail>) => {
+    autosuggestLoadMoreHandlers.fireLoadMoreOnInputChange(event.detail.value);
+  };
+
+  const handleBlur = () => {
+    fireNonCancelableEvent(onBlur, null);
+  };
+
+  const handleFocus = () => {
+    autosuggestItemsHandlers.setShowAll(true);
+    autosuggestLoadMoreHandlers.fireLoadMoreOnInputFocus();
+    fireNonCancelableEvent(onFocus, null);
+  };
+
+  const handleKeyUp = (event: CustomEvent<BaseKeyDetail>) => {
+    fireCancelableEvent(onKeyUp, event.detail, event);
+  };
+
+  const handleKeyDown = (event: CustomEvent<BaseKeyDetail>) => {
+    fireCancelableEvent(onKeyDown, event.detail, event);
+  };
+
+  const handlePressArrowDown = () => {
+    if (autosuggestItemsState.items.length - 1 === autosuggestItemsState.highlightedIndex) {
+      autosuggestItemsHandlers.goHomeWithKeyboard();
+      return;
+    }
+
+    autosuggestItemsHandlers.moveHighlightWithKeyboard(1);
+  };
+
+  const handlePressArrowUp = () => {
+    if (
+      (autosuggestItemsState.highlightedOption?.type === 'child' && autosuggestItemsState.highlightedIndex === 1) ||
+      autosuggestItemsState.highlightedIndex === 0
+    ) {
+      autosuggestItemsHandlers.goEndWithKeyboard();
+      return;
+    }
+
+    autosuggestItemsHandlers.moveHighlightWithKeyboard(-1);
+  };
+
+  const handlePressEnter = () => {
+    return autosuggestItemsHandlers.selectHighlightedOptionWithKeyboard();
+  };
+
+  const handleCloseDropdown = () => {
+    autosuggestItemsHandlers.resetHighlightWithKeyboard();
+  };
+
+  const handleRecoveryClick = () => {
+    autosuggestLoadMoreHandlers.fireLoadMoreOnRecoveryClick();
+    autosuggestInputRef.current?.focus();
+  };
+
+  const formFieldContext = useFormFieldContext(restProps);
+  const groupedControlProps = useGroupedControlContext();
+
+  warnOnUnsupportedGroupedControlProps({
+    isGrouped: !!groupedControlProps.position,
+    componentName: 'Autosuggest',
+    invalid: formFieldContext.invalid,
+    warning: formFieldContext.warning,
+    readOnly,
+    expandToViewport,
+  });
+
+  // When grouped, the dropdown is portaled regardless of the public
+  // `expandToViewport` prop so it escapes the control slot's stacking context
+  // and paints over the group's inline label (which the focus ring stays under).
+  const effectiveExpandToViewport = expandToViewport || !!groupedControlProps.position;
+  const selfControlId = useUniqueId('input');
+  const footerControlId = useUniqueId('footer');
+  const controlId = formFieldContext.controlId ?? selfControlId;
+  const listId = useUniqueId('list');
+  const highlightedOptionIdSource = useUniqueId();
+  const highlightedOptionId = autosuggestItemsState.highlightedOption ? highlightedOptionIdSource : undefined;
+
+  const isEmpty = !value && !autosuggestItemsState.items.length;
+  const isFiltered = !!value && value.length !== 0 && !(filteringType === 'auto' && autosuggestItemsState.showAll);
+  const filteredText =
+    isFiltered && !isTokenMode
+      ? filteringResultsText?.(autosuggestItemsState.items.length, options?.length ?? 0)
+      : undefined;
+  const dropdownStatus = useDropdownStatus({
+    ...props,
+    isEmpty,
+    recoveryText,
+    errorIconAriaLabel,
+    onRecoveryClick: handleRecoveryClick,
+    filteringResultsText: filteredText,
+    hasRecoveryCallback: !!onLoadItems,
+  });
+
+  const shouldRenderDropdownContent =
+    autosuggestItemsState.items.length !== 0 || !!dropdownStatus.content || (!hideEnteredTextOption && !!value);
+
+  const hasItems = useRef(autosuggestItemsState.items.length > 0);
+  hasItems.current = hasItems.current || autosuggestItemsState.items.length > 0;
+
+  return (
+    <AutosuggestInput
+      {...restProps}
+      className={clsx(styles.root, restProps.className)}
+      ref={autosuggestInputRef}
+      __internalRootRef={__internalRootRef}
+      value={value}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      onFocus={handleFocus}
+      onKeyUp={handleKeyUp}
+      onKeyDown={handleKeyDown}
+      name={name}
+      controlId={controlId}
+      placeholder={placeholder}
+      disabled={disabled}
+      readOnly={readOnly}
+      autoFocus={autoFocus}
+      ariaLabel={ariaLabel}
+      ariaRequired={ariaRequired}
+      clearAriaLabel={clearAriaLabel}
+      disableBrowserAutocorrect={disableBrowserAutocorrect}
+      expandToViewport={effectiveExpandToViewport}
+      ariaControls={listId}
+      ariaActivedescendant={highlightedOptionId}
+      dropdownExpanded={shouldRenderDropdownContent}
+      style={style}
+      styleClassNames={styleClassNames}
+      tokens={tokens}
+      tokenOverflowAriaLabel={tokenI18n.tokenOverflowAriaLabel}
+      tokenInsertedAnnouncement={tokenI18n.tokenInsertedAriaLabel}
+      tokenDismissLabel={tokenI18n.tokenDismissLabel}
+      dropdownContent={
+        shouldRenderDropdownContent && (
+          <AutosuggestOptionsList
+            renderOption={renderOption}
+            statusType={statusType}
+            autosuggestItemsState={autosuggestItemsState}
+            autosuggestItemsHandlers={autosuggestItemsHandlers}
+            highlightedOptionId={highlightedOptionId}
+            highlightText={value}
+            listId={listId}
+            controlId={controlId}
+            handleLoadMore={autosuggestLoadMoreHandlers.fireLoadMoreOnScroll}
+            hasDropdownStatus={dropdownStatus.content !== null}
+            virtualScroll={virtualScroll}
+            selectedAriaLabel={selectedAriaLabel}
+            renderHighlightedAriaLive={renderHighlightedAriaLive}
+            listBottom={
+              !dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} id={footerControlId} /> : null
+            }
+            ariaDescribedby={dropdownStatus.content ? footerControlId : undefined}
+          />
+        )
+      }
+      dropdownFooter={
+        dropdownStatus.isSticky && dropdownStatus.content ? (
+          <DropdownFooter
+            id={footerControlId}
+            content={dropdownStatus.content}
+            hasItems={autosuggestItemsState.items.length >= 1}
+          />
+        ) : null
+      }
+      // Forces dropdown position recalculation when new options are loaded
+      dropdownContentKey={hasItems.current.toString()}
+      loopFocus={dropdownStatus.hasRecoveryButton}
+      onCloseDropdown={handleCloseDropdown}
+      onDelayedInput={handleDelayedInput}
+      onPressArrowDown={handlePressArrowDown}
+      onPressArrowUp={handlePressArrowUp}
+      onPressEnter={handlePressEnter}
+    />
+  );
+});
+
+export default InternalAutosuggest;

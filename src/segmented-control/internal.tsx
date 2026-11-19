@@ -1,0 +1,86 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+import clsx from 'clsx';
+
+import InternalFormField from '../form-field/internal';
+import { getBaseProps } from '../internal/base-component';
+import { useGroupedControlContext } from '../internal/context/control-group-context';
+import { fireNonCancelableEvent } from '../internal/events';
+import { getGroupedControlClassNames } from '../internal/grouped-control/grouped-control-styles';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import InternalSelect, { InternalSelectProps, StyleClassNames as SelectStyleClassNames } from '../select/internal';
+import { SegmentedControlProps } from './interfaces';
+import InternalSegmentedControlComponent from './internal-segmented-control';
+
+import styles from './styles.css.js';
+
+type InternalSegmentedControlProps = SegmentedControlProps &
+  InternalBaseComponentProps & {
+    styleClassNames?: StyleClassNames;
+  };
+
+// Style API v2
+export interface StyleClassNames {
+  root?: string;
+  segment?: string;
+  divider?: string;
+  select?: SelectStyleClassNames;
+}
+
+export default function InternalSegmentedControl({
+  selectedId,
+  options,
+  label,
+  ariaLabelledby,
+  onChange,
+  __internalRootRef,
+  style,
+  styleClassNames,
+  ...props
+}: InternalSegmentedControlProps) {
+  const baseProps = getBaseProps(props);
+  const groupedControlProps = useGroupedControlContext();
+
+  const selectOptions = (options || []).map(option => {
+    const label = option.text || option.iconAlt;
+    return { ...option, label, value: option.id };
+  });
+
+  const selectedOptions = selectOptions.filter(option => {
+    return option.value === selectedId;
+  });
+  const currentSelectedOption = selectedOptions.length ? selectedOptions[0] : null;
+
+  const selectProps: InternalSelectProps = {
+    options: selectOptions,
+    selectedOption: currentSelectedOption,
+    triggerVariant: 'option',
+    onChange: event => fireNonCancelableEvent(onChange, { selectedId: event.detail.selectedOption.value! }),
+    styleClassNames: styleClassNames?.select,
+  };
+
+  return (
+    <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
+      <InternalSegmentedControlComponent
+        selectedId={selectedId}
+        options={options}
+        label={label}
+        ariaLabelledby={ariaLabelledby}
+        onChange={onChange}
+        style={style}
+        groupedControlProps={groupedControlProps}
+        styleClassNames={styleClassNames}
+      />
+      <div className={clsx(styles.select, getGroupedControlClassNames(styles, groupedControlProps))}>
+        {ariaLabelledby && <InternalSelect {...selectProps} ariaLabelledby={ariaLabelledby} />}
+        {!ariaLabelledby && label && (
+          <InternalFormField label={label} stretch={true}>
+            <InternalSelect {...selectProps} />
+          </InternalFormField>
+        )}
+        {!ariaLabelledby && !label && <InternalSelect {...selectProps} />}
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,12 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+$token-background: awsui.$color-background-item-selected;
+$token-border-color: awsui.$color-border-item-selected;
+$token-max-height-inline: 20px;
+// Keeps small interactive labels outside the dismiss button's WCAG 2.5.8 target spacing area.
+$token-min-label-width-inline: 12px;
+$icon-width: 16px;

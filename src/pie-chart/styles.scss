@@ -1,0 +1,158 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use 'sass:map';
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use './constants' as constants;
+@use './motion';
+
+.root {
+  /* used in test-utils */
+}
+
+.content {
+  @each $size in map.keys(constants.$pie-chart-sizes) {
+    &.content--#{$size} {
+      $sizes: map.get(constants.$pie-chart-sizes, $size);
+      $fitSizes: map.get(constants.$pie-chart-sizes-fit-height, $size);
+
+      min-block-size: calc(
+        2 * (#{map.get($sizes, 'radius')} + #{map.get($sizes, 'innerPadding')} + #{map.get($sizes, 'labelPadding')})
+      );
+      &.content--fit-height {
+        min-block-size: calc(2 * (#{map.get($fitSizes, 'radius')} + #{map.get($fitSizes, 'labelPadding')}));
+      }
+
+      &.content--without-labels {
+        min-block-size: calc(2 * (#{map.get($sizes, 'radius')} + #{map.get($sizes, 'innerPadding')}));
+        &.content--fit-height {
+          min-block-size: calc(2 * (#{map.get($fitSizes, 'radius')}));
+        }
+      }
+    }
+  }
+}
+
+.content--fit-height {
+  flex: 1;
+}
+
+.status-container {
+  /* used in test utils */
+}
+
+.chart-container {
+  display: flex;
+  flex: 1;
+
+  &--fit-height {
+    block-size: 100%;
+    min-block-size: inherit;
+  }
+}
+
+.chart-container-chart-plot {
+  display: contents;
+
+  &--fit-height {
+    display: block;
+    position: absolute;
+    inset: 0;
+  }
+}
+
+.inner-content {
+  display: flex;
+  position: absolute;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  inset: 0;
+  pointer-events: none;
+}
+
+.segment__highlight {
+  stroke: none;
+  opacity: 0;
+}
+
+.segment {
+  stroke: awsui.$color-background-container-content;
+  stroke-width: 2px;
+  stroke-linejoin: round;
+  opacity: 1;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+
+  &.segment--dimmed {
+    opacity: 0.35;
+  }
+
+  &.segment--highlighted,
+  &:hover:not(.segment--dimmed) {
+    > .segment__highlight {
+      opacity: 1;
+    }
+  }
+}
+
+.label {
+  color: awsui.$color-text-heading-default;
+  opacity: 1;
+
+  /* stylelint-disable-next-line selector-max-type */
+  > line {
+    stroke: awsui.$color-stroke-chart-line;
+    stroke-width: awsui.$border-divider-section-width;
+  }
+
+  /* stylelint-disable-next-line selector-max-type */
+  > div {
+    margin-block-start: -0.75em;
+  }
+
+  &.label--dimmed {
+    opacity: 0.35;
+  }
+
+  &.label--align-right {
+    /* stylelint-disable-next-line selector-max-type */
+    > div {
+      text-align: end;
+    }
+  }
+}
+
+/* stylelint-disable-next-line selector-max-type */
+.label-text > text {
+  @include styles.font-label;
+  fill: awsui.$color-text-heading-default;
+  dominant-baseline: middle;
+}
+
+text.label__description {
+  font-size: awsui.$font-chart-detail-size;
+  font-weight: styles.$font-weight-normal;
+  color: awsui.$color-text-group-label;
+  fill: awsui.$color-text-group-label;
+}
+
+.label-line {
+  /* used in component code */
+}
+
+.label--highlighted {
+  /* used in test-utils */
+}
+
+.popover-header {
+  display: inline-flex;
+  align-items: flex-start;
+}

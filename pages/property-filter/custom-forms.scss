@@ -1,0 +1,23 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '~design-tokens' as awsui;
+
+.date-form,
+.date-time-form {
+  display: grid;
+  grid-template-columns: auto;
+  gap: awsui.$space-scaled-s;
+}
+
+@media (min-width: 688px) {
+  .date-time-form {
+    grid-template-columns: repeat(2, minmax(100px, max-content));
+  }
+}
+
+.multiselect-form {
+  min-inline-size: 200px;
+  max-inline-size: 250px;
+}

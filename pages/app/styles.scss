@@ -1,0 +1,41 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '~design-tokens' as tokens;
+/* stylelint-disable-next-line selector-max-type */
+body {
+  margin-block: 0;
+  margin-inline: 0;
+  color: tokens.$color-text-body-default;
+  background: tokens.$color-background-container-content;
+}
+
+/* stylelint-disable-next-line selector-class-pattern */
+:global(.awsui-motion-disabled) {
+  // disable blinking caret for stable screenshot tests
+  // stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type
+  input,
+  textarea {
+    caret-color: transparent !important;
+  }
+  // stylelint-enable @cloudscape-design/no-implicit-descendant, selector-max-type
+
+  // Target the HTML element (not just the body) in order to include page-level scrollbars
+  html:has(&.safari) {
+    // Hide scrollbars in Safari for stable screenshot tests
+    // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant
+    ::-webkit-scrollbar {
+      inline-size: 0;
+      block-size: 0;
+    }
+  }
+}
+
+/*
+ This sets a background color to the page's container
+ to reveal the effects of negative z-index.
+*/
+:global(#app) {
+  background-color: tokens.$color-background-container-content;
+}

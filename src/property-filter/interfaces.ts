@@ -1,0 +1,386 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+import React from 'react';
+
+import {
+  PropertyFilterOperation,
+  PropertyFilterOperator,
+  PropertyFilterOperatorExtended,
+  PropertyFilterOperatorForm,
+  PropertyFilterOperatorFormat,
+  PropertyFilterOperatorFormProps,
+  PropertyFilterOption,
+  PropertyFilterProperty,
+  PropertyFilterQuery,
+  PropertyFilterToken,
+  PropertyFilterTokenGroup,
+} from '@cloudscape-design/collection-hooks';
+
+import { AutosuggestProps } from '../autosuggest/interfaces';
+import { ExpandToViewport } from '../dropdown/interfaces';
+import { BaseComponentProps } from '../types/base-component';
+import { DropdownStatusProps } from '../types/dropdown-status';
+import { NonCancelableEventHandler } from '../types/events';
+import { FormFieldControlProps } from '../types/form-field';
+
+export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewport, FormFieldControlProps {
+  /**
+   * If set to `true`, the filtering input will be disabled.
+   * Use it, for example, if you are fetching new items upon filtering change
+   * in order to prevent the user from changing the filtering query.
+   */
+  disabled?: boolean;
+  /**
+   * An object containing all the necessary localized strings required by the component.
+   * @i18n
+   */
+  i18nStrings?: PropertyFilterProps.I18nStrings;
+  /**
+   * Accepts a human-readable, localized string that indicates the number of results. For example, "1 match" or "165 matches."
+   * If the total number of results is unknown, also include an indication that there may be more results than
+   * the number listed. For example, "25+ matches."
+   *
+   * The count text is only displayed when `query.tokens` isn't empty.
+   * When the `countText` or `query` changes, it will be announced to assistive technologies.
+   */
+  countText?: string;
+
+  /**
+   * Set to `true` while the related collection is loading (e.g. during an async filtering action).
+   * If set to `true`, the live announcement of countText by assistive technologies will be paused until it changes back to `false`.
+   */
+  loading?: boolean;
+
+  /**
+   * An object representing the current query displayed in the property filter, which has three properties: `operation`, `tokens`, and `tokenGroups`.
+   * The `operation` property has two valid values: "and", "or", and controls the join operation to be applied between tokens when filtering the items.
+   * The `tokens` property is an array of objects that will be displayed to the user beneath the filtering input. When `enableTokenGroups=true`, the
+   * `tokenGroups` property is used instead, which supports nested tokens.
+   *
+   * Each token has the following properties:
+   * * value [unknown]: The value of the token to be used as a filter. Can be null or string for default tokens, string[] for enum tokens, and anything for tokens with custom forms.
+   * * propertyKey [string]: The key of the corresponding property in filteringProperties.
+   * * operator ['<' | '<=' | '>' | '>=' | ':' | '!:' | '=' | '!=' | '^' | '!^']: The operator which indicates how to filter the dataset using this token.
+   */
+  query: PropertyFilterProps.Query;
+  /**
+   * If hideOperations it set, the indicator of the operation (that is, `and` or `or`) and the selection of operations
+   * (applied to the property and value token) are hidden from the user. Only use when you have a custom
+   * filtering logic which combines tokens in different way than the default one. When used, ensure that
+   * operations are communicated to the user in another way, or use `readOnlyOperations`.
+   *
+   * This property cannot be set when `enableTokenGroups=true`.
+   */
+  hideOperations?: boolean;
+  /**
+   * If readOnlyOperations it set, the indicator of the operation (that is, `and` or `or`) is shown, but the
+   * operation cannot be changed. This is also supported for nested tokens when `enableTokenGroups=true`.
+   */
+  readOnlyOperations?: boolean;
+  /**
+   * Activates token grouping mechanism to support token nesting (up to one level).
+   * When `true`, the `query.tokens` property is ignored and `query.tokenGroups` is used instead.
+   */
+  enableTokenGroups?: boolean;
+  /**
+   * Fired when the `query` gets changed. Filter the dataset in response to this event using the values in the `detail` object.
+   */
+  onChange: NonCancelableEventHandler<PropertyFilterProps.Query>;
+  /**
+   * An array of properties by which the data set can be filtered. Each element has the following properties:
+   *
+   * * groupValuesLabel [string]: Localized string to display for the 'Values' group label for a specific property.
+   * * key [string]: The identifier of this property.
+   * * propertyLabel [string]: A human-readable string for the property.
+   * * operators [Array]: A list of all operators supported by this property. Built-in operators are always shown first in their standard order; custom operators are appended after them. If you omit the equals operator because your API does not support it, make sure to set `defaultOperator` to a supported operator from this list. Each entry is either an operator string (for example, `=`, `!=`, `:`, `>`), or an object that customizes the operator with the following properties:
+   *   * `operator` [string]: The operator string. In addition to the built-in operators, you can define a custom operator string, for example `~` or `in`.
+   *   * `match` ['date' | 'datetime' | function]: Overrides how items are matched for this operator. Use `'date'` or `'datetime'` for the built-in date matchers, or a function `(itemValue, tokenValue) => boolean` for custom matching. When you use a custom operator string, provide a `match` function; otherwise there is no matcher for it and items are not filtered by that operator.
+   *   * `description` [string]: A human-readable description shown next to the operator in the operator dropdown. Use it to describe a custom operator, or to override the built-in description of a predefined operator (for example, describing `>` as "After" for a date property).
+   *   * `tokenType` ['value' | 'enum']: The type of value input rendered for this operator.
+   *   * `format` [function]: A function `(value) => string` used to format the token value for display.
+   *   * `form` [ReactNode]: A custom form used to enter the token value.
+   * * group [string]: Optional identifier of a custom group that this filtering option is assigned to. Use to create additional groups below the default one. Make sure to also define labels for the group in the customGroupsText property. Notice that only one level of options nesting is supported.
+   * * defaultOperator [ComparisonOperator]: Optional parameter that changes the default operator used with this filtering property. Use it only if your API does not support "equals" filtering terms with this property.
+   */
+  filteringProperties: ReadonlyArray<PropertyFilterProps.FilteringProperty>;
+  /**
+   * An array of possible values of the individual `filteringProperties`. Each element has the following properties:
+   *
+   * * `propertyKey` [string]: The key of the corresponding filtering property in the `filteringProperties` array.
+   * * `value` [string]: The value that will be used as a suggestion when creating or modifying a filtering token.
+   * * `label` [string]: Optional suggestion label to be matched instead of the value.
+   * * `tags` [string[]]: Optional list of tags giving further guidance about the option.
+   * * `filteringTags` [string[]]: Optional list of additional tags used for automatic filtering.
+   *
+   * Filtering options that require labels can only use `=` and `!=` operators. The token value must be labelled separately, for example:
+   * ```
+   * const filteringProperty = {
+   *   key: 'state',
+   *   propertyLabel: 'State',
+   *   operators: ['=', '!='].map(operator => ({ operator, format: getStateLabel }))
+   * }
+   * const filteringOptions = [
+   *   { propertyKey: 'state', value: 'STOPPED', label: getStateLabel('STOPPED') },
+   *   { propertyKey: 'state', value: 'STOPPING', label: getStateLabel('STOPPING') },
+   *   { propertyKey: 'state', value: 'RUNNING', label: getStateLabel('RUNNING') },
+   * ]
+   * ```
+   */
+  filteringOptions?: ReadonlyArray<PropertyFilterProps.FilteringOption>;
+  /**
+   * An array of objects that contain localized, human-readable strings for the labels of custom groups within the filtering dropdown. Use group property to associate the strings with your custom group of options. Define the following values for each group:
+   *
+   * * properties [string]: The group label in the filtering dropdown that contains the list of properties from this group. For example: Tags.
+   * * values [string]: The group label in the filtering dropdown that contains the list of values from this group. For example: Tags values.
+   * * group [string]: The identifier of a custom group.
+   */
+  customGroupsText?: PropertyFilterProps.GroupText[];
+  /**
+   * Set `disableFreeTextFiltering` only if you can’t filter the dataset using a filter that is applied to every column,
+   * instead of a specific property. This would stop the user from creating such tokens.
+   */
+  disableFreeTextFiltering?: boolean;
+  /**
+   * An object configuring the operators for free text filtering, which has the following properties:
+   *
+   * * operators [Array]: A list of all operators supported for free text filtering. Each entry is either an operator string, or an object with an `operator` string and an optional `match` function `(item, text) => boolean` for custom matching. Custom operator strings are supported and are appended after the built-in operators. If you omit the contains operator because your API does not support it, make sure to set `defaultOperator` to a supported operator from this list.
+   * * defaultOperator [ComparisonOperator]: An optional parameter that changes the default operator used for free text filtering. Use this parameter only if your API does not support "contains" free test filtering terms.
+   */
+  freeTextFiltering?: PropertyFilterProps.FreeTextFiltering;
+  /**
+   * Use this event to asynchronously load filteringOptions, component currently needs.  The detail object contains following properties:
+   *
+   * * `filteringProperty` - The property for which you need to fetch the options.
+   * * `filteringOperator` - The operator for which you need to fetch the options.
+   * * `filteringText` - The value that you need to use to fetch options.
+   * * `firstPage` - Indicates that you should fetch the first page of options for a `filteringProperty` that match the `filteringText`.
+   * * `samePage` - Indicates that you should fetch the same page that you have previously fetched (for example, when the user clicks on the recovery button).
+   */
+  onLoadItems?: NonCancelableEventHandler<PropertyFilterProps.LoadItemsDetail>;
+  /**
+   * If you have more than 500 `filteringOptions`, enable this flag to apply a performance optimization that makes
+   * the filtering experience smoother. We don't recommend enabling the feature if you have less than 500 options,
+   * because the improvements to performance are offset by a visible scrolling lag. When you set this flag to true,
+   * it removes options that are not currently in view from the DOM.
+   */
+  virtualScroll?: boolean;
+  /**
+   * A slot located before the filtering input. Use it if for a Select component if your dataset supports property
+   * filter queries only after an initial filter is applied.
+   */
+  customControl?: React.ReactNode;
+  /**
+   * A slot that replaces the standard "Clear filter" button.
+   * When using this slot, make sure to still provide a mechanism to clear all filters.
+   */
+  customFilterActions?: React.ReactNode;
+  /**
+   * Set `asyncProperties` if you need to load `filteringProperties` asynchronously. This would cause extra `onLoadMore`
+   * events to fire calling for more properties.
+   */
+  asyncProperties?: boolean;
+  /**
+   * Specifies the maximum number of displayed tokens. If the property isn't set, all of the tokens are displayed.
+   */
+  tokenLimit?: number;
+  /**
+   * The label that will be passed down to the Autosuggest `ariaLabel` property.
+   * See the [Autosuggest API](/components/autosuggest/?tabId=api) page for more details.
+   */
+  filteringAriaLabel?: string;
+  /**
+   * Placeholder for the filtering input.
+   */
+  filteringPlaceholder?: string;
+  /**
+   * Displayed when there are no options to display.
+   * This is only shown when `statusType` is set to `finished` or not set at all.
+   */
+  filteringEmpty?: React.ReactNode;
+  /**
+   * Specifies the text to display when in the loading state.
+   **/
+  filteringLoadingText?: string;
+  /**
+   * Specifies the text to display at the bottom of the dropdown menu after pagination has reached the end.
+   **/
+  filteringFinishedText?: string;
+  /**
+   * Specifies the text to display when a data fetching error occurs. Make sure that you provide `recoveryText`.
+   **/
+  filteringErrorText?: string;
+  /**
+   * Specifies the text for the recovery button. The text is displayed next to the error text.
+   * Use the `onLoadItems` event to perform a recovery action (for example, retrying the request).
+   **/
+  filteringRecoveryText?: string;
+  /**
+   * Constraint text that's displayed below the filtering input.
+   * Use this to provide additional information about supported filters.
+   */
+  filteringConstraintText?: React.ReactNode;
+  /**
+   * Specifies the current status of loading more options.
+   * * `pending` - Indicates that no request in progress, but more options may be loaded.
+   * * `loading` - Indicates that data fetching is in progress.
+   * * `finished` - Indicates that pagination has finished and no more requests are expected.
+   * * `error` - Indicates that an error occurred during fetch. You should use `recoveryText` to enable the user to recover.
+   **/
+  filteringStatusType?: PropertyFilterProps.StatusType;
+
+  /**
+   * Adds an aria-label to the "Show fewer" button for the token group control.
+   * Use to assign unique labels when there are multiple token groups with the same `tokenLimitShowFewer` label on one page.
+   */
+  tokenLimitShowFewerAriaLabel?: string;
+  /**
+   * Adds an aria-label to the "Show more" button for the token group control.
+   * Use to assign unique labels when there are multiple token groups with the same `tokenLimitShowMore` label on one page.
+   */
+  tokenLimitShowMoreAriaLabel?: string;
+}
+
+// TODO: replace with PropertyFilterTextOperatorExtended from collection-hooks once it is released
+export interface PropertyFilterTextOperatorExtended {
+  operator: PropertyFilterOperator;
+  match?: (item: unknown, text: string) => boolean;
+}
+// TODO: replace with PropertyFilterFreeTextFiltering from collection-hooks once it is released
+export interface PropertyFilterFreeTextFiltering {
+  operators?: readonly (PropertyFilterOperator | PropertyFilterTextOperatorExtended)[];
+  defaultOperator?: PropertyFilterOperator;
+}
+
+export namespace PropertyFilterProps {
+  export type Token = PropertyFilterToken;
+  export type TokenGroup = PropertyFilterTokenGroup;
+  export type JoinOperation = PropertyFilterOperation;
+  export type ComparisonOperator = PropertyFilterOperator;
+  export type ExtendedOperator<TokenValue> = PropertyFilterOperatorExtended<TokenValue>;
+  export type ExtendedOperatorFormProps<TokenValue> = PropertyFilterOperatorFormProps<TokenValue>;
+  export type ExtendedOperatorForm<TokenValue> = PropertyFilterOperatorForm<TokenValue>;
+  export type ExtendedOperatorFormat<TokenValue> = PropertyFilterOperatorFormat<TokenValue>;
+  export type FilteringOption = PropertyFilterOption;
+  export type FilteringProperty = PropertyFilterProperty;
+  export type FreeTextFiltering = PropertyFilterFreeTextFiltering;
+  export type Query = PropertyFilterQuery;
+  export type StatusType = DropdownStatusProps.StatusType;
+
+  export interface LoadItemsDetail {
+    filteringProperty?: FilteringProperty;
+    filteringOperator?: ComparisonOperator;
+    filteringText: string;
+    firstPage: boolean;
+    samePage: boolean;
+  }
+
+  export interface I18nStrings {
+    /**
+     * @deprecated Use `filteringAriaLabel` on the component instead.
+     */
+    filteringAriaLabel?: string;
+
+    /**
+     * @deprecated Use `filteringPlaceholder` on the component instead.
+     */
+    filteringPlaceholder?: string;
+
+    dismissAriaLabel?: string;
+    clearAriaLabel?: string;
+    groupValuesText?: string;
+    groupPropertiesText?: string;
+    operatorsText?: string;
+
+    operationAndText?: string;
+    operationOrText?: string;
+
+    operatorLessText?: string;
+    operatorLessOrEqualText?: string;
+    operatorGreaterText?: string;
+    operatorGreaterOrEqualText?: string;
+    operatorContainsText?: string;
+    operatorDoesNotContainText?: string;
+    operatorEqualsText?: string;
+    operatorDoesNotEqualText?: string;
+    operatorStartsWithText?: string;
+    operatorDoesNotStartWithText?: string;
+
+    editTokenHeader?: string;
+    propertyText?: string;
+    operatorText?: string;
+    valueText?: string;
+    cancelActionText?: string;
+    applyActionText?: string;
+    allPropertiesLabel?: string;
+
+    formatToken?: (token: FormattedToken) => string;
+
+    tokenLimitShowMore?: string;
+    tokenLimitShowFewer?: string;
+    clearFiltersText?: string;
+    tokenOperatorAriaLabel?: string;
+    removeTokenButtonAriaLabel?: (token: FormattedToken) => string;
+    enteredTextLabel?: AutosuggestProps.EnteredTextLabel;
+
+    groupEditAriaLabel?: (group: FormattedTokenGroup) => string;
+    tokenEditorTokenActionsAriaLabel?: (token: FormattedToken) => string;
+    tokenEditorTokenRemoveAriaLabel?: (token: FormattedToken) => string;
+    tokenEditorTokenRemoveLabel?: string;
+    tokenEditorTokenRemoveFromGroupLabel?: string;
+    tokenEditorAddNewTokenLabel?: string;
+    tokenEditorAddTokenActionsAriaLabel?: string;
+    tokenEditorAddExistingTokenAriaLabel?: (token: FormattedToken) => string;
+    tokenEditorAddExistingTokenLabel?: (token: FormattedToken) => string;
+    tokenEditorPropertyFilteringAriaLabel?: string;
+    tokenEditorValueFilteringAriaLabel?: string;
+  }
+
+  export interface FormattedToken {
+    propertyKey?: string;
+    propertyLabel: string;
+    operator: ComparisonOperator;
+    value: string;
+  }
+
+  export interface FormattedTokenGroup {
+    tokens: FormattedToken[];
+    operation: string;
+    operationLabel: string;
+  }
+
+  export interface GroupText {
+    properties: string;
+    values: string;
+    group: string;
+  }
+
+  export interface FilteringChangeDetail {
+    filteringText: string;
+    filteringProperty?: FilteringProperty;
+  }
+
+  export interface Ref {
+    /**
+     * Sets focus on the underlying input control.
+     */
+    focus(): void;
+  }
+}
+
+// Re-exported namespace interfaces to use module-style imports internally
+
+export type Token = PropertyFilterProps.Token;
+export type TokenGroup = PropertyFilterProps.TokenGroup;
+export type JoinOperation = PropertyFilterProps.JoinOperation;
+export type ComparisonOperator = PropertyFilterProps.ComparisonOperator;
+export type ExtendedOperator<TokenValue> = PropertyFilterOperatorExtended<TokenValue>;
+export type ExtendedOperatorForm<TokenValue> = PropertyFilterOperatorForm<TokenValue>;
+export type FilteringOption = PropertyFilterProps.FilteringOption;
+export type FilteringProperty = PropertyFilterProps.FilteringProperty;
+export type Query = PropertyFilterProps.Query;
+export type LoadItemsDetail = PropertyFilterProps.LoadItemsDetail;
+export type I18nStrings = PropertyFilterProps.I18nStrings;
+export type GroupText = PropertyFilterProps.GroupText;
+export type FormattedToken = PropertyFilterProps.FormattedToken;
+export type Ref = PropertyFilterProps.Ref;

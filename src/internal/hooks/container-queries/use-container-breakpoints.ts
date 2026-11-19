@@ -1,0 +1,25 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+
+import { Breakpoint } from '../../../types/breakpoint';
+import { getMatchingBreakpoint } from '../../breakpoints';
+
+/**
+ * Re-renders the component when the breakpoint for the component changes. Scopes the re-renders to the specific
+ * breakpoints you want to break at. "default" is always included as a fallback, so ["xs"] would trigger for
+ * "default" and "xs".
+ *
+ * @param triggers The relevant breakpoints to trigger for.
+ */
+export function useContainerBreakpoints<T extends readonly Breakpoint[], E extends Element = any>(triggers?: T) {
+  // triggers.join() gives us a stable value to use for the dependencies argument
+  const triggersDep = triggers?.join();
+  return useContainerQuery(
+    (rect, previousBreakpoint) => getMatchingBreakpoint(rect.contentBoxWidth, triggers, previousBreakpoint),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [triggersDep]
+  ) as ['default' | T[number] | null, React.Ref<E>];
+}

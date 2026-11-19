@@ -1,0 +1,89 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+@use '../../generated/custom-css-properties/index.scss' as custom-props;
+
+@keyframes drag-handle-entry {
+  from {
+    transform: translate(
+      var(#{custom-props.$dragHandleAnimationInlineOffset}),
+      var(#{custom-props.$dragHandleAnimationBlockOffset})
+    );
+  }
+  to {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes drag-handle-exit {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(
+      var(#{custom-props.$dragHandleAnimationInlineOffset}),
+      var(#{custom-props.$dragHandleAnimationBlockOffset})
+    );
+  }
+}
+
+.direction-button-wrapper {
+  #{custom-props.$dragHandleAnimationInlineOffset}: 0;
+  #{custom-props.$dragHandleAnimationBlockOffset}: 0;
+
+  @include styles.with-motion {
+    @include styles.animation-fade-in;
+    @include styles.animation-fade-out-0;
+
+    &-motion-enter,
+    &-motion-entering,
+    &-motion-exit,
+    &-motion-exiting {
+      pointer-events: none;
+    }
+
+    &-motion-entering {
+      @include styles.with-motion {
+        animation:
+          drag-handle-entry awsui.$motion-duration-complex awsui.$motion-easing-responsive,
+          awsui-motion-fade-in awsui.$motion-duration-complex awsui.$motion-easing-responsive;
+      }
+    }
+
+    &-motion-exiting {
+      @include styles.with-motion {
+        animation:
+          drag-handle-exit awsui.$motion-duration-complex awsui.$motion-easing-responsive forwards,
+          awsui-motion-fade-out-0 awsui.$motion-duration-complex awsui.$motion-easing-responsive forwards;
+      }
+    }
+  }
+}
+
+.direction-button-wrapper-block-start {
+  #{custom-props.$dragHandleAnimationBlockOffset}: 20px;
+}
+
+.direction-button-wrapper-block-end {
+  #{custom-props.$dragHandleAnimationBlockOffset}: -20px;
+}
+
+.direction-button-wrapper-inline-start {
+  @include styles.with-direction('ltr') {
+    #{custom-props.$dragHandleAnimationInlineOffset}: 20px;
+  }
+  @include styles.with-direction('rtl') {
+    #{custom-props.$dragHandleAnimationInlineOffset}: -20px;
+  }
+}
+
+.direction-button-wrapper-inline-end {
+  @include styles.with-direction('ltr') {
+    #{custom-props.$dragHandleAnimationInlineOffset}: -20px;
+  }
+  @include styles.with-direction('rtl') {
+    #{custom-props.$dragHandleAnimationInlineOffset}: 20px;
+  }
+}

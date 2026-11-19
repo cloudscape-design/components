@@ -1,0 +1,34 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+
+import styles from '../../../drawer/styles.selectors.js';
+import testUtilStyles from '../../../drawer/test-classes/styles.selectors.js';
+
+export default class DrawerWrapper extends ComponentWrapper {
+  static rootSelector: string = testUtilStyles.root;
+
+  findHeader(): ElementWrapper | null {
+    return this.findByClassName(styles.header);
+  }
+
+  findFooter(): ElementWrapper | null {
+    return this.findByClassName(styles.footer);
+  }
+
+  findHeaderActions(): ElementWrapper | null {
+    return this.findByClassName(styles['header-actions']);
+  }
+
+  findContent(): ElementWrapper | null {
+    return this.findByClassName(styles['test-utils-drawer-content']);
+  }
+
+  findBackdrop(): ElementWrapper | null {
+    return this.findByClassName(testUtilStyles.backdrop);
+  }
+
+  findCloseAction(): ElementWrapper | null {
+    return this.findByClassName(testUtilStyles['close-action']);
+  }
+}

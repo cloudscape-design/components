@@ -1,0 +1,126 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+
+import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
+
+export namespace ExpandableSectionProps {
+  export interface AnalyticsMetadata {
+    instanceIdentifier?: string;
+  }
+
+  export type Variant = 'default' | 'footer' | 'container' | 'navigation' | 'stacked' | 'inline';
+  export interface ChangeDetail {
+    expanded: boolean;
+  }
+  export type HeadingTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5';
+}
+
+export interface ExpandableSectionProps extends BaseComponentProps {
+  /**
+   * Specifies additional analytics-related metadata.
+   * * `instanceIdentifier` - A unique string that identifies this component instance in your application.
+   * @analytics
+   */
+  analyticsMetadata?: ExpandableSectionProps.AnalyticsMetadata;
+
+  /**
+   * Determines whether the component initially displays in expanded state (that is, with content visible). The component operates in an uncontrolled
+   * manner even if you provide a value for this property.
+   */
+  defaultExpanded?: boolean;
+
+  /**
+   * Determines whether the component is in the expanded state (that is, with content visible). The component operates in a controlled
+   * manner if you provide a value for this property.
+   */
+  expanded?: boolean;
+
+  /**
+   * The possible variants of an expandable section are as follows:
+   *  * `default` - Use this variant in any context.
+   *  * `footer` - Use this variant in container footers.
+   *  * `container` - Use this variant in a detail page alongside other containers.
+   *  * `navigation` - Use this variant in the navigation panel with anchors and custom styled content.
+   *    It doesn't have any default styles.
+   * * `stacked` - Use this variant directly adjacent to other stacked containers (such as a container, table).
+   * * `inline` - Use this variant in any context where you need reduced padding around the header.
+   * @visualrefresh `stacked` variant
+   * */
+  variant?: ExpandableSectionProps.Variant;
+
+  /**
+   * Determines whether the default padding around the content section is removed.
+   */
+  disableContentPaddings?: boolean;
+
+  /**
+   * Primary content displayed in the expandable section element.
+   */
+  children?: React.ReactNode;
+
+  /**
+   * @deprecated Use `headerText` instead.
+   */
+  header?: React.ReactNode;
+
+  /**
+   * The heading text. Use plain text. When using the container variant, you can use additional header props like `headerDescription` and `headerCounter` to display other elements in the header.
+   */
+  headerText?: React.ReactNode;
+
+  /**
+   * Supplementary text below the heading. Use with the container, default, footer, inline or stacked variants.
+   */
+  headerDescription?: string;
+
+  /**
+   * Specifies secondary text that's displayed to the right of the heading title. Use with the container or stacked variants.
+   * Behaves similar to the Header component counter.
+   */
+  headerCounter?: string;
+
+  /**
+   * Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements).
+   * Use with the container variant (which defaults to H2) or default/footer variants (which default to DIV). Using this
+   * property does not change the visual appearance of the component. Note that this only works with the `headerText`
+   * slot (not with the deprecated `header`), and not with the navigation variant.
+   */
+  headingTagOverride?: ExpandableSectionProps.HeadingTag;
+
+  /**
+   * Adds `aria-label` to the header element.
+   * Use to assign unique labels when there are multiple expandable sections with the same header text on one page.
+   */
+  headerAriaLabel?: string;
+
+  /**
+   * Called when the state changes (that is, when the user expands or collapses the component).
+   * The event `detail` contains the current value of the `expanded` property.
+   */
+  onChange?: NonCancelableEventHandler<ExpandableSectionProps.ChangeDetail>;
+
+  /**
+   * The area next to the heading, used to display an Info link. Use with the container or stacked variants.
+   */
+  headerInfo?: React.ReactNode;
+
+  /**
+   * Actions for the header. Use with the default or container, default, inline or stacked variants.
+   */
+  headerActions?: React.ReactNode;
+
+  /**
+   * Secondary content displayed next to the header text, such as an interactive control or supporting text.
+   * Use with the default or container variant.
+   */
+  headerSecondaryContent?: React.ReactNode;
+
+  /**
+   * Visually hides the header text while keeping it available to assistive technology.
+   * Use with `headerSecondaryContent` to present a purely interactive header control.
+   * Use with the default or container variant.
+   */
+  hideHeaderText?: boolean;
+}

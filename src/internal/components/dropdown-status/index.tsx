@@ -1,0 +1,126 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+
+import InternalLink from '../../../link/internal';
+import InternalStatusIndicator from '../../../status-indicator/internal';
+import { DropdownStatusProps } from '../../../types/dropdown-status';
+import { NonCancelableEventHandler } from '../../../types/events';
+import { fireNonCancelableEvent } from '../../events';
+import { usePrevious } from '../../hooks/use-previous';
+
+import styles from './styles.css.js';
+
+export interface DropdownStatusPropsExtended extends DropdownStatusProps {
+  isEmpty?: boolean;
+  isNoMatch?: boolean;
+  noMatch?: React.ReactNode;
+  filteringResultsText?: string;
+  /**
+   * Called when the user clicks the recovery button placed at the
+   * bottom of the dropdown list in the error state. Use this to
+   * retry a failed request or provide another option for the user
+   * to recover from the error.
+   */
+  onRecoveryClick?: NonCancelableEventHandler;
+  /**
+   * Determines if retry button should be rendered
+   * in case recoveryText was automatically provided by i18n.
+   */
+  hasRecoveryCallback?: boolean;
+  /**
+   * Optional `id` for the recovery button, so that it can be referenced
+   * through `aria-activedescendant` while focus stays in a filter input.
+   */
+  recoveryButtonId?: string;
+}
+
+function DropdownStatus({ children }: { children: React.ReactNode }) {
+  return <div className={styles.root}>{children}</div>;
+}
+
+type UseDropdownStatus = ({
+  statusType,
+  empty,
+  loadingText,
+  finishedText,
+  filteringResultsText,
+  errorText,
+  recoveryText,
+  isEmpty,
+  isNoMatch,
+  noMatch,
+  hasRecoveryCallback,
+  onRecoveryClick,
+  recoveryButtonId,
+}: DropdownStatusPropsExtended) => DropdownStatusResult;
+
+export interface DropdownStatusResult {
+  isSticky: boolean;
+  content: React.ReactNode | null;
+  hasRecoveryButton: boolean;
+}
+
+export const useDropdownStatus: UseDropdownStatus = ({
+  statusType,
+  empty,
+  loadingText,
+  finishedText,
+  filteringResultsText,
+  errorText,
+  recoveryText,
+  isEmpty,
+  isNoMatch,
+  noMatch,
+  onRecoveryClick,
+  hasRecoveryCallback = false,
+  errorIconAriaLabel,
+  recoveryButtonId,
+}): DropdownStatusResult => {
+  const previousStatusType = usePrevious(statusType);
+  const statusResult: DropdownStatusResult = { isSticky: true, content: null, hasRecoveryButton: false };
+
+  if (statusType === 'loading') {
+    statusResult.content = <InternalStatusIndicator type={'loading'}>{loadingText}</InternalStatusIndicator>;
+  } else if (statusType === 'error') {
+    statusResult.hasRecoveryButton = !!recoveryText && hasRecoveryCallback;
+    statusResult.content = (
+      <span>
+        <InternalStatusIndicator
+          type="error"
+          __display="inline"
+          __animate={previousStatusType !== 'error'}
+          iconAriaLabel={errorIconAriaLabel}
+        >
+          {errorText}
+        </InternalStatusIndicator>{' '}
+        {statusResult.hasRecoveryButton && (
+          <InternalLink
+            id={recoveryButtonId}
+            onFollow={() => fireNonCancelableEvent(onRecoveryClick)}
+            variant="recovery"
+            className={styles.recovery}
+          >
+            {recoveryText}
+          </InternalLink>
+        )}
+      </span>
+    );
+  } else if (isEmpty && empty) {
+    statusResult.content = empty;
+  } else if (isNoMatch && noMatch) {
+    statusResult.content = noMatch;
+  } else if (filteringResultsText) {
+    statusResult.content = filteringResultsText;
+  } else if (statusType === 'finished' && finishedText) {
+    statusResult.content = finishedText;
+    statusResult.isSticky = false;
+  }
+
+  return statusResult;
+};
+
+export default DropdownStatus;
+
+// Backward-compatibility re-export for consumers importing this public type from the internal path.
+export { DropdownStatusProps } from '../../../types/dropdown-status';

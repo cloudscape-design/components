@@ -1,0 +1,27 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/style-api' as style-api;
+@use '../popover/style-api' as popover-style-api;
+
+@include style-api.docs('container', $properties: popover-style-api.$container-properties);
+@include style-api.docs('arrow', popover-style-api.$arrow-tokens);
+
+.root {
+  @include styles.with-motion {
+    animation: awsui-motion-fade-in-tooltip awsui.$motion-duration-tooltip-enter awsui.$motion-easing-tooltip-enter;
+
+    @keyframes awsui-motion-fade-in-tooltip {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  }
+}

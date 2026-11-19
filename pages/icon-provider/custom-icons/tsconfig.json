@@ -1,0 +1,8 @@
+{
+  // Using a separate tsconfig so that the module augmentation used to add custom icons doesn't leak to other pages.
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "."
+  },
+  "include": ["./**/*.ts", "./**/*.tsx", "../../mount.d.ts"]
+}

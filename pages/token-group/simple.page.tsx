@@ -1,0 +1,42 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useState } from 'react';
+
+import Box from '~components/box';
+import Checkbox from '~components/checkbox';
+import TokenGroup, { TokenGroupProps } from '~components/token-group';
+
+const generateItems = (numberOfItems: number) => {
+  return [...new Array(numberOfItems)].map((_item, index) => ({
+    label: `Item ${index + 1}`,
+    disabled: index === 1,
+    dismissLabel: `Remove item ${index + 1}`,
+  })) as TokenGroupProps.Item[];
+};
+
+const i18nStrings: TokenGroupProps.I18nStrings = {
+  limitShowMore: 'Show more chosen options',
+  limitShowFewer: 'Show fewer chosen options',
+};
+
+export default function TokenGroupPage() {
+  const [items, setItems] = useState(generateItems(10));
+  const [readOnly, setReadOnly] = useState(false);
+
+  const onDismiss = (event: { detail: { itemIndex: number } }) => {
+    const newItems = [...items];
+    newItems.splice(event.detail.itemIndex, 1);
+    setItems(newItems);
+  };
+
+  return (
+    <Box padding="xl">
+      <h1>Token Group</h1>
+      <Checkbox checked={readOnly} onChange={({ detail }) => setReadOnly(detail.checked)}>
+        Read-only
+      </Checkbox>
+      <br />
+      <TokenGroup items={items} onDismiss={onDismiss} i18nStrings={i18nStrings} limit={5} readOnly={readOnly} />
+    </Box>
+  );
+}

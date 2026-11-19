@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createOneSideRoundedRectPath creates path with rx=0 and side="bottom" 1`] = `"M4,2L4,6Q4,6 4,6L1,6Q1,6 1,6L1,2Q1,2 1,2L4,2Q4,2 4,2Z"`;
+
+exports[`createOneSideRoundedRectPath creates path with rx=0 and side="left" 1`] = `"M4,6L1,6Q1,6 1,6L1,2Q1,2 1,2L4,2Q4,2 4,2L4,6Q4,6 4,6Z"`;
+
+exports[`createOneSideRoundedRectPath creates path with rx=0 and side="right" 1`] = `"M1,2L4,2Q4,2 4,2L4,6Q4,6 4,6L1,6Q1,6 1,6L1,2Q1,2 1,2Z"`;
+
+exports[`createOneSideRoundedRectPath creates path with rx=0 and side="top" 1`] = `"M1,6L1,2Q1,2 1,2L4,2Q4,2 4,2L4,6Q4,6 4,6L1,6Q1,6 1,6Z"`;
+
+exports[`createOneSideRoundedRectPath creates path with rx=4 and side="bottom" 1`] = `"M4,2L4,6Q4,6 4,6L1,6Q1,6 1,6L1,2Q1,2 1,2L4,2Q4,2 4,2Z"`;
+
+exports[`createOneSideRoundedRectPath creates path with rx=4 and side="left" 1`] = `"M4,6L1,6Q1,6 1,6L1,2Q1,2 1,2L4,2Q4,2 4,2L4,6Q4,6 4,6Z"`;
+
+exports[`createOneSideRoundedRectPath creates path with rx=4 and side="right" 1`] = `"M1,2L4,2Q4,2 4,2L4,6Q4,6 4,6L1,6Q1,6 1,6L1,2Q1,2 1,2Z"`;
+
+exports[`createOneSideRoundedRectPath creates path with rx=4 and side="top" 1`] = `"M1,6L1,2Q1,2 1,2L4,2Q4,2 4,2L4,6Q4,6 4,6L1,6Q1,6 1,6Z"`;

@@ -1,0 +1,35 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+.slider {
+  padding-block: 0;
+  padding-inline: 0;
+  cursor: ns-resize;
+  margin-block: 0;
+  margin-inline: 0;
+  block-size: 18px;
+  // Desktop Safari doesn't support touch events, but Safari on iOS does.
+  // stylelint-disable-next-line plugin/no-unsupported-browser-features
+  touch-action: none;
+
+  &:focus {
+    outline: none;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(0px);
+  }
+}
+
+.slider-side,
+.slider-side-start {
+  cursor: ew-resize;
+  margin-block: 0;
+  margin-inline-end: 0;
+}

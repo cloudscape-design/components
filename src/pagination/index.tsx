@@ -1,0 +1,46 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+'use client';
+import React from 'react';
+
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
+import useBaseComponent from '../internal/hooks/use-base-component';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { GeneratedAnalyticsMetadataPaginationComponent } from './analytics-metadata/interfaces';
+import { PaginationProps } from './interfaces';
+import InternalPagination from './internal';
+
+export { PaginationProps };
+
+const Pagination = React.forwardRef<PaginationProps.Ref, PaginationProps>(
+  ({ pagesVariant = 'normal', ...props }, ref) => {
+    const baseComponentProps = useBaseComponent('Pagination', {
+      props: { openEnd: props.openEnd, pagesVariant },
+      metadata: { hasJumpToPage: !!props.jumpToPage },
+    });
+    return (
+      <InternalPagination
+        pagesVariant={pagesVariant}
+        {...props}
+        {...baseComponentProps}
+        ref={ref}
+        {...getAnalyticsMetadataAttribute({
+          component: {
+            name: 'awsui.Pagination',
+            label: { root: 'self' },
+            properties: {
+              openEnd: `${!!props.openEnd}`,
+              pagesCount: `${props.pagesCount || ''}`,
+              currentPageIndex: `${props.currentPageIndex}`,
+            },
+          } as GeneratedAnalyticsMetadataPaginationComponent,
+        })}
+      />
+    );
+  }
+);
+
+applyDisplayName(Pagination, 'Pagination');
+
+export default Pagination;

@@ -1,0 +1,454 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+/* stylelint-disable */
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/foundation/' as foundation;
+@use '../internal/styles/forms/constants' as constants;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/styles/style-api' as style-api;
+
+@include style-api.docs('root', $properties: (background, border, border-radius, box-shadow), $descriptions: (properties: (box-shadow: 'Also draws the focus ring.',)));
+
+// Carriers: the placeholder pseudo-elements read these tokens by inheritance, which non-inheriting public tokens do not allow.
+$textarea-tokens: style-api.resolve(
+  (placeholder-color, placeholder-font-size, placeholder-font-style, placeholder-font-weight),
+  carrier
+);
+@include style-api.register($textarea-tokens);
+@include style-api.docs('textarea', $textarea-tokens, $properties: (color, padding, font-family, font-size, font-weight));
+
+@include style-api.docs-forward('actionButton', 'button', 'root');
+@include style-api.docs-forward('token', 'token', 'root');
+@include style-api.docs-forward('menu', 'dropdown', 'root');
+
+$send-icon-right-spacing: awsui.$space-static-xxs;
+$invalid-border-offset: constants.$invalid-control-left-padding;
+
+.root {
+  @include styles.styles-reset;
+  @include styles.control-border-radius-full();
+  cursor: text;
+
+  background-color: var(#{custom-props.$promptInputStyleBackgroundDefault}, awsui.$color-background-input-default);
+
+  border-block: awsui.$border-width-field solid
+    var(#{custom-props.$promptInputStyleBorderColorDefault}, awsui.$color-border-input-default);
+  border-inline: awsui.$border-width-field solid
+    var(#{custom-props.$promptInputStyleBorderColorDefault}, awsui.$color-border-input-default);
+
+  box-shadow: var(#{custom-props.$promptInputStyleBoxShadowDefault});
+
+  &:hover {
+    background-color: var(
+      #{custom-props.$promptInputStyleBackgroundHover},
+      var(#{custom-props.$promptInputStyleBackgroundDefault}, awsui.$color-background-input-default)
+    );
+    border-color: var(
+      #{custom-props.$promptInputStyleBorderColorHover},
+      var(#{custom-props.$promptInputStyleBorderColorDefault}, awsui.$color-border-input-default)
+    );
+    box-shadow: var(
+      #{custom-props.$promptInputStyleBoxShadowHover},
+      var(#{custom-props.$promptInputStyleBoxShadowDefault})
+    );
+  }
+
+  &.textarea-readonly {
+    @include styles.form-readonly-element(
+      $background-color: var(
+          #{custom-props.$promptInputStyleBackgroundReadonly},
+          var(#{custom-props.$promptInputStyleBackgroundDefault}, awsui.$color-background-input-default)
+        ),
+      $border-color: var(
+          #{custom-props.$promptInputStyleBorderColorReadonly},
+          var(#{custom-props.$promptInputStyleBorderColorDefault}, awsui.$color-border-input-disabled)
+        )
+    );
+    box-shadow: var(#{custom-props.$promptInputStyleBoxShadowReadonly});
+  }
+
+  &.disabled {
+    @include styles.form-disabled-element(
+      $background-color: var(
+          #{custom-props.$promptInputStyleBackgroundDisabled},
+          awsui.$color-background-input-disabled
+        ),
+      $border-color: var(#{custom-props.$promptInputStyleBorderColorDisabled}, awsui.$color-border-input-disabled),
+      $color: var(#{custom-props.$promptInputStyleColorDisabled}, awsui.$color-text-input-disabled),
+      $cursor: default
+    );
+    box-shadow: var(#{custom-props.$promptInputStyleBoxShadowDisabled});
+  }
+
+  &.textarea-invalid {
+    @include styles.form-invalid-control(
+      $color: var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-status-error),
+      $border-color: var(#{custom-props.$promptInputStyleBorderColorDefault}, awsui.$color-text-status-error)
+    );
+    & {
+      padding-inline-start: 0;
+    }
+
+    &:focus-within,
+    &:focus {
+      @include styles.form-invalid-control(
+        $color: var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-status-error),
+        $border-color: var(#{custom-props.$promptInputStyleBorderColorDefault}, awsui.$color-text-status-error)
+      );
+      & {
+        padding-inline-start: 0;
+        box-shadow: foundation.$box-shadow-focused-light-invalid;
+      }
+    }
+
+    // When disabled, keep validation border (including thick left border) but remove focus box-shadow
+    &.disabled:focus-within,
+    &.disabled:focus {
+      box-shadow: var(#{custom-props.$promptInputStyleBoxShadowDisabled});
+    }
+  }
+
+  &.textarea-warning {
+    @include styles.form-warning-control(
+      $color: var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-status-warning),
+      $border-color: var(#{custom-props.$promptInputStyleBorderColorDefault}, awsui.$color-text-status-warning)
+    );
+    & {
+      padding-inline-start: 0;
+    }
+
+    &:focus-within,
+    &:focus {
+      @include styles.form-warning-control(
+        $color: var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-status-warning),
+        $border-color: var(#{custom-props.$promptInputStyleBorderColorDefault}, awsui.$color-text-status-warning)
+      );
+      & {
+        padding-inline-start: 0;
+        box-shadow: foundation.$box-shadow-focused-light-invalid;
+      }
+    }
+
+    // When disabled, keep validation border (including thick left border) but remove focus box-shadow
+    &.disabled:focus-within,
+    &.disabled:focus {
+      box-shadow: var(#{custom-props.$promptInputStyleBoxShadowDisabled});
+    }
+  }
+
+  // General focus styles (only when not invalid/warning)
+  &:focus-within:not(.textarea-invalid):not(.textarea-warning),
+  &:focus:not(.textarea-invalid):not(.textarea-warning) {
+    @include styles.form-focus-element(
+      $border-color: var(#{custom-props.$promptInputStyleBorderColorFocus}, awsui.$color-border-input-focused),
+      $box-shadow: var(#{custom-props.$promptInputStyleBoxShadowFocus}, foundation.$box-shadow-focused-light)
+    );
+    background-color: var(#{custom-props.$promptInputStyleBackgroundFocus}, awsui.$color-background-input-default);
+  }
+
+  // Prevent general focus styles when disabled
+  &.disabled:focus-within:not(.textarea-invalid):not(.textarea-warning),
+  &.disabled:focus:not(.textarea-invalid):not(.textarea-warning) {
+    @include styles.form-disabled-element(
+      $background-color: var(
+          #{custom-props.$promptInputStyleBackgroundDisabled},
+          awsui.$color-background-input-disabled
+        ),
+      $border-color: var(#{custom-props.$promptInputStyleBorderColorDisabled}, awsui.$color-border-input-disabled),
+      $color: var(#{custom-props.$promptInputStyleColorDisabled}, awsui.$color-text-input-disabled),
+      $cursor: default
+    );
+    box-shadow: var(#{custom-props.$promptInputStyleBoxShadowDisabled});
+  }
+}
+
+.textarea {
+  @include style-api.carriers($textarea-tokens);
+  @include styles.styles-reset;
+  @include styles.control-border-radius-full();
+  @include styles.font-body-m;
+  font-size: inherit;
+  font-weight: inherit;
+  // Restore browsers' default resize values
+  resize: none;
+  // Restore default text cursor
+  cursor: text;
+  // Allow multi-line placeholders and word wrapping
+  white-space: pre-wrap;
+  background-color: inherit;
+
+  padding-block: styles.$control-padding-vertical;
+  padding-inline: styles.$control-padding-horizontal;
+
+  color: var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-body-default);
+  max-inline-size: 100%;
+  inline-size: 100%;
+  display: block;
+  box-sizing: border-box;
+
+  border: 0;
+
+  // When a placeholder is shown on the contentEditable div (token mode), use a
+  // grid layout so the `::before` placeholder and the paragraph children share
+  // the same grid cell. Both contribute to the cell's height, so the input grows
+  // to fit a wrapped long placeholder — matching how the native `<textarea>`
+  // `placeholder` attribute sizes the textarea. In non-placeholder states the
+  // element stays `display: block` (inherited from `styles-reset`).
+  &.placeholder-visible {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  &.placeholder-visible::before,
+  &.placeholder-visible > * {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  &.placeholder-visible::before {
+    content: attr(data-placeholder);
+    @include styles.form-placeholder(
+      $color: style-api.value(
+          $textarea-tokens,
+          placeholder-color,
+          var(#{custom-props.$promptInputStylePlaceholderColor}, #{awsui.$color-text-input-placeholder})
+        ),
+      $font-size: style-api.value(
+          $textarea-tokens,
+          placeholder-font-size,
+          var(#{custom-props.$promptInputStylePlaceholderFontSize})
+        ),
+      $font-style: style-api.value(
+          $textarea-tokens,
+          placeholder-font-style,
+          var(#{custom-props.$promptInputStylePlaceholderFontStyle}, italic)
+        ),
+      $font-weight: style-api.value(
+          $textarea-tokens,
+          placeholder-font-weight,
+          var(#{custom-props.$promptInputStylePlaceholderFontWeight})
+        )
+    );
+    opacity: 1;
+    pointer-events: none;
+    // Align self to the start so a single-line placeholder sits at the top when
+    // the cell is taller for any reason (e.g., other content growth).
+    align-self: start;
+    min-inline-size: 0;
+  }
+
+  &:hover {
+    color: var(
+      #{custom-props.$promptInputStyleColorHover},
+      var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-body-default)
+    );
+  }
+
+  &:focus {
+    outline: none;
+    color: var(
+      #{custom-props.$promptInputStyleColorFocus},
+      var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-body-default)
+    );
+  }
+
+  &:invalid {
+    // discard built-in invalid styles, customers should use `invalid` property only (AWSUI-3947)
+    box-shadow: none;
+  }
+
+  // Native placeholder for textarea element
+  &::placeholder {
+    @include styles.form-placeholder(
+      $color: style-api.value(
+          $textarea-tokens,
+          placeholder-color,
+          var(#{custom-props.$promptInputStylePlaceholderColor}, #{awsui.$color-text-input-placeholder})
+        ),
+      $font-size: style-api.value(
+          $textarea-tokens,
+          placeholder-font-size,
+          var(#{custom-props.$promptInputStylePlaceholderFontSize})
+        ),
+      $font-style: style-api.value(
+          $textarea-tokens,
+          placeholder-font-style,
+          var(#{custom-props.$promptInputStylePlaceholderFontStyle}, italic)
+        ),
+      $font-weight: style-api.value(
+          $textarea-tokens,
+          placeholder-font-weight,
+          var(#{custom-props.$promptInputStylePlaceholderFontWeight})
+        )
+    );
+    opacity: 1;
+  }
+
+  &.invalid,
+  &.warning {
+    padding-inline-start: $invalid-border-offset;
+  }
+
+  &:disabled,
+  &.textarea-disabled {
+    color: var(#{custom-props.$promptInputStyleColorDisabled}, awsui.$color-text-input-disabled);
+    cursor: default;
+    overflow-y: hidden;
+
+    &::placeholder {
+      @include styles.form-placeholder-disabled(
+        $color: style-api.value($textarea-tokens, placeholder-color, awsui.$color-text-input-placeholder-disabled)
+      );
+      opacity: 1;
+    }
+  }
+
+  &-readonly {
+    color: var(
+      #{custom-props.$promptInputStyleColorReadonly},
+      var(#{custom-props.$promptInputStyleColorDefault}, awsui.$color-text-body-default)
+    );
+  }
+
+  // Placeholder for disabled contentEditable div (token mode)
+  &.textarea-disabled.placeholder-visible::before {
+    @include styles.form-placeholder-disabled(
+      $color: style-api.value($textarea-tokens, placeholder-color, awsui.$color-text-input-placeholder-disabled)
+    );
+    opacity: 1;
+    pointer-events: none;
+  }
+
+  &-wrapper {
+    display: flex;
+    position: relative;
+  }
+}
+
+.editable-wrapper {
+  flex: 1;
+  min-inline-size: 0;
+  position: relative;
+}
+
+// Token-mode contentEditable element overflow behavior
+.editable-element {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.primary-action {
+  align-self: flex-end;
+  flex-shrink: 0;
+  padding-inline-start: calc(styles.$control-padding-horizontal / 2);
+
+  .textarea-wrapper > & {
+    padding-inline-end: calc(styles.$control-padding-horizontal / 2);
+
+    > .action-button {
+      margin-block-end: awsui.$space-scaled-xxxs;
+      padding: 0;
+    }
+  }
+}
+
+.secondary-content {
+  @include styles.styles-reset;
+  @include styles.control-border-radius-full();
+
+  &.with-paddings {
+    padding-block-start: awsui.$space-scaled-s;
+    padding-block-end: awsui.$space-scaled-s;
+    padding-inline-start: styles.$control-padding-horizontal;
+    padding-inline-end: styles.$control-padding-horizontal;
+
+    &.invalid,
+    &.warning {
+      padding-inline-start: $invalid-border-offset;
+    }
+  }
+}
+
+.action-stripe {
+  @include styles.styles-reset;
+  @include styles.control-border-radius-full();
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.secondary-actions {
+  flex-basis: max-content;
+  flex-grow: 0;
+  flex-shrink: 1;
+  box-sizing: border-box;
+  @include styles.text-flex-wrapping;
+  padding-inline-end: awsui.$space-scaled-xxs;
+  &.with-paddings {
+    padding-inline: styles.$control-padding-horizontal;
+    padding-block-start: awsui.$space-scaled-s;
+    padding-block-end: styles.$control-padding-vertical;
+
+    &.invalid,
+    &.warning {
+      padding-inline-start: $invalid-border-offset;
+    }
+  }
+  &.with-paddings-and-actions {
+    padding-inline-end: 0;
+  }
+}
+
+.buffer {
+  flex: 1;
+  align-self: stretch;
+  cursor: text;
+}
+
+.token-container {
+  display: inline-block;
+  user-select: all;
+  -webkit-user-select: all;
+  -moz-user-select: all;
+  padding-inline: awsui.$space-xxxs;
+}
+
+// Isolate reference token wrappers from the bidi algorithm so that
+// caret spots and the token-container are not reordered in RTL.
+.reference-wrapper {
+  unicode-bidi: isolate;
+}
+
+// Isolate trigger spans from the bidi algorithm so that the trigger
+// character and filter text are not visually reordered in RTL.
+.trigger-base {
+  unicode-bidi: isolate;
+}
+
+.trigger-token {
+  text-decoration: underline dashed currentColor;
+  text-decoration-thickness: awsui.$border-divider-list-width;
+  text-underline-offset: awsui.$space-xxxs;
+}
+
+// Paragraph elements - reset browser default margins/padding
+.paragraph {
+  @include styles.styles-reset;
+  // Ensure paragraphs are only as tall as their line-height
+  margin: 0;
+  padding: 0;
+  // Preserve whitespace including trailing spaces
+  white-space: pre-wrap;
+  // Inherit color from parent (textarea) for disabled/readonly states
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}

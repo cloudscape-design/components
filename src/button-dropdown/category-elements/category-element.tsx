@@ -1,0 +1,103 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+import clsx from 'clsx';
+
+import InternalIcon from '../../icon/internal';
+import { ButtonDropdownProps } from '../interfaces';
+import { CategoryProps } from '../internal-interfaces';
+import ItemsList from '../items-list';
+
+import styles from './styles.css.js';
+
+const CategoryElement = ({
+  item,
+  index,
+  onItemActivate,
+  onGroupToggle,
+  targetItem,
+  isHighlighted,
+  isKeyboardHighlight,
+  isExpanded,
+  lastInDropdown,
+  highlightItem,
+  disabled,
+  variant,
+  position,
+  renderItem,
+  filteringText,
+  filteringEnabled,
+  menuId,
+  filteringDescriptionId,
+}: CategoryProps) => {
+  const highlighted = isHighlighted(item);
+  const groupProps: ButtonDropdownProps.GroupRenderItem = {
+    type: 'group',
+    index: index ?? 0,
+    option: item as ButtonDropdownProps.ItemGroup,
+    disabled: !!disabled,
+    highlighted: !!highlighted,
+    expanded: true,
+    expandDirection: 'vertical',
+  };
+  const renderResult = renderItem?.({ item: groupProps, filterText: filteringText }) ?? null;
+
+  // Hide the category title element from screen readers because it will be
+  // provided as an ARIA label.
+  return (
+    <li
+      className={clsx(styles.category, styles[`variant-${variant}`], disabled && styles.disabled)}
+      role="presentation"
+    >
+      {item.text && (
+        <p
+          className={clsx(styles.header, {
+            [styles.disabled]: disabled,
+            [styles['no-content-styling']]: !!renderResult,
+          })}
+          aria-hidden="true"
+        >
+          {renderResult ? (
+            renderResult
+          ) : (
+            <span className={styles['header-content']}>
+              {(item.iconName || item.iconUrl || item.iconSvg) && (
+                <span className={styles['icon-wrapper']}>
+                  <InternalIcon name={item.iconName} url={item.iconUrl} svg={item.iconSvg} alt={item.iconAlt} />
+                </span>
+              )}
+              <span>{item.text}</span>
+            </span>
+          )}
+        </p>
+      )}
+      <ul className={styles['items-list-container']} role="group" aria-label={item.text} aria-disabled={disabled}>
+        {item.items && (
+          <ItemsList
+            items={item.items}
+            onItemActivate={onItemActivate}
+            onGroupToggle={onGroupToggle}
+            targetItem={targetItem}
+            isHighlighted={isHighlighted}
+            isKeyboardHighlight={isKeyboardHighlight}
+            isExpanded={isExpanded}
+            lastInDropdown={lastInDropdown}
+            highlightItem={highlightItem}
+            categoryDisabled={disabled}
+            hasCategoryHeader={!!item.text}
+            variant={variant}
+            position={position}
+            renderItem={renderItem}
+            parentProps={groupProps}
+            filteringText={filteringText}
+            filteringEnabled={filteringEnabled}
+            menuId={menuId}
+            filteringDescriptionId={filteringDescriptionId}
+          />
+        )}
+      </ul>
+    </li>
+  );
+};
+
+export default CategoryElement;

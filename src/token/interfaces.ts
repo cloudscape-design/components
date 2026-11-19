@@ -1,0 +1,118 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+
+import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
+
+export interface TokenProps extends BaseComponentProps {
+  /** Slot for the label of the token as text or an element.
+   *
+   * For `variant="inline"`, use plain text, for example, strings or numbers, or a single interactive
+   * element such as a popover trigger.
+   */
+  label: React.ReactNode;
+
+  /**
+   * Adds an `aria-label` to the token.
+   *
+   * Use this if the label is not plain text.
+   */
+  ariaLabel?: string;
+
+  /** A label tag that provides additional guidance, shown next to the label.
+   *
+   * When `variant="inline"`, a long label tag is truncated. `tooltipContent` is what appears when the
+   * token is truncated, so include the label tag text in it.
+   */
+  labelTag?: string;
+
+  /** Further information about the token that appears below the label. */
+  description?: string;
+
+  /** A list of tags giving further guidance about the token. */
+  tags?: ReadonlyArray<string>;
+
+  /** An icon at the start of the token.
+   *
+   * When `variant="normal"`, if a description or tags are set, icon size should be `normal`.
+   *
+   * When `variant="inline"`, icon size should be `x-small`.
+   */
+  icon?: React.ReactNode;
+
+  /**
+   * Specifies the token's visual style and functionality.
+   *
+   * When set to `inline`, only label, label tag, icon and dismiss button are displayed. Description and tags are not.
+   *
+   * Defaults to `normal` if not specified.
+   */
+  variant?: TokenProps.Variant;
+
+  /** Determines whether the token is disabled. */
+  disabled?: boolean;
+
+  /**
+   * Specifies if the control is read-only. A read-only control is still focusable.
+   */
+  readOnly?: boolean;
+
+  /** Adds an `aria-label` to the dismiss button. */
+  dismissLabel?: string;
+
+  /**
+   * Called when the user clicks on the dismiss button.
+   *
+   * Make sure that you add a listener to this event to update your application state.
+   */
+  onDismiss?: NonCancelableEventHandler;
+
+  /**
+   * Content to display in the tooltip when `variant="inline"`. The tooltip appears when the token label or label tag is truncated due to insufficient space.
+   */
+  tooltipContent?: string;
+
+  /**
+   * An object containing CSS properties to customize the token's visual appearance.
+   * Refer to the [style](/components/token/?tabId=style) tab for more details.
+   * @awsuiSystem core
+   */
+  style?: TokenProps.Style;
+}
+
+export namespace TokenProps {
+  export type Variant = 'normal' | 'inline';
+
+  export interface Style {
+    root?: {
+      background?: {
+        default?: string;
+        disabled?: string;
+        readOnly?: string;
+      };
+      borderColor?: {
+        default?: string;
+        disabled?: string;
+        readOnly?: string;
+      };
+      borderRadius?: string;
+      borderWidth?: string;
+      paddingBlock?: string;
+      paddingInline?: string;
+    };
+    dismissButton?: {
+      color?: {
+        default?: string;
+        disabled?: string;
+        hover?: string;
+        readOnly?: string;
+      };
+      focusRing?: {
+        borderColor?: string;
+        borderRadius?: string;
+        borderWidth?: string;
+      };
+    };
+  }
+}

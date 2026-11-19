@@ -1,0 +1,123 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useState } from 'react';
+import { MutableRefObject, useCallback, useRef } from 'react';
+import {
+  Transition as ReactTransitionGroupTransition,
+  TransitionStatus as ReactTransitionGroupTransitionStatus,
+} from 'react-transition-group';
+
+import { useReducedMotion } from '@cloudscape-design/component-toolkit/internal';
+
+export type TransitionStatus = ReactTransitionGroupTransitionStatus | 'enter' | 'exit';
+
+interface TransitionProps<T extends HTMLElement> {
+  in: boolean;
+  exit?: boolean;
+
+  disabled?: boolean;
+
+  children: (
+    state: TransitionStatus,
+    transitioningElementRef: MutableRefObject<T | null>,
+    motionDisabled: boolean
+  ) => React.ReactNode;
+  onStatusChange?: (status: TransitionStatus) => void;
+  transitionChangeDelay?: { entering?: number };
+  exitTimeout?: number;
+}
+
+/**
+ * This component wraps react-transition-group's Transition component.
+ *
+ * Its rendering function receives the transition state, a ref that must be attached to the transitioning node,
+ * and whether motion is disabled by either user preference or the disabled prop.
+ */
+export function Transition<T extends HTMLElement = any>({
+  in: isIn,
+  children,
+  exit = true,
+  onStatusChange = () => void 0,
+  disabled = false,
+  transitionChangeDelay,
+  exitTimeout,
+  ...rest
+}: TransitionProps<T>) {
+  const transitionRootElement = useRef<T>(null);
+  // the initial state of the transition should be either 'exited' or 'entered' depending
+  // on the `in` property, this mimicks how internally the Transition component works here:
+  // https://github.com/reactjs/react-transition-group/blob/6cbd6aaedaf8e9472007640b429ddb48c6c24158/src/Transition.js#L121
+  const [transitionState, setTransitionState] = useState<TransitionStatus>(isIn ? 'entered' : 'exited');
+  const motionDisabled = useReducedMotion(transitionRootElement) || disabled;
+
+  const addTransitionEndListener = useCallback((done: () => void) => {
+    const node = transitionRootElement.current;
+
+    if (node === null) {
+      return;
+    }
+    const controller = new AbortController();
+    const listener = (e: TransitionEvent | AnimationEvent) => {
+      if (e.target === node) {
+        controller.abort();
+        done();
+      }
+    };
+    node.addEventListener('transitionend', listener, { signal: controller.signal });
+    node.addEventListener('animationend', listener, { signal: controller.signal });
+  }, []);
+
+  return (
+    <ReactTransitionGroupTransition
+      addEndListener={addTransitionEndListener}
+      timeout={motionDisabled ? 0 : exitTimeout}
+      in={isIn}
+      nodeRef={transitionRootElement}
+      exit={exit}
+      onEnter={isAppearing => {
+        if (!isAppearing) {
+          setTransitionState('enter');
+          onStatusChange('enter');
+        }
+      }}
+      onEntering={isAppearing => {
+        if (!isAppearing) {
+          // This line forces the browser to recalculate the layout because we want the starting state in the 'enter' style
+          // to be applied before the animation starts.
+          void transitionRootElement.current?.offsetHeight;
+
+          if (transitionChangeDelay?.entering) {
+            setTimeout(() => {
+              setTransitionState('entering');
+              onStatusChange('entering');
+            }, transitionChangeDelay?.entering);
+          } else {
+            setTransitionState('entering');
+            onStatusChange('entering');
+          }
+        }
+      }}
+      onEntered={isAppearing => {
+        if (!isAppearing) {
+          setTransitionState('entered');
+          onStatusChange('entered');
+        }
+      }}
+      onExit={() => {
+        setTransitionState('exit');
+        onStatusChange('exit');
+      }}
+      onExiting={() => {
+        setTransitionState('exiting');
+        onStatusChange('exiting');
+      }}
+      onExited={() => {
+        setTransitionState('exited');
+        onStatusChange('exited');
+      }}
+      {...rest}
+    >
+      {() => children(transitionState, transitionRootElement, motionDisabled)}
+    </ReactTransitionGroupTransition>
+  );
+}

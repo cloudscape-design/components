@@ -1,0 +1,90 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+$sizes-horizontal: (
+  'xxxs': awsui.$space-xxxs,
+  'xxs': awsui.$space-xxs,
+  'xs': awsui.$space-xs,
+  's': awsui.$space-s,
+  'm': awsui.$space-m,
+  'l': awsui.$space-l,
+  'xl': awsui.$space-xl,
+  'xxl': awsui.$space-xxl,
+);
+
+$sizes-vertical: (
+  'xxxs': awsui.$space-xxxs,
+  'xxs': awsui.$space-xxs,
+  'xs': awsui.$space-xs,
+  's': awsui.$space-scaled-s,
+  'm': awsui.$space-scaled-m,
+  'l': awsui.$space-scaled-l,
+  'xl': awsui.$space-scaled-xl,
+  'xxl': awsui.$space-scaled-xxl,
+);
+
+.root {
+  display: flex;
+}
+
+.child {
+  /* used in test-utils */
+}
+
+.child:empty {
+  display: none;
+}
+
+/*
+ * Horizontal variant
+ */
+
+.horizontal {
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  @each $name, $size in $sizes-horizontal {
+    &-#{$name} {
+      gap: $size;
+    }
+  }
+}
+
+/*
+ * Vertical variant
+ */
+
+.vertical {
+  flex-direction: column;
+
+  @each $name, $size in $sizes-vertical {
+    &-#{$name} {
+      row-gap: $size;
+    }
+  }
+}
+
+.align-center {
+  align-items: center;
+}
+
+.align-start {
+  align-items: start;
+}
+
+.align-end {
+  align-items: end;
+}
+
+// Propagate `align-items` to the internal wrapper element to prevent possible misalignments.
+// When the consumer-provided content is an inline element shorter than the line height,
+// this component-rendered child can be taller than it, giving room for misalignment.
+.child-aligned {
+  display: flex;
+  align-items: inherit;
+}

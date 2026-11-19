@@ -1,0 +1,20 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+.dismiss-button,
+.token {
+  /* used in test-utils */
+}
+
+.root {
+  @include styles.styles-reset;
+
+  &.has-items:not(.no-padding) {
+    padding-block-start: awsui.$space-xs;
+  }
+}

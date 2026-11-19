@@ -1,0 +1,15 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+.html,
+.body {
+  block-size: 100%;
+}
+
+.popover {
+  position: absolute;
+  inset-block-end: 50px;
+  inset-inline-start: 50px;
+}

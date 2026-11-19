@@ -1,0 +1,64 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+@use '../../styles/foundation' as foundation;
+@use '../../generated/custom-css-properties/index.scss' as custom-props;
+@use '../../styles/style-api' as style-api;
+@use './motion' as motion;
+
+$radio-size: awsui.$size-control;
+
+$_control-props: style-api.combine((fill-color, border-color, indicator-color), style-api.$focus-ring);
+$_control-tokens: style-api.resolve($_control-props, carrier);
+// Registered here, next to the carrier, so every component that renders this control loads the registration.
+@include style-api.register($_control-tokens);
+
+.radio-control {
+  @include style-api.carriers($_control-tokens);
+  @include styles.make-control-size($radio-size);
+}
+
+.outline {
+  @include style-api.focus-highlight(
+    $gutter-block: 2px,
+    $gutter-inline: 2px,
+    $radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-circular-focus-ring),
+    $width: var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width),
+    $color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused)
+  );
+}
+
+.styled-circle-border {
+  stroke: style-api.value($_control-tokens, border-color, awsui.$color-border-control-default);
+  fill: style-api.value($_control-tokens, fill-color, awsui.$color-background-control-default);
+  &.styled-circle-disabled,
+  &.styled-circle-readonly {
+    fill: style-api.value($_control-tokens, fill-color, awsui.$color-background-control-disabled);
+    stroke: style-api.value($_control-tokens, border-color, awsui.$color-background-control-disabled);
+  }
+}
+
+.styled-circle-fill {
+  stroke: style-api.value($_control-tokens, fill-color, awsui.$color-background-control-checked);
+  fill: style-api.value($_control-tokens, indicator-color, awsui.$color-foreground-control-default);
+  opacity: 0;
+  @include styles.with-motion {
+    transition: opacity awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
+  }
+  &.styled-circle-checked {
+    opacity: 1;
+  }
+  &.styled-circle-disabled {
+    fill: style-api.value($_control-tokens, indicator-color, awsui.$color-foreground-control-disabled);
+    stroke: style-api.value($_control-tokens, fill-color, awsui.$color-background-control-disabled);
+  }
+  &.styled-circle-readonly {
+    fill: style-api.value($_control-tokens, indicator-color, awsui.$color-foreground-control-read-only);
+    stroke: style-api.value($_control-tokens, fill-color, awsui.$color-background-control-disabled);
+  }
+  @include motion.select;
+}

@@ -1,0 +1,22 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import { ComponentWrapper } from '@cloudscape-design/test-utils-core/dom';
+
+import InputWrapper from '../input';
+import DropdownWrapper from './dropdown.js';
+
+import dropdownStyles from '../../../dropdown/styles.selectors.js';
+import inputStyles from '../../../input/styles.selectors.js';
+import styles from '../../../internal/components/autosuggest-input/styles.selectors.js';
+
+export default class AutosuggestInputWrapper extends ComponentWrapper {
+  static rootSelector = styles.root;
+
+  findInput(): InputWrapper {
+    return this.findComponent(`.${inputStyles['input-container']}`, InputWrapper)!;
+  }
+
+  findDropdown(): DropdownWrapper {
+    return this.findComponent(`.${dropdownStyles.root}`, DropdownWrapper)!;
+  }
+}

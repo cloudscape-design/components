@@ -1,0 +1,120 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/styles/utils/theming' as theming;
+
+.breadcrumb-group {
+  @include styles.styles-reset;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: awsui.$space-xxs;
+  padding-inline: 0;
+
+  > .breadcrumb-group-list {
+    display: flex;
+    align-items: center;
+    padding-block: 0;
+    padding-inline: 0;
+    margin-block: 0;
+    margin-inline: 0;
+    list-style: none;
+    inline-size: 100%;
+    flex-wrap: nowrap;
+
+    &.ghost {
+      flex-wrap: wrap;
+      position: absolute;
+      inset-inline-start: -9000px;
+    }
+
+    > .item,
+    > .ghost-item,
+    > .ellipsis {
+      display: inline-block;
+      padding-block: 0;
+      padding-inline: 0;
+      margin-block: 0;
+      margin-inline: 0;
+    }
+
+    > .item:last-child {
+      flex-shrink: 1;
+      min-inline-size: 0;
+    }
+
+    > .item.hide {
+      display: none;
+    }
+
+    > .ellipsis {
+      display: none;
+
+      &.visible {
+        display: flex;
+        flex-shrink: 0;
+      }
+
+      > .icon {
+        margin-block: 0;
+        margin-inline: styles.$base-size;
+        color: awsui.$color-text-breadcrumb-icon;
+      }
+
+      @include theming.one-theme-only {
+        > .icon {
+          margin-inline: awsui.$space-xxs;
+        }
+      }
+    }
+  }
+}
+
+.breadcrumbs-skeleton {
+  display: none;
+}
+
+.collapsed-button {
+  @include styles.styles-reset;
+  @include styles.text-wrapping;
+  @include styles.font-button;
+  letter-spacing: awsui.$font-button-letter-spacing;
+  color: awsui.$color-text-interactive-default;
+  cursor: pointer;
+  padding-block: 0;
+  padding-inline: 0;
+  border-inline: none;
+  border-block: none;
+  background: none;
+  display: flex;
+  gap: awsui.$space-xxs;
+  max-inline-size: 100%;
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+  }
+  &:hover {
+    color: awsui.$color-text-interactive-hover;
+  }
+  > :last-child {
+    color: awsui.$color-text-breadcrumb-current;
+    font-weight: awsui.$font-weight-breadcrumb-current;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    &:hover {
+      color: awsui.$color-text-interactive-hover;
+    }
+  }
+}
+
+.button-icon {
+  @include styles.spin-180-when-open;
+}
+
+.hidden {
+  display: none;
+}

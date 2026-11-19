@@ -1,0 +1,61 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+const path = require('path');
+const { writeFile } = require('../utils/files');
+const themes = require('../utils/themes');
+const workspace = require('../utils/workspace');
+
+const ALWAYS_VISUAL_REFRESH = process.env.ALWAYS_VISUAL_REFRESH === 'true';
+const INCLUDE_ONE_THEME = process.env.INCLUDE_ONE_THEME === 'true';
+
+const isAlwaysVisualRefresh = theme => !!theme.alwaysVisualRefresh || ALWAYS_VISUAL_REFRESH;
+
+function writeEnvironmentFile(theme) {
+  const filepath = 'internal/environment';
+  const values = {
+    PACKAGE_SOURCE: workspace.packageSource,
+    PACKAGE_VERSION: workspace.packageVersion,
+    GIT_SHA: workspace.gitCommitVersion,
+    THEME: theme.name,
+    SYSTEM: 'core',
+    ALWAYS_VISUAL_REFRESH: isAlwaysVisualRefresh(theme),
+    INCLUDE_ONE_THEME: INCLUDE_ONE_THEME,
+  };
+  const basePath = path.join(theme.outputPath, filepath);
+
+  console.log('Environment values\n', JSON.stringify(values, null, 2));
+
+  writeFile(`${basePath}.json`, JSON.stringify(values, null, 2));
+  writeFile(
+    `${basePath}.js`,
+    Object.entries(values)
+      .map(([key, value]) => `export var ${key} = ${JSON.stringify(value)};`)
+      .join('\n')
+  );
+  writeFile(
+    `${basePath}.d.ts`,
+    Object.keys(values)
+      .map(key => `export const ${key}: string;`)
+      .join('\n')
+  );
+}
+
+// Classic AppLayout can never render when visual refresh is always on. A static import
+// would still put it in every consumer bundle, so it is left out of the generated module.
+function writeAppLayoutImplementationsFile(theme) {
+  writeFile(
+    path.join(theme.outputPath, 'app-layout/implementations.js'),
+    isAlwaysVisualRefresh(theme)
+      ? 'export var ClassicAppLayout = null;'
+      : "export { default as ClassicAppLayout } from './classic';"
+  );
+}
+
+module.exports = function generateEnvironment() {
+  themes.forEach(theme => {
+    writeEnvironmentFile(theme);
+    writeAppLayoutImplementationsFile(theme);
+  });
+
+  return Promise.resolve();
+};

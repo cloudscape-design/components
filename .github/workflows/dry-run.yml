@@ -1,0 +1,22 @@
+# This workflow executes a full dry-run test, which means that all we build and test all @cloudscape-design packages in GitHub.
+# This ensures that the changes in the current package do not cause any regressions for its consumers.
+name: Dry-run
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+  merge_group:
+    branches:
+      - main
+
+# Cancel superseded runs for the same ref to free shared runner capacity.
+# Only cancel PR runs; other events get a unique group so their runs never
+# cancel or drop each other.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  dry-run:
+    uses: cloudscape-design/actions/.github/workflows/dry-run.yml@main

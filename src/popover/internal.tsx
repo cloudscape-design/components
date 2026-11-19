@@ -1,0 +1,254 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import clsx from 'clsx';
+
+import { Portal, useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useSingleTabStopNavigation } from '@cloudscape-design/component-toolkit/internal';
+
+import { useInternalI18n } from '../i18n/context';
+import { getBaseProps } from '../internal/base-component';
+import { getFirstFocusable } from '../internal/components/focus-lock/utils';
+import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
+import ResetContextsForModal from '../internal/context/reset-contexts-for-modal';
+import { useTokenInlineContext } from '../internal/context/token-inline-context';
+import { fireNonCancelableEvent } from '../internal/events/index';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
+import { KeyCode } from '../internal/keycode';
+import { NonCancelableEventHandler } from '../types/events';
+import Arrow from './arrow';
+import PopoverBody from './body';
+import ConditionalLiveRegion from './conditional-live-region';
+import PopoverContainer from './container';
+import { PopoverProps } from './interfaces';
+
+import styles from './styles.css.js';
+
+export interface InternalPopoverProps extends Omit<PopoverProps, 'triggerType' | 'size'>, InternalBaseComponentProps {
+  __onOpen?: NonCancelableEventHandler<null>;
+  triggerType?: PopoverProps.TriggerType | 'filtering-token';
+  size: PopoverProps.Size | 'content';
+  __closeAnalyticsAction?: string;
+  isInline?: boolean;
+  __visible?: boolean;
+  __onVisibleChange?: NonCancelableEventHandler<{ visible: boolean }>;
+  styleClassNames?: StyleClassNames;
+}
+
+// Style API v2
+export interface StyleClassNames {
+  container?: string;
+  arrow?: string;
+  dismissButton?: string;
+}
+
+export default React.forwardRef(InternalPopover);
+
+function InternalPopover(
+  {
+    position = 'right',
+    size = 'medium',
+    fixedWidth = false,
+    triggerType = 'text',
+    dismissButton = true,
+
+    children,
+    header,
+    content,
+    triggerAriaLabel,
+
+    wrapTriggerText = true,
+    isInline = false,
+    renderWithPortal = false,
+
+    __onOpen,
+    __internalRootRef,
+    __closeAnalyticsAction,
+    __visible: controlledVisible,
+    __onVisibleChange: onVisibleChange,
+    styleClassNames,
+
+    ...restProps
+  }: InternalPopoverProps,
+  ref: React.Ref<PopoverProps.Ref>
+) {
+  const baseProps = getBaseProps(restProps);
+  const triggerRef = useRef<HTMLElement | null>(null);
+  const popoverRef = useRef<HTMLDivElement | null>(null);
+
+  const i18n = useInternalI18n('popover');
+  const dismissAriaLabel = i18n('dismissAriaLabel', restProps.dismissAriaLabel);
+
+  const [internalVisible, setInternalVisible] = useState(false);
+  const isControlled = controlledVisible !== undefined;
+  const visible = isControlled ? controlledVisible : internalVisible;
+
+  const updateVisible = useCallback(
+    (newVisible: boolean) => {
+      if (isControlled) {
+        fireNonCancelableEvent(onVisibleChange, { visible: newVisible });
+      } else {
+        setInternalVisible(newVisible);
+      }
+    },
+    [isControlled, onVisibleChange]
+  );
+
+  const focusTrigger = useCallback(() => {
+    if (['text', 'text-inline'].includes(triggerType)) {
+      triggerRef.current?.focus();
+    } else if (triggerRef.current) {
+      getFirstFocusable(triggerRef.current)?.focus();
+    }
+  }, [triggerType]);
+
+  const onTriggerClick = useCallback(() => {
+    fireNonCancelableEvent(__onOpen);
+    updateVisible(true);
+  }, [__onOpen, updateVisible]);
+
+  const onDismiss = useCallback(() => {
+    updateVisible(false);
+    focusTrigger();
+  }, [focusTrigger, updateVisible]);
+
+  const onTriggerKeyDown = useCallback(
+    (event: React.KeyboardEvent) => {
+      const isEscapeKey = event.keyCode === KeyCode.escape;
+      const isTabKey = event.keyCode === KeyCode.tab;
+      if (isEscapeKey && visible) {
+        event.stopPropagation();
+      }
+      if (isTabKey || isEscapeKey) {
+        updateVisible(false);
+      }
+    },
+    [visible, updateVisible]
+  );
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      dismiss: () => {
+        updateVisible(false);
+      },
+      focus: () => {
+        updateVisible(false);
+        focusTrigger();
+      },
+    }),
+    [updateVisible, focusTrigger]
+  );
+
+  const clickFrameId = useRef<number | null>(null);
+  useEffect(() => {
+    if (!triggerRef.current) {
+      return;
+    }
+    const document = triggerRef.current.ownerDocument;
+
+    const onDocumentClick = () => {
+      // Dismiss popover unless there was a click inside within the last animation frame.
+      if (clickFrameId.current === null) {
+        updateVisible(false);
+      }
+    };
+
+    document.addEventListener('mousedown', onDocumentClick);
+
+    return () => {
+      document.removeEventListener('mousedown', onDocumentClick);
+    };
+  }, [updateVisible]);
+
+  const popoverClasses = usePortalModeClasses(triggerRef, { resetVisualContext: true });
+  const { isInlineToken } = useTokenInlineContext();
+
+  const triggerProps = {
+    // https://github.com/microsoft/TypeScript/issues/36659
+    ref: triggerRef as any,
+    onClick: onTriggerClick,
+    onKeyDown: onTriggerKeyDown,
+    className: clsx(styles.trigger, styles[`trigger-type-${triggerType}`], isInlineToken && styles['in-inline-token']),
+  };
+  const { tabIndex: triggerTabIndex } = useSingleTabStopNavigation(triggerRef);
+
+  const referrerId = useUniqueId();
+
+  const popoverContent = (
+    <div
+      className={clsx(popoverClasses, !renderWithPortal && styles['popover-inline-content'])}
+      data-awsui-referrer-id={referrerId}
+    >
+      <PopoverContainer
+        size={size}
+        fixedWidth={fixedWidth}
+        position={position}
+        trackRef={triggerRef}
+        arrow={position => <Arrow position={position} className={styleClassNames?.arrow} />}
+        renderWithPortal={renderWithPortal}
+        zIndex={renderWithPortal ? 7000 : undefined}
+        bodyClassName={styleClassNames?.container}
+      >
+        <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
+          <PopoverBody
+            dismissButton={dismissButton}
+            dismissAriaLabel={dismissAriaLabel}
+            header={header}
+            onDismiss={onDismiss}
+            dismissButtonClassName={styleClassNames?.dismissButton}
+            overflowVisible="both"
+            closeAnalyticsAction={__closeAnalyticsAction}
+          >
+            <ConditionalLiveRegion condition={!dismissButton}>{content}</ConditionalLiveRegion>
+          </PopoverBody>
+        </LinkDefaultVariantContext.Provider>
+      </PopoverContainer>
+    </div>
+  );
+
+  const mergedRef = useMergeRefs(popoverRef, __internalRootRef);
+
+  return (
+    <span
+      {...baseProps}
+      className={clsx(
+        styles.root,
+        baseProps.className,
+        triggerType === 'filtering-token' && styles['root-filtering-token'],
+        isInline && styles['no-wrap']
+      )}
+      ref={mergedRef}
+      onMouseDown={() => {
+        // Indicate there was a click inside popover recently, including nested portals.
+        clickFrameId.current = requestAnimationFrame(() => {
+          clickFrameId.current = null;
+        });
+      }}
+    >
+      {['text', 'text-inline'].includes(triggerType) ? (
+        <button
+          {...triggerProps}
+          className={clsx(triggerProps.className, wrapTriggerText === false && styles['overflow-ellipsis'])}
+          tabIndex={triggerTabIndex}
+          type="button"
+          aria-haspopup="dialog"
+          id={referrerId}
+          aria-label={triggerAriaLabel}
+        >
+          {children}
+        </button>
+      ) : (
+        <span {...triggerProps} id={referrerId}>
+          {children}
+        </span>
+      )}
+      {visible && (
+        <ResetContextsForModal>
+          {renderWithPortal ? <Portal>{popoverContent}</Portal> : popoverContent}
+        </ResetContextsForModal>
+      )}
+    </span>
+  );
+}

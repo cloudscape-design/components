@@ -1,0 +1,224 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import { compileMotionScss, ONE_THEME as THEME, readSource } from '../../__tests__/compile-motion-scss';
+
+const HOVER_MOTION_SOURCE = readSource('icon/hover-motion.scss');
+
+/** Compiles `hover-motion.scss`; `source` lets the mutation tests below patch it without touching the file on disk. */
+function compile(artefactThemes: string[], source: string = HOVER_MOTION_SOURCE): string {
+  return compileMotionScss({
+    entry: `@use 'hover-motion' as hover-motion;\n@include hover-motion.icon-hover-motion;`,
+    artefactThemes,
+    inline: { 'hover-motion': source },
+  });
+}
+
+/**
+ * The selector of the generic hover-motion rule (the one setting `scale(0.94)`),
+ * compiled with `THEME` opted in.
+ */
+function genericRuleSelector(): string {
+  const css = compile([THEME]);
+  const block = css.split('}').find(b => b.includes('scale(0.94)'));
+  if (!block) {
+    throw new Error('generic hover-motion rule not found in compiled CSS');
+  }
+  return block.slice(0, block.indexOf('{')).trim();
+}
+
+describe('the expressive-motion theme opt-in gate', () => {
+  test('emits nothing for an artefact with no opted-in theme', () => {
+    const css = compile([]);
+    expect(css).not.toContain('scale(0.94)');
+    expect(css).not.toContain('data-awsui-motion-trigger');
+  });
+
+  test('emits generic motion, scoped to the theme, once the theme opts in', () => {
+    const css = compile([THEME]);
+    const scaleBlock = css.split('}').find(block => block.includes('scale(0.94)'));
+
+    expect(scaleBlock).toBeDefined();
+    expect(scaleBlock).toContain(THEME);
+    expect(scaleBlock).toContain('data-awsui-motion-trigger');
+  });
+});
+
+describe('the generic hover motion rule, as compiled', () => {
+  test('the generic rule carries the theme scope and both mode exclusions', () => {
+    const selector = genericRuleSelector();
+    expect(selector).toContain(THEME);
+    expect(selector).toContain(':not(.awsui-motion-disabled)');
+    expect(selector).toContain(':not(.awsui-mode-entering)');
+  });
+
+  test('the generic rule targets the inner svg', () => {
+    const target = genericRuleSelector().split(/\s+/).pop()!;
+    expect(target).toMatch(/^>?\s*:global\(svg\[data-awsui-icon-animated\]\)$/);
+  });
+
+  test('reduced motion is one wrapping media query, not a per-rule override', () => {
+    const css = compile([THEME]);
+    expect(css.match(/@media \(prefers-reduced-motion: no-preference\)/g)).toHaveLength(1);
+    expect(css).not.toMatch(/prefers-reduced-motion:\s*reduce\b/);
+  });
+
+  test('the generic rule also fires on :focus-visible, guarded the same way as :hover', () => {
+    const selector = genericRuleSelector();
+    expect(selector).toContain(
+      ':is([data-awsui-motion-trigger~=hover]:is(:hover, :focus-visible), [data-awsui-motion-trigger~=focus]:focus-visible, '
+    );
+    expect(selector).toContain('):not(:disabled):not([aria-disabled=true]) .icon');
+  });
+
+  test('no rule uses :has(), which is costly to match on every style recalc and DOM insert', () => {
+    expect(compile([THEME])).not.toContain(':has(');
+  });
+
+  test('a delegated-focus trigger fires on :focus-within, only during keyboard interaction', () => {
+    expect(genericRuleSelector()).toContain(
+      '[data-awsui-motion-trigger~=delegated-focus]:focus-within:where(body[data-awsui-focus-visible=true] *))'
+    );
+  });
+
+  test('the disabled guard excludes aria-disabled="true" but not aria-disabled="false"', () => {
+    // The guard follows the trigger-state `:is(...)`, which is dropped since jsdom cannot set hover
+    // or focus-visible state.
+    const guard =
+      '[data-awsui-motion-trigger~=hover]' + genericRuleSelector().match(/(?<=\)\))(:not\([^\s]+)(?= \.icon)/)![0];
+
+    const button = (attributes: Record<string, string> = {}) => {
+      const element = document.createElement('button');
+      element.setAttribute('data-awsui-motion-trigger', 'hover');
+      for (const [name, value] of Object.entries(attributes)) {
+        element.setAttribute(name, value);
+      }
+      return element;
+    };
+
+    expect(button().matches(guard)).toBe(true);
+    expect(button({ disabled: '' }).matches(guard)).toBe(false);
+    expect(button({ 'aria-disabled': 'true' }).matches(guard)).toBe(false);
+
+    // Positive control: React stringifies `aria-disabled={false}` to the string "false" on an
+    // ENABLED control. A bare `[aria-disabled]` guard must not exclude it.
+    expect(button({ 'aria-disabled': 'false' }).matches(guard)).toBe(true);
+  });
+});
+
+describe('a malformed spec fails the build', () => {
+  test('an unknown key is rejected, naming the icon and the key', () => {
+    const typo = HOVER_MOTION_SOURCE.replace("part: 'awsui-icon-arm',", "pat: 'awsui-icon-arm',");
+    expect(typo).not.toBe(HOVER_MOTION_SOURCE);
+    expect(() => compile([THEME], typo)).toThrow(/Unknown key `pat` in the \$icon-hover-motion spec for `zoom-in`/);
+  });
+
+  test('a spec carrying both `animation` and `to` is rejected', () => {
+    const both = HOVER_MOTION_SOURCE.replace(
+      'animation: icon-pulse-soft,',
+      'animation: icon-pulse-soft,\n      to: (transform: scale(0.9)),'
+    );
+    expect(both).not.toBe(HOVER_MOTION_SOURCE);
+    expect(() => compile([THEME], both)).toThrow(/sets both `animation` and `to`/);
+  });
+
+  test('a motion spec missing `duration` is rejected, naming the icon', () => {
+    // `announcement` is the first entry in the map, so the first match is its duration.
+    const missing = HOVER_MOTION_SOURCE.replace('      duration: 400ms,\n', '');
+    expect(missing).not.toBe(HOVER_MOTION_SOURCE);
+    expect(() => compile([THEME], missing)).toThrow(/spec for `announcement` sets motion but is missing/);
+  });
+
+  test('a negative stroke-dashoffset is rejected, naming the icon', () => {
+    // The first `56px` offset in the map belongs to `backward-10-seconds`.
+    const negative = HOVER_MOTION_SOURCE.replace('stroke-dashoffset: 56px,', 'stroke-dashoffset: -4px,');
+    expect(negative).not.toBe(HOVER_MOTION_SOURCE);
+    expect(() => compile([THEME], negative)).toThrow(
+      /spec for `backward-10-seconds` sets a negative `stroke-dashoffset`/
+    );
+  });
+});
+
+describe('keyframes', () => {
+  test('gated on the artefact: none for a theme that never opted in', () => {
+    expect(compile([])).not.toMatch(/@keyframes/);
+  });
+
+  test('every referenced animation name has a matching keyframes block', () => {
+    const css = compile([THEME]);
+    const referenced = new Set(Array.from(css.matchAll(/animation-name:\s*([\w-]+)/g)).map(match => match[1]));
+    expect(referenced.size).toBeGreaterThan(0);
+    for (const name of referenced) {
+      expect(css).toMatch(new RegExp(`@keyframes\\s+${name}\\s*\\{`));
+    }
+  });
+
+  test('no keyframes block is emitted that nothing in the map references', () => {
+    const css = compile([THEME]);
+    const defined = Array.from(css.matchAll(/@keyframes\s+([\w-]+)\s*\{/g)).map(match => match[1]);
+    const referenced = new Set(Array.from(css.matchAll(/animation-name:\s*([\w-]+)/g)).map(match => match[1]));
+    expect(defined.length).toBeGreaterThan(0);
+    for (const name of defined) {
+      expect(referenced.has(name)).toBe(true);
+    }
+  });
+
+  // Keyframes are literal CSS the sass-side spec validation cannot see, so the
+  // Safari negative-dash-offset guard is repeated here on the compiled output.
+  test('nothing in the compiled CSS sets a negative stroke-dashoffset (Safari mishandles them)', () => {
+    const css = compile([THEME]);
+    expect(css).toMatch(/stroke-dashoffset/);
+    expect(css).not.toMatch(/stroke-dashoffset:\s*-/);
+  });
+});
+
+describe('the cancel rule for icons with only part motion', () => {
+  // The cancel rule matches by icon name alone, relying on every such generated icon carrying the
+  // animated parts. Without them, the icon would lose the generic motion and get none instead.
+  test('every cancelled icon contains the parts its motion targets', () => {
+    const css = compile([THEME]);
+    const blocks = css.split('}');
+    const cancelBlock = blocks.find(block => block.includes('transform: none'))!;
+    const names = Array.from(new Set(Array.from(cancelBlock.matchAll(/\.name-([\w-]+)/g)).map(match => match[1])));
+    expect(names.length).toBeGreaterThan(0);
+
+    for (const name of names) {
+      const parts = new Set(
+        blocks
+          .filter(block => new RegExp(`\\.name-${name}(?![\\w-])`).test(block))
+          .flatMap(block => Array.from(block.matchAll(/:global\(svg\[data-awsui-icon-animated\] \.([\w-]+)\)/g)))
+          .map(match => match[1])
+      );
+      expect(parts.size).toBeGreaterThan(0);
+      const svg = readSource(`icon/icons/${name}.svg`);
+      for (const part of parts) {
+        expect({ name, part, present: svg.includes(part) }).toEqual({ name, part, present: true });
+      }
+    }
+  });
+});
+
+describe('per-icon rules', () => {
+  /** The compiled rules outside `@keyframes`, as selector and declaration pairs. */
+  function rules(): Array<{ selector: string; declarations: string }> {
+    const css = compile([THEME])
+      .replace(/@keyframes[^{]+\{(?:[^{}]*\{[^{}]*\})*[^{}]*\}/g, '')
+      .replace(/@media[^{]+\{/, '');
+    return Array.from(css.matchAll(/([^{}]+)\{([^{}]*)\}/g)).map(([, selector, declarations]) => ({
+      selector: selector.trim(),
+      declarations: declarations.replace(/\s+/g, ' ').trim(),
+    }));
+  }
+
+  test('icons with identical motion share one rule', () => {
+    const thumbsUp = rules().filter(rule => rule.declarations.includes('rotate(-12deg) scale(0.92)'));
+    expect(thumbsUp).toHaveLength(1);
+    expect(thumbsUp[0].selector).toContain('.name-thumbs-up,');
+    expect(thumbsUp[0].selector).toContain('.name-thumbs-up-filled)');
+  });
+
+  test('no two rules differ only in the icon name', () => {
+    const anyName = /:is\(\.name-[\w-]+(?:, \.name-[\w-]+)*\)|\.name-[\w-]+/g;
+    const keys = rules().map(rule => `${rule.selector.replace(anyName, '.name-*')} { ${rule.declarations} }`);
+    expect(new Set(keys).size).toBe(keys.length);
+  });
+});

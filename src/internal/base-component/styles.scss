@@ -1,0 +1,10 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../styles/global';
+@use '../generated/custom-css-properties' as custom-styles;
+
+:root {
+  --awsui-version-info-#{custom-styles.$awsui-commit-hash}: true;
+}

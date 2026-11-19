@@ -1,0 +1,329 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use 'sass:map' as map;
+@use '../../../internal/styles' as styles;
+@use '../../../internal/styles/tokens' as awsui;
+@use '../../../internal/styles/utils/theming' as theming;
+@use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../../constants' as constants;
+
+@mixin desktop-only {
+  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+    @content;
+  }
+}
+
+@mixin mobile-only {
+  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+    @content;
+  }
+}
+
+@mixin grid-column-full-content-width {
+  grid-column: 1 / -1;
+
+  @include desktop-only {
+    grid-column: 3 / 6;
+  }
+}
+
+.root {
+  @include styles.styles-reset;
+  color: awsui.$color-text-body-default;
+  background-color: awsui.$color-background-layout-main;
+
+  #{custom-props.$maxContentWidth}: 100%;
+  display: grid;
+
+  // mobile grid
+  grid-template-areas:
+    'toolbar    toolbar     toolbar'
+    '.       notifications  .'
+    '.           main       .';
+  grid-template-columns:
+    awsui.$space-layout-content-horizontal
+    minmax(0, 1fr)
+    awsui.$space-layout-content-horizontal;
+  grid-template-rows: min-content min-content 1fr;
+
+  // desktop grid
+  @include desktop-only {
+    grid-template-areas:
+      'ai-drawer toolbar    toolbar      toolbar       toolbar   toolbar         toolbar  toolbar'
+      'ai-drawer navigation .         notifications    .         sideSplitPanel  tools    global-tools'
+      'ai-drawer navigation .             main         .         sideSplitPanel  tools    global-tools'
+      'ai-drawer bottom-tool bottom-tool bottom-tool  bottom-tool  bottom-tool bottom-tool global-tools';
+    grid-template-columns:
+      min-content
+      min-content
+      minmax(#{awsui.$space-layout-content-horizontal}, 1fr)
+      minmax(0, var(#{custom-props.$maxContentWidth}))
+      minmax(#{awsui.$space-layout-content-horizontal}, 1fr)
+      min-content
+      min-content;
+    grid-template-rows: min-content min-content 1fr min-content min-content;
+
+    &.has-adaptive-widths-default {
+      #{custom-props.$maxContentWidth}: map.get(constants.$adaptive-content-widths, styles.$breakpoint-xx-large);
+    }
+
+    &.has-adaptive-widths-dashboard {
+      @each $breakpoint, $width in constants.$dashboard-content-widths {
+        @include styles.media-breakpoint-up($breakpoint) {
+          #{custom-props.$maxContentWidth}: $width;
+        }
+      }
+    }
+
+    &.drawer-expanded-mode {
+      grid-template-columns:
+        0
+        0
+        0
+        0
+        0
+        0
+        0
+        auto;
+
+      &.ai-drawer-expanded-mode {
+        grid-template-columns:
+          auto
+          0
+          0
+          0
+          0
+          0
+          0
+          0;
+      }
+
+      &.bottom-drawer-expanded-mode {
+        grid-template-rows: auto;
+        grid-template-columns: 0 0 0 0 0 auto 0 0;
+      }
+    }
+  }
+}
+
+.ai-drawer,
+.navigation,
+.tools,
+.global-tools,
+.bottom-tool {
+  grid-row: 1 / -1;
+  grid-column: 1 / -1;
+  background: awsui.$color-background-container-content;
+  opacity: 1;
+
+  @include mobile-only {
+    inline-size: 100%;
+  }
+}
+
+.bottom-tool {
+  @include desktop-only {
+    grid-area: bottom-tool;
+    position: sticky;
+    inset-block-end: 0;
+    overflow: hidden;
+    z-index: 840;
+  }
+}
+
+.ai-drawer {
+  @include desktop-only {
+    grid-area: ai-drawer;
+    position: sticky;
+  }
+}
+
+.navigation {
+  z-index: constants.$drawer-z-index;
+
+  @include desktop-only {
+    grid-area: navigation;
+    inline-size: var(#{custom-props.$navigationWidth});
+    border-inline-end: awsui.$border-width-layout-side-navigation solid awsui.$color-border-layout-side-navigation;
+  }
+
+  @include mobile-only {
+    z-index: constants.$drawer-z-index-mobile;
+  }
+
+  &.navigation-collapsed {
+    @include desktop-only {
+      inline-size: var(#{custom-props.$navigationCollapsedWidth}, awsui.$size-side-navigation-collapsed-width);
+    }
+  }
+}
+
+.tools {
+  @include desktop-only {
+    grid-area: tools;
+
+    // workaround when new app layout and old widgets
+    /* stylelint-disable plugin/no-unsupported-browser-features */
+    &:not(:has(> [data-testid])) {
+      inline-size: var(#{custom-props.$toolsWidth});
+
+      &.tools-open {
+        border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+      }
+    }
+  }
+}
+
+.global-tools {
+  @include desktop-only {
+    display: flex;
+    grid-area: global-tools;
+    justify-content: flex-end;
+  }
+}
+
+.split-panel-side {
+  @include desktop-only {
+    grid-area: sideSplitPanel;
+    border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+    opacity: 1;
+  }
+}
+
+.split-panel-bottom {
+  position: sticky;
+  z-index: 840;
+  align-self: end;
+  grid-area: main;
+  @include grid-column-full-content-width;
+}
+
+.panel-hidden {
+  border-block: none;
+  border-inline: none;
+  opacity: 0;
+  z-index: 0;
+
+  &.navigation,
+  &.tools,
+  &.global-tools {
+    inline-size: 0px;
+  }
+}
+
+.toolbar-container {
+  grid-area: toolbar;
+  block-size: 42px;
+  border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+  box-sizing: border-box;
+}
+
+/**
+ * A zero-height sticky element placed in the toolbar grid area when the toolbar is absent
+ * and the left panel (AI drawer) is open. It reuses the toolbar's pseudo-element technique
+ * to render the border-radius corner between the AI drawer and the content area.
+ * In light mode: inverse radius trick (dark square + white square with radius).
+ * In dark mode: a vertical border line with a rounded top corner + top border on the element itself.
+ */
+.pseudo-toolbar {
+  grid-area: toolbar;
+  position: sticky;
+  z-index: constants.$toolbar-z-index;
+
+  &:before {
+    @include theming.dark-mode-only {
+      content: '';
+      position: absolute;
+      inline-size: awsui.$border-divider-section-width;
+      block-size: 100vh;
+      background: awsui.$color-border-layout;
+    }
+  }
+}
+
+.pseudo-toolbar-content {
+  position: relative;
+
+  @include theming.dark-mode-only {
+    border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+    border-start-start-radius: awsui.$space-xxs;
+  }
+
+  &:before,
+  &:after {
+    content: '';
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inline-size: 5px;
+    block-size: 5px;
+    background: constants.$ai-drawer-background;
+
+    @include theming.dark-mode-only {
+      inset-block-start: -1px;
+    }
+  }
+
+  &::after {
+    background-color: awsui.$color-background-layout-toolbar;
+    border-start-start-radius: awsui.$space-xxs;
+
+    @include theming.dark-mode-only {
+      background-color: transparent;
+      border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+      border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+    }
+  }
+}
+
+.notifications-container {
+  grid-area: notifications;
+}
+
+.notifications-background {
+  background: awsui.$color-background-layout-main;
+  grid-area: notifications;
+  @include grid-column-full-content-width;
+}
+
+.main-landmark {
+  // does not participate in the layout, rendered for accessibility grouping
+  display: contents;
+}
+
+.main {
+  grid-area: main;
+  margin-block-start: awsui.$space-scaled-s;
+  margin-block-end: awsui.$space-layout-content-bottom;
+
+  &-disable-paddings {
+    margin-block: 0;
+    @include grid-column-full-content-width;
+  }
+}
+
+.content-header {
+  margin-block-end: awsui.$space-content-header-padding-bottom;
+}
+
+.content {
+  display: contents;
+}
+
+/* stylelint-disable-next-line selector-combinator-disallowed-list, selector-max-universal */
+.unfocusable-mobile * {
+  @include mobile-only {
+    visibility: hidden;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+// backward compatibility before this commit: f3bdaa292ae849b74404f32ef067c9fd6d2e8d7c
+.breadcrumbs-own:not(:empty) + .breadcrumbs-discovered {
+  display: none;
+}

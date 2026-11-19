@@ -1,0 +1,116 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../../internal/styles/tokens' as awsui;
+@use '../../../internal/styles' as styles;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+@use './motion';
+
+.tutorial-list {
+  @include styles.styles-reset;
+  padding-block: 0;
+  padding-inline: 0;
+  margin-block: 0;
+  margin-inline: 0;
+}
+
+.tutorial-box {
+  @include styles.styles-reset;
+  list-style: none;
+  border-block: awsui.$border-divider-section-width solid awsui.$color-border-tutorial;
+  border-inline: awsui.$border-divider-section-width solid awsui.$color-border-tutorial;
+  border-start-start-radius: awsui.$border-radius-tutorial-panel-item;
+  border-start-end-radius: awsui.$border-radius-tutorial-panel-item;
+  border-end-start-radius: awsui.$border-radius-tutorial-panel-item;
+  border-end-end-radius: awsui.$border-radius-tutorial-panel-item;
+  padding-block: awsui.$space-m;
+  padding-inline: awsui.$space-m;
+
+  &:not(:first-child) {
+    margin-block-start: awsui.$space-l;
+  }
+}
+
+.tutorial-box-title {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.tutorial-description-plaintext {
+  white-space: pre-line;
+}
+
+.tutorial-description {
+  /* stylelint-disable-next-line @cloudscape-design/no-implicit-descendant, selector-max-type -- Customers can nest their list items inside Box components. */
+  ul {
+    list-style-type: initial;
+  }
+}
+
+.expandable-section {
+  display: none;
+  margin-block-start: awsui.$space-m;
+
+  &.expanded {
+    display: block;
+  }
+}
+
+.button-wrapper {
+  margin-block: calc(-1 * #{awsui.$space-xxs} - #{awsui.$border-width-button});
+  margin-inline: calc(-1 * #{awsui.$space-xxs} - #{awsui.$border-width-button});
+}
+
+.start {
+  /* used in test-utils */
+}
+.expand-button {
+  /* used in test-utils */
+}
+.collapse-button {
+  /* used in test-utils */
+}
+.learn-more-link {
+  /* used in test-utils */
+}
+.title {
+  /* used in test-utils */
+}
+.prerequisites-alert {
+  /* used in test-utils */
+}
+.completed {
+  /* used in test-utils */
+}
+.download-link {
+  @include styles.styles-reset;
+  text-decoration: none;
+  display: inline;
+  white-space: inherit;
+  letter-spacing: styles.$letter-spacing-bold-link;
+  color: awsui.$color-text-body-secondary;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:active,
+  &:focus,
+  &:hover {
+    text-decoration: underline;
+    /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+    text-decoration-color: currentColor;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.link-focus;
+  }
+}

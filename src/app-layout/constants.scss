@@ -1,0 +1,37 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+// Toggle should have 40px width, whereas button is 26px wide.
+// 40 - 26 = 14px in total or 7px on each side
+$toggle-padding-horizontal: 0.7 * styles.$base-size;
+$toggle-padding-vertical: awsui.$space-xxs;
+
+$sidebar-size-closed: 4 * styles.$base-size;
+
+$adaptive-content-widths: (
+  styles.$breakpoint-large: 1280px,
+  styles.$breakpoint-x-large: 1440px,
+  styles.$breakpoint-xx-large: 1620px,
+);
+
+$dashboard-content-widths: (
+  styles.$breakpoint-large: 1280px,
+  styles.$breakpoint-x-large: 1620px,
+  styles.$breakpoint-xx-large: 2160px,
+);
+
+// should be above sticky notifications
+$drawer-z-index: 830;
+// should be above mobile toolbar
+$drawer-z-index-mobile: 1001;
+// used in both mobile toolbar and vr-toolbar
+$toolbar-z-index: 1000;
+
+// Shared toolbar drawer component values
+$toolbar-vertical-panel-icon-offset: 14px;
+
+$ai-drawer-background: #161d26;
+$ai-drawer-background: awsui.$color-background-layout-ai-drawer;

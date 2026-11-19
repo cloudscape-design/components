@@ -1,0 +1,351 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+.top-navigation {
+  @include styles.styles-reset;
+  background: awsui.$color-background-container-content;
+  border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+
+  > .padding-box {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    block-size: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-m});
+    padding-inline-start: awsui.$space-xxl;
+  }
+
+  &.medium > .padding-box,
+  &.narrow > .padding-box {
+    padding-inline-start: awsui.$space-l;
+  }
+
+  &.medium > .padding-box {
+    block-size: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-xs});
+    padding-inline-end: 0;
+  }
+
+  &.narrow > .padding-box {
+    block-size: awsui.$space-xxxl;
+  }
+}
+
+.virtual {
+  inline-size: 9000px;
+}
+
+.hidden {
+  @include styles.awsui-util-hide;
+  visibility: hidden;
+}
+
+// Ensures that tabbable child elements are hidden to a11y software.
+// ":not(#\9)" manually added because we want to override the default
+// visibility set by styles-reset, and "*" has a specificity of 0.
+/* stylelint-disable-next-line selector-combinator-disallowed-list, selector-max-universal */
+.hidden *:not(#\9) {
+  visibility: hidden;
+}
+
+.identity {
+  min-inline-size: 0;
+
+  > .identity-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: awsui.$color-text-top-navigation-title;
+
+    &:hover {
+      color: awsui.$color-text-accent;
+    }
+
+    @include focus-visible.when-visible {
+      @include styles.link-focus;
+    }
+  }
+
+  &.no-logo {
+    // Prevent responsiveness from completely hiding the title.
+    min-inline-size: 100px;
+  }
+}
+
+.logo {
+  display: block;
+  max-block-size: awsui.$space-xxl;
+  margin-inline-end: awsui.$space-s;
+  inline-size: auto;
+  flex-shrink: 0;
+
+  // Setting an arbitrary min-width here discourages browser from lazy rendering
+  min-inline-size: 10px;
+
+  &.narrow {
+    max-block-size: awsui.$space-xl;
+  }
+}
+
+.title {
+  @include styles.font-heading-m;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  .no-logo > .identity-link > & {
+    font-weight: styles.$font-weight-bold;
+  }
+}
+
+.inputs {
+  display: flex;
+  flex: 1;
+  padding-block: 0;
+  padding-inline: awsui.$space-m;
+  justify-content: center;
+}
+
+.search {
+  inline-size: 100%;
+  max-inline-size: 340px;
+
+  &-expanded {
+    max-inline-size: none;
+  }
+}
+
+.utilities {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: row;
+  align-items: stretch;
+
+  // Expand height of utilies fully so that the dropdown is anchored directly underneath it.
+  block-size: 100%;
+
+  .medium > .padding-box > &,
+  .narrow > .padding-box > & {
+    padding-inline-start: 0;
+  }
+}
+
+.utility-wrapper {
+  display: flex;
+  position: relative;
+  flex-shrink: 0;
+  align-items: center;
+  padding-block: 0;
+  padding-inline: awsui.$space-m;
+
+  &::after {
+    display: block;
+    position: absolute;
+    content: '';
+
+    inline-size: 1px;
+    inset-inline-end: 0;
+    inset-block: awsui.$space-s;
+
+    background: awsui.$color-border-divider-default;
+  }
+
+  &:last-of-type::after {
+    display: none;
+  }
+}
+
+.utility-type-button-link {
+  padding-block: 0;
+  padding-inline: awsui.$space-l;
+}
+
+.utility-type-menu-dropdown {
+  padding-block: 0;
+  padding-inline: awsui.$space-s;
+  align-items: stretch;
+
+  &:not(.narrow):last-of-type,
+  &:not(.medium):last-of-type {
+    padding-inline-end: 0;
+  }
+}
+
+.utility-type-button-primary-button {
+  // Hide dividers around primary buttons.
+  inset-inline-start: -1px;
+  border-inline-start: 1px solid awsui.$color-background-container-content;
+  &::after {
+    display: none;
+  }
+}
+
+.utility-link-icon {
+  margin-inline-start: awsui.$space-xxs;
+}
+
+.utility-button-external-icon {
+  display: inline-block;
+}
+
+.offset-right-none {
+  margin-inline-end: 0;
+}
+
+.offset-right-l {
+  margin-inline-end: awsui.$space-xxs;
+}
+
+.offset-right-xxl {
+  margin-inline-end: awsui.$space-m;
+}
+
+/* Overflow Menu */
+.overflow-menu-drawer {
+  position: fixed;
+  block-size: 100%;
+  inline-size: 100%;
+  z-index: 1001;
+}
+
+.overflow-menu {
+  @include styles.styles-reset;
+  background: awsui.$color-background-container-content;
+  block-size: 100%;
+}
+
+.overflow-menu-header {
+  display: flex;
+  align-items: center;
+  min-block-size: awsui.$font-panel-header-line-height;
+  padding-block: awsui.$space-scaled-m;
+  padding-inline: awsui.$space-scaled-m;
+  border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+
+  &-text {
+    color: awsui.$color-text-heading-default;
+    flex: 1;
+    margin-block: 0;
+    margin-inline: 0;
+    text-align: center;
+
+    &--title {
+      /* used in test-utils */
+      @include styles.font-panel-header;
+    }
+
+    &--secondary {
+      font-size: awsui.$font-header-h2-description-size;
+      line-height: awsui.$font-header-h2-description-line-height;
+      font-weight: styles.$font-weight-normal;
+      @include styles.font-smoothing;
+    }
+  }
+}
+
+.overflow-menu-back-button {
+  /* used in test-utils */
+}
+
+.overflow-menu-dismiss-button {
+  /* used in test-utils */
+}
+
+.overflow-menu-control {
+  @include styles.styles-reset;
+  display: flex;
+  inline-size: 100%;
+  padding-block: 0;
+  padding-inline: 0;
+  background: none;
+  border-block: none;
+  border-inline: none;
+
+  .overflow-menu-list-item-utility > & {
+    padding-block: awsui.$space-scaled-m;
+    padding-inline: awsui.$space-scaled-m;
+  }
+
+  &:hover {
+    color: awsui.$color-text-accent;
+    cursor: pointer;
+  }
+
+  &-link {
+    text-decoration: none;
+  }
+
+  &-expandable-menu {
+    &-trigger {
+      color: awsui.$color-text-dropdown-group-label;
+      font-weight: styles.$font-weight-bold;
+
+      &:hover {
+        color: awsui.$color-text-accent;
+      }
+    }
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+  }
+}
+
+.overflow-menu-list {
+  list-style: none;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
+
+  &-submenu {
+    margin-block: awsui.$space-scaled-xxs;
+    margin-inline: 0;
+  }
+}
+
+.overflow-menu-list-item {
+  box-sizing: border-box;
+  letter-spacing: awsui.$font-button-letter-spacing;
+
+  &-icon {
+    margin-inline-end: awsui.$space-xxs;
+  }
+
+  &-text {
+    flex: 1;
+  }
+
+  &-utility {
+    @include styles.font-button;
+    border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  }
+
+  &-submenu {
+    border-block-start: awsui.$border-divider-section-width solid transparent;
+    border-block-end: awsui.$border-divider-section-width solid transparent;
+    padding-block: awsui.$space-scaled-xxs;
+    padding-inline: awsui.$space-scaled-l;
+  }
+
+  &-dropdown-menu {
+    padding-block: awsui.$space-scaled-xxs;
+    padding-inline: awsui.$space-scaled-s;
+  }
+
+  &-expandable {
+    border-block-start-color: awsui.$color-border-divider-default;
+    border-block-end-color: awsui.$color-border-divider-default;
+  }
+}
+
+.icon {
+  @include styles.spin-180-when-open;
+}

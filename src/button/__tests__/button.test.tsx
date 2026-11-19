@@ -1,0 +1,939 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+import { act, fireEvent, render } from '@testing-library/react';
+
+import { clearMessageCache } from '@cloudscape-design/component-toolkit/internal';
+import {
+  setTestSingleTabStopNavigationTarget,
+  TestSingleTabStopNavigationProvider,
+} from '@cloudscape-design/component-toolkit/internal/testing';
+
+import Button, { ButtonProps } from '../../../lib/components/button';
+import InternalButton from '../../../lib/components/button/internal';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
+import createWrapper, { ButtonWrapper } from '../../../lib/components/test-utils/dom';
+import { buttonRelExpectations, buttonTargetExpectations } from '../../__tests__/target-rel-test-helper';
+import customCssProps from '../../internal/generated/custom-css-properties';
+
+import styles from '../../../lib/components/button/styles.css.js';
+import testUtilStyles from '../../../lib/components/button/test-classes/styles.css.js';
+
+function renderWrappedButton(props: ButtonProps = {}) {
+  const onClickSpy = jest.fn();
+  const renderResult = render(
+    <div onClick={onClickSpy}>
+      <Button {...props} />
+    </div>
+  );
+  const wrapper = createWrapper(renderResult.container).findButton()!;
+  return { onClickSpy, wrapper };
+}
+
+function renderButton(props: ButtonProps = {}) {
+  const renderResult = render(<Button {...props} />);
+  return createWrapper(renderResult.container).findButton()!;
+}
+
+function findIcons(wrapper: ButtonWrapper) {
+  return wrapper.findAll(`.${styles.icon}`);
+}
+
+function findExternalIcon(wrapper: ButtonWrapper) {
+  return wrapper.find(`.${testUtilStyles['external-icon']}`);
+}
+
+function expectToHaveClasses(element: HTMLElement, classesMap: Record<string, boolean>) {
+  Object.keys(classesMap).forEach(className => {
+    if (classesMap[className]) {
+      expect(element).toHaveClass(className);
+    } else {
+      expect(element).not.toHaveClass(className);
+    }
+  });
+}
+
+describe('Button Component', () => {
+  test('wraps text by default', () => {
+    const wrapper = renderButton();
+    expect(wrapper.getElement()).not.toHaveClass(styles['button-no-wrap']);
+  });
+
+  test('sets "white-space: nowrap" when wrapText is false', () => {
+    const wrapper = renderButton({ wrapText: false });
+    expect(wrapper.getElement()).toHaveClass(styles['button-no-wrap']);
+  });
+
+  test('can be focused through the API', () => {
+    let button: ButtonProps.Ref | null = null;
+    const renderResult = render(<Button ref={el => (button = el)} />);
+    const wrapper = createWrapper(renderResult.container);
+    button!.focus();
+    expect(document.activeElement).toBe(wrapper.findButton()!.getElement());
+  });
+
+  describe('i18n', () => {
+    test('supports providing externalIconAriaLabel from i18n provider', () => {
+      const { container } = render(
+        <TestI18nProvider messages={{ button: { 'i18nStrings.externalIconAriaLabel': 'External test' } }}>
+          <Button external={true}>External</Button>
+        </TestI18nProvider>
+      );
+      const externalIcon = createWrapper(container).findButton()!.find('[role=img]')!.getElement();
+      expect(externalIcon).toHaveAccessibleName('External test');
+    });
+  });
+
+  describe.each([true, false])('loadingText property, with href: %s', withHref => {
+    test('renders loadingText in a LiveRegion', () => {
+      renderButton({ children: 'Button', loading: true, loadingText: 'Loading', href: withHref ? '#' : undefined });
+      expect(createWrapper().findLiveRegion()!.getElement()).toHaveTextContent('Loading');
+    });
+    test('does not render loadingText if loading is false', () => {
+      renderButton({ children: 'Button', loading: false, loadingText: 'Loading', href: withHref ? '#' : undefined });
+      expect(createWrapper().findLiveRegion()).toBeNull();
+    });
+  });
+
+  describe('disabled property', () => {
+    test('renders button with normal styling by default', () => {
+      const wrapper = renderButton();
+      expect(wrapper.isDisabled()).toEqual(false);
+      expect(wrapper.getElement()).not.toHaveAttribute('disabled');
+      expect(wrapper.getElement()).not.toHaveClass(styles.disabled);
+    });
+
+    test('renders button with disabled styling when true', () => {
+      const wrapper = renderButton({ disabled: true });
+      expect(wrapper.isDisabled()).toEqual(true);
+      expect(wrapper.getElement()).toHaveClass(styles.disabled);
+      expect(wrapper.getElement()).toHaveAttribute('disabled');
+      // In this case, aria-disabled would be redundant, so we don't set it
+      expect(wrapper.getElement()).not.toHaveAttribute('aria-disabled');
+      expect(wrapper.isDisabled()).toBe(true);
+    });
+
+    test('does not add the disabled attribute on link buttons', () => {
+      const wrapper = renderButton({ disabled: true, href: 'https://amazon.com' });
+      expect(wrapper.isDisabled()).toEqual(true);
+      expect(wrapper.getElement()).toHaveClass(styles.disabled);
+      expect(wrapper.getElement()).not.toHaveAttribute('disabled');
+      expect(wrapper.getElement()).toHaveAttribute('aria-disabled');
+      expect(wrapper.getElement()).toHaveAttribute('role', 'link');
+      expect(wrapper.getElement()).not.toHaveAttribute('href');
+      expect(wrapper.isDisabled()).toBe(true);
+    });
+
+    test('adds a tab index -1 when button with link is disabled', () => {
+      const wrapper = renderButton({ disabled: true, href: 'https://amazon.com' });
+      expect(wrapper.getElement()).toHaveAttribute('tabIndex', '-1');
+    });
+  });
+
+  describe('external property', () => {
+    test('renders an external icon when set', () => {
+      const wrapper = renderButton({ external: true, children: 'Button' });
+      expect(findExternalIcon(wrapper)).toBeTruthy();
+    });
+
+    test('renders an external icon even when an icon is provided', () => {
+      const wrapper = renderButton({ external: true, children: 'Button', iconName: 'add-plus' });
+      expect(findExternalIcon(wrapper)).toBeTruthy();
+    });
+
+    test('renders an external icon even when an icon is provided on the right', () => {
+      const wrapper = renderButton({ external: true, children: 'Button', iconName: 'angle-right', iconAlign: 'right' });
+      expect(findExternalIcon(wrapper)).toBeTruthy();
+    });
+
+    test('does not render an external icon when variant is icon', () => {
+      const wrapper = renderButton({ external: true, iconName: 'add-plus', variant: 'icon' });
+      expect(findExternalIcon(wrapper)).not.toBeTruthy();
+    });
+
+    test('sets target=_blank implicitly', () => {
+      const wrapper = renderButton({ external: true, href: 'https://amazon.com', children: 'Button' });
+      expect(wrapper.getElement()).toHaveAttribute('target', '_blank');
+    });
+
+    test('allows target to be overridden', () => {
+      const wrapper = renderButton({ external: true, href: 'https://amazon.com', target: '_top', children: 'Button' });
+      expect(wrapper.getElement()).toHaveAttribute('target', '_top');
+    });
+
+    test('labels the icon using i18nStrings.externalIconAriaLabel', () => {
+      const wrapper = renderButton({
+        external: true,
+        children: 'Button',
+        i18nStrings: { externalIconAriaLabel: 'external' },
+      });
+      expect(wrapper.find('[role=img]')!.getElement()).toHaveAccessibleName('external');
+    });
+
+    test('warns when used with a right aligned icon', () => {
+      const consoleWarnSpy = jest.spyOn(console, 'warn');
+      try {
+        clearMessageCache();
+        renderButton({ external: true, children: 'Button', iconName: 'angle-right', iconAlign: 'right' });
+        expect(consoleWarnSpy).toHaveBeenCalledWith(
+          '[AwsUi] [Button] A right-aligned icon should not be combined with an external icon.'
+        );
+      } finally {
+        consoleWarnSpy.mockRestore();
+      }
+    });
+  });
+
+  describe.each(['primary', 'normal', 'icon', 'inline-icon', 'inline-link', 'link'] as const)(
+    'disabled with reason %s variant',
+    variant => {
+      describe.each([true, false] as const)('with href %s', withHref => {
+        const defaultProps = {
+          variant,
+          href: withHref ? 'https://smth.com' : undefined,
+        };
+        test('renders button as normal when disabledReason is set and button is not disabled', () => {
+          const wrapper = renderButton({ ...defaultProps, disabled: false, disabledReason: 'reason' });
+
+          expect(wrapper.getElement()).not.toHaveAttribute('disabled');
+          expect(wrapper.getElement()).not.toHaveAttribute('aria-disabled');
+        });
+
+        test('does not add disabled attribute when disabled with reason', () => {
+          const wrapper = renderButton({ ...defaultProps, disabled: true, disabledReason: 'reason' });
+
+          expect(wrapper.getElement()).not.toHaveAttribute('disabled');
+          expect(wrapper.getElement()).toHaveAttribute('aria-disabled');
+        });
+
+        test('has no tooltip open by default', () => {
+          const wrapper = renderButton({ ...defaultProps, disabled: true, disabledReason: 'reason' });
+
+          expect(wrapper.findDisabledReason()).toBe(null);
+        });
+
+        test('has no tooltip without disabledReason', () => {
+          const wrapper = renderButton({ ...defaultProps, disabled: true });
+
+          wrapper.getElement()!.focus();
+
+          expect(wrapper.findDisabledReason()).toBeNull();
+        });
+
+        test('open tooltip on focus', () => {
+          const wrapper = renderButton({ ...defaultProps, disabled: true, disabledReason: 'reason' });
+
+          wrapper.getElement()!.focus();
+
+          expect(wrapper.findDisabledReason()).not.toBeNull();
+          expect(wrapper.findDisabledReason()!.getElement()).toHaveTextContent('reason');
+        });
+
+        test('closes tooltip on blur', () => {
+          const wrapper = renderButton({ ...defaultProps, disabled: true, disabledReason: 'reason' });
+
+          wrapper.getElement()!.focus();
+
+          expect(wrapper.findDisabledReason()).not.toBeNull();
+          expect(wrapper.findDisabledReason()!.getElement()).toHaveTextContent('reason');
+
+          wrapper.getElement()!.blur();
+
+          expect(wrapper.findDisabledReason()).toBeNull();
+        });
+
+        test('open tooltip on mouseenter', () => {
+          const wrapper = renderButton({ ...defaultProps, disabled: true, disabledReason: 'reason' });
+
+          fireEvent.mouseEnter(wrapper.getElement());
+
+          expect(wrapper.findDisabledReason()).not.toBeNull();
+          expect(wrapper.findDisabledReason()!.getElement()).toHaveTextContent('reason');
+        });
+
+        test('close tooltip on mouseleave', () => {
+          const wrapper = renderButton({ ...defaultProps, disabled: true, disabledReason: 'reason' });
+
+          fireEvent.mouseEnter(wrapper.getElement());
+
+          expect(wrapper.findDisabledReason()).not.toBeNull();
+          expect(wrapper.findDisabledReason()!.getElement()).toHaveTextContent('reason');
+
+          fireEvent.mouseLeave(wrapper.getElement());
+
+          expect(wrapper.findDisabledReason()).toBeNull();
+        });
+
+        test('close tooltip on Esc keydown', () => {
+          const wrapper = renderButton({ ...defaultProps, disabled: true, disabledReason: 'reason' });
+
+          fireEvent.mouseEnter(wrapper.getElement());
+
+          expect(wrapper.findDisabledReason()).not.toBeNull();
+          expect(wrapper.findDisabledReason()!.getElement()).toHaveTextContent('reason');
+
+          fireEvent.keyDown(window, { key: 'Escape', code: 'Escape' });
+          expect(wrapper.findDisabledReason()).toBeNull();
+        });
+
+        test('has no aria-describedby by default', () => {
+          const wrapper = renderButton({ ...defaultProps });
+
+          expect(wrapper.getElement()).not.toHaveAttribute('aria-describedby');
+        });
+
+        test('has no aria-describedby without disabledReason', () => {
+          const wrapper = renderButton({ ...defaultProps, disabled: true });
+
+          expect(wrapper.getElement()).not.toHaveAttribute('aria-describedby');
+        });
+
+        test('has aria-describedby with disabledReason', () => {
+          const wrapper = renderButton({ ...defaultProps, disabled: true, disabledReason: 'reason' });
+
+          expect(wrapper.getElement()).toHaveAttribute('aria-describedby');
+        });
+
+        test('has hidden element (linked to aria-describedby) with disabledReason', () => {
+          const wrapper = renderButton({ ...defaultProps, disabled: true, disabledReason: 'reason' });
+
+          expect(wrapper.find('span[hidden]')!.getElement()).toHaveTextContent('reason');
+        });
+
+        test('does not trigger onClick handler when disabled with reason', () => {
+          const onClick = jest.fn();
+          const wrapper = renderButton({ ...defaultProps, disabled: true, disabledReason: 'reason', onClick });
+
+          wrapper.click();
+
+          expect(onClick).not.toHaveBeenCalled();
+        });
+      });
+    }
+  );
+
+  describe('iconName property', () => {
+    test('does not render icon element when no icon provided', () => {
+      const wrapper = renderButton();
+      expect(findIcons(wrapper)).toHaveLength(0);
+    });
+
+    test('applies icon when value provided', () => {
+      const wrapper = renderButton({ iconName: 'settings' });
+      expect(findIcons(wrapper)).toHaveLength(1);
+    });
+  });
+
+  describe('ariaExpanded property', () => {
+    test('adds aria-expanded property to button', () => {
+      const wrapper = renderButton({ ariaExpanded: true });
+      expect(wrapper.getElement()).toHaveAttribute('aria-expanded', 'true');
+    });
+  });
+
+  describe('ariaHaspopup property', () => {
+    test('adds aria-haspopup property to button', () => {
+      const wrapper = renderButton({ ariaHaspopup: 'menu' });
+      expect(wrapper.getElement()).toHaveAttribute('aria-haspopup', 'menu');
+    });
+  });
+
+  describe('ariaControls property', () => {
+    test('adds aria-controls property to button', () => {
+      const wrapper = renderButton({ ariaControls: 'test-element' });
+      expect(wrapper.getElement()).toHaveAttribute('aria-controls', 'test-element');
+    });
+  });
+
+  describe('ariaDescribedby property', () => {
+    test('adds aria-describedby property to button', () => {
+      const wrapper = renderButton({ ariaDescribedby: 'my-element' });
+      expect(wrapper.getElement()).toHaveAttribute('aria-describedby', 'my-element');
+    });
+
+    test("doesn't add an aria-describedby property if not provided", () => {
+      const wrapper = renderButton();
+      expect(wrapper.getElement()).not.toHaveAttribute('aria-describedby');
+    });
+  });
+
+  describe('iconUrl property', () => {
+    const iconUrl = 'data:image/png;base64,aaaa';
+    const iconAlt = 'Custom icon';
+
+    test('allows to render custom icon with alt text', () => {
+      const wrapper = renderButton({ iconUrl, iconAlt });
+      const icons = findIcons(wrapper);
+      expect(icons).toHaveLength(1);
+      const icon = icons[0];
+      expect(icon.find('img')!.getElement()).toHaveAttribute('alt', iconAlt);
+      expect(icon.find('img')!.getElement()).toHaveAttribute('src', iconUrl);
+      expectToHaveClasses(icon.getElement(), {
+        [styles['icon-left']]: true,
+        [styles['icon-right']]: false,
+      });
+    });
+
+    test('allows to render custom icon with alignment to the right', () => {
+      const wrapper = renderButton({ iconUrl, iconAlt, iconAlign: 'right' });
+      const icons = findIcons(wrapper);
+      expect(icons).toHaveLength(1);
+      expect(icons[0].find('img')).toBeTruthy();
+      expectToHaveClasses(icons[0].getElement(), {
+        [styles['icon-left']]: false,
+        [styles['icon-right']]: true,
+      });
+    });
+  });
+
+  describe('iconSvg property', () => {
+    const iconSvg = (
+      <svg className="test-svg" focusable="false">
+        <circle cx="8" cy="8" r="7" />
+      </svg>
+    );
+
+    test('allows to render custom icon', () => {
+      const wrapper = renderButton({ iconSvg });
+      const icons = findIcons(wrapper);
+      expect(icons).toHaveLength(1);
+      const icon = icons[0];
+      expect(icon.findByClassName('test-svg')).toBeTruthy();
+      expectToHaveClasses(icon.getElement(), {
+        [styles['icon-left']]: true,
+        [styles['icon-right']]: false,
+      });
+    });
+
+    test('allows to render custom icon with alignment to the right', () => {
+      const wrapper = renderButton({ iconSvg, iconAlign: 'right' });
+      const icons = findIcons(wrapper);
+      expect(icons).toHaveLength(1);
+      expect(icons[0].findByClassName('test-svg')).toBeTruthy();
+      expectToHaveClasses(icons[0].getElement(), {
+        [styles['icon-left']]: false,
+        [styles['icon-right']]: true,
+      });
+    });
+  });
+
+  describe('formAction property', () => {
+    function renderButtonInForm(props: ButtonProps = {}) {
+      const submitSpy = jest.fn();
+      const renderResult = render(
+        <form onSubmit={submitSpy}>
+          <Button {...props} />
+        </form>
+      );
+      const buttonWrapper = createWrapper(renderResult.container).findButton()!;
+      return [buttonWrapper, submitSpy] as const;
+    }
+
+    beforeEach(() => {
+      // JSDOM prints an error message to browser logs when form attempted to submit
+      // https://github.com/jsdom/jsdom/issues/1937
+      // We use it as an assertion
+      jest.spyOn(console, 'error').mockImplementation(() => {
+        /*do not print anything to browser logs*/
+      });
+    });
+
+    afterEach(() => {
+      expect(console.error).not.toHaveBeenCalled();
+    });
+
+    // this represents the behavior of native <button />
+    test('should have "submit" by default', () => {
+      const wrapper = renderButton();
+      expect(wrapper.getElement()).toHaveAttribute('type', 'submit');
+    });
+
+    test('should add an attribute to the button element', () => {
+      const wrapper = renderButton({ formAction: 'none' });
+      expect(wrapper.getElement()).toHaveAttribute('type', 'button');
+    });
+
+    test('should not add anything if link variant is chosen', () => {
+      const wrapper = renderButton({ formAction: 'none', href: 'some' });
+      expect(wrapper.getElement()).not.toHaveAttribute('type');
+    });
+
+    test('should submit the form when clicking the submit button', () => {
+      const [wrapper, submitSpy] = renderButtonInForm();
+      wrapper.click();
+      expect(submitSpy).toHaveBeenCalled();
+      expect(console.error).toHaveBeenCalledTimes(1);
+      expect(console.error).toHaveBeenCalledWith(
+        expect.objectContaining({
+          name: 'Error',
+          message: 'Not implemented: HTMLFormElement.prototype.requestSubmit',
+        })
+      );
+      (console.error as jest.Mock).mockClear();
+    });
+
+    test('cancelling click event prevents submission', () => {
+      const [wrapper, submitSpy] = renderButtonInForm({ onClick: event => event.preventDefault() });
+      wrapper.click();
+      expect(submitSpy).not.toHaveBeenCalled();
+    });
+
+    test('should not submit the form if click the regular button', () => {
+      const [wrapper, submitSpy] = renderButtonInForm({ formAction: 'none' });
+      wrapper.click();
+      expect(submitSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('iconAlign property', () => {
+    test('should have "left" by default', () => {
+      const wrapper = renderButton({ iconName: 'settings' });
+      expect(findIcons(wrapper)).toHaveLength(1);
+      expectToHaveClasses(findIcons(wrapper)[0].getElement(), {
+        [styles['icon-left']]: true,
+        [styles['icon-right']]: false,
+      });
+    });
+
+    test('should add an icon if value is "right"', () => {
+      const wrapper = renderButton({ iconName: 'settings', iconAlign: 'right' });
+      expect(findIcons(wrapper)).toHaveLength(1);
+      expectToHaveClasses(findIcons(wrapper)[0].getElement(), {
+        [styles['icon-left']]: false,
+        [styles['icon-right']]: true,
+      });
+    });
+
+    test('should not add a left icon if button is loading', () => {
+      const wrapper = renderButton({ iconName: 'settings', loading: true });
+      expect(findIcons(wrapper)).toHaveLength(1);
+      expect(wrapper.findLoadingIndicator()).not.toBeNull();
+    });
+
+    test('should add a right icon if button is loading', () => {
+      const wrapper = renderButton({ iconName: 'settings', iconAlign: 'right', loading: true });
+      const icons = findIcons(wrapper);
+      expect(icons).toHaveLength(2);
+      expect(icons[0]).toEqual(wrapper.findLoadingIndicator());
+      expectToHaveClasses(icons[0].getElement(), {
+        [styles['icon-left']]: true,
+        [styles['icon-right']]: false,
+      });
+      expectToHaveClasses(icons[1].getElement(), {
+        [styles['icon-left']]: false,
+        [styles['icon-right']]: true,
+      });
+    });
+
+    (['icon', 'inline-icon'] as ButtonProps.Variant[]).forEach(variant => {
+      test(`should ignore iconAlign property if button variant is ${variant}`, () => {
+        const wrapper = renderButton({ iconName: 'settings', iconAlign: 'right', variant });
+        expect(findIcons(wrapper)).toHaveLength(1);
+        expectToHaveClasses(findIcons(wrapper)[0].getElement(), {
+          [styles['icon-left']]: true,
+          [styles['icon-right']]: false,
+        });
+      });
+
+      test(`should not add text if button ${variant} is icon`, () => {
+        const wrapper = renderButton({ iconName: 'settings', variant, children: 'text' });
+        expect(wrapper.findTextRegion()).toBe(null);
+      });
+    });
+  });
+
+  describe('Loading property', () => {
+    test("should disable the button with aria-disabled when in 'loading' status", () => {
+      const onClickSpy = jest.fn();
+      const wrapper = renderButton({ onClick: onClickSpy, loading: true });
+      expect(wrapper.findLoadingIndicator()).not.toBeNull();
+      expect(wrapper.getElement()).not.toHaveAttribute('disabled');
+      expect(wrapper.getElement()).toHaveAttribute('aria-disabled');
+      expect(wrapper.isDisabled()).toBe(true);
+      act(() => wrapper.click());
+      expect(onClickSpy).not.toHaveBeenCalled();
+    });
+
+    test('gives loading precedence over disabled', () => {
+      const wrapper = renderButton({ loading: true, disabled: true });
+      // Loading indicator is shown even when the button is also disabled.
+      expect(wrapper.findLoadingIndicator()).not.toBeNull();
+      // However, setting `disabled` does mean that the button can no longer be focused.
+      expect(wrapper.getElement()).toHaveAttribute('disabled');
+      expect(wrapper.getElement()).not.toHaveAttribute('aria-disabled');
+      expect(wrapper.isDisabled()).toBe(true);
+    });
+
+    test('adds a tab index -1 to the link button', () => {
+      const wrapper = renderButton({ loading: true, href: 'https://amazon.com' });
+      expect(wrapper.getElement()).toHaveAttribute('tabIndex', '-1');
+      expect(wrapper.getElement()).not.toHaveAttribute('href');
+      expect(wrapper.getElement()).toHaveAttribute('role', 'link');
+    });
+  });
+
+  describe('children property', () => {
+    test('displays content within rendered button element when non-empty', () => {
+      const wrapper = renderButton({ children: 'Button Label' });
+      expect(wrapper.findTextRegion()!.getElement()).toHaveTextContent('Button Label');
+    });
+
+    test('contains no text when empty', () => {
+      const wrapper = renderButton({ children: null });
+      expect(wrapper.findTextRegion()).toBe(null);
+    });
+
+    test('contains no text when empty and icon specified', () => {
+      const wrapper = renderButton({ iconName: 'settings' });
+      expect(wrapper.findTextRegion()).toBe(null);
+    });
+  });
+
+  describe('aria-label attribute and children content', () => {
+    test('renders from ariaLabel property', () => {
+      const wrapper = renderButton({ ariaLabel: 'Benjamin', children: 'Button' });
+      expect(wrapper.getElement()).toHaveAccessibleName('Benjamin');
+      expect(wrapper.findTextRegion()!.getElement()).toHaveTextContent('Button');
+    });
+
+    test('does not render if there is no label property', () => {
+      const wrapper = renderButton({ children: 'Button' });
+      expect(wrapper.getElement()).toHaveAccessibleName('Button');
+    });
+
+    test('adds ariaLabel as title attribute - icon-only', () => {
+      const wrapper = renderButton({ ariaLabel: 'Benjamin', variant: 'icon', iconName: 'add-plus' });
+      expect(wrapper.getElement()).toHaveAttribute('title', 'Benjamin');
+    });
+
+    test('adds ariaLabel as title attribute - standard', () => {
+      const wrapper = renderButton({ ariaLabel: 'Remove item 1', children: 'Remove' });
+      expect(wrapper.getElement()).toHaveAttribute('title', 'Remove item 1');
+    });
+
+    test('does not add title to buttons without ariaLabel', () => {
+      const wrapper = renderButton({ variant: 'icon', iconName: 'add-plus' });
+      expect(wrapper.getElement()).not.toHaveAttribute('title');
+    });
+  });
+
+  describe('form property', () => {
+    test('should have form property when set', () => {
+      const formId = 'form-id';
+      const wrapper = renderButton({ form: formId });
+      expect(wrapper.getElement()).toHaveAttribute('form', formId);
+    });
+  });
+
+  describe('button links', () => {
+    test('uses an a element if an href is provided', () => {
+      const wrapper = renderButton({ href: 'https://amazon.com' });
+      expect(wrapper.getElement().tagName).toEqual('A');
+    });
+
+    test('mirrors the href property as href attribute', () => {
+      const wrapper = renderButton({ href: 'https://amazon.com' });
+      expect(wrapper.getElement()).toHaveAttribute('href', 'https://amazon.com');
+    });
+
+    test('removes href attribute and adds role="link" when button is disabled', () => {
+      const wrapper = renderButton({ href: 'https://amazon.com', disabled: true });
+      expect(wrapper.getElement()).not.toHaveAttribute('href');
+      expect(wrapper.getElement()).toHaveAttribute('role', 'link');
+    });
+
+    test('removes href attribute and adds role="link" when button is loading', () => {
+      const wrapper = renderButton({ href: 'https://amazon.com', loading: true });
+      expect(wrapper.getElement()).not.toHaveAttribute('href');
+      expect(wrapper.getElement()).toHaveAttribute('role', 'link');
+    });
+
+    test.each(buttonTargetExpectations)('"target" property %s', (props, expectation) => {
+      const wrapper = renderButton({ ...props });
+      if (expectation) {
+        expect(wrapper.getElement()).toHaveAttribute('target', expectation);
+      } else {
+        expect(wrapper.getElement()).not.toHaveAttribute('target');
+      }
+    });
+
+    test.each(buttonRelExpectations)('"rel" property %s', (props, expectation) => {
+      const wrapper = renderButton({ ...props });
+      if (expectation) {
+        expect(wrapper.getElement()).toHaveAttribute('rel', expectation);
+      } else {
+        expect(wrapper.getElement()).not.toHaveAttribute('rel');
+      }
+    });
+
+    test('can add a download attribute if it is a link', () => {
+      let wrapper = renderButton({ download: 'fileName' });
+      expect(wrapper.getElement()).not.toHaveAttribute('download');
+      wrapper = renderButton({ href: 'https://amazon.com', download: 'fileName' });
+      expect(wrapper.getElement()).toHaveAttribute('download', 'fileName');
+      wrapper = renderButton({ href: 'https://amazon.com' });
+      expect(wrapper.getElement()).not.toHaveAttribute('download');
+    });
+  });
+
+  describe('Button clicks', () => {
+    test('calls onClick when the button is clicked', () => {
+      const onClickSpy = jest.fn();
+      const wrapper = renderButton({ onClick: onClickSpy });
+      wrapper.click();
+      expect(onClickSpy).toHaveBeenCalled();
+    });
+
+    test('does not call onClick on link buttons when button is disabled', () => {
+      const onClickSpy = jest.fn();
+      const wrapper = renderButton({ onClick: onClickSpy, disabled: true, href: 'https://amazon.com' });
+      wrapper.click();
+      expect(onClickSpy).not.toHaveBeenCalled();
+    });
+
+    test('does not call onClick on regular buttons when button is disabled', () => {
+      const onClickSpy = jest.fn();
+      const wrapper = renderButton({ onClick: onClickSpy, disabled: true });
+      wrapper.click();
+      expect(onClickSpy).not.toHaveBeenCalled();
+    });
+
+    test('allows event propagation by default', () => {
+      const { onClickSpy, wrapper } = renderWrappedButton();
+      wrapper.click();
+      expect(onClickSpy).toHaveBeenCalled();
+    });
+
+    test('can prevent event propagation', () => {
+      const { onClickSpy, wrapper } = renderWrappedButton({ onClick: event => event.stopPropagation() });
+      wrapper.click();
+      expect(onClickSpy).not.toHaveBeenCalled();
+    });
+
+    describe('Button clicks with key pressed', () => {
+      test('does not call onClick with metakey when the button is normally clicked', () => {
+        const onClickSpy = jest.fn();
+        const wrapper = renderButton({ onClick: onClickSpy });
+        wrapper.click();
+
+        expect(onClickSpy).toHaveBeenCalledWith(
+          expect.objectContaining({
+            detail: { button: 0, ctrlKey: false, shiftKey: false, altKey: false, metaKey: false },
+          })
+        );
+      });
+
+      test('calls onClick with modifiers when the button is clicked with modifiers', () => {
+        const onClickSpy = jest.fn();
+        const wrapper = renderButton({ onClick: onClickSpy });
+        wrapper.click({ button: 0, ctrlKey: true, shiftKey: true, altKey: true, metaKey: true });
+
+        expect(onClickSpy).toHaveBeenCalledWith(
+          expect.objectContaining({
+            detail: { button: 0, ctrlKey: true, shiftKey: true, altKey: true, metaKey: true },
+          })
+        );
+      });
+    });
+
+    describe('onFollow', () => {
+      test('calls onFollow when button with `href` is clicked normally', () => {
+        const onFollowSpy = jest.fn();
+        const wrapper = renderButton({ onFollow: onFollowSpy, href: 'http://example.com' });
+        wrapper.click();
+
+        expect(onFollowSpy).toHaveBeenCalled();
+      });
+
+      test('does not call onFollow when button without `href` is clicked', () => {
+        const onFollowSpy = jest.fn();
+        const wrapper = renderButton({ onFollow: onFollowSpy });
+        wrapper.click();
+
+        expect(onFollowSpy).not.toHaveBeenCalled();
+      });
+
+      test('does not call onFollow when button is clicked with modifiers', () => {
+        const onFollowSpy = jest.fn();
+        const wrapper = renderButton({ onFollow: onFollowSpy, href: 'http://example.com' });
+        wrapper.click({ button: 0, ctrlKey: true });
+
+        expect(onFollowSpy).not.toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('URL sanitization', () => {
+    let consoleWarnSpy: jest.SpyInstance;
+    let consoleErrorSpy: jest.SpyInstance;
+    beforeEach(() => {
+      consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+      consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+    });
+    afterEach(() => {
+      consoleWarnSpy?.mockRestore();
+      consoleErrorSpy?.mockRestore();
+    });
+
+    test('does not throw an error when a safe javascript: URL is passed', () => {
+      const element = renderButton({ href: 'javascript:void(0)' });
+      expect((element.getElement() as unknown as HTMLAnchorElement).href).toBe('javascript:void(0)');
+      expect(console.warn).toHaveBeenCalledTimes(0);
+    });
+
+    test('throws an error when a dangerous javascript: URL is passed', () => {
+      expect(() => renderButton({ href: "javascript:alert('Hello!')" })).toThrow(
+        'A javascript: URL was blocked as a security precaution.'
+      );
+
+      expect(console.warn).toHaveBeenCalledTimes(1);
+      expect(console.warn).toHaveBeenCalledWith(
+        `[AwsUi] [Button] A javascript: URL was blocked as a security precaution. The URL was "javascript:alert('Hello!')".`
+      );
+    });
+  });
+
+  test.each(['normal', 'primary', 'link'] as const)(
+    'Assigns full-width class for buttons with content, variant=%s',
+    variant => {
+      const wrapper = renderButton({ fullWidth: true, variant, children: 'Content' });
+      expectToHaveClasses(wrapper.getElement(), { [styles['full-width']]: true });
+    }
+  );
+
+  test.each(['normal', 'primary', 'link'] as const)(
+    'Does not assign full-width class buttons without content, variant=%s',
+    variant => {
+      const wrapper = renderButton({ fullWidth: true, variant, iconName: 'settings', iconAlign: 'left' });
+      expectToHaveClasses(wrapper.getElement(), { [styles['full-width']]: false });
+    }
+  );
+
+  test.each(['icon', 'inline-icon'] as const)(
+    'Does not assign full-width class buttons without content, variant=%s',
+    variant => {
+      const wrapper = renderButton({ fullWidth: true, variant, iconName: 'settings', iconAlign: 'left' });
+      expectToHaveClasses(wrapper.getElement(), { [styles['full-width']]: false });
+    }
+  );
+});
+
+describe('table grid navigation support', () => {
+  function getButton(selector: string) {
+    return createWrapper().findButton(selector)!.getElement();
+  }
+
+  test('does not override tab index when keyboard navigation is not active', () => {
+    render(
+      <TestSingleTabStopNavigationProvider navigationActive={false}>
+        <Button id="button" />
+      </TestSingleTabStopNavigationProvider>
+    );
+    expect(getButton('#button')).not.toHaveAttribute('tabIndex');
+  });
+
+  test('overrides tab index when keyboard navigation is active', () => {
+    render(
+      <TestSingleTabStopNavigationProvider navigationActive={true}>
+        <Button id="button1" />
+        <Button id="button2" />
+      </TestSingleTabStopNavigationProvider>
+    );
+    setTestSingleTabStopNavigationTarget(getButton('#button1'));
+    expect(getButton('#button1')).toHaveAttribute('tabIndex', '0');
+    expect(getButton('#button2')).toHaveAttribute('tabIndex', '-1');
+  });
+
+  test('does not override explicit tab index with 0', () => {
+    render(
+      <TestSingleTabStopNavigationProvider navigationActive={true}>
+        <InternalButton id="button1" nativeButtonAttributes={{ tabIndex: -2 }} />
+        <InternalButton id="button2" nativeButtonAttributes={{ tabIndex: -2 }} />
+      </TestSingleTabStopNavigationProvider>
+    );
+    setTestSingleTabStopNavigationTarget(getButton('#button1'));
+    expect(getButton('#button1')).toHaveAttribute('tabIndex', '-2');
+    expect(getButton('#button2')).toHaveAttribute('tabIndex', '-2');
+  });
+});
+
+describe('Style API', () => {
+  test('custom properties', () => {
+    const wrapper = renderButton({
+      children: 'Button',
+      style: {
+        root: {
+          background: {
+            active: '#fff',
+            default: '#fff',
+            disabled: '#fff',
+            hover: '#fff',
+          },
+          borderColor: {
+            active: '#fff',
+            default: '#fff',
+            disabled: '#fff',
+            hover: '#fff',
+          },
+          color: {
+            active: '#fff',
+            default: '#fff',
+            disabled: '#fff',
+            hover: '#fff',
+          },
+          focusRing: {
+            borderColor: '#fff',
+            borderRadius: '50px',
+            borderWidth: '25px',
+          },
+          boxShadow: {
+            active: '0 0 10px red',
+            default: '0 0 5px blue',
+            disabled: '0 0 2px gray',
+            hover: '0 0 8px green',
+          },
+        },
+      },
+    });
+
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleBackgroundActive)).toBe('#fff');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleBackgroundDefault)).toBe('#fff');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleBackgroundDisabled)).toBe(
+      '#fff'
+    );
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleBackgroundHover)).toBe('#fff');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleBorderColorActive)).toBe('#fff');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleBorderColorDefault)).toBe(
+      '#fff'
+    );
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleBorderColorDisabled)).toBe(
+      '#fff'
+    );
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleBorderColorHover)).toBe('#fff');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleColorActive)).toBe('#fff');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleColorDefault)).toBe('#fff');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleColorDisabled)).toBe('#fff');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleColorHover)).toBe('#fff');
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleFocusRingBorderColor)).toBe(
+      '#fff'
+    );
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleFocusRingBorderRadius)).toBe(
+      '50px'
+    );
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleFocusRingBorderWidth)).toBe(
+      '25px'
+    );
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleBoxShadowActive)).toBe(
+      '0 0 10px red'
+    );
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleBoxShadowDefault)).toBe(
+      '0 0 5px blue'
+    );
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleBoxShadowDisabled)).toBe(
+      '0 0 2px gray'
+    );
+    expect(getComputedStyle(wrapper.getElement()).getPropertyValue(customCssProps.styleBoxShadowHover)).toBe(
+      '0 0 8px green'
+    );
+  });
+});

@@ -1,0 +1,89 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
+@use './mixins' as mixins;
+@use './hover-motion' as hover-motion;
+
+.icon {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  box-sizing: border-box;
+  &-flex-height {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  // stylelint-disable selector-max-type
+  > svg {
+    // SVG is focusable by default
+    // https://stackoverflow.com/questions/18646111/disable-onfocus-event-for-svg-element
+    pointer-events: none;
+  }
+
+  > svg,
+  > img {
+    vertical-align: top;
+  }
+  // stylelint-enable selector-max-type
+
+  @include mixins.style-svg();
+
+  @include mixins.make-icon-sizes;
+  @include mixins.make-icon-variants;
+
+  &:is(
+    .name-angle-left-double,
+    .name-angle-left,
+    .name-angle-right-double,
+    .name-angle-right,
+    .name-arrow-left,
+    .name-arrow-right,
+    .name-caret-left-filled,
+    .name-caret-right-filled,
+    .name-audio-full,
+    .name-audio-half,
+    .name-audio-off,
+    .name-external,
+    .name-redo,
+    .name-resize-area,
+    .name-send,
+    .name-shrink,
+    .name-undo,
+    .name-view-vertical,
+    .name-view-vertical-start
+  ) {
+    @include styles.with-direction('rtl') {
+      transform: scaleX(-1);
+    }
+  }
+}
+
+@include hover-motion.icon-hover-motion;
+
+.badge::after {
+  content: '';
+  position: absolute;
+  inline-size: 6px;
+  block-size: 6px;
+  border-start-start-radius: 4px;
+  border-start-end-radius: 4px;
+  border-end-start-radius: 4px;
+  border-end-end-radius: 4px;
+  background-color: awsui.$color-background-badge-icon;
+  inset-block-start: 0px;
+  inset-inline-end: -3px;
+}
+
+// Wraps custom icons supplied through IconProvider or the internal override. Generates no box of
+// its own, and provides text metrics so a nested `size="inherit"` icon resolves to the wrapper's
+// size. It carries the same icon and size classes as the wrapper, so custom raw svg nodes receive
+// the regular sizing and stroke styles.
+.icon.custom-icon {
+  display: contents;
+  @include mixins.make-icon-size-text-metrics;
+}

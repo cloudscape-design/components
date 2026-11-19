@@ -1,0 +1,140 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+
+import { useInternalI18n } from '../../i18n/context';
+import { IconProps } from '../../icon/interfaces';
+import InternalIcon from '../../icon/internal';
+import { ForwardFocusRef } from '../../internal/hooks/forward-focus';
+import InternalLink from '../../link/internal';
+import { TableProps } from '../../table/interfaces';
+import { S3ResourceSelectorProps } from '../interfaces';
+import { joinObjectPath } from '../utils';
+import { BasicS3Table, getSharedI18Strings } from './basic-table';
+import { formatDefault, formatSize } from './column-formats';
+import { compareDates, getColumnAriaLabel, includes } from './table-utils';
+
+interface ObjectsTableProps {
+  forwardFocusRef: React.Ref<ForwardFocusRef>;
+  pathSegments: ReadonlyArray<string>;
+  visibleColumns: ReadonlyArray<string>;
+  isItemDisabled: TableProps.IsItemDisabled<S3ResourceSelectorProps.Object> | undefined;
+  selectableItemsTypes: S3ResourceSelectorProps['selectableItemsTypes'];
+  fetchData: S3ResourceSelectorProps['fetchObjects'];
+  i18nStrings: S3ResourceSelectorProps.I18nStrings | undefined;
+  isVisualRefresh?: boolean;
+  onDrilldown: (path: S3ResourceSelectorProps.Object) => void;
+  onSelect: (uri: string) => void;
+}
+
+export function ObjectsTable({
+  forwardFocusRef,
+  pathSegments,
+  i18nStrings,
+  isVisualRefresh,
+  isItemDisabled,
+  selectableItemsTypes,
+  fetchData,
+  visibleColumns,
+  onDrilldown,
+  onSelect,
+}: ObjectsTableProps) {
+  const i18n = useInternalI18n('s3-resource-selector');
+
+  return (
+    <BasicS3Table<S3ResourceSelectorProps.Object>
+      // remount fresh component every we change the path to reset the inner state (e.g. selection/filtering)
+      key={pathSegments.join('/')}
+      forwardFocusRef={forwardFocusRef}
+      trackBy="Key"
+      fetchData={() => {
+        const [bucketName, ...rest] = pathSegments;
+        return fetchData(bucketName, joinObjectPath(rest));
+      }}
+      i18nStrings={{
+        ...getSharedI18Strings(i18n, i18nStrings),
+        header: i18n('i18nStrings.selectionObjects', i18nStrings?.selectionObjects),
+        loadingText: i18n('i18nStrings.selectionObjectsLoading', i18nStrings?.selectionObjectsLoading),
+        filteringAriaLabel: i18n(
+          'i18nStrings.labelFiltering',
+          i18nStrings?.labelFiltering,
+          format => itemsType => format({ itemsType })
+        )?.(i18n('i18nStrings.selectionObjects', i18nStrings?.selectionObjects) ?? ''),
+        filteringPlaceholder: i18n(
+          'i18nStrings.selectionObjectsSearchPlaceholder',
+          i18nStrings?.selectionObjectsSearchPlaceholder
+        ),
+        emptyText: i18n('i18nStrings.selectionObjectsNoItems', i18nStrings?.selectionObjectsNoItems),
+        selectionLabels: {
+          ...i18nStrings?.labelsObjectsSelection,
+          selectionGroupLabel: i18n(
+            'i18nStrings.labelsObjectsSelection.selectionGroupLabel',
+            i18nStrings?.labelsObjectsSelection?.selectionGroupLabel
+          ),
+          itemSelectionLabel: i18n(
+            'i18nStrings.labelsObjectsSelection.itemSelectionLabel',
+            i18nStrings?.labelsObjectsSelection?.itemSelectionLabel,
+            format => (data, item) => format({ item__Key: item.Key ?? '' })
+          ),
+        },
+      }}
+      isVisualRefresh={isVisualRefresh}
+      visibleColumns={visibleColumns}
+      isItemDisabled={isItemDisabled || (() => !includes(selectableItemsTypes, 'objects'))}
+      columnDefinitions={[
+        {
+          id: 'Key',
+          header: i18n('i18nStrings.columnObjectKey', i18nStrings?.columnObjectKey),
+          ariaLabel: getColumnAriaLabel(
+            i18n,
+            i18nStrings,
+            i18n('i18nStrings.columnObjectKey', i18nStrings?.columnObjectKey)
+          ),
+          sortingField: 'Key',
+          cell: item => {
+            const isClickable = item.IsFolder || includes(selectableItemsTypes, 'versions');
+            const iconProps: IconProps = item.IsFolder
+              ? { name: 'folder', ariaLabel: i18n('i18nStrings.labelIconFolder', i18nStrings?.labelIconFolder) }
+              : { name: 'file', ariaLabel: i18n('i18nStrings.labelIconObject', i18nStrings?.labelIconObject) };
+            return (
+              <>
+                <InternalIcon {...iconProps} />{' '}
+                {isClickable ? (
+                  <InternalLink onFollow={() => item.Key && onDrilldown(item)} variant="link">
+                    {item.Key}
+                  </InternalLink>
+                ) : (
+                  item.Key
+                )}
+              </>
+            );
+          },
+          minWidth: '250px',
+        },
+        {
+          id: 'LastModified',
+          header: i18n('i18nStrings.columnObjectLastModified', i18nStrings?.columnObjectLastModified),
+          ariaLabel: getColumnAriaLabel(
+            i18n,
+            i18nStrings,
+            i18n('i18nStrings.columnObjectLastModified', i18nStrings?.columnObjectLastModified)
+          ),
+          sortingComparator: (a, b) => compareDates(a.LastModified, b.LastModified),
+          cell: item => formatDefault(item.LastModified),
+        },
+        {
+          id: 'Size',
+          header: i18n('i18nStrings.columnObjectSize', i18nStrings?.columnObjectSize),
+          ariaLabel: getColumnAriaLabel(
+            i18n,
+            i18nStrings,
+            i18n('i18nStrings.columnObjectSize', i18nStrings?.columnObjectSize)
+          ),
+          sortingField: 'Size',
+          cell: item => formatSize(item.Size),
+        },
+      ]}
+      onSelect={item => onSelect(item?.Key ?? '')}
+    />
+  );
+}

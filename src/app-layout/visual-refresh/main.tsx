@@ -1,0 +1,70 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+import clsx from 'clsx';
+
+import { BuiltInErrorBoundary } from '../../error-boundary/internal';
+import customCssProps from '../../internal/generated/custom-css-properties';
+import * as tokens from '../../internal/generated/styles/tokens';
+import { getStickyOffsetVars } from '../utils/sticky-offsets';
+import { useAppLayoutInternals } from './context';
+
+import testutilStyles from '../test-classes/styles.css.js';
+import styles from './styles.css.js';
+
+export default function Main() {
+  const {
+    content,
+    disableBodyScroll,
+    disableContentPaddings,
+    footerHeight,
+    hasDrawerViewportOverlay,
+    navigationOpen,
+    placement,
+    isMobile,
+    isSplitPanelOpen,
+    isToolsOpen,
+    mainElement,
+    notificationsHeight,
+    stickyNotifications,
+    offsetBottom,
+    splitPanelDisplayed,
+    splitPanelPosition,
+    activeDrawerId,
+  } = useAppLayoutInternals();
+
+  const splitPanelHeight = offsetBottom - footerHeight;
+
+  return (
+    <div
+      className={clsx(
+        styles.container,
+        styles[`split-panel-position-${splitPanelPosition ?? 'bottom'}`],
+        {
+          [styles['disable-content-paddings']]: disableContentPaddings,
+          [styles['has-split-panel']]: splitPanelDisplayed,
+          [styles['is-navigation-open']]: navigationOpen,
+          [styles['is-tools-open']]: isToolsOpen,
+          [styles['has-active-drawer']]: !!activeDrawerId,
+          [styles['is-split-panel-open']]: isSplitPanelOpen,
+          [styles.unfocusable]: hasDrawerViewportOverlay,
+        },
+        testutilStyles.content
+      )}
+      ref={mainElement}
+      style={{
+        [customCssProps.splitPanelHeight]: `${splitPanelHeight}px`,
+        ...getStickyOffsetVars(
+          placement.insetBlockStart,
+          offsetBottom,
+          stickyNotifications && notificationsHeight > 0 ? `${tokens.spaceXs} + ${notificationsHeight}px` : '0px',
+          `var(${customCssProps.mobileBarHeight})`,
+          !!disableBodyScroll,
+          isMobile
+        ),
+      }}
+    >
+      <BuiltInErrorBoundary>{content}</BuiltInErrorBoundary>
+    </div>
+  );
+}

@@ -1,0 +1,121 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { forwardRef, useContext, useImperativeHandle, useRef, useState } from 'react';
+import clsx from 'clsx';
+
+import { StickyHeaderContext } from '../container/use-sticky-header';
+import { useStickyHeaderCopy } from '../internal/components/sticky-header/use-sticky-header-copy';
+import { getVisualContextClassname } from '../internal/components/visual-context';
+import { TableColGroup } from './column-groups/col-group';
+import { TableProps } from './interfaces';
+import { getTableRoleProps, TableRole } from './table-role';
+import Thead, { TheadProps } from './thead';
+
+import styles from './styles.css.js';
+
+export interface StickyHeaderRef {
+  scrollToTop(): void;
+  scrollToRow(node: null | HTMLElement): void;
+  setFocus(focusId: null | string): void;
+}
+
+interface StickyHeaderProps {
+  variant: TableProps.Variant;
+  theadProps: TheadProps;
+  wrapperRef: React.RefObject<HTMLDivElement>;
+  theadRef: React.RefObject<HTMLTableRowElement>;
+  secondaryWrapperRef: React.RefObject<HTMLDivElement>;
+  tableRef: React.RefObject<HTMLTableElement>;
+  onScroll?: React.UIEventHandler<HTMLDivElement>;
+  contentDensity?: 'comfortable' | 'compact';
+  tableHasHeader?: boolean;
+  tableRole: TableRole;
+  hasGroupedColumns?: boolean;
+  columnDefinitions?: ReadonlyArray<TableProps.ColumnDefinition<any>>;
+  hasSelection?: boolean;
+}
+
+export default forwardRef(StickyHeader);
+
+function StickyHeader(
+  {
+    variant,
+    theadProps,
+    wrapperRef,
+    theadRef,
+    secondaryWrapperRef,
+    tableRef,
+    onScroll,
+    tableHasHeader,
+    contentDensity,
+    tableRole,
+    hasGroupedColumns,
+    columnDefinitions,
+    hasSelection,
+  }: StickyHeaderProps,
+  ref: React.Ref<StickyHeaderRef>
+) {
+  const secondaryTheadRef = useRef<HTMLTableRowElement>(null);
+  const secondaryTableRef = useRef<HTMLTableElement>(null);
+  const { isStuck } = useContext(StickyHeaderContext);
+
+  const [focusedComponent, setFocusedComponent] = useState<null | string>(null);
+  const { scrollToRow, scrollToTop } = useStickyHeaderCopy({
+    tableRef,
+    theadRef,
+    secondaryTheadRef,
+    secondaryTableRef,
+    tableWrapperRef: wrapperRef,
+  });
+
+  useImperativeHandle(ref, () => ({
+    scrollToTop,
+    scrollToRow,
+    setFocus: setFocusedComponent,
+  }));
+
+  // For grouped columns, the secondary table needs a <colgroup> to define column
+  // widths. Without it, table-layout:fixed uses the first row (which has colspan group
+  // headers) to determine widths — giving wrong results.
+
+  return (
+    <div
+      className={clsx(styles['header-secondary'], styles[`variant-${variant}`], {
+        [styles['table-has-header']]: tableHasHeader,
+      })}
+      aria-hidden={true}
+      // Prevents receiving focus in Firefox. Focus on the overflowing table is sufficient
+      // to scroll the table horizontally
+      tabIndex={-1}
+      ref={secondaryWrapperRef}
+      onScroll={onScroll}
+    >
+      <table
+        className={clsx(
+          styles.table,
+          styles['table-layout-fixed'],
+          hasGroupedColumns && styles['has-grouped-header'],
+          contentDensity === 'compact' && getVisualContextClassname('compact-table')
+        )}
+        ref={secondaryTableRef}
+        {...getTableRoleProps({ tableRole })}
+      >
+        {hasGroupedColumns && columnDefinitions && (
+          <TableColGroup
+            visibleColumnDefinitions={columnDefinitions}
+            hasSelection={!!hasSelection}
+            sticky={true}
+            selectionColumnId={theadProps.selectionColumnId}
+          />
+        )}
+        <Thead
+          ref={secondaryTheadRef}
+          sticky={true}
+          stuck={isStuck}
+          focusedComponent={focusedComponent}
+          {...theadProps}
+        />
+      </table>
+    </div>
+  );
+}

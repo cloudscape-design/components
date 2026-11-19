@@ -1,0 +1,33 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as awsui;
+@use '../background-inline-svg.scss' as utils;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+.resizable-box {
+  position: relative;
+  inline-size: 100%;
+
+  &:not(.cursor-active) {
+    @include styles.with-motion {
+      transition: height awsui.$motion-duration-complex awsui.$motion-easing-responsive;
+    }
+  }
+}
+
+.resizable-box-handle {
+  position: absolute;
+  inset-inline-end: 0;
+  inset-block-end: 0;
+  z-index: 10; // above editor, when editor is overflowing
+
+  inline-size: awsui.$space-l;
+  block-size: awsui.$space-l;
+}
+
+.resize-active {
+  user-select: none;
+}

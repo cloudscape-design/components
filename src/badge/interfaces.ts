@@ -1,0 +1,65 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+
+import { BaseComponentProps } from '../types/base-component';
+/**
+ * @awsuiSystem core
+ */
+import { NativeAttributes } from '../types/native-attributes';
+
+export interface BadgeProps extends BaseComponentProps {
+  /**
+   * Specifies the badge color.
+   */
+  color?:
+    | 'blue'
+    | 'grey'
+    | 'green'
+    | 'red'
+    | 'severity-critical'
+    | 'severity-high'
+    | 'severity-medium'
+    | 'severity-low'
+    | 'severity-neutral';
+
+  /**
+   * Text displayed inside the badge.
+   */
+  children?: React.ReactNode;
+
+  /**
+   * An object containing CSS properties to customize the badge's visual appearance.
+   * Refer to the [style](/components/badge/?tabId=style) tab for more details.
+   * @awsuiSystem core
+   */
+  style?: BadgeProps.Style;
+
+  /**
+   * Attributes to add to the native element.
+   * Some attributes will be automatically combined with internal attribute values:
+   * - `className` will be appended.
+   * - Event handlers will be chained, unless the default is prevented.
+   *
+   * We do not support using this attribute to apply custom styling.
+   *
+   * Pass a `ref` to access the native element for measurement, observation, or third-party integration.
+   *
+   * @awsuiSystem core
+   */
+  nativeAttributes?: NativeAttributes<React.HTMLAttributes<HTMLElement>>;
+}
+
+export namespace BadgeProps {
+  export interface Style {
+    root?: {
+      background?: string;
+      borderColor?: string;
+      borderRadius?: string;
+      borderWidth?: string;
+      color?: string;
+      paddingBlock?: string;
+      paddingInline?: string;
+    };
+  }
+}

@@ -1,0 +1,112 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/styles' as styles;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../constants' as constants;
+
+.toggle {
+  box-sizing: border-box;
+  padding-block: constants.$toggle-padding-vertical;
+  padding-inline: constants.$toggle-padding-horizontal;
+}
+
+.drawer-triggers {
+  box-sizing: border-box;
+}
+
+.drawer {
+  flex-shrink: 0;
+  position: relative;
+  word-wrap: break-word;
+  box-shadow: awsui.$shadow-panel;
+  &:not(.drawer-mobile) {
+    z-index: constants.$drawer-z-index;
+  }
+  &-closed {
+    min-inline-size: constants.$sidebar-size-closed;
+    &.drawer-mobile {
+      display: none;
+    }
+  }
+}
+.drawer-content {
+  position: fixed;
+  overflow: auto;
+  background-color: awsui.$color-background-layout-panel-content;
+  display: flex;
+  flex-direction: column;
+  .drawer-mobile > & {
+    z-index: constants.$drawer-z-index-mobile;
+    inset: 0;
+  }
+  .drawer-closed > & {
+    inline-size: constants.$sidebar-size-closed;
+    &.drawer-content-clickable {
+      cursor: pointer;
+      color: awsui.$color-text-interactive-default;
+      &:hover {
+        background: awsui.$color-background-layout-panel-hover;
+      }
+    }
+  }
+  & > [aria-hidden='true'] {
+    display: none;
+  }
+  > .drawer-resize-content {
+    overflow: auto;
+    block-size: 100%;
+    position: relative;
+  }
+  > .drawer-content-wrapper {
+    flex: 1;
+  }
+}
+
+.drawer-triggers-wrapper {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: stretch;
+}
+
+.drawer-trigger {
+  padding-block: constants.$toggle-padding-vertical;
+  padding-inline: constants.$toggle-padding-horizontal;
+  cursor: pointer;
+  color: awsui.$color-text-interactive-default;
+  &:not(:first-child) {
+    border-block-start: 1px solid awsui.$color-border-layout;
+  }
+  &:hover {
+    color: awsui.$color-text-layout-toggle-hover;
+  }
+  &-active,
+  &-active:hover {
+    background-color: awsui.$color-background-layout-toggle-selected-default;
+    color: awsui.$color-text-layout-toggle-active;
+  }
+  .drawer-triggers-wrapper > & {
+    .drawer-content-clickable > & {
+      &:hover {
+        color: awsui.$color-text-interactive-default;
+      }
+    }
+  }
+}
+
+.resize-handle-wrapper {
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 0;
+  block-size: 100%;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+
+.hide {
+  display: none;
+}

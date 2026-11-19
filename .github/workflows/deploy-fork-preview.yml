@@ -1,0 +1,23 @@
+name: Deploy fork preview
+
+on:
+  workflow_run:
+    workflows: ['Build, lint and test']
+    types:
+      - completed
+
+permissions:
+  id-token: write
+  actions: read
+  contents: read
+  deployments: write
+
+jobs:
+  fork-preview:
+    strategy:
+      matrix:
+        react: [16, 18]
+    uses: cloudscape-design/actions/.github/workflows/deploy-fork-preview.yml@main
+    secrets: inherit
+    with:
+      artifact-name: dev-pages-react${{ matrix.react }}

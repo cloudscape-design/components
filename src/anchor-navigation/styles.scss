@@ -1,0 +1,126 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/styles/typography/constants.scss' as typography;
+
+$guide-line-width: 2px;
+$guide-line-offset: -2px; // Negative to expand 2px beyond the element
+$anchor-nav-inset-inline: 6px;
+
+.root {
+  @include styles.styles-reset;
+}
+
+.anchor-list {
+  list-style: none;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
+  position: relative;
+  text-indent: 0;
+
+  &::before {
+    content: '';
+    background-color: awsui.$color-border-divider-default;
+    border-start-start-radius: awsui.$border-radius-tabs-focus-ring;
+    border-start-end-radius: awsui.$border-radius-tabs-focus-ring;
+    border-end-start-radius: awsui.$border-radius-tabs-focus-ring;
+    border-end-end-radius: awsui.$border-radius-tabs-focus-ring;
+    inset-block-end: $guide-line-offset;
+    pointer-events: none;
+    position: absolute;
+    inset-block-start: $guide-line-offset;
+    inline-size: $guide-line-width;
+    inset-inline-start: $anchor-nav-inset-inline;
+  }
+}
+
+.anchor-item {
+  @include styles.font-body-m;
+
+  color: awsui.$color-text-body-secondary;
+  font-weight: styles.$font-weight-normal;
+  margin-block: awsui.$space-scaled-xxs;
+  margin-inline: 0;
+
+  @include styles.with-motion {
+    transition: awsui.$motion-duration-slow;
+    transition-property: all;
+  }
+
+  &--active {
+    position: relative;
+
+    &::before {
+      content: '';
+      background-color: awsui.$color-text-accent;
+      border-start-start-radius: awsui.$border-radius-tabs-focus-ring;
+      border-start-end-radius: awsui.$border-radius-tabs-focus-ring;
+      border-end-start-radius: awsui.$border-radius-tabs-focus-ring;
+      border-end-end-radius: awsui.$border-radius-tabs-focus-ring;
+      inset-block-end: $guide-line-offset;
+      pointer-events: none;
+      position: absolute;
+      inset-block-start: $guide-line-offset;
+      inline-size: $guide-line-width;
+      inset-inline-start: $anchor-nav-inset-inline;
+    }
+  }
+}
+
+.anchor-link {
+  @include styles.font-body-m;
+
+  align-items: baseline;
+  color: awsui.$color-text-body-secondary;
+  display: flex;
+  flex-direction: row;
+  font-weight: styles.$font-weight-normal;
+  text-decoration: none;
+
+  @include styles.with-motion {
+    transition: awsui.$motion-duration-slow;
+    transition-property: all;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.link-focus;
+  }
+
+  &:hover {
+    color: awsui.$color-text-accent;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+
+  &--active {
+    font-weight: awsui.$font-wayfinding-link-active-weight;
+    @include styles.font-smoothing;
+    color: awsui.$color-text-accent;
+  }
+}
+
+.anchor-link-text {
+  display: block;
+}
+
+.anchor-link-info {
+  margin-inline-start: awsui.$space-xs;
+  @include styles.font-body-s;
+  @include styles.font-smoothing;
+  font-weight: styles.$font-weight-bold;
+  letter-spacing: typography.$letter-spacing-bold-link;
+  color: awsui.$color-text-link-default;
+}

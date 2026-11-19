@@ -1,0 +1,92 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import * as React from 'react';
+import { useState } from 'react';
+
+import { Toggle } from '~components';
+import Select, { SelectProps } from '~components/select';
+
+import AppContext, { AppContextType } from '../app/app-context';
+import { SimplePage } from '../app/templates';
+
+const lotsOfOptions = [...Array(50).keys()].map(n => {
+  const numberToDisplay = (n + 5).toString();
+  return {
+    value: numberToDisplay,
+    label: `Option ${n + 5}`,
+  };
+});
+
+const options: SelectProps.Options = [
+  { value: 'first', label: 'Simple' },
+  { value: 'second', label: 'With small icon', iconName: 'folder' },
+  {
+    value: 'third',
+    label: 'With big icon icon',
+    description: 'Very big option',
+    iconName: 'heart',
+    disabled: true,
+    disabledReason: 'disabled reason',
+    tags: ['Cool', 'Intelligent', 'Cat'],
+  },
+  {
+    label: 'Option group',
+    options: [{ value: 'forth', label: 'Nested option' }],
+    disabledReason: 'disabled reason',
+  },
+  ...lotsOfOptions,
+  { label: 'Last option', disabled: true, disabledReason: 'disabled reason' },
+];
+type PageContext = React.Context<
+  AppContextType<{
+    virtualScroll?: boolean;
+  }>
+>;
+
+export default function SelectPage() {
+  const { urlParams, setUrlParams } = React.useContext(AppContext as PageContext);
+  const virtualScroll = urlParams.virtualScroll ?? false;
+  const [selectedOption, setSelectedOption] = useState<SelectProps.Option | null>(null);
+  const renderOption: SelectProps.SelectOptionItemRenderer = ({ item }) => {
+    if (item.type === 'trigger') {
+      return <div>Trigger: {item.option.label}</div>;
+    } else if (item.type === 'group') {
+      return <div>Group: {item.option.label}</div>;
+    } else if (item.type === 'item') {
+      return <div>Item: {item.option.label}</div>;
+    }
+    return null;
+  };
+
+  return (
+    <SimplePage
+      title="Select with custom item renderer"
+      settings={
+        <Toggle
+          checked={!!urlParams.virtualScroll}
+          onChange={({ detail }) => setUrlParams({ virtualScroll: detail.checked })}
+        >
+          Virtual Scroll
+        </Toggle>
+      }
+      screenshotArea={{
+        style: {
+          padding: 10,
+        },
+      }}
+    >
+      <div style={{ maxInlineSize: '400px', blockSize: '650px' }}>
+        <Select
+          virtualScroll={virtualScroll}
+          filteringType="auto"
+          renderOption={renderOption}
+          selectedOption={selectedOption}
+          placeholder={`Choose option ${virtualScroll ? '(virtual)' : ''}`}
+          onChange={({ detail }) => setSelectedOption(detail.selectedOption)}
+          options={options}
+          triggerVariant="option"
+        />
+      </div>
+    </SimplePage>
+  );
+}

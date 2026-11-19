@@ -1,0 +1,136 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+@mixin trigger-selected-styles {
+  background: awsui.$color-background-layout-toggle-selected-default;
+  color: awsui.$color-text-layout-toggle-selected;
+
+  &:hover {
+    background: awsui.$color-background-layout-toggle-selected-hover;
+  }
+  &:active {
+    background: awsui.$color-background-layout-toggle-selected-active;
+  }
+}
+
+.trigger-button-styles {
+  background: awsui.$color-background-layout-toggle-default;
+  border-start-start-radius: 50%;
+  border-start-end-radius: 50%;
+  border-end-start-radius: 50%;
+  border-end-end-radius: 50%;
+  block-size: awsui.$space-layout-toggle-diameter;
+  inline-size: awsui.$space-layout-toggle-diameter;
+
+  &:hover {
+    background: awsui.$color-background-layout-toggle-hover;
+  }
+
+  &:active {
+    background: awsui.$color-background-layout-toggle-active;
+  }
+}
+
+.trigger-icon-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.trigger-badge-wrapper {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  clip-path: path(
+    'M34.2193 10.1845C33.3961 10.579 32.4739 10.8 31.5 10.8C28.0206 10.8 25.2 7.97939 25.2 4.5C25.2 3.52614 25.421 2.6039 25.8155 1.78066C23.4518 0.639587 20.8006 0 18 0C8.05887 0 0 8.05887 0 18C0 27.9411 8.05887 36 18 36C27.9411 36 36 27.9411 36 18C36 15.1994 35.3604 12.5482 34.2193 10.1845Z'
+  );
+
+  @include styles.with-direction('rtl') {
+    clip-path: path(
+      'M1.78066 10.1845C2.6039 10.579 3.52615 10.8 4.5 10.8C7.97939 10.8 10.8 7.97939 10.8 4.5C10.8 3.52614 10.579 2.6039 10.1845 1.78066C12.5482 0.639587 15.1994 0 18 0C27.9411 0 36 8.05887 36 18C36 27.9411 27.9411 36 18 36C8.05887 36 0 27.9411 0 18C0 15.1994 0.639587 12.5482 1.78066 10.1845Z'
+    );
+  }
+}
+
+/*
+Warning! If these design tokens for width change it will adversely impact
+the calculation used to determine the Split Panel maximum width in the
+handleSplitPanelMaxWidth function in the context.
+*/
+.trigger {
+  border-block: none;
+  border-inline: none;
+  padding-inline: 0;
+  color: awsui.$color-text-layout-toggle;
+  cursor: pointer;
+  pointer-events: auto;
+  position: relative;
+
+  // WebKit's native block padding is asymmetric (2px/3px), which pushes the icon 0.5px above center.
+  // Badge triggers keep it: their icon wrapper is absolutely positioned, and the padding determines
+  // their baseline and therefore the height of the surrounding wrapper.
+  &:not(.badge) {
+    padding-block: 0;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(3px);
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &.selected {
+    @include trigger-selected-styles();
+
+    > .trigger-badge-wrapper {
+      @include trigger-selected-styles();
+    }
+  }
+
+  &.badge,
+  &.badge:hover,
+  &.badge:active {
+    background: transparent;
+  }
+}
+
+.trigger-wrapper {
+  position: relative;
+  border-start-start-radius: 50%;
+  border-start-end-radius: 50%;
+  border-end-start-radius: 50%;
+  border-end-end-radius: 50%;
+
+  &:not(.remove-high-contrast-header) {
+    box-shadow: awsui.$shadow-panel-toggle;
+  }
+}
+
+.trigger-wrapper-tooltip-visible {
+  /* used in test-utils*/
+}
+
+.dot {
+  position: absolute;
+  inline-size: 9px;
+  block-size: 9px;
+  border-start-start-radius: 8px;
+  border-start-end-radius: 8px;
+  border-end-start-radius: 8px;
+  border-end-end-radius: 8px;
+  background-color: awsui.$color-background-badge-icon;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+}
+
+.trigger-tooltip {
+  /* used in test-utils */
+}

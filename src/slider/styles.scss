@@ -1,0 +1,475 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../internal/styles/style-api' as style-api;
+@use './mixins.scss' as mixins;
+
+// Track and value colors are root tokens: the tick marks take either color depending on the slider state.
+$root-tokens: style-api.resolve((track-color, value-color), carrier);
+@include style-api.register($root-tokens, mixins.$handle-tokens);
+@include style-api.docs('root', $root-tokens);
+@include style-api.docs(
+  'handle',
+  mixins.$handle-tokens,
+  $descriptions: (
+    tokens: (
+      halo-color: 'Defaults to the fill color.',
+    )
+  )
+);
+
+@function track-color($fallback) {
+  @return style-api.value($root-tokens, track-color, $fallback);
+}
+
+@function value-color($fallback) {
+  @return style-api.value($root-tokens, value-color, $fallback);
+}
+
+.root {
+  @include style-api.carriers($root-tokens);
+  @include styles.styles-reset;
+  font-size: awsui.$font-size-body-s;
+  padding-block: awsui.$space-s;
+
+  position: relative;
+  max-inline-size: 800px;
+  margin-inline: calc(mixins.$thumb-size / 2);
+}
+
+.slider {
+  display: flex;
+  align-items: center;
+
+  &-track,
+  &-range {
+    position: absolute;
+    border-start-start-radius: 3px;
+    border-start-end-radius: 3px;
+    border-end-start-radius: 3px;
+    border-end-end-radius: 3px;
+    margin-block-start: awsui.$space-xs;
+    margin-inline: calc(mixins.$thumb-size / -2);
+  }
+
+  &-track {
+    background-color: track-color(
+      var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-background-slider-track-default)
+    );
+    inline-size: calc(100% + mixins.$thumb-size);
+    block-size: 2px;
+    cursor: pointer;
+
+    &.disabled {
+      cursor: default;
+      background-color: track-color(
+        var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-background-control-disabled)
+      );
+    }
+
+    &.readonly:not(&.disabled) {
+      cursor: default;
+      background-color: track-color(
+        var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-background-control-disabled)
+      );
+    }
+  }
+
+  &-range {
+    background-color: value-color(
+      var(#{custom-props.$styleSliderRangeBackgroundDefault}, awsui.$color-background-slider-range-default)
+    );
+    block-size: 4px;
+    inline-size: calc(var(#{custom-props.$sliderRangeInlineSize}) + mixins.$thumb-size);
+
+    &.error {
+      background-color: value-color(
+        var(#{custom-props.$styleSliderRangeBackgroundDefault}, awsui.$color-background-slider-range-error-default)
+      );
+    }
+
+    &.warning {
+      background-color: value-color(
+        var(#{custom-props.$styleSliderRangeBackgroundDefault}, awsui.$color-background-slider-range-warning-default)
+      );
+    }
+
+    &.active {
+      background-color: value-color(
+        var(#{custom-props.$styleSliderRangeBackgroundActive}, awsui.$color-background-slider-range-active)
+      );
+    }
+
+    &.error-active {
+      background-color: value-color(
+        var(#{custom-props.$styleSliderRangeBackgroundActive}, awsui.$color-background-slider-range-error-active)
+      );
+    }
+
+    &.warning-active {
+      background-color: value-color(
+        var(#{custom-props.$styleSliderRangeBackgroundActive}, awsui.$color-background-slider-range-warning-active)
+      );
+    }
+
+    &.disabled {
+      background-color: value-color(
+        var(#{custom-props.$styleSliderRangeBackgroundDefault}, awsui.$color-background-control-disabled)
+      );
+    }
+
+    &.readonly:not(&.disabled) {
+      inline-size: calc(var(#{custom-props.$sliderRangeInlineSize}) + mixins.$thumb-readonly-size);
+      background-color: value-color(
+        var(#{custom-props.$styleSliderRangeBackgroundDefault}, awsui.$color-foreground-control-read-only)
+      );
+    }
+  }
+}
+
+.labels {
+  display: grid;
+  // the first and the last column get extra space, for readability
+  grid-template-columns:
+    3fr repeat(
+      calc((var(#{custom-props.$sliderLabelCount}) - 2) / 2 + (var(#{custom-props.$sliderLabelCount}) - 2) / 2 - 1),
+      2fr
+    )
+    3fr;
+  grid-auto-rows: 100%;
+  padding-block-start: awsui.$space-m;
+
+  &-noref {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  &-reference {
+    grid-column-start: var(#{custom-props.$sliderReferenceColumn});
+    grid-column-end: var(#{custom-props.$sliderNextReferenceColumn});
+    grid-row: 1;
+    justify-self: center;
+    text-align: center;
+  }
+
+  &-min {
+    grid-column: 1;
+    grid-row: 1;
+    grid-column-end: var(#{custom-props.$sliderMinEnd});
+    margin-inline-start: calc(mixins.$thumb-size / -2);
+  }
+
+  &-max {
+    text-align: end;
+    justify-content: flex-end;
+    grid-row: 1;
+    grid-column-end: calc(var(#{custom-props.$sliderLabelCount}) + 1);
+    grid-column-start: var(#{custom-props.$sliderMaxStart});
+    margin-inline-end: calc(mixins.$thumb-size / -2);
+  }
+
+  &-aria-description {
+    display: none;
+  }
+
+  @include styles.media-breakpoint-down(styles.$breakpoint-xx-small) {
+    & {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    &-min {
+      grid-column: 1;
+    }
+
+    &-max {
+      grid-column: 2;
+    }
+
+    > .labels-reference {
+      display: none;
+    }
+  }
+}
+
+.ticks {
+  display: grid;
+  grid-template-columns: repeat(var(#{custom-props.$sliderTickCount}), 1fr);
+  inline-size: calc(100% - mixins.$thumb-size);
+  margin-inline: calc(mixins.$thumb-size / 2);
+
+  &-wrapper {
+    block-size: 0;
+    display: flex;
+
+    margin-inline: calc(mixins.$thumb-size / -2);
+  }
+}
+
+.tick {
+  grid-row: 1;
+  block-size: awsui.$space-xs;
+  inline-size: awsui.$space-xxxs;
+  padding-inline: 0;
+  padding-block: 0;
+  background: track-color(
+    var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-background-slider-track-default)
+  );
+  inset-block-start: -4px;
+
+  &.middle {
+    &:first-child,
+    &:last-child {
+      visibility: hidden;
+    }
+  }
+
+  &.filled {
+    background: value-color(
+      var(#{custom-props.$styleSliderRangeBackgroundDefault}, awsui.$color-background-slider-range-default)
+    );
+
+    &.readonly:not(.disabled) {
+      background: value-color(
+        var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-foreground-control-read-only)
+      );
+    }
+  }
+
+  &.active {
+    background: value-color(
+      var(#{custom-props.$styleSliderRangeBackgroundActive}, awsui.$color-background-slider-range-active)
+    );
+  }
+
+  &.error {
+    background: value-color(
+      var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-background-slider-range-error-default)
+    );
+  }
+
+  &.warning {
+    background: value-color(
+      var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-background-slider-range-warning-default)
+    );
+  }
+
+  &.error-active {
+    background-color: value-color(
+      var(#{custom-props.$styleSliderRangeBackgroundActive}, awsui.$color-background-slider-range-error-active)
+    );
+  }
+
+  &.warning-active {
+    background-color: value-color(
+      var(#{custom-props.$styleSliderRangeBackgroundActive}, awsui.$color-background-slider-range-warning-active)
+    );
+  }
+
+  &.disabled {
+    background: track-color(
+      var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-background-control-disabled)
+    );
+  }
+
+  &.readonly {
+    background: track-color(
+      var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-background-control-disabled)
+    );
+  }
+
+  &.filled.disabled {
+    background: value-color(
+      var(#{custom-props.$styleSliderTrackBackgroundColor}, awsui.$color-background-control-disabled)
+    );
+  }
+}
+
+.tooltip-thumb {
+  position: absolute;
+  inline-size: awsui.$space-xxl;
+  block-size: awsui.$space-xxl;
+  margin-block-start: calc(awsui.$space-s / -1);
+  inset-inline-start: var(#{custom-props.$sliderTooltipPosition});
+
+  &.readonly {
+    inline-size: awsui.$space-xl;
+    block-size: awsui.$space-xl;
+    margin-block-start: calc(awsui.$space-xs / -1);
+  }
+}
+
+.thumb {
+  @include style-api.carriers(mixins.$handle-tokens);
+  background: transparent;
+  appearance: none;
+  position: absolute;
+  block-size: 0;
+  inline-size: calc(100% + mixins.$thumb-size);
+  margin-inline-start: calc(mixins.$thumb-size / -2);
+
+  outline: 0;
+  margin-block-start: awsui.$space-xxs;
+  cursor: pointer;
+  // Desktop Safari doesn't support touch events, but Safari on iOS does.
+  // stylelint-disable-next-line plugin/no-unsupported-browser-features
+  touch-action: none;
+
+  &.disabled {
+    cursor: default;
+  }
+
+  &.readonly:not(&.disabled) {
+    cursor: default;
+
+    &:focus::-webkit-slider-thumb,
+    &:active::-webkit-slider-thumb {
+      @include mixins.base-thumb-focus-readonly-styles();
+    }
+
+    &:focus::-moz-range-thumb,
+    &:active::-moz-range-thumb {
+      @include mixins.base-thumb-focus-readonly-styles();
+    }
+  }
+
+  // 1px added to min and max to cover the step line when it exists.
+  &.min {
+    margin-inline-start: calc(-1px + mixins.$thumb-size / -2);
+  }
+
+  &.max {
+    margin-inline-start: calc(1px + mixins.$thumb-size / -2);
+  }
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    @include mixins.base-thumb-styles();
+  }
+
+  &::-moz-range-thumb {
+    appearance: none;
+    @include mixins.base-thumb-styles();
+  }
+
+  &:hover::-webkit-slider-thumb {
+    @include mixins.base-thumb-hover-styles();
+  }
+
+  &:hover::-moz-range-thumb {
+    @include mixins.base-thumb-hover-styles();
+  }
+
+  &:focus::-webkit-slider-thumb,
+  &:active::-webkit-slider-thumb {
+    @include mixins.base-thumb-focus-styles();
+  }
+
+  &:focus::-moz-range-thumb,
+  &:active::-moz-range-thumb {
+    @include mixins.base-thumb-focus-styles();
+  }
+}
+
+.error {
+  &::-webkit-slider-thumb {
+    background-color: mixins.fill-color(
+      var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-error-default)
+    );
+    border-color: mixins.fill-color(
+      var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-error-default)
+    );
+  }
+
+  &::-moz-range-thumb {
+    background-color: mixins.fill-color(
+      var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-error-default)
+    );
+    border-color: mixins.fill-color(
+      var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-error-default)
+    );
+  }
+  &:hover::-webkit-slider-thumb {
+    @include mixins.error-thumb-hover-styles;
+  }
+
+  &:hover::-moz-range-thumb {
+    @include mixins.error-thumb-hover-styles;
+  }
+
+  &:focus::-webkit-slider-thumb,
+  &:active::-webkit-slider-thumb {
+    @include mixins.error-thumb-focus-styles;
+  }
+
+  &:focus::-moz-range-thumb,
+  &:active::-moz-range-thumb {
+    @include mixins.error-thumb-focus-styles;
+  }
+}
+
+.warning {
+  &::-webkit-slider-thumb {
+    background-color: mixins.fill-color(
+      var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-warning-default)
+    );
+    border-color: mixins.fill-color(
+      var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-warning-default)
+    );
+  }
+
+  &::-moz-range-thumb {
+    background-color: mixins.fill-color(
+      var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-warning-default)
+    );
+    border-color: mixins.fill-color(
+      var(#{custom-props.$styleSliderHandleBackgroundDefault}, awsui.$color-background-slider-handle-warning-default)
+    );
+  }
+  &:hover::-webkit-slider-thumb {
+    @include mixins.warning-thumb-hover-styles;
+  }
+
+  &:hover::-moz-range-thumb {
+    @include mixins.warning-thumb-hover-styles;
+  }
+
+  &:focus::-webkit-slider-thumb,
+  &:active::-webkit-slider-thumb {
+    @include mixins.warning-thumb-focus-styles;
+  }
+
+  &:focus::-moz-range-thumb,
+  &:active::-moz-range-thumb {
+    @include mixins.warning-thumb-focus-styles;
+  }
+}
+
+.disabled,
+.disabled:hover,
+.disabled:active {
+  &::-webkit-slider-thumb {
+    @include mixins.base-thumb-disabled-styles();
+  }
+
+  &::-moz-range-thumb {
+    @include mixins.base-thumb-disabled-styles();
+  }
+}
+
+.readonly:not(.disabled),
+.readonly:not(.disabled):hover,
+.readonly:not(.disabled):active {
+  &::-webkit-slider-thumb {
+    @include mixins.base-thumb-readonly-styles();
+    cursor: initial;
+  }
+
+  &::-moz-range-thumb {
+    @include mixins.base-thumb-readonly-styles();
+    cursor: initial;
+  }
+}

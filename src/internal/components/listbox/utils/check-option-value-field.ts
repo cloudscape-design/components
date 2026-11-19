@@ -1,0 +1,31 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import { isDevelopment } from '../../../is-development';
+
+export function checkOptionValueField<ValueType extends ReadonlyArray<any>>(
+  componentName: string,
+  propertyName: string,
+  propertyValue: ValueType | undefined
+) {
+  if (isDevelopment) {
+    if (!propertyValue) {
+      return;
+    }
+
+    // The `in` checks below are intentional: `element` is `any` (loosely-typed external input),
+    // so compile-time `keyof` validation is not possible. These checks validate runtime shape.
+    const valuePropertyMissing = !propertyValue.every(element => {
+      // eslint-disable-next-line no-restricted-syntax -- Runtime shape validation on loosely-typed external input (`any`)
+      return 'options' in element || 'value' in element;
+    });
+
+    if (valuePropertyMissing) {
+      warnOnce(
+        componentName,
+        `You provided an \`${propertyName}\` prop where at least one non-group array element is missing the \`value\` field. This field is required for all options without sub-items.`
+      );
+    }
+  }
+}

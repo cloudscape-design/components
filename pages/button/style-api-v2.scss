@@ -1,0 +1,84 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~components/styling/button';
+@use '../style-api/palette' as palette;
+
+.button-danger {
+  @include button.root(
+    $background: palette.$error,
+    $color: palette.$text-on-accent,
+    $border-color: palette.$error,
+    $border-radius: 4px,
+    $padding-inline: 24px,
+    $padding-block: 10px,
+    $font-family: monospace,
+    $font-weight: 700
+  );
+
+  &:hover,
+  &:focus {
+    @include button.root(
+      $background: palette.$error-hover,
+      $border-color: palette.$error-hover,
+      $awsui-focus-ring-color: palette.$error-hover
+    );
+  }
+
+  &:active {
+    @include button.root($background: palette.$error-active, $border-color: palette.$error-active);
+  }
+}
+
+.button-pill {
+  @include button.root(
+    $background: palette.$subtle,
+    $color: palette.$text,
+    $border-color: palette.$subtle,
+    $border-radius: 999px,
+    $padding-inline: 16px,
+    $padding-block: 8px,
+    $awsui-focus-ring-color: palette.$accent,
+    $awsui-focus-ring-radius: 99px
+  );
+
+  &:hover,
+  &:focus {
+    @include button.root($background: palette.$subtle-hover, $border-color: palette.$subtle-hover);
+  }
+
+  &:active {
+    @include button.root($background: palette.$subtle-active, $border-color: palette.$subtle-active);
+  }
+}
+
+.button-ghost {
+  @include button.root(
+    $padding-inline: 12px,
+    $padding-block: 4px,
+    $border-radius: 4px,
+    $color: palette.$accent,
+    $border-color: transparent,
+    $awsui-focus-ring-color: palette.$accent
+  );
+
+  &:hover,
+  &:focus {
+    @include button.root($background: palette.$surface, $border-color: palette.$surface);
+  }
+
+  &:active {
+    @include button.root($background: palette.$surface-alt, $border-color: palette.$surface-alt);
+  }
+}
+
+// Applied for disabled and loading buttons. Repeated to win over the state rules above, which have the same specificity.
+.disabled.disabled {
+  @include button.root(
+    $background: palette.$control-bg-disabled,
+    $color: palette.$control-fg-disabled,
+    $border-color: palette.$control-bg-disabled
+  );
+}

@@ -1,0 +1,163 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/styles/utils/theming';
+
+.header {
+  position: relative;
+  margin-block: 0;
+  margin-inline: 0;
+  color: awsui.$color-text-dropdown-group-label;
+  border-block: awsui.$border-divider-list-width solid transparent;
+  border-inline: awsui.$border-divider-list-width solid transparent;
+  // remove the borders completely to avoid the slating effect at the border ends (AWSUI-10545)
+  border-inline-width: 0;
+  font-weight: styles.$font-weight-bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  // to compensate for the loss of padding due to the removal of the left and right borders
+  // and differences in default divider + selected border widths (visual refresh)
+  padding-block: styles.$option-padding-with-border-placeholder-vertical;
+  padding-inline: calc(#{awsui.$space-button-horizontal} + #{awsui.$border-item-width});
+  z-index: 1;
+
+  &.disabled {
+    color: awsui.$color-text-dropdown-item-disabled;
+    cursor: default;
+  }
+
+  &.no-content-styling {
+    padding-block: calc((#{awsui.$border-item-width} - #{awsui.$border-divider-list-width}));
+    padding-inline: awsui.$border-item-width;
+    font-weight: styles.$font-weight-normal;
+    color: inherit;
+  }
+
+  &.expandable-header {
+    border-block-start-color: awsui.$color-border-dropdown-group;
+    border-block-end-color: awsui.$color-border-dropdown-group;
+    cursor: pointer;
+
+    &.disabled {
+      cursor: default;
+    }
+    &:focus {
+      outline: none;
+    }
+    &.rolled-down {
+      border-block-end-color: transparent;
+    }
+    &.highlighted {
+      background-color: awsui.$color-background-dropdown-item-hover;
+      color: awsui.$color-text-dropdown-item-highlighted;
+      // reset padding when adding border back in
+      padding-block: styles.$option-padding-vertical;
+      padding-inline: awsui.$space-button-horizontal;
+      border-block: awsui.$border-item-width solid awsui.$color-border-dropdown-item-hover;
+      border-inline: awsui.$border-item-width solid awsui.$color-border-dropdown-item-hover;
+      @include styles.logical-radius(awsui.$border-radius-dropdown);
+      z-index: 2;
+
+      &.no-content-styling {
+        padding-block: 0;
+        padding-inline: 0;
+        color: inherit;
+      }
+
+      &.disabled {
+        background-color: awsui.$color-background-dropdown-item-dimmed;
+        border-color: awsui.$color-border-dropdown-item-dimmed-hover;
+        color: awsui.$color-text-dropdown-item-dimmed;
+      }
+      &.is-focused {
+        border-color: awsui.$color-border-dropdown-item-focused;
+        &:not(.visual-refresh) {
+          box-shadow: inset 0 0 0 awsui.$border-control-focus-ring-shadow-spread awsui.$color-border-item-focused;
+        }
+      }
+    }
+  }
+}
+
+.category {
+  list-style: none;
+  margin-block-start: calc(-1 * #{awsui.$border-divider-list-width});
+  padding-block: 0;
+  padding-inline: 0;
+
+  &:first-child {
+    margin-block-start: 0;
+  }
+
+  &.expandable {
+    border-block-start: 0;
+  }
+
+  &:last-child {
+    border-block-end: none;
+  }
+
+  &.variant-navigation {
+    padding-block-start: awsui.$space-xxs;
+
+    &.expandable {
+      padding-block-start: 0;
+    }
+  }
+}
+
+.expand-icon {
+  position: relative;
+  inset-inline-end: calc(-1 * #{awsui.$space-s});
+  inline-size: awsui.$space-m;
+  display: inline-block;
+  margin-inline-start: auto;
+
+  @include theming.one-theme-only {
+    inset-inline-end: calc(-1 * #{awsui.$space-xs});
+    inline-size: awsui.$space-s;
+    overflow: hidden;
+  }
+
+  @include styles.with-motion {
+    transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;
+  }
+
+  &-up {
+    transform: rotate(-180deg);
+  }
+
+  &-right {
+    transform: rotate(-90deg);
+    @include styles.with-direction('rtl') {
+      transform: rotate(90deg);
+    }
+  }
+}
+
+.items-list-container {
+  padding-block: 0;
+  padding-inline: 0;
+  margin-block-start: -1px;
+  margin-block-end: 0;
+  margin-inline: 0;
+  overflow-y: auto;
+}
+
+.in-dropdown {
+  margin-block-end: -1px;
+}
+
+.icon-wrapper {
+  margin-inline-end: awsui.$space-xxs;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+}

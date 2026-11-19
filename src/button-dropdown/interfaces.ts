@@ -1,0 +1,549 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { ReactNode } from 'react';
+
+import { ButtonProps } from '../button/interfaces';
+import { ExpandToViewport, OptionsLoadItemsDetail } from '../dropdown/interfaces';
+import { IconProps } from '../icon/interfaces';
+import { BaseComponentProps } from '../types/base-component';
+import { BaseNavigationDetail, CancelableEventHandler, NonCancelableEventHandler } from '../types/events';
+/**
+ * @awsuiSystem core
+ */
+import { NativeAttributes } from '../types/native-attributes';
+
+export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewport {
+  /**
+   * Array of objects with a number of supported types.
+   *
+   * The following properties are supported across all types:
+   *
+   * - `type` (string) - The type of the item. Can be `action`, `group`, `checkbox`. Defaults to `action` if `items` undefined and `group` otherwise.
+   * - `id` (string) - allows to identify the item that the user clicked on. Mandatory for individual items, optional for categories. Mandatory for expandable groups whose items you load asynchronously.
+   * - `text` (string) - description shown in the menu for this item. Mandatory for individual items, optional for categories.
+   * - `lang` (string) - (Optional) The language of the item, provided as a BCP 47 language tag.
+   * - `disabled` (boolean) - whether the item is disabled. Disabled items are not clickable, but they can be highlighted with the keyboard to make them accessible.
+   * - `disabledReason` (string) - (Optional) Displays text near the `text` property when item is disabled. Use to provide additional context.
+   * - `description` (string) - additional data that will be passed to a `data-description` attribute. **Deprecated**, has no effect.
+   * - `ariaLabel` (string) - (Optional) - ARIA label of the item element.
+   * - `dataAttributes` (Record<string, string>) - (Optional) Custom data attributes for the item element. Attribute names are automatically prefixed with "data-". The "testid" key is reserved.
+   *
+   * ### action
+   *
+   * - `href` (string) - (Optional) Defines the target URL of the menu item, turning it into a link.
+   * - `download` (boolean | string) - (Optional) Indicates that the link should be downloaded when clicked. Only works when `href` is also provided. If set to `true`, the browser will use the filename from the URL. If set to a string, that string will be used as the suggested filename.
+   * - `external` (boolean) - Marks a menu item as external by adding an icon after the menu item text. The link will open in a new tab when clicked. Note that this only works when `href` is also provided.
+   * - `externalIconAriaLabel` (string) - Adds an `aria-label` to the external icon.
+   * - `iconName` (string) - (Optional) Specifies the name of the icon, used with the [icon component](/components/icon/).
+   * - `iconAlt` (string) - (Optional) Specifies alternate text for the icon when using `iconUrl`.
+   * - `iconUrl` (string) - (Optional) Specifies the URL of a custom icon.
+   * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
+   * - `secondaryText` (string) - (Optional) Further information about the action that appears below the label.
+   * - `labelTag` (string) - (Optional) - A label tag that provides additional guidance, shown next to the label.
+   *
+   * ### checkbox
+   *
+   * When `type` is set to "checkbox", the values set to `href`, `external` and `externalIconAriaLabel` will be ignored.
+   *
+   * - `checked` (boolean) - Controls the state of the checkbox item.
+   * - `iconName` (string) - (Optional) Specifies the name of the icon, used with the [icon component](/components/icon/).
+   * - `iconAlt` (string) - (Optional) Specifies alternate text for the icon when using `iconUrl`.
+   * - `iconUrl` (string) - (Optional) Specifies the URL of a custom icon.
+   * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
+   * - `secondaryText` (string) - (Optional) Further information about the action that appears below the label.
+   * - `labelTag` (string) - (Optional) - A label tag that provides additional guidance, shown next to the label.
+   *
+   * ### group
+   *
+   * - `items` (ReadonlyArray<Item>) - an array of item objects. Items will be rendered as nested menu items but only for the first nesting level, multi-nesting is not supported.
+   * An item which belongs to nested group has the following properties: `id`, `text`, `disabled`, and `description`.
+   * - `expandable` (boolean) - (Optional) Defines whether the group is expandable (this overrides the component-level `expandableGroups` property).
+   *
+   */
+  items: ReadonlyArray<ButtonDropdownProps.ItemOrGroup>;
+
+  /**
+   * Specifies a render function to render custom options in the dropdown menu.
+   *
+   * The item inside the props has a different shape depending on its type:
+   *
+   *
+   * ### action
+   *
+   * - `type` ('action') - The item type.
+   * - `index` (number) - The item's position relative to its parent.
+   * - `option` (Item) - The original item configuration.
+   * - `highlighted` (boolean) - Whether the item is currently highlighted.
+   * - `disabled` (boolean) - Whether the item is disabled.
+   * - `parent` (GroupRenderItem | null) - The parent group item, if any.
+   * - `filterText` (string) - The current value of the filtering input, when filtering is enabled.
+   *
+   * ### checkbox
+   *
+   * - `type` ('checkbox') - The item type.
+   * - `index` (number) - The item's position relative to its parent.
+   * - `option` (CheckboxItem) - The original item configuration.
+   * - `disabled` (boolean) - Whether the item is disabled.
+   * - `highlighted` (boolean) - Whether the item is currently highlighted.
+   * - `checked` (boolean) - Controls the state of the checkbox item.
+   * - `parent` (GroupRenderItem | null) - The parent group item, if any.
+   * - `filterText` (string) - The current value of the filtering input, when filtering is enabled.
+   *
+   * ### group
+   *
+   * - `type` ('group') - The item type.
+   * - `index` (number) - The item's position in the list.
+   * - `option` (ItemGroup) - The original item configuration.
+   * - `disabled` (boolean) - Whether the item is disabled.
+   * - `highlighted` (boolean) - Whether the item is currently highlighted.
+   * - `expanded` (boolean) - Whether the group is expanded.
+   * - `expandDirection` ('vertical' | 'horizontal') - The direction in which the group expands.
+   * - `filterText` (string) - The current value of the filtering input, when filtering is enabled.
+   *
+   * When providing a custom `renderItem` implementation, it fully replaces the default visual rendering and content for that item.
+   * The component still manages focus, keyboard interactions, and selection state, but it no longer applies its default item layout or typography.
+   *
+   * When returning `null`, the default styling will be applied.
+   */
+  renderItem?: ButtonDropdownProps.ItemRenderer;
+
+  /**
+   * Determines whether the button dropdown is disabled. Users cannot interact with the control if it's disabled.
+   */
+  disabled?: boolean;
+  /**
+   * Provides a reason why the button dropdown is disabled (only when `disabled` is `true`).
+   * If provided, the disabled button becomes focusable.
+   *
+   * Do not place interactive elements like links or buttons.
+   */
+  disabledReason?: React.ReactNode;
+  /**
+   * Renders the button as being in a loading state. It takes precedence over the `disabled` if both are set to `true`.
+   * It prevents clicks.
+   */
+  loading?: boolean;
+  /**
+   * Specifies the text that screen reader announces when the button dropdown is in a loading state.
+   */
+  loadingText?: string;
+  /** Determines the general styling of the button dropdown.
+   * * `primary` for primary buttons
+   * * `normal` for secondary buttons
+   * * `icon` for icon buttons
+   * * `inline-icon` for icon buttons with no outer padding
+   */
+  variant?: ButtonDropdownProps.Variant;
+  /**
+   * Specifies the name of the icon used in the button dropdown trigger, used with the [icon component](/components/icon/).
+   * Defaults to `ellipsis`. Applies to the `icon` and `inline-icon` variants only.
+   */
+  iconName?: IconProps.Name;
+  /**
+   * Specifies alternate text for a custom icon, for use with `iconUrl`. Applies to the `icon` and `inline-icon` variants only.
+   */
+  iconAlt?: string;
+  /**
+   * Specifies the URL of a custom icon. Applies to the `icon` and `inline-icon` variants only.
+   *
+   * If you set both `iconUrl` and `iconSvg`, `iconSvg` will take precedence.
+   */
+  iconUrl?: string;
+  /**
+   * Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
+   * Applies to the `icon` and `inline-icon` variants only.
+   *
+   * If you set both `iconUrl` and `iconSvg`, `iconSvg` will take precedence.
+   */
+  iconSvg?: React.ReactNode;
+  /**
+   * Controls expandability of the item groups.
+   * If group items are loaded asynchronously, return each group's status from `getExpandableItemsAsyncLoadingState`.
+   */
+  expandableGroups?: boolean;
+  /**
+   * Adds `aria-label` to the button dropdown trigger.
+   * Use this to provide an accessible name for buttons that don't have visible text.
+   */
+  ariaLabel?: string;
+  /**
+   * Text displayed in the button dropdown trigger.
+   * @displayname text
+   */
+  children?: React.ReactNode;
+  /**
+   * Called when the user clicks on an item, and the item is not disabled.  The event detail object contains the id of the clicked item.
+   */
+  onItemClick?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
+  /**
+   * Called when the user clicks on an item with the left mouse button without pressing
+   * modifier keys (that is, CTRL, ALT, SHIFT, META), and the item has an `href` set.
+   */
+  onItemFollow?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
+  /**
+   * A standalone action that is shown prior to the dropdown trigger.
+   * Use it with "primary" and "normal" variant only.
+   *
+   * Main action properties:
+   * * `text` (string) - Specifies the text shown in the main action.
+   * * `external` (boolean) - Marks the main action as external by adding an icon after the text. The link will open in a new tab when clicked. Note that this only works when `href` is also provided.
+   * * `externalIconAriaLabel` (string) - Adds an ARIA label to the external icon.
+   *
+   * The main action also supports the following properties of the [button](/components/button/?tabId=api) component:
+   * `ariaLabel`, `disabled`, `loading`, `loadingText`, `href`, `target`, `rel`, `download`, `iconAlt`, `iconName`, `iconUrl`, `iconSvg`, `onClick`, `onFollow`.
+   */
+  mainAction?: ButtonDropdownProps.MainAction;
+
+  /**
+   * Sets the button width to be 100% of the parent container width. Button content is centered.
+   */
+  fullWidth?: boolean;
+
+  /**
+   * Contains all the properties for async loading. Make sure to listen to `onLoadItems`.
+   *
+   * The text properties (`empty`, `loadingText`, `finishedText`, `errorText`) are functions that receive the
+   * `expandedGroupId` when the status belongs to an expandable group, and no argument for the root list.
+   * * `empty` - (Optional) Displayed when there are no items to display. This is only shown when `statusType` is set to `finished` or not set at all.
+   * * `loadingText` - (Optional) Specifies the text to display when in the loading state.
+   * * `finishedText` - (Optional) Specifies the text to display at the bottom of the dropdown menu after pagination has reached the end.
+   * * `errorText` - (Optional) Specifies the text to display when a data fetching error occurs. Make sure that you provide `recoveryText`.
+   * * `recoveryText` (i18n) - (Optional) Specifies the text for the recovery button. The text is displayed next to the error text. Use the `onLoadItems` event to perform a recovery action (for example, retrying the request).
+   * * `errorIconAriaLabel` (i18n) - (Optional) Provides a text alternative for the error icon in the error message.
+   * * `statusType` - (Optional) Specifies the current status of loading more items.
+   * * * `pending` - Indicates that no request is in progress, but more items may be loaded.
+   * * * `loading` - Indicates that data fetching is in progress.
+   * * * `finished` - Indicates that pagination has finished and no more requests are expected.
+   * * * `error` - Indicates that an error occurred during fetch. You should use `recoveryText` to enable the user to recover.
+   */
+  asyncLoadingProps?: ButtonDropdownProps.AsyncLoadingProps;
+
+  /**
+   * Use this event to implement the asynchronous behavior for the component.
+   *
+   * The event is called in the following situations:
+   * * The dropdown opens, unless the same filtering text was already requested.
+   * * The user types inside the filtering input field.
+   * * The user scrolls to the end of the list of items, if `statusType` is set to `pending`.
+   * * The user clicks on the recovery button in the error state.
+   * * The user expands an expandable group that has an `id`.
+   *
+   * The detail object contains the following properties:
+   * * `filteringText` - The value that you need to use to fetch items. It is empty for events about an expandable group.
+   * * `firstPage` - Indicates that you should fetch the first page of items that match the `filteringText`.
+   * * `samePage` - Indicates that you should fetch the same page that you have previously fetched (for example, when the user clicks on the recovery button).
+   * * `expandedGroupId` - Set when the event is about an expandable group: the ID of the group whose items you need to load.
+   **/
+  onLoadItems?: NonCancelableEventHandler<ButtonDropdownProps.LoadItemsDetail>;
+
+  /**
+   * Specifies the async loading status of individual expandable groups.
+   * Use only if you load the nested items asynchronously upon expanding a group.
+   *
+   * Return values are:
+   * * `pending` - Indicates that no request in progress, but more options may be loaded.
+   * * `loading` - Indicates that data fetching is in progress.
+   * * `finished` - Indicates that the group's items are loaded and no more requests are expected.
+   * * `error` - Indicates that an error occurred during fetch. You should use `recoveryText` to enable the user to recover.
+   *
+   * If null or undefined, the status will be treated as `finished`.
+   */
+  getExpandableItemsAsyncLoadingState?: (options: {
+    item: ButtonDropdownProps.ItemGroup;
+  }) => ButtonDropdownProps.AsyncLoadingStatusType | null | undefined;
+
+  /**
+   * Determines how filtering is applied to the dropdown `items`:
+   *
+   * * `auto` - The component will automatically filter items based on user input.
+   * * `manual` - You will set up `onLoadItems` event listeners and filter items on your side or request
+   * them from server.
+   *
+   * If you set this property to `auto`, the component will filter the provided `items` based on the value of the filtering input field.
+   * The filtering text is matched against the item's `text`, `secondaryText`, and `labelTag`.
+   *
+   * If you set this property to `manual`, the default filtering mechanism is disabled and all provided `items` are
+   * displayed in the dropdown list. In that case make sure that you use the `onLoadItems` events in order
+   * to set the `items` property to the items that are relevant for the user, given the filtering input value.
+   *
+   */
+  filteringType?: ButtonDropdownProps.FilteringType;
+
+  /**
+   * Specifies the placeholder to display in the filtering input. Only relevant when filtering is enabled.
+   */
+  filteringPlaceholder?: string;
+
+  /**
+   * Adds an `aria-label` to the filtering input. Only relevant when filtering is enabled.
+   */
+  filteringAriaLabel?: string;
+
+  /**
+   * Adds an `aria-label` to the clear button inside the filtering input. Only relevant when filtering is enabled.
+   * @i18n
+   */
+  filteringClearAriaLabel?: string;
+
+  /**
+   * Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.
+   * @i18n
+   */
+  filteringResultsText?: (matchesCount: number, totalCount: number) => string;
+
+  /**
+   * Displayed when filtering is enabled and there are no matches for the filtering input.
+   * With `filteringType="manual"`, this is shown when you set `items` to an empty array while the filtering input has a value.
+   */
+  noMatch?: React.ReactNode;
+
+  /**
+   * An object containing all the necessary localized strings required by the component.
+   * @i18n
+   */
+  i18nStrings?: ButtonDropdownProps.I18nStrings;
+
+  /**
+   * Attributes to add to the native `button` element.
+   * Some attributes will be automatically combined with internal attribute values:
+   * - `className` will be appended.
+   * - Event handlers will be chained, unless the default is prevented.
+   *
+   * We do not support using this attribute to apply custom styling.
+   *
+   * Pass a `ref` to access the native element for measurement, observation, or third-party integration.
+   * For actions such as focus or selection, use the component's explicit ref methods;
+   * operations performed directly on the native element may bypass the built-in component's behaviors.
+   *
+   * @awsuiSystem core
+   */
+  nativeTriggerAttributes?: NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>;
+
+  /**
+   * Attributes to add to the native element of the `mainAction`.
+   *
+   * Specify either `button` for a standard main action, or `anchor` if `html` is set.
+   *
+   * Some attributes will be automatically combined with internal attribute values:
+   * - `className` will be appended.
+   * - Event handlers will be chained, unless the default is prevented.
+   *
+   * We do not support using this attribute to apply custom styling.
+   *
+   * Pass a `ref` to access the native element for measurement, observation, or third-party integration.
+   * For actions such as focus or selection, use the component's explicit ref methods;
+   * operations performed directly on the native element may bypass the built-in component's behaviors.
+   *
+   * @awsuiSystem core
+   */
+  nativeMainActionAttributes?: {
+    button?: NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>;
+    anchor?: NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>;
+  };
+}
+
+export namespace ButtonDropdownProps {
+  export type Variant = 'normal' | 'primary' | 'icon' | 'inline-icon';
+  export type ItemType = 'action' | 'group';
+  export type FilteringType = 'none' | 'auto' | 'manual';
+
+  export interface AsyncLoadingProps {
+    /**
+     * Displayed when there are no items to display.
+     * This is only shown when `statusType` is set to `finished` or not set at all.
+     */
+    empty?: (expandedGroupId?: string) => ReactNode;
+    /**
+     * Specifies the text to display when in the loading state.
+     **/
+    loadingText?: (expandedGroupId?: string) => string;
+    /**
+     * Specifies the text to display at the bottom of the dropdown menu after pagination has reached the end.
+     **/
+    finishedText?: (expandedGroupId?: string) => string;
+    /**
+     * Specifies the text to display when a data fetching error occurs. Make sure that you provide `recoveryText`.
+     **/
+    errorText?: (expandedGroupId?: string) => string;
+    /**
+     * Specifies the text for the recovery button. The text is displayed next to the error text.
+     * Use the `onLoadItems` event to perform a recovery action (for example, retrying the request).
+     * @i18n
+     **/
+    recoveryText?: string;
+    /**
+     * Provides a text alternative for the error icon in the error message.
+     * @i18n
+     */
+    errorIconAriaLabel?: string;
+    /**
+     * Specifies the current status of loading more items.
+     * * `pending` - Indicates that no request is in progress, but more items may be loaded.
+     * * `loading` - Indicates that data fetching is in progress.
+     * * `finished` - Indicates that pagination has finished and no more requests are expected.
+     * * `error` - Indicates that an error occurred during fetch. You should use `recoveryText` to enable the user to recover.
+     **/
+    statusType?: ButtonDropdownProps.AsyncLoadingStatusType;
+  }
+
+  export type AsyncLoadingStatusType = 'pending' | 'loading' | 'finished' | 'error';
+
+  export interface LoadItemsDetail extends OptionsLoadItemsDetail {
+    expandedGroupId?: string;
+  }
+
+  export interface I18nStrings {
+    filteringItemAriaDescription?: string;
+  }
+
+  export interface ActionRenderItem {
+    type: 'action';
+    index: number;
+    option: Item;
+    highlighted: boolean;
+    disabled: boolean;
+    parent: GroupRenderItem | null;
+  }
+  export interface CheckboxRenderItem {
+    type: 'checkbox';
+    index: number;
+    option: CheckboxItem;
+    disabled: boolean;
+    highlighted: boolean;
+    checked: boolean;
+    parent: GroupRenderItem | null;
+  }
+  export interface GroupRenderItem {
+    type: 'group';
+    index: number;
+    option: ItemGroup;
+    disabled: boolean;
+    highlighted: boolean;
+    expanded: boolean;
+    expandDirection: 'vertical' | 'horizontal';
+  }
+
+  export type RenderItem = ActionRenderItem | CheckboxRenderItem | GroupRenderItem;
+  export type ItemRenderer = (props: { item: ButtonDropdownProps.RenderItem; filterText?: string }) => ReactNode | null;
+
+  export interface MainAction {
+    text?: string;
+    ariaLabel?: string;
+    onClick?: CancelableEventHandler<ButtonProps.ClickDetail>;
+    onFollow?: CancelableEventHandler<ButtonProps.FollowDetail>;
+    disabled?: boolean;
+    disabledReason?: React.ReactNode;
+    loading?: boolean;
+    loadingText?: string;
+    href?: string;
+    target?: string;
+    rel?: string;
+    download?: boolean | string;
+    external?: boolean;
+    externalIconAriaLabel?: string;
+    iconAlt?: string;
+    iconName?: IconProps.Name;
+    iconUrl?: string;
+    iconSvg?: React.ReactNode;
+  }
+
+  export interface Item {
+    itemType?: ItemType;
+    id: string;
+    text: string;
+    secondaryText?: string;
+    ariaLabel?: string;
+    lang?: string;
+    disabled?: boolean;
+    disabledReason?: string;
+    /**
+     * @deprecated Has no effect.
+     */
+    description?: string;
+    href?: string;
+    download?: boolean | string;
+    external?: boolean;
+    externalIconAriaLabel?: string;
+    iconAlt?: string;
+    iconName?: IconProps.Name;
+    iconUrl?: string;
+    iconSvg?: React.ReactNode;
+    labelTag?: string;
+    dataAttributes?: Record<string, string>;
+  }
+
+  export interface CheckboxItem
+    extends Omit<ButtonDropdownProps.Item, 'href' | 'download' | 'external' | 'externalIconAriaLabel' | 'itemType'> {
+    itemType: 'checkbox';
+    checked: boolean;
+  }
+
+  export interface ItemGroup extends Omit<Item, 'id' | 'text' | 'itemType' | 'secondaryText' | 'labelTag'> {
+    itemType?: 'group';
+    id?: string;
+    text?: string;
+    items: Items;
+    /**
+     * Controls whether this group renders as an expandable submenu, overriding `expandableGroups`
+     * for this group. Defaults to the `expandableGroups` value when unset.
+     */
+    expandable?: boolean;
+  }
+
+  export type ItemOrGroup = Item | CheckboxItem | ItemGroup;
+
+  export type Items = ReadonlyArray<ItemOrGroup>;
+
+  export interface ItemClickDetails extends BaseNavigationDetail {
+    id: string;
+    checked?: boolean;
+  }
+
+  export interface Ref {
+    /**
+     * Focuses the underlying native button. If a main action is defined this will focus that button.
+     */
+    focus(options?: FocusOptions): void;
+    /**
+     * Focuses the underlying native button for the dropdown.
+     */
+    focusDropdownTrigger(options?: FocusOptions): void;
+  }
+}
+
+export interface ButtonDropdownSettings {
+  // this means whether action is required to make group expand
+  hasExpandableGroups: boolean;
+  // on smaller screens expandable groups are integrated into parent dropdown
+  // this changes keyboard navigation, highlight and activation behavior for parent dropdown
+  isInRestrictedView?: boolean;
+}
+
+export interface HighlightProps {
+  targetItem: ButtonDropdownProps.ItemOrGroup | null;
+  isHighlighted: (item: ButtonDropdownProps.ItemOrGroup) => boolean;
+  isKeyboardHighlight: (item: ButtonDropdownProps.ItemOrGroup) => boolean;
+  isExpanded: (group: ButtonDropdownProps.ItemGroup) => boolean;
+  highlightItem: (item: ButtonDropdownProps.ItemOrGroup) => void;
+}
+
+export type GroupToggle = (item: ButtonDropdownProps.ItemGroup, event: React.SyntheticEvent) => void;
+export type ItemActivate = (
+  item: ButtonDropdownProps.Item | ButtonDropdownProps.CheckboxItem,
+  event: React.MouseEvent | React.KeyboardEvent
+) => void;
+
+export interface LinkItem extends ButtonDropdownProps.Item {
+  href: string;
+}
+
+export interface CustomTriggerProps {
+  triggerRef: React.Ref<HTMLElement>;
+  testUtilsClass: string;
+  ariaLabel: string | undefined;
+  disabled: boolean;
+  disabledReason?: React.ReactNode;
+  isOpen: boolean;
+  onClick: () => void;
+  ariaExpanded: boolean;
+}

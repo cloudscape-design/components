@@ -1,0 +1,382 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { ReactNode } from 'react';
+
+import { BaseDropdownHostProps, OptionsFilteringType, OptionsLoadItemsDetail } from '../dropdown/interfaces';
+import { BaseInputProps, InputAutoCorrect, InputClearLabel, InputKeyEvents, InputProps } from '../input/interfaces';
+import { BaseComponentProps } from '../types/base-component';
+import { DropdownStatusProps } from '../types/dropdown-status';
+import { NonCancelableEventHandler } from '../types/events';
+import { FormFieldValidationControlProps } from '../types/form-field';
+import { OptionDefinition, OptionGroup } from '../types/option';
+
+export interface AutosuggestProps
+  extends BaseComponentProps,
+    BaseInputProps,
+    InputAutoCorrect,
+    BaseDropdownHostProps,
+    InputKeyEvents,
+    InputClearLabel,
+    FormFieldValidationControlProps,
+    DropdownStatusProps {
+  onLoadItems?: NonCancelableEventHandler<AutosuggestProps.LoadItemsDetail>;
+  /**
+   * Specifies an array of options that are displayed to the user as a dropdown list.
+   * The options can be grouped using `OptionGroup` objects.
+   *
+   * #### Option
+   * - `value` (string) - The returned value of the option when selected.
+   * - `label` (string) - (Optional) Option text displayed to the user.
+   * - `lang` (string) - (Optional) The language of the option, provided as a BCP 47 language tag.
+   * - `description` (string) - (Optional) Further information about the option that appears below the label.
+   * - `disabled` (boolean) - (Optional) Determines whether the option is disabled.
+   * - `labelTag` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
+   * - `tags` [string[]] - (Optional) A list of tags giving further guidance about the option.
+   * - `filteringTags` [string[]] - (Optional) A list of additional tags used for automatic filtering.
+   * - `iconName` (string) - (Optional) Specifies the name of an [icon](/components/icon/) to display in the option.
+   * - `iconAriaLabel` (string) - (Optional) Specifies alternate text for the icon. We recommend that you provide this for accessibility.
+   * - `iconAlt` (string) - (Optional) **Deprecated**, replaced by \`iconAriaLabel\`. Specifies alternate text for a custom icon, for use with `iconUrl`.
+   * - `iconUrl` (string) - (Optional) URL of a custom icon.
+   * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
+   *
+   * #### OptionGroup
+   * - `label` (string) - Option group text displayed to the user.
+   * - `disabled` (boolean) - (Optional) Determines whether the option group is disabled.
+   * - `options` (Option[]) - (Optional) The options under this group.
+   *
+   * Note: Only one level of option nesting is supported.
+   *
+   * If you want to use the built-in filtering capabilities of this component, provide
+   * a list of all valid options here and they will be automatically filtered based on the user's filtering input.
+   *
+   * Alternatively, you can listen to the `onChange` or `onLoadItems` event and set new options
+   * on your own.
+   **/
+  options?: AutosuggestProps.Options;
+
+  /**
+   * Specifies a render function to render custom options in the dropdown menu.
+   *
+   * The item inside the props has a different shape depending on its type:
+   *
+   *
+   * ### item
+   *
+   * - `type` ('item') - The item type.
+   * - `index` (number) - The item's absolute position in the dropdown.
+   * - `option` (Option) - The original option configuration.
+   * - `disabled` (boolean) - Whether the item is disabled.
+   * - `highlighted` (boolean) - Whether the item is currently highlighted.
+   * - `selected` (boolean) - Whether the item is selected.
+   * - `parent` (OptionGroupRenderItem | null) - The parent group item, if any.
+   *
+   * ### group
+   *
+   * - `type` ('group') - The item type.
+   * - `index` (number) - The item's absolute position in the dropdown.
+   * - `option` (OptionGroup) - The original option configuration.
+   * - `disabled` (boolean) - Whether the item is disabled.
+   *
+   * ### entered-text
+   *
+   * - `type` ('entered-text') - The item type.
+   * - `option` (Option) - The entered-text option configuration.
+   *
+   * When providing a custom `renderOption` implementation, it fully replaces the default visual rendering and content for that item.
+   * The component still manages focus, keyboard interactions, and selection state, but it no longer applies its default item layout or typography.
+   *
+   * When returning `null`, the default rendering will be applied for that item.
+   */
+  renderOption?: AutosuggestProps.ItemRenderer;
+
+  /**
+   * Determines how filtering is applied to the list of `options`:
+   *
+   * * `auto` - The component will automatically filter options based on user input.
+   * * `manual` - You will set up `onChange` or `onLoadItems` event listeners and filter options on your side or request
+   * them from server.
+   *
+   * By default the component will filter the provided `options` based on the value of the filtering input field.
+   * Only options that have a `value`, `label`, `description` or `labelTag` that contains the input value as a substring
+   * are displayed in the list of options.
+   *
+   * If you set this property to `manual`, this default filtering mechanism is disabled and all provided `options` are
+   * displayed in the dropdown list. In that case make sure that you use the `onChange` or `onLoadItems` events in order
+   * to set the `options` property to the options that are relevant for the user, given the filtering input value.
+   *
+   * Note: Manual filtering doesn't disable match highlighting.
+   **/
+  filteringType?: OptionsFilteringType;
+
+  /**
+   * Specifies a function that generates the custom value indicator (for example, `Use "${value}"`).
+   * @deprecated Use `i18nStrings.enteredTextLabel` instead.
+   * @i18n
+   */
+  enteredTextLabel?: AutosuggestProps.EnteredTextLabel;
+
+  /**
+   * Defines whether entered text option is shown as the first option in the dropdown when value is non-empty.
+   */
+  hideEnteredTextOption?: boolean;
+
+  /**
+   * Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.
+   *
+   * Note that the `matchesCount` includes the `enteredTextLabel` ("Use ${value}") item, so in most cases you
+   * should subtract 1 from `matchesCount`. If using manual filtering, you should provide your own value for `totalCount`.
+   */
+  filteringResultsText?: (matchesCount: number, totalCount: number) => string;
+
+  /**
+   * Specifies the text that's displayed when there aren't any suggestions to display.
+   * This is displayed when `statusType` is set to `finished` or it's not set at all.
+   */
+  empty?: React.ReactNode;
+
+  /**
+   * Called whenever a user selects an option in the dropdown. Don't use this event as the only way to handle user input.
+   * Instead, use `onSelect` in combination with the `onChange` handler only as an optional convenience for the user.
+   */
+  onSelect?: NonCancelableEventHandler<AutosuggestProps.SelectDetail>;
+
+  /**
+   * Specifies the localized string that describes an option as being selected.
+   * This is required to provide a good screen reader experience. For more information, see the
+   * [accessibility guidelines](/components/autosuggest/?tabId=usage#accessibility-guidelines).
+   * @i18n
+   */
+  selectedAriaLabel?: string;
+  /**
+   * Overrides the element that is announced to screen readers
+   * when the highlighted option changes. By default, this announces
+   * the option's name and properties, and its selected state if
+   * the `selectedAriaLabel` property is defined.
+   * The highlighted option is provided, and its group (if groups
+   * are used and it differs from the group of the previously highlighted option).
+   *
+   * For more information, see the
+   * [accessibility guidelines](/components/autosuggest/?tabId=usage#accessibility-guidelines).
+   */
+  renderHighlightedAriaLive?: AutosuggestProps.ContainingOptionAndGroupString;
+
+  /**
+   * An object containing CSS properties to customize the autosuggest's visual appearance.
+   * Refer to the [style](/components/autosuggest/?tabId=style) tab for more details.
+   * @awsuiSystem core
+   */
+  style?: AutosuggestProps.Style;
+
+  /**
+   * Specifies the list of tokens to display inline before the text input.
+   * When this prop is provided (including an empty array), the component enters token mode:
+   * accepted values accumulate as dismissible inline tokens before the text input.
+   * Tokens that don't fit the available width collapse into a `+N` overflow button.
+   * This is a controlled prop — update it in response to `onChange`.
+   */
+  tokens?: ReadonlyArray<AutosuggestProps.Token>;
+
+  /**
+   * Called whenever the input value or token list changes.
+   *
+   * In default mode, fires on every keystroke with `{ value }`.
+   * When `tokens` is provided, fires in three situations:
+   * * Keystroke — `value` is the new text; `tokens` is unchanged.
+   * * Token added — `value` is `""`; `tokens` contains the updated list.
+   * * Token dismissed — `value` is unchanged; `tokens` contains the updated list.
+   */
+  onChange?: NonCancelableEventHandler<AutosuggestProps.ChangeDetail>;
+
+  /**
+   * An object containing all the localized strings required by the component.
+   *
+   * - `enteredTextLabel` ((value: string) => string) - Label for the "Use/Add" item shown at the top of the dropdown when the user types a value. Applies in both default and token mode.
+   * - `tokenOverflowAriaLabel` ((hiddenCount: number) => string) - Aria label for the `+N` overflow button. Applies only when `tokens` is provided.
+   * - `tokenInsertedAriaLabel` ((value: string) => string) - Announced via `aria-live` when a token is added. Applies only when `tokens` is provided.
+   * - `tokenDismissLabel` ((value: string) => string) - Aria label for the dismiss button on each token. Applies only when `tokens` is provided.
+   * @i18n
+   */
+  i18nStrings?: AutosuggestProps.I18nStrings;
+}
+
+export namespace AutosuggestProps {
+  export interface ChangeDetail {
+    value: string;
+    /**
+     * Current token list. Only present when `tokens` prop is provided.
+     */
+    tokens?: ReadonlyArray<AutosuggestProps.Token>;
+  }
+  export type KeyDetail = InputProps.KeyDetail;
+  export type FilteringType = OptionsFilteringType;
+  export type Option = OptionDefinition;
+  export type Options = ReadonlyArray<Option | OptionGroup>;
+  export type EnteredTextLabel = (value: string) => string;
+  export interface OptionGroup extends Option {
+    label?: string;
+    options: ReadonlyArray<Option>;
+  }
+  /* eslint-disable-next-line @typescript-eslint/no-empty-object-type --
+   * Required to create a distinct named type for the documenter.
+   **/
+  export interface LoadItemsDetail extends OptionsLoadItemsDetail {}
+  export type StatusType = DropdownStatusProps.StatusType;
+  export interface SelectDetail {
+    value: string;
+    selectedOption?: Option;
+  }
+
+  export interface ContainingOptionAndGroupString {
+    (option: Option, group?: OptionGroup): string;
+  }
+
+  export interface OptionRenderItem {
+    type: 'item';
+    index: number;
+    option: Option;
+    disabled: boolean;
+    highlighted: boolean;
+    selected: boolean;
+    parent: OptionGroupRenderItem | null;
+  }
+  export interface OptionGroupRenderItem {
+    type: 'group';
+    index: number;
+    option: OptionGroup;
+    disabled: boolean;
+  }
+  export interface EnteredTextRenderItem {
+    type: 'entered-text';
+    option: Option;
+    highlighted: boolean;
+  }
+  export type RenderItem = OptionRenderItem | OptionGroupRenderItem | EnteredTextRenderItem;
+  export type ItemRenderer = (props: { item: RenderItem; filterText?: string }) => ReactNode | null;
+
+  export interface Ref {
+    /**
+     * Sets input focus onto the UI control.
+     */
+    focus(): void;
+
+    /**
+     * Selects all text in the input control.
+     */
+    select(): void;
+  }
+
+  export interface Token {
+    /** Specifies the text value displayed in the token. */
+    value: string;
+    /**
+     * An icon displayed at the start of the token.
+     *
+     * Use an `<Icon>` element with `size="x-small"`.
+     */
+    icon?: React.ReactNode;
+  }
+
+  export interface I18nStrings {
+    /**
+     * Label for the "entered text" dropdown item shown when the user types a value.
+     * In default mode the item reads `Use: "{value}"` by default.
+     * In token mode it reads `Add "{value}"` by default.
+     *
+     * Since you control whether `tokens` is provided, you can branch on your
+     * own state to return different text per mode:
+     * `(value) => tokens !== undefined ? \`Add "${value}"\` : \`Use "${value}"\``
+     *
+     * Replaces the deprecated top-level `enteredTextLabel` prop.
+     * @param value The text the user typed
+     * @returns The label string displayed as the first dropdown option
+     * @i18n
+     */
+    enteredTextLabel?: (value: string) => string;
+
+    /**
+     * Provides an aria-label for the `+N` overflow trigger shown when tokens overflow.
+     * The function receives the count of hidden items.
+     *
+     * Use to provide context-specific vocabulary:
+     * `count => \`${count} more regions\``
+     *
+     * Applies only when `tokens` is provided.
+     * @param hiddenCount The number of tokens hidden in the overflow
+     * @returns The aria-label string for the overflow trigger
+     * @i18n
+     */
+    tokenOverflowAriaLabel?: (hiddenCount: number) => string;
+
+    /**
+     * Announced via an `aria-live` region when a token is added.
+     * Applies only when `tokens` is provided.
+     * @param value The value of the token that was added
+     * @returns The announcement string
+     * @default `${value} inserted`
+     * @i18n
+     */
+    tokenInsertedAriaLabel?: (value: string) => string;
+
+    /**
+     * Provides an `aria-label` for the dismiss button on each token,
+     * describing the action to screen reader users (e.g. `value => \`Remove ${value}\``).
+     * Applies only when `tokens` is provided.
+     * @param value The value of the token being dismissed
+     * @returns The aria-label string for the dismiss button
+     * @i18n
+     */
+    tokenDismissLabel?: (value: string) => string;
+  }
+
+  export interface Style {
+    root?: {
+      backgroundColor?: {
+        default?: string;
+        disabled?: string;
+        focus?: string;
+        hover?: string;
+        readonly?: string;
+      };
+      borderColor?: {
+        default?: string;
+        disabled?: string;
+        focus?: string;
+        hover?: string;
+        readonly?: string;
+      };
+      borderRadius?: string;
+      borderWidth?: string;
+      boxShadow?: {
+        default?: string;
+        disabled?: string;
+        focus?: string;
+        hover?: string;
+        readonly?: string;
+      };
+      color?: {
+        default?: string;
+        disabled?: string;
+        focus?: string;
+        hover?: string;
+        readonly?: string;
+      };
+      fontSize?: string;
+      fontWeight?: string;
+      paddingBlock?: string;
+      paddingInline?: string;
+    };
+    placeholder?: {
+      color?: string;
+      fontSize?: string;
+      fontStyle?: string;
+      fontWeight?: string;
+    };
+  }
+}
+
+// TODO: use DropdownOption type same as in select and multiselect
+export type AutosuggestItem = (AutosuggestProps.Option | AutosuggestProps.OptionGroup) & {
+  type?: 'parent' | 'child' | 'use-entered';
+  option: OptionDefinition | OptionGroup;
+  parent?: OptionGroup;
+};

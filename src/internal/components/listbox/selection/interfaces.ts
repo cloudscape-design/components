@@ -1,0 +1,34 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import { OptionDefinition } from '../../../../types/option';
+import { DropdownOption } from '../../option/interfaces';
+
+export type SelectionType = 'single' | 'multi';
+
+export interface GroupState {
+  selected: boolean;
+  indeterminate: boolean;
+}
+
+/**
+ * Describes how a list selects options. Implementations are pure functions of their inputs.
+ */
+export interface SelectionModel {
+  /** Drives aria-multiselectable and the row style. */
+  selectionType: SelectionType;
+  /** Whether group headers (and select-all) can be highlighted and chosen. */
+  interactiveGroups: boolean;
+  /**
+   * The selected options. Rows are matched to them by `value` (the first option with a matching value wins),
+   * so this is the single source of truth for which rows render as selected.
+   */
+  selectedOptions: ReadonlyArray<OptionDefinition>;
+
+  /** The checkbox state of a group header or select-all row. Other options are neither selected nor indeterminate. */
+  getGroupState(option: DropdownOption): GroupState;
+  /**
+   * Returns the selection that results from the user choosing `option`.
+   * Does not check whether `option` is disabled, read-only or non-interactive; callers must do that first.
+   */
+  getNextSelection(option: DropdownOption): ReadonlyArray<OptionDefinition>;
+}

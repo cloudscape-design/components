@@ -1,0 +1,37 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use './visible-content';
+@use './content-display/content-display-list';
+
+.root,
+.modal-root,
+.trigger-button,
+.cancel-button,
+.confirm-button,
+.custom,
+.content-before {
+  /* used in test-utils */
+}
+
+.second-column-small {
+  padding-block-start: calc(2 * #{awsui.$space-scaled-l});
+}
+
+.wrap-lines,
+.striped-rows,
+.content-density,
+.page-size,
+.page-size-form-field,
+.page-size-radio-group,
+.sticky-columns,
+.sticky-columns-form-field,
+.sticky-columns-radio-group,
+.sticky-columns-first,
+.sticky-columns-last {
+  /* used in test-utils */
+}

@@ -1,0 +1,331 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../app-layout/constants' as constants;
+
+$slider-width: 16px;
+
+// Values taken from app layout
+$app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{awsui.$space-layout-toggle-padding});
+
+.drawer {
+  @include styles.styles-reset;
+  flex-shrink: 0;
+  position: relative;
+  @include styles.text-wrapping;
+  background-color: awsui.$color-background-layout-panel-content;
+  // should be above tools and navigation panels to avoid their shadows
+  z-index: 840;
+  &-closed:not(.refresh) {
+    min-inline-size: constants.$sidebar-size-closed;
+  }
+}
+
+.drawer-content-side {
+  display: flex;
+  align-items: center;
+  block-size: 100%;
+  overflow: auto;
+  & > [aria-hidden='true'],
+  .drawer-closed.refresh > & {
+    display: none;
+  }
+  .drawer-closed:not(.refresh) > & {
+    inline-size: constants.$sidebar-size-closed;
+    &:hover {
+      background: awsui.$color-background-layout-panel-hover;
+    }
+  }
+}
+
+.drawer-content-bottom {
+  :not(.drawer-closed) > & {
+    overflow-y: auto;
+    position: absolute;
+    inset: 0;
+    // Make sure that fixed position elements like popovers don't leak out
+    clip-path: border-box;
+  }
+}
+
+.position-bottom {
+  position: fixed;
+  overflow-y: auto;
+
+  &:not(.hidden) {
+    border-block-start: awsui.$border-panel-top-width solid awsui.$color-border-divider-panel-bottom;
+  }
+
+  &:not(.refresh) {
+    // custom shadow because the existing one does not have shadow on top
+    box-shadow: awsui.$shadow-split-bottom;
+    border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-bottom;
+    border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-bottom;
+  }
+  &.drawer-closed {
+    overflow: hidden;
+  }
+  &.drawer-closed.drawer-clickable:hover {
+    cursor: pointer;
+    background: awsui.$color-background-layout-panel-hover;
+  }
+  & > .drawer-content-bottom > [aria-hidden='true'] {
+    display: none;
+  }
+
+  /*
+  Removed the position fixed with the AppLayout refactor because the
+  SplitPanel is no longer in fixed position in the DOM.
+  */
+  &.refresh {
+    position: relative;
+  }
+}
+
+.position-side {
+  border-block-start: none;
+  box-shadow: awsui.$shadow-split-side;
+  block-size: 100%;
+  &.with-toolbar {
+    box-shadow: none;
+  }
+}
+
+.slider-wrapper-bottom {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inline-size: 100%;
+  block-size: $slider-width + 2px;
+  display: flex;
+  justify-content: center;
+  z-index: 2;
+}
+
+.slider-wrapper-side {
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 0;
+  block-size: 100%;
+  inline-size: $slider-width + 2px;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+  &.with-toolbar {
+    position: unset;
+  }
+}
+
+.open-button-side {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  box-sizing: border-box;
+  margin-block-start: awsui.$space-xxs;
+  margin-block-end: 0;
+  margin-inline: auto;
+}
+
+.pane-header-wrapper-bottom {
+  position: sticky;
+  inset-block-start: 0;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  z-index: 1; // should be above .content-bottom
+  padding-block: 0;
+  padding-inline: awsui.$space-layout-content-horizontal;
+
+  .drawer-mobile > .drawer-content-bottom > & {
+    padding-block: 0;
+    padding-inline: awsui.$space-l;
+  }
+  .drawer-disable-content-paddings > .drawer-content-bottom > & {
+    padding-block: 0;
+    padding-inline: awsui.$space-l;
+  }
+  :not(.drawer-closed) > .drawer-content-bottom > & {
+    background-color: awsui.$color-background-layout-panel-content;
+    border-block-end: awsui.$border-panel-header-width solid awsui.$color-border-panel-header;
+  }
+  .with-toolbar:not(.drawer-closed) > .drawer-content-bottom > & {
+    border-color: transparent;
+  }
+}
+
+.content-bottom {
+  padding-block: 0;
+  padding-inline: awsui.$space-layout-content-horizontal;
+  margin-block-start: awsui.$space-panel-split-top;
+  position: relative;
+  z-index: 0; // the content inside .content-bottom should not be above pane-header-wrapper-bottom
+  .with-toolbar > .drawer-content-bottom > & {
+    margin-block-start: 0px;
+  }
+  .drawer-mobile > .drawer-content-bottom > & {
+    padding-block: 0;
+    padding-inline: awsui.$space-l;
+  }
+  .drawer-disable-content-paddings > .drawer-content-bottom > & {
+    padding-block: 0;
+    padding-inline: 0;
+  }
+}
+
+.pane-bottom-center-align {
+  display: flex;
+  justify-content: center;
+}
+
+.pane-bottom-content-nav-padding {
+  padding-inline-start: $app-layout-drawer-width;
+}
+
+.pane-bottom-content-tools-padding {
+  padding-inline-end: $app-layout-drawer-width;
+}
+
+.content-bottom-max-width {
+  flex-grow: 1;
+  max-inline-size: 100%;
+}
+
+.content-side {
+  flex: auto;
+  align-self: flex-start;
+  box-sizing: border-box;
+  overflow-y: auto;
+  inset-block-start: 0;
+  inset-inline: 0;
+  block-size: 100%;
+  &.with-toolbar {
+    position: absolute;
+  }
+  > .pane-header-wrapper-side {
+    padding-block: 0;
+    padding-inline-end: awsui.$space-m;
+    padding-inline-start: awsui.$space-panel-side-left;
+    border-block-end: awsui.$border-panel-header-width solid awsui.$color-border-panel-header;
+  }
+  &.with-toolbar > .pane-header-wrapper-side {
+    border-color: transparent;
+  }
+  > .pane-content-wrapper-side {
+    padding-block: 0;
+    padding-inline-start: awsui.$space-panel-side-left;
+    padding-inline-end: awsui.$space-panel-side-right;
+    margin-block-start: awsui.$space-panel-split-top;
+    margin-block-end: awsui.$space-panel-split-bottom;
+  }
+  &.with-toolbar > .pane-content-wrapper-side {
+    margin-block-start: 0px;
+  }
+}
+
+.header {
+  $vertical-margin: calc(#{awsui.$space-scaled-xxs} + 1px);
+
+  inline-size: 100%;
+  margin-block: awsui.$size-vertical-panel-icon-offset;
+  margin-inline: 0;
+  &.with-toolbar {
+    margin-block: constants.$toolbar-vertical-panel-icon-offset;
+  }
+
+  &-main-row,
+  &-main-content {
+    display: flex;
+  }
+
+  // Area containing the before-header slot, the header text, the info link, the actions slot
+  // and the built-in panel buttons.
+  &-main-row {
+    // Make sure that the panel buttons are always anchored to the block start,
+    // even if the main content (before-header slot, header text, actions) wraps into multiple lines.
+    align-items: flex-start;
+  }
+
+  // Area containing the before-header slot, the header text, the info link and the actions slot
+  // --not the description nor the built-in panel buttons.
+  &-main-content {
+    flex: auto;
+    flex-direction: row;
+    column-gap: awsui.$space-scaled-xs;
+    row-gap: awsui.$space-scaled-xxs;
+    justify-content: space-between;
+    // Keep the actions slot always at the block start,
+    // even if the heading and the info slot wrap into multiple lines.
+    align-items: flex-start;
+  }
+
+  // Header tag and info link
+  &-tag-and-info {
+    flex-grow: 1;
+    margin-block-start: $vertical-margin;
+    // The line height of the header text might not be respected in non-high pixel density screens
+    // unless it is set to a smaller value in its parent container.
+    line-height: awsui.$line-height-body-s;
+    &.with-description {
+      margin-block-end: awsui.$space-scaled-xxxs;
+    }
+  }
+
+  &-tag.with-info,
+  &-text {
+    display: inline;
+  }
+
+  // The h2 tag, which contains the elements in the `headerBefore` slot, if defined, and the header text
+  &-tag {
+    margin-block: 0;
+  }
+
+  &-before-slot,
+  &-text {
+    @include styles.font-panel-header;
+  }
+
+  &-before-slot {
+    margin-block-start: calc(-1 * #{$vertical-margin});
+    .header-tag.with-info > &,
+    &.with-header-text {
+      display: inline-block;
+    }
+  }
+
+  &-before-slot.with-header-text,
+  &-tag.with-info {
+    margin-inline-end: awsui.$space-scaled-xs;
+  }
+
+  &-actions-slot {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    min-block-size: calc(#{awsui.$font-panel-header-line-height} + 2 * #{$vertical-margin});
+  }
+
+  &-description {
+    color: awsui.$color-text-heading-secondary;
+    @include styles.font-body-m;
+    margin-block: 0;
+  }
+}
+
+.header-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex: 0 0 auto;
+  margin-inline-start: awsui.$space-xs;
+}
+
+.divider {
+  border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  margin-block: awsui.$space-scaled-xxs;
+  margin-inline: awsui.$space-scaled-xs;
+}

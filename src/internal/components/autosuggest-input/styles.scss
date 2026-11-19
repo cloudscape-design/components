@@ -1,0 +1,72 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../../internal/styles/tokens' as awsui;
+@use '../../../internal/styles' as styles;
+
+.root {
+  // Used in test-utils.
+}
+
+.dropdown-footer {
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.dropdown-content {
+  display: contents;
+}
+
+.token-list {
+  @include styles.styles-reset-ul;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  column-gap: awsui.$space-xxs;
+  flex-shrink: 1;
+  min-inline-size: 0;
+}
+
+.inline-tokens {
+  display: flex;
+  align-items: center;
+  column-gap: awsui.$space-xxs;
+  min-inline-size: 0;
+}
+
+.token-list-item {
+  display: contents;
+}
+
+.token-overflow {
+  flex-shrink: 0;
+}
+
+.token-overflow-trigger {
+  flex-shrink: 0;
+}
+
+.overflow-dropdown {
+  @include styles.styles-reset-ul;
+  padding-block: awsui.$space-xxs;
+}
+
+.overflow-dropdown-item {
+  display: flex;
+  padding-block: awsui.$space-xxs;
+  padding-inline: awsui.$space-xs;
+}
+
+.measurement-container {
+  @include styles.measurement-ghost;
+  display: flex;
+  flex-wrap: nowrap;
+  column-gap: awsui.$space-xxs;
+}
+
+.measurement-token {
+  display: inline-flex;
+  flex-shrink: 0;
+}

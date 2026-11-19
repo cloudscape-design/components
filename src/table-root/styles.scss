@@ -1,0 +1,70 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/index' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/components/sticky-header/mixins' as sticky-header;
+@use '../internal/components/sticky-scrollbar/mixins' as sticky-scrollbar;
+
+.root {
+  @include styles.styles-reset;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
+}
+
+// Its scrollbar is hidden in favour of the sticky scrollbar, which stays reachable however tall the body is.
+.body-scroller {
+  overflow-x: auto;
+  @include sticky-scrollbar.hidden-scrollbar;
+  @include focus-visible.when-visible {
+    @include styles.container-focus();
+  }
+}
+
+.table {
+  inline-size: 100%;
+  // Separate borders: the collapsed model breaks sticky columns and blurs the selected-row outline corners.
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-auto {
+  table-layout: auto;
+}
+
+.table-grid {
+  display: block;
+}
+
+// Keeps the copy's cells at the widths copied from the real header.
+.table-copy-fixed {
+  table-layout: fixed;
+}
+
+.sticky-slot {
+  position: sticky;
+  inset-block-start: 0;
+  // Above absolutely positioned (virtualized) rows, below overlays.
+  z-index: 800;
+  background: awsui.$color-background-table-header;
+}
+
+.sticky-slot-stuck {
+  box-shadow: awsui.$shadow-sticky-embedded;
+}
+
+.sticky-copy-scroller {
+  @include sticky-header.copy-scroller;
+}
+
+.sticky-copy-focus {
+  @include focus-visible.when-visible-unfocused {
+    // No gutter: the copy's scroller clips anything outside it.
+    @include styles.focus-highlight(awsui.$space-none);
+  }
+}

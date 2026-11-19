@@ -1,0 +1,38 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+@use './motion';
+
+.root {
+  /* used in test-utils */
+}
+
+.series {
+  display: block;
+  stroke-width: awsui.$border-line-chart-width;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: awsui.$border-line-chart-line-join;
+}
+
+.series--highlighted {
+  /* used in test-utils */
+}
+
+.series--dimmed {
+  opacity: 0.3;
+}
+
+.series--threshold {
+  stroke-dasharray: awsui.$border-line-chart-dash-array;
+  stroke-width: awsui.$border-line-chart-width;
+}
+
+.popover-divider {
+  margin-block: awsui.$space-xs;
+  margin-inline: 0;
+  border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+}

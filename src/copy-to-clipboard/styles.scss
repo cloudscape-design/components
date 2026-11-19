@@ -1,0 +1,40 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/style-api' as style-api;
+
+@include style-api.docs-forward('copyButton', 'button', 'root');
+@include style-api.docs-forward('statusPopover', 'popover');
+
+.root {
+  display: contents;
+}
+
+.inline-container {
+  word-break: break-all;
+
+  &-trigger {
+    margin-inline-end: awsui.$space-scaled-xxs;
+  }
+
+  &-no-wrap {
+    display: inline-flex;
+    align-items: flex-start;
+    max-inline-size: 100%;
+    word-break: normal;
+
+    > .inline-container-trigger {
+      flex-shrink: 0;
+    }
+
+    > .text-to-display {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      min-inline-size: 0;
+    }
+  }
+}

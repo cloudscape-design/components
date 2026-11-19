@@ -1,0 +1,321 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use 'sass:map';
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/foundation' as foundation;
+@use '../internal/styles' as styles;
+@use '../internal/styles/typography' as typography;
+@use '../internal/styles/utils/theming' as theming;
+@use '../internal/styles/style-api' as style-api;
+@use './collapsible.motion';
+
+// Style API v2. The focus-ring tokens are registered once, in styles.scss.
+$_bar-tokens: style-api.resolve(style-api.$focus-ring, carrier);
+@include style-api.docs(
+  'notificationBar',
+  $_bar-tokens,
+  $properties: (color, background, border, border-radius, box-shadow, padding)
+);
+
+$notification-bar-top-overlap: (
+  'collapsed': calc(#{awsui.$space-scaled-xl} + 3px),
+  'expanded': awsui.$space-scaled-s,
+);
+$notification-bar-line-height: awsui.$line-height-body-m;
+$notification-bar-padding-vertical: awsui.$space-button-vertical;
+$notification-bar-collapsed-item-overflow: (
+  'x': 10px,
+  'y': 8px,
+);
+$notification-bar-border-width: awsui.$border-width-notification-stack-bar;
+
+.stack {
+  $notification-bar-horizontal-margin: 3 * map.get($notification-bar-collapsed-item-overflow, 'x');
+  display: grid;
+  grid-template-columns: $notification-bar-horizontal-margin 1fr $notification-bar-horizontal-margin;
+}
+
+.stack > .expanded {
+  grid-column: 1 / 4;
+}
+
+@mixin stacked-flash-z-index {
+  // The first item should have the highest z index than the second item, and so forth...
+  z-index: calc(var(#{custom-props.$flashbarStackDepth}) - var(#{custom-props.$flashbarStackIndex}));
+}
+
+/*
+The collapsed stack is a dynamic grid that creates the necessary number of
+rows and columns based on the number of items passed to CSS via the
+`flashbarStackDepth` custom property. Assuming there are three flashbar items,
+the grid layout will be:
+
+[item 1 start] [10px] [10px] [fractional unit] [10px] [10px] [item 1 end]
+[10px] [item 2 start] [10px] [fractional unit] [10px] [item 2 end] [10px]
+[10px] [10px] [item 3 start] [fractional unit] [item 3 end] [10px] [10px]
+*/
+
+.stack > .collapsed {
+  display: grid;
+  grid-column: 1 / 4;
+  grid-template-columns:
+    repeat(var(#{custom-props.$flashbarStackDepth}), map.get($notification-bar-collapsed-item-overflow, 'x'))
+    1fr
+    repeat(var(#{custom-props.$flashbarStackDepth}), map.get($notification-bar-collapsed-item-overflow, 'x'));
+  row-gap: map.get($notification-bar-collapsed-item-overflow, 'y');
+  z-index: 0;
+
+  > .item {
+    // Each item will have a unique custom property `flashbarStackIndex`
+    // Add +1 is because the array is indexed at zero but grid positions are indexed at 1.
+    grid-column-start: calc(var(#{custom-props.$flashbarStackIndex}) + 1);
+
+    // Add +1 to include the fractional unit in the column count
+    // Add +1 because the array indexed at zero but grid positions at indexed at 1.
+    grid-column-end: calc(
+      var(#{custom-props.$flashbarStackDepth}) * 2 + 1 - var(#{custom-props.$flashbarStackIndex}) + 1
+    );
+    grid-row-start: 1;
+    grid-row-end: calc(var(#{custom-props.$flashbarStackIndex}) + 2);
+
+    @include stacked-flash-z-index;
+  }
+
+  > .item:not(:first-of-type) {
+    align-self: end;
+    /* Give placeholder elements in the stacked state the height of a notification
+       with one single line of text.
+       This makes them look better during the collapse animation, in which they are already empty.
+     */
+    min-block-size: calc(
+      #{awsui.$line-height-body-m} +
+        (#{awsui.$space-scaled-xs} + #{awsui.$border-width-field} + #{awsui.$space-scaled-xxs}) * 2
+    );
+  }
+
+  > .item:not(:last-child) > .flash,
+  > .item.flash {
+    box-shadow: awsui.$shadow-flash-collapsed;
+  }
+}
+
+.stack > .expanded.animation-running > .flash-list-item {
+  position: relative;
+  @include stacked-flash-z-index;
+}
+
+@mixin vertical-spacing($top-overlap, $border-width, $buffer-bottom: 0px, $offset-bottom: 0px) {
+  /*
+ The default bottom margin (custom-props.$stackedNotificationsDefaultBottomMargin) is just enough to prevent the
+ notification bar from overlapping the elements below. But if using disableContentPaddings,
+ $stackedNotificationsBottomMargin will be set at the App Layout level so that this distance is increased to prevent the
+ main area from touching the notifications area.
+ */
+
+  /* $notification-bar-line-height + 2 * $notification-bar-padding-vertical + 2 * $border-width
+  is the full height of the notification bar */
+  #{custom-props.$stackedNotificationsDefaultBottomMargin}: calc(
+    #{$notification-bar-line-height} + 2 * #{$notification-bar-padding-vertical} + 2 * #{$border-width} -
+      #{$top-overlap}
+  );
+  margin-block-end: calc(
+    var(
+        #{custom-props.$stackedNotificationsBottomMargin},
+        var(#{custom-props.$stackedNotificationsDefaultBottomMargin})
+      ) +
+      #{$buffer-bottom} + #{$offset-bottom}
+  );
+
+  > .notification-bar {
+    margin-block-start: calc(-1 * #{$top-overlap} + #{$offset-bottom});
+    /* $notification-bar-line-height + 2 * $notification-bar-padding-vertical + 2 * $border-width
+    is the full height of the notification bar */
+    margin-block-end: calc(
+      #{$top-overlap} - #{$notification-bar-line-height} - 2 * #{$notification-bar-padding-vertical} - 2 *
+        #{$border-width} - #{$offset-bottom}
+    );
+    padding-block: $notification-bar-padding-vertical;
+  }
+}
+
+.stack.collapsible {
+  &:not(.expanded) {
+    &:not(.short-list) {
+      @include vertical-spacing(map.get($notification-bar-top-overlap, 'collapsed'), $notification-bar-border-width);
+    }
+
+    /*
+    Since the notification bar is anchored to the bottom of the Flashbar, we need to push it up to account for the
+    missing third item when there are only 2 items in the stack.
+     */
+    &.short-list {
+      @include vertical-spacing(
+        map.get($notification-bar-top-overlap, 'collapsed'),
+        $notification-bar-border-width,
+        0px,
+        map.get($notification-bar-collapsed-item-overflow, 'y')
+      );
+    }
+  }
+
+  &.expanded {
+    &:not(.visual-refresh) {
+      /*
+      Give a bit more bottom margin when expanded, but only in Classic because in Visual Refresh the margin around the
+      notifications slot already gives it enough space.
+       */
+      @include vertical-spacing(
+        map.get($notification-bar-top-overlap, 'expanded'),
+        $notification-bar-border-width,
+        awsui.$space-scaled-m
+      );
+    }
+    &.visual-refresh {
+      @include vertical-spacing(map.get($notification-bar-top-overlap, 'expanded'), $notification-bar-border-width);
+    }
+  }
+}
+
+.stack > .notification-bar {
+  @include style-api.carriers($_bar-tokens);
+  @include styles.text-wrapping;
+  background: var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-notification-stack-bar);
+  border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-notification-stack-bar);
+  border-start-start-radius: awsui.$border-radius-button;
+  border-start-end-radius: awsui.$border-radius-button;
+  border-end-start-radius: awsui.$border-radius-button;
+  border-end-end-radius: awsui.$border-radius-button;
+  border-block-style: solid;
+  border-inline-style: solid;
+  border-block-width: $notification-bar-border-width;
+  border-inline-width: $notification-bar-border-width;
+  box-shadow: awsui.$shadow-panel-toggle;
+  color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-notification-stack-bar);
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  grid-column: 2;
+  grid-row: 2;
+  column-gap: calc(#{awsui.$space-m} + #{awsui.$space-xxs});
+  justify-content: center;
+  letter-spacing: awsui.$font-button-letter-spacing;
+  margin-inline: auto;
+  row-gap: 0;
+  text-align: center;
+  text-decoration: none;
+  z-index: 1;
+
+  > .status > .header,
+  > .status > .item-count,
+  > .button {
+    @include typography.default-text-style;
+    color: inherit;
+    cursor: pointer;
+    margin-block: 0;
+    padding-block: 0;
+  }
+
+  > .status {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-gap: awsui.$space-m;
+    justify-content: center;
+    row-gap: 0;
+
+    > .header {
+      font-weight: awsui.$font-weight-button;
+      display: inline-block;
+    }
+
+    > .item-count {
+      column-gap: awsui.$space-s;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      row-gap: 0;
+
+      > .type-count > .count-number {
+        margin-inline-start: awsui.$space-xxs;
+      }
+    }
+  }
+
+  &:hover {
+    background: var(#{custom-props.$styleBackgroundHover}, awsui.$color-background-notification-stack-bar-hover);
+    border-color: var(#{custom-props.$styleBorderColorHover}, awsui.$color-border-notification-stack-bar-hover);
+    color: var(#{custom-props.$styleColorHover}, awsui.$color-text-notification-stack-bar);
+  }
+
+  &:active {
+    background: var(#{custom-props.$styleBackgroundActive}, awsui.$color-background-notification-stack-bar-active);
+    border-color: var(#{custom-props.$styleBorderColorActive}, awsui.$color-border-notification-stack-bar-active);
+    color: var(#{custom-props.$styleColorActive}, awsui.$color-text-notification-stack-bar);
+  }
+
+  &.visual-refresh {
+    padding-inline: awsui.$space-l;
+
+    @include theming.one-theme-only {
+      padding-inline: awsui.$space-s;
+    }
+  }
+
+  &:not(.visual-refresh) {
+    padding-inline: awsui.$space-s;
+
+    &:focus {
+      text-decoration: none;
+    }
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  > .button {
+    display: inline-block;
+    flex-grow: 1;
+    background: none;
+    border-block: 0;
+    border-inline: none;
+    padding-block: 0;
+    @include theming.one-theme-only {
+      padding-inline: 0;
+    }
+
+    > .icon {
+      @include styles.with-motion {
+        transition: transform awsui.$motion-duration-rotate-90 awsui.$motion-easing-rotate-90;
+      }
+    }
+    &.expanded > .icon {
+      transform: rotate(180deg);
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    @include focus-visible.when-visible {
+      @include style-api.focus-highlight(
+        $gutter-block: 0px,
+        $gutter-inline: 0px,
+        $radius: var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring),
+        $width: var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width),
+        $color: var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-notification-stack-bar-focused)
+      );
+    }
+  }
+}
+
+// Prevent the sticky Flashbar from reaching the end of the window by leaving some space below.
+.stack.expanded:not(.floating) {
+  // Default to 0 so that this does not apply to non-sticky Flashbar.
+  padding-block-end: var(#{custom-props.$flashbarStickyBottomMargin}, 0);
+}

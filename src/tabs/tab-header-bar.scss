@@ -1,0 +1,351 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+/* stylelint-disable selector-max-type */
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles//foundation' as foundation;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../internal/styles/style-api' as style-api;
+
+$separator-color: awsui.$color-border-tabs-divider;
+$label-horizontal-spacing: awsui.$space-xs;
+
+// Style API v2
+$header-tokens: style-api.resolve((divider-color, divider-width), carrier);
+$tab-tokens: style-api.resolve(
+  (active-indicator-color, active-indicator-width, active-indicator-border-radius),
+  public
+);
+$link-tokens: style-api.resolve(style-api.$focus-ring, carrier);
+$content-tokens: style-api.resolve(style-api.$focus-ring, carrier);
+@include style-api.register($header-tokens, $tab-tokens, $link-tokens, $content-tokens);
+@include style-api.docs(
+  'tabsHeader',
+  $header-tokens,
+  $properties: (border),
+  $descriptions: (
+    tokens: (
+      divider-color: 'The line between two tabs.',
+    )
+  )
+);
+@include style-api.docs('tab', $tab-tokens, $properties: (background, border, border-radius));
+@include style-api.docs('tabLink', $link-tokens, $properties: (color, padding, font-family, font-size, font-weight));
+@include style-api.docs('content', $content-tokens);
+@include style-api.docs-forward('dismissButton', 'button', 'root');
+
+.tabs-header {
+  @include style-api.carriers($header-tokens);
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tab-header-scroll-container {
+  display: flex;
+  flex-grow: 1;
+  max-inline-size: 100%;
+}
+
+.tabs-header-list {
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
+  display: flex;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  position: relative;
+  inline-size: 100%;
+  scroll-snap-type: inline proximity;
+  // do not use pointer-events none because it disables scroll by sliding
+
+  // Hide scrollbar in all browsers
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
+}
+
+.pagination-button {
+  margin-block: awsui.$space-scaled-s;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: awsui.$space-xxs;
+  display: flex;
+  &-left {
+    border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-control-disabled;
+    &-scrollable {
+      z-index: 1;
+      box-shadow:
+        5px 0px 4px -3px awsui.$color-border-tabs-shadow,
+        1px 0px 0px 0px awsui.$color-border-tabs-shadow;
+    }
+  }
+  &-right {
+    border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-control-disabled;
+    &-scrollable {
+      z-index: 1;
+      box-shadow:
+        -5px 0px 4px -3px awsui.$color-border-tabs-shadow,
+        -1px 0px 0px 0 awsui.$color-border-tabs-shadow;
+    }
+  }
+}
+
+.actions-container {
+  flex-shrink: 0;
+  align-self: center;
+  padding-block: awsui.$space-xs;
+  padding-inline: awsui.$space-xs;
+  margin-inline-start: auto;
+}
+
+.tabs-tab {
+  // Clear list formatting that comes with list item
+  list-style: none;
+  padding-block: 0;
+  padding-inline: 0;
+
+  flex-shrink: 0;
+  display: flex;
+  max-inline-size: calc(90% - awsui.$space-l);
+  scroll-snap-align: start;
+}
+
+.tabs-tab-label {
+  display: flex;
+  align-items: center;
+  padding-inline: $label-horizontal-spacing;
+  padding-block: awsui.$space-tabs-vertical;
+  text-align: start;
+  position: relative;
+
+  @include styles.text-wrapping;
+}
+
+.tabs-tab-header-container {
+  position: relative;
+
+  border-block: awsui.$border-divider-section-width solid transparent;
+  border-inline: awsui.$border-divider-section-width solid transparent;
+
+  padding-inline: $label-horizontal-spacing;
+  display: flex;
+  align-items: stretch;
+
+  & > .tabs-tab-dismiss,
+  & > .tabs-tab-action {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  &.refresh > span:first-of-type {
+    margin-inline-start: calc(-1 * awsui.$space-scaled-xs);
+  }
+}
+
+.tabs-tab-header-container:not(.tabs-tab-disabled) {
+  // This is the underline for the currently selected tab.
+  &:after {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    inline-size: calc(100% - 1px);
+    inset-block-end: calc(-1 * #{awsui.$border-divider-section-width});
+    block-size: style-api.value(
+      $tab-tokens,
+      active-indicator-width,
+      var(#{custom-props.$styleTabsActiveIndicatorWidth}, awsui.$border-active-width)
+    );
+    --awsui-style-active-indicator-color: inherit;
+    --awsui-style-active-indicator-width: inherit;
+    --awsui-style-active-indicator-border-radius: inherit;
+    border-start-start-radius: style-api.value(
+      $tab-tokens,
+      active-indicator-border-radius,
+      var(#{custom-props.$styleTabsActiveIndicatorBorderRadius}, awsui.$border-radius-tabs-focus-ring)
+    );
+    border-start-end-radius: style-api.value(
+      $tab-tokens,
+      active-indicator-border-radius,
+      var(#{custom-props.$styleTabsActiveIndicatorBorderRadius}, awsui.$border-radius-tabs-focus-ring)
+    );
+    border-end-start-radius: style-api.value(
+      $tab-tokens,
+      active-indicator-border-radius,
+      var(#{custom-props.$styleTabsActiveIndicatorBorderRadius}, awsui.$border-radius-tabs-focus-ring)
+    );
+    border-end-end-radius: style-api.value(
+      $tab-tokens,
+      active-indicator-border-radius,
+      var(#{custom-props.$styleTabsActiveIndicatorBorderRadius}, awsui.$border-radius-tabs-focus-ring)
+    );
+    background: style-api.value(
+      $tab-tokens,
+      active-indicator-color,
+      var(#{custom-props.$styleTabsActiveIndicatorColor}, awsui.$color-border-tabs-underline)
+    );
+    opacity: 0;
+  }
+
+  &.refresh {
+    &:after {
+      @include styles.with-motion {
+        transition: opacity awsui.$motion-duration-refresh-only-medium awsui.$motion-easing-refresh-only-c;
+      }
+    }
+  }
+}
+
+.tabs-tab:not(:last-child) {
+  & > .tabs-tab-header-container {
+    margin-inline-end: calc(-1 * #{awsui.$border-divider-section-width});
+    // This is the divider for the tab
+    &:before {
+      content: '';
+      position: absolute;
+      border-inline-end: style-api.value(
+          $header-tokens,
+          divider-width,
+          var(#{custom-props.$styleTabsSeparatorWidth}, awsui.$border-divider-section-width)
+        )
+        solid
+        style-api.value($header-tokens, divider-color, var(#{custom-props.$styleTabsSeparatorColor}, $separator-color));
+      inset: awsui.$space-scaled-s 0;
+      opacity: 1;
+    }
+
+    &.refresh:before {
+      inset: calc(#{awsui.$space-static-s} - #{awsui.$border-active-width}) 0;
+    }
+  }
+}
+
+.tabs-tab-link {
+  @include style-api.carriers($link-tokens);
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  text-decoration: none;
+  cursor: pointer;
+  padding-block-start: calc(#{awsui.$space-scaled-s} - 2px);
+  padding-block-end: calc(#{awsui.$space-scaled-s} - 1px);
+
+  padding-inline: 0;
+  margin-block-start: 1px;
+  border-block: awsui.$border-divider-section-width solid var(#{custom-props.$styleBorderColorDefault}, transparent);
+  border-inline: awsui.$border-divider-section-width solid var(#{custom-props.$styleBorderColorDefault}, transparent);
+
+  font-size: awsui.$font-size-tabs;
+  line-height: awsui.$line-height-tabs;
+  font-weight: awsui.$font-weight-tabs;
+  color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-interactive-default);
+  background-color: var(#{custom-props.$styleBackgroundDefault}, transparent);
+
+  padding-inline-start: calc(#{awsui.$space-xxs} - 1px);
+  padding-inline-end: awsui.$space-xxs;
+  @include styles.font-smoothing;
+
+  &.refresh {
+    padding-block-start: calc(awsui.$space-static-xs - 1px);
+    padding-block-end: calc(awsui.$space-static-xs - 1px);
+
+    margin-block-start: 0;
+  }
+
+  &:hover {
+    color: var(#{custom-props.$styleColorHover}, awsui.$color-text-accent);
+    border-color: var(
+      #{custom-props.$styleBorderColorHover},
+      var(#{custom-props.$styleBorderColorDefault}, transparent)
+    );
+    background-color: var(
+      #{custom-props.$styleBackgroundHover},
+      var(#{custom-props.$styleBackgroundDefault}, transparent)
+    );
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  @include focus-visible.when-visible {
+    #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
+      style-api.value(
+        $link-tokens,
+        focus-ring-width,
+        var(#{custom-props.$styleFocusRingBorderWidth}, foundation.$box-shadow-focused-width)
+      )
+      style-api.value(
+        $link-tokens,
+        focus-ring-color,
+        var(#{custom-props.$styleFocusRingBorderColor}, awsui.$color-border-item-focused)
+      );
+
+    @include styles.focus-highlight(
+      $gutter: awsui.$space-tabs-focus-outline-gutter,
+      $border-radius: style-api.value(
+          $link-tokens,
+          focus-ring-radius,
+          var(#{custom-props.$styleFocusRingBorderRadius}, awsui.$border-radius-control-default-focus-ring)
+        ),
+      $box-shadow: var(#{custom-props.$styleFocusRingBoxShadow}),
+      // Positions focus ring above the underline to prevent the bottom edge from being obscured.
+      // Previously used z-index on the button, but that hides the underline when the button has a background color.
+      $z-index: 1
+    );
+  }
+}
+
+// Remediate focus shadow
+.tabs-tab:first-child {
+  margin-inline-start: 1px;
+  scroll-margin-inline-start: 1px;
+  & > .tabs-tab-header-container {
+    padding-inline-start: calc(#{$label-horizontal-spacing} - 1px);
+  }
+}
+
+// Remediate focus shadow
+.tabs-tab:last-child {
+  margin-inline-end: 1px;
+  scroll-margin-inline-end: 1px;
+  & > .tabs-tab-header-container {
+    padding-inline-end: calc(#{$label-horizontal-spacing} - 1px);
+  }
+}
+
+.tabs-tab-disabled {
+  &,
+  &:hover {
+    cursor: default;
+    color: var(#{custom-props.$styleColorDisabled}, awsui.$color-text-interactive-disabled);
+    border-color: var(#{custom-props.$styleBorderColorDisabled}, transparent);
+    background-color: var(#{custom-props.$styleBackgroundDisabled}, transparent);
+    font-weight: awsui.$font-weight-tabs-disabled;
+  }
+}
+
+.tabs-tab-active:not(.tabs-tab-disabled) {
+  color: var(#{custom-props.$styleColorActive}, awsui.$color-text-accent);
+  border-color: var(#{custom-props.$styleBorderColorActive}, transparent);
+  background-color: var(#{custom-props.$styleBackgroundActive}, transparent);
+  &:after {
+    opacity: 1;
+  }
+}
+
+.tabs-header-with-divider {
+  border-block-end: awsui.$border-divider-section-width solid $separator-color;
+}
+
+.tabs-tab-focusable {
+  /* used to manage focusable logic */
+}

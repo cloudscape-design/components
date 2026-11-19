@@ -1,0 +1,96 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../../internal/styles/tokens' as awsui;
+@use '../../../internal/styles' as styles;
+
+.tutorial-list {
+  @include styles.styles-reset;
+  padding-block: 0;
+  padding-inline: 0;
+  margin-block: 0;
+  margin-inline: 0;
+}
+
+.tutorial-title {
+  display: flex;
+  align-items: flex-start;
+  margin-inline-start: calc(-1 * #{awsui.$space-xxs});
+  padding-block-end: awsui.$space-xxxs;
+}
+
+.task {
+  list-style: none;
+  padding-block-start: 0;
+  &:not(:first-child) {
+    margin-block-start: awsui.$space-xl;
+  }
+}
+
+.task-title {
+  display: flex;
+  align-items: flex-start;
+  padding-inline-start: awsui.$border-divider-section-width;
+  @include styles.font(heading-s);
+
+  &--status {
+    line-height: inherit;
+  }
+}
+
+.current-task {
+  font-weight: styles.$font-weight-bold;
+}
+
+.successful-task {
+  color: awsui.$color-text-status-success;
+}
+
+.congratulation-message {
+  display: flex;
+  @include styles.font(heading-s);
+  font-weight: awsui.$font-weight-heading-xs;
+  color: awsui.$color-text-status-success;
+
+  &--status {
+    line-height: inherit;
+    flex-shrink: 0;
+  }
+}
+
+.plaintext-congratulation-description {
+  white-space: pre-line;
+}
+
+.divider {
+  border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+}
+
+.step-list {
+  list-style: none;
+  padding-block: 0;
+  padding-inline-start: awsui.$space-xxxs;
+  padding-inline-end: 0;
+}
+
+.step:not(:first-child) {
+  padding-block-start: awsui.$space-xxs;
+}
+
+.expandable-section-wrapper {
+  inline-size: 100%;
+}
+
+.expandable-section-header {
+  @include styles.font(body-m);
+}
+
+.step-title,
+.feedback-link,
+.dismiss-button,
+.completion-screen-title,
+.completion-screen-description {
+  /* used in test-utils */
+}

@@ -1,0 +1,72 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+
+import { BaseComponentProps } from '../types/base-component';
+
+export interface KeyValuePairsProps extends BaseComponentProps {
+  /**
+   * Specifies the number of columns in each grid row. It defaults to 1.
+   *
+   * The number of columns is reduced as the available space narrows, based on `minColumnWidth`.
+   */
+  columns?: number;
+  /**
+   * An array of either key-value pairs individual items or groups.
+   * They could be combined.
+   * Each item has `type` prop, which might be either `group` or `pair`. Defaults to `pair` if not specified.
+   *
+   * Each key-value pair definition has the following properties:
+   *   * `type` (string) - (Optional) Item type (pair).
+   *   * `label` (React.ReactNode) - The key label.
+   *   * `info` (React.ReactNode) - (Optional) Area next to the key to display an info link.
+   *   * `value` (React.ReactNode) - The corresponding value for the key.
+   *
+   * Each group definition has the following properties:
+   *   * `type` (string) - Item type (group).
+   *   * `title` (string) - (Optional) An optional title for this column.
+   *   * `items` (ReadonlyArray<KeyValuePairProps.KeyValuePair>) - An array of
+   *     key-value pair items.
+   */
+  items: ReadonlyArray<KeyValuePairsProps.Item>;
+  /**
+   * Provides an `aria-label` to the Key-value pairs container.
+   * Don't use `ariaLabel` and `ariaLabelledby` at the same time.
+   */
+  ariaLabel?: string;
+  /**
+   * Sets the `aria-labelledby` property on the Key-value pairs container.
+   * If there's a visible label element that you can reference, use this instead of `ariaLabel`.
+   * Don't use `ariaLabel` and `ariaLabelledby` at the same time.
+   */
+  ariaLabelledby?: string;
+
+  /**
+   * Use to specify the desired minimum width for each column in pixels.
+   *
+   * The number of columns is determined by the value of this property, the available space,
+   * and the maximum number of columns as defined by the `columns` property.
+   * If not set, defaults to 150.
+   *
+   * While reducing the count, odd numbers are skipped, so 5 columns becomes 4 and then 2.
+   * A requested odd count is kept when it fits.
+   */
+  minColumnWidth?: number;
+}
+
+export namespace KeyValuePairsProps {
+  export type Item = Group | Pair;
+
+  export interface Group {
+    type: 'group';
+    title?: string;
+    items: ReadonlyArray<Pair>;
+  }
+
+  export interface Pair extends BaseComponentProps {
+    type?: 'pair';
+    label: React.ReactNode;
+    value: React.ReactNode;
+    info?: React.ReactNode;
+  }
+}

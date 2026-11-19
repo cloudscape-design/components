@@ -1,0 +1,18 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~design-tokens' as awsui;
+
+.header {
+  background-color: awsui.$color-background-home-header;
+}
+
+.header-title {
+  color: awsui.$color-text-home-header-default;
+}
+
+.header-sub-title {
+  color: awsui.$color-text-home-header-secondary;
+}

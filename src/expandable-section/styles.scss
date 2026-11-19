@@ -1,0 +1,643 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../container/shared' as container;
+@use '../internal/styles/utils/theming';
+
+// Show/hide animation (show = height leads, opacity trails; hide = equal, no delay).
+$reveal-enter-duration: awsui.$motion-duration-expandable-content-enter;
+$reveal-enter-easing: awsui.$motion-easing-expandable-content-enter;
+$reveal-enter-delay: calc(#{$reveal-enter-duration} / 3);
+$reveal-enter-motion: $reveal-enter-duration $reveal-enter-easing;
+$reveal-enter-delayed-motion: $reveal-enter-motion $reveal-enter-delay;
+$reveal-exit-motion: awsui.$motion-duration-show-quick $reveal-enter-easing;
+
+$icon-width-normal: awsui.$size-icon-normal;
+$icon-width-medium: awsui.$size-icon-medium;
+$icon-margin-left: '(#{awsui.$line-height-body-m} - #{$icon-width-normal}) / -2';
+$icon-margin-right-normal: '#{awsui.$space-xxs} + #{awsui.$border-divider-list-width}';
+$icon-margin-right-small: calc(awsui.$space-xs - awsui.$space-xxxs);
+$icon-margin-right-medium: awsui.$space-xs;
+$icon-offset-inline: awsui.$space-xxs;
+$icon-offset-block: awsui.$space-xxxs;
+$icon-offset-container: awsui.$space-xxs;
+
+// Total space occupied by the expand icon on the left and its margins.
+// Useful to keep elements correctly aligned.
+$icon-total-space-normal: calc(#{$icon-width-normal} + #{$icon-margin-left} + #{$icon-margin-right-normal});
+$icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{$icon-margin-right-medium});
+// In One Theme the container caret is an x-small (12px) icon with no start margin and
+// $icon-margin-right-small as end margin (see .icon-container below), so it occupies less
+// space than the medium caret. Keep in sync with that rule and with the icon size chosen
+// in expandable-section-header.tsx.
+$icon-width-x-small: 12px;
+$icon-total-space-container-one-theme: calc(#{$icon-width-x-small} + #{$icon-margin-right-small});
+
+// Extra inline padding that widens the navigation caret pointer target to 24px (WCAG 2.5.8).
+$nav-caret-pad-normal: calc(24px - #{$icon-width-normal});
+$nav-caret-pad-one-theme: 12px; // 24px minus the one-theme x-small (12px) icon
+
+.root {
+  @include styles.styles-reset;
+  @include styles.text-wrapping;
+  display: block;
+}
+
+.expand-button {
+  outline: none;
+}
+
+.icon {
+  transform: rotate(-90deg);
+
+  @include styles.with-motion {
+    transition: transform awsui.$motion-duration-rotate-90 awsui.$motion-easing-rotate-90;
+  }
+
+  &.expanded {
+    transform: rotate(0deg);
+  }
+
+  @include styles.with-direction('rtl') {
+    transform: rotate(90deg);
+
+    &.expanded {
+      transform: rotate(0deg);
+    }
+  }
+}
+
+// Applied to both the default and custom toggle icons.
+.icon-position {
+  position: relative;
+  @include theming.one-theme-only {
+    inset-block-start: $icon-offset-block;
+  }
+}
+
+.icon-container {
+  position: relative;
+  margin-inline: calc(#{$icon-margin-left}) calc(#{$icon-margin-right-normal});
+  // For vertical alignment of text in side navigation items
+  &-container {
+    margin-inline-end: $icon-margin-right-medium;
+    @include theming.one-theme-only {
+      margin-inline-end: calc(#{$icon-margin-right-medium} + $icon-offset-inline);
+      inset-block-start: $icon-offset-container;
+    }
+  }
+  @include theming.one-theme-only {
+    display: inline-flex;
+    align-items: flex-start;
+    margin-inline: 0 $icon-margin-right-small;
+  }
+}
+
+.wrapper {
+  box-sizing: border-box;
+  border-block: none;
+  border-inline: none;
+  inline-size: 100%;
+  line-height: awsui.$line-height-body-m;
+  text-align: start;
+
+  &-default,
+  &-inline,
+  &-footer {
+    border-block: awsui.$border-divider-section-width solid transparent;
+    border-inline: awsui.$border-divider-section-width solid transparent;
+  }
+  &-navigation {
+    // not needed for focus ring compensation, but to keep this variant vertically aligned with other variants when used together
+    border-inline-start: awsui.$border-divider-section-width solid transparent;
+  }
+
+  &-navigation,
+  &-container {
+    display: flex;
+    font-weight: awsui.$font-weight-heading-s;
+  }
+
+  &-default,
+  &-inline,
+  &-navigation,
+  &-footer,
+  &-compact {
+    color: awsui.$color-text-expandable-section-default;
+    @include styles.font-smoothing;
+  }
+
+  &-default,
+  &-inline,
+  &-navigation,
+  &-footer {
+    font-size: awsui.$font-size-expandable-heading;
+    letter-spacing: awsui.$letter-spacing-heading-s;
+  }
+
+  &-default {
+    padding-block: awsui.$space-scaled-xxs;
+    padding-inline-end: awsui.$space-xxs;
+    &.header-deprecated {
+      padding-inline-start: awsui.$space-xxs;
+    }
+  }
+  &-default,
+  &-inline {
+    &:not(.header-deprecated) {
+      padding-inline-start: $icon-total-space-normal;
+    }
+
+    // HIDE (collapsed): quick collapse, no delay
+    @include styles.with-motion {
+      transition: border-block-end-color $reveal-exit-motion;
+    }
+
+    &.wrapper-expanded {
+      padding-block-end: awsui.$space-scaled-xxs;
+      border-block-end-color: awsui.$color-border-expandable-section-default;
+
+      // SHOW (expanded): border fades in with the same delay as content opacity so both appear together
+      @include styles.with-motion {
+        transition: border-block-end-color $reveal-enter-delayed-motion;
+      }
+    }
+  }
+
+  &-footer {
+    padding-block: awsui.$space-scaled-xxs;
+  }
+
+  &-footer,
+  &-compact {
+    padding-inline-end: 0;
+    &.header-deprecated {
+      padding-inline-start: 0;
+    }
+    &:not(.header-deprecated) {
+      padding-inline-start: $icon-total-space-normal;
+    }
+  }
+
+  &-container {
+    padding-block: awsui.$space-container-header-top awsui.$space-container-header-bottom;
+    padding-inline-end: container.$header-padding-horizontal;
+
+    // HIDE (collapsed state): padding settles back to symmetric top/bottom.
+    @include styles.with-motion {
+      transition: padding-block-end $reveal-exit-motion;
+    }
+
+    &:not(.wrapper-expanded) {
+      // Equal top and bottom padding so standalone header has vertical symmetry.
+      padding-block-end: awsui.$space-container-header-top;
+    }
+
+    &.wrapper-not-expanded-without-actions {
+      padding-block-end: calc(#{awsui.$space-container-header-top} + #{awsui.$space-scaled-xxs});
+    }
+
+    &.header-deprecated {
+      padding-inline-start: container.$header-padding-horizontal;
+    }
+    &:not(.header-deprecated) {
+      padding-inline-start: calc(#{container.$header-padding-horizontal} + #{$icon-total-space-medium});
+      @include theming.one-theme-only {
+        padding-inline-start: calc(#{container.$header-padding-horizontal} + #{$icon-total-space-container-one-theme});
+      }
+    }
+
+    @include focus-visible.when-visible {
+      // HACK: Remediate focus border
+      padding-block: calc(#{awsui.$space-scaled-s} - #{awsui.$border-divider-section-width});
+      padding-inline: calc(#{awsui.$space-l} - #{awsui.$border-divider-section-width});
+    }
+  }
+}
+
+.header {
+  /* used in test-utils */
+
+  &-wrapper,
+  &-deprecated {
+    display: flex;
+    font-weight: awsui.$font-weight-heading-s;
+  }
+
+  &-wrapper {
+    font-size: inherit;
+    letter-spacing: inherit;
+    margin-block: 0;
+    margin-inline: 0;
+    padding-block: 0;
+    padding-inline: 0;
+  }
+
+  &-actions-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+    min-inline-size: 0;
+  }
+
+  &-main {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: awsui.$space-xs;
+    row-gap: awsui.$space-scaled-xxs;
+    min-inline-size: 0;
+
+    > .header-wrapper {
+      flex: 1 1 auto;
+      min-inline-size: 0;
+    }
+  }
+
+  &-secondary-content {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    margin-inline-end: auto;
+  }
+
+  &-button,
+  &-container-button {
+    @include focus-visible.when-visible {
+      @include styles.focus-highlight(0px);
+    }
+  }
+
+  &-button {
+    box-sizing: border-box;
+    display: flex;
+    margin-inline-start: calc(-1 * #{$icon-total-space-normal});
+  }
+
+  &-container-button {
+    margin-inline-start: calc(-1 * #{$icon-total-space-medium});
+    // Only when the caret is at the start. The end-icon layout resets this margin
+    // below (.header-button-icon-end) and a theme-scoped rule would outrank that reset.
+    &:not(.header-button-icon-end) {
+      @include theming.one-theme-only {
+        margin-inline-start: calc(-1 * #{$icon-total-space-container-one-theme});
+      }
+    }
+  }
+
+  &-container {
+    inline-size: 100%;
+    // The icon-container style is kept for variant='container' and header
+    > .icon-container {
+      margin-block-start: awsui.$space-expandable-section-icon-offset-top;
+    }
+  }
+
+  &-navigation {
+    > .icon-container {
+      display: inline-flex;
+      cursor: pointer;
+      color: awsui.$color-text-expandable-section-navigation-icon-default;
+      border-block: 0;
+      border-inline: 0;
+      padding-block: 0;
+      padding-inline: 0;
+      background: transparent;
+      outline: none;
+      text-decoration: none;
+      flex-direction: column;
+
+      // Widen the pointer target to 24px (WCAG 2.5.8) with inline padding and an
+      // equal negative margin: the extra width grows away from the header label
+      // into the adjacent gutter, so neither the glyph nor the label moves and
+      // the label link keeps its own clicks. Vertical size already fills the row.
+      &:not(.icon-container-end) {
+        padding-inline-start: $nav-caret-pad-normal;
+        margin-inline-start: calc(#{$icon-margin-left} - #{$nav-caret-pad-normal});
+        @include theming.one-theme-only {
+          padding-inline-start: $nav-caret-pad-one-theme;
+          margin-inline-start: calc(-1 * #{$nav-caret-pad-one-theme});
+        }
+      }
+      &.icon-container-end {
+        padding-inline-end: $nav-caret-pad-normal;
+        margin-inline-end: calc(-1 * #{$nav-caret-pad-normal});
+        @include theming.one-theme-only {
+          padding-inline-end: $nav-caret-pad-one-theme;
+          margin-inline-end: calc(-1 * #{$nav-caret-pad-one-theme});
+        }
+      }
+
+      &:hover {
+        color: awsui.$color-text-expandable-section-hover;
+      }
+
+      @include focus-visible.when-visible {
+        @include styles.focus-highlight(2px);
+      }
+    }
+  }
+
+  &-text {
+    /* used in test-utils */
+
+    &-hidden {
+      @include styles.awsui-util-hide;
+    }
+  }
+}
+
+.header-container-button:has(> .header-text-hidden) > .icon-container {
+  margin-inline-end: 0;
+}
+
+// Make sure that actions can wrap for default expandable section headers.
+// The compact variant is used in chart popovers and should not wrap.
+:not(.wrapper-compact) > .header-actions-wrapper {
+  flex-wrap: wrap;
+  column-gap: awsui.$space-xs;
+  row-gap: awsui.$space-scaled-xxxs;
+}
+
+.content {
+  display: none;
+
+  &-expanded {
+    display: block;
+  }
+
+  &-compact {
+    padding-inline-start: $icon-total-space-normal;
+  }
+
+  // One-theme only: animated grid-template-rows reveal instead of the true/false display:none. VR keeps
+  // instantaneous display toggling, to prevent breaking reliance on synchronous isDisplayed()/isExisting() checks.
+  @include theming.one-theme-only {
+    display: grid;
+    grid-template-rows: 0fr;
+
+    // HIDE (collapsed state): quick collapse, no delay
+    @include styles.with-motion {
+      transition: grid-template-rows $reveal-exit-motion;
+    }
+
+    &-expanded {
+      grid-template-rows: 1fr;
+
+      // SHOW (expanded state): paced height opening, no delay — height leads.
+      @include styles.with-motion {
+        transition: grid-template-rows $reveal-enter-motion;
+      }
+    }
+  }
+}
+
+// One-theme only: inner wrapper that collapses to 0 height via the grid-row track.
+.content-inner {
+  /* this comment keeps the class in the style sheet */
+  @include theming.one-theme-only {
+    // Grid item of .content above. `clip` rather than `hidden`: `hidden` coerces the inline axis
+    // to `auto`, making this a scroll container on both axes, where `clip` leaves the inline axis
+    // `visible` so content that paints outside the box (focus rings, inline popovers) survives.
+    overflow-y: clip;
+    min-block-size: 0;
+    // A grid item's automatic minimum size is content-based on this axis too, so content that
+    // manages its own inline overflow (e.g. a table) would stretch the box out of the container.
+    min-inline-size: 0;
+    opacity: 0;
+    transform: translateY(-4px);
+
+    // HIDE (collapsed state): quick opacity collapse and slide back up, no delay.
+    @include styles.with-motion {
+      transition:
+        opacity $reveal-exit-motion,
+        transform $reveal-exit-motion;
+    }
+  }
+}
+
+.content-inner-expanded {
+  /* this comment keeps the class in the style sheet */
+  @include theming.one-theme-only {
+    opacity: 1;
+    transform: translateY(0);
+
+    // SHOW (expanded state): opacity fades in and content slides down into place AFTER
+    // height has partially opened, creating a perceptible reveal in the opened space.
+    @include styles.with-motion {
+      transition:
+        opacity $reveal-enter-delayed-motion,
+        transform $reveal-enter-delayed-motion;
+    }
+  }
+}
+
+.content-inner-settled {
+  /* this comment keeps the class in the style sheet */
+  @include theming.one-theme-only {
+    overflow-y: visible;
+    // Keeping translateY(0) here would leave this box as a stacking context, so a dropdown
+    // opened from the content would paint underneath whatever follows the section.
+    transform: none;
+  }
+}
+
+// Padding lives here rather than outer content wrapper so the grid track can fully collapse to zero at 0fr.
+.content-inner-body {
+  &-default,
+  &-inline {
+    padding-block: awsui.$space-scaled-xs;
+  }
+
+  &-footer {
+    padding-block: awsui.$space-xs;
+  }
+
+  &-container {
+    padding-block: awsui.$space-container-content-top awsui.$space-scaled-l;
+    padding-inline: awsui.$space-container-horizontal;
+  }
+}
+
+// Internal-only class: zeros header wrapper padding when __disableHeaderPaddings is set.
+// Allows parent components to control spacing without brittle positional selectors.
+.disable-header-paddings {
+  padding-block: 0;
+  padding-inline: 0;
+}
+
+// Internal-only class: zeros content wrapper padding when the disableContentPaddings prop is set.
+// Paired with disable-header-paddings for consistent zero-padding on both wrapper divs.
+.disable-content-paddings {
+  padding-block: 0;
+  padding-inline: 0;
+}
+
+.focusable {
+  &:focus {
+    outline: none;
+    text-decoration: none;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.focus-element-without-border(awsui.$border-radius-control-default-focus-ring);
+  }
+}
+
+.click-target {
+  cursor: pointer;
+  &:not(.wrapper-container):not(.header-container-button):hover {
+    color: awsui.$color-text-expandable-section-hover;
+  }
+}
+
+// For non-container variants the icon is rendered at the end of the headerButton
+// (taking the full width of the header). For the container variant the icon is
+// rendered as a sibling of the InternalHeader so it appears past any actions.
+.header-icon-end {
+  &.wrapper-default,
+  &.wrapper-inline,
+  &.wrapper-footer,
+  &.wrapper-compact {
+    padding-inline-start: 0;
+  }
+
+  &.wrapper-navigation {
+    justify-content: space-between;
+    align-items: flex-start;
+    column-gap: awsui.$space-xs;
+  }
+
+  &-with-info {
+    display: flex;
+    align-items: flex-start;
+    column-gap: awsui.$space-xs;
+  }
+
+  &.wrapper-container,
+  &.wrapper-default {
+    display: flex;
+    align-items: flex-start;
+    column-gap: awsui.$space-m;
+  }
+
+  &.wrapper-container {
+    &:not(.header-deprecated) {
+      padding-inline-start: container.$header-padding-horizontal;
+    }
+  }
+}
+
+.header-button-icon-end {
+  margin-inline-start: 0;
+  column-gap: awsui.$space-xs;
+  justify-content: space-between;
+
+  // For non-container variants the icon lives inside this button, so it
+  // needs to be a full-width flex row to push the icon to the inline-end.
+  // The container variant renders the icon outside InternalHeader, so
+  // making this element a block-level flex container with 100% width would
+  // force the title to consume all available space and push the info slot
+  // (rendered as a sibling inside InternalHeader) to a new line.
+  &:not(.header-container-button) {
+    display: flex;
+    inline-size: 100%;
+
+    > .header-text {
+      flex: 1;
+      min-inline-size: 0;
+    }
+  }
+}
+
+.icon-container-end {
+  margin-inline-start: auto;
+  margin-inline-end: 0;
+  flex-shrink: 0;
+
+  // Stretch the button to fill the parent's block-size so the entire caret
+  // column is clickable/hoverable, matching start-position behavior.
+  align-self: stretch;
+  align-items: flex-start;
+
+  // Reset native <button> chrome for the outside caret in end-icon-position.
+  // The navigation variant already has its own reset via .header-navigation > .icon-container
+  // so this is harmless-but-redundant for that path, and necessary for default/container.
+  border-block: none;
+  border-inline: none;
+  background: none;
+  padding-block: 0;
+  padding-inline: 0;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(2px);
+  }
+
+  // Align the navigation end-layout caret to the first line of header text.
+  // The header link has padding-block equal to (item-height - line-height) / 2
+  // (set by side-navigation). Mirror that on the caret so it sits at the same
+  // vertical position as the first text line — identical to the start layout.
+  .header-icon-end.wrapper-navigation > & {
+    padding-block-start: calc((#{awsui.$size-side-navigation-item-height} - #{awsui.$line-height-body-m}) / 2);
+  }
+
+  // In the end layout the icon is a flex child governed by the parent's
+  // align-items: flex-start. Reset the inset-block-start offsets that the
+  // start layout uses (they assume relative positioning within text flow)
+  // so the icon aligns with the first line of header text via flex.
+  @include theming.one-theme-only {
+    // Override the base .icon-container one-theme rule that re-introduces
+    // margin-inline-end via the margin-inline shorthand (equal specificity,
+    // later source order wins).
+    margin-inline-end: 0;
+    &:not(.icon-container-container) {
+      inset-block-start: $icon-offset-block;
+    }
+    > .icon {
+      inset-block-start: 0;
+    }
+  }
+}
+
+// Side-navigation makes this box a grid item (its section wrapper sets display: grid with
+// grid-template-rows: 0fr to collapse), and a grid item's automatic minimum size is content-based on
+// both axes: zero the block axis so the header collapses to zero, zero the inline axis so wide content
+// cannot stretch it past the track. It belongs here rather than on side-navigation's grid container,
+// because a container's min-size does not participate in track sizing.
+.header-content {
+  min-block-size: 0;
+  min-inline-size: 0;
+
+  &-with-info {
+    display: flex;
+    align-items: baseline;
+  }
+}
+
+// In the end-icon layout, header content elements must shrink without overflowing.
+.header-icon-end > .header-content,
+.header-icon-end > .header-navigation-content {
+  flex: 1;
+  min-inline-size: 0;
+}
+
+// Navigation variant, start icon: align the expand caret to the first line of text
+// when header paddings are disabled (side-navigation use case).
+// Mirrors the end-icon alignment at .icon-container-end (same formula).
+.disable-header-paddings.wrapper-navigation:not(.header-icon-end) > .icon-container {
+  display: grid;
+  align-items: flex-start;
+  padding-block: calc((#{awsui.$size-side-navigation-item-height} - #{awsui.$line-height-body-m}) / 2);
+}

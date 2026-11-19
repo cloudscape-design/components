@@ -1,0 +1,347 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+import { AutoScrollOptions, TraversalOrder } from '@dnd-kit/core';
+import { act, fireEvent, render } from '@testing-library/react';
+
+import TestI18nProvider from '../../../lib/components/i18n/testing';
+import List, { ListProps } from '../../../lib/components/list';
+import createWrapper from '../../../lib/components/test-utils/dom';
+import InternalDragHandleWrapper from '../../../lib/components/test-utils/dom/internal/drag-handle';
+
+const mockDndContextAutoScroll: { current: AutoScrollOptions | undefined } = { current: undefined };
+
+jest.mock('@dnd-kit/core', () => {
+  const actual = jest.requireActual('@dnd-kit/core');
+  const { createElement } = jest.requireActual('react');
+  return {
+    ...actual,
+    DndContext: (props: { autoScroll?: AutoScrollOptions }) => {
+      mockDndContextAutoScroll.current = props.autoScroll;
+      return createElement(actual.DndContext, props);
+    },
+  };
+});
+
+interface Item {
+  id: string;
+  content: string;
+}
+const defaultItems: Item[] = [
+  { id: 'item1', content: 'Item 1' },
+  { id: 'item2', content: 'Item 2' },
+  { id: 'item3', content: 'Item 3' },
+];
+
+const i18nMessages = {
+  list: {
+    dragHandleAriaLabel: 'Drag handle',
+    dragHandleAriaDescription:
+      "Use Space or Enter to activate drag for an item, then use the arrow keys to move the item's position. To complete the position move, use Space or Enter, or to discard the move, use Escape.",
+    liveAnnouncementDndStarted: 'Picked up item at position {position} of {total}',
+    liveAnnouncementDndDiscarded: 'Reordering canceled',
+    liveAnnouncementDndItemReordered:
+      '{isInitialPosition, select, true {Moving item back to position {currentPosition} of {total}} false {Moving item to position {currentPosition} of {total}} other {}}',
+    liveAnnouncementDndItemCommitted:
+      '{isInitialPosition, select, true {Item moved back to its original position {initialPosition} of {total}} false {Item moved from position {initialPosition} to position {finalPosition} of {total}} other {}}',
+  },
+};
+
+const ControlledList = (props: ListProps<Item>) => {
+  const [items, setItems] = React.useState(props.items);
+
+  const onSortingChange: ListProps<Item>['onSortingChange'] = event => {
+    setItems(event.detail.items);
+    props.onSortingChange?.(event);
+  };
+
+  return (
+    <TestI18nProvider messages={i18nMessages}>
+      <List {...props} items={items} onSortingChange={onSortingChange} />
+    </TestI18nProvider>
+  );
+};
+
+function pressKey(element: HTMLElement, key: string) {
+  fireEvent.keyDown(element, { key, code: key });
+}
+
+async function expectAnnouncement(announcement: string) {
+  await new Promise(resolve => setTimeout(resolve, 0));
+  const liveRegion = createWrapper().find('[aria-live="assertive"]');
+  expect(liveRegion!.getElement()).toHaveTextContent(announcement);
+}
+
+describe('List - Sortable', () => {
+  const renderSortableList = (props: Partial<ListProps<Item>> = {}) => {
+    const defaultProps = {
+      items: defaultItems,
+      renderItem: (item: Item) => ({ id: item.id, content: item.content }),
+      sortable: true,
+      onSortingChange: jest.fn(),
+    };
+    const renderResult = render(<ControlledList {...defaultProps} {...props} />);
+    return {
+      wrapper: createWrapper(renderResult.container).findList()!,
+      onSortingChange: defaultProps.onSortingChange,
+    };
+  };
+
+  test('renders drag handles for each item', () => {
+    const { wrapper } = renderSortableList();
+    const items = wrapper.findItems();
+
+    expect(items).toHaveLength(3);
+    items.forEach(item => {
+      expect(item.findDragHandle()).not.toBeNull();
+    });
+  });
+
+  test('applies i18nStrings to drag handles', () => {
+    const i18nStrings = {
+      dragHandleAriaLabel: 'Drag handle',
+      dragHandleAriaDescription:
+        'Use space or enter to activate drag, arrow keys to move, space or enter to drop, escape to cancel',
+    };
+
+    const { wrapper } = renderSortableList({ i18nStrings });
+
+    // The drag handle should have the aria-label from i18nStrings
+    const dragHandle = wrapper.findItemByIndex(1)!.findDragHandle();
+    expect(dragHandle).not.toBeNull();
+    expect(dragHandle!.getElement()).toHaveAttribute(
+      'aria-label',
+      expect.stringContaining(i18nStrings.dragHandleAriaLabel)
+    );
+  });
+
+  test('renders as ol by default when sortable', () => {
+    const { wrapper } = renderSortableList();
+    expect(wrapper.getElement().tagName).toBe('OL');
+  });
+
+  test('can override tag when sortable', () => {
+    const { wrapper } = renderSortableList({ tagOverride: 'ul' });
+    expect(wrapper.getElement().tagName).toBe('UL');
+  });
+
+  test('disables sorting with sortDisabled prop', () => {
+    const { wrapper } = renderSortableList({ sortDisabled: true });
+
+    const dragHandle = wrapper.findItemByIndex(1)!.findDragHandle();
+    expect(dragHandle!.getElement()).toHaveAttribute('aria-disabled', 'true');
+  });
+
+  test('can find item by id', () => {
+    const { wrapper } = renderSortableList();
+    expect(wrapper.findItemById('item2')!.getElement()).toHaveTextContent('Item 2');
+  });
+
+  test('can move an item', async () => {
+    const { wrapper } = renderSortableList();
+    const dragHandle = wrapper.findItemByIndex(1)!.findDragHandle()!.getElement();
+    pressKey(dragHandle, 'Space');
+    await expectAnnouncement('Picked up item at position 1 of 3');
+    pressKey(dragHandle, 'ArrowDown');
+    await expectAnnouncement('Moving item to position 2 of 3');
+    pressKey(dragHandle, 'Space');
+    expect(wrapper.findItemByIndex(1)!.getElement()).toHaveTextContent('Item 2');
+    expect(wrapper.findItemByIndex(2)!.getElement()).toHaveTextContent('Item 1');
+    await expectAnnouncement('Item moved from position 1 to position 2 of 3');
+  });
+
+  test('ignores other keys', async () => {
+    const { wrapper } = renderSortableList();
+    const dragHandle = wrapper.findItemByIndex(1)!.findDragHandle()!.getElement();
+    pressKey(dragHandle, 'Space');
+    await expectAnnouncement('Picked up item at position 1 of 3');
+    pressKey(dragHandle, 'D');
+    pressKey(dragHandle, 'Space');
+    expect(wrapper.findItemByIndex(1)!.getElement()).toHaveTextContent('Item 1');
+    expect(wrapper.findItemByIndex(2)!.getElement()).toHaveTextContent('Item 2');
+  });
+
+  test('can move an item with UAP buttons', async () => {
+    const { wrapper } = renderSortableList();
+    const dragHandle = wrapper.findItemByIndex(1)!.findDragHandle()!.getElement();
+    const dragWrapper = new InternalDragHandleWrapper(document.body);
+    expect(dragWrapper.findVisibleDirectionButtonBlockEnd()).toBeFalsy();
+
+    dragHandle.click();
+    expect(dragWrapper.findVisibleDirectionButtonBlockEnd()).toBeTruthy();
+    await expectAnnouncement('Picked up item at position 1 of 3');
+
+    dragWrapper.findVisibleDirectionButtonBlockEnd()!.click();
+    await expectAnnouncement('Moving item to position 2 of 3');
+    dragWrapper.findVisibleDirectionButtonBlockEnd()!.click();
+    await expectAnnouncement('Moving item to position 3 of 3');
+    dragWrapper.findVisibleDirectionButtonBlockStart()!.click();
+    await expectAnnouncement('Moving item to position 2 of 3');
+
+    pressKey(dragHandle, 'Enter');
+    expect(wrapper.findItemByIndex(1)!.getElement()).toHaveTextContent('Item 2');
+    expect(wrapper.findItemByIndex(2)!.getElement()).toHaveTextContent('Item 1');
+    await expectAnnouncement('Item moved from position 1 to position 2 of 3');
+  });
+
+  describe('repeated keyboard drags', () => {
+    const fiveItems: Item[] = [...defaultItems, { id: 'item4', content: 'Item 4' }, { id: 'item5', content: 'Item 5' }];
+
+    const nextTick = () => act(() => new Promise(resolve => setTimeout(resolve, 0)));
+
+    async function keyboardDrag(handle: HTMLElement, direction: 'ArrowDown' | 'ArrowUp') {
+      pressKey(handle, 'Space');
+      await nextTick();
+      pressKey(handle, direction);
+      await nextTick();
+      pressKey(handle, 'Space');
+      await nextTick();
+    }
+
+    function renderWithTrackedHandle() {
+      const { wrapper, onSortingChange } = renderSortableList({ items: fiveItems });
+      const handle = wrapper.findItemById('item1')!.findDragHandle()!.getElement();
+      const addListener = jest.spyOn(handle, 'addEventListener');
+      const removeListener = jest.spyOn(handle, 'removeEventListener');
+      const blurListeners = (spy: jest.SpyInstance) =>
+        spy.mock.calls.filter(([type]) => type === 'blur').map(([, listener]) => listener);
+      return {
+        handle,
+        onSortingChange,
+        addedBlurListeners: () => blurListeners(addListener),
+        removedBlurListeners: () => blurListeners(removeListener),
+      };
+    }
+
+    test('removes the drag handle blur listener after each drop', async () => {
+      const { handle, addedBlurListeners, removedBlurListeners } = renderWithTrackedHandle();
+      handle.focus();
+
+      await keyboardDrag(handle, 'ArrowDown');
+      await keyboardDrag(handle, 'ArrowDown');
+      await keyboardDrag(handle, 'ArrowUp');
+
+      expect(addedBlurListeners()).toHaveLength(3);
+      expect(removedBlurListeners()).toEqual(addedBlurListeners());
+    });
+
+    test('fires onSortingChange once per drop, including a later drag ended by blur', async () => {
+      const { handle, onSortingChange } = renderWithTrackedHandle();
+      handle.focus();
+
+      await keyboardDrag(handle, 'ArrowDown');
+      await keyboardDrag(handle, 'ArrowDown');
+      expect(onSortingChange).toHaveBeenCalledTimes(2);
+      onSortingChange.mockClear();
+
+      pressKey(handle, 'Space');
+      await nextTick();
+      pressKey(handle, 'ArrowDown');
+      await nextTick();
+      fireEvent.blur(handle);
+      await nextTick();
+
+      expect(onSortingChange).toHaveBeenCalledTimes(1);
+      expect(onSortingChange.mock.calls[0][0].detail.items.map((item: Item) => item.id)).toEqual([
+        'item2',
+        'item3',
+        'item4',
+        'item1',
+        'item5',
+      ]);
+    });
+  });
+
+  test('non-primary pointer events do not activate UAP', () => {
+    const { wrapper } = renderSortableList();
+    const dragHandle = wrapper.findItemByIndex(1)!.findDragHandle()!;
+    const dragWrapper = new InternalDragHandleWrapper(document.body);
+    expect(dragWrapper.findVisibleDirectionButtonBlockEnd()).toBeFalsy();
+
+    dragHandle.click({ button: 1 });
+    expect(dragWrapper.findVisibleDirectionButtonBlockEnd()).toBeFalsy();
+  });
+
+  describe('auto-scroll', () => {
+    const interact = (action: () => void) =>
+      act(async () => {
+        action();
+        await new Promise(resolve => setTimeout(resolve, 0));
+      });
+    const canAutoScroll = (element: Element) => mockDndContextAutoScroll.current!.canScroll!(element);
+
+    function renderInScrollContainers({ innerScrolls }: { innerScrolls: boolean }) {
+      const { container } = render(
+        <div data-testid="outer" style={{ overflowY: 'auto' }}>
+          <div data-testid="inner" style={{ overflowY: 'auto' }}>
+            <ControlledList
+              items={defaultItems}
+              renderItem={item => ({ id: item.id, content: item.content })}
+              sortable={true}
+            />
+          </div>
+        </div>
+      );
+      const outer = container.querySelector<HTMLElement>('[data-testid="outer"]')!;
+      const inner = container.querySelector<HTMLElement>('[data-testid="inner"]')!;
+      // jsdom has no layout, so make the containers overflow explicitly.
+      const overflowing = innerScrolls ? [outer, inner] : [];
+      for (const element of overflowing) {
+        Object.defineProperty(element, 'scrollHeight', { configurable: true, value: 1000 });
+        Object.defineProperty(element, 'clientHeight', { configurable: true, value: 100 });
+      }
+      const list = createWrapper(container).findList()!;
+      const item = list.findItemById('item1')!.getElement();
+      const handle = list.findItemById('item1')!.findDragHandle()!.getElement();
+      return { outer, inner, item, handle };
+    }
+
+    test('checks the innermost scroll container first', () => {
+      renderInScrollContainers({ innerScrolls: true });
+      expect(mockDndContextAutoScroll.current!.order).toBe(TraversalOrder.ReversedTreeOrder);
+    });
+
+    test('only auto-scrolls the nearest scroll container and its descendants while dragging', async () => {
+      const { outer, inner, item, handle } = renderInScrollContainers({ innerScrolls: true });
+
+      await interact(() => pressKey(handle, 'Space'));
+
+      expect(canAutoScroll(inner)).toBe(true);
+      expect(canAutoScroll(item)).toBe(true);
+      expect(canAutoScroll(outer)).toBe(false);
+      expect(canAutoScroll(document.documentElement)).toBe(false);
+
+      await interact(() => pressKey(handle, 'Space'));
+
+      expect(canAutoScroll(outer)).toBe(true);
+      expect(canAutoScroll(document.documentElement)).toBe(true);
+    });
+
+    test('keeps every container eligible for auto-scroll when the list has no scrollable ancestor', async () => {
+      const { outer, inner, handle } = renderInScrollContainers({ innerScrolls: false });
+
+      await interact(() => pressKey(handle, 'Space'));
+
+      expect(canAutoScroll(inner)).toBe(true);
+      expect(canAutoScroll(outer)).toBe(true);
+      expect(canAutoScroll(document.documentElement)).toBe(true);
+
+      await interact(() => pressKey(handle, 'Escape'));
+    });
+
+    test('limits auto-scroll when the drag starts on the drag handle icon and stops limiting it on cancel', async () => {
+      const { outer, inner, handle } = renderInScrollContainers({ innerScrolls: true });
+      const icon = handle.querySelector('svg')!;
+      expect(icon).not.toBeNull();
+
+      await interact(() => fireEvent.click(icon));
+
+      expect(canAutoScroll(inner)).toBe(true);
+      expect(canAutoScroll(outer)).toBe(false);
+
+      await interact(() => pressKey(handle, 'Escape'));
+
+      expect(canAutoScroll(outer)).toBe(true);
+    });
+  });
+});

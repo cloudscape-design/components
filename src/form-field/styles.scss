@@ -1,0 +1,84 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+@use './motion';
+
+.root {
+  @include styles.styles-reset;
+  box-sizing: border-box;
+}
+
+.label {
+  box-sizing: border-box;
+  color: awsui.$color-text-form-label;
+  // We display label inline to achieve the proper line-wrapping with info links
+  display: inline;
+  @include styles.font-smoothing;
+  @include styles.font-label(awsui.$font-size-form-label, awsui.$line-height-form-label, awsui.$font-weight-form-label);
+  @include styles.info-link-spacing;
+}
+
+.info {
+  display: inline-flex;
+  padding-inline-start: awsui.$space-xs;
+  border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+}
+
+.description,
+.constraint {
+  @include styles.form-control-description;
+}
+
+.hints,
+.constraint-has-validation-text {
+  padding-block-start: awsui.$space-xxs;
+}
+
+.secondary-control {
+  /* used in test-utils */
+}
+
+.controls {
+  &:not(.label-hidden) {
+    padding-block-start: awsui.$space-xxs;
+  }
+
+  .label-wrapper:empty + & {
+    padding-block-start: 0;
+  }
+}
+
+.control {
+  @include styles.text-wrapping;
+}
+
+.error {
+  color: awsui.$color-text-status-error;
+  @include styles.font-body-s;
+
+  display: flex;
+  align-items: flex-start;
+}
+
+.warning {
+  color: awsui.$color-text-status-warning;
+  @include styles.font-body-s;
+
+  display: flex;
+  align-items: flex-start;
+}
+
+.error__message,
+.warning__message {
+  margin-inline-start: awsui.$space-xxs;
+}
+
+.visually-hidden {
+  @include styles.awsui-util-hide;
+}

@@ -1,0 +1,28 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~design-tokens' as awsui;
+
+.bodyScrollOverride {
+  overflow-y: scroll;
+  block-size: 100%;
+}
+
+.fixedHeader {
+  position: fixed;
+  inset-inline-start: 0;
+  inset-block-start: 0;
+  inline-size: 100%;
+  z-index: 1;
+  padding-block: 10px;
+  padding-inline: 10px;
+  box-sizing: border-box;
+  background: awsui.$color-background-container-content;
+}
+
+.placeholder {
+  block-size: 3000px;
+  background: awsui.$color-background-layout-main;
+}

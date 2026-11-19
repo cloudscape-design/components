@@ -1,0 +1,184 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/foundation' as foundation;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../internal/styles/style-api' as style-api;
+
+// The placeholder tokens are read by the ::placeholder pseudo-element of the native textarea, which does not
+// inherit the non-inheriting public tokens: they are re-anchored as carriers on the textarea itself.
+$tokens: style-api.resolve(
+  (placeholder-color, placeholder-font-size, placeholder-font-style, placeholder-font-weight),
+  carrier
+);
+@include style-api.register($tokens);
+@include style-api.docs(
+  'textarea',
+  $tokens,
+  $properties: (color, background, border, border-radius, box-shadow, padding, font-family, font-size, font-weight),
+  $descriptions: (
+    properties: (
+      box-shadow: 'Also draws the focus ring.',
+    )
+  )
+);
+
+.root {
+  /* used for test-utils */
+}
+
+.textarea {
+  @include style-api.carriers($tokens);
+  @include styles.styles-reset;
+  // Matches browsers' default for textarea; overridden by the resize modifiers below
+  resize: both;
+  // Restore default text cursor
+  cursor: text;
+  // Allow multi-line placeholders
+  white-space: pre-wrap;
+
+  padding-block: styles.$control-padding-vertical;
+  padding-inline: styles.$control-padding-horizontal;
+
+  color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-body-default);
+  max-inline-size: 100%;
+  inline-size: 100%;
+  display: block;
+  box-sizing: border-box;
+  background-color: var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default);
+  border-start-start-radius: styles.$control-border-radius;
+  border-start-end-radius: styles.$control-border-radius;
+  border-end-start-radius: styles.$control-border-radius;
+  border-end-end-radius: styles.$control-border-radius;
+
+  border-block: awsui.$border-width-field solid
+    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default);
+  border-inline: awsui.$border-width-field solid
+    var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default);
+
+  box-shadow: var(#{custom-props.$styleBoxShadowDefault});
+
+  @include styles.font-body-m;
+
+  // Physical axes are used here rather than logical ones: resize axes follow
+  // `writing-mode`, which is always horizontal-tb, so `block`/`inline` would
+  // resolve identically in both LTR and RTL.
+  &.textarea-resize-both {
+    resize: both;
+  }
+
+  &.textarea-resize-horizontal {
+    resize: horizontal;
+  }
+
+  &.textarea-resize-vertical {
+    resize: vertical;
+  }
+
+  &.textarea-resize-none {
+    resize: none;
+  }
+
+  &:hover {
+    border-color: var(
+      #{custom-props.$styleBorderColorHover},
+      var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-default)
+    );
+    color: var(
+      #{custom-props.$styleColorHover},
+      var(#{custom-props.$styleColorDefault}, awsui.$color-text-body-default)
+    );
+    background-color: var(
+      #{custom-props.$styleBackgroundHover},
+      var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+    );
+    box-shadow: var(#{custom-props.$styleBoxShadowHover}, var(#{custom-props.$styleBoxShadowDefault}));
+  }
+
+  &.textarea-readonly {
+    @include styles.form-readonly-element(
+      $background-color: var(
+          #{custom-props.$styleBackgroundReadonly},
+          var(#{custom-props.$styleBackgroundDefault}, awsui.$color-background-input-default)
+        ),
+      $border-color: var(
+          #{custom-props.$styleBorderColorReadonly},
+          var(#{custom-props.$styleBorderColorDefault}, awsui.$color-border-input-disabled)
+        )
+    );
+    color: var(
+      #{custom-props.$styleColorReadonly},
+      var(#{custom-props.$styleColorDefault}, awsui.$color-text-body-default)
+    );
+    box-shadow: var(#{custom-props.$styleBoxShadowReadonly});
+  }
+
+  &::placeholder {
+    @include styles.form-placeholder(
+      $color: style-api.value(
+          $tokens,
+          placeholder-color,
+          var(#{custom-props.$stylePlaceholderColor}, #{awsui.$color-text-input-placeholder})
+        ),
+      $font-size: style-api.value($tokens, placeholder-font-size, var(#{custom-props.$stylePlaceholderFontSize})),
+      $font-style: style-api.value(
+          $tokens,
+          placeholder-font-style,
+          var(#{custom-props.$stylePlaceholderFontStyle}, italic)
+        ),
+      $font-weight: style-api.value($tokens, placeholder-font-weight, var(#{custom-props.$stylePlaceholderFontWeight}))
+    );
+    opacity: 1;
+  }
+
+  &:focus {
+    @include styles.form-focus-element(
+      $border-color: var(#{custom-props.$styleBorderColorFocus}, awsui.$color-border-input-focused),
+      $box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light)
+    );
+    color: var(
+      #{custom-props.$styleColorFocus},
+      var(#{custom-props.$styleColorDefault}, awsui.$color-text-body-default)
+    );
+    background-color: var(#{custom-props.$styleBackgroundFocus}, awsui.$color-background-input-default);
+  }
+
+  &:invalid {
+    // discard built-in invalid styles, customers should use `invalid` property only (AWSUI-3947)
+    box-shadow: none;
+  }
+
+  &:disabled {
+    @include styles.form-disabled-element(
+      $background-color: var(#{custom-props.$styleBackgroundDisabled}, awsui.$color-background-input-disabled),
+      $border-color: var(#{custom-props.$styleBorderColorDisabled}, awsui.$color-border-input-disabled),
+      $color: var(#{custom-props.$styleColorDisabled}, awsui.$color-text-input-disabled),
+      $cursor: default
+    );
+    box-shadow: var(#{custom-props.$styleBoxShadowDisabled});
+    &::placeholder {
+      @include styles.form-placeholder-disabled(
+        $color: style-api.value($tokens, placeholder-color, awsui.$color-text-input-placeholder-disabled)
+      );
+      opacity: 1;
+    }
+  }
+
+  &.textarea-invalid {
+    @include styles.form-invalid-control(
+      $color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-status-error),
+      $border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-error)
+    );
+  }
+
+  &.textarea-warning {
+    @include styles.form-warning-control(
+      $color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-status-warning),
+      $border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-warning)
+    );
+  }
+}

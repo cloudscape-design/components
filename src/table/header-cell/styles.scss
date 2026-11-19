@@ -1,0 +1,339 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/styles' as styles;
+@use '../cell-base/cell-box' as cell-base;
+@use '../sticky-columns/sticky-boundary' as sticky-boundary;
+@use '../../internal/styles/style-api' as style-api;
+@use '../style-api' as table-style-api;
+
+$border-color: table-style-api.header-cell(border-color, awsui.$color-border-divider-default);
+$group-border-color: table-style-api.header-cell(border-color, awsui.$color-border-divider-table-group);
+$group-divider-color: table-style-api.header-cell(divider-color, awsui.$color-border-divider-table-group);
+
+@mixin when-focus-visible-or-fake {
+  @include focus-visible.when-visible {
+    @content;
+  }
+  &.header-cell-fake-focus {
+    @include focus-visible.when-visible-unfocused {
+      @content;
+    }
+  }
+}
+
+@mixin header-cell-focus-outline($gutter) {
+  @include when-focus-visible-or-fake {
+    @include table-style-api.focus-highlight(table-style-api.$header-cell-tokens, calc(-1 * #{$gutter}));
+  }
+}
+
+@mixin header-cell-focus-outline-first($gutter) {
+  @include when-focus-visible-or-fake {
+    // Give extra space on the left (inline start) to compensate for missing header cell padding.
+    @include table-style-api.focus-highlight(
+      table-style-api.$header-cell-tokens,
+      (
+        'vertical': calc(-1 * #{$gutter}),
+        'horizontal': (
+          'left': calc(-1 * #{$gutter} + #{awsui.$space-scaled-xxs}),
+          'right': calc(-1 * #{$gutter}),
+        ),
+      )
+    );
+  }
+}
+
+@mixin cell-offset($padding) {
+  padding-inline-start: $padding;
+
+  &.header-cell-content-expandable {
+    padding-inline-start: calc(#{$padding} + #{awsui.$space-m} + #{awsui.$space-xs});
+  }
+}
+
+.header-cell {
+  @include style-api.carriers(table-style-api.$header-cell-tokens);
+  position: relative;
+  text-align: start;
+  box-sizing: border-box;
+  border-block-end: awsui.$border-divider-list-width solid $border-color;
+  background: awsui.$color-background-table-header;
+  color: awsui.$color-text-column-header;
+  font-weight: awsui.$font-weight-heading-s;
+  @include styles.font-smoothing;
+  padding-block: awsui.$space-scaled-xxs;
+  padding-inline: awsui.$space-scaled-xs;
+
+  @include header-cell-focus-outline(awsui.$space-scaled-xxs);
+
+  &.header-cell-group,
+  &.header-cell-grouped,
+  &.header-cell-spans-rows {
+    padding-block: awsui.$space-xxxs;
+    padding-inline: awsui.$space-scaled-xs;
+    border-block-end-color: $group-border-color;
+
+    > .resize-divider.resize-divider {
+      border-inline-start-color: $group-divider-color;
+    }
+  }
+
+  &-sticky {
+    border-block-end: awsui.$border-table-sticky-width solid $border-color;
+
+    &.header-cell-group,
+    &.header-cell-grouped,
+    &.header-cell-spans-rows {
+      border-block-end-color: $group-border-color;
+    }
+  }
+  &-stuck:not(.header-cell-variant-full-page) {
+    border-block-end-color: transparent;
+  }
+  &-variant-full-page {
+    background: awsui.$color-background-layout-main;
+  }
+  &-variant-full-page.header-cell-hidden {
+    border-block-end-color: transparent;
+  }
+  &-variant-embedded.is-visual-refresh:not(:is(.header-cell-sticky, .sticky-cell)),
+  &-variant-borderless.is-visual-refresh:not(:is(.header-cell-sticky, .sticky-cell)) {
+    background: none;
+  }
+  &:last-child,
+  &[data-rightmost],
+  &.header-cell-sortable {
+    padding-inline-end: awsui.$space-xs;
+  }
+
+  &.sticky-cell {
+    position: sticky;
+    background: awsui.$color-background-table-header;
+    z-index: 798; // Lower than the AppLayout's notification slot z-index(799)
+    @include styles.with-motion {
+      transition-property: padding;
+      transition-duration: awsui.$motion-duration-transition-show-quick;
+      transition-timing-function: awsui.$motion-easing-sticky;
+    }
+    &.table-variant-full-page {
+      background: awsui.$color-background-layout-main;
+    }
+    &-pad-left:not(.has-selection) {
+      padding-inline-start: awsui.$space-table-horizontal;
+    }
+    &-last-inline-start {
+      box-shadow: awsui.$shadow-sticky-column-first;
+      clip-path: inset(0px -24px 0px 0px);
+      & > .resize-divider {
+        display: none;
+      }
+
+      @include styles.with-direction('rtl') {
+        box-shadow: awsui.$shadow-sticky-column-last;
+        clip-path: inset(0 0 0 -24px);
+      }
+    }
+    &-last-inline-end {
+      box-shadow: awsui.$shadow-sticky-column-last;
+      clip-path: inset(0 0 0 -24px);
+
+      @include styles.with-direction('rtl') {
+        box-shadow: awsui.$shadow-sticky-column-first;
+        clip-path: inset(0 -24px 0 0);
+      }
+    }
+    &-boundary-inline-start {
+      @include sticky-boundary.sticky-boundary-border('end') {
+        // The boundary border replaces the short column divider, same as when the cell is stuck.
+        & > .resize-divider {
+          display: none;
+        }
+      }
+    }
+    &-boundary-inline-end {
+      @include sticky-boundary.sticky-boundary-border('start', calc(-1 * #{sticky-boundary.$border-width}));
+    }
+  }
+}
+
+.sorting-icon {
+  position: absolute;
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  inset-inline-end: awsui.$space-xxs;
+  color: awsui.$color-text-column-sorting-icon;
+}
+
+.header-cell-main {
+  /* When the wrapper is present without a sort menu, behave as if it weren't there. */
+  display: contents;
+}
+
+.sort-priority-badge {
+  margin-inline-end: awsui.$space-xxs;
+}
+
+.edit-icon {
+  margin-inline-start: awsui.$space-xxs;
+  margin-block-start: awsui.$space-scaled-xxs;
+  color: inherit;
+}
+
+.header-cell-content {
+  position: relative;
+  padding-block: awsui.$space-scaled-xxs;
+  padding-inline-end: awsui.$space-s;
+  @include cell-offset(awsui.$space-s);
+
+  .header-cell-group > & {
+    padding-block: awsui.$space-xxxs;
+  }
+
+  &:focus {
+    outline: none;
+    text-decoration: none;
+  }
+
+  @include header-cell-focus-outline(awsui.$space-table-header-focus-outline-gutter);
+
+  .header-cell-grouped > .header-cell-main > &,
+  .header-cell-spans-rows > .header-cell-main > & {
+    padding-block: awsui.$space-xxxs;
+  }
+
+  .header-cell-sortable > .header-cell-main > & {
+    padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-xxs});
+  }
+
+  // The multi-sort priority badge renders alongside the sort arrow inside the
+  // absolutely-positioned sort icon. Reserve extra inline-end space for it so it
+  // does not overlap long, non-truncated header text (e.g. resizable columns off).
+  .header-cell-sortable > .header-cell-main > &.header-cell-content-multi-sorted {
+    padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-xxs} + #{awsui.$space-m});
+  }
+
+  .header-cell-disabled.header-cell-sorted > .header-cell-main > & {
+    & > .sorting-icon {
+      color: awsui.$color-text-interactive-disabled;
+    }
+  }
+}
+
+.header-cell-main-with-menu {
+  display: flex;
+  align-items: center;
+}
+
+.header-cell-content-with-menu {
+  flex-grow: 1;
+  min-inline-size: 0;
+}
+
+.header-cell-spans-rows {
+  block-size: 100%;
+  vertical-align: bottom;
+
+  > .header-cell-main > .header-cell-content {
+    block-size: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    // stylelint-disable-next-line no-descending-specificity
+    > .sorting-icon {
+      inset-block-start: auto;
+      inset-block-end: awsui.$space-scaled-xxs;
+      transform: none;
+    }
+  }
+}
+
+.header-cell-sortable:not(.header-cell-disabled) {
+  cursor: pointer;
+  // The sorted color is set on the cell so that a `headerCell` color applies to sorted cells too.
+  &.header-cell-sorted {
+    color: awsui.$color-text-interactive-active;
+    & > .header-cell-main > .header-cell-content > .sorting-icon {
+      color: awsui.$color-text-interactive-active;
+    }
+  }
+  & > .header-cell-main > .header-cell-content:hover {
+    color: awsui.$color-text-interactive-active;
+    & > .sorting-icon {
+      color: awsui.$color-text-interactive-active;
+    }
+  }
+}
+
+.header-cell-text {
+  line-height: awsui.$line-height-heading-xs;
+
+  padding-block: calc(#{awsui.$space-xxxs} / 2);
+
+  &:not(.header-cell-text-wrap) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.header-cell-ascending,
+.header-cell-descending {
+  /* used in test-utils */
+}
+
+/*
+In Visual Refresh the first cell in the header should align
+with the left edge of the table as closely as possible. If the
+last header cell is sortable the sort icon should align with the
+settings icon in the pagination slot.
+*/
+.header-cell:not(.is-visual-refresh) {
+  &:first-child {
+    @include cell-offset(awsui.$space-xs);
+  }
+}
+
+.header-cell.is-visual-refresh {
+  &:first-child {
+    @include header-cell-focus-outline-first(awsui.$space-scaled-xxs);
+  }
+  &:first-child:not(.header-cell-grouped):not(.header-cell-group) > .header-cell-main > .header-cell-content {
+    @include cell-offset(0px);
+    @include header-cell-focus-outline-first(awsui.$space-table-header-focus-outline-gutter);
+  }
+
+  // Opt-in gate: a control header (`disablePaddings`) omits `.with-paddings`, so this high-specificity
+  // <th> offset simply doesn't apply — a low-specificity reset could not override it.
+  &:first-child.with-paddings:not(.has-striped-rows):not(.sticky-cell-pad-inline-start):not(.header-cell-group):not(
+      .header-cell-grouped
+    ) {
+    @include cell-offset(awsui.$space-xxxs);
+  }
+
+  /*
+    Striped rows requires additional left padding because the
+    shaded background makes the child content appear too close
+    to the table edge.
+  */
+  &:first-child.with-paddings.has-striped-rows:not(.sticky-cell-pad-inline-start):not(.header-cell-group):not(
+      .header-cell-grouped
+    ) {
+    @include cell-offset(awsui.$space-xxs);
+  }
+
+  &:last-child.header-cell-sortable:not(.header-cell-resizable),
+  &[data-rightmost].header-cell-sortable:not(.header-cell-resizable) {
+    padding-inline-end: awsui.$space-xxxs;
+  }
+
+  &.sticky-cell-pad-inline-start {
+    @include cell-offset(cell-base.$cell-horizontal-padding);
+  }
+}

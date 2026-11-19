@@ -1,0 +1,30 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '~design-tokens' as awsui;
+
+.image-wrapper {
+  block-size: 250px;
+  overflow: hidden;
+  &--embedded {
+    padding-block-start: 6px;
+    border-start-start-radius: awsui.$border-radius-card-embedded;
+    border-start-end-radius: awsui.$border-radius-card-embedded;
+    border-end-start-radius: awsui.$border-radius-card-embedded;
+    border-end-end-radius: awsui.$border-radius-card-embedded;
+  }
+  &--default {
+    padding-block-start: 12px;
+    border-start-start-radius: awsui.$border-radius-card-default;
+    border-start-end-radius: awsui.$border-radius-card-default;
+    border-end-start-radius: awsui.$border-radius-card-default;
+    border-end-end-radius: awsui.$border-radius-card-default;
+  }
+}
+
+.image {
+  block-size: 100%;
+  inline-size: 100%;
+  object-fit: 'cover';
+}

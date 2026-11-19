@@ -1,0 +1,74 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/styles/style-api' as style-api;
+
+@use './tab-header-bar';
+
+.root {
+  /* used in test-utils or tests */
+}
+
+.tabs {
+  @include styles.styles-reset;
+  display: block;
+  inline-size: 100%;
+}
+
+.tabs-content {
+  @include style-api.carriers(tab-header-bar.$content-tokens);
+  display: none;
+}
+
+.fit-height {
+  display: flex;
+  flex-direction: column;
+  block-size: 100%;
+}
+
+.tabs-content-active {
+  display: block;
+  flex: 1;
+  @include focus-visible.when-visible {
+    @include style-api.container-focus();
+  }
+}
+
+.tabs-content-wrapper {
+  &.with-paddings > .tabs-content {
+    padding-block: awsui.$space-scaled-m;
+    padding-inline: 0;
+  }
+  .fit-height > & {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+  }
+}
+
+.tabs-container-content-wrapper {
+  .fit-height > .tabs-content-wrapper > & {
+    block-size: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  &.with-paddings > .tabs-content {
+    padding-block-start: awsui.$space-tabs-content-top;
+    padding-block-end: awsui.$space-scaled-l;
+    padding-inline: awsui.$space-container-horizontal;
+  }
+}
+
+.disabled-reason-tooltip {
+  /* used in test-utils or tests */
+}
+
+.tabs-tab-focused {
+  /* used to manage focusable state for disabled with reason tabs */
+}

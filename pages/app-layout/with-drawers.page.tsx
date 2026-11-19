@@ -1,0 +1,96 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useContext, useRef, useState } from 'react';
+
+import { AppLayout, Button, ContentLayout, Header, SpaceBetween, SplitPanel, Toggle } from '~components';
+import { AppLayoutProps } from '~components/app-layout';
+
+import AppContext, { AppContextType } from '../app/app-context';
+import ScreenshotArea from '../utils/screenshot-area';
+import { Breadcrumbs, Containers } from './utils/content-blocks';
+import { drawerItems, drawerLabels } from './utils/drawers';
+import appLayoutLabels from './utils/labels';
+import { splitPaneli18nStrings } from './utils/strings';
+
+import styles from './styles.scss';
+
+type DemoContext = React.Context<
+  AppContextType<{
+    hasDrawers: boolean | undefined;
+    splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];
+    disableContentPaddings: boolean | undefined;
+  }>
+>;
+
+export default function WithDrawers() {
+  const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
+  const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
+  const hasDrawers = urlParams.hasDrawers ?? true;
+  const disableContentPaddings = urlParams.disableContentPaddings ?? false;
+  const appLayoutRef = useRef<AppLayoutProps.Ref>(null);
+
+  function openDrawer(id: string) {
+    setActiveDrawerId(id);
+    appLayoutRef.current?.focusActiveDrawer();
+  }
+
+  return (
+    <ScreenshotArea gutters={false}>
+      <AppLayout
+        ref={appLayoutRef}
+        ariaLabels={{ ...appLayoutLabels, ...drawerLabels }}
+        breadcrumbs={<Breadcrumbs />}
+        content={
+          <ContentLayout
+            data-test-id="content"
+            header={
+              <SpaceBetween size="m">
+                <Header variant="h1" description="Sometimes you need custom drawers to get the job done.">
+                  Testing Custom Drawers!
+                </Header>
+
+                <SpaceBetween size="xs">
+                  <Toggle
+                    checked={hasDrawers}
+                    onChange={({ detail }) => setUrlParams({ hasDrawers: detail.checked })}
+                    data-id="toggle-drawers"
+                  >
+                    Has Drawers
+                  </Toggle>
+                </SpaceBetween>
+                <Button onClick={() => openDrawer('security')} data-testid="open-drawer-button">
+                  Open drawer
+                </Button>
+                <Button onClick={() => openDrawer('pro-help')} data-testid="open-drawer-button-2">
+                  Open second drawer
+                </Button>
+              </SpaceBetween>
+            }
+          >
+            <Containers />
+          </ContentLayout>
+        }
+        splitPanelPreferences={{
+          position: urlParams.splitPanelPosition,
+        }}
+        onSplitPanelPreferencesChange={event => {
+          const { position } = event.detail;
+          setUrlParams({ splitPanelPosition: position === 'side' ? position : undefined });
+        }}
+        disableContentPaddings={disableContentPaddings}
+        splitPanel={
+          <SplitPanel header="Split panel header" i18nStrings={splitPaneli18nStrings}>
+            <SpaceBetween size="l">
+              <div className={styles.contentPlaceholder} />
+              <div className={styles.contentPlaceholder} />
+              <div className={styles.contentPlaceholder} />
+            </SpaceBetween>
+          </SplitPanel>
+        }
+        drawers={hasDrawers ? drawerItems : undefined}
+        onDrawerChange={event => setActiveDrawerId(event.detail.activeDrawerId)}
+        activeDrawerId={activeDrawerId}
+      />
+    </ScreenshotArea>
+  );
+}

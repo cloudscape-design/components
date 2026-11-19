@@ -1,0 +1,255 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import { StyleDictionary } from '../../utils/interfaces.js';
+
+const metadata: StyleDictionary.MetadataIndex = {
+  spaceDialogHorizontal: {
+    description: 'The horizontal padding inside Dialog.',
+    public: false,
+    themeable: true,
+  },
+  spaceDialogVertical: {
+    description: 'The vertical padding inside Dialog.',
+    public: false,
+    themeable: true,
+  },
+  spaceDialogActionBlock: {
+    description: 'The block-axis offset used to align Dialog header actions.',
+    public: false,
+    themeable: true,
+  },
+  spaceDialogActionInline: {
+    description: 'The inline-axis offset used to align Dialog header actions.',
+    public: false,
+    themeable: true,
+  },
+  spaceDialogHeaderGap: {
+    description: 'The gap between the Dialog heading and header actions.',
+    public: false,
+    themeable: true,
+  },
+  spaceDialogSectionGap: {
+    description: 'The spacing between Dialog sections.',
+    public: false,
+    themeable: true,
+  },
+  spaceAlertVertical: {
+    description: 'The vertical padding inside alert components.',
+    public: true,
+    themeable: true,
+  },
+  spaceScaled2xL: { sassName: '$space-scaled-2x-l' },
+  spaceScaled2xM: { sassName: '$space-scaled-2x-m' },
+  spaceScaled2xNone: { sassName: '$space-scaled-2x-none' },
+  spaceScaled2xS: { sassName: '$space-scaled-2x-s' },
+  spaceScaled2xXl: { sassName: '$space-scaled-2x-xl' },
+  spaceScaled2xXs: { sassName: '$space-scaled-2x-xs' },
+  spaceScaled2xXxl: { sassName: '$space-scaled-2x-xxl' },
+  spaceScaled2xXxs: { sassName: '$space-scaled-2x-xxs' },
+  spaceScaled2xXxxl: { sassName: '$space-scaled-2x-xxxl' },
+  spaceScaled2xXxxs: { sassName: '$space-scaled-2x-xxxs' },
+
+  spaceStaticL: {
+    description: 'The static L spacing unit.',
+    public: true,
+    themeable: false,
+  },
+  spaceStaticM: {
+    description: 'The static M spacing unit.',
+    public: true,
+    themeable: false,
+  },
+  spaceStaticS: {
+    description: 'The static S spacing unit.',
+    public: true,
+    themeable: false,
+  },
+  spaceStaticXl: {
+    description: 'The static XL spacing unit.',
+    public: true,
+    themeable: false,
+  },
+  spaceStaticXs: {
+    description: 'The static XS spacing unit.',
+    public: true,
+    themeable: false,
+  },
+  spaceStaticXxl: {
+    description: 'The static XXL spacing unit.',
+    public: true,
+    themeable: false,
+  },
+  spaceStaticXxs: {
+    description: 'The static XXS spacing unit.',
+    public: true,
+    themeable: false,
+  },
+  spaceStaticXxxl: {
+    description: 'The static XXXL spacing unit.',
+    public: true,
+    themeable: false,
+  },
+  spaceStaticXxxs: {
+    description: 'The static XXXS spacing unit.',
+    public: true,
+    themeable: false,
+  },
+  spaceScaledL: {
+    description: 'The L spacing unit which scales between modes. For example: vertical space between form fields.',
+    public: true,
+    themeable: false,
+  },
+  spaceScaledM: {
+    description: 'The M spacing unit which scales between modes. For example: horizontal padding inside a popover.',
+    public: true,
+    themeable: false,
+  },
+  spaceScaledS: {
+    description: 'The S spacing unit which scales between modes. For example: vertical padding inside a popover.',
+    public: true,
+    themeable: false,
+  },
+  spaceScaledXl: {
+    description:
+      'The XL spacing unit which scales between modes. For example: horizontal space between wizard navigation and content.',
+    public: true,
+    themeable: false,
+  },
+  spaceScaledXs: {
+    description:
+      'The XS spacing unit which scales between modes. For example: horizontal space between buttons in an action stripe.',
+    public: true,
+    themeable: false,
+  },
+  spaceScaledXxl: {
+    description:
+      'The XXL spacing unit which scales between modes. For example: left indentation of grouped options in a select.',
+    public: true,
+    themeable: false,
+  },
+  spaceScaledXxs: {
+    description:
+      'The XXS spacing unit which scales between modes. For example: vertical space between form field label and control.',
+    public: true,
+    themeable: false,
+  },
+  spaceScaledXxxl: {
+    description:
+      'The XXXL spacing unit which scales between modes. For example: horizontal padding for app layout and split panel content on large screens.',
+    public: true,
+    themeable: false,
+  },
+  spaceScaledXxxs: {
+    description: 'The XXXS spacing unit which scales between modes.',
+    public: true,
+    themeable: false,
+  },
+  spaceCardHorizontalDefault: {
+    description: 'The default horizontal padding inside a card.',
+    public: true,
+    themeable: true,
+  },
+  spaceCardHorizontalEmbedded: {
+    description: 'The horizontal padding inside embedded a card.',
+    public: true,
+    themeable: true,
+  },
+  spaceCardVerticalDefault: {
+    description: 'The default vertical padding inside a card.',
+    public: true,
+    themeable: true,
+  },
+  spaceCardVerticalEmbedded: {
+    description: 'The vertical padding inside embedded a card.',
+    public: true,
+    themeable: true,
+  },
+  spaceActionCardHorizontalDefault: {
+    description: 'The default horizontal padding inside an action card.',
+    public: true,
+    themeable: true,
+  },
+  spaceActionCardHorizontalEmbedded: {
+    description: 'The horizontal padding inside an embedded action card.',
+    public: true,
+    themeable: true,
+  },
+  spaceActionCardVerticalDefault: {
+    description: 'The default vertical padding inside an action card.',
+    public: true,
+    themeable: true,
+  },
+  spaceActionCardVerticalEmbedded: {
+    description: 'The vertical padding inside an embedded action card.',
+    public: true,
+    themeable: true,
+  },
+  spaceContainerHorizontal: {
+    description: 'The horizontal padding inside a container.',
+    public: true,
+    themeable: false,
+  },
+  spaceFieldHorizontal: {
+    description: 'The horizontal padding inside field components.',
+    public: true,
+    themeable: false,
+  },
+  spaceTabsVertical: {
+    description: 'The vertical padding inside tabs.',
+    public: true,
+    themeable: true,
+  },
+  spaceTreeViewIndentation: {
+    description: 'The indentation of tree view items.',
+    public: true,
+    themeable: false,
+  },
+  spaceSideNavigationItemDefaultGap: {
+    description: 'The vertical gap between side navigation items when no item has an icon.',
+    public: true,
+    themeable: true,
+  },
+  spaceSideNavigationItemIconGap: {
+    description: 'The vertical gap between side navigation items when at least one item has an icon.',
+    public: true,
+    themeable: true,
+  },
+  spaceButtonHorizontal: {
+    description: 'The horizontal padding inside buttons.',
+    public: true,
+    themeable: true,
+  },
+  spaceButtonVertical: {
+    description: 'The vertical padding inside buttons.',
+    public: true,
+    themeable: true,
+  },
+  spaceTokenVertical: {
+    description: 'The vertical padding inside tokens.',
+    public: true,
+    themeable: true,
+  },
+  spaceFieldVertical: {
+    description: 'The vertical padding inside control components.',
+    public: true,
+    themeable: true,
+  },
+  spaceOptionPaddingVertical: {
+    description: 'The vertical padding inside dropdown option items.',
+    public: true,
+    themeable: false,
+  },
+  spaceOptionPaddingHorizontal: {
+    description: 'The horizontal padding inside dropdown option items.',
+    public: true,
+    themeable: false,
+  },
+  spaceStatusIndicatorPaddingHorizontal: {
+    description:
+      'The inline padding inside the status indicator container. Applied when the status indicator background is themed.',
+    public: false,
+    themeable: true,
+  },
+};
+
+export default metadata;

@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "lib": ["ES2021", "DOM"],
+    "target": "ES2019",
+    "types": [],
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "strict": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "inlineSources": true,
+    "rootDir": "test/definitions",
+    "outDir": "lib/test-definitions",
+    "skipLibCheck": true
+  },
+  "include": ["test/definitions", "test/types.ts"],
+  "exclude": ["test/definitions/utils.ts"]
+}

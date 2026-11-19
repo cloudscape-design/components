@@ -1,0 +1,24 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/style-api' as style-api;
+
+// The control slot is painted by the shared internal radio button, which reads the same token map and registers it.
+$control-props: style-api.combine((fill-color, border-color, indicator-color), style-api.$focus-ring);
+$control-tokens: style-api.resolve($control-props, carrier);
+@include style-api.docs(
+  'control',
+  $control-tokens,
+  $descriptions: (
+    tokens: (
+      fill-color: 'The inside of the circle; the ring when checked.',
+    )
+  )
+);
+
+.radio-button {
+  @include styles.styles-reset;
+}

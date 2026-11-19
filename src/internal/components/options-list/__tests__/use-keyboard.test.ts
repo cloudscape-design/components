@@ -1,0 +1,147 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import { act, renderHook } from '../../../../__tests__/render-hook';
+import { KeyCode } from '../../../keycode';
+import { useMenuKeyboard, useTriggerKeyboard } from '../utils/use-keyboard';
+
+const createKeyEventDetail = ([name, keyCode]: any) => {
+  return { name, eventDetail: { detail: { keyCode }, preventDefault: jest.fn() } };
+};
+
+const triggerKeys = [
+  ['up', KeyCode.up],
+  ['down', KeyCode.down],
+].map(createKeyEventDetail);
+
+const menuKeys: any = [
+  ['up', KeyCode.up],
+  ['down', KeyCode.down],
+  ['home', 36],
+  ['end', 35],
+  ['escape', KeyCode.escape],
+  ['enter', KeyCode.enter],
+  ['space', KeyCode.space],
+].reduce<any>((acc, [name, keyCode]) => {
+  acc[name] = { detail: { keyCode }, preventDefault: jest.fn(), stopPropagation: jest.fn() };
+  return acc;
+}, {});
+
+const menuInitialProps = {
+  goUp: () => {},
+  goDown: () => {},
+  selectOption: () => {},
+  goHome: () => {},
+  goEnd: () => {},
+  onEscape: () => {},
+};
+
+describe('useTriggerKeyboard', () => {
+  triggerKeys.forEach(({ name, eventDetail }) => {
+    test(`should call openDropdown and goHome when press ${name}`, () => {
+      const openDropdown = jest.fn();
+      const goHome = jest.fn();
+      const hook = renderHook(useTriggerKeyboard, {
+        initialProps: {
+          openDropdown,
+          goHome,
+        },
+      });
+      act(() => hook.result.current(eventDetail as any));
+      expect(openDropdown).toHaveBeenCalled();
+      expect(goHome).toHaveBeenCalled();
+      expect(eventDetail.preventDefault).toHaveBeenCalled();
+    });
+  });
+});
+
+describe('useMenuKeyboard', () => {
+  test('should go up when pressing up', () => {
+    const goUp = jest.fn();
+    const hook = renderHook(useMenuKeyboard, {
+      initialProps: { ...menuInitialProps, goUp },
+    });
+    act(() => hook.result.current(menuKeys.up));
+    expect(goUp).toHaveBeenCalled();
+    expect(menuKeys.up.preventDefault).toHaveBeenCalled();
+  });
+
+  test('should go down when pressing down', () => {
+    const goDown = jest.fn();
+    const hook = renderHook(useMenuKeyboard, {
+      initialProps: { ...menuInitialProps, goDown },
+    });
+    act(() => hook.result.current(menuKeys.down));
+    expect(goDown).toHaveBeenCalled();
+    expect(menuKeys.down.preventDefault).toHaveBeenCalled();
+  });
+
+  test('should go home when pressing home', () => {
+    const goHome = jest.fn();
+    const hook = renderHook(useMenuKeyboard, {
+      initialProps: { ...menuInitialProps, goHome },
+    });
+    act(() => hook.result.current(menuKeys.home));
+    expect(goHome).toHaveBeenCalled();
+    expect(menuKeys.home.preventDefault).not.toHaveBeenCalled();
+  });
+
+  test('should go to end when pressing end', () => {
+    const goEnd = jest.fn();
+    const hook = renderHook(useMenuKeyboard, {
+      initialProps: { ...menuInitialProps, goEnd },
+    });
+    act(() => hook.result.current(menuKeys.end));
+    expect(goEnd).toHaveBeenCalled();
+    expect(menuKeys.end.preventDefault).not.toHaveBeenCalled();
+  });
+
+  test('should close the dropdown when pressing escape', () => {
+    const onEscape = jest.fn();
+    const hook = renderHook(useMenuKeyboard, {
+      initialProps: { ...menuInitialProps, onEscape },
+    });
+    act(() => hook.result.current(menuKeys.escape));
+    expect(onEscape).toHaveBeenCalled();
+    expect(menuKeys.escape.preventDefault).not.toHaveBeenCalled();
+  });
+
+  test('does not stop propagation when onEscape is omitted', () => {
+    const escape = { detail: { keyCode: KeyCode.escape }, preventDefault: jest.fn(), stopPropagation: jest.fn() };
+    const hook = renderHook(useMenuKeyboard, {
+      initialProps: { ...menuInitialProps, onEscape: undefined },
+    });
+    act(() => hook.result.current(escape as any));
+    expect(escape.stopPropagation).not.toHaveBeenCalled();
+    expect(escape.preventDefault).not.toHaveBeenCalled();
+  });
+
+  test('should select option when pressing enter', () => {
+    const selectOption = jest.fn();
+    const hook = renderHook(useMenuKeyboard, {
+      initialProps: { ...menuInitialProps, selectOption },
+    });
+    act(() => hook.result.current(menuKeys.enter));
+    expect(selectOption).toHaveBeenCalled();
+    expect(menuKeys.enter.preventDefault).toHaveBeenCalled();
+  });
+
+  test('should not select option when pressing space when native space is in action (filtering enabled)', () => {
+    const selectOption = jest.fn();
+    const hook = renderHook(useMenuKeyboard, {
+      initialProps: { ...menuInitialProps, selectOption },
+    });
+    act(() => hook.result.current(menuKeys.space));
+    expect(selectOption).not.toHaveBeenCalled();
+    expect(menuKeys.space.preventDefault).not.toHaveBeenCalled();
+  });
+
+  test('should select option when pressing space when preventNativeSpace is enabled', () => {
+    const selectOption = jest.fn();
+    const hook = renderHook(useMenuKeyboard, {
+      initialProps: { ...menuInitialProps, selectOption, preventNativeSpace: true },
+    });
+    act(() => hook.result.current(menuKeys.space));
+    expect(selectOption).toHaveBeenCalled();
+    expect(menuKeys.space.preventDefault).toHaveBeenCalled();
+  });
+});

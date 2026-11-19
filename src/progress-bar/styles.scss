@@ -1,0 +1,189 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../internal/styles/style-api' as style-api;
+@use './motion';
+
+$progress-bar-tokens: style-api.resolve((track-color, value-color, bar-block-size, bar-border-radius), carrier);
+@include style-api.register($progress-bar-tokens);
+@include style-api.docs('root', $progress-bar-tokens);
+@include style-api.docs('valueLabel', $properties: (color, font-family, font-size, font-weight));
+
+$progress-height: style-api.value(
+  $progress-bar-tokens,
+  bar-block-size,
+  var(#{custom-props.$progressBarHeight}, 0.4 * styles.$base-size)
+);
+$progress-border-radius: style-api.value(
+  $progress-bar-tokens,
+  bar-border-radius,
+  var(#{custom-props.$progressBarBorderRadius}, 10px)
+);
+$progress-background-color: style-api.value(
+  $progress-bar-tokens,
+  track-color,
+  var(#{custom-props.$progressBarBackgroundColor}, awsui.$color-background-progress-bar-default)
+);
+$progress-value-background-color: style-api.value(
+  $progress-bar-tokens,
+  value-color,
+  var(#{custom-props.$progressValueBackgroundColor}, awsui.$color-background-progress-bar-value-default)
+);
+$progress-flash-background-color: style-api.value(
+  $progress-bar-tokens,
+  track-color,
+  var(#{custom-props.$progressBarBackgroundColor}, awsui.$color-background-progress-bar-flash)
+);
+$progress-flash-value-background-color: style-api.value(
+  $progress-bar-tokens,
+  value-color,
+  var(#{custom-props.$progressValueBackgroundColor}, awsui.$color-background-progress-bar-value-flash)
+);
+
+.root {
+  @include style-api.carriers($progress-bar-tokens);
+  @include styles.styles-reset;
+}
+
+.with-result-button {
+  padding-inline-end: awsui.$space-m;
+}
+
+.result-text {
+  /* used in test-utils */
+}
+
+.result-container {
+  &-error,
+  &-success {
+    /* used in test-utils */
+  }
+}
+.result-button {
+  display: inline-block;
+  margin-block: awsui.$space-scaled-xxs;
+  margin-inline: 0;
+}
+
+.word-wrap {
+  @include styles.text-wrapping;
+}
+
+.label {
+  &-flash {
+    color: inherit;
+    font-weight: styles.$font-weight-bold;
+  }
+  &-key-value {
+    @include styles.font-label;
+    color: awsui.$color-text-label;
+    margin-block-end: awsui.$space-scaled-xxxs;
+  }
+}
+
+.flash {
+  color: inherit;
+}
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  max-inline-size: 800px;
+  block-size: awsui.$line-height-body-m;
+}
+
+.percentage-container {
+  inline-size: 3.3 * styles.$base-size;
+  flex-shrink: 0;
+  white-space: nowrap;
+  text-align: end;
+  @include styles.font(body-s);
+}
+
+.percentage {
+  display: inline-block;
+  font-family: awsui.$font-family-base;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+  line-height: awsui.$line-height-body-s;
+  letter-spacing: awsui.$letter-spacing-body-s;
+  color: awsui.$color-text-small;
+  font-size: awsui.$font-size-body-s;
+  font-weight: styles.$font-weight-normal;
+
+  &.percentage-flash {
+    color: currentColor;
+  }
+}
+
+@mixin general-progress-background-style {
+  block-size: $progress-height;
+  border-block: 0;
+  border-inline: none;
+  box-sizing: border-box;
+  border-start-start-radius: $progress-border-radius;
+  border-start-end-radius: $progress-border-radius;
+  border-end-start-radius: $progress-border-radius;
+  border-end-end-radius: $progress-border-radius;
+}
+
+@mixin general-progress-bar-style {
+  border-start-start-radius: $progress-border-radius;
+  border-start-end-radius: 0;
+  border-end-start-radius: $progress-border-radius;
+  border-end-end-radius: 0;
+}
+
+.progress {
+  inline-size: 100%;
+  margin-inline-end: awsui.$space-s;
+  min-inline-size: 0;
+
+  @include general-progress-background-style;
+  background-color: $progress-background-color;
+
+  &::-webkit-progress-bar {
+    @include general-progress-background-style;
+    background-color: $progress-background-color;
+  }
+
+  &::-webkit-progress-value {
+    @include general-progress-bar-style;
+    background-color: $progress-value-background-color;
+  }
+
+  &.complete::-webkit-progress-value {
+    border-start-start-radius: $progress-border-radius;
+    border-start-end-radius: $progress-border-radius;
+    border-end-start-radius: $progress-border-radius;
+    border-end-end-radius: $progress-border-radius;
+  }
+
+  &::-moz-progress-bar {
+    @include general-progress-bar-style;
+    background-color: $progress-value-background-color;
+  }
+
+  &.progress-flash {
+    background-color: $progress-flash-background-color;
+
+    &::-webkit-progress-bar {
+      background-color: $progress-flash-background-color;
+    }
+    &::-webkit-progress-value {
+      background-color: $progress-flash-value-background-color;
+    }
+    &::-moz-progress-bar {
+      background-color: $progress-flash-value-background-color;
+    }
+  }
+}
+
+.additional-info {
+  /* used in test-utils */
+}

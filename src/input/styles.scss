@@ -1,0 +1,402 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/foundation' as foundation;
+@use '../internal/styles/forms/mixins' as forms;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../internal/styles/style-api' as style-api;
+
+@include style-api.docs(
+  'root',
+  $properties: (background, border, border-radius, box-shadow),
+  $descriptions: (
+    properties: (
+      box-shadow: 'Also draws the focus ring.',
+    )
+  )
+);
+
+// The placeholder tokens are read by the ::placeholder pseudo-element of the native input, which does not
+// inherit the non-inheriting public tokens: they are re-anchored as carriers on the input itself.
+$input-tokens: style-api.resolve(
+  (placeholder-color, placeholder-font-size, placeholder-font-style, placeholder-font-weight),
+  carrier
+);
+@include style-api.register($input-tokens);
+@include style-api.docs(
+  'input',
+  $input-tokens,
+  $properties: (color, padding, font-family, font-size, font-weight),
+  $descriptions: (
+    properties: (
+      padding-inline: 'Replaces the padding reserved for the search icon and the clear button.',
+    )
+  )
+);
+
+@include style-api.docs('inlineLabel', $properties: (color, background, font-family, font-size, font-weight));
+@include style-api.docs('searchIcon', $properties: (color));
+@include style-api.docs-forward('clearButton', 'button', 'root');
+
+@mixin placeholder {
+  &::-webkit-input-placeholder {
+    @content;
+    // Chrome allows to select the placeholder on drag, if drag starts and
+    // ends in surrounding flex container
+    user-select: none;
+  }
+
+  &::-moz-placeholder {
+    @content;
+    opacity: 1;
+  }
+}
+
+.root {
+  /* used in test-utils for component to distinguish input from other input-like components, for example autosuggest */
+}
+
+// The native input only renders text: the border, background, box-shadow and all state styles
+// live on the surrounding .input-field box.
+.input {
+  @include style-api.carriers($input-tokens);
+  @include styles.styles-reset;
+  flex: 1;
+  min-inline-size: 0;
+  inline-size: 100%;
+  padding-block: styles.$control-padding-vertical;
+  padding-inline: styles.$control-padding-horizontal;
+  color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-body-default);
+  cursor: text;
+  box-sizing: border-box;
+  border-block: none;
+  border-inline: none;
+  background-color: transparent;
+  // Also discards built-in invalid styles, customers should use `invalid` property only (AWSUI-3947)
+  box-shadow: none;
+  outline: none;
+
+  @include styles.font-body-m;
+
+  &:hover {
+    color: var(
+      #{custom-props.$styleColorHover},
+      var(#{custom-props.$styleColorDefault}, awsui.$color-text-body-default)
+    );
+  }
+
+  &.input-readonly {
+    color: var(
+      #{custom-props.$styleColorReadonly},
+      var(#{custom-props.$styleColorDefault}, awsui.$color-text-body-default)
+    );
+  }
+
+  @include placeholder {
+    @include styles.form-placeholder(
+      $color: style-api.value(
+          $input-tokens,
+          placeholder-color,
+          var(#{custom-props.$stylePlaceholderColor}, #{awsui.$color-text-input-placeholder})
+        ),
+      $font-size: style-api.value($input-tokens, placeholder-font-size, var(#{custom-props.$stylePlaceholderFontSize})),
+      $font-style: style-api.value(
+          $input-tokens,
+          placeholder-font-style,
+          var(#{custom-props.$stylePlaceholderFontStyle}, italic)
+        ),
+      $font-weight: style-api.value(
+          $input-tokens,
+          placeholder-font-weight,
+          var(#{custom-props.$stylePlaceholderFontWeight})
+        )
+    );
+  }
+
+  &:focus {
+    color: var(#{custom-props.$styleColorFocus}, awsui.$color-text-body-default);
+  }
+
+  &:disabled {
+    opacity: 1;
+    color: var(#{custom-props.$styleColorDisabled}, awsui.$color-text-input-disabled);
+    cursor: default;
+    @include placeholder {
+      @include styles.form-placeholder-disabled(
+        $color: style-api.value(
+            $input-tokens,
+            placeholder-color,
+            var(#{custom-props.$stylePlaceholderColor}, #{awsui.$color-text-input-placeholder-disabled})
+          )
+      );
+    }
+  }
+
+  &.input-invalid {
+    color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-status-error);
+  }
+
+  &.input-warning {
+    color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-status-warning);
+  }
+
+  &.input-type-search {
+    box-sizing: border-box; // Overrides the [type='search'] CSS from normalize
+    -webkit-appearance: none;
+
+    &::-webkit-search-decoration {
+      // Remove extra space for default Safari browser search icon
+      -webkit-appearance: none;
+    }
+
+    &::-webkit-search-cancel-button {
+      display: none;
+    }
+  }
+  &.input-has-icon-start {
+    padding-inline-start: styles.$control-icon-horizontal-padding;
+  }
+  &.input-has-icon-end {
+    padding-inline-end: styles.$control-icon-horizontal-padding;
+  }
+}
+
+.input-container {
+  display: flex;
+  position: relative;
+}
+
+.input-field {
+  display: flex;
+  align-items: stretch;
+  inline-size: 100%;
+  box-sizing: border-box;
+  cursor: text;
+  color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-form-secondary);
+  border-start-start-radius: styles.$control-border-radius;
+  border-start-end-radius: styles.$control-border-radius;
+  border-end-start-radius: styles.$control-border-radius;
+  border-end-end-radius: styles.$control-border-radius;
+  min-block-size: awsui.$size-vertical-input;
+  @include styles.input-default-styles;
+
+  &:hover {
+    color: var(
+      #{custom-props.$styleColorHover},
+      var(#{custom-props.$styleColorDefault}, awsui.$color-text-form-secondary)
+    );
+    @include styles.input-hover-styles;
+  }
+
+  // Inline content can open popovers (e.g. the token overflow dropdown) that must not be clipped.
+  &:not(.input-field-has-inline-content) {
+    overflow: clip;
+  }
+
+  &.input-field-readonly {
+    color: var(
+      #{custom-props.$styleColorReadonly},
+      var(#{custom-props.$styleColorDefault}, awsui.$color-text-form-secondary)
+    );
+    box-shadow: var(#{custom-props.$styleBoxShadowReadonly});
+    @include styles.input-readonly-styles;
+  }
+
+  &:focus-within {
+    color: var(
+      #{custom-props.$styleColorFocus},
+      var(#{custom-props.$styleColorDefault}, awsui.$color-text-form-secondary)
+    );
+    background-color: var(#{custom-props.$styleBackgroundFocus}, awsui.$color-background-input-default);
+    @include styles.input-focus-styles;
+  }
+
+  // Keep disabled styles before validation modifiers so invalid/warning border colors win when both modifiers are present.
+  &.input-field-disabled {
+    @include styles.form-disabled-element(
+      $background-color: var(#{custom-props.$styleBackgroundDisabled}, awsui.$color-background-input-disabled),
+      $border-color: var(#{custom-props.$styleBorderColorDisabled}, awsui.$color-border-input-disabled),
+      $color: var(#{custom-props.$styleColorDisabled}, awsui.$color-text-input-disabled),
+      $cursor: default
+    );
+    box-shadow: var(#{custom-props.$styleBoxShadowDisabled});
+  }
+
+  &.input-field-invalid {
+    @include styles.form-invalid-control(
+      $color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-status-error),
+      $border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-error),
+      $focus-box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid)
+    ) {
+      padding-inline-start: 0;
+    }
+
+    &:focus-within {
+      border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-error);
+      box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid);
+    }
+  }
+
+  &.input-field-warning {
+    @include styles.form-warning-control(
+      $color: var(#{custom-props.$styleColorDefault}, awsui.$color-text-status-warning),
+      $border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-warning),
+      $focus-box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid)
+    ) {
+      padding-inline-start: 0;
+    }
+
+    &:focus-within {
+      border-color: var(#{custom-props.$styleBorderColorDefault}, awsui.$color-text-status-warning);
+      box-shadow: var(#{custom-props.$styleBoxShadowFocus}, foundation.$box-shadow-focused-light-invalid);
+    }
+  }
+
+  &.input-field-no-border-radius {
+    border-start-start-radius: awsui.$border-radius-dropdown;
+    border-start-end-radius: awsui.$border-radius-dropdown;
+    border-end-start-radius: awsui.$border-radius-dropdown;
+    border-end-end-radius: awsui.$border-radius-dropdown;
+  }
+
+  &.grouped {
+    // Unlike other controls, input's padding is rendered by the inner input element and not by its wrapper,
+    // so we should not add extra space to the wrapper for the validation border.
+    @include styles.grouped-control($validation-border-padding: awsui.$border-width-field);
+    &.input-field-disabled {
+      @include styles.grouped-control-disabled;
+    }
+  }
+}
+
+.input-prefix,
+.input-suffix {
+  display: flex;
+  align-items: center;
+  flex-shrink: 1;
+  max-inline-size: calc(50% - 6rem);
+  min-inline-size: 0;
+  padding-block: styles.$control-padding-vertical;
+  padding-inline: styles.$control-padding-horizontal;
+  color: inherit;
+  // Adornments are not part of the editable text, so they do not show the text cursor.
+  cursor: default;
+  @include styles.font-body-m;
+}
+
+.input-adornment-content {
+  display: block;
+  flex: 1;
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.input-adornment-divider {
+  display: block;
+  flex-shrink: 0;
+  inline-size: awsui.$border-width-field;
+  background-color: awsui.$color-border-divider-default;
+  align-self: stretch;
+  cursor: default;
+}
+
+// Starts the inline content one small gap after the start icon, which is offset from the outer border edge.
+$inline-content-icon-padding: calc(
+  #{styles.$control-icon-horizontal-offset} + #{awsui.$size-icon-normal} + #{awsui.$space-xxs} -
+    #{awsui.$border-width-field}
+);
+
+.input-inline-content {
+  display: flex;
+  min-inline-size: 0;
+  padding-inline-start: $inline-content-icon-padding;
+  // Inline content is not editable text, so it does not show the field's text cursor.
+  cursor: default;
+
+  // The inline content already clears the start icon; the input keeps room to type.
+  + .input {
+    padding-inline-start: styles.$control-padding-horizontal;
+    min-inline-size: 20%;
+  }
+}
+
+// The wider invalid/warning start border is absorbed by the first cell, so the content does not shift.
+// The first cell is the prefix when present, then the inline content, otherwise the native input.
+.input-field-invalid,
+.input-field-warning {
+  > .input-prefix,
+  > .input:first-child {
+    padding-inline-start: styles.$invalid-control-left-padding;
+  }
+
+  > .input-inline-content:first-child {
+    padding-inline-start: calc(
+      #{$inline-content-icon-padding} - (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field})
+    );
+  }
+
+  > .input-has-icon-start:first-child {
+    padding-inline-start: calc(
+      #{styles.$control-icon-horizontal-padding} -
+        (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field})
+    );
+  }
+
+  > .input-prefix,
+  > .input-suffix {
+    max-inline-size: calc(50% - 6rem + (#{styles.$invalid-control-left-border} - #{awsui.$border-width-field}) / 2);
+  }
+}
+
+.input-icon-start {
+  position: absolute;
+  pointer-events: none;
+  inset-inline-start: styles.$control-icon-horizontal-offset;
+  inset-block-start: styles.$control-icon-vertical-offset;
+  // The icon inside uses currentColor, so the span owns the subtle/disabled colors.
+  color: awsui.$color-text-icon-subtle;
+
+  &.input-icon-start-disabled {
+    color: awsui.$color-text-interactive-disabled;
+  }
+}
+
+.input-icon-end {
+  position: absolute;
+  inset-block-start: calc(#{styles.$control-icon-vertical-offset} - #{awsui.$space-xxxs});
+  inset-inline-end: calc(#{styles.$control-icon-horizontal-offset} - #{awsui.$space-xxs});
+}
+
+.input-button-right {
+  /* used in test-utils */
+}
+
+.inline-label-trigger-wrapper {
+  @include forms.inline-label-trigger-wrapper;
+
+  &-full-width {
+    inline-size: 100%;
+  }
+}
+
+.inline-label-wrapper {
+  @include forms.inline-label-wrapper;
+
+  &-full-width {
+    inline-size: 100%;
+  }
+}
+
+.inline-label {
+  @include forms.inline-label;
+
+  &-disabled {
+    @include forms.inline-label-disabled;
+  }
+}

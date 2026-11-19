@@ -1,0 +1,151 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import * as React from 'react';
+
+import Checkbox from '~components/checkbox';
+import { CollectionPreferencesProps } from '~components/collection-preferences';
+
+export const baseProperties: CollectionPreferencesProps<boolean> = {
+  title: 'Preferences',
+  confirmLabel: 'Confirm',
+  cancelLabel: 'Cancel',
+  onConfirm: () => {},
+
+  preferences: {
+    wrapLines: true,
+    pageSize: 10,
+    visibleContent: ['id', 'sslCertificate', 'origin'],
+    custom: true,
+  },
+};
+
+export const pageSizePreference: CollectionPreferencesProps.PageSizePreference = {
+  title: 'Select page size',
+  options: [
+    { value: 10, label: '10 resources' },
+    { value: 20, label: '20 resources' },
+  ],
+};
+
+export const wrapLinesPreference: CollectionPreferencesProps.WrapLinesPreference = {
+  label: 'Wrap lines',
+  description: 'Wrap lines description',
+};
+
+export const contentDensityPreference: CollectionPreferencesProps.ContentDensityPreference = {
+  label: 'Compact mode',
+  description: 'Content density description',
+};
+
+export const visibleContentPreference: CollectionPreferencesProps.VisibleContentPreference = {
+  title: 'Content Selection',
+  options: [
+    {
+      label: 'Main distribution properties',
+      options: [
+        { id: 'id', label: 'Distribution ID', editable: false },
+        {
+          id: 'domainName',
+          label:
+            'Domain name Domain name Domain name Domain name Domain name Domain name Domain name Domain name Domain name Domain name Domain name Domain name',
+        },
+      ],
+    },
+    {
+      label: 'Secondary distribution properties',
+      options: [
+        {
+          id: 'deliveryMethod',
+          label: 'Deliverymethod',
+          editable: true,
+        },
+        { id: 'priceClass', label: 'Price class', editable: false },
+        { id: 'sslCertificate', label: 'SSL certificate' },
+        {
+          id: 'origin',
+          label:
+            'OriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOrigin',
+        },
+      ],
+    },
+  ],
+};
+
+export const stickyColumnsPreference: CollectionPreferencesProps.StickyColumnsPreference = {
+  firstColumns: {
+    title: 'Stick first column(s)',
+    description: 'Keep the first column(s) visible while horizontally scrolling the table content.',
+    options: [
+      { label: 'None', value: 0 },
+      { label: 'First column', value: 1 },
+      { label: 'First two columns', value: 2 },
+    ],
+  },
+  lastColumns: {
+    title: 'Stick last column',
+    description: 'Keep the last column visible while horizontally scrolling the table content.',
+    options: [
+      { label: 'None', value: 0 },
+      { label: 'Last column', value: 1 },
+    ],
+  },
+};
+
+export const customPreference = (customState: boolean) => (
+  <Checkbox checked={customState} onChange={() => {}}>
+    View as
+  </Checkbox>
+);
+
+export const groupedContentDisplayOptions: CollectionPreferencesProps.ContentDisplayOption[] = [
+  { id: 'id', label: 'Instance ID', alwaysVisible: true },
+  { id: 'name', label: 'Name' },
+  { id: 'type', label: 'Instance type' },
+  { id: 'az', label: 'Availability zone' },
+  { id: 'state', label: 'State' },
+  { id: 'cpu', label: 'CPU (%)' },
+  { id: 'memory', label: 'Memory (%)' },
+  { id: 'netIn', label: 'Network in (MB/s)' },
+  { id: 'netOut', label: 'Network out (MB/s)' },
+  { id: 'cost', label: 'Monthly cost ($)' },
+];
+
+export const contentDisplayGroups: CollectionPreferencesProps.ContentDisplayOptionGroup[] = [
+  { id: 'config', label: 'Configuration' },
+  { id: 'performance', label: 'Performance' },
+  { id: 'network', label: 'Network' },
+];
+
+export const groupedContentDisplay: CollectionPreferencesProps.ContentDisplayItem[] = [
+  { id: 'id', visible: true },
+  { id: 'name', visible: true },
+  {
+    type: 'group',
+    id: 'config',
+    visible: true,
+    children: [
+      { id: 'type', visible: true },
+      { id: 'az', visible: true },
+      { id: 'state', visible: true },
+    ],
+  },
+  {
+    type: 'group',
+    id: 'performance',
+    visible: true,
+    children: [
+      { id: 'cpu', visible: true },
+      { id: 'memory', visible: true },
+    ],
+  },
+  {
+    type: 'group',
+    id: 'network',
+    visible: true,
+    children: [
+      { id: 'netIn', visible: true },
+      { id: 'netOut', visible: true },
+    ],
+  },
+  { id: 'cost', visible: true },
+];

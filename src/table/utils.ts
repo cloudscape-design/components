@@ -1,0 +1,126 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import { InternalContainerProps } from '../container/internal';
+import { TableProps } from './interfaces';
+import { StickyColumnsCellState } from './sticky-columns';
+
+export const applyTrackBy = <T>(trackBy: TableProps.TrackBy<T>, item: T) => {
+  if (typeof trackBy === 'function') {
+    return trackBy(item);
+  }
+  return (item as any)[trackBy];
+};
+
+export const getItemKey = <T>(trackBy: TableProps.TrackBy<T> | undefined, item: T, index: number) => {
+  if (!trackBy) {
+    return index;
+  }
+  return applyTrackBy(trackBy, item);
+};
+
+export const getTrackableValue = <T>(trackBy: TableProps.TrackBy<T> | undefined, item: T) => {
+  if (!trackBy) {
+    return item;
+  }
+  return applyTrackBy(trackBy, item);
+};
+
+export const getColumnKey = <T>(column: TableProps.ColumnDefinition<T>, index: number) => {
+  return column.id || index;
+};
+
+export const toContainerVariant = (variant: TableProps.Variant | undefined): InternalContainerProps['variant'] => {
+  const isDefaultVariant = !variant || variant === 'container';
+  return isDefaultVariant ? 'default' : variant === 'borderless' ? 'embedded' : variant;
+};
+
+export function checkSortingState<T>(
+  columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>,
+  sortingComparator: TableProps.SortingColumn<T>['sortingComparator']
+) {
+  const matchedColumn = columnDefinitions.filter(column => column.sortingComparator === sortingComparator)[0];
+  if (!matchedColumn) {
+    warnOnce(
+      'Table',
+      'Currently active sorting comparator was not found in any columns. Make sure to provide the same comparator function instance on each render.'
+    );
+  }
+}
+
+export function getVisibleColumnDefinitions<T>({
+  columnDisplay,
+  visibleColumns,
+  columnDefinitions,
+}: {
+  columnDisplay?: ReadonlyArray<TableProps.ColumnDisplayProperties>;
+  visibleColumns?: ReadonlyArray<string>;
+  columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
+}) {
+  // columnsDisplay has a precedence over visibleColumns.
+  if (columnDisplay) {
+    return getVisibleColumnDefinitionsFromColumnDisplay({ columnDisplay, columnDefinitions });
+  } else if (visibleColumns) {
+    return getVisibleColumnDefinitionsFromVisibleColumns({ visibleColumns, columnDefinitions });
+  } else {
+    return columnDefinitions;
+  }
+}
+
+function getVisibleColumnDefinitionsFromColumnDisplay<T>({
+  columnDisplay,
+  columnDefinitions,
+}: {
+  columnDisplay: ReadonlyArray<TableProps.ColumnDisplayProperties>;
+  columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
+}) {
+  const columnDefinitionsById: Record<string, TableProps.ColumnDefinition<T>> = columnDefinitions.reduce(
+    (accumulator, item) => (item.id === undefined ? accumulator : { ...accumulator, [item.id]: item }),
+    {}
+  );
+  const visibleIds = flattenVisibleColumnIds(columnDisplay);
+  return visibleIds.map(id => columnDefinitionsById[id]).filter(Boolean);
+}
+
+function getVisibleColumnDefinitionsFromVisibleColumns<T>({
+  visibleColumns,
+  columnDefinitions,
+}: {
+  visibleColumns: ReadonlyArray<string>;
+  columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
+}) {
+  const ids = new Set(visibleColumns);
+  return columnDefinitions.filter(({ id }) => id !== undefined && ids.has(id));
+}
+
+export function getStickyClassNames(styles: Record<string, string>, props: StickyColumnsCellState | null) {
+  const classNames: Record<string, boolean> = {};
+
+  const addClassName = (name: string, isActive: boolean) => {
+    if (styles[name] !== undefined) {
+      classNames[styles[name]] = isActive;
+    }
+  };
+
+  addClassName('sticky-cell', !!props);
+  addClassName('sticky-cell-pad-inline-start', !!props?.padInlineStart);
+  addClassName('sticky-cell-last-inline-start', !!props?.lastInsetInlineStart);
+  addClassName('sticky-cell-last-inline-end', !!props?.lastInsetInlineEnd);
+  addClassName('sticky-cell-boundary-inline-start', !!props?.boundaryInlineStart);
+  addClassName('sticky-cell-boundary-inline-end', !!props?.boundaryInlineEnd);
+
+  return classNames;
+}
+
+function flattenVisibleColumnIds(items: ReadonlyArray<TableProps.ColumnDisplayProperties>): string[] {
+  const ids: string[] = [];
+  for (const item of items) {
+    if (item.type === 'group') {
+      ids.push(...flattenVisibleColumnIds(item.children));
+    } else if (item.visible) {
+      ids.push(item.id);
+    }
+  }
+  return ids;
+}

@@ -1,0 +1,212 @@
+name: Visual Regression Tests
+
+on:
+  workflow_call:
+    inputs:
+      test-utils-artifact-name:
+        description: 'Name of the artifact containing test-utils selectors.'
+        required: true
+        type: string
+      caller-run-id:
+        description: 'The run ID of the calling workflow, used to download artifacts it uploaded.'
+        required: true
+        type: string
+      baseline-artifact-name:
+        description: 'Name of the artifact containing baseline pages (built by the caller workflow).'
+        required: true
+        type: string
+      commit-sha:
+        description: 'The commit SHA under test, used to check for a per-commit override.'
+        required: false
+        type: string
+
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  id-token: write
+  contents: read
+  actions: read
+  statuses: read
+  deployments: write
+
+jobs:
+  # Checks whether a maintainer has explicitly approved the visual changes for
+  # this exact commit via the manual override workflow
+  # (.github/workflows/override-check.yml). The approval is a commit
+  # status posted on the head SHA, so it applies only to that commit: a new push
+  # produces a new SHA with no override and the comparison runs again.
+  check-override:
+    name: Check for commit override
+    runs-on: ubuntu-latest
+    outputs:
+      overridden: ${{ steps.status.outputs.overridden }}
+    steps:
+      - name: Look for override commit status
+        id: status
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ inputs.commit-sha }}
+        run: |
+          if [ -z "$SHA" ]; then
+            echo "No commit SHA provided; treating as not overridden."
+            echo "overridden=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          OVERRIDDEN=$(gh api \
+            "repos/${REPO}/commits/${SHA}/status" \
+            --jq 'any(.statuses[]; .context == "visual-regression-override" and .state == "success")' 2>/dev/null || echo "false")
+          echo "Override status present for ${SHA}: ${OVERRIDDEN}"
+          echo "overridden=${OVERRIDDEN}" >> "$GITHUB_OUTPUT"
+
+  visual:
+    name: Visual regression (shard ${{ matrix.shard }})
+    needs: check-override
+    # Skip the (expensive) screenshot comparison when the changes have been
+    # explicitly overridden by a maintainer.
+    if: ${{ needs.check-override.outputs.overridden != 'true' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Set up Chrome and ChromeDriver
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
+      - name: Install dependencies
+        run: npm i
+
+      - name: Download baseline artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.baseline-artifact-name }}
+          path: pages/lib/static-visual-baseline
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.caller-run-id }}
+
+      - name: Download test utils artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.test-utils-artifact-name }}
+          path: lib/components
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.caller-run-id }}
+
+      - name: Resolve PR deployment URL
+        id: hosts
+        run: |
+          DEPLOY_ENV="dev-pages-react18"
+          MAX_ATTEMPTS=10
+          DELAY=15
+
+          # Every PR deploys to the same environment, so filter by the commit under test.
+          if [ -z "$SHA" ]; then
+            echo "::error::No commit SHA provided; cannot resolve the PR deployment"
+            exit 1
+          fi
+
+          for attempt in $(seq 1 $MAX_ATTEMPTS); do
+            echo "Attempt ${attempt}/${MAX_ATTEMPTS}: looking for deployment with environment '${DEPLOY_ENV}' and sha '${SHA}'..."
+            DEPLOY_ID=$(gh api \
+              "repos/${REPO}/deployments?environment=${DEPLOY_ENV}&sha=${SHA}&per_page=5" \
+              --jq '.[0].id // empty' 2>/dev/null || true)
+            NEW_URL=""
+            if [ -n "$DEPLOY_ID" ]; then
+              NEW_URL=$(gh api \
+                "repos/${REPO}/deployments/${DEPLOY_ID}/statuses" \
+                --jq '[.[] | select(.state == "success")] | first | .environment_url // empty' 2>/dev/null || true)
+            fi
+            if [ -n "$NEW_URL" ]; then
+              echo "Found PR deployment: ID=${DEPLOY_ID}, URL=${NEW_URL}"
+              echo "new=${NEW_URL}" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            if [ "$attempt" -lt "$MAX_ATTEMPTS" ]; then
+              echo "Deployment URL not available yet (ID=${DEPLOY_ID:-not found}). Retrying in ${DELAY}s..."
+              sleep $DELAY
+            fi
+          done
+
+          echo "::error::Could not resolve PR deployment URL after ${MAX_ATTEMPTS} attempts"
+          exit 1
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ inputs.commit-sha }}
+
+      - name: Start baseline server
+        run: npx --yes serve --no-clipboard --listen 8080 pages/lib/static-visual-baseline &
+
+      - name: Wait for baseline server
+        run: node_modules/.bin/wait-on http://localhost:8080
+
+      - name: Generate visual test runner files
+        run: npm run generate:visual-tests
+
+      - name: Run visual regression tests
+        run: |
+          echo "NEW_HOST=${NEW_HOST}"
+          NODE_OPTIONS=--experimental-vm-modules node_modules/.bin/jest -c jest.visual.config.js --shard="${SHARD}/10"
+        env:
+          TZ: UTC
+          SHARD: ${{ matrix.shard }}
+          NEW_HOST: ${{ steps.hosts.outputs.new }}
+
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-shard-${{ matrix.shard }}
+          path: allure-results/
+          retention-days: 3
+
+  report:
+    name: Generate Allure Report
+    if: ${{ always() && needs.check-override.outputs.overridden != 'true' }}
+    needs: [check-override, visual]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Download all Allure results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: allure-results-shard-*
+          path: allure-results
+          merge-multiple: true
+
+      - name: Generate Allure HTML report
+        run: npx --yes allure generate allure-results -o allure-report
+
+      - name: Upload Allure report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: allure-report/
+          retention-days: 14
+
+  deploy-report:
+    name: Deploy Allure Report
+    if: ${{ always() && needs.check-override.outputs.overridden != 'true' }}
+    needs: [check-override, report]
+    uses: cloudscape-design/actions/.github/workflows/deploy.yml@main
+    secrets: inherit
+    with:
+      artifact-name: allure-report
+      deployment-path: allure-report

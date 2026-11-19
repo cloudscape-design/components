@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="194px" height="32px" viewBox="0 0 194 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group</title>
+    <g id="Side-navigation" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group">
+            <rect id="Rectangle" fill="#F2F3F3" x="0" y="0" width="194" height="32"></rect>
+            <polygon id="x" fill="#FFFFFF" fill-rule="nonzero" points="92.6706827 27 96.7791165 20.0254403 101.064257 27 108 27 100.269076 15.5479452 107.646586 5 100.975904 5 97.1325301 11.6731898 93.0240964 5 86.0883534 5 93.5542169 15.8923679 86 27"></polygon>
+        </g>
+    </g>
+</svg>

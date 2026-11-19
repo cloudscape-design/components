@@ -1,0 +1,20 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding-block-end: 8px;
+  padding-block-start: 2px;
+}
+
+.invertedIconsScenario {
+  background: #333;
+
+  > .header {
+    color: #fff;
+  }
+}

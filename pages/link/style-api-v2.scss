@@ -1,0 +1,50 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~components/styling/link';
+@use '../style-api/palette' as palette;
+
+.link-brand {
+  @include link.root(
+    $color: palette.$accent,
+    $text-decoration: underline palette.$genai,
+    $awsui-focus-ring-color: palette.$accent,
+    $awsui-focus-ring-width: 3px,
+    $awsui-focus-ring-radius: 4px
+  );
+
+  &:hover {
+    @include link.root($color: palette.$accent-hover, $text-decoration: underline palette.$genai-hover);
+  }
+
+  &:active {
+    @include link.root($color: palette.$accent-active, $text-decoration: underline palette.$genai-active);
+  }
+}
+
+.link-inverted {
+  @include link.root(
+    $color: hsl(330, 75%, 78%),
+    $text-decoration: underline hsl(265, 85%, 76%),
+    $awsui-focus-ring-color: hsl(330, 75%, 78%),
+    $awsui-focus-ring-width: 3px,
+    $awsui-focus-ring-radius: 4px
+  );
+
+  &:hover,
+  &:active {
+    @include link.root($color: hsl(330, 75%, 90%), $text-decoration: underline hsl(265, 85%, 84%));
+  }
+}
+
+.link-custom-font {
+  @include link.root($font-family: serif, $font-size: 18px, $font-weight: 700);
+}
+
+.container-inverted {
+  padding-block: 5px;
+  padding-inline: 5px;
+  background-color: hsl(220, 30%, 15%);
+}

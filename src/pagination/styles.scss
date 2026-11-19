@@ -1,0 +1,128 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/index' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+.root {
+  @include styles.styles-reset;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  align-items: center;
+  //reset base styles for ul
+  padding-inline-start: 0;
+  margin-block: 0;
+  margin-inline: 0;
+  list-style: none;
+}
+
+.button,
+.dots {
+  min-inline-size: awsui.$space-l;
+  border-block: awsui.$border-width-button solid transparent;
+  border-inline: awsui.$border-width-button solid transparent;
+}
+
+.button {
+  cursor: pointer;
+  text-align: center;
+  box-sizing: border-box;
+  background: transparent;
+  line-height: inherit;
+  padding-block: 0;
+  padding-inline: 0;
+
+  &:focus {
+    outline: none;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.focus-element-without-border(awsui.$border-radius-control-default-focus-ring);
+  }
+
+  &-disabled {
+    cursor: default;
+    color: awsui.$color-text-interactive-disabled;
+  }
+}
+
+.arrow {
+  color: awsui.$color-text-interactive-default;
+  &:not(.button-disabled):hover {
+    color: awsui.$color-text-interactive-hover;
+  }
+  &.button-disabled {
+    color: awsui.$color-text-interactive-disabled;
+  }
+}
+
+.page-number {
+  color: awsui.$color-text-pagination-page-number-default;
+  &:not(.button-disabled):hover {
+    color: awsui.$color-text-interactive-hover;
+  }
+  &.button-current {
+    font-weight: awsui.$font-wayfinding-link-active-weight;
+    @include styles.font-smoothing;
+    color: awsui.$color-text-interactive-active;
+    &.button-disabled {
+      color: awsui.$color-text-pagination-page-number-active-disabled;
+    }
+  }
+  &.button-disabled {
+    color: awsui.$color-text-interactive-disabled;
+  }
+}
+
+.jump-to-page {
+  border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  box-sizing: border-box;
+  margin-inline-start: awsui.$space-xs;
+  padding-inline-start: awsui.$space-xs;
+  padding-inline-start: 15px;
+  list-style: none;
+
+  &-input {
+    inline-size: 87px;
+    // This element contains the inline label and the HTML input element.
+    // Push it upwards to let the HTML input element look vertically centered.
+    margin-block-start: calc(-0.6em - #{awsui.$space-scaled-xs});
+    overflow: visible;
+  }
+}
+
+.dots {
+  color: awsui.$color-text-interactive-default;
+}
+
+.pages-compact {
+  color: awsui.$color-text-pagination-page-number-default;
+  white-space: nowrap;
+}
+
+.page-item,
+.dots,
+.pages-compact {
+  margin-block: styles.$control-padding-vertical;
+  margin-inline: awsui.$space-xxs;
+  text-align: center;
+  box-sizing: border-box;
+  padding-block: 0;
+  padding-inline: 0;
+  &:first-child {
+    margin-inline-start: 0;
+  }
+  &:last-child {
+    margin-inline-end: 0;
+  }
+}
+
+.root-disabled > .dots,
+.root-disabled > .pages-compact {
+  color: awsui.$color-text-interactive-disabled;
+}

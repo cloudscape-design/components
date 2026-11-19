@@ -1,0 +1,69 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use 'sass:map';
+@use './tokens' as awsui;
+@use './motion' as styles;
+@use './typography/' as typography;
+@use './forms/' as mixins;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../../link/constants.scss' as constants;
+@use '../generated/custom-css-properties/index.scss' as custom-props;
+
+@mixin link-variant-style($variant) {
+  color: var(#{custom-props.$styleColorDefault}, map.get($variant, 'text-color-default'));
+  font-weight: map.get($variant, 'font-weight');
+  letter-spacing: map.get($variant, 'letter-spacing');
+  text-decoration-line: map.get($variant, 'decoration-line');
+  text-decoration-color: map.get($variant, 'decoration-color');
+
+  @include styles.with-motion {
+    transition-property: color, text-decoration;
+    transition-duration: awsui.$motion-duration-refresh-only-medium;
+  }
+
+  &:hover {
+    cursor: pointer;
+    color: var(#{custom-props.$styleColorHover}, map.get($variant, 'text-color-hover'));
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:active {
+    color: var(#{custom-props.$styleColorActive}, map.get($variant, 'text-color-active'));
+  }
+
+  &:active,
+  &:focus,
+  &:hover {
+    text-decoration-line: underline;
+    text-decoration-color: map.get($variant, 'decoration-color-hover');
+  }
+}
+
+@mixin link-font-size-style($font-size) {
+  text-underline-offset: map.get($font-size, 'text-underline-offset');
+  text-decoration-thickness: map.get($font-size, 'text-decoration-thickness');
+  text-decoration-style: awsui.$font-decoration-style-link;
+}
+
+@mixin link-default($font-size: 'inherit') {
+  @include link-font-size-style(map.get(constants.$link-font-sizes, $font-size));
+  @include link-variant-style(map.get(constants.$link-variants, 'secondary'));
+}
+
+/* Style used for links in slots/components that are text heavy, to help links stand out among
+surrounding text. (WCAG F73) https://www.w3.org/WAI/WCAG21/Techniques/failures/F73#description */
+@mixin link-inline($font-size: 'inherit') {
+  @include link-font-size-style(map.get(constants.$link-font-sizes, $font-size));
+  @include link-variant-style(map.get(constants.$link-variants, 'primary'));
+}
+
+// Need style as a mixin for tag editor only, because it needs special keyup/keydown behavior and thus cannot use the Link component
+@mixin link-recovery($font-size: 'inherit') {
+  @include typography.font-smoothing;
+  @include link-font-size-style(map.get(constants.$link-font-sizes, $font-size));
+  @include link-variant-style(map.get(constants.$link-variants, 'recovery'));
+}

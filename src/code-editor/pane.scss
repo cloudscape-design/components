@@ -1,0 +1,95 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+@mixin pane-row-border($border-color) {
+  $border: awsui.$border-item-width solid $border-color;
+  $radius: awsui.$border-radius-item;
+  > .pane__cell {
+    border-block-start: $border;
+    border-block-end: $border;
+    &:first-child {
+      border-inline-start: $border;
+      border-start-start-radius: $radius;
+      border-end-start-radius: $radius;
+    }
+    &:last-child {
+      border-inline-end: $border;
+      border-start-end-radius: $radius;
+      border-end-end-radius: $radius;
+    }
+  }
+}
+
+.pane {
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  flex: 1;
+
+  border-block-start: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
+  border-end-start-radius: awsui.$border-radius-code-editor;
+  border-end-end-radius: awsui.$border-radius-code-editor;
+  background: awsui.$color-background-code-editor-status-bar;
+  color: awsui.$color-text-body-default;
+
+  &__close-container {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: calc(#{awsui.$space-s} / 2);
+  }
+
+  &__list {
+    flex: 1;
+    overflow: auto;
+    max-block-size: 100%;
+    box-sizing: border-box;
+    margin-inline-end: calc(#{awsui.$line-height-body-m} + 2 * #{awsui.$space-xs});
+  }
+
+  &__table {
+    inline-size: 100%;
+    border-spacing: 0;
+    margin-block: awsui.$space-s;
+    margin-inline: 0;
+  }
+
+  &__item {
+    @include pane-row-border(awsui.$color-transparent);
+
+    &--highlighted,
+    &:hover,
+    &:focus {
+      cursor: pointer;
+      outline: none;
+      > .pane__cell {
+        background-color: awsui.$color-background-code-editor-pane-item-hover;
+      }
+      @include pane-row-border(awsui.$color-border-code-editor-pane-item-hover);
+    }
+  }
+
+  &__location,
+  &__description {
+    padding-block: awsui.$space-xxs;
+    padding-inline: awsui.$space-s;
+  }
+
+  &__location {
+    vertical-align: baseline;
+    white-space: nowrap;
+    padding-inline-start: calc(#{awsui.$space-l} + #{awsui.$space-s});
+  }
+
+  &__description {
+    padding-inline-end: 0;
+    @include styles.text-wrapping;
+  }
+}
+
+.focus-lock {
+  block-size: 100%;
+}

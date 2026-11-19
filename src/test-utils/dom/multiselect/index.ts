@@ -1,0 +1,125 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import { ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
+
+import InputWrapper from '../input';
+import DropdownHostComponentWrapper from '../internal/dropdown-host';
+import TokenWrapper from '../token';
+import TokenGroupWrapper from '../token-group';
+import { TokenGroupItemWrapper } from '../token-group/token';
+
+import inputStyles from '../../../input/styles.selectors.js';
+import buttonTriggerStyles from '../../../internal/components/button-trigger/styles.selectors.js';
+import dropdownStatusStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
+import footerStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
+import multiselectStyles from '../../../multiselect/styles.selectors.js';
+import selectPartsStyles from '../../../select/parts/styles.selectors.js';
+import tokenTestingStyles from '../../../token/test-classes/styles.selectors.js';
+import tokenGroupStyles from '../../../token-group/styles.selectors.js';
+
+export default class MultiselectWrapper extends DropdownHostComponentWrapper {
+  static rootSelector: string = multiselectStyles.root;
+
+  /**
+   * @param options
+   * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
+   */
+  findErrorRecoveryButton(options = { expandToViewport: false }): ElementWrapper | null {
+    return this.findDropdown(options).findByClassName(footerStyles.recovery);
+  }
+
+  /**
+   * Returns the input that is used for filtering.
+   * @param options
+   * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
+   */
+  findFilteringInput(options = { expandToViewport: false }): InputWrapper | null {
+    return this.findDropdown(options).findComponent(`.${inputStyles['input-container']}`, InputWrapper);
+  }
+
+  findPlaceholder(): ElementWrapper | null {
+    return this.findByClassName(buttonTriggerStyles.placeholder);
+  }
+
+  findInlineLabel(): ElementWrapper | null {
+    return this.findByClassName(selectPartsStyles['inline-label']);
+  }
+
+  /**
+   * Returns the custom dropdown header region rendered by `renderDropdownHeader`, if present.
+   * @param options
+   * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
+   */
+  findDropdownHeader(options = { expandToViewport: false }): ElementWrapper | null {
+    return this.findDropdown(options).findByClassName(multiselectStyles['dropdown-header']);
+  }
+
+  /**
+   * Returns the custom dropdown footer region rendered by `renderDropdownFooter`, if present.
+   * @param options
+   * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
+   */
+  findDropdownFooter(options = { expandToViewport: false }): ElementWrapper | null {
+    return this.findDropdown(options).findByClassName(multiselectStyles['dropdown-footer']);
+  }
+
+  /**
+   * @param options
+   * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
+   */
+  findStatusIndicator(options = { expandToViewport: false }): ElementWrapper | null {
+    return this.findDropdown(options).findByClassName(dropdownStatusStyles.root);
+  }
+
+  /**
+   * Returns a token.
+   *
+   * @param tokenIndex 1-based index of the token to return
+   */
+  findToken(tokenIndex: number): TokenGroupItemWrapper | null {
+    const tokenGroup = this.findComponent(`.${tokenGroupStyles.root}`, TokenGroupWrapper);
+    return tokenGroup!.findToken(tokenIndex);
+  }
+
+  /**
+   * Returns a token toggle button.
+   */
+  findTokenToggle(): ElementWrapper | null {
+    const tokenGroup = this.findComponent(`.${tokenGroupStyles.root}`, TokenGroupWrapper);
+    return tokenGroup!.findTokenToggle();
+  }
+
+  findTokens(): Array<TokenGroupItemWrapper> {
+    const tokenGroup = this.findComponent(`.${tokenGroupStyles.root}`, TokenGroupWrapper);
+    return tokenGroup?.findTokens() || [];
+  }
+
+  findTrigger(): ElementWrapper {
+    return this.findByClassName(buttonTriggerStyles['button-trigger'])!;
+  }
+
+  findInlineTokens(): Array<TokenWrapper> {
+    return (
+      this.findByClassName(selectPartsStyles['inline-token-list'])
+        ?.findAllByClassName(tokenTestingStyles.root)
+        .map(tokenElement => new TokenWrapper(tokenElement.getElement())) ?? []
+    );
+  }
+
+  /**
+   * Returns an inline token.
+   *
+   * @param tokenIndex 1-based index of the inline token to return
+   */
+  findInlineToken(tokenIndex: number): TokenWrapper | null {
+    return this.findComponent(
+      `.${selectPartsStyles['inline-token-list']} > .${tokenTestingStyles.root}:nth-child(${tokenIndex})`,
+      TokenWrapper
+    );
+  }
+
+  @usesDom
+  isDisabled(): boolean {
+    return (this.findTrigger().getElement() as HTMLButtonElement).disabled;
+  }
+}

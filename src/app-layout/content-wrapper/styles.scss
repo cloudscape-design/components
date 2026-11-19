@@ -1,0 +1,27 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as awsui;
+@use '../constants' as constants;
+
+.content-wrapper {
+  padding-inline-start: awsui.$space-layout-content-horizontal;
+  padding-inline-end: awsui.$space-layout-content-horizontal;
+  &-mobile {
+    padding-inline-start: awsui.$space-l;
+    padding-inline-end: awsui.$space-l;
+  }
+}
+
+.content-type-dashboard {
+  margin-inline-start: auto;
+  margin-inline-end: auto;
+  @each $breakpoint, $width in constants.$dashboard-content-widths {
+    @include styles.media-breakpoint-up($breakpoint) {
+      max-inline-size: $width;
+    }
+  }
+}

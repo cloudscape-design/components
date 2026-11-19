@@ -1,0 +1,141 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+'use client';
+import React, { useEffect, useState } from 'react';
+import clsx from 'clsx';
+
+import { useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import { getBaseProps } from '../internal/base-component';
+import { fireNonCancelableEvent } from '../internal/events';
+import useBaseComponent from '../internal/hooks/use-base-component';
+import { useThrottleCallback } from '../internal/hooks/use-throttle-callback';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { joinStrings } from '../internal/utils/strings';
+import InternalLiveRegion from '../live-region/internal';
+import { ProgressBarProps } from './interfaces';
+import { Progress, ResultState, SmallText, StyleClassNames } from './internal';
+
+import styles from './styles.css.js';
+
+const ASSERTION_FREQUENCY = 5000; // interval in ms between progress announcements
+
+export { ProgressBarProps };
+
+export default function ProgressBar({
+  value = 0,
+  status = 'in-progress',
+  variant = 'standalone',
+  resultButtonText,
+  label,
+  ariaLabel,
+  ariaLabelledby,
+  ariaDescribedby,
+  description,
+  additionalInfo,
+  resultText,
+  onResultButtonClick,
+  style,
+  ...rest
+}: ProgressBarProps) {
+  const { __internalRootRef } = useBaseComponent('ProgressBar', {
+    props: { variant },
+  });
+  const { styleClassNames, ...restProps } = rest as typeof rest & { styleClassNames?: StyleClassNames };
+  const baseProps = getBaseProps(restProps);
+  const generatedName = useUniqueId('awsui-progress-bar-');
+
+  const labelId = `${generatedName}-label`;
+  const isInFlash = variant === 'flash';
+  const isInProgressState = status === 'in-progress';
+
+  const descriptionId = useUniqueId('progressbar-description-');
+  const additionalInfoId = useUniqueId('progressbar-additional-info-');
+
+  const [announcedValue, setAnnouncedValue] = useState('');
+  const throttledAssertion = useThrottleCallback(
+    (value: ProgressBarProps['value']) => {
+      setAnnouncedValue(`${value}%`);
+    },
+    ASSERTION_FREQUENCY,
+    []
+  );
+
+  useEffect(() => {
+    throttledAssertion(value);
+    return () => throttledAssertion.cancel();
+  }, [throttledAssertion, value]);
+
+  if (isInFlash && resultButtonText) {
+    warnOnce(
+      'ProgressBar',
+      'The `resultButtonText` is ignored if you set `variant="flash"`, and the result button is not displayed. Use the `buttonText` property and the `onButtonClick` event listener of the flashbar item in which the progress bar component is embedded.'
+    );
+  }
+
+  return (
+    <div
+      {...baseProps}
+      className={clsx(baseProps.className, styleClassNames?.root, styles.root, variant && styles[variant])}
+      ref={__internalRootRef}
+    >
+      <div className={isInFlash ? styles['flash-container'] : undefined}>
+        <div className={clsx(styles['word-wrap'], styles[`label-${variant}`])} id={labelId}>
+          {label}
+        </div>
+        {description && (
+          <SmallText color={isInFlash ? 'inherit' : undefined} id={descriptionId}>
+            {description}
+          </SmallText>
+        )}
+        <div>
+          {isInProgressState ? (
+            <>
+              <Progress
+                value={value}
+                ariaLabel={ariaLabel}
+                ariaLabelledby={joinStrings(labelId, ariaLabelledby)}
+                ariaDescribedby={joinStrings(
+                  description ? descriptionId : undefined,
+                  additionalInfo ? additionalInfoId : undefined,
+                  ariaDescribedby
+                )}
+                isInFlash={isInFlash}
+                style={style}
+                styleClassNames={styleClassNames}
+              />
+              <InternalLiveRegion hidden={true} tagName="span" delay={0}>
+                {label}
+                {label ? ': ' : null}
+                {announcedValue}
+              </InternalLiveRegion>
+            </>
+          ) : (
+            <InternalLiveRegion hidden={false} tagName="span" delay={0}>
+              <ResultState
+                resultText={resultText}
+                isInFlash={isInFlash}
+                resultButtonText={resultButtonText}
+                status={status}
+                onClick={() => {
+                  fireNonCancelableEvent(onResultButtonClick);
+                }}
+              />
+            </InternalLiveRegion>
+          )}
+        </div>
+      </div>
+      {additionalInfo && (
+        <SmallText
+          className={styles['additional-info']}
+          color={isInFlash ? 'inherit' : undefined}
+          id={additionalInfoId}
+        >
+          {additionalInfo}
+        </SmallText>
+      )}
+    </div>
+  );
+}
+
+applyDisplayName(ProgressBar, 'ProgressBar');

@@ -1,0 +1,226 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+
+import { ButtonDropdownProps } from '../button-dropdown/interfaces';
+import { BaseComponentProps } from '../types/base-component';
+import { Breakpoint as InternalBreakpoint } from '../types/breakpoint';
+import { NonCancelableEventHandler } from '../types/events';
+
+/*
+ * HACK: Cast the component to a named parametrized interface.
+ *
+ * This lets us use React.forwardRef and still let the component have type
+ * parameters, and the naming convention lets the documenter know that this is
+ * a forwardRef-wrapped component.
+ *
+ * We don't need to expose this type to customers because it's just a simple
+ * function type.
+ */
+export interface AttributeEditorForwardRefType {
+  <T>(props: AttributeEditorProps<T> & { ref?: React.Ref<AttributeEditorProps.Ref> }): JSX.Element;
+}
+
+export namespace AttributeEditorProps {
+  export interface IsItemRemovableFunction<T> {
+    (item: T): boolean;
+  }
+
+  export type FieldRenderable<T> = (item: T, itemIndex: number) => React.ReactNode;
+  export interface FieldDefinition<T> {
+    label?: React.ReactNode;
+    description?: React.ReactNode;
+    info?: React.ReactNode;
+    control?: FieldRenderable<T> | React.ReactNode;
+    errorText?: FieldRenderable<T> | React.ReactNode;
+    warningText?: FieldRenderable<T> | React.ReactNode;
+    constraintText?: FieldRenderable<T> | React.ReactNode;
+  }
+
+  export type AddButtonVariant = 'normal' | 'inline-link';
+
+  export interface RemoveButtonClickDetail {
+    itemIndex: number;
+  }
+
+  export interface Ref {
+    /**
+     * Focuses the 'remove' button for the given row index.
+     */
+    focusRemoveButton(itemIndex: number): void;
+    /**
+     * Focuses the 'add' button. Use this, for example, after a user removes the last row.
+     */
+    focusAddButton(): void;
+  }
+
+  export interface RowActionsProps<T> {
+    item: T;
+    itemIndex: number;
+    ref: React.Ref<ButtonDropdownProps.Ref>;
+    breakpoint: Breakpoint | null;
+    ownRow: boolean;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  export interface I18nStrings<T = any> {
+    /**
+     * Provides a text alternative for the error icon in the error message.
+     */
+    errorIconAriaLabel?: string;
+
+    /**
+     * Provides a text alternative for the warning icon in the warning message.
+     */
+    warningIconAriaLabel?: string;
+
+    /**
+     * Announcement made to screen readers when an item is removed.
+     */
+    itemRemovedAriaLive?: string;
+
+    /**
+     * @deprecated Use `removeButtonAriaLabel` on the component instead.
+     */
+    removeButtonAriaLabel?: (item: T) => string;
+  }
+
+  export type Breakpoint = InternalBreakpoint;
+
+  export interface GridLayout {
+    breakpoint?: Breakpoint;
+    rows: ReadonlyArray<ReadonlyArray<number>>;
+    removeButton?: {
+      ownRow?: boolean;
+      width?: number | 'auto';
+    };
+  }
+}
+
+export interface AttributeEditorProps<T> extends BaseComponentProps {
+  /**
+   * Displayed when there are no items to display.
+   */
+  empty?: React.ReactNode;
+
+  /**
+   * Displayed below the add button. Use it for additional information related to the attribute editor.
+   */
+  additionalInfo?: React.ReactNode;
+
+  /**
+   * Specifies the text that's displayed in the add button.
+   */
+  addButtonText: string;
+
+  /**
+   * Specifies the text that's displayed in the remove button.
+   * @i18n
+   */
+  removeButtonText?: string;
+
+  /**
+   * Adds an `aria-label` to the remove button.
+   */
+  removeButtonAriaLabel?: (item: T) => string;
+
+  /**
+   * Specifies the items that serve as the data source for all rows.
+   * The display of a row is handled by the `definition` property.
+   */
+  items?: ReadonlyArray<T>;
+
+  /**
+   * Function that determines whether an item is removable. When this function returns `false`, the remove
+   * button is not rendered and the user can't remove the item.
+   * By default, all items are removable.
+   */
+  isItemRemovable?: AttributeEditorProps.IsItemRemovableFunction<T>;
+
+  /**
+   * Determines whether the add button is disabled.
+   */
+  disableAddButton?: boolean;
+
+  /**
+   * Determines whether the add button is hidden
+   */
+  hideAddButton?: boolean;
+
+  /**
+   * Specifies additional actions displayed next to the add-button (or instead of the add-button if hidden).
+   */
+  additionalActions?: React.ReactNode;
+
+  /**
+   * Specifies the variant to use for the add button. By default a normal button is used.
+   * Use `inline-link` when using an attribute editor nested inside complex attribute editing
+   * with expandable sections.
+   */
+  addButtonVariant?: AttributeEditorProps.AddButtonVariant;
+
+  /**
+   * Defines the editor configuration. Each object in the array represents one form field in the row.
+   * If more than 6 attributes are specified, a `gridLayout` must be provided.
+   *
+   * * `label` (ReactNode) - Text label for the form field.
+   * * `description` (ReactNode) - Additional description for the form field.
+   * * `info` (ReactNode) - Info link for the form field.
+   * * `errorText` ((item, itemIndex) => ReactNode) - Error message text to display as a control validation message.
+   *    It renders the form field as invalid if the returned value is not `null` or `undefined`.
+   * * `warningText` ((item, itemIndex) => ReactNode) - Warning message text to display as a control validation message.
+   *    It renders the form field in a warning state if the returned value is not `null` or `undefined`.
+   * * `constraintText` ((item, itemIndex) => ReactNode) - Text to display as a constraint message below the field.
+   * * `control` ((item, itemIndex) => ReactNode) - A control to use as the input for the field.
+   */
+  definition: ReadonlyArray<AttributeEditorProps.FieldDefinition<T>>;
+
+  /**
+   * Optionally specifies the layout of the attributes. By default, all attributes will be
+   * equally spaced and wrapped into multiple rows on smaller viewports.
+   *
+   * A `gridLayout` is an array of breakpoint definitions. Each definition consists of:
+   * - `rows` (`number[][]`): the rows in which to display the attributes. Each row consists of a list of numbers indicating
+   *   the relative width of each attribute. For example, `[[1, 1, 1, 1]]` is a single row of four evenly-spaced attributes,
+   *   or `[[1, 2], [1, 1, 1]]` splits five attributes onto two rows.
+   * - `breakpoint` (`string`): optionally specifies that the given entry should only be used when at least that much width is available.
+   * - `removeButton`: optionally configures the remove (or row action) button placement. If this is not provided, the button will be
+   *   placed at the end of a single row, or below if multiple rows are present. The `removeButton` property supports contains two properties:
+   *   - `ownRow` (`boolean`): forces the remove button onto its own row.
+   *   - `width` (`number | 'auto'`): a number indicating the relative width (equivalent to a `rows` entry), or 'auto' to fit to the button width.
+   */
+  gridLayout?: ReadonlyArray<AttributeEditorProps.GridLayout>;
+
+  /**
+   * Specifies a custom action trigger for each row, in place of the remove button.
+   * Only button and button dropdown components are supported.
+   * If you provide this, `removeButtonText`, `removeButtonAriaLabel`,
+   * and `onRemoveButtonClick` will be ignored.
+   * The trigger must be given the provided `ref` in order for `focusRemoveButton`
+   * to work.
+   * The function receives the following properties:
+   * - `item`: The item being rendered in the current row.
+   * - `itemIndex` (`number`): The index of the item.
+   * - `ref` (`ReactRef`): A React ref that should be passed to the rendered button.
+   * - `breakpoint` (`Breakpoint`): The current breakpoint, for responsive behavior.
+   * - `ownRow` (`boolean`): Whether the button is rendered on its own row.
+   */
+  customRowActions?: (props: AttributeEditorProps.RowActionsProps<T>) => React.ReactNode;
+
+  /**
+   * Called when add button is clicked.
+   */
+  onAddButtonClick?: NonCancelableEventHandler;
+
+  /**
+   * Called when remove button is clicked.
+   * The event `detail` contains the index of the corresponding item.
+   */
+  onRemoveButtonClick?: NonCancelableEventHandler<AttributeEditorProps.RemoveButtonClickDetail>;
+
+  /**
+   * An object containing all the necessary localized strings required by the component.
+   * @i18n
+   */
+  i18nStrings?: AttributeEditorProps.I18nStrings<T>;
+}

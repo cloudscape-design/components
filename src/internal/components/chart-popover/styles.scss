@@ -1,0 +1,29 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+
+.root {
+  @include styles.styles-reset;
+  position: absolute;
+}
+
+.popover-body {
+  pointer-events: auto;
+}
+
+.footer {
+  margin-block-start: awsui.$space-static-xs;
+
+  /* stylelint-disable-next-line selector-max-type */
+  > hr {
+    border-block: none;
+    border-inline: none;
+    border-block-start: 1px solid awsui.$color-border-divider-default;
+    margin-block: awsui.$space-static-xs;
+    margin-inline: 0;
+  }
+}

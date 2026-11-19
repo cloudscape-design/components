@@ -1,0 +1,42 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/style-api' as style-api;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+.root {
+  position: relative;
+}
+
+.file-input {
+  // Adapted from https://webaim.org/techniques/css/invisiblecontent/
+
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  block-size: 1px;
+  inline-size: 1px;
+  margin-block: -1px;
+  margin-inline: -1px;
+  padding-block: 0;
+  padding-inline: 0;
+  overflow: hidden;
+}
+
+.file-input-button {
+  @include focus-visible.when-visible-unfocused {
+    &.force-focus-outline {
+      &-icon {
+        @include style-api.focus-highlight($gutter-block: awsui.$space-button-icon-focus-outline-gutter-vertical);
+      }
+
+      &-button {
+        @include style-api.focus-highlight;
+      }
+    }
+  }
+}

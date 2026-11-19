@@ -1,0 +1,114 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+import clsx from 'clsx';
+
+import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
+import { getBaseProps } from '../internal/base-component';
+import { useFormFieldContext } from '../internal/context/form-field-context';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries';
+import useRadioGroupForwardFocus from '../internal/hooks/forward-focus/radio-group';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { GeneratedAnalyticsMetadataTilesSelect } from './analytics-metadata/interfaces';
+import { TilesProps } from './interfaces';
+import { Tile } from './tile';
+
+import analyticsSelectors from './analytics-metadata/styles.css.js';
+import styles from './styles.css.js';
+
+const COLUMN_TRIGGERS: TilesProps.Breakpoint[] = ['default', 'xxs', 'xs'];
+
+type InternalTilesProps = TilesProps & InternalBaseComponentProps;
+
+const InternalTiles = React.forwardRef(
+  (
+    {
+      name,
+      value,
+      items,
+      ariaLabel,
+      ariaRequired,
+      ariaControls,
+      columns,
+      onChange,
+      readOnly,
+      __internalRootRef,
+      ...rest
+    }: InternalTilesProps,
+    ref: React.Ref<TilesProps.Ref>
+  ) => {
+    const baseProps = getBaseProps(rest);
+    const { ariaDescribedby, ariaLabelledby } = useFormFieldContext(rest);
+    const generatedName = useUniqueId('awsui-tiles-');
+
+    const [tileRef, tileRefIndex] = useRadioGroupForwardFocus(ref, items, value);
+    const [breakpoint, breakpointRef] = useContainerBreakpoints(COLUMN_TRIGGERS);
+    const mergedRef = useMergeRefs(breakpointRef, __internalRootRef);
+
+    const columnCount = getColumnCount(items, columns);
+
+    return (
+      <div
+        role="radiogroup"
+        aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledby}
+        aria-describedby={ariaDescribedby}
+        aria-required={ariaRequired}
+        aria-controls={ariaControls}
+        aria-readonly={readOnly ? 'true' : undefined}
+        {...baseProps}
+        className={clsx(baseProps.className, styles.root)}
+        ref={mergedRef}
+      >
+        <div className={clsx(styles.columns, styles[`column-${columnCount}`])}>
+          {items &&
+            items.map((item, index) => (
+              <Tile
+                ref={index === tileRefIndex ? tileRef : undefined}
+                key={item.value}
+                item={item}
+                selected={item.value === value}
+                name={name || generatedName}
+                breakpoint={breakpoint}
+                onChange={onChange}
+                readOnly={readOnly}
+                {...(!item.disabled && !readOnly
+                  ? getAnalyticsMetadataAttribute({
+                      action: 'select',
+                      detail: {
+                        position: `${index + 1}`,
+                        value: item.value,
+                        label: `.${analyticsSelectors['radio-button']}`,
+                      } as Partial<GeneratedAnalyticsMetadataTilesSelect['detail']>,
+                    })
+                  : {})}
+              />
+            ))}
+        </div>
+      </div>
+    );
+  }
+);
+
+function getColumnCount(
+  items: ReadonlyArray<TilesProps.TilesDefinition> | undefined,
+  columns: number | undefined
+): number {
+  if (columns) {
+    return columns;
+  }
+
+  const nItems = items ? items.length : 0;
+  const columnsLookup: Record<number, number> = {
+    0: 1,
+    1: 1,
+    2: 2,
+    4: 2,
+    8: 2,
+  };
+  return columnsLookup[nItems] || 3;
+}
+
+export default InternalTiles;

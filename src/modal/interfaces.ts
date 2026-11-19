@@ -1,0 +1,129 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+
+import { PortalProps } from '@cloudscape-design/component-toolkit/internal';
+
+import { FlowType } from '../types/analytics';
+import { BaseComponentProps } from '../types/base-component';
+import { NonCancelableEventHandler } from '../types/events';
+
+export interface BaseModalProps {
+  /**
+   * Use this property to specify a different dynamic modal root for the dialog.
+   * The function will be called when a user clicks on the trigger button.
+   */
+  getModalRoot?: PortalProps['getContainer'];
+
+  /**
+   * Use this property when `getModalRoot` is used to clean up the modal root
+   * element after a user closes the dialog. The function receives the return value
+   * of the most recent getModalRoot call as an argument.
+   */
+  removeModalRoot?: PortalProps['removeContainer'];
+}
+
+export interface ModalProps extends BaseComponentProps, BaseModalProps {
+  /**
+   * Specifies the width of the modal. When provided, takes precedence over the `size` property.
+   * If the specified width exceeds available viewport space, the modal will use the maximum available space.
+   * The minimum width is 320px (equivalent to the `small` size).
+   */
+  width?: number;
+
+  /**
+   * Specifies the height of the modal. When provided, the modal content becomes scrollable if it exceeds the specified height.
+   * If the specified height exceeds available viewport space, the modal will use the maximum available space.
+   * To make sure the content is accessible, the component will apply a minimum height of 60px for the content area,
+   * plus the header height and the footer height.
+   */
+  height?: number;
+
+  /**
+   * Sets the width of the modal. `max` uses variable width up to the
+   * largest size allowed by the design guidelines. Other sizes have fixed widths:
+   * `small` (320px), `medium` (600px), `large` (820px), `x-large` (1024px), `xx-large` (1280px).
+   */
+  size?: ModalProps.Size;
+  /**
+   * Controls the vertical positioning of the modal.
+   *
+   * - `center` (default) - The modal is vertically centered in the viewport and re-centers
+   *   when content height changes. Use for dialogs with static, predictable content.
+   *
+   * - `top` - The modal anchors at fixed distance and grows downward
+   *   as content expands. Use when the content changes dynamically to prevent disruptive
+   *   vertical repositioning that can cause users to lose context.
+   */
+  position?: ModalProps.Position;
+  /**
+   * Determines whether the close button is displayed in the header.
+   * When set to `true`, the close button isn't rendered, and the user resolves
+   * the modal by choosing one of the actions in the footer.
+   * ESC and clicks outside the modal still call `onDismiss`.
+   */
+  hideDismissButton?: boolean;
+  /**
+   * Determines whether the modal is displayed on the screen. Modals are hidden by default.
+   * Set this property to `true` to show them.
+   */
+  visible: boolean;
+  /**
+   * Adds an `aria-label` to the close button, for accessibility.
+   * @i18n
+   */
+  closeAriaLabel?: string;
+  /**
+   * Specifies a title for the modal. Although this can be empty, we suggest that you always provide a title.
+   */
+  header?: React.ReactNode;
+  /**
+   * Body of the modal.
+   */
+  children?: React.ReactNode;
+  /**
+   * Specifies a footer for the modal. If empty, the footer isn't displayed.
+   */
+  footer?: React.ReactNode;
+  /**
+   * Determines whether the modal content has padding. If `true`, removes the default padding from the content area.
+   */
+  disableContentPaddings?: boolean;
+  /**
+   * Called when a user closes the modal by using the close icon button,
+   * clicking outside of the modal, or pressing ESC.
+   * The event detail contains the `reason`, which can be any of the following:
+   * `['closeButton', 'overlay', 'keyboard']`.
+   */
+  onDismiss?: NonCancelableEventHandler<ModalProps.DismissDetail>;
+  /**
+   * Specifies the HTML element where the modal is rendered.
+   * If neither `modalRoot` or `getModalRoot` properties are provided, the modal will
+   * render to an element under `document.body`.
+   */
+  modalRoot?: HTMLElement;
+
+  /**
+   * Specifies additional analytics-related metadata.
+   * * `instanceIdentifier` - A unique string that identifies this component instance in your application.
+   * * `flowType` - Identifies the type of flow represented by the component.
+   * * `resourceType` - Identifies the type of resource represented by the flow. **Note:** This API is currently experimental.
+   * @analytics
+   */
+  analyticsMetadata?: ModalProps.AnalyticsMetadata;
+}
+
+export namespace ModalProps {
+  export type Size = 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' | 'max';
+  export type Position = 'center' | 'top';
+
+  export interface DismissDetail {
+    reason: string;
+  }
+
+  export interface AnalyticsMetadata {
+    instanceIdentifier?: string;
+    flowType?: FlowType;
+    resourceType?: string;
+  }
+}

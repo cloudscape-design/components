@@ -1,0 +1,20 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+
+export default function useHiddenDescription(description?: React.ReactNode) {
+  const id = useUniqueId();
+  return {
+    targetProps: {
+      'aria-describedby': description ? id : undefined,
+    },
+    descriptionEl: description ? (
+      <span id={id} hidden={true}>
+        {description}
+      </span>
+    ) : null,
+    descriptionId: id,
+  };
+}

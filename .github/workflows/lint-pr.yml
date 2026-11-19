@@ -1,0 +1,13 @@
+name: Lint PR
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - synchronize
+  merge_group:
+
+jobs:
+  dry-run:
+    uses: cloudscape-design/actions/.github/workflows/lint-pr.yml@main

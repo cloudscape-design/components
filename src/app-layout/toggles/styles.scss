@@ -1,0 +1,36 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/styles' as styles;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+.toggle-button {
+  cursor: pointer;
+  border-block: 0;
+  border-inline: 0;
+  // resemble button styles with an extra 1px offset for non-existing here border width
+  $padding-vertical: calc(#{awsui.$space-scaled-xxs} + 1px);
+  $padding-horizontal: calc(#{awsui.$space-xxs} + 1px);
+  padding-block: $padding-vertical;
+  padding-inline: $padding-horizontal;
+  background: transparent;
+  color: currentColor;
+  &:focus {
+    outline: none;
+    text-decoration: none;
+  }
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(awsui.$space-button-inline-icon-focus-outline-gutter);
+  }
+}
+
+.close-button {
+  position: absolute;
+  outline: none;
+  inset-inline-end: awsui.$space-m;
+  inset-block-start: awsui.$size-vertical-panel-icon-offset;
+  z-index: 1;
+}

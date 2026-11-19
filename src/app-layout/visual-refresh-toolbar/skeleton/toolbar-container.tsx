@@ -1,0 +1,103 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+import clsx from 'clsx';
+
+import { isThemeActive, Theme } from '@cloudscape-design/component-toolkit/internal';
+
+import { AppLayoutProps } from '../../../app-layout/interfaces';
+import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
+import { BreadcrumbsSlotContextType } from '../contexts';
+import TriggerButton from '../toolbar/trigger-button';
+import { BreadcrumbsSlot, ToolbarSlot } from './slots';
+
+import testutilStyles from '../../test-classes/styles.css.js';
+import toolbarStyles from '../toolbar/styles.css.js';
+
+interface ToolbarContainerProps {
+  children: React.ReactNode;
+  hasAiDrawer?: boolean;
+}
+
+export function ToolbarContainer({ children, hasAiDrawer }: ToolbarContainerProps) {
+  return (
+    <div className={clsx(toolbarStyles['toolbar-container'], hasAiDrawer && toolbarStyles['with-ai-drawer'])}>
+      {children}
+    </div>
+  );
+}
+
+interface ToolbarBreadcrumbsSectionProps {
+  ownBreadcrumbs: React.ReactNode;
+  discoveredBreadcrumbs?: BreadcrumbGroupProps | null;
+  hideBreadcrumbsInToolbar?: boolean;
+  reportOwnBreadcrumbsProps?: BreadcrumbsSlotContextType['reportOwnBreadcrumbsProps'];
+  includeTestUtils?: boolean;
+}
+
+export function ToolbarBreadcrumbsSection({
+  ownBreadcrumbs,
+  discoveredBreadcrumbs,
+  hideBreadcrumbsInToolbar,
+  reportOwnBreadcrumbsProps,
+  includeTestUtils = false,
+}: ToolbarBreadcrumbsSectionProps) {
+  return (
+    <div
+      className={clsx(
+        toolbarStyles['universal-toolbar-breadcrumbs'],
+        hideBreadcrumbsInToolbar && toolbarStyles['external-breadcrumbs'],
+        includeTestUtils && testutilStyles.breadcrumbs
+      )}
+      data-awsui-external-breadcrumbs={hideBreadcrumbsInToolbar || undefined}
+    >
+      <BreadcrumbsSlot
+        ownBreadcrumbs={ownBreadcrumbs}
+        discoveredBreadcrumbs={discoveredBreadcrumbs}
+        reportOwnBreadcrumbsProps={reportOwnBreadcrumbsProps}
+      />
+    </div>
+  );
+}
+
+interface ToolbarSkeletonStructureProps {
+  ariaLabels?: AppLayoutProps.Labels;
+  expandedDrawerId?: string | null;
+  hasNavigation?: boolean;
+  navigationOpen?: boolean;
+  ownBreadcrumbs: React.ReactNode;
+  discoveredBreadcrumbs?: BreadcrumbGroupProps | null;
+}
+
+export const ToolbarSkeletonStructure = React.forwardRef<HTMLElement, ToolbarSkeletonStructureProps>(
+  ({ ariaLabels, expandedDrawerId, hasNavigation, navigationOpen, ownBreadcrumbs, discoveredBreadcrumbs }, ref) => {
+    const drawerExpandedMode = !!expandedDrawerId;
+    const isOneTheme = isThemeActive(Theme.OneTheme);
+    // istanbul ignore next: not interactive during SSR
+    const noop = () => {};
+    return (
+      <ToolbarSlot ref={ref}>
+        <ToolbarContainer>
+          {hasNavigation && (
+            <nav className={toolbarStyles['universal-toolbar-nav']}>
+              <TriggerButton
+                ariaLabel={ariaLabels?.navigationToggle ?? undefined}
+                ariaExpanded={!drawerExpandedMode && navigationOpen}
+                iconName={isOneTheme ? 'side-bar' : 'menu'}
+                className={testutilStyles['navigation-toggle']}
+                onClick={noop}
+                selected={!drawerExpandedMode && navigationOpen}
+              />
+            </nav>
+          )}
+          <ToolbarBreadcrumbsSection
+            ownBreadcrumbs={ownBreadcrumbs}
+            discoveredBreadcrumbs={discoveredBreadcrumbs}
+            includeTestUtils={true}
+          />
+          <div className={toolbarStyles['universal-toolbar-drawers']} />
+        </ToolbarContainer>
+      </ToolbarSlot>
+    );
+  }
+);

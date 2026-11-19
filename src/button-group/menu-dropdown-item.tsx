@@ -1,0 +1,98 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+import clsx from 'clsx';
+
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
+import InternalButton from '../button/internal';
+import { ButtonDropdownProps } from '../button-dropdown/interfaces';
+import ButtonDropdown from '../button-dropdown/internal';
+import { fireCancelableEvent } from '../internal/events';
+import Tooltip from '../tooltip/internal.js';
+import { CancelableEventHandler } from '../types/events';
+import { ButtonGroupProps } from './interfaces';
+
+import testUtilStyles from './test-classes/styles.css.js';
+
+interface MenuDropdownItemProps {
+  styleClassName?: string;
+  dropdownClassName?: string;
+  item: ButtonGroupProps.MenuDropdown;
+  showTooltip: boolean;
+  onTooltipDismiss: () => void;
+  onItemClick?: CancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
+  expandToViewport?: boolean;
+  position: string;
+}
+
+const MenuDropdownItem = React.forwardRef(
+  (
+    {
+      styleClassName,
+      dropdownClassName,
+      item,
+      showTooltip,
+      onItemClick,
+      onTooltipDismiss,
+      expandToViewport,
+      position,
+    }: MenuDropdownItemProps,
+    ref: React.Ref<ButtonDropdownProps.Ref>
+  ) => {
+    const containerRef = React.useRef<HTMLDivElement>(null);
+    const hasCustomIcon = item.iconName || item.iconUrl || item.iconSvg;
+    const onClickHandler = (event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => {
+      fireCancelableEvent(onItemClick, { id: event.detail.id, checked: event.detail.checked }, event);
+    };
+
+    return (
+      <ButtonDropdown
+        ref={ref}
+        variant="icon"
+        styleClassNames={{ dropdown: dropdownClassName }}
+        items={item.items}
+        onItemClick={onClickHandler}
+        expandToViewport={expandToViewport}
+        ariaLabel={item.text}
+        className={testUtilStyles['button-group-item']}
+        position={position}
+        data-testid={item.id}
+        disabled={item.disabled}
+        customTriggerBuilder={({ onClick, isOpen, triggerRef, ariaLabel, ariaExpanded, testUtilsClass }) => (
+          <div ref={containerRef} {...(item.disabled ? {} : getAnalyticsMetadataAttribute({ detail: { position } }))}>
+            {!isOpen && showTooltip && !item.disabled && !item.loading && (
+              <Tooltip
+                className={testUtilStyles['button-group-tooltip']}
+                getTrack={() => containerRef.current}
+                content={item.text}
+                onEscape={onTooltipDismiss}
+              />
+            )}
+            <InternalButton
+              ref={triggerRef}
+              styleClassNames={{ root: styleClassName }}
+              variant="icon"
+              ariaLabel={ariaLabel}
+              data-itemid={item.id}
+              ariaExpanded={ariaExpanded}
+              className={clsx(testUtilStyles.item, testUtilsClass)}
+              iconName={hasCustomIcon ? item.iconName : 'ellipsis'}
+              iconAlt={item.iconAlt}
+              iconUrl={item.iconUrl}
+              iconSvg={item.iconSvg}
+              loading={item.loading}
+              loadingText={item.loadingText}
+              disabled={item.disabled}
+              disabledReason={item.disabledReason}
+              onClick={onClick}
+              __title=""
+            />
+          </div>
+        )}
+      />
+    );
+  }
+);
+
+export default MenuDropdownItem;

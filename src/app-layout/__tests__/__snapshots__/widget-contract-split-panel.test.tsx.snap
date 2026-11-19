@@ -1,0 +1,588 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Theme=refresh-toolbar, Size=desktop contract with split panel (trigger is hidden) 1`] = `
+Map {
+  "BeforeMainSlotImplementation" => {
+    "appLayoutProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "contentType": "default",
+      "maxContentWidth": undefined,
+      "minContentWidth": 280,
+      "navigationCollapsedWidth": 54,
+      "navigationOpen": true,
+      "navigationWidth": 280,
+      "onNavigationChange": [Function],
+      "placement": {
+        "inlineSize": Infinity,
+        "insetBlockEnd": 0,
+        "insetBlockStart": 0,
+        "insetInlineEnd": 0,
+        "insetInlineStart": 0,
+      },
+      "splitPanel": <SplitPanel
+        closeBehavior="hide"
+        header="Split panel header"
+      >
+        <div>
+          split panel content
+        </div>
+      </SplitPanel>,
+      "toolsWidth": 290,
+    },
+    "appLayoutState": {
+      "isIntersecting": true,
+    },
+    "toolbarProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "hasNavigation": true,
+      "navigationCollapsible": undefined,
+      "navigationFocusRef": undefined,
+      "navigationOpen": true,
+      "onNavigationToggle": undefined,
+    },
+  },
+  "TopContentSlotImplementation" => {
+    "appLayoutProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "contentType": "default",
+      "maxContentWidth": undefined,
+      "minContentWidth": 280,
+      "navigationCollapsedWidth": 54,
+      "navigationOpen": true,
+      "navigationWidth": 280,
+      "onNavigationChange": [Function],
+      "placement": {
+        "inlineSize": Infinity,
+        "insetBlockEnd": 0,
+        "insetBlockStart": 0,
+        "insetInlineEnd": 0,
+        "insetInlineStart": 0,
+      },
+      "splitPanel": <SplitPanel
+        closeBehavior="hide"
+        header="Split panel header"
+      >
+        <div>
+          split panel content
+        </div>
+      </SplitPanel>,
+      "toolsWidth": 290,
+    },
+    "appLayoutState": {
+      "isIntersecting": true,
+    },
+    "toolbarProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "hasNavigation": true,
+      "navigationCollapsible": undefined,
+      "navigationFocusRef": undefined,
+      "navigationOpen": true,
+      "onNavigationToggle": undefined,
+    },
+  },
+  "BottomContentSlotImplementation" => {
+    "appLayoutProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "contentType": "default",
+      "maxContentWidth": undefined,
+      "minContentWidth": 280,
+      "navigationCollapsedWidth": 54,
+      "navigationOpen": true,
+      "navigationWidth": 280,
+      "onNavigationChange": [Function],
+      "placement": {
+        "inlineSize": Infinity,
+        "insetBlockEnd": 0,
+        "insetBlockStart": 0,
+        "insetInlineEnd": 0,
+        "insetInlineStart": 0,
+      },
+      "splitPanel": <SplitPanel
+        closeBehavior="hide"
+        header="Split panel header"
+      >
+        <div>
+          split panel content
+        </div>
+      </SplitPanel>,
+      "toolsWidth": 290,
+    },
+    "appLayoutState": {
+      "isIntersecting": true,
+    },
+    "toolbarProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "hasNavigation": true,
+      "navigationCollapsible": undefined,
+      "navigationFocusRef": undefined,
+      "navigationOpen": true,
+      "onNavigationToggle": undefined,
+    },
+  },
+  "AfterMainSlotImplementation" => {
+    "appLayoutProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "contentType": "default",
+      "maxContentWidth": undefined,
+      "minContentWidth": 280,
+      "navigationCollapsedWidth": 54,
+      "navigationOpen": true,
+      "navigationWidth": 280,
+      "onNavigationChange": [Function],
+      "placement": {
+        "inlineSize": Infinity,
+        "insetBlockEnd": 0,
+        "insetBlockStart": 0,
+        "insetInlineEnd": 0,
+        "insetInlineStart": 0,
+      },
+      "splitPanel": <SplitPanel
+        closeBehavior="hide"
+        header="Split panel header"
+      >
+        <div>
+          split panel content
+        </div>
+      </SplitPanel>,
+      "toolsWidth": 290,
+    },
+    "appLayoutState": {
+      "isIntersecting": true,
+    },
+    "toolbarProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "hasNavigation": true,
+      "navigationCollapsible": undefined,
+      "navigationFocusRef": undefined,
+      "navigationOpen": true,
+      "onNavigationToggle": undefined,
+    },
+  },
+  "AppLayoutStateProvider" => {
+    "appLayoutProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "contentType": "default",
+      "maxContentWidth": undefined,
+      "minContentWidth": 280,
+      "navigationCollapsedWidth": 54,
+      "navigationOpen": true,
+      "navigationWidth": 280,
+      "onNavigationChange": [Function],
+      "placement": {
+        "inlineSize": Infinity,
+        "insetBlockEnd": 0,
+        "insetBlockStart": 0,
+        "insetInlineEnd": 0,
+        "insetInlineStart": 0,
+      },
+      "splitPanel": <SplitPanel
+        closeBehavior="hide"
+        header="Split panel header"
+      >
+        <div>
+          split panel content
+        </div>
+      </SplitPanel>,
+      "toolsWidth": 290,
+    },
+    "forwardRef": null,
+    "stateManager": {
+      "current": {
+        "hasToolbar": true,
+        "setState": [Function],
+        "setToolbar": undefined,
+      },
+    },
+  },
+}
+`;
+
+exports[`Theme=refresh-toolbar, Size=desktop contract with split panel 1`] = `
+Map {
+  "BeforeMainSlotImplementation" => {
+    "appLayoutProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "contentType": "default",
+      "maxContentWidth": undefined,
+      "minContentWidth": 280,
+      "navigationCollapsedWidth": 54,
+      "navigationOpen": true,
+      "navigationWidth": 280,
+      "onNavigationChange": [Function],
+      "placement": {
+        "inlineSize": Infinity,
+        "insetBlockEnd": 0,
+        "insetBlockStart": 0,
+        "insetInlineEnd": 0,
+        "insetInlineStart": 0,
+      },
+      "splitPanel": <SplitPanel
+        header="Split panel header"
+      >
+        <div>
+          split panel content
+        </div>
+      </SplitPanel>,
+      "toolsWidth": 290,
+    },
+    "appLayoutState": {
+      "isIntersecting": true,
+    },
+    "toolbarProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "hasNavigation": true,
+      "navigationCollapsible": undefined,
+      "navigationFocusRef": undefined,
+      "navigationOpen": true,
+      "onNavigationToggle": undefined,
+    },
+  },
+  "TopContentSlotImplementation" => {
+    "appLayoutProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "contentType": "default",
+      "maxContentWidth": undefined,
+      "minContentWidth": 280,
+      "navigationCollapsedWidth": 54,
+      "navigationOpen": true,
+      "navigationWidth": 280,
+      "onNavigationChange": [Function],
+      "placement": {
+        "inlineSize": Infinity,
+        "insetBlockEnd": 0,
+        "insetBlockStart": 0,
+        "insetInlineEnd": 0,
+        "insetInlineStart": 0,
+      },
+      "splitPanel": <SplitPanel
+        header="Split panel header"
+      >
+        <div>
+          split panel content
+        </div>
+      </SplitPanel>,
+      "toolsWidth": 290,
+    },
+    "appLayoutState": {
+      "isIntersecting": true,
+    },
+    "toolbarProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "hasNavigation": true,
+      "navigationCollapsible": undefined,
+      "navigationFocusRef": undefined,
+      "navigationOpen": true,
+      "onNavigationToggle": undefined,
+    },
+  },
+  "BottomContentSlotImplementation" => {
+    "appLayoutProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "contentType": "default",
+      "maxContentWidth": undefined,
+      "minContentWidth": 280,
+      "navigationCollapsedWidth": 54,
+      "navigationOpen": true,
+      "navigationWidth": 280,
+      "onNavigationChange": [Function],
+      "placement": {
+        "inlineSize": Infinity,
+        "insetBlockEnd": 0,
+        "insetBlockStart": 0,
+        "insetInlineEnd": 0,
+        "insetInlineStart": 0,
+      },
+      "splitPanel": <SplitPanel
+        header="Split panel header"
+      >
+        <div>
+          split panel content
+        </div>
+      </SplitPanel>,
+      "toolsWidth": 290,
+    },
+    "appLayoutState": {
+      "isIntersecting": true,
+    },
+    "toolbarProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "hasNavigation": true,
+      "navigationCollapsible": undefined,
+      "navigationFocusRef": undefined,
+      "navigationOpen": true,
+      "onNavigationToggle": undefined,
+    },
+  },
+  "AfterMainSlotImplementation" => {
+    "appLayoutProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "contentType": "default",
+      "maxContentWidth": undefined,
+      "minContentWidth": 280,
+      "navigationCollapsedWidth": 54,
+      "navigationOpen": true,
+      "navigationWidth": 280,
+      "onNavigationChange": [Function],
+      "placement": {
+        "inlineSize": Infinity,
+        "insetBlockEnd": 0,
+        "insetBlockStart": 0,
+        "insetInlineEnd": 0,
+        "insetInlineStart": 0,
+      },
+      "splitPanel": <SplitPanel
+        header="Split panel header"
+      >
+        <div>
+          split panel content
+        </div>
+      </SplitPanel>,
+      "toolsWidth": 290,
+    },
+    "appLayoutState": {
+      "isIntersecting": true,
+    },
+    "toolbarProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "hasNavigation": true,
+      "navigationCollapsible": undefined,
+      "navigationFocusRef": undefined,
+      "navigationOpen": true,
+      "onNavigationToggle": undefined,
+    },
+  },
+  "AppLayoutStateProvider" => {
+    "appLayoutProps": {
+      "ariaLabels": {
+        "drawers": undefined,
+        "drawersOverflow": undefined,
+        "drawersOverflowWithBadge": undefined,
+        "navigation": undefined,
+        "navigationClose": undefined,
+        "navigationToggle": undefined,
+        "notifications": undefined,
+        "tools": undefined,
+        "toolsClose": undefined,
+        "toolsToggle": undefined,
+      },
+      "contentType": "default",
+      "maxContentWidth": undefined,
+      "minContentWidth": 280,
+      "navigationCollapsedWidth": 54,
+      "navigationOpen": true,
+      "navigationWidth": 280,
+      "onNavigationChange": [Function],
+      "placement": {
+        "inlineSize": Infinity,
+        "insetBlockEnd": 0,
+        "insetBlockStart": 0,
+        "insetInlineEnd": 0,
+        "insetInlineStart": 0,
+      },
+      "splitPanel": <SplitPanel
+        header="Split panel header"
+      >
+        <div>
+          split panel content
+        </div>
+      </SplitPanel>,
+      "toolsWidth": 290,
+    },
+    "forwardRef": null,
+    "stateManager": {
+      "current": {
+        "hasToolbar": true,
+        "setState": [Function],
+        "setToolbar": undefined,
+      },
+    },
+  },
+}
+`;

@@ -1,0 +1,81 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+@use 'sass:map';
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/style-api' as style-api;
+@use './constants' as constants;
+
+// Border tokens stay public: as carriers they would inherit into nested components that read the same carrier name.
+$border-tokens: style-api.resolve((border-color, border-width), public);
+$carrier-tokens: style-api.resolve((border-radius, focus-ring-color, focus-ring-width, focus-ring-radius), carrier);
+$tokens: map.merge($border-tokens, $carrier-tokens);
+
+$variant-border-radius: (
+  'embedded': awsui.$border-radius-action-card-embedded,
+  'default': awsui.$border-radius-action-card-default,
+);
+
+$variant-padding-block: (
+  'embedded': awsui.$space-action-card-vertical-embedded,
+  'default': awsui.$space-action-card-vertical-default,
+);
+
+$variant-padding-inline: (
+  'embedded': awsui.$space-action-card-horizontal-embedded,
+  'default': awsui.$space-action-card-horizontal-default,
+);
+
+@mixin border-radius-all($value) {
+  border-start-start-radius: $value;
+  border-start-end-radius: $value;
+  border-end-start-radius: $value;
+  border-end-end-radius: $value;
+}
+
+@mixin state-border-radius($variant: 'default', $state: 'default') {
+  $token: map.get($variant-border-radius, $variant);
+  @include border-radius-all(style-api.value($carrier-tokens, border-radius, $token));
+}
+
+@mixin inherit-border-tokens {
+  @if style-api.enabled() {
+    @each $token, $property in $border-tokens {
+      #{$property}: inherit;
+    }
+  }
+}
+
+@mixin state-border-radius-all-variants($state: 'default') {
+  @each $variant in ('embedded', 'default') {
+    &.variant-#{$variant} {
+      &,
+      &:after {
+        @include state-border-radius($variant, $state);
+      }
+    }
+  }
+}
+
+@mixin apply-state-styles($state) {
+  $s: map.get(constants.$states, $state);
+
+  background-color: map.get($s, 'background');
+  box-shadow: map.get($s, 'box-shadow');
+  color: map.get($s, 'text-color');
+
+  @if $state != 'default' {
+    @include state-border-radius-all-variants($state);
+  }
+
+  &:after {
+    border-color: style-api.value($border-tokens, border-color, map.get($s, 'border-color'));
+    border-block-width: style-api.value($border-tokens, border-width, map.get($s, 'border-width'));
+    border-inline-width: style-api.value($border-tokens, border-width, map.get($s, 'border-width'));
+  }
+
+  > .icon,
+  > .inner-card > .header-row > .icon {
+    color: map.get($s, 'icon-color');
+  }
+}

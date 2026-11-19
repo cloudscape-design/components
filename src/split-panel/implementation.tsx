@@ -1,0 +1,316 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
+
+import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags';
+import { SizeControlProps } from '../app-layout/utils/interfaces';
+import { useKeyboardEvents } from '../app-layout/utils/use-keyboard-events';
+import { usePointerEvents } from '../app-layout/utils/use-pointer-events';
+import { InternalButton } from '../button/internal';
+import { BuiltInErrorBoundary } from '../error-boundary/internal';
+import { getBaseProps } from '../internal/base-component';
+import PanelResizeHandle from '../internal/components/panel-resize-handle';
+import { useSplitPanelContext } from '../internal/context/split-panel-context';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import globalVars from '../internal/styles/global-vars';
+import { SomeRequired } from '../internal/types';
+import { createWidgetizedComponent } from '../internal/widgets';
+import { SplitPanelContentBottom } from './bottom';
+import { SplitPanelProps } from './interfaces';
+import PreferencesModal from './preferences-modal';
+import { SplitPanelContentSide } from './side';
+
+import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
+
+export type SplitPanelImplementationProps = SomeRequired<SplitPanelProps, 'hidePreferencesButton' | 'closeBehavior'> &
+  InternalBaseComponentProps;
+
+export function SplitPanelImplementation({
+  __internalRootRef,
+  header,
+  children,
+  hidePreferencesButton,
+  closeBehavior,
+  i18nStrings = {},
+  ariaLabel,
+  headerActions,
+  headerBefore,
+  headerDescription,
+  headerInfo,
+  ...restProps
+}: SplitPanelImplementationProps) {
+  const isRefresh = useVisualRefresh();
+  const isToolbar = useAppLayoutToolbarDesignEnabled();
+
+  if (!header && !headerBefore) {
+    warnOnce('SplitPanel', 'You must provide either `header` or `headerBefore`.');
+  }
+
+  const {
+    position,
+    topOffset,
+    bottomOffset,
+    rightOffset,
+    contentWidthStyles,
+    isOpen,
+    isForcedPosition,
+    onPreferencesChange,
+    onResize,
+    onToggle,
+    size,
+    relativeSize,
+    setSplitPanelToggle,
+    refs,
+    animationDisabled,
+  } = useSplitPanelContext();
+  const baseProps = getBaseProps(restProps);
+  const [isPreferencesOpen, setPreferencesOpen] = useState<boolean>(false);
+
+  const appLayoutMaxWidth = isRefresh && position === 'bottom' ? contentWidthStyles : undefined;
+
+  const openButtonAriaLabel = i18nStrings.openButtonAriaLabel;
+  useEffect(() => {
+    setSplitPanelToggle({ displayed: closeBehavior === 'collapse', ariaLabel: openButtonAriaLabel });
+
+    return () => {
+      setSplitPanelToggle({ displayed: false, ariaLabel: undefined });
+    };
+  }, [setSplitPanelToggle, openButtonAriaLabel, closeBehavior]);
+
+  const splitPanelRefObject = useRef<HTMLDivElement>(null);
+
+  const sizeControlProps: SizeControlProps = {
+    position,
+    panelRef: splitPanelRefObject,
+    handleRef: refs.slider,
+    onResize,
+  };
+  const onSliderPointerDown = usePointerEvents(sizeControlProps);
+  const { onKeyDown, onDirectionClick } = useKeyboardEvents(sizeControlProps);
+
+  const contentStyle = {
+    [globalVars.stickyVerticalTopOffset]: topOffset,
+    [globalVars.stickyVerticalBottomOffset]: bottomOffset,
+  };
+
+  const panelHeaderUniqueId = useUniqueId('split-panel-header');
+  const panelHeaderId = ariaLabel ? undefined : panelHeaderUniqueId;
+
+  const showActions = headerActions && isOpen;
+  const showDescription = headerDescription && isOpen;
+  const hasCustomElements = !!headerActions || !!headerBefore || !!headerInfo;
+
+  const wrappedHeader = (
+    <div className={clsx(styles.header, isToolbar && styles['with-toolbar'])} style={appLayoutMaxWidth}>
+      <div className={styles['header-main-row']}>
+        <div className={styles['header-main-content']}>
+          <div className={clsx(styles['header-tag-and-info'], showDescription && styles['with-description'])}>
+            <h2 className={clsx(styles['header-tag'], !!headerInfo && styles['with-info'])} id={panelHeaderId}>
+              {headerBefore && (
+                <div
+                  className={clsx(
+                    styles['header-before-slot'],
+                    testUtilStyles['header-before'],
+                    !!header && styles['with-header-text']
+                  )}
+                >
+                  {headerBefore}
+                </div>
+              )}
+              {!!header && <div className={clsx(styles['header-text'], testUtilStyles['header-text'])}>{header}</div>}
+            </h2>
+            {headerInfo && (
+              <span className={clsx(styles['header-info-slot'], testUtilStyles['header-info'])}>{headerInfo}</span>
+            )}
+          </div>
+          {showActions && (
+            <div className={clsx(styles['header-actions-slot'], testUtilStyles['header-actions'])}>{headerActions}</div>
+          )}
+        </div>
+        <div className={styles['header-buttons']}>
+          {!hidePreferencesButton && isOpen && (
+            <>
+              <InternalButton
+                className={testUtilStyles['preferences-button']}
+                iconName="settings"
+                variant="icon"
+                onClick={() => setPreferencesOpen(true)}
+                formAction="none"
+                ariaLabel={i18nStrings.preferencesTitle}
+                ref={refs.preferences}
+              />
+              <span className={styles.divider} />
+            </>
+          )}
+
+          {isOpen ? (
+            <InternalButton
+              className={testUtilStyles['close-button']}
+              iconName={
+                isRefresh && closeBehavior === 'collapse'
+                  ? position === 'side'
+                    ? 'angle-right'
+                    : 'angle-down'
+                  : 'close'
+              }
+              variant="icon"
+              onClick={onToggle}
+              formAction="none"
+              ariaLabel={i18nStrings.closeButtonAriaLabel}
+              ariaExpanded={isOpen}
+            />
+          ) : position === 'side' || closeBehavior === 'hide' ? null : (
+            <InternalButton
+              className={testUtilStyles['open-button']}
+              iconName="angle-up"
+              variant="icon"
+              formAction="none"
+              ariaLabel={i18nStrings.openButtonAriaLabel}
+              ref={refs.toggle}
+              ariaExpanded={isOpen}
+              onClick={hasCustomElements ? onToggle : undefined}
+            />
+          )}
+        </div>
+      </div>
+
+      {showDescription && (
+        <p className={clsx(styles['header-description'], testUtilStyles['header-description'])}>{headerDescription}</p>
+      )}
+    </div>
+  );
+
+  const resizeHandle = (
+    <PanelResizeHandle
+      ref={refs.slider}
+      className={testUtilStyles.slider}
+      tooltipText={i18nStrings.resizeHandleTooltipText}
+      ariaLabel={i18nStrings.resizeHandleAriaLabel}
+      // Allows us to use the logical left/right keys to move the slider left/right,
+      // but match aria keyboard behavior of using left/right to decrease/increase
+      // the slider value.
+      ariaValuenow={position === 'bottom' ? relativeSize : 100 - relativeSize}
+      position={position}
+      onKeyDown={onKeyDown}
+      onPointerDown={onSliderPointerDown}
+      onDirectionClick={onDirectionClick}
+    />
+  );
+
+  /*
+    This effect forces the browser to recalculate the layout
+    whenever the split panel might have moved.
+
+    This is needed as a workaround for a bug in Safari, which does
+    not automatically calculate the new position of the split panel
+    _content_ when the split panel moves.
+  */
+  useLayoutEffect(() => {
+    const root = splitPanelRefObject.current;
+
+    if (root) {
+      const property = 'transform';
+      const temporaryValue = 'translateZ(0)';
+
+      const valueBefore = root.style[property];
+      root.style[property] = temporaryValue;
+
+      // This line forces the browser to recalculate the layout
+      void root.offsetHeight;
+
+      root.style[property] = valueBefore;
+    }
+  }, [rightOffset, __internalRootRef]);
+
+  const mergedRef = useMergeRefs(splitPanelRefObject, __internalRootRef);
+
+  if (closeBehavior === 'hide' && !isOpen && (animationDisabled || !isRefresh)) {
+    return <></>;
+  }
+
+  /**
+   * The AppLayout factor moved the circular buttons out of the
+   * SplitPanel and into the Tools component. This conditional
+   * is still needed for the early return to prevent execution
+   * of the following code.
+   */
+  if (isRefresh && !isToolbar && !isOpen && position === 'side') {
+    return <></>;
+  }
+
+  return (
+    <>
+      {position === 'side' && (
+        <SplitPanelContentSide
+          style={contentStyle}
+          resizeHandle={resizeHandle}
+          baseProps={baseProps}
+          isOpen={isOpen}
+          splitPanelRef={mergedRef}
+          cappedSize={size}
+          onToggle={onToggle}
+          openButtonAriaLabel={openButtonAriaLabel}
+          toggleRef={refs.toggle}
+          header={wrappedHeader}
+          panelHeaderId={panelHeaderId}
+          ariaLabel={ariaLabel}
+          closeBehavior={closeBehavior}
+        >
+          <BuiltInErrorBoundary>{children}</BuiltInErrorBoundary>
+        </SplitPanelContentSide>
+      )}
+
+      {position === 'bottom' && (
+        <SplitPanelContentBottom
+          style={contentStyle}
+          resizeHandle={resizeHandle}
+          baseProps={baseProps}
+          isOpen={isOpen}
+          splitPanelRef={mergedRef}
+          cappedSize={size}
+          onToggle={onToggle}
+          header={wrappedHeader}
+          panelHeaderId={panelHeaderId}
+          appLayoutMaxWidth={appLayoutMaxWidth}
+          ariaLabel={ariaLabel}
+          closeBehavior={closeBehavior}
+          hasCustomElements={hasCustomElements}
+        >
+          <BuiltInErrorBoundary>{children}</BuiltInErrorBoundary>
+        </SplitPanelContentBottom>
+      )}
+      {isPreferencesOpen && (
+        <PreferencesModal
+          visible={true}
+          preferences={{ position }}
+          disabledSidePosition={position === 'bottom' && isForcedPosition}
+          isRefresh={isRefresh}
+          i18nStrings={{
+            header: i18nStrings.preferencesTitle,
+            confirm: i18nStrings.preferencesConfirm,
+            cancel: i18nStrings.preferencesCancel,
+            close: i18nStrings.preferencesCloseAriaLabel,
+            positionLabel: i18nStrings.preferencesPositionLabel,
+            positionDescription: i18nStrings.preferencesPositionDescription,
+            positionBottom: i18nStrings.preferencesPositionBottom,
+            positionSide: i18nStrings.preferencesPositionSide,
+          }}
+          onConfirm={preferences => {
+            onPreferencesChange({ ...preferences });
+            setPreferencesOpen(false);
+          }}
+          onDismiss={() => {
+            setPreferencesOpen(false);
+          }}
+        />
+      )}
+    </>
+  );
+}
+
+export const createWidgetizedSplitPanel = createWidgetizedComponent(SplitPanelImplementation);

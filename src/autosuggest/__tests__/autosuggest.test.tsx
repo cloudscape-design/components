@@ -1,0 +1,692 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useState } from 'react';
+import { render } from '@testing-library/react';
+
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
+
+import '../../__a11y__/to-validate-a11y';
+import Autosuggest, { AutosuggestProps } from '../../../lib/components/autosuggest';
+import createWrapper from '../../../lib/components/test-utils/dom';
+
+import itemStyles from '../../../lib/components/internal/components/selectable-item/styles.css.js';
+
+const defaultOptions: AutosuggestProps.Options = [
+  { value: '1', label: 'One' },
+  { value: '2', lang: 'fr' },
+];
+const groupOptions: AutosuggestProps.Options = [
+  { label: 'Group 1', options: [{ value: '1' }, { value: '2' }] },
+  { label: 'Group 2', options: [{ value: '3' }] },
+];
+const defaultProps: AutosuggestProps = {
+  enteredTextLabel: () => 'Use value',
+  value: '',
+  onChange: () => {},
+  options: defaultOptions,
+};
+
+function StatefulAutosuggest(props: AutosuggestProps) {
+  const [value, setValue] = useState(props.value);
+  return (
+    <Autosuggest
+      {...props}
+      value={value}
+      onChange={event => {
+        props.onChange?.(event);
+        setValue(event.detail.value);
+      }}
+    />
+  );
+}
+
+function renderAutosuggest(jsx: React.ReactElement) {
+  const { container, rerender } = render(jsx);
+  const wrapper = createWrapper(container).findAutosuggest()!;
+  return { container, wrapper, rerender };
+}
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => {
+  const originalModule = jest.requireActual('@cloudscape-design/component-toolkit/internal');
+
+  //just mock the `warnOnce` export
+  return {
+    __esModule: true,
+    ...originalModule,
+    warnOnce: jest.fn(),
+  };
+});
+beforeEach(() => {
+  (warnOnce as any).mockClear();
+});
+
+test('renders correct labels when focused', () => {
+  const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} />);
+
+  wrapper.focus();
+  expect(wrapper.findDropdown().findOptionByValue('1')!.getElement()).toHaveTextContent('One');
+  expect(wrapper.findDropdown().findOptionByValue('2')!.getElement()).toHaveTextContent('2');
+});
+
+test('renders lang on options', () => {
+  const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} />);
+  wrapper.focus();
+  expect(wrapper.findDropdown()!.findOptionByValue('2')!.getElement()).toHaveAttribute('lang', 'fr');
+});
+
+test('option can be selected', () => {
+  const onChange = jest.fn();
+  const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} onChange={onChange} />);
+  wrapper.focus();
+  wrapper.selectSuggestion(1);
+  expect(onChange).toHaveBeenCalledWith(
+    expect.objectContaining({
+      detail: {
+        value: '1',
+      },
+    })
+  );
+});
+
+test('option can be selected by value', () => {
+  const onChange = jest.fn();
+  const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} onChange={onChange} />);
+  wrapper.focus();
+  wrapper.selectSuggestionByValue('2');
+  expect(onChange).toHaveBeenCalledWith(
+    expect.objectContaining({
+      detail: {
+        value: '2',
+      },
+    })
+  );
+});
+
+test('option with special characters can be selected by value', () => {
+  ['"quote"', 'greater than > '].forEach(value => {
+    const onChange = jest.fn();
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} options={[{ value }]} onChange={onChange} />);
+    wrapper.focus();
+    wrapper.selectSuggestionByValue(value);
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: { value },
+      })
+    );
+  });
+});
+
+test('should display entered text option/label', () => {
+  const enteredTextLabel = jest.fn(value => `Custom function with ${value} placeholder`);
+  const { wrapper } = renderAutosuggest(
+    <StatefulAutosuggest enteredTextLabel={enteredTextLabel} value="" options={defaultOptions} />
+  );
+  wrapper.setInputValue('1');
+  expect(enteredTextLabel).toHaveBeenCalledWith('1');
+  expect(wrapper.findEnteredTextOption()!.getElement()).toHaveTextContent('Custom function with 1 placeholder');
+});
+
+test('should not display entered text option when hideEnteredTextOption=false', () => {
+  const { wrapper } = renderAutosuggest(
+    <StatefulAutosuggest enteredTextLabel={() => 'X'} value="" options={defaultOptions} hideEnteredTextOption={true} />
+  );
+  wrapper.setInputValue('1');
+  expect(wrapper.findEnteredTextOption()).toBe(null);
+});
+
+test('entered text option should not get screenreader override', () => {
+  const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} value="1" />);
+  wrapper.focus();
+  expect(
+    wrapper.findEnteredTextOption()!.findByClassName(itemStyles['screenreader-content'])?.getElement().textContent
+  ).toBeFalsy();
+});
+
+test('should not close dropdown when no related target in blur', () => {
+  const { wrapper, container } = renderAutosuggest(
+    <div>
+      <Autosuggest enteredTextLabel={v => v} value="1" options={defaultOptions} />
+      <button id="focus-target">focus target</button>
+    </div>
+  );
+  wrapper.findNativeInput().focus();
+  expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
+
+  document.body.focus();
+  expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
+
+  createWrapper(container).find('#focus-target')!.focus();
+  expect(wrapper.findDropdown().findOpenDropdown()).toBe(null);
+});
+
+it('should warn if recoveryText is provided without associated handler', () => {
+  renderAutosuggest(
+    <Autosuggest {...defaultProps} statusType="error" errorText="Test error text" recoveryText="Retry" />
+  );
+  expect(warnOnce).toHaveBeenCalledTimes(1);
+  expect(warnOnce).toHaveBeenCalledWith(
+    'Autosuggest',
+    '`onLoadItems` must be provided for `recoveryText` to be displayed.'
+  );
+});
+
+describe('onSelect', () => {
+  test('should select normal value', () => {
+    const onChange = jest.fn();
+    const onSelect = jest.fn();
+    const { wrapper } = renderAutosuggest(
+      <Autosuggest
+        {...defaultProps}
+        onChange={event => onChange(event.detail)}
+        onSelect={event => onSelect(event.detail)}
+      />
+    );
+    wrapper.focus();
+    wrapper.selectSuggestion(1);
+    expect(onChange).toHaveBeenCalledWith({ value: '1' });
+    expect(onSelect).toHaveBeenCalledWith({ value: '1', selectedOption: defaultOptions[0] });
+  });
+
+  test('should select `enteredText` option', () => {
+    const onChange = jest.fn();
+    const onSelect = jest.fn();
+    const { wrapper } = renderAutosuggest(
+      <Autosuggest
+        {...defaultProps}
+        value="test"
+        onChange={event => onChange(event.detail)}
+        onSelect={event => onSelect(event.detail)}
+      />
+    );
+    wrapper.focus();
+    wrapper.findEnteredTextOption()!.fireEvent(new MouseEvent('mouseup', { bubbles: true }));
+    expect(onChange).toHaveBeenCalledWith({ value: 'test' });
+    expect(onSelect).toHaveBeenCalledWith({ value: 'test', selectedOption: undefined });
+    expect(wrapper.findDropdown().findOpenDropdown()).toBeFalsy();
+  });
+});
+
+describe('a11y props', () => {
+  test('adds combobox role to input', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} options={[]} />);
+    const input = wrapper.findNativeInput().getElement();
+    expect(input).toHaveAttribute('role', 'combobox');
+  });
+
+  test('adds correct aria properties to input', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} options={[]} />);
+    const input = wrapper.findNativeInput().getElement();
+    expect(input).toHaveAttribute('aria-autocomplete', 'list');
+    expect(input).toHaveAttribute('aria-expanded', 'false');
+    expect(input).not.toHaveAttribute('aria-controls');
+    expect(input).not.toHaveAttribute('aria-owns');
+    expect(input).not.toHaveAttribute('aria-label');
+    expect(input).not.toHaveAttribute('aria-activedescendant');
+  });
+
+  test('has correct aria property when suggestion dialog is open', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} options={[]} />);
+    const input = wrapper.findNativeInput().getElement();
+    wrapper.findNativeInput().focus();
+    expect(input).toHaveAttribute('aria-controls', expect.any(String));
+    expect(input).toHaveAttribute('aria-owns', expect.any(String));
+  });
+
+  test('adds correct aria properties to input when expanded', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} />);
+    const input = wrapper.findNativeInput().getElement();
+    wrapper.focus();
+    expect(input).toHaveAttribute('aria-expanded', 'true');
+  });
+
+  test('can add an aria-label to input', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} options={[]} ariaLabel="input label" />);
+    const input = wrapper.findNativeInput().getElement();
+    expect(input).toHaveAttribute('aria-label', 'input label');
+  });
+
+  test('adds id of highlighted item as aria-activedescendant to input', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} />);
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    const input = wrapper.findNativeInput().getElement();
+    const highlightedOption = wrapper.findDropdown().findHighlightedOption()!.getElement();
+    expect(highlightedOption).toHaveAttribute('id', expect.any(String));
+    expect(input).toHaveAttribute('aria-activedescendant', highlightedOption.getAttribute('id'));
+  });
+
+  test('Option should have appropriate aria-selected values', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} value="2" />);
+    wrapper.focus();
+    expect(wrapper.findDropdown()!.find('[data-test-index="1"]')!.getElement()).toHaveAttribute(
+      'aria-selected',
+      'false'
+    );
+    expect(wrapper.findDropdown()!.find('[data-test-index="2"]')!.getElement()).toHaveAttribute(
+      'aria-selected',
+      'true'
+    );
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(wrapper.findDropdown()!.find('[data-test-index="1"]')!.getElement()).toHaveAttribute(
+      'aria-selected',
+      'false'
+    );
+    expect(wrapper.findDropdown()!.find('[data-test-index="2"]')!.getElement()).toHaveAttribute(
+      'aria-selected',
+      'true'
+    );
+  });
+
+  test('Option should have appropriate aria label', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} value="1" selectedAriaLabel="Selected" />);
+    wrapper.focus();
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(
+      wrapper
+        .findDropdown()!
+        .find('[data-test-index="1"]')!
+        .findByClassName(itemStyles['screenreader-content'])!
+        .getElement()
+    ).toHaveTextContent('Selected');
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(
+      wrapper
+        .findDropdown()!
+        .find('[data-test-index="2"]')!
+        .findByClassName(itemStyles['screenreader-content'])!
+        .getElement()
+    ).not.toHaveTextContent('Selected');
+  });
+
+  test('renders screen reader content for highlighted option', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} value="1" />);
+    wrapper.focus();
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(wrapper.findDropdown()!.findHighlightedAriaLiveRegion()!.getElement().textContent).toEqual('One');
+  });
+
+  test('renders screen reader content for highlighted option with custom text', () => {
+    const { wrapper } = renderAutosuggest(
+      <Autosuggest {...defaultProps} value="1" renderHighlightedAriaLive={option => `${option.label}, custom text`} />
+    );
+    wrapper.focus();
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(wrapper.findDropdown()!.findHighlightedAriaLiveRegion()!.getElement().textContent).toEqual(
+      'One, custom text'
+    );
+  });
+});
+
+describe('keyboard interactions', () => {
+  beforeEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test('selects option on enter', () => {
+    const onChange = jest.fn();
+    const onSelect = jest.fn();
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} onChange={onChange} onSelect={onSelect} />);
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    wrapper.findNativeInput().keydown(KeyCode.enter);
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '1' } }));
+    expect(onSelect).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { value: '1', selectedOption: defaultOptions[0] } })
+    );
+  });
+
+  test('closes dropdown on enter and opens it on arrow keys', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} onChange={() => undefined} />);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
+
+    wrapper.findNativeInput().keydown(KeyCode.enter);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+
+    wrapper.findNativeInput().keydown(KeyCode.up);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
+  });
+
+  test('does not select option on enter keydown if part of IME composition', () => {
+    const onChange = jest.fn();
+    const onSelect = jest.fn();
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} onChange={onChange} onSelect={onSelect} />);
+    const input = wrapper.findNativeInput().getElement();
+
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    input.dispatchEvent(new CompositionEvent('compositionstart'));
+    wrapper.findNativeInput().keydown({ keyCode: KeyCode.enter, isComposing: false });
+
+    expect(onChange).not.toHaveBeenCalled();
+    expect(onSelect).not.toHaveBeenCalled();
+    expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
+  });
+
+  test('does not select option on enter when composition ends immediately before keydown', () => {
+    jest.spyOn(window, 'requestAnimationFrame').mockImplementation(() => {
+      return 1;
+    });
+
+    const onChange = jest.fn();
+    const onSelect = jest.fn();
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} onChange={onChange} onSelect={onSelect} />);
+    const input = wrapper.findNativeInput().getElement();
+
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    input.dispatchEvent(new CompositionEvent('compositionstart'));
+    input.dispatchEvent(new CompositionEvent('compositionend', { data: '가' }));
+    wrapper.findNativeInput().keydown({ keyCode: KeyCode.enter, isComposing: false });
+
+    expect(onChange).not.toHaveBeenCalled();
+    expect(onSelect).not.toHaveBeenCalled();
+  });
+
+  test('selects option on enter after composition flag is cleared', () => {
+    const mockRaf = jest.spyOn(window, 'requestAnimationFrame').mockImplementation(callback => {
+      callback(performance.now());
+      return 1;
+    });
+
+    const onChange = jest.fn();
+    const onSelect = jest.fn();
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} onChange={onChange} onSelect={onSelect} />);
+    const input = wrapper.findNativeInput().getElement();
+
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    input.dispatchEvent(new CompositionEvent('compositionstart'));
+    input.dispatchEvent(new CompositionEvent('compositionend', { data: '가' }));
+    wrapper.findNativeInput().keydown({ keyCode: KeyCode.enter, isComposing: false });
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onSelect).toHaveBeenCalledTimes(1);
+
+    mockRaf.mockRestore();
+  });
+
+  test('blocks enter during rapid sequential composition events', () => {
+    jest.spyOn(window, 'requestAnimationFrame').mockImplementation(() => {
+      return 1;
+    });
+
+    const onChange = jest.fn();
+    const onSelect = jest.fn();
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} onChange={onChange} onSelect={onSelect} />);
+    const input = wrapper.findNativeInput().getElement();
+
+    wrapper.findNativeInput().keydown(KeyCode.down);
+
+    input.dispatchEvent(new CompositionEvent('compositionstart'));
+    input.dispatchEvent(new CompositionEvent('compositionend', { data: 'ㄱ' }));
+    wrapper.findNativeInput().keydown({ keyCode: KeyCode.enter, isComposing: false });
+    expect(onChange).not.toHaveBeenCalled();
+    expect(onSelect).not.toHaveBeenCalled();
+
+    input.dispatchEvent(new CompositionEvent('compositionstart'));
+    input.dispatchEvent(new CompositionEvent('compositionend', { data: '가' }));
+    wrapper.findNativeInput().keydown({ keyCode: KeyCode.enter, isComposing: false });
+    expect(onChange).not.toHaveBeenCalled();
+    expect(onSelect).not.toHaveBeenCalled();
+  });
+
+  test('does not select option when enter pressed to complete character composition', () => {
+    jest.spyOn(window, 'requestAnimationFrame').mockImplementation(() => {
+      return 1;
+    });
+
+    const onChange = jest.fn();
+    const onSelect = jest.fn();
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} onChange={onChange} onSelect={onSelect} />);
+    const input = wrapper.findNativeInput().getElement();
+
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    input.dispatchEvent(new CompositionEvent('compositionstart'));
+    input.dispatchEvent(new CompositionEvent('compositionend', { data: '가' }));
+    wrapper.findNativeInput().keydown({ keyCode: KeyCode.enter, isComposing: false });
+
+    expect(onChange).not.toHaveBeenCalled();
+    expect(onSelect).not.toHaveBeenCalled();
+  });
+
+  test('closes dropdown and clears input on esc', () => {
+    const onChange = jest.fn();
+    const { wrapper, rerender } = renderAutosuggest(<Autosuggest {...defaultProps} value="1" onChange={onChange} />);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
+
+    wrapper.findNativeInput().keydown(KeyCode.escape);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+    expect(onChange).toHaveBeenCalledTimes(0);
+
+    wrapper.findNativeInput().keydown(KeyCode.escape);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '' } }));
+
+    rerender(<Autosuggest {...defaultProps} value="" onChange={onChange} />);
+
+    wrapper.findNativeInput().keydown(KeyCode.escape);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+    expect(onChange).toHaveBeenCalledTimes(1);
+  });
+
+  test('arrow up key on first option should highlight last option', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} />);
+
+    expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
+
+    expect(wrapper.findDropdown().findHighlightedOption()!.getElement()).toHaveTextContent('One');
+    wrapper.findNativeInput().keydown(KeyCode.up);
+    expect(wrapper.findDropdown().findHighlightedOption()!.getElement()).toHaveTextContent('2');
+  });
+
+  test('arrow up key on first option should highlight last option (options with groups)', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} options={groupOptions} />);
+
+    expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
+
+    expect(wrapper.findDropdown().findHighlightedOption()!.getElement()).toHaveTextContent('1');
+    wrapper.findNativeInput().keydown(KeyCode.up);
+    expect(wrapper.findDropdown().findHighlightedOption()!.getElement()).toHaveTextContent('3');
+  });
+
+  test('arrow down key on last option should highlight first option', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} />);
+
+    expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
+
+    expect(wrapper.findDropdown().findHighlightedOption()!.getElement()).toHaveTextContent('One');
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(wrapper.findDropdown().findHighlightedOption()!.getElement()).toHaveTextContent('2');
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(wrapper.findDropdown().findHighlightedOption()!.getElement()).toHaveTextContent('One');
+  });
+});
+
+describe('Check if should render dropdown', () => {
+  test('should render dropdown content when not empty and dropdown content is not null', () => {
+    const { wrapper } = renderAutosuggest(
+      <Autosuggest
+        {...defaultProps}
+        value="1"
+        options={[{ value: '1', label: 'One' }]}
+        statusType="error"
+        errorText="Test error text"
+      />
+    );
+
+    wrapper.focus();
+
+    expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
+  });
+
+  test('should not render dropdown content when empty and dropdown content is null', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} value="" options={[]} />);
+
+    wrapper.focus();
+
+    expect(wrapper.findDropdown().findOpenDropdown()).toBe(null);
+  });
+
+  test('should render dropdown content when not empty', () => {
+    const { wrapper } = renderAutosuggest(
+      <Autosuggest {...defaultProps} value="1" options={[{ value: '1', label: 'One' }]} />
+    );
+
+    wrapper.focus();
+
+    expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
+  });
+
+  test('should render dropdown content when dropdown content is not null', () => {
+    const { wrapper } = renderAutosuggest(
+      <Autosuggest {...defaultProps} value="" options={[]} statusType="error" errorText="Test error text" />
+    );
+
+    wrapper.focus();
+
+    expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
+  });
+
+  test('should render dropdown when the only visible option is entered text option', () => {
+    const { wrapper } = renderAutosuggest(
+      <StatefulAutosuggest enteredTextLabel={() => 'X'} value="" options={defaultOptions} />
+    );
+
+    wrapper.focus();
+    wrapper.setInputValue('XXX');
+
+    expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
+    expect(wrapper.findDropdown().findOptions()).toHaveLength(0);
+    expect(wrapper.findEnteredTextOption()).not.toBe(null);
+  });
+
+  test('should render dropdown when no options matched with a message', () => {
+    const { wrapper } = renderAutosuggest(
+      <StatefulAutosuggest
+        value=""
+        options={defaultOptions}
+        hideEnteredTextOption={true}
+        filteringResultsText={() => 'No matches'}
+      />
+    );
+
+    wrapper.focus();
+    wrapper.setInputValue('XXX');
+
+    expect(wrapper.findDropdown().findOpenDropdown()!.getElement()).toHaveTextContent('No matches');
+    expect(wrapper.findDropdown().findOptions()).toHaveLength(0);
+  });
+
+  test('should not render dropdown when no options matched with no message', () => {
+    const { wrapper } = renderAutosuggest(
+      <StatefulAutosuggest value="" options={defaultOptions} hideEnteredTextOption={true} />
+    );
+
+    wrapper.focus();
+    wrapper.setInputValue('XXX');
+
+    expect(wrapper.findDropdown().findOpenDropdown()).toBe(null);
+  });
+});
+
+describe('Ref', () => {
+  test('can be used to focus the component', () => {
+    const ref = React.createRef<AutosuggestProps.Ref>();
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} value="1" ref={ref} />);
+    const input = wrapper.findNativeInput().getElement();
+    expect(document.activeElement).not.toBe(input);
+    ref.current!.focus();
+    expect(document.activeElement).toBe(input);
+  });
+
+  test('can be used to select all text', () => {
+    const ref = React.createRef<AutosuggestProps.Ref>();
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} value="te" ref={ref} />);
+    const input = wrapper.findNativeInput().getElement();
+
+    // Make sure no text is selected
+    input.selectionStart = input.selectionEnd = 0;
+    input.blur();
+    expect(input.selectionStart).toBe(0);
+    expect(input.selectionEnd).toBe(0);
+
+    // Select all text
+    ref.current!.select();
+    expect(input.selectionStart).toBe(0);
+    expect(input.selectionEnd).toBe(2);
+  });
+});
+
+test('findOptionInGroup', () => {
+  const { container } = render(
+    <Autosuggest value="" onChange={() => {}} enteredTextLabel={() => 'Use value'} options={groupOptions} />
+  );
+  const wrapper = createWrapper(container).findAutosuggest()!;
+  wrapper.findNativeInput().focus();
+  expect(wrapper.findDropdown().findOptionInGroup(1, 2)).toBeTruthy();
+});
+
+test('findOptionInGroup returns consistent element with findOption', () => {
+  const { container } = render(
+    <Autosuggest value="" onChange={() => {}} enteredTextLabel={() => 'Use value'} options={groupOptions} />
+  );
+  const wrapper = createWrapper(container).findAutosuggest()!;
+  wrapper.findNativeInput().focus();
+  const optionByIndex = wrapper.findDropdown().findOption(1);
+  const optionInGroup = wrapper.findDropdown().findOptionInGroup(1, 1);
+  expect(optionByIndex).toBeTruthy();
+  expect(optionInGroup).toBeTruthy();
+  // Both should return the inner option element with data-value
+  expect(optionByIndex!.getElement().getAttribute('data-value')).toBe('1');
+  expect(optionInGroup!.getElement().getAttribute('data-value')).toBe('1');
+});
+
+describe('native attributes', () => {
+  it('adds native attributes', () => {
+    const { wrapper } = renderAutosuggest(
+      <Autosuggest {...defaultProps} nativeInputAttributes={{ 'data-testid': 'my-test-id' }} />
+    );
+    expect(wrapper.getElement().querySelectorAll('[data-testid="my-test-id"]')).toHaveLength(1);
+    expect(wrapper.getElement().querySelectorAll('input[data-testid="my-test-id"]')).toHaveLength(1);
+  });
+
+  it('chains autosuggest-specific handlers', () => {
+    const onClick = jest.fn();
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} nativeInputAttributes={{ onClick }} />);
+
+    wrapper.findNativeInput().click();
+
+    expect(onClick).toHaveBeenCalled();
+  });
+
+  it('warns about overriding autosuggest-specific attributes', () => {
+    renderAutosuggest(<Autosuggest {...defaultProps} nativeInputAttributes={{ 'aria-autocomplete': 'both' }} />);
+    expect(warnOnce).toHaveBeenCalledWith(
+      'Autosuggest',
+      'Overriding native attribute [aria-autocomplete] which has a Cloudscape-provided value'
+    );
+  });
+
+  it('warns about overriding input-specific attributes', () => {
+    renderAutosuggest(
+      <Autosuggest {...defaultProps} ariaRequired={true} nativeInputAttributes={{ 'aria-required': 'false' }} />
+    );
+    expect(warnOnce).toHaveBeenCalledWith(
+      'Input',
+      'Overriding native attribute [aria-required] which has a Cloudscape-provided value'
+    );
+  });
+});
