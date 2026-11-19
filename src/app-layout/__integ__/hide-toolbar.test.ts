@@ -78,7 +78,7 @@ describe('appLayoutHideToolbar flag', () => {
     expect(toolbarHeight).toBeGreaterThan(0);
     // allow 1px for sub-pixel rounding
     expect(Math.abs(offsetWithToolbar - toolbarHeight - offsetWithHiddenToolbar)).toBeLessThanOrEqual(1);
-  }, 120_000 /* two browser sessions */);
+  });
 
   test(
     'publishes breadcrumbs to registerBreadcrumbsConsumer and keeps them updated',

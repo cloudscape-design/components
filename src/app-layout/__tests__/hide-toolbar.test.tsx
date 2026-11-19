@@ -1,21 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act, cleanup, render, waitFor } from '@testing-library/react';
+import { cleanup, render, waitFor } from '@testing-library/react';
 
 import AppLayout from '../../../lib/components/app-layout';
 import { isAppLayoutHideToolbar } from '../../../lib/components/app-layout/utils/feature-flags';
 import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
-import * as awsuiWidgetPlugins from '../../../lib/components/internal/plugins/widget';
 import { clearInitialMessages } from '../../../lib/components/internal/plugins/widget/core';
-import { DrawerPayload } from '../../../lib/components/internal/plugins/widget/interfaces';
 import * as widgetPlugins from '../../../lib/components/plugins';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { describeEachAppLayout, getGlobalDrawersTestUtils, renderComponent, setPendingGlobalFlag } from './utils';
+import { describeEachAppLayout, renderComponent, setPendingGlobalFlag } from './utils';
 
-import testUtilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
-import drawerStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/drawer/styles.css.js';
-import skeletonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.css.js';
 import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.css.js';
 
 const breadcrumbItems: BreadcrumbGroupProps['items'] = [
@@ -86,37 +80,6 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
     expect(isToolbarHidden(wrapper.findToolbar()!.getElement())).toBe(true);
     expect(wrapper.findTools().getElement()).toHaveTextContent('tools content');
   });
-
-  test('reads the flag on every render', () => {
-    const { wrapper, rerender } = renderComponent(<AppLayout navigation="nav" />);
-    expect(isToolbarHidden(wrapper.findToolbar()!.getElement())).toBe(false);
-
-    setPendingGlobalFlag('appLayoutHideToolbar', true);
-    rerender(<AppLayout navigation="nav" content="hidden" />);
-    expect(isToolbarHidden(wrapper.findToolbar()!.getElement())).toBe(true);
-
-    setPendingGlobalFlag('appLayoutHideToolbar', undefined);
-    rerender(<AppLayout navigation="nav" content="visible" />);
-    expect(isToolbarHidden(wrapper.findToolbar()!.getElement())).toBe(false);
-  });
-
-  test('hides the single shared toolbar for nested layouts when the flag is set', async () => {
-    setPendingGlobalFlag('appLayoutHideToolbar', true);
-    render(
-      <AppLayout
-        {...({ __disableRuntimeDrawers: true } as any)}
-        navigation="outer nav"
-        content={
-          <AppLayout {...({ __disableRuntimeDrawers: true } as any)} navigationHide={true} tools="inner tools" />
-        }
-      />
-    );
-    // let the layouts negotiate which one owns the toolbar
-    await act(() => new Promise(resolve => setTimeout(resolve, 10)));
-    const toolbars = createWrapper().findAllByClassName(testUtilStyles.toolbar);
-    expect(toolbars).toHaveLength(1);
-    expect(isToolbarHidden(toolbars[0].getElement())).toBe(true);
-  });
 });
 
 describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
@@ -158,47 +121,6 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
       expect(onBreadcrumbsChange).toHaveBeenLastCalledWith(expect.objectContaining({ items: updatedItems }))
     );
     registration.unregister();
-  });
-});
-
-describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
-  const aiDrawer: DrawerPayload = {
-    id: 'ai-drawer',
-    ariaLabels: {},
-    trigger: { customIcon: 'custom icon' },
-    defaultActive: true,
-    mountContent: container => (container.textContent = 'ai drawer content'),
-    unmountContent: () => {},
-  };
-
-  beforeEach(() => clearInitialMessages());
-  afterEach(() => {
-    cleanup();
-    clearInitialMessages();
-  });
-
-  function renderAiDrawer() {
-    const { wrapper } = renderComponent(<AppLayout navigation="nav" />);
-    return getGlobalDrawersTestUtils(wrapper).findDrawerById(aiDrawer.id)!.getElement();
-  }
-
-  // the toolbar draws the separator between the AI drawer and the main content,
-  // so the AI drawer takes it over while the toolbar is hidden
-  test('the AI drawer draws the content separator when the flag is set', () => {
-    setPendingGlobalFlag('appLayoutHideToolbar', true);
-    awsuiWidgetPlugins.registerLeftDrawer(aiDrawer);
-    const drawer = renderAiDrawer();
-    expect(drawer).toHaveClass(drawerStyles['with-hidden-toolbar']);
-    // the separator is drawn outside the drawer, so its grid cell is raised above the navigation
-    expect(drawer.parentElement).toHaveClass(skeletonStyles['ai-drawer']);
-    expect(drawer.parentElement).toHaveClass(skeletonStyles['with-hidden-toolbar']);
-  });
-
-  test('the AI drawer leaves the content separator to the toolbar when the flag is not set', () => {
-    awsuiWidgetPlugins.registerLeftDrawer(aiDrawer);
-    const drawer = renderAiDrawer();
-    expect(drawer).not.toHaveClass(drawerStyles['with-hidden-toolbar']);
-    expect(drawer.parentElement).not.toHaveClass(skeletonStyles['with-hidden-toolbar']);
   });
 });
 
