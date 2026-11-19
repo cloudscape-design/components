@@ -99,6 +99,50 @@ describe('AnchorNavigation', () => {
     expect(wrapper.findAnchorByIndex(2)!.isActive()).toBe(true);
   });
 
+  it('does not call onActiveHrefChange again when re-rendered with the same active anchor', () => {
+    const onActiveHrefChange = jest.fn();
+
+    // The anchors and the handler get a new identity on every render, as they do when defined inline.
+    const renderWithInlineProps = () => (
+      <AnchorNavigation
+        anchors={[
+          { text: 'Section 1', href: '#section1', level: 1 },
+          { text: 'Section 2', href: '#section2', level: 1 },
+        ]}
+        activeHref="#section1"
+        onActiveHrefChange={event => onActiveHrefChange(event.detail)}
+      />
+    );
+
+    const { rerender } = render(renderWithInlineProps());
+    expect(onActiveHrefChange).toHaveBeenCalledTimes(1);
+
+    rerender(renderWithInlineProps());
+    rerender(renderWithInlineProps());
+    expect(onActiveHrefChange).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls onActiveHrefChange again when an anchor becomes active a second time', () => {
+    const onActiveHrefChange = jest.fn();
+
+    const props = {
+      anchors: [
+        { text: 'Section 1', href: '#section1', level: 1 },
+        { text: 'Section 2', href: '#section2', level: 1 },
+      ],
+      onActiveHrefChange,
+    };
+
+    const { rerender } = render(<AnchorNavigation {...props} activeHref="#section1" />);
+    rerender(<AnchorNavigation {...props} activeHref="#section2" />);
+    rerender(<AnchorNavigation {...props} activeHref="#section1" />);
+
+    expect(onActiveHrefChange).toHaveBeenCalledTimes(3);
+    expect(onActiveHrefChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({ detail: { text: 'Section 1', href: '#section1', level: 1 } })
+    );
+  });
+
   it('calls onActiveHrefChange when a new anchor is active', () => {
     const onActiveHrefChange = jest.fn();
 
