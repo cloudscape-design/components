@@ -6,8 +6,9 @@ import { BaseComponentProps } from '../types/base-component';
 
 export interface KeyValuePairsProps extends BaseComponentProps {
   /**
-   * Specifies the number of columns in each grid row.
-   * Valid values are any integer between 1 and 4. It defaults to 1.
+   * Specifies the number of columns in each grid row. It defaults to 1.
+   *
+   * The number of columns is reduced as the available space narrows, based on `minColumnWidth`.
    */
   columns?: number;
   /**
@@ -46,6 +47,9 @@ export interface KeyValuePairsProps extends BaseComponentProps {
    * The number of columns is determined by the value of this property, the available space,
    * and the maximum number of columns as defined by the `columns` property.
    * If not set, defaults to 150.
+   *
+   * While reducing the count, odd numbers are skipped, so 5 columns becomes 4 and then 2.
+   * A requested odd count is kept when it fits.
    */
   minColumnWidth?: number;
 }
