@@ -302,6 +302,17 @@
       border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
     }
   }
+
+  // square corner next to the AI drawer, same as the toolbar in simplified view
+  &.pseudo-toolbar-simplified-view {
+    @include theming.dark-mode-only {
+      border-start-start-radius: 0;
+    }
+
+    &::after {
+      border-start-start-radius: 0;
+    }
+  }
 }
 
 .notifications-container {
