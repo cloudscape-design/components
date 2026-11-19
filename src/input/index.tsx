@@ -53,6 +53,7 @@ const Input = React.forwardRef(
   ) => {
     const baseComponentProps = useBaseComponent('Input', {
       props: { autoComplete, autoFocus, disableBrowserAutocorrect, inputMode, readOnly, spellcheck, type },
+      metadata: { hasInlineLabel: Boolean(inlineLabelText) },
     });
     const baseProps = getBaseProps(rest);
 
