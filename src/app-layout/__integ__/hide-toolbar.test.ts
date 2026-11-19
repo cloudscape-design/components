@@ -30,7 +30,7 @@ class HideToolbarPage extends BasePageObject {
 function setupTest(params: Record<string, string>, testFn: (page: HideToolbarPage) => Promise<void>) {
   return useBrowser(async browser => {
     const page = new HideToolbarPage(browser);
-    await browser.url(`#/light/app-layout/global-nav-breadcrumbs?${getUrlParams('refresh-toolbar', params)}`);
+    await browser.url(`#/app-layout/global-nav-breadcrumbs?${getUrlParams('refresh-toolbar', params)}`);
     await page.waitForVisible(appLayout.findContentRegion().toSelector());
     await testFn(page);
   });
