@@ -78,6 +78,7 @@ export const InternalButton = React.forwardRef(
       onClick,
       onFollow,
       iconAlign = 'left',
+      iconEnd,
       iconUrl,
       iconSvg,
       iconAlt,
@@ -148,6 +149,11 @@ export const InternalButton = React.forwardRef(
 
     if ((iconName || iconUrl || iconSvg) && iconAlign === 'right' && external) {
       warnOnce('Button', 'A right-aligned icon should not be combined with an external icon.');
+    }
+    // React renders nothing for these, but it does render `0`.
+    const hasIconEnd = iconEnd !== undefined && iconEnd !== null && iconEnd !== false && iconEnd !== '';
+    if ((iconName || iconUrl || iconSvg) && iconAlign === 'right' && hasIconEnd) {
+      warnOnce('Button', 'A right-aligned icon should not be combined with `iconEnd`.');
     }
 
     const buttonRef = useRef<HTMLElement>(null);
@@ -289,6 +295,7 @@ export const InternalButton = React.forwardRef(
             )}
           </>
         )}
+        {hasIconEnd && <span className={styles['icon-end']}>{iconEnd}</span>}
         <RightIcon {...iconProps} />
       </>
     );

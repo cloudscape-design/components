@@ -6281,7 +6281,9 @@ This property only applies when an \`href\` is provided.",
 * \`link\` for tertiary buttons.
 * \`icon\` to display an icon only (no text).
 * \`inline-icon\` to display an icon-only (no text) button within a text context.
-* \`inline-link\` to display a tertiary button with no outer padding.",
+* \`inline-link\` to display a tertiary button with no outer padding.
+* \`table-header\` to fill a table column header, for example to sort the column. Place it in a \`TableHeaderCell\`
+ with \`disablePaddings="headerButton"\`, use \`iconEnd\` for a sort indicator, and set \`formAction="none"\` inside forms.",
       "inlineType": {
         "name": "ButtonProps.Variant",
         "type": "union",
@@ -6292,6 +6294,7 @@ This property only applies when an \`href\` is provided.",
           "primary",
           "inline-icon",
           "inline-link",
+          "table-header",
         ],
       },
       "name": "variant",
@@ -6320,6 +6323,14 @@ If provided, the button becomes focusable.
 Do not place interactive elements like links or buttons.",
       "isDefault": false,
       "name": "disabledReason",
+    },
+    {
+      "description": "Displays content after the text, for example a sort indicator with its sort priority.
+Use \`Icon\` components, which inherit the button's color. Pass \`null\` when there's nothing to show.
+
+Don't combine it with a right-aligned icon (\`iconAlign="right"\`).",
+      "isDefault": false,
+      "name": "iconEnd",
     },
     {
       "description": "Specifies the SVG of a custom icon.
@@ -31078,10 +31089,23 @@ exports[`Components definition for table-header-cell matches the snapshot: table
       "type": "string",
     },
     {
-      "description": "Removes the cell's built-in padding so you can compose your own spacing. Defaults to \`false\`.",
+      "description": "Removes the cell's built-in padding so you can compose your own spacing.
+* \`true\` - Removes all padding.
+* \`headerButton\` - Leaves the content padding to a \`Button\` with \`variant="table-header"\`.
+
+Defaults to \`false\`.",
+      "inlineType": {
+        "name": "boolean | "headerButton"",
+        "type": "union",
+        "values": [
+          "false",
+          "true",
+          ""headerButton"",
+        ],
+      },
       "name": "disablePaddings",
       "optional": true,
-      "type": "boolean",
+      "type": "boolean | "headerButton"",
     },
     {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
@@ -36601,6 +36625,20 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
           },
         },
         {
+          "description": "Returns the content of the \`iconEnd\` slot, or \`null\` if there isn't any.",
+          "name": "findIconEnd",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
           "name": "findLoadingIndicator",
           "parameters": [],
           "returnType": {
@@ -40212,6 +40250,23 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
             "name": "ButtonWrapper.findDisabledReason",
           },
           "name": "findDisabledReason",
+          "parameters": [],
+          "returnType": {
+            "isNullable": true,
+            "name": "ElementWrapper",
+            "typeArguments": [
+              {
+                "name": "HTMLElement",
+              },
+            ],
+          },
+        },
+        {
+          "description": "Returns the content of the \`iconEnd\` slot, or \`null\` if there isn't any.",
+          "inheritedFrom": {
+            "name": "ButtonWrapper.findIconEnd",
+          },
+          "name": "findIconEnd",
           "parameters": [],
           "returnType": {
             "isNullable": true,
@@ -50307,6 +50362,15 @@ The dismiss button is only rendered when the \`dismissible\` property is set to 
           },
         },
         {
+          "description": "Returns the content of the \`iconEnd\` slot, or \`null\` if there isn't any.",
+          "name": "findIconEnd",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
           "name": "findLoadingIndicator",
           "parameters": [],
           "returnType": {
@@ -52888,6 +52952,18 @@ To find a specific item use the \`findBreadcrumbLink(n)\` function as chaining \
             "name": "ButtonWrapper.findDisabledReason",
           },
           "name": "findDisabledReason",
+          "parameters": [],
+          "returnType": {
+            "isNullable": false,
+            "name": "ElementWrapper",
+          },
+        },
+        {
+          "description": "Returns the content of the \`iconEnd\` slot, or \`null\` if there isn't any.",
+          "inheritedFrom": {
+            "name": "ButtonWrapper.findIconEnd",
+          },
+          "name": "findIconEnd",
           "parameters": [],
           "returnType": {
             "isNullable": false,

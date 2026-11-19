@@ -3,7 +3,11 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs, useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
+import {
+  getLogicalBoundingClientRect,
+  useMergeRefs,
+  useResizeObserver,
+} from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
 import { StickyScrollbar } from '../internal/components/sticky-scrollbar';
@@ -22,10 +26,22 @@ export interface InternalTableRootProps extends TableRootProps, InternalBaseComp
 // In grid layout the rows overflow the table element, so the scroller, not the table, measures the
 // scrollable width. scrollWidth is rounded to a whole pixel, so content that fits a fractional-width
 // scroller reports the scroller's own width instead, using the same tolerance as measureScrollable.
-function getScrollerContentInlineSize(_table: HTMLElement, scroller: HTMLElement) {
-  return scroller.scrollWidth - scroller.clientWidth > 1
-    ? scroller.scrollWidth
-    : scroller.getBoundingClientRect().width;
+// The scroller's inline padding (room for focus rings at the table's edges) is part of neither the content nor
+// the visible track of the sticky scrollbar.
+function getScrollerInlinePadding(scroller: HTMLElement) {
+  const { paddingInlineStart, paddingInlineEnd } = getComputedStyle(scroller);
+  return (parseFloat(paddingInlineStart) || 0) + (parseFloat(paddingInlineEnd) || 0);
+}
+
+export function getScrollerContentInlineSize(_table: HTMLElement, scroller: HTMLElement) {
+  return (
+    (scroller.scrollWidth - scroller.clientWidth > 1 ? scroller.scrollWidth : scroller.getBoundingClientRect().width) -
+    getScrollerInlinePadding(scroller)
+  );
+}
+
+export function getScrollerVisibleInlineSize(scroller: HTMLElement) {
+  return getLogicalBoundingClientRect(scroller).inlineSize - getScrollerInlinePadding(scroller);
 }
 
 export default function InternalTableRoot({
@@ -141,6 +157,7 @@ export default function InternalTableRoot({
           tableRef={sticky.realTableRef}
           onScroll={handleScroll}
           getContentInlineSize={getScrollerContentInlineSize}
+          getWrapperInlineSize={getScrollerVisibleInlineSize}
           contentKey={gridTemplateColumns}
         />
       </TableContextProvider>

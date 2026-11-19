@@ -542,6 +542,35 @@ describe('Button Component', () => {
     });
   });
 
+  describe('iconEnd property', () => {
+    test('renders the slot after the text', () => {
+      const wrapper = renderButton({ children: 'Name', iconEnd: <span data-testid="end">1</span> });
+      expect(wrapper.findIconEnd()!.find('[data-testid="end"]')).not.toBeNull();
+      expect(wrapper.findTextRegion()!.getElement().nextElementSibling).toBe(wrapper.findIconEnd()!.getElement());
+    });
+
+    test('renders no slot by default', () => {
+      expect(renderButton({ children: 'Name' }).findIconEnd()).toBeNull();
+    });
+
+    test.each([null, false, ''])('renders no slot for %p', iconEnd => {
+      expect(renderButton({ children: 'Name', iconEnd }).findIconEnd()).toBeNull();
+    });
+
+    test('renders the slot for 0', () => {
+      expect(renderButton({ children: 'Name', iconEnd: 0 }).findIconEnd()!.getElement()).toHaveTextContent('0');
+    });
+
+    test('warns when combined with a right-aligned icon', () => {
+      const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+      renderButton({ children: 'Name', iconName: 'add-plus', iconAlign: 'right', iconEnd: <span /> });
+      expect(warnSpy).toHaveBeenCalledWith(
+        '[AwsUi] [Button] A right-aligned icon should not be combined with `iconEnd`.'
+      );
+      warnSpy.mockRestore();
+    });
+  });
+
   describe('Loading property', () => {
     test("should disable the button with aria-disabled when in 'loading' status", () => {
       const onClickSpy = jest.fn();
