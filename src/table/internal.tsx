@@ -71,6 +71,7 @@ import ToolsHeader from './tools-header';
 import { useAutoSkeletonRows } from './use-auto-skeleton-rows';
 import { useCellEditing } from './use-cell-editing';
 import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } from './use-column-widths';
+import { useIsTableScrollable } from './use-is-table-scrollable';
 import { usePreventStickyClickScroll } from './use-prevent-sticky-click-scroll';
 import { useRowEvents } from './use-row-events';
 import useTableFocusNavigation from './use-table-focus-navigation';
@@ -194,12 +195,9 @@ const InternalTable = React.forwardRef(
     const { allRows } = useProgressiveLoadingProps({ getLoadingStatus, expandableRows });
     const selectionType = expandableRows.hasGroupSelection ? ('group' as const) : externalSelectionType;
 
-    const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(rect => rect.borderBoxWidth);
-    const wrapperMeasureRefObject = useRef(null);
-    const wrapperMeasureMergedRef = useMergeRefs(wrapperMeasureRef, wrapperMeasureRefObject);
-
-    const [tableWidth, tableMeasureRef] = useContainerQuery<number>(rect => rect.borderBoxWidth);
+    const wrapperMeasureRefObject = useRef<HTMLDivElement>(null);
     const tableRefObject = useRef<HTMLTableElement>(null);
+    const isScrollable = useIsTableScrollable(wrapperMeasureRefObject, tableRefObject);
 
     const secondaryWrapperRef = React.useRef<HTMLDivElement>(null);
     const theadRef = useRef<HTMLTableRowElement>(null);
@@ -471,7 +469,7 @@ const InternalTable = React.forwardRef(
 
     const tableRootRef = useMergeRefs(__internalRootRef, tableRootRefObject);
     const wrapperRef = useMergeRefs(wrapperRefObject, stickyState.refs.wrapper);
-    const tableRef = useMergeRefs(tableMeasureRef, tableRefObject, stickyState.refs.table);
+    const tableRef = useMergeRefs(tableRefObject, stickyState.refs.table);
     const autoSkeletonRows = useAutoSkeletonRows({
       enabled: !!loading && skeleton?.totalRows === 'auto',
       maxRows: skeleton?.maxAutoRows,
@@ -493,7 +491,7 @@ const InternalTable = React.forwardRef(
 
     const wrapperProps = getTableWrapperRoleProps({
       tableRole,
-      isScrollable: !!(tableWidth && containerWidth && tableWidth > containerWidth),
+      isScrollable,
       ariaLabel: ariaLabels?.tableLabel,
       ariaLabelledby,
     });
@@ -614,7 +612,7 @@ const InternalTable = React.forwardRef(
                 onScroll={handleScroll}
                 {...wrapperProps}
               >
-                <div className={styles['wrapper-content-measure']} ref={wrapperMeasureMergedRef}></div>
+                <div className={styles['wrapper-content-measure']} ref={wrapperMeasureRefObject}></div>
                 {!!renderAriaLive && !!firstIndex && !loading && (
                   <InternalLiveRegion hidden={true} tagName="span">
                     <span>
