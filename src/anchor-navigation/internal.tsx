@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component/index.js';
@@ -40,7 +40,14 @@ export default function InternalAnchorNavigation({
     activeHref,
   });
 
+  // The event must only fire when the active href changes, not when the handler or the anchors
+  // get a new identity, which happens on every render if they are defined inline.
+  const lastReportedHref = useRef<string | undefined>(undefined);
   useEffect(() => {
+    if (currentActiveHref === lastReportedHref.current) {
+      return;
+    }
+    lastReportedHref.current = currentActiveHref;
     if (currentActiveHref) {
       const newActiveAnchor = anchors.find(anchor => anchor.href === currentActiveHref);
       fireNonCancelableEvent(onActiveHrefChange, newActiveAnchor);
