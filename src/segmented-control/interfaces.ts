@@ -6,6 +6,7 @@ import { IconProps } from '../icon/interfaces';
 import { SelectProps } from '../select/interfaces';
 import { BaseComponentProps } from '../types/base-component';
 import { NonCancelableEventHandler } from '../types/events';
+import { StyleSlot } from '../types/utils';
 
 export interface SegmentedControlProps extends BaseComponentProps {
   /**
@@ -66,7 +67,7 @@ export interface SegmentedControlProps extends BaseComponentProps {
 export namespace SegmentedControlProps {
   export interface StyleClassNames {
     root?: string;
-    segment?: string;
+    segment?: StyleSlot<{ option: Option; selected: boolean }>;
     divider?: string;
     select?: SelectProps.StyleClassNames;
   }

@@ -97,6 +97,7 @@ export default function InternalSegmentedControl({
               iconUrl={option.iconUrl}
               iconSvg={option.iconSvg}
               text={option.text}
+              option={option}
               isActive={isActive}
               tabIndex={tabIndex}
               ref={node => {

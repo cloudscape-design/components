@@ -5,6 +5,7 @@ import { RadioButtonProps } from '../radio-button/interfaces';
 import { BaseComponentProps } from '../types/base-component';
 import { NonCancelableEventHandler } from '../types/events';
 import { FormFieldControlProps } from '../types/form-field';
+import { StyleSlot } from '../types/utils';
 
 export interface RadioGroupProps extends BaseComponentProps, FormFieldControlProps {
   /**
@@ -88,7 +89,7 @@ export interface RadioGroupProps extends BaseComponentProps, FormFieldControlPro
 
 export namespace RadioGroupProps {
   export interface StyleClassNames {
-    item?: RadioButtonProps.StyleClassNames;
+    item?: StyleSlot<{ item: RadioButtonDefinition; checked: boolean }, RadioButtonProps.StyleClassNames>;
   }
 
   export interface RadioButtonDefinition {

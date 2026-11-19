@@ -26769,19 +26769,16 @@ Refer to the [style docs](/components/radio-group/?tabId=style) for more details
         "properties": [
           {
             "inlineType": {
-              "name": "RadioButtonProps.StyleClassNames",
-              "properties": [
-                {
-                  "name": "control",
-                  "optional": true,
-                  "type": "string",
-                },
+              "name": "StyleSlot<{ item: RadioGroupProps.RadioButtonDefinition; checked: boolean; }, RadioButtonProps.StyleClassNames>",
+              "type": "union",
+              "values": [
+                "RadioButtonProps.StyleClassNames",
+                "(args: { item: RadioGroupProps.RadioButtonDefinition; checked: boolean; }) => RadioButtonProps.StyleClassNames",
               ],
-              "type": "object",
             },
             "name": "item",
             "optional": true,
-            "type": "RadioButtonProps.StyleClassNames",
+            "type": "StyleSlot<{ item: RadioGroupProps.RadioButtonDefinition; checked: boolean; }, RadioButtonProps.StyleClassNames>",
           },
         ],
         "type": "object",
@@ -27925,9 +27922,17 @@ Refer to the [style docs](/components/segmented-control/?tabId=style) for more d
             "type": "string",
           },
           {
+            "inlineType": {
+              "name": "StyleSlot<{ option: SegmentedControlProps.Option; selected: boolean; }>",
+              "type": "union",
+              "values": [
+                "string",
+                "(args: { option: SegmentedControlProps.Option; selected: boolean; }) => string",
+              ],
+            },
             "name": "segment",
             "optional": true,
-            "type": "string",
+            "type": "StyleSlot<{ option: SegmentedControlProps.Option; selected: boolean; }>",
           },
           {
             "inlineType": {

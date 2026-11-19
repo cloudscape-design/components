@@ -12,6 +12,7 @@ import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import useRadioGroupForwardFocus from '../internal/hooks/forward-focus/radio-group';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { getStyleClassName } from '../internal/utils/style-slot';
 import { GeneratedAnalyticsMetadataRadioGroupSelect } from './analytics-metadata/interfaces';
 import { RadioGroupProps } from './interfaces';
 
@@ -84,7 +85,7 @@ const InternalRadioGroup = React.forwardRef(
               controlId={item.controlId}
               readOnly={readOnly}
               style={style}
-              styleClassNames={styleClassNames?.item}
+              styleClassNames={getStyleClassName(styleClassNames?.item, { item, checked: item.value === value })}
               {...getAnalyticsMetadataAttribute(
                 !item.disabled && !readOnly
                   ? {
