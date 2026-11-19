@@ -18,7 +18,7 @@ describe('Link', () => {
     test(
       'enter key triggers link',
       useBrowser(async browser => {
-        await browser.url('#/light/link/integration');
+        await browser.url('#/link/integration');
         const page = new LinkPageObject(browser);
         await page.waitForVisible(wrapper.findLink('#role-link').toSelector());
         await expect(page.getClickMessage()).resolves.toBe('0 times clicked');
@@ -31,7 +31,7 @@ describe('Link', () => {
     test(
       'space key does not trigger link',
       useBrowser(async browser => {
-        await browser.url('#/light/link/integration');
+        await browser.url('#/link/integration');
         const page = new LinkPageObject(browser);
         await page.waitForVisible(wrapper.findLink('#role-link').toSelector());
         await expect(page.getClickMessage()).resolves.toBe('0 times clicked');
@@ -46,7 +46,7 @@ describe('Link', () => {
     test(
       'enter key and space key trigger link',
       useBrowser(async browser => {
-        await browser.url('#/light/link/integration');
+        await browser.url('#/link/integration');
         const page = new LinkPageObject(browser);
         await page.waitForVisible(wrapper.findLink('#role-button').toSelector());
         await expect(page.getClickMessage()).resolves.toBe('0 times clicked');

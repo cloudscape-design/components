@@ -10,7 +10,7 @@ const wrapper = createWrapper();
 const setupTest = (testFn: (page: BasePageObject) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url('#/light/tabs/actions');
+    await browser.url('#/tabs/actions');
     await page.waitForVisible(wrapper.findTabs().findTabContent().toSelector());
     await testFn(page);
   });

@@ -31,7 +31,7 @@ describe('Visual refresh toolbar only', () => {
       const page = new PageObject(browser);
 
       await browser.url(
-        `#/light/app-layout/sidecar-demo?${getUrlParams('refresh-toolbar', {
+        `#/app-layout/sidecar-demo?${getUrlParams('refresh-toolbar', {
           hasDrawers: 'false',
           hasTools: 'true',
           splitPanelPosition: 'side',

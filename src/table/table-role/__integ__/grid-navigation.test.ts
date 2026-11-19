@@ -20,7 +20,7 @@ const setupTest = (
   return useBrowser(async browser => {
     const page = new GridNavigationPageObject(browser);
     const query = new URLSearchParams({ actionsMode, visibleColumns: visibleColumns.join(',') });
-    await browser.url(`#/light/table-fragments/grid-navigation-custom/?${query.toString()}`);
+    await browser.url(`#/table-fragments/grid-navigation-custom/?${query.toString()}`);
     await page.waitForVisible('table');
     await testFn(page);
   });

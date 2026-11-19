@@ -32,7 +32,7 @@ describe('Icon', () => {
   const setupTest = (testFn: (page: IconSizeInherit) => Promise<void>) => {
     return useBrowser(async browser => {
       const page = new IconSizeInherit(browser);
-      await browser.url('#/light/icon/size-inherit');
+      await browser.url('#/icon/size-inherit');
       await page.waitForVisible(dynamicIconSelector);
       await testFn(page);
     });

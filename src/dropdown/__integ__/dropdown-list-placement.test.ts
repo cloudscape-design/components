@@ -12,7 +12,7 @@ const multiselect = createWrapper().findMultiselect();
 
 function setupTest(testFn: (page: BasePageObject) => Promise<void>) {
   return useBrowser(async browser => {
-    await browser.url('#/light/dropdown-list-placement.test');
+    await browser.url('#/dropdown-list-placement.test');
     const page = new BasePageObject(browser);
     await page.waitForVisible(autosuggest.toSelector());
     await testFn(page);

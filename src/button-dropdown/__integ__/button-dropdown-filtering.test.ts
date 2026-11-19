@@ -12,7 +12,7 @@ const setupTest = (
 ) => {
   return useBrowser(async browser => {
     const page = new ButtonDropdownPage(id, browser);
-    await browser.url('#/light/button-dropdown/filtering');
+    await browser.url('#/button-dropdown/filtering');
     await page.waitForVisible(page.getTrigger());
     if (expandToViewport) {
       await page.click('[data-testid="expand-to-viewport"]');

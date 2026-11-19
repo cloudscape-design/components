@@ -52,7 +52,7 @@ const setupTest = (testFn: (page: StickyHeaderPage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new StickyHeaderPage(browser);
     await page.setWindowSize(desktopSize);
-    await browser.url('#/light/table/sticky-header-scrollable-container');
+    await browser.url('#/table/sticky-header-scrollable-container');
     await page.waitForVisible(tableWrapper.toSelector());
     await testFn(page);
   });
@@ -86,7 +86,7 @@ describe('Sticky header', () => {
     `syncs column sizes from the hidden column headers when items change`,
     useBrowser(async browser => {
       const page = new StickyHeaderPage(browser);
-      await browser.url('#/light/table/hooks');
+      await browser.url('#/table/hooks');
       await page.click(tableWrapper.findPagination().findPageNumberByIndex(2).toSelector());
       const originalSizes = await page.getElementSizes(originalHeadersSelector);
       const copySizes = await page.getElementSizes(stickyHeadersSelector);

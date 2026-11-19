@@ -222,7 +222,7 @@ export default function () {
                         columnDefinitions={[
                           {
                             header: 'Column 1',
-                            cell: item => <Link href="/#/light/error-boundary/demo-async-load">{item}</Link>,
+                            cell: item => <Link href="/#/error-boundary/demo-async-load">{item}</Link>,
                           },
                           { header: 'Column 2', cell: item => `Content 2:${item}` },
                           { header: 'Column 3', cell: item => `Content 3:${item}` },

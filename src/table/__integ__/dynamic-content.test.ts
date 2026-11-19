@@ -19,7 +19,7 @@ class TablePage extends BasePageObject {
 test(
   'column width adjusts when the column content loads',
   useBrowser(async browser => {
-    await browser.url('#/light/table/dynamic-content');
+    await browser.url('#/table/dynamic-content');
     const page = new TablePage(browser);
 
     await page.waitForVisible(tableWrapper.findColumnHeaders().toSelector());

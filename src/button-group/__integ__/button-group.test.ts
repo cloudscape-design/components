@@ -26,7 +26,7 @@ function setup(options: { dropdownExpandToViewport?: boolean }, testFn: (page: B
     const query = new URLSearchParams({
       dropdownExpandToViewport: String(options.dropdownExpandToViewport),
     });
-    await browser.url(`/#/light/button-group/test?${query.toString()}`);
+    await browser.url(`/#/button-group/test?${query.toString()}`);
     await testFn(page);
   });
 }

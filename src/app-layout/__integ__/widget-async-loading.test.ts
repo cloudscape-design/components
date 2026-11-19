@@ -12,7 +12,7 @@ describe.each(['desktop', 'mobile'] as const)('%s', size => {
     useBrowser(size === 'desktop' ? viewports.desktop : viewports.mobile, async browser => {
       const page = new BasePageObject(browser);
       await browser.url(
-        `#/light/app-layout/runtime-drawers?${getUrlParams('refresh-toolbar', {
+        `#/app-layout/runtime-drawers?${getUrlParams('refresh-toolbar', {
           appLayoutWidget: 'true',
           appLayoutDelayedWidget: 'true',
         })}`

@@ -13,7 +13,7 @@ function setupTest(
   return useBrowser(async browser => {
     const wrapper = createWrapper().findSelect();
     const page = new EventsSelectPage(browser, wrapper);
-    await browser.url('/#/light/select/select.test.events');
+    await browser.url('/#/select/select.test.events');
     if (expandToViewport) {
       await page.expandToViewport();
     }

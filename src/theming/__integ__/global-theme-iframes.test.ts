@@ -52,7 +52,7 @@ class GlobalThemeIframesPage extends BasePageObject {
 const setupTest = (testFn: (page: GlobalThemeIframesPage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new GlobalThemeIframesPage(browser);
-    await browser.url('#/light/theming/global-theme-iframes');
+    await browser.url('#/theming/global-theme-iframes');
     await page.waitForVisible('[data-testid="set-theme-a"]');
     await page.waitForIframesDisplay();
     await testFn(page);

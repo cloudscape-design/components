@@ -14,7 +14,7 @@ test(
     const tableWrapper = createWrapper().findTable('[data-test-id="small-table"]');
     const wrapperSelector = tableWrapper.findAllByClassName(styles.wrapper).toSelector();
     await browser.setWindowSize(600, 1000);
-    await browser.url('#/light/table/sticky-columns/?selectionType=multi&stickyColumnsFirst=1&stickyColumnsLast=1');
+    await browser.url('#/table/sticky-columns/?selectionType=multi&stickyColumnsFirst=1&stickyColumnsLast=1');
     const page = new BasePageObject(browser);
     await page.waitForVisible(tableWrapper.findRows().toSelector());
 

@@ -10,7 +10,7 @@ function setup(selectId: string, testFn: (page: SelectPageObject) => Promise<voi
     const wrapper = createWrapper().findSelect(selectId);
     const page = new SelectPageObject(browser, wrapper);
     await page.setWindowSize({ width: 950, height: 600 });
-    await browser.url('/#/light/select/dropdown-customization');
+    await browser.url('/#/select/dropdown-customization');
     await page.waitForVisible(wrapper.findTrigger().toSelector());
     await testFn(page);
   });

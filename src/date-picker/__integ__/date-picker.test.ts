@@ -9,7 +9,7 @@ describe('Date Picker', () => {
   const setupTest = (testFn: (page: DatePickerPage) => Promise<void>) => {
     return useBrowser(async browser => {
       const page = new DatePickerPage(createWrapper().findDatePicker().getElement(), browser);
-      await browser.url('#/light/date-picker/simple');
+      await browser.url('#/date-picker/simple');
       await page.waitForLoad();
       await testFn(page);
     });

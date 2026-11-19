@@ -15,7 +15,7 @@ class ToggleButtonHoverPage extends BasePageObject {
 
 const setupTest = (testFn: (page: ToggleButtonHoverPage) => Promise<void>) =>
   useBrowser(async browser => {
-    await browser.url('#/light/toggle-button/test-hover');
+    await browser.url('#/toggle-button/test-hover');
     const page = new ToggleButtonHoverPage(browser);
     await page.waitForVisible('[data-testid="variant-normal-enabled-not-pressed"]');
     await testFn(page);

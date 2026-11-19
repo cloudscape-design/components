@@ -15,7 +15,7 @@ describe.each(['visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme
       const params = new URLSearchParams({
         appLayoutToolbar: `${theme === 'visual-refresh-toolbar'}`,
       });
-      await this.browser.url(`#/light/app-layout/${pageName}?${params.toString()}`);
+      await this.browser.url(`#/app-layout/${pageName}?${params.toString()}`);
       await this.waitForVisible(wrapper.toSelector());
     }
 

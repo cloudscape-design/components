@@ -16,7 +16,7 @@ describe('Popover content is announced as plain text on hover', () => {
 
     test(
       'without expandable sub-items',
-      setupTest(`#/light/mixed-line-bar-chart/drilldown?useLinks=${useLinks}&expandableSubItems=false`, async page => {
+      setupTest(`#/mixed-line-bar-chart/drilldown?useLinks=${useLinks}&expandableSubItems=false`, async page => {
         const wrapper = createWrapper().findMixedLineBarChart();
         const bar = wrapper.findBarGroups().get(3).toSelector();
         const getLabel = () => page.getElementAttribute(bar, 'aria-label');
@@ -36,7 +36,7 @@ describe('Popover content is announced as plain text on hover', () => {
 
     (process.env.REACT_VERSION !== '18' ? test : test.skip)(
       'with expandable sub-items',
-      setupTest(`#/light/mixed-line-bar-chart/drilldown?useLinks=${useLinks}&expandableSubItems=true`, async page => {
+      setupTest(`#/mixed-line-bar-chart/drilldown?useLinks=${useLinks}&expandableSubItems=true`, async page => {
         const wrapper = createWrapper().findMixedLineBarChart();
         const barGroup = wrapper.findBarGroups().get(3).toSelector();
         const nextBarGroup = wrapper.findBarGroups().get(4).toSelector();
@@ -80,7 +80,7 @@ describe('Application aria label', () => {
   const chartWrapper = createWrapper().findMixedLineBarChart('#chart');
   test(
     'is updated when navigating in a bar chart with keyboard',
-    setupTest('#/light/bar-chart/test', async page => {
+    setupTest('#/bar-chart/test', async page => {
       // Hover over first group in the first chart
       await page.click('#focus-target');
       await page.keys(['Tab', 'Tab', 'ArrowRight']);

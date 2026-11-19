@@ -4,7 +4,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import AutosuggestTokenModePage from './page-objects/autosuggest-token-mode-page';
 
-const URL = '/#/light/autosuggest/token-mode';
+const URL = '/#/autosuggest/token-mode';
 const tokenLabels = ['us-east-1', 'eu-west-1', 'ap-southeast-1', 'ca-central-1', 'sa-east-1', 'eu-central-1'];
 
 function setupTest(windowWidth: number, testFn: (page: AutosuggestTokenModePage) => Promise<void>) {

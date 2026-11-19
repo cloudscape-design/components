@@ -12,7 +12,7 @@ class RadioPage extends BasePageObject {}
 const setupTest = (testFn: (page: RadioPage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new RadioPage(browser);
-    await browser.url('#/light/radio-group/labels-highlight');
+    await browser.url('#/radio-group/labels-highlight');
     await page.waitForVisible(radioGroupWrapper.findButtons().toSelector());
     await testFn(page);
   });

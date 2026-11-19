@@ -14,7 +14,7 @@ class CheckboxPage extends BasePageObject {}
 const setupTest = (testFn: (page: CheckboxPage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new CheckboxPage(browser);
-    await browser.url('#/light/checkbox/simple');
+    await browser.url('#/checkbox/simple');
     await testFn(page);
   });
 };
@@ -32,7 +32,7 @@ test(
 test(
   'style api focus state',
   useBrowser(async browser => {
-    await browser.url('#/light/checkbox/style-custom/');
+    await browser.url('#/checkbox/style-custom/');
     const page = new CheckboxPage(browser);
 
     await page.click('[data-testid="1"]');

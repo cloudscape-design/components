@@ -10,7 +10,7 @@ const tagEditorWrapper = createWrapper().findTagEditor();
 const setupTest = (testFn: (page: TagEditorPage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new TagEditorPage(browser);
-    await browser.url('#/light/tag-editor/integ');
+    await browser.url('#/tag-editor/integ');
     await page.waitForVisible(tagEditorWrapper.findAddButton().toSelector());
     await testFn(page);
   });

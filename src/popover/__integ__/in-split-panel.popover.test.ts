@@ -15,7 +15,7 @@ const popoverContainerSelector = wrapper.findPopover().findByClassName(styles.co
 const setupTest = (testFn: (page: BasePageObject) => Promise<void>) =>
   useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url('#/light/app-layout/with-popover-in-split-panel');
+    await browser.url('#/app-layout/with-popover-in-split-panel');
     await testFn(page);
   });
 

@@ -63,7 +63,7 @@ const itemsWithGroups: ButtonDropdownProps['items'] = [
         secondaryText: '',
         labelTag: 'Ctrl + P',
         external: true,
-        href: '/#/light/',
+        href: '/#/',
       },
     ],
   },

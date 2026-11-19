@@ -10,12 +10,12 @@ import ThemeSwitcher from './theme-switcher';
 import styles from './header.scss';
 
 export default function Header({ sticky }: { sticky?: boolean }) {
-  const { mode } = useContext(AppContext);
+  const { urlParams } = useContext(AppContext);
   return (
     <>
       {/* #h selector for compatibility with global navigation */}
       <header id="h" className={clsx(styles.header, sticky && styles['header-sticky'])}>
-        <Link to={`/${mode}/`}>Demo Assets</Link>
+        <Link to={{ pathname: '/', search: urlParams.mode ? `?mode=${urlParams.mode}` : '' }}>Demo Assets</Link>
         <ThemeSwitcher />
       </header>
     </>
