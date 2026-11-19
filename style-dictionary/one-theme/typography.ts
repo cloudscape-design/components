@@ -12,22 +12,27 @@ const tokens: StyleDictionary.DensityTypographyDictionary = {
   fontSizeHeadingXl: '24px',
   lineHeightHeadingXl: '30px',
   fontWeightHeadingXl: '500',
+  letterSpacingHeadingXl: '-0.015em',
 
   fontSizeHeadingL: '20px',
   lineHeightHeadingL: '24px',
   fontWeightHeadingL: '500',
+  letterSpacingHeadingL: '-0.01em',
 
   fontSizeHeadingM: '18px',
   lineHeightHeadingM: '22px',
   fontWeightHeadingM: '500',
+  letterSpacingHeadingM: '-0.005em',
 
   fontSizeHeadingS: '16px',
   lineHeightHeadingS: '20px',
   fontWeightHeadingS: '500',
+  letterSpacingHeadingS: 'normal',
 
   fontSizeHeadingXs: '14px',
   lineHeightHeadingXs: '20px',
   fontWeightHeadingXs: '500',
+  letterSpacingHeadingXs: '0.005em',
 
   fontWeightDisplayL: '500',
   fontWeightDisplayXl: '400',
@@ -51,6 +56,8 @@ const tokens: StyleDictionary.DensityTypographyDictionary = {
 
   // ── Body text ─────────────────────────────────────────────────────────────
   fontWeightBold: '600',
+  letterSpacingBodyM: '0.005em',
+  letterSpacingBodyS: '0.01em',
 
   // ── Key-value pairs ───────────────────────────────────────────────────────
   fontWeightKeyValuePairsLabel: '400',
