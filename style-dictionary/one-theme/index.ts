@@ -6,6 +6,7 @@ import {
   createAlertContext,
   createAppLayoutToolbarContext,
   createCompactTableContext,
+  createContainerAccentuatedContexts,
   createFlashbarContext,
   createFlashbarWarningContext,
   createHeaderContext,
@@ -48,6 +49,9 @@ builder.addContext(createCompactTableContext((await import('./contexts/compact-t
 builder.addContext(createAppLayoutToolbarContext((await import('./contexts/app-layout-toolbar.js')).tokens));
 builder.addContext(createTopNavigationContext((await import('./contexts/top-navigation.js')).tokens));
 builder.addContext(createHeaderContext((await import('./contexts/header.js')).tokens));
+createContainerAccentuatedContexts(await import('../visual-refresh/contexts/container-accentuated.js')).forEach(
+  context => builder.addContext(context)
+);
 
 // Notification design lives in base tokens; these contexts only carry references
 // so interactive controls inside notifications follow the notification treatment.

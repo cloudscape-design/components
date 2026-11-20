@@ -2,11 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import Button from '~components/button';
 import Container from '~components/container';
 import ExpandableSection from '~components/expandable-section';
+import FormField from '~components/form-field';
 import Header from '~components/header';
+import Input from '~components/input';
 import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
+import Table from '~components/table';
 
 import ScreenshotArea from '../utils/screenshot-area';
 
@@ -112,6 +116,42 @@ export default function SimpleContainers() {
             disableContentPaddings={true}
             header={<Header variant="h2">Container Without Content</Header>}
           ></Container>
+          <Container
+            visualVariant="accentuated"
+            header={
+              <Header variant="h2" description="Header description" actions={<Button>Action</Button>}>
+                Accentuated container
+              </Header>
+            }
+            footer="Some footer text"
+          >
+            <SpaceBetween size="m">
+              <FormField label="Input">
+                <Input value="Value" onChange={() => {}} />
+              </FormField>
+              <Table
+                variant="embedded"
+                header={<Header counter="(2)">Embedded table</Header>}
+                columnDefinitions={[
+                  { id: 'name', header: 'Name', cell: item => item.name },
+                  { id: 'status', header: 'Status', cell: item => item.status },
+                ]}
+                items={[
+                  { name: 'Item one', status: 'Active' },
+                  { name: 'Item two', status: 'Inactive' },
+                ]}
+              />
+            </SpaceBetween>
+          </Container>
+          <Container visualVariant="accentuated">Accentuated container without header</Container>
+          <div>
+            <Container variant="stacked" visualVariant="accentuated" header="Stacked accentuated container">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+            </Container>
+            <Container variant="stacked" header="Stacked default container">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+            </Container>
+          </div>
         </SpaceBetween>
       </ScreenshotArea>
     </article>

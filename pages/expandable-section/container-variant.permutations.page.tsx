@@ -24,6 +24,12 @@ const permutations = createPermutations<ExpandableSectionProps>([
     headerCounter: ['(5)'],
     headerActions: [headerTextActions],
   },
+  {
+    containerVisualVariant: ['accentuated'],
+    defaultExpanded: [true, false],
+    headerDescription: [undefined, 'Expandable section header description'],
+    headerActions: [undefined, headerActions],
+  },
 ]);
 export default function ExpandableSectionContainerVariantPermutations({
   variant = 'container',
@@ -39,9 +45,9 @@ export default function ExpandableSectionContainerVariantPermutations({
           permutations={permutations}
           render={permutation => (
             <ExpandableSection
+              defaultExpanded={true}
               {...permutation}
               headerText={'Expandable section heading'}
-              defaultExpanded={true}
               variant={variant}
             >
               Expandable section content

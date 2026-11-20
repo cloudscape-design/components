@@ -82,6 +82,14 @@ export interface ContainerProps extends BaseComponentProps {
   variant?: 'default' | 'stacked';
 
   /**
+   * Specifies the visual treatment of the container:
+   * * `default` - The header and content share the container background.
+   * * `accentuated` - The header and content have a subtle visual distinction, with a divider between them.
+   * @visualrefresh
+   */
+  visualVariant?: ContainerProps.VisualVariant;
+
+  /**
    * An object containing CSS properties to customize the container's visual appearance.
    * Refer to the [style](/components/container/?tabId=style) tab for more details.
    * @awsuiSystem core
@@ -101,6 +109,9 @@ export namespace ContainerProps {
   export interface AnalyticsMetadata {
     instanceIdentifier?: string;
   }
+
+  export type VisualVariant = 'default' | 'accentuated';
+
   export interface Media {
     /**
      * Use this slot to render your media element. We support `img`, `video`, `picture`, and `iframe` elements.
