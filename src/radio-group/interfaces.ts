@@ -5,6 +5,7 @@ import { RadioButtonProps } from '../radio-button/interfaces';
 import { BaseComponentProps } from '../types/base-component';
 import { NonCancelableEventHandler } from '../types/events';
 import { FormFieldControlProps } from '../types/form-field';
+import { StyleSlot } from '../types/utils';
 
 export interface RadioGroupProps extends BaseComponentProps, FormFieldControlProps {
   /**
@@ -66,7 +67,8 @@ export interface RadioGroupProps extends BaseComponentProps, FormFieldControlPro
 
   /**
    * An object containing CSS properties to customize the radio group's visual appearance.
-   * Refer to the [style](/components/radio-group/?tabId=style) tab for more details.
+   * Refer to the [style docs](/components/radio-group/?tabId=style) for more details.
+   * @deprecated Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: RadioGroupProps.Style;
@@ -75,9 +77,21 @@ export interface RadioGroupProps extends BaseComponentProps, FormFieldControlPro
    * Defines the direction in which the radio buttons are laid out.
    */
   direction?: 'horizontal' | 'vertical';
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: item.
+   * Refer to the [style docs](/components/radio-group/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: RadioGroupProps.StyleClassNames;
 }
 
 export namespace RadioGroupProps {
+  export interface StyleClassNames {
+    item?: StyleSlot<{ item: RadioButtonDefinition; checked: boolean }, RadioButtonProps.StyleClassNames>;
+  }
+
   export interface RadioButtonDefinition {
     value: string;
     label: React.ReactNode;

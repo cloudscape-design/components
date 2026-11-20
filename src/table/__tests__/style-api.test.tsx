@@ -4,7 +4,6 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import Table, { TableProps } from '../../../lib/components/table';
-import { StyleClassNames } from '../../../lib/components/table/style-api';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 interface Item {
@@ -51,7 +50,7 @@ describe('Table Style API v2 (implicit styleClassNames)', () => {
           args.type === 'group' ? `group-${args.group.id}` : args.type === 'column' ? `column-${args.column.id}` : '',
         row: ({ item }) => `row-${item.name}`,
         cell: args => (args.type === 'data' ? `cell-${args.item.name}-${args.column.id}` : undefined),
-      } satisfies StyleClassNames<Item>
+      } satisfies TableProps.StyleClassNames<Item>
     );
     expect(table.find('.group-group')).not.toBeNull();
     expect(table.find('.column-name')).not.toBeNull();
@@ -64,7 +63,7 @@ describe('Table Style API v2 (implicit styleClassNames)', () => {
       headerCell: args => (args.type === 'selection' ? 'selection-header' : undefined),
       row: ({ selected }) => (selected ? 'row-selected' : 'row-unselected'),
       cell: ({ type }) => `${type}-cell`,
-    } satisfies StyleClassNames<Item>);
+    } satisfies TableProps.StyleClassNames<Item>);
     expect(table.find('thead th.selection-header')).not.toBeNull();
     expect(table.findRows()[0].getElement()).toHaveClass('row-unselected');
     expect(table.findRows()[1].getElement()).toHaveClass('row-selected');
@@ -83,7 +82,7 @@ describe('Table Style API v2 (implicit styleClassNames)', () => {
                 .filter(Boolean)
                 .join(' ')
             : undefined,
-      } satisfies StyleClassNames<Item>
+      } satisfies TableProps.StyleClassNames<Item>
     );
     expect(table.findColumnHeaders()[0].getElement()).toHaveClass('sortable', 'sorted', 'descending');
     expect(table.findColumnHeaders()[1].getElement()).not.toHaveClass('sortable');
@@ -96,7 +95,7 @@ describe('Table Style API v2 (implicit styleClassNames)', () => {
     const sortable = { ...columnDefinitions[0], sortingField: 'name' };
     const table = renderTable({ columnDefinitions: [sortable, columnDefinitions[1]], sortingDisabled }, {
       sortingButton: 'sorting-button',
-    } satisfies StyleClassNames<Item>);
+    } satisfies TableProps.StyleClassNames<Item>);
     expect(table.findColumnHeaders()[0].findAll('[role="button"].sorting-button')).toHaveLength(count);
     expect(table.findAll('.sorting-button')).toHaveLength(count);
   });
@@ -105,7 +104,7 @@ describe('Table Style API v2 (implicit styleClassNames)', () => {
     const [a, b] = columnDefinitions.map(column => ({ ...column, sortingField: column.id }));
     const table = renderTable(
       { columnDefinitions: [a, b], multiColumnSort: { sortingColumns: [{ sortingColumn: a }], onChange: () => {} } },
-      { sortingMenu: { trigger: 'sorting-menu-trigger' } } satisfies StyleClassNames<Item>
+      { sortingMenu: { trigger: 'sorting-menu-trigger' } } satisfies TableProps.StyleClassNames<Item>
     );
     expect(table.findAll('button.sorting-menu-trigger')).toHaveLength(2);
   });
@@ -114,7 +113,7 @@ describe('Table Style API v2 (implicit styleClassNames)', () => {
     const [a] = columnDefinitions.map(column => ({ ...column, sortingField: column.id }));
     const table = renderTable(
       { columnDefinitions: [a], multiColumnSort: { sortingColumns: [{ sortingColumn: a }], onChange: () => {} } },
-      { clearSortButton: 'clear-sort-button' } satisfies StyleClassNames<Item>
+      { clearSortButton: 'clear-sort-button' } satisfies TableProps.StyleClassNames<Item>
     );
     expect(table.findAll('button.clear-sort-button')).toHaveLength(1);
   });
@@ -129,7 +128,7 @@ describe('Table Style API v2 (implicit styleClassNames)', () => {
           onChange: () => {},
         },
       },
-      { sortingIndicator: 'indicator' } satisfies StyleClassNames<Item>
+      { sortingIndicator: 'indicator' } satisfies TableProps.StyleClassNames<Item>
     );
     const indicators = table.findColumnHeaders().map(header => header.find('.indicator')!.getElement());
     expect(indicators.map(indicator => indicator.textContent)).toEqual(['1', '2']);
@@ -151,7 +150,7 @@ describe('Table Style API v2 (implicit styleClassNames)', () => {
     const table = renderTable({ selectionType, selectedItems: [items[0]], isItemDisabled: item => item.name === 'b' }, {
       selectionCheckbox: { control: 'checkbox' },
       selectionRadio: { control: 'radio' },
-    } satisfies StyleClassNames<Item>);
+    } satisfies TableProps.StyleClassNames<Item>);
     expect(table.findAll(`.${control}`)).toHaveLength(count);
     expect(table.findAll(`.${control === 'checkbox' ? 'radio' : 'checkbox'}`)).toHaveLength(0);
   });

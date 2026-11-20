@@ -58,7 +58,6 @@ import { useGroupSelection } from './selection/use-group-selection';
 import { SkeletonRows } from './skeleton-rows';
 import { useStickyColumns } from './sticky-columns';
 import StickyHeader, { StickyHeaderRef } from './sticky-header';
-import { StyleClassNames } from './style-api';
 import {
   getTableRoleProps,
   getTableRowRoleProps,
@@ -90,7 +89,6 @@ type InternalTableProps<T> = SomeRequired<
 > &
   InternalBaseComponentProps & {
     __funnelSubStepProps?: InternalContainerProps['__funnelSubStepProps'];
-    styleClassNames?: StyleClassNames<T>;
   };
 
 export const InternalTableAsSubstep = React.forwardRef(

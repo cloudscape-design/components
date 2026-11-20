@@ -35,7 +35,7 @@
     @include segmented-control.segment($background: palette.$subtle-hover, $color: palette.$text);
   }
 
-  &[aria-pressed='true'] {
+  &.segment-selected {
     @include segmented-control.segment(
       $background: palette.$accent,
       $color: palette.$text-on-accent,
@@ -43,8 +43,7 @@
     );
   }
 
-  &:disabled,
-  &[aria-disabled='true'] {
+  &.segment-disabled {
     @include segmented-control.segment($background: palette.$control-bg-disabled, $color: palette.$text-disabled);
   }
 }

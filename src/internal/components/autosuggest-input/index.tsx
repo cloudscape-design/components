@@ -17,7 +17,7 @@ import {
   InputKeyEvents,
   InputProps,
 } from '../../../input/interfaces';
-import InternalInput, { StyleClassNames as InputStyleClassNames } from '../../../input/internal';
+import InternalInput from '../../../input/internal';
 import InternalLiveRegion from '../../../live-region/internal';
 import InternalToken from '../../../token/internal';
 import { BaseComponentProps } from '../../../types/base-component';
@@ -69,7 +69,7 @@ interface AutosuggestInputProps
   tokenOverflowAriaLabel?: (hiddenCount: number) => string;
   tokenInsertedAnnouncement?: (value: string) => string;
   tokenDismissLabel?: (value: string) => string;
-  styleClassNames?: { input?: InputStyleClassNames; dropdown?: string };
+  styleClassNames?: { input?: InputProps.StyleClassNames; dropdown?: string };
 }
 
 interface AutosuggestInputFocusOptions {

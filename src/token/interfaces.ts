@@ -75,13 +75,27 @@ export interface TokenProps extends BaseComponentProps {
 
   /**
    * An object containing CSS properties to customize the token's visual appearance.
-   * Refer to the [style](/components/token/?tabId=style) tab for more details.
+   * Refer to the [style docs](/components/token/?tabId=style) for more details.
+   * @deprecated Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: TokenProps.Style;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: root, dismissButton.
+   * Refer to the [style docs](/components/token/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: TokenProps.StyleClassNames;
 }
 
 export namespace TokenProps {
+  export interface StyleClassNames {
+    root?: string;
+    dismissButton?: string;
+  }
+
   export type Variant = 'normal' | 'inline';
 
   export interface Style {

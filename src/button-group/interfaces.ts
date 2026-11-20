@@ -5,6 +5,7 @@ import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import { IconProps } from '../icon/interfaces';
 import { BaseComponentProps } from '../types/base-component';
 import { NonCancelableEventHandler } from '../types/events';
+import { StyleSlot } from '../types/utils';
 
 export interface ButtonGroupProps extends BaseComponentProps {
   /**
@@ -125,10 +126,19 @@ export interface ButtonGroupProps extends BaseComponentProps {
   onCopyFailure?: NonCancelableEventHandler<ButtonGroupProps.CopyFailureDetail>;
   /**
    * An object containing CSS properties to customize the button group's visual appearance.
-   * Refer to the [style](/components/button-group/?tabId=style) tab for more details.
+   * Refer to the [style docs](/components/button-group/?tabId=style) for more details.
+   * @deprecated Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: ButtonGroupProps.Style;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: divider, item, dropdown.
+   * Refer to the [style docs](/components/button-group/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: ButtonGroupProps.StyleClassNames;
 }
 
 // The runtime plugin API cannot carry React nodes, so node-typed properties are omitted or narrowed
@@ -166,6 +176,12 @@ export type ItemRuntime =
   | IconCopyToClipboardRuntime;
 
 export namespace ButtonGroupProps {
+  export interface StyleClassNames {
+    divider?: string;
+    item?: StyleSlot<{ item: ButtonGroupProps.Item }>;
+    dropdown?: string;
+  }
+
   export type Variant = 'icon';
 
   export type ItemOrGroup = Item | Group;

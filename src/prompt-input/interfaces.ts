@@ -312,12 +312,29 @@ export interface PromptInputProps
   nativeTextareaAttributes?: NativeAttributes<React.TextareaHTMLAttributes<HTMLTextAreaElement>>;
 
   /**
+   * @deprecated Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: PromptInputProps.Style;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: root, textarea, actionButton, token, menu.
+   * Refer to the [style docs](/components/prompt-input/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: PromptInputProps.StyleClassNames;
 }
 
 export namespace PromptInputProps {
+  export interface StyleClassNames {
+    root?: string;
+    textarea?: string;
+    actionButton?: string;
+    token?: string;
+    menu?: string;
+  }
+
   export type KeyDetail = BaseKeyDetail;
 
   export interface I18nStrings {

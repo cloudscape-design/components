@@ -142,9 +142,22 @@ export interface ActionCardProps extends BaseComponentProps {
    * @awsuiSystem core
    */
   nativeAnchorAttributes?: NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: root, header.
+   * Refer to the [style docs](/components/action-card/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: ActionCardProps.StyleClassNames;
 }
 
 export namespace ActionCardProps {
+  export interface StyleClassNames {
+    root?: string;
+    header?: string;
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   export interface ClickDetail {}
 

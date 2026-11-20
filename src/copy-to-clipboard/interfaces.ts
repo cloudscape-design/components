@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { PopoverProps } from '../popover/interfaces';
 import { BaseComponentProps } from '../types/base-component';
 import { NonCancelableEventHandler } from '../types/events';
 
@@ -85,9 +86,22 @@ export interface CopyToClipboardProps extends BaseComponentProps {
    * The event `detail` contains the text that failed to copy.
    */
   onCopyFailure?: NonCancelableEventHandler<CopyToClipboardProps.CopyFailureDetail>;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: copyButton, statusPopover.
+   * Refer to the [style docs](/components/copy-to-clipboard/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: CopyToClipboardProps.StyleClassNames;
 }
 
 export namespace CopyToClipboardProps {
+  export interface StyleClassNames {
+    copyButton?: string;
+    statusPopover?: PopoverProps.StyleClassNames;
+  }
+
   export type Variant = 'button' | 'icon' | 'inline';
 
   export interface CopySuccessDetail {

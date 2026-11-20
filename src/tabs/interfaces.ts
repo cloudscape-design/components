@@ -4,6 +4,7 @@ import { ButtonProps } from '../button/interfaces';
 import { ContainerProps } from '../container/interfaces';
 import { BaseComponentProps } from '../types/base-component';
 import { NonCancelableEventHandler } from '../types/events';
+import { StyleSlot } from '../types/utils';
 import { FocusRingStyle } from '../types/utils';
 
 export interface TabsProps extends BaseComponentProps {
@@ -105,12 +106,29 @@ export interface TabsProps extends BaseComponentProps {
 
   /**
    * An object containing CSS properties to customize the tabs' visual appearance.
-   * Refer to the [style](/components/tabs/?tabId=style) tab for more details.
+   * Refer to the [style docs](/components/tabs/?tabId=style) for more details.
+   * @deprecated Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: TabsProps.Style;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: tabsHeader, tab, tabLink, content, dismissButton.
+   * Refer to the [style docs](/components/tabs/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: TabsProps.StyleClassNames;
 }
 export namespace TabsProps {
+  export interface StyleClassNames {
+    tabsHeader?: string;
+    tab?: StyleSlot<{ tab: TabsProps.Tab }>;
+    tabLink?: string;
+    content?: string;
+    dismissButton?: string;
+  }
+
   export type Variant = 'default' | 'container' | 'stacked';
 
   export interface Tab {

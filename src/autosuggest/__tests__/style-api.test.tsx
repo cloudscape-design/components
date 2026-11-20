@@ -28,16 +28,14 @@ function renderAutosuggest(props: Partial<AutosuggestProps> & { styleClassNames?
 }
 
 describe('Autosuggest Style API v2', () => {
-  test('forwards the input classes to the Input slots and ignores unknown keys', () => {
+  test('forwards the input classes to the Input slots', () => {
     const { container, wrapper } = renderAutosuggest({
-      styleClassNames: { input: { root: 'a', input: 'b', searchIcon: 'c', unknown: 'd' }, unknown: 'e' },
+      styleClassNames: { input: { root: 'a', input: 'b', searchIcon: 'c' } },
     });
     const nativeInput = wrapper.findNativeInput().getElement();
     expect(nativeInput.parentElement).toHaveClass('a');
     expect(nativeInput).toHaveClass('b');
     expect(container.querySelector('.c')).toBe(nativeInput.parentElement!.previousElementSibling);
-    expect(container.querySelector('.d')).toBeNull();
-    expect(container.querySelector('.e')).toBeNull();
   });
 
   test('forwards the clear button class to the clear button', () => {

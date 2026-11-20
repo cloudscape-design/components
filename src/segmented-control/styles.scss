@@ -26,9 +26,10 @@
 @include style-api.docs(
   'segment',
   seg.$segment-tokens,
-  $properties: (color, background, border, border-radius, box-shadow, padding, font-family, font-size, font-weight)
+  $properties: (color, background, border, border-radius, box-shadow, padding, font-family, font-size, font-weight),
+  $descriptions: (slot: 'The semantic button of each option.')
 );
-@include style-api.docs('divider', seg.$divider-tokens);
+@include style-api.docs('divider', seg.$divider-tokens, $descriptions: (slot: 'The line between two segments.'));
 @include style-api.docs-forward('select', 'select');
 
 @function repeatValue($value, $times) {

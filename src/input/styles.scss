@@ -14,6 +14,7 @@
   'root',
   $properties: (background, border, border-radius, box-shadow),
   $descriptions: (
+    slot: 'The field box around the `input` slot.',
     properties: (
       box-shadow: 'Also draws the focus ring.',
     )
@@ -32,14 +33,19 @@ $input-tokens: style-api.resolve(
   $input-tokens,
   $properties: (color, padding, font-family, font-size, font-weight),
   $descriptions: (
+    slot: 'The semantic text input.',
     properties: (
       padding-inline: 'Replaces the padding reserved for the search icon and the clear button.',
     )
   )
 );
 
-@include style-api.docs('inlineLabel', $properties: (color, background, font-family, font-size, font-weight));
-@include style-api.docs('searchIcon', $properties: (color));
+@include style-api.docs(
+  'inlineLabel',
+  $properties: (color, background, font-family, font-size, font-weight),
+  $descriptions: (slot: 'Rendered when `inlineLabelText` is set.')
+);
+@include style-api.docs('searchIcon', $properties: (color), $descriptions: (slot: 'Rendered when `type` is `search`.'));
 @include style-api.docs-forward('clearButton', 'button', 'root');
 
 @mixin placeholder {

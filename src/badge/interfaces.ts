@@ -30,7 +30,8 @@ export interface BadgeProps extends BaseComponentProps {
 
   /**
    * An object containing CSS properties to customize the badge's visual appearance.
-   * Refer to the [style](/components/badge/?tabId=style) tab for more details.
+   * Refer to the [style docs](/components/badge/?tabId=style) for more details.
+   * @deprecated Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: BadgeProps.Style;
@@ -48,9 +49,21 @@ export interface BadgeProps extends BaseComponentProps {
    * @awsuiSystem core
    */
   nativeAttributes?: NativeAttributes<React.HTMLAttributes<HTMLElement>>;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: root.
+   * Refer to the [style docs](/components/badge/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: BadgeProps.StyleClassNames;
 }
 
 export namespace BadgeProps {
+  export interface StyleClassNames {
+    root?: string;
+  }
+
   export interface Style {
     root?: {
       background?: string;

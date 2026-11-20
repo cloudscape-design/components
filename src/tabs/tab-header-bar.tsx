@@ -25,7 +25,7 @@ import { KeyCode } from '../internal/keycode';
 import { circleIndex } from '../internal/utils/circle-index';
 import { isHTMLElement } from '../internal/utils/dom';
 import handleKey from '../internal/utils/handle-key';
-import { getStyleClassName, Slot } from '../internal/utils/style-slot';
+import { getStyleClassName } from '../internal/utils/style-slot';
 import Tooltip from '../tooltip/internal.js';
 import {
   GeneratedAnalyticsMetadataTabsComponent,
@@ -45,15 +45,6 @@ import { getTabContainerStyles, getTabStyles } from './styles';
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
-
-// Style API v2
-export interface StyleClassNames {
-  tabsHeader?: string;
-  tab?: Slot<{ tab: TabsProps.Tab }>;
-  tabLink?: string;
-  content?: string;
-  dismissButton?: string;
-}
 
 const tabSelector = `.${styles['tabs-tab-link']}`;
 const focusedTabSelector = `.${styles['tabs-tab-focused']}`;
@@ -99,7 +90,7 @@ interface TabHeaderBarProps {
   keyboardActivationMode: Required<TabsProps['keyboardActivationMode']>;
   actions?: TabsProps['actions'];
   style?: TabsProps['style'];
-  styleClassNames?: StyleClassNames;
+  styleClassNames?: TabsProps.StyleClassNames;
 }
 
 export function TabHeaderBar({

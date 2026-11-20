@@ -42,8 +42,20 @@ export interface DividerProps extends BaseComponentProps {
    * @awsuiSystem core
    */
   nativeAttributes?: NativeAttributes<React.HTMLAttributes<HTMLElement>>;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: root.
+   * Refer to the [style docs](/components/divider/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: DividerProps.StyleClassNames;
 }
 
 export namespace DividerProps {
+  export interface StyleClassNames {
+    root?: string;
+  }
+
   export type Orientation = 'horizontal' | 'vertical';
 }

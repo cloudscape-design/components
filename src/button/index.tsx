@@ -7,7 +7,7 @@ import { getBaseProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { ButtonProps } from './interfaces';
-import { InternalButton, StyleClassNames } from './internal';
+import { InternalButton } from './internal';
 
 export { ButtonProps };
 
@@ -87,7 +87,7 @@ const Button = React.forwardRef(
         form={form}
         i18nStrings={i18nStrings}
         style={style}
-        styleClassNames={(props as { styleClassNames?: StyleClassNames }).styleClassNames}
+        styleClassNames={props.styleClassNames}
         nativeButtonAttributes={nativeButtonAttributes}
         nativeAnchorAttributes={nativeAnchorAttributes}
         __injectAnalyticsComponentMetadata={true}

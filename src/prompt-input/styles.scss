@@ -12,7 +12,17 @@
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../internal/styles/style-api' as style-api;
 
-@include style-api.docs('root', $properties: (background, border, border-radius, box-shadow), $descriptions: (properties: (box-shadow: 'Also draws the focus ring.',)));
+@include style-api.docs(
+  'root',
+  $properties: (background, border, border-radius, box-shadow),
+  $descriptions: (
+    slot:
+      'The field box around the `textarea` slot.',
+    properties: (
+      box-shadow: 'Also draws the focus ring.',
+    )
+  )
+);
 
 // Carriers: the placeholder pseudo-elements read these tokens by inheritance, which non-inheriting public tokens do not allow.
 $textarea-tokens: style-api.resolve(
@@ -20,7 +30,12 @@ $textarea-tokens: style-api.resolve(
   carrier
 );
 @include style-api.register($textarea-tokens);
-@include style-api.docs('textarea', $textarea-tokens, $properties: (color, padding, font-family, font-size, font-weight));
+@include style-api.docs(
+  'textarea',
+  $textarea-tokens,
+  $properties: (color, padding, font-family, font-size, font-weight),
+  $descriptions: (slot: 'The semantic text area, or a content-editable element when `tokens` is set.')
+);
 
 @include style-api.docs-forward('actionButton', 'button', 'root');
 @include style-api.docs-forward('token', 'token', 'root');
