@@ -55,6 +55,13 @@ export interface TreeViewProps<T = any> extends BaseComponentProps {
   ariaDescribedby?: string;
 
   /**
+   * Specifies the semantics of the tree view:
+   * * `tree` (default) - Renders a tree widget. Items have the `treeitem` role, the tree view is a single tab stop, and users move between items with the arrow keys. Use only when treeitems are all interactive.
+   * * `list` - Renders nested lists (`ul` and `li` elements with the `list` and `listitem` roles). Expand toggles and item actions are in the normal tab order, and arrow-key navigation is turned off.
+   */
+  ariaRole?: TreeViewProps.AriaRole;
+
+  /**
    * Shows connector lines highlighting hierarchy between parent and child items.
    */
   connectorLines?: TreeViewProps.ConnectorLinesVariant;
@@ -99,6 +106,8 @@ export namespace TreeViewProps {
   }
 
   export type ConnectorLinesVariant = 'vertical' | 'none';
+
+  export type AriaRole = 'tree' | 'list';
 
   export interface I18nStrings<T> {
     collapseButtonLabel?: (item: T) => string;
