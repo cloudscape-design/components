@@ -19,7 +19,7 @@ function setupTest(url: string, testFn: (page: A11yPageObject) => Promise<void>)
 }
 
 function urlFormatter(inputUrl: string, mode: Mode) {
-  return `#/${mode}/${inputUrl}`;
+  return `#/${inputUrl}?mode=${mode}`;
 }
 
 export default function runA11yTests(theme: Theme, mode: Mode, skip: string[] = []) {
