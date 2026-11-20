@@ -118,11 +118,12 @@ test('correct aria-level is set', () => {
 
 describe('ariaRole', () => {
   test('uses tree semantics by default', () => {
-    renderTreeView({ ariaLabel: 'Files', expandedItems: ['1'] });
+    const { wrapper } = renderTreeView({ ariaLabel: 'Files', expandedItems: ['1'] });
 
     const tree = screen.getByRole('tree', { name: 'Files' });
     expect(within(tree).getAllByRole('treeitem').length).toBeGreaterThan(0);
-    expect(within(tree).getByRole('group', { name: 'Item 1.1' })).toBeTruthy();
+    const childGroup = wrapper.findItemById('1.1')!.getElement().parentElement!;
+    expect(childGroup).toHaveAttribute('role', 'group');
     expect(screen.queryByRole('list')).toBeNull();
   });
 
