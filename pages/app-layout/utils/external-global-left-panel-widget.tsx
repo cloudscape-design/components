@@ -99,12 +99,15 @@ const AIDrawer = () => {
   );
 };
 
+const searchParams = new URL(location.hash.substring(1), location.href).searchParams;
+
 export const leftDrawerPayload: DrawerPayload = {
   id: 'ai-panel',
   resizable: true,
   isExpandable: true,
   defaultSize: DEFAULT_SIZE,
   preserveInactiveContent: true,
+  defaultActive: searchParams.get('leftDrawerDefaultActive') === 'true',
 
   ariaLabels: {
     closeButton: 'Close AI Panel drawer',

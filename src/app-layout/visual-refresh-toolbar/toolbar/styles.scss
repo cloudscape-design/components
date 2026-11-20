@@ -29,6 +29,10 @@ $toolbar-height: 42px;
     transition-property: inset-block-start, opacity;
   }
 
+  &.toolbar-hidden {
+    display: none;
+  }
+
   &.with-ai-drawer:not(:has(.universal-toolbar-ai-custom)) {
     &:before,
     &:after {
@@ -163,6 +167,25 @@ $toolbar-height: 42px;
       display: flex;
       justify-content: flex-end;
       block-size: 100%;
+    }
+  }
+
+  // square corners next to the AI drawer
+  &.simplified-view {
+    &.with-ai-drawer:not(:has(.universal-toolbar-ai-custom)):after,
+    > .universal-toolbar-ai-custom:after {
+      border-start-start-radius: 0;
+    }
+
+    @include theming.dark-mode-only {
+      > .toolbar-container.with-ai-drawer {
+        border-start-start-radius: 0;
+      }
+    }
+    @include theming.one-theme-only {
+      > .toolbar-container.with-ai-drawer {
+        border-start-start-radius: 0;
+      }
     }
   }
 }

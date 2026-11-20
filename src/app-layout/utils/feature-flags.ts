@@ -25,3 +25,20 @@ export const useAppLayoutToolbarDesignEnabled = () => {
 };
 
 export const isAppLayoutHideToolbarBreadcrumbsEnabled = () => !!getGlobalFlag('appLayoutHideToolbarBreadcrumbs');
+
+// Flags not yet declared in component-toolkit's GlobalFlags.
+// Remove once component-toolkit declares them, and call getGlobalFlag directly.
+export interface PendingGlobalFlags {
+  appLayoutHideToolbar?: boolean;
+  appLayoutSimplifiedView?: boolean;
+}
+
+type ToolkitFlagName = Parameters<typeof getGlobalFlag>[0];
+
+const getPendingGlobalFlag = <FlagName extends keyof PendingGlobalFlags>(
+  flagName: FlagName
+): PendingGlobalFlags[FlagName] | undefined =>
+  getGlobalFlag(flagName as unknown as ToolkitFlagName) as PendingGlobalFlags[FlagName] | undefined;
+
+export const isAppLayoutHideToolbar = () => !!getPendingGlobalFlag('appLayoutHideToolbar');
+export const isAppLayoutSimplifiedView = () => !!getPendingGlobalFlag('appLayoutSimplifiedView');
