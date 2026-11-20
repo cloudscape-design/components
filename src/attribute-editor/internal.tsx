@@ -78,19 +78,18 @@ const InternalAttributeEditor = React.forwardRef(
     const i18n = useInternalI18n('attribute-editor');
 
     React.useEffect(() => {
-      if (prevItemsLength && prevItemsLength > items.length) {
-        const announcement = i18n('i18nStrings.itemRemovedAriaLive', i18nStrings?.itemRemovedAriaLive);
-        if (announcement) {
-          setRemovalAnnouncement(announcement);
-        } else {
-          setRemovalAnnouncement('');
-        }
-      } else {
-        setRemovalAnnouncement('');
+      const nextAnnouncement =
+        prevItemsLength && prevItemsLength > items.length
+          ? i18n('i18nStrings.itemRemovedAriaLive', i18nStrings?.itemRemovedAriaLive) || ''
+          : '';
+      // A no-op setState still schedules a render while other updates are pending, which can chain past
+      // React's nested update limit during fast typing elsewhere on the page (AWSUI-62553).
+      if (nextAnnouncement !== removalAnnouncement) {
+        setRemovalAnnouncement(nextAnnouncement);
       }
       // we only want to announce when the number of items decreases (i.e. when an item is removed)
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [items, i18nStrings?.itemRemovedAriaLive]);
+    }, [items.length, i18nStrings?.itemRemovedAriaLive]);
 
     for (const def of definition) {
       if (def && !def.label) {

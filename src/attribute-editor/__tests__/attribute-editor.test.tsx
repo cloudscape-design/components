@@ -741,3 +741,55 @@ describe('Attribute Editor', () => {
     });
   });
 });
+
+describe('removal announcement updates', () => {
+  const definition = [{ label: 'Value', control: (item: { value: string }) => item.value }];
+
+  function FreshItems({ values, unrelated }: { values: string[]; unrelated: string }) {
+    return (
+      <>
+        <span data-testid="unrelated">{unrelated}</span>
+        <AttributeEditor
+          addButtonText="Add"
+          removeButtonText="Remove"
+          definition={definition}
+          items={values.map(value => ({ value }))}
+        />
+      </>
+    );
+  }
+
+  test('does not re-render when the parent re-renders with a new items array of the same length', () => {
+    let commits = 0;
+    const tree = (unrelated: string) => (
+      <React.Profiler id="ae" onRender={() => commits++}>
+        <FreshItems values={['a', 'b']} unrelated={unrelated} />
+      </React.Profiler>
+    );
+    const { rerender } = render(tree('0'));
+    for (let i = 1; i <= 20; i++) {
+      commits = 0;
+      rerender(tree(String(i)));
+      expect(commits).toBe(1);
+    }
+  });
+
+  test('clears the removal announcement when an item is added after a removal', async () => {
+    const props = {
+      addButtonText: 'Add',
+      removeButtonText: 'Remove',
+      definition,
+      i18nStrings: { itemRemovedAriaLive: 'An item was removed.' },
+    };
+    const { container, rerender } = render(<AttributeEditor {...props} items={[{ value: 'a' }, { value: 'b' }]} />);
+    const announcement = () =>
+      createWrapper(container).findAttributeEditor()!.find('[data-testid="removal-announcement"]')!.getElement();
+
+    rerender(<AttributeEditor {...props} items={[{ value: 'a' }]} />);
+    await waitFor(() => expect(announcement()).toHaveTextContent('An item was removed.'));
+
+    rerender(<AttributeEditor {...props} items={[{ value: 'a' }, { value: 'c' }]} />);
+    await waitFor(() => expect(announcement()).toHaveTextContent(''));
+    expect(announcement().textContent).toBe('');
+  });
+});
