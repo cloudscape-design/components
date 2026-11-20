@@ -65,9 +65,8 @@ function isAppLayoutPage(pageId?: string) {
 
 function App() {
   const {
-    mode,
     pageId,
-    urlParams: { density, motionDisabled },
+    urlParams: { mode, density, motionDisabled },
   } = useContext(AppContext);
 
   // AppLayout already contains <main>
