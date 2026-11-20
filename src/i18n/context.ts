@@ -3,6 +3,9 @@
 
 import React, { useContext } from 'react';
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import { isDevelopment, isTestEnvironment } from '../internal/is-development';
 import { awsuiPluginsInternal } from '../internal/plugins/api';
 import { I18nFormatArgTypes } from './messages-types';
 
@@ -14,9 +17,14 @@ export interface FormatFunction {
   <T, A = unknown>(namespace: string, component: string, key: string, provided: T, handler?: CustomHandler<T, A>): T;
 }
 
-interface InternalI18nContextProps {
+export interface InternalI18nContextProps {
   locale: string | null;
   format: FormatFunction;
+  /**
+   * Set while a provider is still loading its messages, so that missing strings
+   * are not reported as a consumer error in the meantime.
+   */
+  pending?: boolean;
 }
 
 export const namespace = 'cloudscape-design-components';
@@ -25,6 +33,8 @@ const defaultContextValue: InternalI18nContextProps = {
   locale: null,
   format: <T>(_namespace: string, _component: string, _key: string, provided: T) => provided,
 };
+
+export const pendingContextValue: InternalI18nContextProps = { ...defaultContextValue, pending: true };
 
 export const InternalI18nContext = awsuiPluginsInternal.sharedReactContexts.createContext<InternalI18nContextProps>(
   React,
@@ -95,12 +105,24 @@ export function useCustomI18n<
   NamespaceTypes = GenericI18nFormatArgTypes,
   ComponentName extends StringKeyOf<NamespaceTypes> = StringKeyOf<NamespaceTypes>,
 >(namespace: string, componentName: ComponentName): I18nFormatFunction<NamespaceTypes, ComponentName> {
-  const { format } = useContext(InternalI18nContext) ?? defaultContextValue;
+  const context = useContext(InternalI18nContext);
+  const { format } = context ?? defaultContextValue;
   const formatFunction = <MessageKey extends StringKeyOf<NamespaceTypes[ComponentName]>, ValueType>(
     key: MessageKey,
     provided: ValueType,
     customHandler?: CustomHandler<ValueType, NamespaceTypes[ComponentName][MessageKey]>
-  ) => format(namespace, componentName, key, provided, customHandler);
+  ) => {
+    const result = format(namespace, componentName, key, provided, customHandler);
+    if (isDevelopment) {
+      if (result === undefined && !context?.pending && !isTestEnvironment()) {
+        warnOnce(
+          componentName,
+          'Some built-in strings are missing. Wrap your application in <I18nProvider> or provide the i18n properties of this component. See https://cloudscape.design/get-started/for-developers/internationalization/'
+        );
+      }
+    }
+    return result;
+  };
   return formatFunction;
 }
 

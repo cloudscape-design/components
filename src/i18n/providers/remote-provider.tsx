@@ -7,7 +7,7 @@ import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
 // NOTE: Ensure that direct or transitive dependencies never pull in
 // intl-messageformat or any `@formatjs` dependencies! Otherwise, it
 // would harm any bundle size improvements this component brings.
-import { FormatFunction, InternalI18nContext } from '../context';
+import { FormatFunction, InternalI18nContext, pendingContextValue } from '../context';
 import { determineAppLocale } from '../utils/locales';
 
 interface I18nFormatterInterface {
@@ -32,7 +32,8 @@ export interface RemoteI18nProviderProps {
  */
 export default function RemoteI18nProvider({ loadFormatter, children }: RemoteI18nProviderProps) {
   const wrapperContext = useContext(InternalI18nContext);
-  const [formatFunction, setFormatFunction] = useState<FormatFunction | undefined>();
+  // `undefined` while loading, `null` when the remote formatter is unavailable.
+  const [formatFunction, setFormatFunction] = useState<FormatFunction | null | undefined>();
 
   // Ensure that every dependency of the effect below can never change.
   // The locale comes from the document, and the formatter only depends on that,
@@ -40,6 +41,7 @@ export default function RemoteI18nProvider({ loadFormatter, children }: RemoteI1
   const hasWrapperContext = !!wrapperContext;
   const [locale] = useState(() => determineAppLocale());
   const [staticLoadFormatter] = useState(() => loadFormatter);
+  const isWidgetActive = !!getGlobalFlag('appLayoutWidget');
 
   useEffect(() => {
     let mounted = true;
@@ -48,25 +50,32 @@ export default function RemoteI18nProvider({ loadFormatter, children }: RemoteI1
       return;
     }
     // Skip trying to load remote provider if the app layout widget is not available
-    if (!getGlobalFlag('appLayoutWidget')) {
+    if (!isWidgetActive) {
       return;
     }
 
     staticLoadFormatter({ locale })
       .then(formatter => {
-        if (formatter && mounted) {
-          setFormatFunction(() => formatter.format.bind(formatter));
+        if (!mounted) {
+          return;
         }
         // If formatter isn't available, do nothing.
+        setFormatFunction(formatter ? () => formatter.format.bind(formatter) : null);
       })
       .catch(() => {
-        // Do nothing. Failure in fetching the formatter should not be fatal.
+        // Failure in fetching the formatter should not be fatal.
+        if (mounted) {
+          setFormatFunction(null);
+        }
       });
     return () => {
       mounted = false;
     };
-  }, [hasWrapperContext, locale, staticLoadFormatter]);
+  }, [hasWrapperContext, isWidgetActive, locale, staticLoadFormatter]);
 
-  const value = wrapperContext || (formatFunction && { locale, format: formatFunction });
+  const isLoading = isWidgetActive && formatFunction === undefined;
+  const value =
+    wrapperContext ||
+    (formatFunction ? { locale, format: formatFunction } : isLoading ? pendingContextValue : undefined);
   return <InternalI18nContext.Provider value={value}>{children}</InternalI18nContext.Provider>;
 }

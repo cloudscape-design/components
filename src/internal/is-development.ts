@@ -19,3 +19,11 @@ declare const process: { env: { NODE_ENV?: string } };
  * and remove the conditional statement for production bundles.
  */
 export const isDevelopment = process.env.NODE_ENV !== 'production';
+
+/**
+ * Whether the code runs under a test runner. Evaluated on every call, so tests
+ * that exercise test-environment-specific behavior can toggle `NODE_ENV`.
+ */
+export function isTestEnvironment() {
+  return process.env.NODE_ENV === 'test';
+}
