@@ -60,6 +60,7 @@ export function PropertyEditorContentEnum({
   asyncProps,
   filteringOptions,
   onLoadItems,
+  virtualScroll,
 }: {
   property: InternalFilteringProperty;
   filter: string;
@@ -68,6 +69,7 @@ export function PropertyEditorContentEnum({
   asyncProps: DropdownStatusProps;
   filteringOptions: readonly InternalFilteringOption[];
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
+  virtualScroll?: boolean;
 }) {
   const valueOptions: readonly {
     value: string;
@@ -99,6 +101,7 @@ export function PropertyEditorContentEnum({
         ariaLabel={property.groupValuesLabel}
         statusType="finished"
         noMatch={asyncProps.empty}
+        virtualScroll={virtualScroll}
         {...valueHandlers}
         {...asyncProps}
       />

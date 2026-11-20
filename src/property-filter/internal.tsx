@@ -420,6 +420,7 @@ const PropertyFilterInternal = React.forwardRef(
                           asyncProps={asyncProps}
                           filteringOptions={internalOptions}
                           onLoadItems={inputLoadItemsHandlers.onLoadItems}
+                          virtualScroll={virtualScroll}
                         />
                       ),
                       footer: (
@@ -498,6 +499,7 @@ const PropertyFilterInternal = React.forwardRef(
                     disabled={disabled}
                     expandToViewport={expandToViewport}
                     enableTokenGroups={enableTokenGroups}
+                    virtualScroll={virtualScroll}
                   />
                 )}
                 i18nStrings={{
