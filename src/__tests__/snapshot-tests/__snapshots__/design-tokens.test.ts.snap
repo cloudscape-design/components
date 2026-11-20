@@ -3231,6 +3231,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font weight for disabled tabs.",
           "$value": "400",
         },
+        "letter-spacing-body-m": {
+          "$description": "The default letter spacing for regular body text.",
+          "$value": "normal",
+        },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
           "$value": "normal",
@@ -6948,6 +6952,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-tabs-disabled": {
           "$description": "The default font weight for disabled tabs.",
           "$value": "400",
+        },
+        "letter-spacing-body-m": {
+          "$description": "The default letter spacing for regular body text.",
+          "$value": "normal",
         },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
@@ -10667,6 +10675,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font weight for disabled tabs.",
           "$value": "400",
         },
+        "letter-spacing-body-m": {
+          "$description": "The default letter spacing for regular body text.",
+          "$value": "normal",
+        },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
           "$value": "normal",
@@ -14384,6 +14396,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-weight-tabs-disabled": {
           "$description": "The default font weight for disabled tabs.",
           "$value": "400",
+        },
+        "letter-spacing-body-m": {
+          "$description": "The default letter spacing for regular body text.",
+          "$value": "normal",
         },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
@@ -18103,6 +18119,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font weight for disabled tabs.",
           "$value": "400",
         },
+        "letter-spacing-body-m": {
+          "$description": "The default letter spacing for regular body text.",
+          "$value": "normal",
+        },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
           "$value": "normal",
@@ -21821,6 +21841,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font weight for disabled tabs.",
           "$value": "400",
         },
+        "letter-spacing-body-m": {
+          "$description": "The default letter spacing for regular body text.",
+          "$value": "normal",
+        },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
           "$value": "normal",
@@ -25538,6 +25562,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "font-weight-tabs-disabled": {
       "$description": "The default font weight for disabled tabs.",
       "$value": "400",
+    },
+    "letter-spacing-body-m": {
+      "$description": "The default letter spacing for regular body text.",
+      "$value": "normal",
     },
     "letter-spacing-display-l": {
       "$description": "The default letter spacing for large display text.",
@@ -29262,6 +29290,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for disabled tabs.",
           "$value": "700",
         },
+        "letter-spacing-body-m": {
+          "$description": "The default letter spacing for regular body text.",
+          "$value": "normal",
+        },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
           "$value": "-0.03em",
@@ -32979,6 +33011,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-tabs-disabled": {
           "$description": "The default font weight for disabled tabs.",
           "$value": "700",
+        },
+        "letter-spacing-body-m": {
+          "$description": "The default letter spacing for regular body text.",
+          "$value": "normal",
         },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
@@ -36698,6 +36734,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for disabled tabs.",
           "$value": "700",
         },
+        "letter-spacing-body-m": {
+          "$description": "The default letter spacing for regular body text.",
+          "$value": "normal",
+        },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
           "$value": "-0.03em",
@@ -40415,6 +40455,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-tabs-disabled": {
           "$description": "The default font weight for disabled tabs.",
           "$value": "700",
+        },
+        "letter-spacing-body-m": {
+          "$description": "The default letter spacing for regular body text.",
+          "$value": "normal",
         },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
@@ -44134,6 +44178,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for disabled tabs.",
           "$value": "700",
         },
+        "letter-spacing-body-m": {
+          "$description": "The default letter spacing for regular body text.",
+          "$value": "normal",
+        },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
           "$value": "-0.03em",
@@ -47851,6 +47899,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-weight-tabs-disabled": {
           "$description": "The default font weight for disabled tabs.",
           "$value": "700",
+        },
+        "letter-spacing-body-m": {
+          "$description": "The default letter spacing for regular body text.",
+          "$value": "normal",
         },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
@@ -51570,6 +51622,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for disabled tabs.",
           "$value": "700",
         },
+        "letter-spacing-body-m": {
+          "$description": "The default letter spacing for regular body text.",
+          "$value": "normal",
+        },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
           "$value": "-0.03em",
@@ -55288,6 +55344,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font weight for disabled tabs.",
           "$value": "700",
         },
+        "letter-spacing-body-m": {
+          "$description": "The default letter spacing for regular body text.",
+          "$value": "normal",
+        },
         "letter-spacing-display-l": {
           "$description": "The default letter spacing for large display text.",
           "$value": "-0.03em",
@@ -59005,6 +59065,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "font-weight-tabs-disabled": {
       "$description": "The default font weight for disabled tabs.",
       "$value": "700",
+    },
+    "letter-spacing-body-m": {
+      "$description": "The default letter spacing for regular body text.",
+      "$value": "normal",
     },
     "letter-spacing-display-l": {
       "$description": "The default letter spacing for large display text.",
