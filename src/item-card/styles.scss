@@ -26,8 +26,16 @@ $radius-tokens: style-api.resolve((border-radius), carrier);
     )
   )
 );
-@include style-api.docs('header', $properties: (background, border));
-@include style-api.docs('footer', $properties: (background, border));
+@include style-api.docs(
+  'header',
+  $properties: (background, border),
+  $descriptions: (slot: 'Rendered when `header`, `description`, `icon` or `actions` is set.')
+);
+@include style-api.docs(
+  'footer',
+  $properties: (background, border),
+  $descriptions: (slot: 'Rendered when `footer` is set.')
+);
 
 // Variant configuration maps — adjust values here for easy customization
 $variant-border-radius: (

@@ -18,7 +18,8 @@ $tokens: style-api.resolve(style-api.$focus-ring, carrier);
 @include style-api.docs(
   'root',
   $tokens,
-  $properties: (color, background, border, border-radius, padding, box-shadow, font-family, font-size, font-weight)
+  $properties: (color, background, border, border-radius, padding, box-shadow, font-family, font-size, font-weight),
+  $descriptions: (slot: 'A semantic button, or a semantic anchor when `href` is set.')
 );
 
 @mixin adjust-for-variant($variant) {

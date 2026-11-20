@@ -12,11 +12,12 @@
 // Track and value colors are root tokens: the tick marks take either color depending on the slider state.
 $root-tokens: style-api.resolve((track-color, value-color), carrier);
 @include style-api.register($root-tokens, mixins.$handle-tokens);
-@include style-api.docs('root', $root-tokens);
+@include style-api.docs('root', $root-tokens, $descriptions: (slot: 'The container of the `handle` slot.'));
 @include style-api.docs(
   'handle',
   mixins.$handle-tokens,
   $descriptions: (
+    slot: 'The semantic range input.',
     tokens: (
       halo-color: 'Defaults to the fill color.',
     )

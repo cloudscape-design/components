@@ -41,7 +41,11 @@
     )
   )
 );
-@include style-api.docs('sortingButton', $properties: (color));
+@include style-api.docs(
+  'sortingButton',
+  $properties: (color),
+  $descriptions: (slot: 'The semantic button that sorts the column, in sortable header cells.')
+);
 @include style-api.docs('sortingIndicator', $properties: (color));
 @include style-api.docs-forward('sortingMenu', 'button-dropdown');
 @include style-api.docs-forward('clearSortButton', 'button', 'root');
