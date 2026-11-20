@@ -34,7 +34,7 @@ permissions:
 jobs:
   # Checks whether a maintainer has explicitly approved the visual changes for
   # this exact commit via the manual override workflow
-  # (.github/workflows/visual-regression-override.yml). The approval is a commit
+  # (.github/workflows/override-check.yml). The approval is a commit
   # status posted on the head SHA, so it applies only to that commit: a new push
   # produces a new SHA with no override and the comparison runs again.
   check-override:

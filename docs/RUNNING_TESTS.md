@@ -99,7 +99,9 @@ pushing a new commit produces a new SHA with no override, so the comparison runs
 
 To override, first confirm the diffs in the Allure report are intentional, then use either method:
 
-- **From the PR page (recommended):** comment `/override-visual-regression <Reason to override>` on the pull request.
-- **From the Actions tab:** run the **Override visual regression** workflow (`.github/workflows/visual-regression-override.yml`) manually, passing the commit SHA to approve.
+- **From the PR page (recommended):** comment `/override-check visual-regression <Reason to override>` on the pull request.
+- **From the Actions tab:** run the **Override required check** workflow (`.github/workflows/override-check.yml`) manually, choosing the `visual-regression` check and passing the commit SHA to approve and a reason.
 
 Either way the workflow posts a `visual-regression-override` success commit status on that SHA and re-runs the deploy workflow. On the re-run, the screenshot comparison is skipped and the `Visual regression result` check passes.
+
+The same command overrides the Codecov checks: `/override-check codecov <reason>` posts a success status to `codecov/patch` and `codecov/project` for the PR head commit. If Codecov uploads a report for that commit again afterwards, it overwrites the override and the command has to be posted again. Only the checks listed in the workflow (`visual-regression`, `codecov`) can be overridden, and only users with write or admin access can run it. `/override-visual-regression <reason>` is still accepted as an alias for `/override-check visual-regression <reason>`.

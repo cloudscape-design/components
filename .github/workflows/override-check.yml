@@ -1,0 +1,236 @@
+name: Override required check
+
+# Marks one allowlisted required check as passed for a single commit, for cases where
+# the failure is reviewed and accepted by a maintainer (for example intentional visual
+# changes, or a coverage drop that cannot be fixed in the PR).
+#
+# The override is scoped to a single commit: pushing a new commit produces a new SHA
+# with no override status, so the check has to pass (or be overridden) again.
+#
+# Two ways to trigger it:
+#   1. Comment `/override-check <check> <reason>` on the pull request
+#      (right from the PR page). Only users with write or admin access can do this.
+#   2. Run it manually from the Actions tab, passing the check, a commit SHA and a reason.
+#
+# Transition alias: `/override-visual-regression <reason>` is still accepted and means
+# `/override-check visual-regression <reason>`. Remove it once the new command is
+# established.
+#
+# Allowed values for <check> are fixed in the "Resolve the check" step below. Only the
+# literal status contexts listed there are ever posted; nothing derived from the comment
+# text is used as a context name.
+
+on:
+  issue_comment:
+    types: [created]
+  workflow_dispatch:
+    inputs:
+      check:
+        description: 'The required check to override.'
+        required: true
+        type: choice
+        options:
+          - visual-regression
+          - codecov
+      commit-sha:
+        description: 'The commit SHA to override the check for.'
+        required: true
+        type: string
+      reason:
+        description: 'Why the check is overridden (shown in the commit status).'
+        required: true
+        type: string
+
+permissions:
+  statuses: write # Needed to post the override commit statuses
+  actions: write # Needed to re-run the deploy workflow (visual-regression only)
+  pull-requests: read # Needed to resolve the PR head SHA for issue_comment overrides
+  issues: write # Needed to reply on the PR when the command does not complete
+
+jobs:
+  override:
+    name: Apply required check override
+    # Override comments must be posted on a PR and start with the command; the trailing
+    # space requires text after it (the check name and the reason), for example:
+    # "/override-check visual-regression Expected padding changes in Container border radii".
+    # The transition alias "/override-visual-regression <reason>" is accepted as well.
+    # Manual runs (workflow_dispatch) skip the comment check.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.issue.pull_request != null &&
+       (startsWith(github.event.comment.body, '/override-check ') ||
+        startsWith(github.event.comment.body, '/override-visual-regression ')))
+    runs-on: ubuntu-latest
+    steps:
+      - name: Authorize commenter
+        if: github.event_name == 'issue_comment'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          ACTOR: ${{ github.actor }}
+        run: |
+          PERMISSION=$(gh api "repos/${REPO}/collaborators/${ACTOR}/permission" --jq '.permission' 2>/dev/null || echo "none")
+          echo "@${ACTOR} has '${PERMISSION}' permission."
+          case "$PERMISSION" in
+            admin|write|maintain)
+              echo "Authorized." ;;
+            *)
+              echo "::error::@${ACTOR} is not authorized to override required checks (requires admin, write or maintain access)."
+              exit 1 ;;
+          esac
+
+      - name: Parse the command
+        id: command
+        # The comment body is untrusted input: it is only ever read from the COMMENT_BODY
+        # environment variable and split with shell parameter expansion, never interpolated
+        # into the script. Only the first line of the comment is read.
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          INPUT_CHECK: ${{ inputs.check }}
+          INPUT_REASON: ${{ inputs.reason }}
+        run: |
+          if [ "$EVENT_NAME" = "issue_comment" ]; then
+            FIRST_LINE=$(printf '%s\n' "$COMMENT_BODY" | head -n 1 | tr -d '\r')
+            COMMAND=${FIRST_LINE%%' '*}
+            REST=${FIRST_LINE#*' '}
+            case "$COMMAND" in
+              /override-check)
+                # "/override-check <check> <reason>": split the check name from the rest.
+                CHECK=${REST%%' '*}
+                REASON=${REST#"$CHECK"} ;;
+              /override-visual-regression)
+                # Transition alias for "/override-check visual-regression <reason>".
+                CHECK="visual-regression"
+                REASON="$REST" ;;
+              *)
+                echo "::error::Unknown command '${COMMAND}'."
+                exit 1 ;;
+            esac
+          else
+            CHECK="$INPUT_CHECK"
+            REASON="$INPUT_REASON"
+          fi
+
+          # Collapse newlines and surrounding whitespace so the reason fits on one line.
+          REASON=$(printf '%s' "$REASON" | tr '\r\n' '  ' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+
+          if [ -z "$CHECK" ] || [ -z "$REASON" ]; then
+            echo "::error::Usage: /override-check <check> <reason>. Both the check name and a reason are required."
+            exit 1
+          fi
+
+          echo "check=${CHECK}" >> "$GITHUB_OUTPUT"
+          echo "reason=${REASON}" >> "$GITHUB_OUTPUT"
+
+      - name: Resolve the check
+        id: check
+        # Allowlist of checks that can be overridden. The check name must match exactly; each
+        # entry maps to the literal commit status contexts to post and whether the deploy
+        # workflow has to be re-run so its gate job re-evaluates.
+        env:
+          CHECK: ${{ steps.command.outputs.check }}
+          REASON: ${{ steps.command.outputs.reason }}
+          ACTOR: ${{ github.actor }}
+        run: |
+          case "$CHECK" in
+            visual-regression)
+              # The "Visual regression result" gate job in deploy.yml reads this status, so the
+              # failed jobs of that run are re-run afterwards to pick it up.
+              CONTEXTS="visual-regression-override"
+              RERUN="true" ;;
+            codecov)
+              # codecov/patch and codecov/project are posted by Codecov itself; there is no gate
+              # job to re-run, so the override overwrites them directly. If Codecov uploads again
+              # for the same SHA it overwrites the override; post the command again in that case.
+              CONTEXTS="codecov/patch codecov/project"
+              RERUN="false" ;;
+            *)
+              echo "::error::Unknown check '${CHECK}'. Allowed values: visual-regression, codecov."
+              exit 1 ;;
+          esac
+
+          # Commit status descriptions are limited to 140 characters.
+          DESCRIPTION="Overridden by @${ACTOR}: ${REASON}"
+          DESCRIPTION=${DESCRIPTION:0:140}
+
+          echo "Overriding '${CHECK}' (contexts: ${CONTEXTS})."
+          echo "contexts=${CONTEXTS}" >> "$GITHUB_OUTPUT"
+          echo "rerun=${RERUN}" >> "$GITHUB_OUTPUT"
+          echo "description=${DESCRIPTION}" >> "$GITHUB_OUTPUT"
+
+      - name: Resolve the commit SHA
+        id: resolve
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_SHA: ${{ inputs.commit-sha }}
+          COMMENT_PR: ${{ github.event.issue.number }}
+        run: |
+          if [ "$EVENT_NAME" = "issue_comment" ]; then
+            # Resolve the head commit of the PR the command was posted on.
+            RESOLVED=$(gh api "repos/${REPO}/pulls/${COMMENT_PR}" --jq '.head.sha')
+          else
+            # workflow_dispatch: the SHA is provided directly.
+            RESOLVED="$INPUT_SHA"
+          fi
+
+          if [ -z "$RESOLVED" ]; then
+            echo "::error::Could not resolve a commit SHA to override."
+            exit 1
+          fi
+
+          echo "Overriding for commit ${RESOLVED}."
+          echo "sha=${RESOLVED}" >> "$GITHUB_OUTPUT"
+
+      - name: Post override commit statuses
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ steps.resolve.outputs.sha }}
+          CONTEXTS: ${{ steps.check.outputs.contexts }}
+          DESCRIPTION: ${{ steps.check.outputs.description }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          for CONTEXT in $CONTEXTS; do
+            gh api --method POST "repos/${REPO}/statuses/${SHA}" \
+              -f state="success" \
+              -f context="${CONTEXT}" \
+              -f description="${DESCRIPTION}" \
+              -f target_url="${RUN_URL}" >/dev/null
+            echo "Posted success status '${CONTEXT}' on ${SHA}: ${DESCRIPTION}"
+          done
+
+      - name: Re-run the failed check to pick up the override
+        if: steps.check.outputs.rerun == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ steps.resolve.outputs.sha }}
+        run: |
+          RUN_ID=$(gh api \
+            "repos/${REPO}/actions/workflows/deploy.yml/runs?head_sha=${SHA}&per_page=1" \
+            --jq '.workflow_runs[0].id // empty')
+
+          if [ -n "$RUN_ID" ]; then
+            # Re-run only the failed jobs (the "Visual regression result" gate),
+            # not the whole run, so the build and deploy jobs are not repeated.
+            echo "Re-running failed jobs of deploy workflow run ${RUN_ID} to re-evaluate the check with the override."
+            gh api --method POST "repos/${REPO}/actions/runs/${RUN_ID}/rerun-failed-jobs" >/dev/null || \
+              echo "::warning::Could not automatically re-run the check. Re-run the failed 'Visual regression result' job manually."
+          else
+            echo "::warning::No deploy workflow run found for commit ${SHA}. Re-run the failed 'Visual regression result' job manually."
+          fi
+
+      - name: Reply on the PR when the command did not complete
+        if: failure() && github.event_name == 'issue_comment'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          COMMENT_PR: ${{ github.event.issue.number }}
+          ACTOR: ${{ github.actor }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh api --method POST "repos/${REPO}/issues/${COMMENT_PR}/comments" \
+            -f body="@${ACTOR} the \`/override-check\` command did not complete. Some statuses may already have been posted; check the commit status list. See the [workflow run](${RUN_URL}) for the reason. Usage: \`/override-check <visual-regression|codecov> <reason>\`." >/dev/null

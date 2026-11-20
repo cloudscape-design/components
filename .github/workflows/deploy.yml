@@ -182,9 +182,9 @@ jobs:
           fi
 
           if [ "$VISUAL_RESULT" = "skipped" ] || [ "$VISUAL_RESULT" = "cancelled" ]; then
-            echo "::error::Visual regression did not run (result: ${VISUAL_RESULT}). If the baseline cannot be built, comment '/override-visual-regression <justification>' on the PR."
+            echo "::error::Visual regression did not run (result: ${VISUAL_RESULT}). If the baseline cannot be built, comment '/override-check visual-regression <reason>' on the PR."
             exit 1
           fi
 
-          echo "::error::Visual regression did not pass (result: ${VISUAL_RESULT}). If the differences are intentional, comment '/override-visual-regression <justification>' on the PR."
+          echo "::error::Visual regression did not pass (result: ${VISUAL_RESULT}). If the differences are intentional, comment '/override-check visual-regression <reason>' on the PR."
           exit 1
