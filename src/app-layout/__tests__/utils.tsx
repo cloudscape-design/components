@@ -9,6 +9,7 @@ import { clearVisualRefreshState, setGlobalFlag } from '@cloudscape-design/compo
 import { ComponentWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
+import { PendingGlobalFlags } from '../../../lib/components/app-layout/utils/feature-flags';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import { forceMobileModeSymbol } from '../../../lib/components/internal/hooks/use-mobile';
 import { SplitPanelProps } from '../../../lib/components/split-panel';
@@ -49,6 +50,22 @@ const defaultTestConfig: AppLayoutTestConfig = {
 };
 
 const globalWithFlags = globalThis as any;
+const globalFlagsSymbol = Symbol.for('awsui-global-flags');
+
+/**
+ * Typed counterpart of toolkit's `setGlobalFlag` for flags the toolkit does not declare yet.
+ */
+export function setPendingGlobalFlag<FlagName extends keyof PendingGlobalFlags>(
+  flagName: FlagName,
+  value: PendingGlobalFlags[FlagName] | undefined
+) {
+  globalWithFlags[globalFlagsSymbol] = globalWithFlags[globalFlagsSymbol] ?? {};
+  if (value === undefined) {
+    delete globalWithFlags[globalFlagsSymbol][flagName];
+  } else {
+    globalWithFlags[globalFlagsSymbol][flagName] = value;
+  }
+}
 
 export function describeEachAppLayout(callback: AppLayoutTestSuite): void;
 export function describeEachAppLayout(config: Partial<AppLayoutTestConfig>, callback: AppLayoutTestSuite): void;
