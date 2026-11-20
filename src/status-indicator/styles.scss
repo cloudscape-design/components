@@ -52,6 +52,10 @@ $_background-overrides: (
   'yellow': awsui.$color-background-status-indicator-warning,
 );
 
+// Diameter of the circular background around the status icon, matching the body line
+// height so the wrapper does not grow the line box. The icon itself is 12px in one theme.
+$_icon-circle-size: awsui.$line-height-body-m;
+
 .root {
   @include styles.default-text-style;
   @each $status in map.keys($_status-colors) {
@@ -65,15 +69,38 @@ $_background-overrides: (
     }
   }
 
+  // The background is a circle around the icon only (see `.icon-wrapper`). The loading
+  // type is excluded because it renders a spinner instead of an icon.
   @each $status in map.keys($_status-backgrounds) {
-    &.status-#{$status}:not(.embedded) > .container {
-      background: #{map.get($_status-backgrounds, $status)};
+    @if $status != 'loading' {
+      &.status-#{$status}:not(.embedded) > .container > .icon-wrapper {
+        background: #{map.get($_status-backgrounds, $status)};
+      }
     }
   }
   @each $color in map.keys($_background-overrides) {
-    &.color-override-#{$color}:not(.embedded) > .container {
+    &.color-override-#{$color}:not(.embedded, .status-loading) > .container > .icon-wrapper {
       background: #{map.get($_background-overrides, $color)};
     }
+  }
+}
+
+.icon-wrapper {
+  // Layout-transparent outside of one theme, where there is no icon background to render.
+  display: contents;
+
+  @include theming.one-theme-only {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    box-sizing: border-box;
+    inline-size: $_icon-circle-size;
+    block-size: $_icon-circle-size;
+    border-start-start-radius: 50%;
+    border-start-end-radius: 50%;
+    border-end-start-radius: 50%;
+    border-end-end-radius: 50%;
   }
 }
 
@@ -83,6 +110,12 @@ $_background-overrides: (
   border-start-end-radius: awsui.$border-radius-status-indicator;
   border-end-start-radius: awsui.$border-radius-status-indicator;
   border-end-end-radius: awsui.$border-radius-status-indicator;
+
+  // The container no longer paints a background in one theme, so it does not need to
+  // inset its content.
+  @include theming.one-theme-only {
+    padding-inline: 0;
+  }
 
   .root.status-loading > & {
     @include theming.one-theme-only {
@@ -95,7 +128,7 @@ $_background-overrides: (
     @include styles.text-wrapping;
     display: inline;
 
-    > .icon {
+    > .icon-wrapper > .icon {
       white-space: nowrap;
       @include theming.one-theme-only {
         vertical-align: middle;
@@ -112,13 +145,22 @@ $_background-overrides: (
       vertical-align: top;
     }
 
-    > .icon {
+    > .icon-wrapper {
+      // The gap between icon and label sits on the wrapper so that it stays outside of
+      // the circular background.
+      @include theming.one-theme-only {
+        margin-inline-end: awsui.$space-xxxs;
+      }
+    }
+
+    > .icon-wrapper > .icon {
       padding-inline-end: awsui.$space-xxs;
 
       @include theming.one-theme-only {
         display: inline-flex;
         align-items: center;
         block-size: awsui.$line-height-body-m;
+        padding-inline-end: 0;
       }
     }
   }
