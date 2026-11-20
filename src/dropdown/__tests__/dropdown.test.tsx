@@ -30,6 +30,13 @@ jest.mock('../../../lib/components/dropdown/dropdown-fit-handler', () => {
   };
 });
 
+async function flushContentChanges() {
+  await act(async () => {
+    await Promise.resolve();
+    jest.runOnlyPendingTimers();
+  });
+}
+
 describe('Dropdown Component', () => {
   describe('Properties', () => {
     test('closed by default', () => {
@@ -477,6 +484,180 @@ describe('Dropdown Component', () => {
       (calculatePosition as jest.Mock).mockClear();
       fireEvent.scroll(window, { target: { scrollY: 100 } });
       expect(calculatePosition).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe('dropdown recalculates its width when its content changes', () => {
+    const originalCalculatePosition = jest.requireActual(
+      '../../../lib/components/dropdown/dropdown-fit-handler'
+    ).calculatePosition;
+
+    function mockCalculatedInlineSize(inlineSize: string) {
+      (calculatePosition as jest.Mock).mockImplementation((...args: unknown[]) => {
+        const [position, triggerBox] = originalCalculatePosition(...args);
+        return [{ ...position, inlineSize }, triggerBox];
+      });
+    }
+
+    function ContentDropdown({ items }: { items: string[] }) {
+      return (
+        <Dropdown
+          trigger={<button />}
+          open={true}
+          content={
+            <ul>
+              {items.map(item => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          }
+        />
+      );
+    }
+
+    function MaxWidthDropdown({ items }: { items: string[] }) {
+      return (
+        <Dropdown
+          trigger={<button />}
+          open={true}
+          maxWidth={465}
+          content={
+            <ul>
+              {items.map(item => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          }
+        />
+      );
+    }
+
+    function getOpenDropdown(container: HTMLElement) {
+      const root = container.querySelector<HTMLElement>(`.${DropdownWrapper.rootSelector}`)!;
+      return new DropdownWrapper(root).findOpenDropdown()!.getElement();
+    }
+
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+    afterEach(() => {
+      jest.useRealTimers();
+      (calculatePosition as jest.Mock).mockImplementation(originalCalculatePosition);
+    });
+
+    test('widens an open dropdown when its content changes and needs more room', async () => {
+      mockCalculatedInlineSize('300px');
+      const { container, rerender } = render(<ContentDropdown items={['short']} />);
+      expect(getOpenDropdown(container).style.inlineSize).toBe('300px');
+
+      mockCalculatedInlineSize('465px');
+      rerender(<ContentDropdown items={['short', 'a much longer item']} />);
+      await flushContentChanges();
+      expect(getOpenDropdown(container).style.inlineSize).toBe('465px');
+    });
+
+    test('does not shrink an open dropdown when its content gets shorter', async () => {
+      mockCalculatedInlineSize('465px');
+      const { container, rerender } = render(<ContentDropdown items={['a much longer item']} />);
+
+      mockCalculatedInlineSize('300px');
+      (calculatePosition as jest.Mock).mockClear();
+      rerender(<ContentDropdown items={['short']} />);
+      await flushContentChanges();
+      expect(calculatePosition).toHaveBeenCalledTimes(1);
+      expect(getOpenDropdown(container).style.inlineSize).toBe('465px');
+    });
+
+    test('applying the new position does not trigger another recalculation', async () => {
+      const { rerender } = render(<ContentDropdown items={['short']} />);
+      rerender(<ContentDropdown items={['short', 'another item']} />);
+      (calculatePosition as jest.Mock).mockClear();
+      await flushContentChanges();
+      expect(calculatePosition).toHaveBeenCalledTimes(1);
+      await flushContentChanges();
+      expect(calculatePosition).toHaveBeenCalledTimes(1);
+    });
+
+    test('keeps the attachment sides it opened with when content grows', async () => {
+      const { rerender } = render(<ContentDropdown items={['short']} />);
+      (calculatePosition as jest.Mock).mockClear();
+      rerender(<ContentDropdown items={['short', 'a much longer item']} />);
+      await flushContentChanges();
+      const args = (calculatePosition as jest.Mock).mock.calls[0];
+      expect(args[args.length - 1]).toEqual({ dropBlockStart: false, dropInlineStart: false });
+    });
+
+    test('chooses the attachment sides freely when it opens', () => {
+      (calculatePosition as jest.Mock).mockClear();
+      render(<ContentDropdown items={['short']} />);
+      const args = (calculatePosition as jest.Mock).mock.calls[0];
+      expect(args[args.length - 1]).toBeUndefined();
+    });
+
+    test('skips measuring when the dropdown is already at its max width', async () => {
+      mockCalculatedInlineSize('465px');
+      const { rerender } = render(<MaxWidthDropdown items={['short']} />);
+      (calculatePosition as jest.Mock).mockClear();
+      rerender(<MaxWidthDropdown items={['short', 'another item']} />);
+      await flushContentChanges();
+      expect(calculatePosition).not.toHaveBeenCalled();
+    });
+
+    test('cancels a pending recalculation and stops observing when it closes', async () => {
+      const { rerender } = render(<Dropdown trigger={<button />} open={true} content={<div>a</div>} />);
+      rerender(<Dropdown trigger={<button />} open={true} content={<div>b</div>} />);
+      await act(async () => {
+        await Promise.resolve();
+      });
+      rerender(<Dropdown trigger={<button />} open={false} content={<div>b</div>} />);
+      (calculatePosition as jest.Mock).mockClear();
+      rerender(<Dropdown trigger={<button />} open={false} content={<div>c</div>} />);
+      await flushContentChanges();
+      expect(calculatePosition).not.toHaveBeenCalled();
+    });
+
+    test('recalculates an interior dropdown with fixed attachment sides when its content grows', async () => {
+      const renderInterior = (items: string[]) => (
+        <Dropdown
+          trigger={<button />}
+          open={true}
+          interior={true}
+          content={
+            <ul>
+              {items.map(item => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          }
+        />
+      );
+      const { rerender } = render(renderInterior(['Loading']));
+      (calculatePosition as jest.Mock).mockClear();
+      rerender(renderInterior(['A very long item label that needs more room']));
+      await flushContentChanges();
+      expect(calculatePosition).toHaveBeenCalledTimes(1);
+      const args = (calculatePosition as jest.Mock).mock.calls[0];
+      expect(args[3]).toBe(true);
+      expect(args[args.length - 1]).toEqual({ dropBlockStart: false, dropInlineStart: false });
+    });
+
+    test('does not observe centered dropdowns', async () => {
+      const renderCentered = (text: string) => (
+        <Dropdown trigger={<button />} open={true} preferredAlignment="center" content={<div>{text}</div>} />
+      );
+      const { rerender } = render(renderCentered('a'));
+      (calculatePosition as jest.Mock).mockClear();
+      rerender(renderCentered('a longer text'));
+      await flushContentChanges();
+      expect(calculatePosition).not.toHaveBeenCalled();
+    });
+
+    test('does not observe content changes while closed', async () => {
+      const { rerender } = render(<Dropdown trigger={<button />} open={false} content={<div>a</div>} />);
+      (calculatePosition as jest.Mock).mockClear();
+      rerender(<Dropdown trigger={<button />} open={false} content={<div>b</div>} />);
+      await flushContentChanges();
+      expect(calculatePosition).not.toHaveBeenCalled();
     });
   });
 
