@@ -57,7 +57,7 @@ describe('appLayoutHideToolbar flag', () => {
     })
   );
 
-  // Global flags are read once on page load, so each toolbar state is measured in its own browser session
+  // Global flags are set once on page load, so each toolbar state is measured in its own browser session
   // instead of switching the URL (and relying on a reload) within one session.
   test('does not reserve space for the hidden toolbar', async () => {
     let toolbarHeight = 0;
