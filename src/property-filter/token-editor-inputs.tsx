@@ -142,6 +142,7 @@ interface ValueInputProps {
   operator: undefined | ComparisonOperator;
   property: null | InternalFilteringProperty;
   value: unknown;
+  virtualScroll?: boolean;
 }
 
 export function ValueInput(props: ValueInputProps) {
@@ -208,6 +209,7 @@ function ValueInputEnum({
   filteringOptions,
   onLoadItems,
   i18nStrings,
+  virtualScroll,
 }: ValueInputPropsEnum) {
   const valueOptions = filteringOptions
     .filter(option => option.property?.propertyKey === property.propertyKey)
@@ -229,6 +231,7 @@ function ValueInputEnum({
           inlineTokens={true}
           hideTokens={true}
           keepOpen={true}
+          virtualScroll={virtualScroll}
         />
       </div>
     </div>

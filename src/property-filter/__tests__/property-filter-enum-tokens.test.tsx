@@ -591,3 +591,53 @@ describe('async token editing', () => {
     );
   });
 });
+
+describe('virtual scroll', () => {
+  const manyOptionsCount = 500;
+  const manyFilteringOptions: readonly FilteringOption[] = Array.from({ length: manyOptionsCount }, (_, index) => ({
+    propertyKey: 'tags',
+    value: `tag-${index}`,
+  }));
+  const enumTokenQuery: PropertyFilterProps.Query = {
+    operation: 'and',
+    tokens: [{ propertyKey: 'tags', operator: '=', value: ['tag-0'] }],
+  };
+
+  const getFilteringInputOptionsCount = (virtualScroll: boolean) => {
+    const { wrapper, getOptionsContent } = renderComponent({ filteringOptions: manyFilteringOptions, virtualScroll });
+    wrapper.focus();
+    wrapper.setInputValue('tags = ');
+    return getOptionsContent().length;
+  };
+
+  const getTokenEditorOptionsCount = (virtualScroll: boolean) => {
+    const { openEditor, findEditorMultiselect, getEditorOptionsContent } = renderComponent({
+      filteringOptions: manyFilteringOptions,
+      query: enumTokenQuery,
+      virtualScroll,
+    });
+    openEditor();
+    findEditorMultiselect().openDropdown();
+    return getEditorOptionsContent().length;
+  };
+
+  test('renders a subset of enum options in the filtering input when virtualScroll=true', () => {
+    const count = getFilteringInputOptionsCount(true);
+    expect(count).toBeGreaterThan(0);
+    expect(count).toBeLessThan(manyOptionsCount);
+  });
+
+  test('renders all enum options in the filtering input when virtualScroll=false', () => {
+    expect(getFilteringInputOptionsCount(false)).toBe(manyOptionsCount);
+  });
+
+  test('renders a subset of enum options in the token editor when virtualScroll=true', () => {
+    const count = getTokenEditorOptionsCount(true);
+    expect(count).toBeGreaterThan(0);
+    expect(count).toBeLessThan(manyOptionsCount);
+  });
+
+  test('renders all enum options in the token editor when virtualScroll=false', () => {
+    expect(getTokenEditorOptionsCount(false)).toBe(manyOptionsCount);
+  });
+});
