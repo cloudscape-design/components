@@ -11,7 +11,8 @@ interface PermutationsViewProps<T> {
 
 function formatValue(key: string, value: any) {
   if (typeof value === 'function') {
-    return value.toString();
+    // Function source changes with minification, so it would make the permutation ID differ between builds.
+    return '[function]';
   }
   if (value && value.$$typeof) {
     // serialize React content to string
@@ -28,10 +29,17 @@ export default function PermutationsView<T>({ permutations, render }: Permutatio
     throw new Error(`Too many permutations (${permutations.length}), maximum is ${maximumPermutations}`);
   }
 
+  // Permutations that differ only by a function prop get the same base ID, so number the repeats to keep IDs unique.
+  const idCounts = new Map<string, number>();
+
   return (
     <SpaceBetween size="m">
       {permutations.map((permutation, index) => {
-        const id = JSON.stringify(permutation, formatValue);
+        const baseId = JSON.stringify(permutation, formatValue);
+        const repeat = idCounts.get(baseId) ?? 0;
+        idCounts.set(baseId, repeat + 1);
+        // The ID must stay valid JSON, because the screenshot tests parse it.
+        const id = repeat === 0 ? baseId : JSON.stringify({ ...permutation, $repeat: repeat }, formatValue);
         return (
           <div key={id} data-permutation={id}>
             {render(permutation, index)}
