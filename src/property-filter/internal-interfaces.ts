@@ -40,6 +40,7 @@ export interface InternalFreeTextFiltering {
   disabled: boolean;
   operators: readonly (PropertyFilterOperator | PropertyFilterTextOperatorExtended)[];
   defaultOperator: PropertyFilterOperator;
+  getOperatorDescription: (operator: PropertyFilterOperator) => string | null;
 }
 
 export interface InternalToken<TokenValue = any> {
