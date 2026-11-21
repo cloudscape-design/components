@@ -103,7 +103,7 @@ const Alert = React.forwardRef(
       }
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [funnelInteractionId, visible, submissionAttempt, errorCount]);
+    }, [funnelInteractionId, visible, type, submissionAttempt, errorCount]);
 
     const componentAnalyticsMetadata: GeneratedAnalyticsMetadataAlertComponent = {
       name: 'awsui.Alert',
