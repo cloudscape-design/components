@@ -375,6 +375,93 @@ describe('Navigation', () => {
   });
 });
 
+describe('Non-linear navigation', () => {
+  const requiredSteps = [
+    { title: 'Step 1', isOptional: false, content: 'content 1' },
+    { title: 'Step 2', isOptional: false, content: 'content 2' },
+    { title: 'Step 3', isOptional: false, content: 'content 3' },
+  ];
+
+  test('enables all forward steps in the navigation pane when allowNonLinearNavigation is set', () => {
+    const [wrapper] = renderWizard({
+      steps: requiredSteps,
+      i18nStrings: DEFAULT_I18N_SETS[0],
+      activeStepIndex: 0,
+      onNavigate: () => {},
+      allowNonLinearNavigation: true,
+    });
+    wrapper
+      .findMenuNavigationLinks()
+      .slice(1, 3)
+      .map(link => link.getElement())
+      .forEach(link => {
+        expect(link).not.toHaveClass(styles['navigation-link-disabled']);
+        expect(link).not.toHaveAttribute('aria-disabled');
+        expect(link).not.toHaveAttribute('aria-current');
+      });
+    expect(wrapper.findMenuNavigationLink(2, 'disabled')).toBeNull();
+    expect(wrapper.findMenuNavigationLink(3, 'disabled')).toBeNull();
+  });
+
+  test('forward required steps stay disabled by default (backward compatible)', () => {
+    const [wrapper] = renderWizard({
+      steps: requiredSteps,
+      i18nStrings: DEFAULT_I18N_SETS[0],
+      activeStepIndex: 0,
+      onNavigate: () => {},
+    });
+    expect(wrapper.findMenuNavigationLink(2, 'disabled')).not.toBeNull();
+    expect(wrapper.findMenuNavigationLink(3, 'disabled')).not.toBeNull();
+  });
+
+  test('fires onNavigate with reason "skip" when jumping to a not-yet-visited step', () => {
+    const onNavigate = jest.fn();
+    const [wrapper] = renderWizard({
+      steps: requiredSteps,
+      i18nStrings: DEFAULT_I18N_SETS[0],
+      activeStepIndex: 0,
+      onNavigate,
+      allowNonLinearNavigation: true,
+    });
+    // Jump directly from step 1 to the unvisited required step 3
+    wrapper.findMenuNavigationLink(3)!.click();
+    expect(onNavigate).toHaveBeenCalledTimes(1);
+    expect(onNavigate).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { requestedStepIndex: 2, reason: 'skip' } })
+    );
+  });
+
+  test('fires onNavigate with reason "step" when navigating back to a visited step', () => {
+    const onNavigate = jest.fn();
+    const [wrapper] = renderWizard({
+      steps: requiredSteps,
+      i18nStrings: DEFAULT_I18N_SETS[0],
+      activeStepIndex: 2,
+      onNavigate,
+      allowNonLinearNavigation: true,
+    });
+    // Step 1 has already been visited (farthest reached step 3)
+    wrapper.findMenuNavigationLink(1)!.click();
+    expect(onNavigate).toHaveBeenCalledTimes(1);
+    expect(onNavigate).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { requestedStepIndex: 0, reason: 'step' } })
+    );
+  });
+
+  test('forward steps are not navigable while the next step is loading', () => {
+    const [wrapper] = renderWizard({
+      steps: requiredSteps,
+      i18nStrings: DEFAULT_I18N_SETS[0],
+      activeStepIndex: 0,
+      onNavigate: () => {},
+      allowNonLinearNavigation: true,
+      isLoadingNextStep: true,
+    });
+    expect(wrapper.findMenuNavigationLink(2, 'disabled')).not.toBeNull();
+    expect(wrapper.findMenuNavigationLink(3, 'disabled')).not.toBeNull();
+  });
+});
+
 describe('Form', () => {
   test('renders header', () => {
     const [wrapper] = renderDefaultWizard({ steps: [{ title: 'test title', content: null }] });
@@ -777,6 +864,7 @@ describe('WizardStepList click and keyboard navigation', () => {
     activeStepIndex: number;
     farthestStepIndex: number;
     allowSkipTo?: boolean;
+    allowNonLinearNavigation?: boolean;
     onStepClick: jest.Mock;
     onSkipToClick: jest.Mock;
   }) {
@@ -785,6 +873,7 @@ describe('WizardStepList click and keyboard navigation', () => {
         activeStepIndex={props.activeStepIndex}
         farthestStepIndex={props.farthestStepIndex}
         allowSkipTo={props.allowSkipTo ?? false}
+        allowNonLinearNavigation={props.allowNonLinearNavigation ?? false}
         i18nStrings={defaultI18nStrings}
         isLoadingNextStep={false}
         onStepClick={props.onStepClick}
