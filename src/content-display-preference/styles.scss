@@ -1,0 +1,11 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+// The standalone ContentDisplayPreference renders the shared content-display control,
+// which brings its own layout. This root only exists to carry the component metadata,
+// so it is removed from the layout box tree.
+.root {
+  display: contents;
+}

@@ -11,6 +11,7 @@ const defaultProps: Record<string, Record<string, any>> = {
   'option-list': { options: [], selectionType: 'single' },
   'anchor-navigation': { anchors: [] },
   'code-editor': { i18nStrings },
+  'content-display-preference': { options: [] },
   wizard: {
     steps: [],
     i18nStrings: {
