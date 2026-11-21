@@ -31,7 +31,7 @@ import { BreadcrumbGroupProps, EllipsisDropdownProps } from './interfaces';
 import { InternalBreadcrumbGroupProps } from './internal-interfaces';
 import { BreadcrumbItem } from './item/item';
 import { BreadcrumbGroupSkeleton } from './skeleton';
-import { getEventDetail, getItemsDisplayProperties } from './utils';
+import { getEventDetail, getItemsDisplayProperties, getMaxItemsCollapsed } from './utils';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -117,6 +117,7 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
   items = [],
   ariaLabel,
   expandAriaLabel,
+  maxItems,
   onClick,
   onFollow,
   __internalRootRef,
@@ -194,7 +195,12 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
     }
   }, [items, navWidth]);
 
-  const { collapsed } = getItemsDisplayProperties(itemsWidths.ghost, navWidth);
+  const { collapsed: responsiveCollapsed } = getItemsDisplayProperties(itemsWidths.ghost, navWidth);
+
+  // Static collapse from maxItems prop — takes the maximum of the two collapse counts so that
+  // both constraints are respected simultaneously.
+  const maxItemsCollapsed = getMaxItemsCollapsed(items.length, maxItems);
+  const collapsed = Math.max(responsiveCollapsed, maxItemsCollapsed);
 
   let breadcrumbItems = items.map((item, index) => {
     const isLast = index === items.length - 1;
