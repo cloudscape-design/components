@@ -3,6 +3,7 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
+import Button from '../../../lib/components/button';
 import Checkbox from '../../../lib/components/checkbox';
 import TableBody from '../../../lib/components/table-body';
 import TableBodyCell from '../../../lib/components/table-body-cell';
@@ -11,6 +12,7 @@ import TableHeaderCell from '../../../lib/components/table-header-cell';
 import TableRoot, { TableRootProps } from '../../../lib/components/table-root';
 import TableRow from '../../../lib/components/table-row';
 
+import buttonStyles from '../../../lib/components/button/styles.css.js';
 import abstractSwitchStyles from '../../../lib/components/internal/components/abstract-switch/styles.selectors.js';
 import styles from '../../../lib/components/table-root/styles.selectors.js';
 
@@ -126,6 +128,36 @@ describe('TableRoot sticky header', () => {
     fireEvent.blur(realButton);
     fireEvent.focus(findRealTable(container).tBodies[0].querySelector('a')!);
     expect(copyButton).not.toHaveClass(styles['sticky-copy-focus']);
+  });
+
+  test('shows a table header button its own focus ring in the copy', () => {
+    const { container } = render(
+      <TableRoot
+        ariaLabel="Resources"
+        columnLayout={GRID}
+        stickyHeader={
+          <TableHead>
+            <TableRow>
+              <TableHeaderCell disablePaddings="headerButton">
+                <Button variant="table-header">Name</Button>
+              </TableHeaderCell>
+              <TableHeaderCell>Status</TableHeaderCell>
+            </TableRow>
+          </TableHead>
+        }
+      >
+        <Body />
+      </TableRoot>
+    );
+    const realButton = findRealTable(container).querySelector('button')!;
+    const copyButton = findSlot(container)!.querySelector('button')!;
+
+    fireEvent.focus(realButton);
+    expect(copyButton).toHaveClass(buttonStyles['fake-focus']);
+    expect(copyButton).not.toHaveClass(styles['sticky-copy-focus']);
+
+    fireEvent.blur(realButton);
+    expect(copyButton).not.toHaveClass(buttonStyles['fake-focus']);
   });
 
   test('hides the real header under the copy and restores it when sticky is turned off', () => {

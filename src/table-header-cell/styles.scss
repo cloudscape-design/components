@@ -31,11 +31,51 @@
   padding-inline: 0;
 }
 
+// The gap to the cell edge, and the padding around the content, as in the existing Table.
+$gap-block: awsui.$space-scaled-xxs;
+$gap-inline: awsui.$space-scaled-xs;
+// The existing Table's last column, whose end gap doesn't scale with density.
+$gap-inline-end-last: awsui.$space-xs;
+// In visual refresh the first column lines up with the table edge.
+$gap-inline-start-first: awsui.$space-xxxs;
+$content-block: awsui.$space-scaled-xxs;
+$content-inline: awsui.$space-s;
+// A header button spans the cell's height and has the same inline space as the existing Table's sortable headers.
+// Its focus ring sits outside it inline, like other buttons, so the cell leaves room for that. The start side is
+// narrower by the divider's width, so the ring is the same distance from the dividers on both sides.
+$button-ring-room: calc(
+  #{awsui.$space-button-focus-outline-gutter} + #{awsui.$space-table-header-focus-outline-gutter}
+);
+$button-gap-inline-start: calc(#{awsui.$space-xs} - #{awsui.$border-divider-list-width} + #{$button-ring-room});
+$button-gap-inline-end: calc(#{awsui.$space-xs} + #{$button-ring-room});
+// In visual refresh a last sortable column without a resizer ends closer to the table edge.
+$button-gap-inline-end-last: calc(#{awsui.$space-xxxs} + #{$button-ring-room});
+
 .header-cell-content {
-  padding-block: awsui.$space-scaled-xxs;
-  padding-inline-start: awsui.$space-s;
-  padding-inline-end: awsui.$space-s;
   line-height: awsui.$line-height-body-m;
+}
+
+// By default the content wrapper is the only padding layer. With a header button, the cell keeps the gap as its
+// own padding, and the content wrapper draws no box but sets the content padding that the button inherits, so the
+// focus ring sits at the button's edge. The doubled classes outrank the existing Table's `th` padding rules, which
+// also apply to this element.
+.header-cell.padded-content.padded-content {
+  padding-block: 0;
+  padding-inline: 0;
+}
+
+.header-cell.header-button.header-button {
+  padding-block: 0;
+  padding-inline-start: $button-gap-inline-start;
+  padding-inline-end: $button-gap-inline-end;
+}
+
+.header-cell.header-button.header-button.is-visual-refresh:last-child {
+  padding-inline-end: $button-gap-inline-end-last;
+}
+
+.header-cell.header-button.header-button.is-visual-refresh:first-child {
+  padding-inline-start: $gap-inline-start-first;
 }
 
 .header-cell.disable-paddings > .header-cell-content {
@@ -43,9 +83,28 @@
   padding-inline: 0;
 }
 
-// VR-gated: the substrate is shared with the existing Table, which still supports non-VR mode.
-.header-cell.is-visual-refresh:first-child > .header-cell-content {
+.header-cell.header-button.header-button > .header-cell-content {
+  display: contents;
+  padding-block: calc(#{$gap-block} + #{$content-block});
+  padding-inline-start: calc(#{$gap-inline} + #{$content-inline} - #{$button-gap-inline-start});
+  padding-inline-end: calc(#{$content-inline} - #{$button-ring-room});
+}
+
+.header-cell.padded-content.padded-content > .header-cell-content {
+  padding-block: calc(#{$gap-block} + #{$content-block});
+  padding-inline: calc(#{$gap-inline} + #{$content-inline});
+}
+
+.header-cell.padded-content.padded-content:last-child > .header-cell-content {
+  padding-inline-end: calc(#{$gap-inline-end-last} + #{$content-inline});
+}
+
+.header-cell.header-button.header-button.is-visual-refresh:first-child > .header-cell-content {
   padding-inline-start: 0;
+}
+
+.header-cell.padded-content.padded-content.is-visual-refresh:first-child > .header-cell-content {
+  padding-inline-start: $gap-inline-start-first;
 }
 
 // Stretch to the row track, else an empty control header collapses to ~1px, leaving a stray divider stub.
