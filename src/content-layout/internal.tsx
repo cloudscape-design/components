@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import { useCurrentMode, useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
+import { GridProps } from '../grid/interfaces';
 import InternalGrid from '../grid/internal';
 import { getBaseProps } from '../internal/base-component';
 import customCssProps from '../internal/generated/custom-css-properties';
@@ -23,6 +24,20 @@ const halfGeckoMaxCssLength = ((1 << 30) - 1) / 120;
 // CSS lengths in Gecko are limited to at most (1<<30)-1 app units (Gecko uses 60 as app unit).
 // Limit the maxContentWidth to the half of the upper boundary (≈4230^2) to be on the safe side.
 
+export const defaultSecondaryHeaderBreakpoint: ContentLayoutProps.SecondaryHeaderBreakpoint = 'xs';
+
+/**
+ * Builds the grid definition for the header / secondary header split.
+ *
+ * The header spans 9 columns and the secondary header 3 columns (25%) at and above the provided
+ * breakpoint. Below the breakpoint both slots stack and occupy the full 12 columns.
+ */
+export function getSecondaryHeaderGridDefinition(
+  breakpoint: ContentLayoutProps.SecondaryHeaderBreakpoint
+): ReadonlyArray<GridProps.ElementDefinition> {
+  return [{ colspan: { default: 12, [breakpoint]: 9 } }, { colspan: { default: 12, [breakpoint]: 3 } }];
+}
+
 export default function InternalContentLayout({
   children,
   disableOverlap,
@@ -35,6 +50,7 @@ export default function InternalContentLayout({
   notifications,
   defaultPadding,
   secondaryHeader,
+  secondaryHeaderBreakpoint = defaultSecondaryHeaderBreakpoint,
   ...rest
 }: InternalContentLayoutProps) {
   const mainRef = useRef<HTMLDivElement>(null);
@@ -111,7 +127,7 @@ export default function InternalContentLayout({
             [styles['with-divider']]: headerVariant === 'divider',
           })}
         >
-          <InternalGrid gridDefinition={[{ colspan: { default: 12, xs: 9 } }, { colspan: { default: 12, xs: 3 } }]}>
+          <InternalGrid gridDefinition={getSecondaryHeaderGridDefinition(secondaryHeaderBreakpoint)}>
             <div className={clsx(testutilStyles.header, contentHeaderClassName)}>{header}</div>
             <div className={testutilStyles['secondary-header']}>{secondaryHeader}</div>
           </InternalGrid>

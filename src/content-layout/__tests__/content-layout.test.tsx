@@ -4,6 +4,10 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import ContentLayout, { ContentLayoutProps } from '../../../lib/components/content-layout';
+import {
+  defaultSecondaryHeaderBreakpoint,
+  getSecondaryHeaderGridDefinition,
+} from '../../../lib/components/content-layout/internal';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import { highContrastHeaderClassName } from '../../../lib/components/internal/utils/content-header-utils';
@@ -58,6 +62,17 @@ function renderContentLayout(props: ContentLayoutProps = {}) {
         const { wrapper } = renderContentLayout({
           header: <>Header text</>,
           secondaryHeader: <>Secondary text</>,
+        });
+
+        expect(wrapper.findHeader()!.getElement()).toHaveTextContent('Header text');
+        expect(wrapper.findSecondaryHeader()!.getElement()).toHaveTextContent('Secondary text');
+      });
+
+      test('renders both header slots when secondaryHeaderBreakpoint is set', () => {
+        const { wrapper } = renderContentLayout({
+          header: <>Header text</>,
+          secondaryHeader: <>Secondary text</>,
+          secondaryHeaderBreakpoint: 'm',
         });
 
         expect(wrapper.findHeader()!.getElement()).toHaveTextContent('Header text');
@@ -280,5 +295,34 @@ function renderContentLayout(props: ContentLayoutProps = {}) {
         expect(wrapper.findByClassName(styles['header-background'])!.getElement()).toHaveStyle('background: blue;');
       });
     });
+  });
+});
+
+describe('secondaryHeaderBreakpoint', () => {
+  test('defaults to the "xs" breakpoint', () => {
+    expect(defaultSecondaryHeaderBreakpoint).toBe('xs');
+  });
+
+  test('getSecondaryHeaderGridDefinition keeps the 9/3 split and full-width stacking below the breakpoint (default xs)', () => {
+    expect(getSecondaryHeaderGridDefinition(defaultSecondaryHeaderBreakpoint)).toEqual([
+      { colspan: { default: 12, xs: 9 } },
+      { colspan: { default: 12, xs: 3 } },
+    ]);
+  });
+
+  test.each(['xxs', 'xs', 's', 'm', 'l', 'xl'] as const)(
+    'getSecondaryHeaderGridDefinition applies the side-by-side split at the "%s" breakpoint',
+    breakpoint => {
+      expect(getSecondaryHeaderGridDefinition(breakpoint)).toEqual([
+        { colspan: { default: 12, [breakpoint]: 9 } },
+        { colspan: { default: 12, [breakpoint]: 3 } },
+      ]);
+    }
+  );
+
+  test('lowering the breakpoint to "xxs" keeps the slots side-by-side on narrow viewports', () => {
+    const [headerColumn, secondaryColumn] = getSecondaryHeaderGridDefinition('xxs');
+    expect(headerColumn.colspan).toEqual({ default: 12, xxs: 9 });
+    expect(secondaryColumn.colspan).toEqual({ default: 12, xxs: 3 });
   });
 });
