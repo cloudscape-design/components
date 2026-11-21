@@ -14,7 +14,7 @@ jest.mock('../../../lib/components/app-layout/visual-refresh-toolbar/navigation'
   AppLayoutNavigationImplementation: createMockComponent('AppLayoutNavigationImplementation'),
 }));
 jest.mock('../../../lib/components/app-layout/visual-refresh-toolbar/drawer', () => ({
-  AppLayoutDrawerImplementation: createMockComponent('AppLayoutDrawerImplementation'),
+  AppLayoutDrawersImplementation: createMockComponent('AppLayoutDrawersImplementation'),
   AppLayoutGlobalDrawersImplementation: createMockComponent('AppLayoutGlobalDrawersImplementation'),
 }));
 jest.mock('../../../lib/components/app-layout/visual-refresh-toolbar/notifications', () => ({

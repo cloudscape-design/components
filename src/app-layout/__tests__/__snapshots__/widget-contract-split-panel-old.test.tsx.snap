@@ -551,7 +551,7 @@ Map {
       "topOffset": 0,
     },
   },
-  "AppLayoutDrawerImplementation" => {
+  "AppLayoutDrawersImplementation" => {
     "appLayoutInternals": {
       "activeAiDrawer": null,
       "activeAiDrawerId": null,
@@ -1413,7 +1413,7 @@ Map {
       "topOffset": 0,
     },
   },
-  "AppLayoutDrawerImplementation" => {
+  "AppLayoutDrawersImplementation" => {
     "appLayoutInternals": {
       "activeAiDrawer": null,
       "activeAiDrawerId": null,

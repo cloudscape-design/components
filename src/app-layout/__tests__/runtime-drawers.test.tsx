@@ -15,7 +15,7 @@ import * as awsuiWidgetInternal from '../../../lib/components/internal/plugins/w
 import * as awsuiWidgetPlugins from '../../../lib/components/internal/plugins/widget/index';
 import { DrawerPayload as WidgetDrawerPayload } from '../../../lib/components/internal/plugins/widget/interfaces';
 import SplitPanel from '../../../lib/components/split-panel';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import createWrapper, { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
 import {
   describeEachAppLayout,
   findActiveDrawerLandmark,
@@ -857,6 +857,7 @@ describe('toolbar mode only features', () => {
         return;
       }
 
+      wrapper.findDrawerTriggerById(testDrawer.id)!.click();
       wrapper.findDrawerTriggerById('global-drawer')!.click();
 
       expect(wrapper!.find('[class*="awsui_drawer-close-button_12i0j"]')).toBeTruthy();
@@ -880,6 +881,128 @@ describe('toolbar mode only features', () => {
 
       expect(wrapper.findDrawersTriggers()).toHaveLength(2);
       expect(globalDrawersWrapper.findGlobalDrawersTriggers()).toHaveLength(0);
+    });
+
+    describe('local drawers with preserveInactiveContent', () => {
+      const findLocalDrawerContent = (wrapper: AppLayoutWrapper, id: string) =>
+        wrapper.find(`[data-awsui-runtime-drawer-root-id="${id}"]`);
+      const isContentHidden = (wrapper: AppLayoutWrapper, id: string) =>
+        findLocalDrawerContent(wrapper, id)!.getElement().closest('aside')!.getAttribute('aria-hidden') === 'true';
+
+      test('initially closed drawer is not rendered, but stays in the DOM after being opened and closed', async () => {
+        const mountContent = jest.fn((container: HTMLElement) => (container.textContent = 'local drawer content'));
+        const unmountContent = jest.fn();
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'local-drawer',
+          mountContent,
+          unmountContent,
+          preserveInactiveContent: true,
+        });
+        const { wrapper } = await renderComponent(<AppLayout />);
+
+        if (isNotRefreshToolbarTheme(theme)) {
+          return;
+        }
+
+        expect(findLocalDrawerContent(wrapper, 'local-drawer')).toBeNull();
+        expect(mountContent).not.toHaveBeenCalled();
+
+        wrapper.findDrawerTriggerById('local-drawer')!.click();
+        expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('local drawer content');
+        expect(isContentHidden(wrapper, 'local-drawer')).toBe(false);
+
+        wrapper.findActiveDrawerCloseButton()!.click();
+        expect(wrapper.findActiveDrawer()).toBeNull();
+        expect(findLocalDrawerContent(wrapper, 'local-drawer')!.getElement()).toHaveTextContent('local drawer content');
+        expect(isContentHidden(wrapper, 'local-drawer')).toBe(true);
+        expect(unmountContent).not.toHaveBeenCalled();
+
+        wrapper.findDrawerTriggerById('local-drawer')!.click();
+        expect(isContentHidden(wrapper, 'local-drawer')).toBe(false);
+        expect(mountContent).toHaveBeenCalledTimes(1);
+      });
+
+      test('preserved drawer stays in the DOM while another local drawer is active', async () => {
+        const mountContent = jest.fn((container: HTMLElement) => (container.textContent = 'preserved content'));
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'preserved-drawer',
+          mountContent,
+          preserveInactiveContent: true,
+        });
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'regular-drawer',
+          mountContent: container => (container.textContent = 'regular content'),
+        });
+        const { wrapper } = await renderComponent(<AppLayout />);
+
+        if (isNotRefreshToolbarTheme(theme)) {
+          return;
+        }
+
+        wrapper.findDrawerTriggerById('preserved-drawer')!.click();
+        wrapper.findDrawerTriggerById('regular-drawer')!.click();
+
+        expect(wrapper.findActiveDrawer()!.getElement()).toHaveAttribute('id', 'regular-drawer');
+        expect(isContentHidden(wrapper, 'regular-drawer')).toBe(false);
+        expect(findLocalDrawerContent(wrapper, 'preserved-drawer')!.getElement()).toHaveTextContent(
+          'preserved content'
+        );
+        expect(isContentHidden(wrapper, 'preserved-drawer')).toBe(true);
+
+        wrapper.findDrawerTriggerById('preserved-drawer')!.click();
+        expect(isContentHidden(wrapper, 'preserved-drawer')).toBe(false);
+        expect(findLocalDrawerContent(wrapper, 'regular-drawer')).toBeNull();
+        expect(mountContent).toHaveBeenCalledTimes(1);
+      });
+
+      test('drawer without preserveInactiveContent is removed from the DOM when closed', async () => {
+        const unmountContent = jest.fn();
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'local-drawer',
+          mountContent: container => (container.textContent = 'local drawer content'),
+          unmountContent,
+        });
+        const { wrapper } = await renderComponent(<AppLayout />);
+
+        if (isNotRefreshToolbarTheme(theme)) {
+          return;
+        }
+
+        wrapper.findDrawerTriggerById('local-drawer')!.click();
+        expect(findLocalDrawerContent(wrapper, 'local-drawer')).not.toBeNull();
+
+        wrapper.findActiveDrawerCloseButton()!.click();
+        expect(findLocalDrawerContent(wrapper, 'local-drawer')).toBeNull();
+        expect(unmountContent).toHaveBeenCalledTimes(1);
+      });
+
+      test('calls visibilityChange callback when preserved local drawer is opened and closed', async () => {
+        const onVisibilityChange = jest.fn();
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'local-drawer',
+          mountContent: (container, mountContext) => {
+            mountContext?.onVisibilityChange(onVisibilityChange);
+            container.textContent = 'local drawer content';
+          },
+          preserveInactiveContent: true,
+        });
+        const { wrapper } = await renderComponent(<AppLayout />);
+
+        if (isNotRefreshToolbarTheme(theme)) {
+          return;
+        }
+
+        wrapper.findDrawerTriggerById('local-drawer')!.click();
+        expect(onVisibilityChange).toHaveBeenLastCalledWith(true);
+
+        wrapper.findActiveDrawerCloseButton()!.click();
+        expect(onVisibilityChange).toHaveBeenLastCalledWith(false);
+      });
     });
 
     test('should register global runtime drawers and their trigger buttons', async () => {

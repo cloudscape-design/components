@@ -7,7 +7,7 @@ import { AppLayoutBuiltInErrorBoundary } from '../../../error-boundary/internal'
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { ActiveDrawersContext } from '../../utils/visibility-context';
 import {
-  AppLayoutDrawerImplementation as AppLayoutDrawer,
+  AppLayoutDrawersImplementation as AppLayoutDrawers,
   AppLayoutGlobalDrawersImplementation as AppLayoutGlobalDrawers,
 } from '../drawer';
 import { AppLayoutBottomDrawerWrapper } from '../drawer/global-bottom-drawer';
@@ -76,10 +76,12 @@ export const AfterMainSlotImplementationInternal = ({ appLayoutState, appLayoutP
           )}
         >
           {drawers && drawers.length > 0 && (
-            <AppLayoutDrawer
-              appLayoutInternals={appLayoutState.appLayoutInternals}
-              bottomDrawerReportedSize={activeGlobalBottomDrawerId ? bottomDrawerReportedSize : 0}
-            />
+            <ActiveDrawersContext.Provider value={activeDrawer ? [activeDrawer.id] : []}>
+              <AppLayoutDrawers
+                appLayoutInternals={appLayoutState.appLayoutInternals}
+                bottomDrawerReportedSize={activeGlobalBottomDrawerId ? bottomDrawerReportedSize : 0}
+              />
+            </ActiveDrawersContext.Provider>
           )}
         </div>
       </AppLayoutBuiltInErrorBoundary>

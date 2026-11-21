@@ -2,4 +2,5 @@
 // SPDX-License-Identifier: Apache-2.0
 
 export { AppLayoutDrawerImplementation } from './local-drawer';
+export { AppLayoutDrawersImplementation } from './local-drawers';
 export { AppLayoutGlobalDrawersImplementation } from './global-drawers';

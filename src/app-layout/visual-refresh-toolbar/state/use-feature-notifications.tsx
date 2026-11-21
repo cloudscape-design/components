@@ -106,6 +106,7 @@ export function useFeatureNotifications() {
       resizable: true,
       defaultSize: 320,
       badge: payload.badge,
+      preserveInactiveContent: true,
     };
   };
 
