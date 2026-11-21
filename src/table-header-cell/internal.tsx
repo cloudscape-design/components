@@ -1,12 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useTableContext } from '../table-root/context';
 import { TableHeaderCellProps } from './interfaces';
+import { TableHeaderCellSortContext } from './sort-context';
 
 import headerCellStyles from '../table/header-cell/styles.css.js';
 import styles from './styles.css.js';
@@ -39,10 +40,13 @@ export const InternalTableHeaderCell = React.forwardRef<HTMLTableCellElement, In
     const { className, ...restBaseProps } = getBaseProps(props);
     const { isGrid } = useTableContext();
     const isVisualRefresh = useVisualRefresh();
+    // Set by a TableSortButton inside the cell. An explicit ariaSort, or the existing Table's, wins.
+    const [reportedAriaSort, setReportedAriaSort] = useState<React.AriaAttributes['aria-sort']>(undefined);
     // `scope='col'` is the default for a public header cell; an internal caller's nativeAttributes (e.g. the
     // existing Table's `scope='colgroup'` and computed role/aria-sort) override it. Grid mode adds the role.
     const mergedNativeAttributes = {
       scope: 'col' as const,
+      ...(reportedAriaSort !== undefined ? { 'aria-sort': reportedAriaSort } : undefined),
       ...nativeAttributes,
       ...(ariaLabel !== undefined ? { 'aria-label': ariaLabel } : undefined),
       ...(ariaLabelledby !== undefined ? { 'aria-labelledby': ariaLabelledby } : undefined),
@@ -72,7 +76,9 @@ export const InternalTableHeaderCell = React.forwardRef<HTMLTableCellElement, In
         tabIndex={tabIndex}
         {...mergedNativeAttributes}
       >
-        {disableContentWrapper ? children : <div className={styles['header-cell-content']}>{children}</div>}
+        <TableHeaderCellSortContext.Provider value={setReportedAriaSort}>
+          {disableContentWrapper ? children : <div className={styles['header-cell-content']}>{children}</div>}
+        </TableHeaderCellSortContext.Provider>
       </th>
     );
   }

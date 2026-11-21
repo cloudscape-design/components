@@ -724,6 +724,11 @@ exports[`test-utils selectors 1`] = `
   "table-row": [
     "awsui_row_3yyds",
   ],
+  "table-sort-button": [
+    "awsui_label_1ssy0",
+    "awsui_root_1ssy0",
+    "awsui_sorting-icon_1ssy0",
+  ],
   "tabs": [
     "awsui_actions-container_14rmt",
     "awsui_disabled-reason-tooltip_14rmt",
