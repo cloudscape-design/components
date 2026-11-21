@@ -26,6 +26,7 @@ import {
   getSortedOptions,
   OptionGroupNode,
   OptionTreeNode,
+  OptionWithVisibility,
   toContentDisplayItems,
 } from './utils';
 
@@ -187,6 +188,30 @@ function HierarchicalContentDisplay({
   );
 }
 
+/**
+ * Renders locked options as a static (non-sortable) list above the sortable list.
+ * Locked options cannot be reordered or hidden.
+ */
+function LockedOptionsList({ options }: { options: ReadonlyArray<OptionWithVisibility> }) {
+  if (options.length === 0) {
+    return null;
+  }
+  return (
+    <div className={getClassName('locked-options')} data-testid="locked-options">
+      {options.map(option => (
+        <div
+          key={option.id}
+          className={getClassName('locked-option-item')}
+          data-item-type="column"
+          data-testid="locked-option-item"
+        >
+          <ContentDisplayOption option={option} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function ContentDisplayPreference({
   title,
   description,
@@ -219,9 +244,18 @@ export default function ContentDisplayPreference({
   const isFiltering = columnFilteringText.trim().length > 0;
 
   const sortedOptions = useMemo(() => getSortedOptions({ options, contentDisplay: value }), [options, value]);
+
+  // Separate locked options (always at top, non-sortable) from sortable options
+  const lockedOptions = useMemo(() => sortedOptions.filter(opt => opt.locked === true), [sortedOptions]);
+  const sortableOptions = useMemo(() => sortedOptions.filter(opt => opt.locked !== true), [sortedOptions]);
+
   const filteredOptions = useMemo(
-    () => getFilteredOptions(sortedOptions, columnFilteringText),
-    [sortedOptions, columnFilteringText]
+    () => getFilteredOptions(sortableOptions, columnFilteringText),
+    [sortableOptions, columnFilteringText]
+  );
+  const filteredLockedOptions = useMemo(
+    () => getFilteredOptions(lockedOptions, columnFilteringText),
+    [lockedOptions, columnFilteringText]
   );
   const optionTree = useMemo(
     () => (hasGroups ? buildOptionTree(options, groups, value) : null),
@@ -233,6 +267,10 @@ export default function ContentDisplayPreference({
   );
 
   const handleToggle = (id: string) => {
+    // Locked options cannot be toggled
+    if (options.find(opt => opt.id === id)?.locked) {
+      return;
+    }
     // For flat (non-grouped) mode, rebuild from sortedOptions to handle items not in value
     if (!hasGroups) {
       onChange(sortedOptions.map(opt => ({ id: opt.id, visible: opt.id === id ? !opt.visible : opt.visible })));
@@ -250,7 +288,29 @@ export default function ContentDisplayPreference({
       });
     onChange(toggle(value));
   };
-  const noResults = filteredTree ? filteredTree.length === 0 : filteredOptions.length === 0;
+
+  // When sortable options are reordered, preserve locked options at their original positions
+  const handleSortableChange = (reorderedSortable: ReadonlyArray<{ id: string; visible: boolean }>) => {
+    // Rebuild full order: locked items stay in their original slots, sortable items fill the rest
+    const lockedIds = new Set(lockedOptions.map(o => o.id));
+    const sortableResult = reorderedSortable.map(({ id, visible }) => ({ id, visible }));
+    const result: CollectionPreferencesProps.ContentDisplayItem[] = [];
+    let sortableIdx = 0;
+    for (const opt of sortedOptions) {
+      if (lockedIds.has(opt.id)) {
+        result.push({ id: opt.id, visible: opt.visible });
+      } else {
+        result.push({ id: sortableResult[sortableIdx].id, visible: sortableResult[sortableIdx].visible });
+        sortableIdx++;
+      }
+    }
+    onChange(result);
+  };
+
+  const noResults = filteredTree
+    ? filteredTree.length === 0
+    : filteredOptions.length === 0 && filteredLockedOptions.length === 0;
+
   return (
     <div
       role="group"
@@ -286,8 +346,8 @@ export default function ContentDisplayPreference({
             onChange={({ detail }) => setColumnFilteringText(detail.filteringText)}
             countText={i18n(
               'contentDisplayPreference.i18nStrings.columnFilteringCountText',
-              i18nStrings?.columnFilteringCountText?.(filteredOptions.length),
-              format => format({ count: filteredOptions.length })
+              i18nStrings?.columnFilteringCountText?.(filteredOptions.length + filteredLockedOptions.length),
+              format => format({ count: filteredOptions.length + filteredLockedOptions.length })
             )}
           />
         </div>
@@ -325,21 +385,28 @@ export default function ContentDisplayPreference({
             groupLabelFormatter={groupLabelFormatter}
           />
         ) : (
-          <InternalList
-            items={filteredOptions}
-            sortable={true}
-            sortDisabled={isFiltering}
-            disableItemPaddings={true}
-            ariaLabelledby={titleId}
-            ariaDescribedby={descriptionId}
-            i18nStrings={listI18nStrings}
-            onSortingChange={({ detail: { items } }) => onChange(items.map(({ id, visible }) => ({ id, visible })))}
-            renderItem={item => ({
-              id: item.id,
-              announcementLabel: item.label,
-              content: <ContentDisplayOption option={item} onToggle={() => handleToggle(item.id)} />,
-            })}
-          />
+          <>
+            {/* Locked options rendered above the sortable list, non-interactive */}
+            {!isFiltering && <LockedOptionsList options={lockedOptions} />}
+            {isFiltering && <LockedOptionsList options={filteredLockedOptions} />}
+            <InternalList
+              items={isFiltering ? filteredOptions : sortableOptions}
+              sortable={true}
+              sortDisabled={isFiltering}
+              disableItemPaddings={true}
+              ariaLabelledby={titleId}
+              ariaDescribedby={descriptionId}
+              i18nStrings={listI18nStrings}
+              onSortingChange={({ detail: { items } }) =>
+                handleSortableChange(items.map(({ id, visible }) => ({ id, visible })))
+              }
+              renderItem={item => ({
+                id: item.id,
+                announcementLabel: item.label,
+                content: <ContentDisplayOption option={item} onToggle={() => handleToggle(item.id)} />,
+              })}
+            />
+          </>
         )}
       </div>
     </div>
