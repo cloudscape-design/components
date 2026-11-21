@@ -51,7 +51,7 @@ export class FlashbarInteractivePage extends FlashbarBasePage {
 export const setupTest = (testFn: (page: FlashbarInteractivePage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new FlashbarInteractivePage(browser);
-    await browser.url(`#/light/flashbar/interactive`);
+    await browser.url(`#/flashbar/interactive`);
     await page.waitForVisible(flashbar.toSelector());
     await testFn(page);
   });

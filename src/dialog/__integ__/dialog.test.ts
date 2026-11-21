@@ -21,7 +21,7 @@ describe('Dialog focus restoration', () => {
   test(
     'moves focus into Dialog and returns it to the trigger',
     useBrowser(async browser => {
-      await browser.url('#/light/dialog/simple');
+      await browser.url('#/dialog/simple');
       const page = new DialogPage(browser);
       await page.waitForVisible(triggerSelector);
 
@@ -37,7 +37,7 @@ describe('Dialog focus restoration', () => {
   test(
     'consumer restores focus when the trigger is removed',
     useBrowser(async browser => {
-      await browser.url('#/light/dialog/simple?removeTrigger=true');
+      await browser.url('#/dialog/simple?removeTrigger=true');
       const page = new DialogPage(browser);
       await page.waitForVisible(triggerSelector);
 
@@ -52,7 +52,7 @@ describe('Dialog focus restoration', () => {
   test(
     'consumer restores focus after programmatic opening',
     useBrowser(async browser => {
-      await browser.url('#/light/dialog/simple?dialogOpen=true&removeTrigger=true');
+      await browser.url('#/dialog/simple?dialogOpen=true&removeTrigger=true');
       const page = new DialogPage(browser);
       await page.waitForVisible(dialogSelector);
 

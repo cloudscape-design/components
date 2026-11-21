@@ -51,7 +51,7 @@ describe('Visual refresh toolbar only', () => {
       const page = new PageObject(browser);
 
       await browser.url(
-        `#/light/app-layout/with-error-boundaries?${getUrlParams('refresh-toolbar', {
+        `#/app-layout/with-error-boundaries?${getUrlParams('refresh-toolbar', {
           appLayoutToolbar: 'true',
           hasParentErrorBoundary,
         })}`

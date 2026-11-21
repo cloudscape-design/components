@@ -11,7 +11,7 @@ const annotationWrapper = wrapper.findAnnotation();
 function setupTest(testFn: (page: BasePageObject) => Promise<void>) {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url('#/light/annotation-context/annotation-scroll');
+    await browser.url('#/annotation-context/annotation-scroll');
     await testFn(page);
   });
 }

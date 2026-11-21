@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 import { PACKAGE_VERSION } from '~components/internal/environment';
 import AwsUiLink from '~components/link';
 
+import AppContext from '../app-context';
 import pagesContext from '../pages-context';
 
 interface TreeItem {
@@ -38,10 +39,14 @@ function createPagesTree(pages: string[]) {
 }
 
 function TreeItemView({ item }: { item: TreeItem }) {
+  const { urlParams } = useContext(AppContext);
   return (
     <li>
       {item.href ? (
-        <Link to={item.href} component={AwsUiLink}>
+        <Link
+          to={{ pathname: item.href, search: urlParams.mode ? `?mode=${urlParams.mode}` : '' }}
+          component={AwsUiLink}
+        >
           {item.name}
         </Link>
       ) : (

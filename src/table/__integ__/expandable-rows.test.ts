@@ -26,7 +26,7 @@ describe('Expandable rows', () => {
         useServerMock: String(useServerMock),
         manualServerMock: String(useServerMock),
       });
-      await browser.url(`#/light/table/expandable-rows-test?${query.toString()}`);
+      await browser.url(`#/table/expandable-rows-test?${query.toString()}`);
       await page.waitForVisible(tableWrapper.findColumnHeaders().get(1).toSelector());
       await testFn(page);
     });

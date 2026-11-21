@@ -66,7 +66,7 @@ class TimeInputPage extends BasePageObject {
 const setupTest = (testFn: (page: TimeInputPage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new TimeInputPage(browser);
-    await browser.url('#/light/time-input/simple');
+    await browser.url('#/time-input/simple');
     await page.waitForLoad();
     await testFn(page);
   });

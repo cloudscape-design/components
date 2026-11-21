@@ -13,7 +13,7 @@ const listbox = (list: typeof singleList) => `${list.toSelector()} [role="listbo
 
 const setupTest = (testFn: (page: BasePageObject) => Promise<void>) =>
   useBrowser(async browser => {
-    await browser.url('#/light/option-list/simple');
+    await browser.url('#/option-list/simple');
     const page = new BasePageObject(browser);
     await page.waitForVisible(singleList.toSelector());
     await testFn(page);
@@ -66,7 +66,7 @@ describe('OptionList in an iframe', () => {
   test(
     'Home and End move the highlight without scrolling the iframe away from it',
     useBrowser(async browser => {
-      await browser.url('#/light/option-list/in-iframe');
+      await browser.url('#/option-list/in-iframe');
       const page = new BasePageObject(browser);
       await page.runInsideIframe('#option-list-iframe', true, async () => {
         await page.click('#option-list-heading');

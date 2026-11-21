@@ -14,7 +14,7 @@ function setupTest(
 ) {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url(`#/light/table/performance-marks${!inViewport ? '?outsideOfViewport=true' : ''}`);
+    await browser.url(`#/table/performance-marks${!inViewport ? '?outsideOfViewport=true' : ''}`);
     const getMarks = async () => {
       let awsuiMarks: PerformanceMark[] = [];
       await new Promise(r => setTimeout(r, 200));

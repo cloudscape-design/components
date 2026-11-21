@@ -13,7 +13,7 @@ class SelectionTestPage extends BasePageObject {
 const setupTest = (selectionType: 'single' | 'multi', testFn: (page: SelectionTestPage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new SelectionTestPage(browser);
-    await browser.url(`#/light/table-fragments/selection-custom?selectionType=${selectionType}`);
+    await browser.url(`#/table-fragments/selection-custom?selectionType=${selectionType}`);
     await page.waitForVisible('table');
     await testFn(page);
   });

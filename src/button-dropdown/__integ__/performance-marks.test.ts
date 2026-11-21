@@ -12,7 +12,7 @@ test(
   'ButtonDropdown emits a single mark',
   useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url('#/light/button-dropdown/main-action');
+    await browser.url('#/button-dropdown/main-action');
     await new Promise(r => setTimeout(r, 200));
 
     await page.waitForAssertion(async () => {

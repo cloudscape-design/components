@@ -37,7 +37,7 @@ test(
   'does not work in visual refresh',
   setupTest(
     {
-      url: `#/light/app-layout/global-breadcrumbs/?${new URLSearchParams({ hasOwnBreadcrumbs: 'true' }).toString()}`,
+      url: `#/app-layout/global-breadcrumbs/?${new URLSearchParams({ hasOwnBreadcrumbs: 'true' }).toString()}`,
     },
     async page => {
       await expect(page.getRootBreadcrumbText()).resolves.toEqual('Own');
@@ -55,7 +55,7 @@ describe('refresh-toolbar', () => {
     'deduplicates breadcrumbs',
     setupTest(
       {
-        url: `#/light/app-layout/global-breadcrumbs/?${getUrlParams('refresh-toolbar', { hasOwnBreadcrumbs: 'false' })}`,
+        url: `#/app-layout/global-breadcrumbs/?${getUrlParams('refresh-toolbar', { hasOwnBreadcrumbs: 'false' })}`,
       },
       async page => {
         await expect(page.getRootBreadcrumbText()).resolves.toEqual('Default');
@@ -76,7 +76,7 @@ describe('refresh-toolbar', () => {
     'does not deduplicate breadcrumbs if breadcrumbs slot is not empty',
     setupTest(
       {
-        url: `#/light/app-layout/global-breadcrumbs/?${getUrlParams('refresh-toolbar', { hasOwnBreadcrumbs: 'true' })}`,
+        url: `#/app-layout/global-breadcrumbs/?${getUrlParams('refresh-toolbar', { hasOwnBreadcrumbs: 'true' })}`,
       },
       async page => {
         await expect(page.getRootBreadcrumbText()).resolves.toEqual('Own');

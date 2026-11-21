@@ -4,7 +4,7 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-const pageUrl = '#/light/icon-provider/custom-icons/custom-icons';
+const pageUrl = '#/icon-provider/custom-icons/custom-icons';
 
 class CustomIconsPage extends BasePageObject {
   svgInside(testId: string) {

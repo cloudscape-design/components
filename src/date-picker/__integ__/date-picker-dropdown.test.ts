@@ -11,7 +11,7 @@ describe('Date picker Dropdown interactions', () => {
   const setupTest = (testFn: (page: DatePickerPage) => Promise<void>) => {
     return useBrowser(async browser => {
       const page = new DatePickerPage(createWrapper().findDatePicker().getElement(), browser);
-      await browser.url('#/light/date-picker/simple');
+      await browser.url('#/date-picker/simple');
       await page.waitForLoad();
       await testFn(page);
     });
@@ -138,7 +138,7 @@ describe('Dropdown with default value', () => {
   const setupTest = (testFn: (page: DatePickerPage) => Promise<void>) => {
     return useBrowser(async browser => {
       const page = new DatePickerPage(createWrapper().findDatePicker().getElement(), browser);
-      await browser.url('#/light/date-picker/simple?hasValue=true&locale=en-GB');
+      await browser.url('#/date-picker/simple?hasValue=true&locale=en-GB');
       await page.waitForLoad();
       await testFn(page);
     });

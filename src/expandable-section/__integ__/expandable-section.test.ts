@@ -15,7 +15,7 @@ const headerButtonSelector = expandableSectionWrapper.findHeader().find('[role="
 const setupTest = (testFn: (page: BasePageObject) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url('#/light/expandable-section/test');
+    await browser.url('#/expandable-section/test');
     await page.waitForVisible(expandableSectionWrapper.toSelector());
     await testFn(page);
   });
@@ -87,7 +87,7 @@ class EndPositionPage extends BasePageObject {
 const setupEndPositionTest = (testFn: (page: EndPositionPage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new EndPositionPage(browser);
-    await browser.url('#/light/expandable-section/test');
+    await browser.url('#/expandable-section/test');
     await page.waitForVisible(endSingleRowWrapper.toSelector());
     await testFn(page);
   });

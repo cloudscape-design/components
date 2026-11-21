@@ -55,7 +55,7 @@ test(
   'fits automatic skeleton rows inside nested scroll viewports',
   useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url('#/light/table/auto-skeleton-rows');
+    await browser.url('#/table/auto-skeleton-rows');
     await page.waitForVisible(skeletonRowSelector);
 
     await expectNoVerticalOverflow(browser, scrollContainerSelector);
@@ -68,7 +68,7 @@ test(
   useBrowser(async browser => {
     const page = new BasePageObject(browser);
     await page.setWindowSize({ width: 1024, height: 800 });
-    await browser.url('#/light/table/auto-skeleton-rows');
+    await browser.url('#/table/auto-skeleton-rows');
 
     for (const selector of featureScenarioSelectors) {
       await page.waitForVisible(`${selector} tr[aria-hidden="true"]`);
@@ -119,7 +119,7 @@ test(
   useBrowser(async browser => {
     const page = new BasePageObject(browser);
     await page.setWindowSize({ width: 1024, height: 800 });
-    await browser.url('#/light/table/auto-skeleton-rows');
+    await browser.url('#/table/auto-skeleton-rows');
 
     await page.waitForVisible('#auto-skeleton-mixed-rows tr[aria-hidden="true"]');
     await expectNoVerticalOverflow(browser, '#auto-skeleton-mixed-rows');
@@ -160,7 +160,7 @@ test(
   useBrowser(async browser => {
     const page = new BasePageObject(browser);
     await page.setWindowSize({ width: 1024, height: 800 });
-    await browser.url('#/light/app-layout/auto-skeleton-table');
+    await browser.url('#/app-layout/auto-skeleton-table');
     await page.waitForVisible('#auto-skeleton-app-layout tr[aria-hidden="true"]');
 
     const layout = await getAppLayoutScenarioLayout(browser, '#auto-skeleton-app-layout');

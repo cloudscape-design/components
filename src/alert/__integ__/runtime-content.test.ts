@@ -15,7 +15,7 @@ class RuntimeContentPage extends BasePageObject {
 function setupTest(testFn: (page: RuntimeContentPage) => Promise<void>) {
   return useBrowser(async browser => {
     const page = new RuntimeContentPage(browser);
-    await browser.url('#/light/alert/runtime-content/?autofocus=true');
+    await browser.url('#/alert/runtime-content/?autofocus=true');
     await page.waitForVisible('.screenshot-area');
     await testFn(page);
   });

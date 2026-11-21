@@ -42,7 +42,7 @@ class StickyHeaderPage extends BasePageObject {
 
 const setupTest = (layout: 'grid' | 'auto', testFn: (page: StickyHeaderPage) => Promise<void>) =>
   useBrowser({ width: 900, height: 800 }, async browser => {
-    await browser.url(`#/light/table-root/sticky-header?layout=${layout}`);
+    await browser.url(`#/table-root/sticky-header?layout=${layout}`);
     const page = new StickyHeaderPage(browser);
     await page.waitForVisible(copyCells);
     await testFn(page);

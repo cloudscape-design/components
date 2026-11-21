@@ -8,7 +8,7 @@ describe('Detail popover series content keeps expanded state independently for e
   test.each(['hover', 'click'])('on %s', interaction =>
     useBrowser(async browser => {
       const page = new MixedChartPage(browser);
-      await browser.url('#/light/mixed-line-bar-chart/drilldown?expandableSubItems=true');
+      await browser.url('#/mixed-line-bar-chart/drilldown?expandableSubItems=true');
 
       const textUnderFirstExpandableSection = 'AWS Config';
       const textUnderSecondExpandableSection = 'Amazon Elastic Container Service';

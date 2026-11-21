@@ -13,7 +13,7 @@ const windowDimensions = {
 const setupTest = (testFn: (page: ContentDisplayPageObject) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new ContentDisplayPageObject(browser);
-    await browser.url('#/light/collection-preferences/content-display-groups');
+    await browser.url('#/collection-preferences/content-display-groups');
     await page.setWindowSize(windowDimensions);
     page.wrapper = createWrapper().findCollectionPreferences();
     await page.openCollectionPreferencesModal();

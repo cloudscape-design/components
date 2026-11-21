@@ -81,7 +81,7 @@ class SegmentedControlPage extends BasePageObject {
 const setupTest = (testFn: (page: SegmentedControlPage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new SegmentedControlPage(browser);
-    await browser.url('#/light/segmented-control/simple');
+    await browser.url('#/segmented-control/simple');
     await page.waitForVisible(segmentedControlWrapper.toSelector());
     await testFn(page);
   });

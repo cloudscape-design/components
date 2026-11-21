@@ -22,7 +22,7 @@ class VirtualScrollAutosuggestPage extends AutosuggestPage {
 function setupTest(testFn: (page: VirtualScrollAutosuggestPage) => Promise<void>) {
   return useBrowser(async browser => {
     const page = new VirtualScrollAutosuggestPage(browser);
-    await browser.url('/#/light/autosuggest/virtual-scroll');
+    await browser.url('/#/autosuggest/virtual-scroll');
     await page.focusInput();
     await page.assertDropdownOpen();
     await testFn(page);

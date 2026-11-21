@@ -12,7 +12,7 @@ const wrapper = createWrapper().findTagEditor();
 const setupTest = (testFn: (page: BasePageObject) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url('/#/light/i18n/dynamic');
+    await browser.url('/#/i18n/dynamic');
     await testFn(page);
   });
 };

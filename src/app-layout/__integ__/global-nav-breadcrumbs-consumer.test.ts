@@ -63,7 +63,7 @@ function setupTest(
 ) {
   return useBrowser(async browser => {
     const pageObject = new GlobalNavBreadcrumbsPage(browser);
-    await browser.url(`#/light/app-layout/${page}?${getUrlParams(theme, params)}`);
+    await browser.url(`#/app-layout/${page}?${getUrlParams(theme, params)}`);
     await pageObject.waitForVisible(createWrapper().findAppLayout().findContentRegion().toSelector());
     await testFn(pageObject);
   });

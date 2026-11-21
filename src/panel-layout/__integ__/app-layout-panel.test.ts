@@ -15,7 +15,7 @@ class PanelLayoutAppLayoutPage extends BasePageObject {
       urlParams.set(key, value.toString());
     });
 
-    const url = `#/light/panel-layout/app-layout-panel?${urlParams.toString()}`;
+    const url = `#/panel-layout/app-layout-panel?${urlParams.toString()}`;
     await this.browser.url(url);
     await this.waitForVisible(appLayoutWrapper.toSelector());
   }

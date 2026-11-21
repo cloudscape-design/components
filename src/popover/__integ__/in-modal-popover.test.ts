@@ -15,7 +15,7 @@ import createWrapper from '../../../lib/components/test-utils/selectors';
       const targetButton = createWrapper().findPopover().findContent({ renderWithPortal }).findButton().toSelector();
 
       const page = new BasePageObject(browser);
-      await browser.url(`#/light/popover/in-modal-test?renderWithPortal=${renderWithPortal}`);
+      await browser.url(`#/popover/in-modal-test?renderWithPortal=${renderWithPortal}`);
       await page.click(modalTrigger);
       await page.click(popoverTrigger);
       await page.click(targetButton);

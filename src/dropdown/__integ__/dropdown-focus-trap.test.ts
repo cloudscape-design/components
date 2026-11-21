@@ -17,7 +17,7 @@ function setupTest(settings: PageSettings, testFn: (page: DropdownPageObject) =>
     for (const [key, value] of Object.entries(settings)) {
       query.set(key, value);
     }
-    await browser.url(`#/light/dropdown/focus-trap?${query.toString()}`);
+    await browser.url(`#/dropdown/focus-trap?${query.toString()}`);
     const page = new DropdownPageObject('test-target', browser);
     await page.waitForVisible(page.getDropdown());
     await page.click(page.getTrigger());

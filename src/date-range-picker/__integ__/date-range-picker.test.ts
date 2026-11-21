@@ -12,7 +12,7 @@ describe('Date Range Picker', () => {
         monthOnly: granularity === 'month' ? 'true' : 'false',
       });
       const page = new DateRangePickerPage(createWrapper().findDateRangePicker().getElement(), browser);
-      await browser.url(`#/light/date-range-picker/with-value?${params}`);
+      await browser.url(`#/date-range-picker/with-value?${params}`);
       await page.waitForLoad();
       await testFn(page);
     });
@@ -104,7 +104,7 @@ describe('Date Range Picker', () => {
       return useBrowser(async browser => {
         const params = new URLSearchParams({ readOnly: 'true' });
         const page = new DateRangePickerPage(createWrapper().findDateRangePicker().getElement(), browser);
-        await browser.url(`#/light/date-range-picker/with-value?${params}`);
+        await browser.url(`#/date-range-picker/with-value?${params}`);
         await page.waitForLoad();
         await testFn(page, browser);
       });

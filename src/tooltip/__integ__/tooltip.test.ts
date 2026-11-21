@@ -27,7 +27,7 @@ describe('Tooltip', () => {
   test(
     'shows tooltip on hover and verifies content',
     useBrowser(async browser => {
-      await browser.url('/#/light/tooltip/simple');
+      await browser.url('/#/tooltip/simple');
       const page = new TooltipPageObject(browser);
 
       await page.waitForVisible('[data-testid="hover-button"]');
@@ -42,7 +42,7 @@ describe('Tooltip', () => {
   test(
     'hides tooltip when mouse leaves',
     useBrowser(async browser => {
-      await browser.url('/#/light/tooltip/simple');
+      await browser.url('/#/tooltip/simple');
       const page = new TooltipPageObject(browser);
 
       await page.waitForVisible('[data-testid="hover-button"]');
@@ -60,7 +60,7 @@ describe('Tooltip', () => {
   test(
     'closes tooltip on Escape key',
     useBrowser(async browser => {
-      await browser.url('/#/light/tooltip/simple');
+      await browser.url('/#/tooltip/simple');
       const page = new TooltipPageObject(browser);
 
       await page.waitForVisible('[data-testid="hover-button"]');
@@ -77,7 +77,7 @@ describe('Tooltip', () => {
   test(
     'tooltip content can be selected and copied - medium length',
     useBrowser(async browser => {
-      await browser.url('/#/light/tooltip/simple');
+      await browser.url('/#/tooltip/simple');
       const page = new TooltipPageObject(browser);
 
       await page.waitForVisible('[data-testid="medium-length-button"]');

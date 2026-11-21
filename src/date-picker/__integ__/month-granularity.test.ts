@@ -9,7 +9,7 @@ describe('Date picker at month granularity', () => {
   test(
     'announces the year without the month when opening the calendar',
     useBrowser(async browser => {
-      await browser.url('#/light/date-picker/month-picker');
+      await browser.url('#/date-picker/month-picker');
       const page = new DatePickerPage(createWrapper().findDatePicker().getElement(), browser);
       await page.initLiveAnnouncementsObserver();
       await page.waitForLoad();

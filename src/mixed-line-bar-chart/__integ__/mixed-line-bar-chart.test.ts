@@ -31,7 +31,7 @@ const legendWrapper = chartWrapper.findLegend();
 describe('Legend', () => {
   test(
     'can be controlled with mouse',
-    setupTest('#/light/mixed-line-bar-chart/test', async page => {
+    setupTest('#/mixed-line-bar-chart/test', async page => {
       // Scroll down to get access to the legend
       await page.windowScrollTo({ top: 200 });
 
@@ -45,7 +45,7 @@ describe('Legend', () => {
 
   test(
     'can be controlled with keyboard',
-    setupTest('#/light/mixed-line-bar-chart/test', async page => {
+    setupTest('#/mixed-line-bar-chart/test', async page => {
       await page.click('#focus-target');
 
       // Tab to first legend item
@@ -63,7 +63,7 @@ describe('Legend', () => {
 
   test(
     'highlighted legend elements should be not be highlighted when user hovers away',
-    setupTest('#/light/mixed-line-bar-chart/test', async page => {
+    setupTest('#/mixed-line-bar-chart/test', async page => {
       // Scroll down to get access to the legend
       await page.windowScrollTo({ top: 200 });
 
@@ -80,7 +80,7 @@ describe('Legend', () => {
 describe('Filter', () => {
   test(
     'can filter out segments',
-    setupTest('#/light/mixed-line-bar-chart/test', async page => {
+    setupTest('#/mixed-line-bar-chart/test', async page => {
       await expect(page.getElementsCount(chartWrapper.findSeries().toSelector())).resolves.toBe(3);
       await expect(page.getElementsCount(legendWrapper.findItems().toSelector())).resolves.toBe(3);
 
@@ -103,7 +103,7 @@ describe('Filter', () => {
 
   test(
     'maintains series order',
-    setupTest('#/light/mixed-line-bar-chart/test', async page => {
+    setupTest('#/mixed-line-bar-chart/test', async page => {
       // Open filter
       await page.click(chartWrapper.findDefaultFilter().findTrigger().toSelector());
       await page.waitForVisible(chartWrapper.findDefaultFilter().findDropdown().findOpenDropdown().toSelector());
@@ -133,7 +133,7 @@ describe('Filter', () => {
 describe('Series', () => {
   test(
     'grouped bar chart can be highlighted with keyboard',
-    setupTest('#/light/bar-chart/test', async page => {
+    setupTest('#/bar-chart/test', async page => {
       await page.click('#focus-target');
       await page.keys(['Tab', 'Tab', 'ArrowRight']);
 
@@ -168,7 +168,7 @@ describe('Series', () => {
 
   test(
     'stacked bar chart can be highlighted with keyboard',
-    setupTest('#/light/bar-chart/test', async page => {
+    setupTest('#/bar-chart/test', async page => {
       // Scroll down to the other charts
       await page.windowScrollTo({ top: 650 });
 
@@ -195,7 +195,7 @@ describe('Series', () => {
 
   test(
     'horizontal bar chart can be highlighted with keyboard',
-    setupTest('#/light/bar-chart/test', async page => {
+    setupTest('#/bar-chart/test', async page => {
       // Scroll down to the other charts
       await page.windowScrollTo({ top: 650 });
 
@@ -219,7 +219,7 @@ describe('Series', () => {
 
   test(
     'mixed bar/line chart can be highlighted with keyboard',
-    setupTest('#/light/mixed-line-bar-chart/test', async page => {
+    setupTest('#/mixed-line-bar-chart/test', async page => {
       await page.click('#focus-target');
       await page.keys(['Tab', 'Tab', 'ArrowRight']);
 
@@ -255,7 +255,7 @@ describe('Series', () => {
 
   test(
     'clicking outside of the chart removes all highlights for pinned element',
-    setupTest('#/light/bar-chart/test', async page => {
+    setupTest('#/bar-chart/test', async page => {
       // Click on it to reveal the dismiss button
       await page.hoverElement(chartWrapper.findBarGroups().get(3).toSelector());
       await page.click(chartWrapper.toSelector());
@@ -270,7 +270,7 @@ describe('Series', () => {
 describe('Details popover', () => {
   test(
     'shows on hover in bar charts',
-    setupTest('#/light/bar-chart/test', async page => {
+    setupTest('#/bar-chart/test', async page => {
       // Hover over third group in the first chart
       await page.hoverElement(chartWrapper.findBarGroups().get(3).toSelector());
       await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Chocolate');
@@ -304,7 +304,7 @@ describe('Details popover', () => {
 
   test(
     'shows on hover in a mixed line/bar chart inside modal',
-    setupTest('#/light/mixed-line-bar-chart/in-modal', async page => {
+    setupTest('#/mixed-line-bar-chart/in-modal', async page => {
       // Hover over first group
       await page.hoverElement(chartWrapper.findBarGroups().get(1).toSelector());
       await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Potatoes');
@@ -313,7 +313,7 @@ describe('Details popover', () => {
 
   test(
     'shows on hover in a mixed line/bar chart',
-    setupTest('#/light/mixed-line-bar-chart/test', async page => {
+    setupTest('#/mixed-line-bar-chart/test', async page => {
       // Hover over first group
       await page.hoverElement(chartWrapper.findBarGroups().get(1).toSelector());
       await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Potatoes');
@@ -335,7 +335,7 @@ describe('Details popover', () => {
 
   test(
     'can be pinned and unpinned in a bar chart with mouse',
-    setupTest('#/light/bar-chart/test', async page => {
+    setupTest('#/bar-chart/test', async page => {
       // Hover over third group in the first chart
       await page.hoverElement(chartWrapper.findBarGroups().get(3).toSelector());
       await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Chocolate');
@@ -359,7 +359,7 @@ describe('Details popover', () => {
 
   test(
     'can be pinned and unpinned in a chart with mouse when rendered inside tabs',
-    setupTest('#/light/mixed-line-bar-chart/in-tabs', async page => {
+    setupTest('#/mixed-line-bar-chart/in-tabs', async page => {
       // Hover over third group in the first chart
       await page.hoverElement(chartWrapper.findBarGroups().get(3).toSelector());
       await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Chocolate');
@@ -386,7 +386,7 @@ describe('Details popover', () => {
 
   test(
     'can be hidden after hover by pressing Escape',
-    setupTest('#/light/mixed-line-bar-chart/test', async page => {
+    setupTest('#/mixed-line-bar-chart/test', async page => {
       // Hover over first group
       await page.hoverElement(chartWrapper.findBarGroups().get(1).toSelector());
       await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Potatoes');
@@ -400,7 +400,7 @@ describe('Details popover', () => {
 
   test(
     'can be hidden after keyboard navigation by pressing Escape',
-    setupTest('#/light/bar-chart/test', async page => {
+    setupTest('#/bar-chart/test', async page => {
       // Navigate first group in the first chart
       await page.click('#focus-target');
       await page.keys(['Tab', 'Tab', 'ArrowRight']);
@@ -415,7 +415,7 @@ describe('Details popover', () => {
 
   test(
     'can be hidden by moving focus away',
-    setupTest('#/light/mixed-line-bar-chart/test', async page => {
+    setupTest('#/mixed-line-bar-chart/test', async page => {
       await page.click('#focus-target');
       await page.keys(['Tab', 'Tab', 'ArrowRight']);
       await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Potatoes');
@@ -429,7 +429,7 @@ describe('Details popover', () => {
 
   test(
     'tabbing from the popover back to the chart keeps the highlights',
-    setupTest('#/light/bar-chart/test', async page => {
+    setupTest('#/bar-chart/test', async page => {
       await page.click('#focus-target');
       await page.keys(['Tab', 'Tab', 'ArrowRight']);
 
@@ -455,7 +455,7 @@ describe('Details popover', () => {
 
   test(
     'can be pinned by clicking on chart background and dismissed by clicking outside chart area in line chart',
-    setupTest('#/light/line-chart/test', async page => {
+    setupTest('#/line-chart/test', async page => {
       // Hovers to open popover
       await page.hoverElement(chartWrapper.findChart().toSelector());
       // Clicks background to pin
@@ -473,7 +473,7 @@ describe('Details popover', () => {
 
   test(
     'can be pinned and unpinned in a bar chart with keyboard',
-    setupTest('#/light/bar-chart/test', async page => {
+    setupTest('#/bar-chart/test', async page => {
       // Hover over first group in the first chart
       await page.click('#focus-target');
       await page.keys(['Tab', 'Tab', 'ArrowRight']);
@@ -499,7 +499,7 @@ describe('Details popover', () => {
 
   (process.env.REACT_VERSION !== '18' ? test : test.skip)(
     'scrolls if necessary on click',
-    setupTest('#/light/bar-chart/drilldown', async page => {
+    setupTest('#/bar-chart/drilldown', async page => {
       await page.setWindowSize({ width: 360, height: 650 });
       await page.windowScrollTo({ top: 150 });
       const barChart = createWrapper().findBarChart();
@@ -514,7 +514,7 @@ describe('Details popover', () => {
 
   (process.env.REACT_VERSION !== '18' ? test : test.skip)(
     'does not scroll on hover',
-    setupTest('#/light/bar-chart/drilldown', async page => {
+    setupTest('#/bar-chart/drilldown', async page => {
       await page.setWindowSize({ width: 360, height: 650 });
       await page.windowScrollTo({ top: 150 });
       const barChart = createWrapper().findBarChart();
@@ -534,7 +534,7 @@ describe('Details popover', () => {
 
   (process.env.REACT_VERSION !== '18' ? test : test.skip)(
     'scrolls if necessary on click inside a scrollable container',
-    setupTest('#/light/bar-chart/in-modal', async page => {
+    setupTest('#/bar-chart/in-modal', async page => {
       await page.setWindowSize({ width: 360, height: 650 });
       const wrapper = createWrapper();
       await page.click(wrapper.findButton().toSelector());
@@ -571,7 +571,7 @@ describe('Details popover', () => {
 
   test(
     'Allow mouse to enter popover when a group is hovering over a point',
-    setupTest('#/light/mixed-line-bar-chart/test', async page => {
+    setupTest('#/mixed-line-bar-chart/test', async page => {
       // Hover over first group
       await page.hoverElement(chartWrapper.findBarGroups().get(1).toSelector());
       await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Potatoes');
@@ -583,7 +583,7 @@ describe('Details popover', () => {
 
   test(
     'Should still open popver when focus move out then move in again with keyboard',
-    setupTest('#/light/bar-chart/test', async page => {
+    setupTest('#/bar-chart/test', async page => {
       await page.click('#focus-target');
       // Should open popver when focus on a bar with keyboard
       await page.keys(['Tab', 'Tab', 'ArrowRight']);
@@ -601,7 +601,7 @@ describe('Details popover', () => {
 describe('Chart container', () => {
   test(
     'Series with computed domain do not overflow',
-    setupTest('#/light/mixed-line-bar-chart/test', async page => {
+    setupTest('#/mixed-line-bar-chart/test', async page => {
       const seriesSVGBox = await page.getBoundingBox(seriesSVGSelector(computedDomainChartWrapper));
 
       const numberOfSeries = await page.getElementsCount(computedDomainChartWrapper.findSeries().toSelector());

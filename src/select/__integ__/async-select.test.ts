@@ -19,7 +19,7 @@ function setup(
   return useBrowser(async browser => {
     const page = new AsyncDropdownComponentPage(browser, select);
     await page.setWindowSize({ width: 950, height: 300 });
-    await browser.url('/#/light/select/select.test.async');
+    await browser.url('/#/select/select.test.async');
     await page.waitForVisible(select.findTrigger().toSelector());
     if (virtualScrolling) {
       await page.enableVirtualScrolling();

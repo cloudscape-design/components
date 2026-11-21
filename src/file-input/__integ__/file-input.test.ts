@@ -11,7 +11,7 @@ const fileInputWrapper = wrapper.findFileInput();
 const setupTest = (testFn: (page: BasePageObject) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url('#/light/file-input/integ');
+    await browser.url('#/file-input/integ');
     await page.waitForVisible(fileInputWrapper.toSelector());
     await testFn(page);
   });

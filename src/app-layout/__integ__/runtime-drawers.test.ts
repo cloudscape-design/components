@@ -38,7 +38,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
       const page = new BasePageObject(browser);
 
       await browser.url(
-        `#/light/app-layout/${url}?${getUrlParams(theme, {
+        `#/app-layout/${url}?${getUrlParams(theme, {
           hasDrawers: hasDrawers,
           hasTools: 'true',
           splitPanelPosition: 'side',
@@ -171,7 +171,7 @@ describe('Visual refresh toolbar only', () => {
       const page = new PageObject(browser);
 
       await browser.url(
-        `#/light/app-layout/runtime-drawers?${getUrlParams('refresh-toolbar', {
+        `#/app-layout/runtime-drawers?${getUrlParams('refresh-toolbar', {
           hasDrawers: 'false',
           hasTools: 'true',
           splitPanelPosition,

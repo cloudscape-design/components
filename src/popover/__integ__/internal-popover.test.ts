@@ -8,7 +8,7 @@ import createWrapper from '../../../lib/components/test-utils/selectors';
 const setupTest = (testFn: (page: BasePageObject) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url('#/light/popover/internal-test');
+    await browser.url('#/popover/internal-test');
     await testFn(page);
   });
 };

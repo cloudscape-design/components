@@ -8,7 +8,7 @@ import createWrapper from '../../../lib/components/test-utils/selectors';
 test(
   'Focus moves to the next tree-item toggle when tree-item gets removed',
   useBrowser(async browser => {
-    await browser.url('#/light/tree-view/removable-elements');
+    await browser.url('#/tree-view/removable-elements');
     const page = new BasePageObject(browser);
 
     const wrapper = createWrapper().findTreeView('[data-testid="removable-items-tree"]')!;
@@ -30,7 +30,7 @@ test(
 test(
   'Focus moves to the tree-item toggle when action button gets removed',
   useBrowser(async browser => {
-    await browser.url('#/light/tree-view/removable-elements');
+    await browser.url('#/tree-view/removable-elements');
     const page = new BasePageObject(browser);
 
     const wrapper = createWrapper().findTreeView('[data-testid="removable-action-buttons-tree"]')!;
@@ -52,7 +52,7 @@ test(
 test(
   'Focus moves to the tree-item same position action button when action button gets removed',
   useBrowser(async browser => {
-    await browser.url('#/light/tree-view/removable-elements');
+    await browser.url('#/tree-view/removable-elements');
     const page = new BasePageObject(browser);
 
     const wrapper = createWrapper().findTreeView('[data-testid="regular-removable-action-buttons-tree"]')!;
@@ -75,7 +75,7 @@ test(
 test(
   'Re-focuses on the previously focused tree-item when focus moves outside and back inside',
   useBrowser(async browser => {
-    await browser.url('#/light/tree-view/removable-elements');
+    await browser.url('#/tree-view/removable-elements');
     const page = new BasePageObject(browser);
     const wrapper = createWrapper();
     const treeView = wrapper.findTreeView('[data-testid="removable-items-tree"]')!;
@@ -94,7 +94,7 @@ test(
 test(
   'Re-focuses on the tree-item that previously focused element belongs when focus moves outside and back inside',
   useBrowser(async browser => {
-    await browser.url('#/light/tree-view/removable-elements');
+    await browser.url('#/tree-view/removable-elements');
     const page = new BasePageObject(browser);
     const wrapper = createWrapper();
     const treeView = wrapper.findTreeView('[data-testid="removable-items-tree"]')!;

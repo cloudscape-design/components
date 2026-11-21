@@ -41,7 +41,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
   function setupTest(testFn: (page: SinglePageCreate) => Promise<void>) {
     return useBrowser(async browser => {
       const page = new SinglePageCreate(browser);
-      await page.visit(`#/light/funnel-analytics/static-single-page-flow?${getUrlParams(theme, {})}`);
+      await page.visit(`#/funnel-analytics/static-single-page-flow?${getUrlParams(theme, {})}`);
       await new Promise(r => setTimeout(r, 10));
       await testFn(page);
     });
