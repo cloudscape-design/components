@@ -54,22 +54,23 @@ export interface PanelLayoutProps extends BaseComponentProps {
   /**
    * Makes the panel and main content areas scrollable.
    *
-   * When setting this property to `true`, make sure that all content, including focus rings of interactive elements,
-   * fits within the panels, otherwise it will be clipped.
+   * Scrollable panels clip all overflowing content, such as focus rings of interactive elements that are close to panel borders,
+   * and constrain the space available for dropdowns. If you use this property, make sure there is enough padding between such
+   * elements and the panel edge, and consider rendering dropdowns inside portals if necessary.
    */
   scrollable?: boolean;
 
   /**
-   * Makes the panel content focusable. This should be used if there are no focusable elements
-   * inside the panel, to ensure it is keyboard scrollable when `scrollable` is set.
+   * Makes the panel content focusable. Use it when `scrollable` is set to `true` and the content does not include
+   * focusable elements, to make sure it is keyboard scrollable.
    *
    * Provide either `{ariaLabel: "Panel label"}` or `{ariaLabelledby: "panel-label-id"}`
    */
   panelFocusable?: PanelLayoutProps.FocusableConfig;
 
   /**
-   * Makes the main content area focusable. This should be used if there are no focusable elements
-   * inside the content, to ensure it is keyboard scrollable when `scrollable` is set.
+   * Makes the main content area focusable. Use it when `scrollable` is set to `true` and the content does not include
+   * focusable elements, to make sure it is keyboard scrollable.
    *
    * Provide either `{ariaLabel: "Main label"}` or `{ariaLabelledby: "main-label-id"}`
    */
