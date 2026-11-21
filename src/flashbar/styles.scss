@@ -152,7 +152,8 @@ $_item-tokens: style-api.resolve(style-api.$focus-ring, carrier);
 }
 
 .action-button,
-.action-slot {
+.action-slot,
+.secondary-action-slot {
   /* Only used as a selector for test-utils */
 }
 

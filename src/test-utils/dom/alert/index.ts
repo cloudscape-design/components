@@ -45,4 +45,13 @@ export default class AlertWrapper extends ComponentWrapper {
   findActionSlot(): ElementWrapper | null {
     return this.findByClassName(styles['action-slot']);
   }
+
+  /**
+   * Returns the secondary action slot.
+   *
+   * The secondary action slot is only rendered when the `secondaryAction` property is set.
+   */
+  findSecondaryActionSlot(): ElementWrapper | null {
+    return this.findByClassName(styles['secondary-action-slot']);
+  }
 }

@@ -17,6 +17,7 @@ export namespace FlashbarProps {
     type?: FlashbarProps.Type;
     ariaRole?: FlashbarProps.AriaRole;
     action?: React.ReactNode;
+    secondaryAction?: React.ReactNode;
     id?: string;
     buttonText?: ButtonProps['children'];
     onButtonClick?: ButtonProps['onClick'];

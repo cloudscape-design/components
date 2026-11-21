@@ -34,6 +34,15 @@ export default class FlashWrapper extends ComponentWrapper {
     return this.findComponent(`.${styles['action-button']}`, ButtonWrapper);
   }
 
+  /**
+   * Returns the secondary action slot.
+   *
+   * The secondary action slot is only rendered when the `secondaryAction` property is set.
+   */
+  findSecondaryAction(): ElementWrapper | null {
+    return this.findByClassName(styles['secondary-action-slot']);
+  }
+
   findHeader(): ElementWrapper | null {
     return this.findByClassName(styles['flash-header']);
   }

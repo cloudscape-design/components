@@ -161,6 +161,40 @@ describe('Alert Component', () => {
     expect(wrapper.findActionSlot()!.findButton()!.getElement()).toHaveTextContent('Click');
   });
 
+  describe('secondaryAction', () => {
+    it('renders secondary action content', () => {
+      const { wrapper } = renderAlert({
+        children: 'Message body',
+        action: <Button>Primary</Button>,
+        secondaryAction: <Button>Secondary</Button>,
+      });
+      expect(wrapper.findSecondaryActionSlot()!.findButton()!.getElement()).toHaveTextContent('Secondary');
+    });
+
+    it('does not render secondary action slot when secondaryAction is not provided', () => {
+      const { wrapper } = renderAlert({ children: 'Message body' });
+      expect(wrapper.findSecondaryActionSlot()).toBeNull();
+    });
+
+    it('renders secondary action without a primary action', () => {
+      const { wrapper } = renderAlert({
+        children: 'Message body',
+        secondaryAction: <Button>Secondary only</Button>,
+      });
+      expect(wrapper.findSecondaryActionSlot()!.findButton()!.getElement()).toHaveTextContent('Secondary only');
+    });
+
+    it('renders both primary and secondary actions independently', () => {
+      const { wrapper } = renderAlert({
+        children: 'Message body',
+        action: <Button>Primary</Button>,
+        secondaryAction: <Button>Secondary</Button>,
+      });
+      expect(wrapper.findActionSlot()!.findButton()!.getElement()).toHaveTextContent('Primary');
+      expect(wrapper.findSecondaryActionSlot()!.findButton()!.getElement()).toHaveTextContent('Secondary');
+    });
+  });
+
   it('when both `buttonText` and `action` provided, prefers the latter', () => {
     const { wrapper } = renderAlert({
       children: 'Message body',

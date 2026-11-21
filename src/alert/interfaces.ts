@@ -135,6 +135,11 @@ export interface AlertProps extends BaseComponentProps {
    */
   action?: React.ReactNode;
   /**
+   * Specifies a secondary action for the alert message, displayed alongside the primary action.
+   * Although it is technically possible to insert any content, our UX guidelines only allow you to add a button.
+   */
+  secondaryAction?: React.ReactNode;
+  /**
    * Fired when the user clicks the close icon that is displayed
    * when the `dismissible` property is set to `true`.
    */
