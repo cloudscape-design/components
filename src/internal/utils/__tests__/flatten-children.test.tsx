@@ -4,7 +4,7 @@ import React, { Fragment } from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { flattenChildren } from '../flatten-children';
+import { flattenChildren, getFlattenedChildKey } from '../flatten-children';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
@@ -95,5 +95,24 @@ describe('flattenChildren', () => {
       flattenChildren(nestedArrayChildren, 'TestComponent');
       expect(warnOnce).not.toHaveBeenCalled();
     });
+  });
+});
+
+describe('getFlattenedChildKey', () => {
+  const mixedChildren = [
+    <span key="a">A</span>,
+    'text',
+    0,
+    <span key="b">B</span>,
+    React.createElement('span', null, 'C'),
+    'more text',
+  ];
+
+  it.each(['18.2.0', '19.0.0'])('returns unique keys for mixed children in React %s', version => {
+    Object.defineProperty(React, 'version', { value: version, writable: true, configurable: true });
+    const keys = flattenChildren(mixedChildren, 'TestComponent').map(getFlattenedChildKey);
+    expect(keys).toHaveLength(mixedChildren.length);
+    expect(new Set(keys).size).toBe(keys.length);
+    expect(keys.filter(key => key.startsWith('primitive-'))).toEqual(['primitive-1', 'primitive-2', 'primitive-5']);
   });
 });

@@ -23,6 +23,19 @@ function renderColumnInGrid(props: GridProps = {}) {
 }
 
 describe('Grid component', () => {
+  test('does not log a key warning when text children are mixed with elements', () => {
+    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const wrapper = render(
+      <Grid gridDefinition={[{ colspan: 6 }, { colspan: 6 }]}>
+        <div>Element</div>
+        Text
+      </Grid>
+    );
+    expect(consoleError).not.toHaveBeenCalled();
+    expect(createWrapper(wrapper.container).findGrid()!.findColumn(2)!.getElement()).toHaveTextContent('Text');
+    consoleError.mockRestore();
+  });
+
   test('has gutters by default', () => {
     const wrapper = renderGrid();
     expect(wrapper.getElement()).not.toHaveClass(styles['no-gutters']);

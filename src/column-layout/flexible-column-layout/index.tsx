@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
-import { flattenChildren } from '../../internal/utils/flatten-children';
+import { flattenChildren, getFlattenedChildKey } from '../../internal/utils/flatten-children';
 import { InternalColumnLayoutProps } from '../internal-interfaces';
 
 import styles from './styles.css.js';
@@ -67,12 +67,9 @@ export default function FlexibleColumnLayout({
       style={{ gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))` }}
     >
       {flattenedChildren.map((child, i) => {
-        // If this react child is a primitive value, the key will be undefined
-        const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
-
         return (
           <div
-            key={key ? String(key) : undefined}
+            key={getFlattenedChildKey(child, i)}
             className={clsx(styles.item, {
               [styles['first-column']]: i % columnCount === 0,
             })}

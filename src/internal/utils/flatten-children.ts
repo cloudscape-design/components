@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ReactNode } from 'react';
+import React, { isValidElement, ReactNode } from 'react';
 
 import flattenChildrenLegacy from '../vendor/react-keyed-flatten-children';
 import { getReactMajorVersion } from './react-version';
@@ -25,4 +25,13 @@ export function flattenChildren(children: ReactNode, componentName: string): Rea
     return flattenChildrenLegacy(children, 0, [], componentName);
   }
   return React.Children.toArray(children);
+}
+
+/**
+ * Returns a key for a wrapper element rendered around a flattened child. Elements keep the key that
+ * flattening assigned them, which always contains a "." (such as ".0" or ".$custom"). Strings and
+ * numbers have no key, so they're keyed by position with a prefix that can't collide with those keys.
+ */
+export function getFlattenedChildKey(child: ReactNode, index: number): string {
+  return isValidElement(child) && child.key !== null ? String(child.key) : `primitive-${index}`;
 }
