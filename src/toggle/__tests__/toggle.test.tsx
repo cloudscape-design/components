@@ -1,22 +1,26 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { act, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
+
+import { clearMessageCache } from '@cloudscape-design/component-toolkit/internal';
 
 import '../../__a11y__/to-validate-a11y';
 import FormField from '../../../lib/components/form-field';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import createWrapper, { ToggleWrapper } from '../../../lib/components/test-utils/dom';
 import Toggle, { ToggleProps } from '../../../lib/components/toggle';
 import { createCommonTests } from '../../checkbox/__tests__/common-tests';
 import customCssProps from '../../internal/generated/custom-css-properties';
 
 import abstractSwitchStyles from '../../../lib/components/internal/components/abstract-switch/styles.css.js';
+import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
 import styles from '../../../lib/components/toggle/styles.selectors.js';
 
 function renderToggle(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);
   const wrapper = createWrapper(container).findToggle()!;
-  return { wrapper, rerender };
+  return { wrapper, rerender, container };
 }
 
 function findStyledElement(wrapper: ToggleWrapper) {
@@ -267,5 +271,203 @@ describe('handle follow-through animation', () => {
     expect(findStyledElement(wrapper)).toHaveAttribute(readyAttribute);
     rerender(<Toggle checked={true} />);
     expect(findStyledElement(wrapper)).toHaveAttribute(readyAttribute);
+  });
+});
+
+describe('loading state', () => {
+  test('renders a loading handle with spinner when loading', () => {
+    const { wrapper, container } = renderToggle(<Toggle checked={false} loading={true} />);
+    expect(wrapper.findByClassName(styles['toggle-handle-loading'])).not.toBeNull();
+    expect(createWrapper(container).findSpinner()).not.toBeNull();
+  });
+
+  test('does not render the standard toggle handle when loading', () => {
+    const { wrapper } = renderToggle(<Toggle checked={false} loading={true} />);
+    expect(wrapper.findByClassName(styles['toggle-handle'])).toBeNull();
+  });
+
+  test('applies loading-checked class to loading handle when loading and checked', () => {
+    const { wrapper } = renderToggle(<Toggle checked={true} loading={true} />);
+    const loadingHandle = wrapper.findByClassName(styles['toggle-handle-loading'])!.getElement();
+    expect(loadingHandle).toHaveClass(styles['toggle-handle-loading-checked']);
+  });
+
+  test('does not apply toggle-control-checked class when loading and checked', () => {
+    const { wrapper } = renderToggle(<Toggle checked={true} loading={true} />);
+    const control = wrapper.findByClassName(styles['toggle-control'])!.getElement();
+    expect(control).not.toHaveClass(styles['toggle-control-checked']);
+  });
+
+  test('applies toggle-control-disabled class when loading', () => {
+    const { wrapper } = renderToggle(<Toggle checked={false} loading={true} />);
+    const control = wrapper.findByClassName(styles['toggle-control'])!.getElement();
+    expect(control).toHaveClass(styles['toggle-control-disabled']);
+  });
+
+  test('does not fire onChange on label click when loading', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderToggle(<Toggle checked={false} loading={true} onChange={onChange} />);
+    act(() => wrapper.findLabel().click());
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  test('does not fire onChange on input click when loading', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderToggle(<Toggle checked={false} loading={true} onChange={onChange} />);
+    act(() => wrapper.findNativeInput().click());
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  test('prevents Space key default on input when loading', () => {
+    const { wrapper } = renderToggle(<Toggle checked={false} loading={true} />);
+    const input = wrapper.findNativeInput().getElement();
+    const prevented = fireEvent.keyDown(input, { key: ' ' });
+    expect(prevented).toBe(false);
+  });
+
+  test('does not prevent Space key default when not loading', () => {
+    const { wrapper } = renderToggle(<Toggle checked={false} loading={false} />);
+    const input = wrapper.findNativeInput().getElement();
+    const prevented = fireEvent.keyDown(input, { key: ' ' });
+    expect(prevented).toBe(true);
+  });
+
+  test('input is not natively disabled when loading (remains keyboard-focusable)', () => {
+    const { wrapper } = renderToggle(<Toggle checked={false} loading={true} />);
+    expect(wrapper.findNativeInput().getElement()).not.toHaveAttribute('disabled');
+  });
+
+  test('sets aria-disabled on input when loading', () => {
+    const { wrapper } = renderToggle(<Toggle checked={false} loading={true} />);
+    expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-disabled', 'true');
+  });
+
+  test('sets aria-busy on input when loading', () => {
+    const { wrapper } = renderToggle(<Toggle checked={false} loading={true} />);
+    expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-busy', 'true');
+  });
+
+  test('does not set aria-busy when not loading', () => {
+    const { wrapper } = renderToggle(<Toggle checked={false} loading={false} />);
+    expect(wrapper.findNativeInput().getElement()).not.toHaveAttribute('aria-busy');
+  });
+
+  test('does not apply label-disabled style when loading without disabled', () => {
+    const { wrapper } = renderToggle(
+      <Toggle checked={false} loading={true}>
+        Toggle label
+      </Toggle>
+    );
+    const label = wrapper.findByClassName(abstractSwitchStyles.label)!.getElement();
+    expect(label).not.toHaveClass(abstractSwitchStyles['label-disabled']);
+  });
+
+  test('applies label-disabled style when disabled without loading', () => {
+    const { wrapper } = renderToggle(
+      <Toggle checked={false} disabled={true}>
+        Toggle label
+      </Toggle>
+    );
+    const label = wrapper.findByClassName(abstractSwitchStyles.label)!.getElement();
+    expect(label).toHaveClass(abstractSwitchStyles['label-disabled']);
+  });
+
+  test('loading takes precedence over disabled: input is not natively disabled', () => {
+    const { wrapper } = renderToggle(<Toggle checked={false} loading={true} disabled={true} />);
+    expect(wrapper.findNativeInput().getElement()).not.toHaveAttribute('disabled');
+  });
+
+  test('loading takes precedence over disabled: renders spinner not standard handle', () => {
+    const { wrapper, container } = renderToggle(<Toggle checked={false} loading={true} disabled={true} />);
+    expect(createWrapper(container).findSpinner()).not.toBeNull();
+    expect(wrapper.findByClassName(styles['toggle-handle'])).toBeNull();
+  });
+
+  describe('live region', () => {
+    test('links input to loading live region via aria-describedby', () => {
+      const { wrapper, container } = renderToggle(
+        <Toggle checked={false} loading={true} i18nStrings={{ loadingText: 'Saving' }} />
+      );
+      const input = wrapper.findNativeInput().getElement();
+      const ariaDescribedby = input.getAttribute('aria-describedby') ?? '';
+      const liveRegionId = ariaDescribedby.split(' ').find(id => id.startsWith('toggle-loading'));
+      expect(liveRegionId).toBeTruthy();
+      expect(container.querySelector(`#${liveRegionId!}`)).not.toBeNull();
+    });
+
+    test('live region contains loadingText when loading', () => {
+      const { container } = renderToggle(
+        <Toggle checked={false} loading={true} i18nStrings={{ loadingText: 'Saving preference' }} />
+      );
+      const liveRegion = container.querySelector(`.${liveRegionStyles.root}`);
+      expect(liveRegion).toHaveTextContent('Saving preference');
+    });
+
+    test('live region is empty when not loading', () => {
+      const { container } = renderToggle(
+        <Toggle checked={false} loading={false} i18nStrings={{ loadingText: 'Saving preference' }} />
+      );
+      const liveRegion = container.querySelector(`.${liveRegionStyles.root}`);
+      expect(liveRegion).toHaveTextContent('');
+    });
+
+    test('live region text comes from i18n provider when i18nStrings prop is absent', () => {
+      const { container } = render(
+        <TestI18nProvider messages={{ toggle: { 'i18nStrings.loadingText': 'Provider saving text' } }}>
+          <Toggle checked={false} loading={true} />
+        </TestI18nProvider>
+      );
+      const liveRegion = container.querySelector(`.${liveRegionStyles.root}`);
+      expect(liveRegion).toHaveTextContent('Provider saving text');
+    });
+
+    test('i18nStrings prop takes precedence over i18n provider', () => {
+      const { container } = render(
+        <TestI18nProvider messages={{ toggle: { 'i18nStrings.loadingText': 'Provider text' } }}>
+          <Toggle checked={false} loading={true} i18nStrings={{ loadingText: 'Prop text' }} />
+        </TestI18nProvider>
+      );
+      const liveRegion = container.querySelector(`.${liveRegionStyles.root}`);
+      expect(liveRegion).toHaveTextContent('Prop text');
+    });
+  });
+
+  describe('warnOnce', () => {
+    let consoleWarnSpy: jest.SpyInstance;
+
+    beforeEach(() => {
+      clearMessageCache();
+      consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+      consoleWarnSpy.mockRestore();
+    });
+
+    test('warns when loading=true and loadingText is absent', () => {
+      renderToggle(<Toggle checked={false} loading={true} />);
+      expect(consoleWarnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('`loadingText` is required when `loading` is true for accessibility.')
+      );
+    });
+
+    test('does not warn when loading=true and i18nStrings.loadingText is provided', () => {
+      renderToggle(<Toggle checked={false} loading={true} i18nStrings={{ loadingText: 'Saving' }} />);
+      expect(consoleWarnSpy).not.toHaveBeenCalled();
+    });
+
+    test('does not warn when not loading', () => {
+      renderToggle(<Toggle checked={false} loading={false} />);
+      expect(consoleWarnSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  test('check a11y when loading', async () => {
+    const { wrapper } = renderToggle(
+      <Toggle checked={false} loading={true} i18nStrings={{ loadingText: 'Saving preference' }}>
+        Toggle label
+      </Toggle>
+    );
+    await expect(wrapper.getElement()).toValidateA11y();
   });
 });

@@ -46,6 +46,20 @@ const permutations = createPermutations<ToggleProps>([
     children: ['Some label'],
     description: ['', 'Short description'],
   },
+  {
+    loading: [true],
+    checked: [false, true],
+    children: ['Some label'],
+    description: ['', 'Short description'],
+    i18nStrings: [{ loadingText: 'Saving' }],
+  },
+  {
+    loading: [true],
+    disabled: [true],
+    checked: [false, true],
+    children: ['Some label'],
+    i18nStrings: [{ loadingText: 'Saving' }],
+  },
 ]);
 
 export default function TogglePermutations() {
