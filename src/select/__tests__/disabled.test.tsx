@@ -35,6 +35,19 @@ function renderSelect(props?: Partial<SelectProps>) {
 
 describe.each([false, true])('expandToViewport=%s', expandToViewport => {
   describe('Disabled state', () => {
+    test('does not select an option after becoming disabled while open', () => {
+      const onChange = jest.fn();
+      const props = { ...defaultProps, expandToViewport, onChange };
+      const { container, rerender } = render(<Select {...props} />);
+      const wrapper = createWrapper(container).findSelect()!;
+      wrapper.openDropdown();
+      rerender(<Select {...props} disabled={true} />);
+      wrapper.selectOption(2, { expandToViewport });
+
+      expect(onChange).not.toHaveBeenCalled();
+      expect(wrapper.isDisabled()).toBe(true);
+    });
+
     test('enabled by default', () => {
       const { wrapper } = renderSelect();
       expect(wrapper.isDisabled()).toEqual(false);
