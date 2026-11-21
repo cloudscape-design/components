@@ -1,0 +1,12 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles/tokens' as awsui;
+
+.row-edit-action-cell {
+  white-space: nowrap;
+  width: 1%;
+  padding-inline: awsui.$space-scaled-xs;
+}

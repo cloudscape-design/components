@@ -57,6 +57,7 @@ export interface TheadProps {
   onFocusedComponentChange?: (focusId: null | string) => void;
   tableRole: TableRole;
   isExpandable?: boolean;
+  hasRowEditing?: boolean;
   setLastUserAction: (name: string) => void;
   styleClassNames?: StyleClassNames;
 }
@@ -96,6 +97,7 @@ const Thead = React.forwardRef(
       resizerRoleDescription,
       resizerTooltipText,
       isExpandable,
+      hasRowEditing,
       setLastUserAction,
       styleClassNames,
     }: TheadProps,
@@ -206,6 +208,7 @@ const Thead = React.forwardRef(
                 />
               );
             })}
+            {hasRowEditing && <th className={styles['header-cell']} style={{ width: '1%' }} aria-label="Row actions" />}
           </tr>
         </thead>
       );
