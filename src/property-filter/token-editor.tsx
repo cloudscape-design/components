@@ -174,6 +174,7 @@ export function TokenEditor({
             operator={groups[index].operator}
             value={groups[index].value}
             onChangeValue={groups[index].onChangeValue}
+            onSubmit={onSubmit}
             asyncProps={asyncProps}
             filteringOptions={filteringOptions}
             onLoadItems={onLoadItems}

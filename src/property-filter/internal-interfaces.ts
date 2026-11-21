@@ -4,12 +4,15 @@
 import {
   PropertyFilterOperation,
   PropertyFilterOperator,
-  PropertyFilterOperatorForm,
   PropertyFilterProperty,
   PropertyFilterTokenType,
 } from '@cloudscape-design/collection-hooks';
 
-import { ComparisonOperator, PropertyFilterTextOperatorExtended } from './interfaces';
+import {
+  ComparisonOperator,
+  PropertyFilterOperatorFormExtended,
+  PropertyFilterTextOperatorExtended,
+} from './interfaces';
 
 // Utility types
 
@@ -22,7 +25,7 @@ export interface InternalFilteringProperty<TokenValue = any> {
   defaultOperator: PropertyFilterOperator;
   getTokenType: (operator?: PropertyFilterOperator) => PropertyFilterTokenType;
   getValueFormatter: (operator?: PropertyFilterOperator) => null | ((value: any) => string);
-  getValueFormRenderer: (operator?: PropertyFilterOperator) => null | PropertyFilterOperatorForm<TokenValue>;
+  getValueFormRenderer: (operator?: PropertyFilterOperator) => null | PropertyFilterOperatorFormExtended<TokenValue>;
   getOperatorDescription: (operator?: PropertyFilterOperator) => string | null;
   // Original property used in callbacks.
   externalProperty: PropertyFilterProperty;
