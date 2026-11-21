@@ -38,6 +38,7 @@ const InternalFileInput = React.forwardRef(
       accept,
       ariaRequired,
       ariaLabel,
+      disabled = false,
       multiple = false,
       value,
       onChange,
@@ -89,6 +90,9 @@ const InternalFileInput = React.forwardRef(
     if (ariaRequired) {
       nativeAttributes['aria-required'] = true;
     }
+    if (disabled) {
+      nativeAttributes['aria-disabled'] = true;
+    }
 
     if (variant === 'icon' && !ariaLabel) {
       warnOnce('FileInput', 'Aria label is required with icon variant.');
@@ -138,6 +142,7 @@ const InternalFileInput = React.forwardRef(
           hidden={false}
           multiple={multiple}
           accept={accept}
+          disabled={disabled}
           onChange={onUploadInputChange}
           onFocus={onUploadInputFocus}
           onBlur={onUploadInputBlur}
@@ -153,6 +158,7 @@ const InternalFileInput = React.forwardRef(
           iconName="upload"
           variant={variant === 'icon' ? 'icon' : undefined}
           formAction="none"
+          disabled={disabled}
           onClick={onUploadButtonClick}
           className={clsx(styles['file-input-button'], {
             [styles['force-focus-outline-button']]: isFocused && variant === 'button',

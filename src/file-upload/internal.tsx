@@ -36,6 +36,7 @@ function InternalFileUpload(
   {
     accept,
     ariaRequired,
+    disabled = false,
     multiple = false,
     onChange,
     value,
@@ -85,6 +86,9 @@ function InternalFileUpload(
   }
 
   const handleFilesChange = (newFiles: File[]) => {
+    if (disabled) {
+      return;
+    }
     const newValue = multiple ? [...value, ...newFiles] : newFiles[0] ? newFiles.slice(0, 1) : [...value];
     fireNonCancelableEvent(onChange, { value: newValue });
   };
@@ -123,7 +127,7 @@ function InternalFileUpload(
       ref={tokenListRef}
     >
       <InternalBox>
-        {areFilesDragging ? (
+        {areFilesDragging && !disabled ? (
           <InternalFileDropzone onChange={event => handleFilesChange(event.detail.value)}>
             {i18n('i18nStrings.dropzoneText', i18nStrings?.dropzoneText?.(multiple), format =>
               format({ multiple: `${multiple}` })
@@ -134,6 +138,7 @@ function InternalFileUpload(
             ref={ref}
             accept={accept}
             ariaRequired={ariaRequired}
+            disabled={disabled}
             multiple={multiple}
             onChange={event => handleFilesChange(event.detail.value)}
             value={value}
@@ -187,6 +192,7 @@ function InternalFileUpload(
           showFileLastModified={metadata.showFileLastModified}
           showFileSize={metadata.showFileSize}
           showFileThumbnail={metadata.showFileThumbnail}
+          readOnly={disabled}
           i18nStrings={{
             removeFileAriaLabel: i18n(
               'i18nStrings.removeFileAriaLabel',
