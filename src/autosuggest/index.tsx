@@ -38,6 +38,7 @@ const Autosuggest = React.forwardRef(
       },
       metadata: {
         hasTokens: props.tokens !== undefined,
+        hasAsyncLoading: Boolean(props.onLoadItems),
       },
     });
 
