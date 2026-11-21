@@ -1,0 +1,267 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+// VirtualTable (F1-A2, compound) is styled to visually match the existing
+// Cloudscape `Table` BY DEFAULT. Every colour / border / spacing value below is a
+// Cloudscape design token REUSED from the Table component styles
+// (src/table/header-cell/styles.scss and src/table/body-cell/styles.scss) rather
+// than a bespoke value, so the look tracks Table + visual refresh automatically.
+// The virtualization viewport (.scroll-container) scrolls with the NATIVE browser
+// scrollbar — there is no custom / synthetic / overlay scrollbar in this component.
+
+.root {
+  @include styles.styles-reset;
+  position: relative;
+  // Height-owning flex column: when the component (or a parent) is given a bounded
+  // block-size, the scroll container flexes to fill it and windows. Combined with the
+  // height / maxHeight props (which bound .scroll-container directly), this guarantees a
+  // bounded viewport so the model windows instead of mounting every row.
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
+  // Sit on the container content surface, like a Table inside a Container.
+  background: awsui.$color-background-container-content;
+}
+
+.header {
+  margin-block-end: awsui.$space-scaled-s;
+}
+
+.scroll-container {
+  position: relative;
+  // Fill the height-owning root when it is bounded (min-block-size:0 lets a flex item shrink
+  // below its content so it can scroll); an explicit height / maxHeight prop overrides this
+  // with a fixed viewport. Either way the viewport is bounded.
+  flex: 1 1 auto;
+  min-block-size: 0;
+  // Native scrollbar only — no ::-webkit-scrollbar / overlay scrollbar styling.
+  overflow: auto;
+  inline-size: 100%;
+  &:focus-visible {
+    outline: 2px solid awsui.$color-border-item-focused;
+    outline-offset: -2px;
+  }
+}
+
+.header-rowgroup {
+  display: block;
+}
+
+// Header treatment matches Table's thead: table-header surface + a default divider
+// under the header row (Table: border-block-end divider-list-width solid
+// color-border-divider-default). A grid (not flex) so the shared column template governs
+// every column's width identically to the body rows (columns align across rows
+// content-independently).
+.header-row {
+  display: grid;
+  inline-size: 100%;
+  background: awsui.$color-background-table-header;
+  border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
+}
+
+// Sticky header is opt-in; the header stays inside the single scroll container so it
+// scrolls horizontally with the body (CW-14) while pinning vertically. Its surface
+// matches the non-sticky header (Table sticky-header look).
+.sticky-header {
+  & > .header-rowgroup {
+    position: sticky;
+    inset-block-start: 0;
+    // Match Table's sticky-header stacking convention (Table pins its sticky header at 800,
+    // above sticky columns at 798); a bare `1` risks under-layering other console stacking
+    // contexts.
+    z-index: 800;
+    background: awsui.$color-background-table-header;
+  }
+}
+
+.header-cell {
+  position: relative;
+  min-inline-size: 0;
+  // Opaque header surface per cell: when the header is sticky over the windowed (absolutely
+  // positioned) body rows, a transparent cell lets a body row composite behind the column
+  // label, dropping its contrast below WCAG AA in dark mode. Painting the table-header surface
+  // on the cell itself keeps the label on the dark header background (matches Table's cells).
+  background: awsui.$color-background-table-header;
+  color: awsui.$color-text-column-header;
+  font-weight: awsui.$font-weight-heading-s;
+  line-height: awsui.$line-height-heading-xs;
+  // Table cell rhythm: dense vertical padding, space-scaled-l inline padding.
+  padding-block: awsui.$space-scaled-xxs;
+  padding-inline: awsui.$space-scaled-l;
+  box-sizing: border-box;
+}
+
+// Column resize affordance: a pointer-only handle pinned to the header cell's inline-end
+// edge (aria-hidden — it adds no semantics; the columnheader keeps its role). Dragging it
+// drives the shared column template's width map. It renders a VISIBLE vertical divider on
+// the trailing edge to match Table's header resizer: a thin rule in the default divider
+// colour that switches to the interactive-divider colour on hover/active.
+.resize-handle {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  // Comfortable grab area hanging just inside the trailing edge; the visible rule is drawn on
+  // the edge itself via ::after so the hit target is wider than the 1px divider.
+  inline-size: awsui.$space-m;
+  cursor: col-resize;
+  user-select: none;
+  z-index: 1;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset-inline-end: 0;
+    // Small block gap top/bottom, like Table's column divider.
+    inset-block: awsui.$space-xxs;
+    inline-size: 0;
+    border-inline-start: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
+    box-sizing: border-box;
+  }
+
+  &:hover::after,
+  &:active::after {
+    border-inline-start-color: awsui.$color-border-divider-interactive-default;
+  }
+}
+
+.disclosure-header,
+.disclosure-cell {
+  inline-size: awsui.$space-xl;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// impl-F1-A2-core: the body is the windowing runway — Root sets its block-size to the full
+// virtualized height and positions each windowed row absolutely at its measured offset.
+.body {
+  display: block;
+  position: relative;
+  inline-size: 100%;
+}
+
+// Header and body rows are CSS grids driven by the SAME `grid-template-columns` (applied
+// inline from context), so every column aligns across rows deterministically. Rows stay
+// absolutely positioned vertically in the runway (windowing unchanged) — grid governs only
+// the horizontal column axis.
+.row,
+.expanded-row {
+  display: grid;
+  inline-size: 100%;
+  box-sizing: border-box;
+}
+
+.row {
+  align-items: center;
+  // Table's per-row divider: the border sits on the row (not the cell) so it always
+  // lands at the row boundary regardless of cell padding / fixed row height under
+  // virtualization.
+  border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
+
+  // Selected-row surface, matching Table's selected row (color-background-item-selected
+  // + selected border). VirtualTable (F1-A2, compound) has no selection prop today;
+  // this is a style hook so a selected row reads identically to Table if a consumer
+  // marks one. Inert until a row carries the row-selected class.
+  &.row-selected {
+    background: awsui.$color-background-item-selected;
+    border-block: awsui.$border-width-item-selected solid awsui.$color-border-item-selected;
+  }
+
+  &:focus-visible {
+    outline: 2px solid awsui.$color-border-item-focused;
+    outline-offset: -2px;
+  }
+}
+
+// The row referenced by aria-activedescendant while the grid container holds focus. Applied
+// via the .row-active class ONLY while the grid holds focus (see internal.tsx), so it never
+// paints on initial load. The shared styles.focus-highlight mixin is intentionally NOT used
+// here: it forces `position: relative`, which would break the row's `position: absolute`
+// windowing placement; the outline is inset to sit inside the row like Table's focused ring.
+.row-active {
+  outline: 2px solid awsui.$color-border-item-focused;
+  outline-offset: -2px;
+}
+
+.cell {
+  min-inline-size: 0;
+  // Default: single line, truncate with an ellipsis. This matches Table's default
+  // (wrapLines = false). Wrapping is available via the cell-wrap hook on measured
+  // rows (getRowHeight: 'auto'), mirroring Table's opt-in wrapLines.
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  // Match Table body-cell vertical density ($space-scaled-xs). Fixed-height rows are clamped
+  // by their explicit blockSize regardless; this aligns wrapping / auto rows with a real Table.
+  padding-block: awsui.$space-scaled-xs;
+  padding-inline: awsui.$space-scaled-l;
+  box-sizing: border-box;
+}
+
+// Wrapping affordance (Table wrapLines parity). Apply on cells in rows that opt into
+// measured heights (getRowHeight: 'auto') so wrapped content is measured and
+// windowed correctly.
+.cell-wrap {
+  white-space: normal;
+  overflow-wrap: break-word;
+  text-overflow: clip;
+}
+
+// Sort trigger for a sortable HeaderCell: a native button (implicitly keyboard-operable)
+// that fills the header cell and inherits the Table column-header typography.
+.sort-button {
+  @include styles.styles-reset;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  inline-size: 100%;
+  text-align: start;
+  color: awsui.$color-text-column-header;
+  font-weight: awsui.$font-weight-heading-s;
+  &:focus-visible {
+    outline: 2px solid awsui.$color-border-item-focused;
+    outline-offset: -2px;
+  }
+}
+
+.expanded-cell {
+  // Span every column track (incl. the disclosure column) so the expanded region is full width.
+  grid-column: 1 / -1;
+  min-inline-size: 0;
+  box-sizing: border-box;
+}
+
+// The expanded region sits on the container content surface with a divider below, so
+// an expanded row reads as a detail panel attached to its data row (Table
+// expandable-rows look), while holding arbitrary non-tabular content (R-EXPAND).
+.expanded-region {
+  display: block;
+  inline-size: 100%;
+  box-sizing: border-box;
+  background: awsui.$color-background-container-content;
+  border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
+  padding-block: awsui.$space-scaled-s;
+  padding-inline: awsui.$space-scaled-l;
+}
+
+.loading,
+.empty {
+  padding-block: awsui.$space-scaled-l;
+  text-align: center;
+}
+
+// Empty / no-match text is muted, matching Table's empty slot.
+.empty {
+  color: awsui.$color-text-empty;
+  padding-inline: awsui.$space-l;
+}
+
+.live-region {
+  @include styles.awsui-util-hide;
+}

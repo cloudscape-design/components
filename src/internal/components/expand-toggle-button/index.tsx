@@ -19,6 +19,8 @@ export function ExpandToggleButton({
   expandToggleIcon,
   className,
   disableFocusHighlight,
+  id,
+  ariaControls,
 }: {
   isExpanded?: boolean;
   onExpandableItemToggle?: () => void;
@@ -28,6 +30,8 @@ export function ExpandToggleButton({
   expandToggleIcon?: (state: { expanded: boolean }) => React.ReactNode;
   className?: string;
   disableFocusHighlight?: boolean;
+  id?: string;
+  ariaControls?: string;
 }) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { tabIndex } = useSingleTabStopNavigation(buttonRef);
@@ -36,9 +40,11 @@ export function ExpandToggleButton({
     <button
       type="button"
       ref={buttonRef}
+      id={id}
       tabIndex={tabIndex}
       aria-label={isExpanded ? collapseButtonLabel : expandButtonLabel}
       aria-expanded={isExpanded}
+      aria-controls={ariaControls}
       className={clsx(styles['expand-toggle'], disableFocusHighlight && styles['disable-focus-highlight'], className)}
       onClick={onExpandableItemToggle}
       data-awsui-motion-trigger="hover"
