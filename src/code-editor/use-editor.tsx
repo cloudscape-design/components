@@ -6,6 +6,7 @@ import { Ace } from 'ace-builds';
 
 import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
 
+import { defineCloudscapeAceTheme, isCloudscapeAceTheme } from './cloudscape-theme';
 import { CodeEditorProps } from './interfaces';
 import { getAceTheme, getDefaultConfig, getDefaultTheme } from './util';
 
@@ -115,8 +116,16 @@ export function useSyncEditorWrapLines(editor: null | Ace.Editor, wrapLines?: bo
   }, [editor, wrapLines]);
 }
 
-export function useSyncEditorTheme(editor: null | Ace.Editor, theme: CodeEditorProps.Theme) {
+export function useSyncEditorTheme(ace: any, editor: null | Ace.Editor, theme: CodeEditorProps.Theme) {
   useEffect(() => {
-    editor?.setTheme(getAceTheme(theme));
-  }, [editor, theme]);
+    if (!editor) {
+      return;
+    }
+    // The Cloudscape theme is registered lazily and must exist on the Ace
+    // instance before it can be applied.
+    if (isCloudscapeAceTheme(theme)) {
+      defineCloudscapeAceTheme(ace);
+    }
+    editor.setTheme(getAceTheme(theme));
+  }, [ace, editor, theme]);
 }
