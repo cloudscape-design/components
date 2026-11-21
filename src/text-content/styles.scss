@@ -105,4 +105,16 @@
       margin-inline: 0;
     }
   }
+
+  blockquote {
+    @include styles.font(body-m);
+    color: awsui.$color-text-body-default;
+    border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    margin-block: awsui.$space-scaled-xs;
+    margin-inline: 0;
+    padding-block: awsui.$space-xxs;
+    padding-inline-start: awsui.$space-m;
+    padding-inline-end: 0;
+    font-style: italic;
+  }
 }
