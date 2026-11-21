@@ -1,0 +1,160 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+/* stylelint-disable selector-class-pattern */
+
+/*
+ * Accent utility classes — Direction 3 exploration
+ *
+ * NOTE: This stylesheet is experimental. Class names and values may change without notice.
+ *
+ * Usage:
+ *   <span className="awsui-accent-indigo awsui-accent-sharp">content</span>
+ *   <span className="awsui-accent-green awsui-accent-circle"><Icon /></span>
+ */
+
+// Dark mode detection — awsui-dark-mode and awsui-polaris-dark-mode are the
+// class names Cloudscape places on an ancestor element to signal dark mode.
+@mixin dark-mode-only {
+  @media not print {
+    /* stylelint-disable selector-combinator-disallowed-list */
+    :global(.awsui-polaris-dark-mode) &,
+    :global(.awsui-dark-mode) & {
+      @content;
+    }
+  }
+}
+
+// ─── Content color mixin ───────────────────────────────────────────────────────
+// Overrides CSS custom properties consumed by Box text variants and Icon (subtle).
+// $light: 600-level  |  $dark: 400-level
+
+@mixin accent-content($light, $dark) {
+  --color-text-body-default-a7br70: #{$light};
+  --color-text-heading-default-5p4ugs: #{$light};
+  --color-text-body-secondary-6zl7e0: #{$light};
+  --color-text-heading-secondary-c1zwy4: #{$light};
+  --color-text-icon-subtle-xnb03v: #{$light};
+  --color-text-small-ldm4or: #{$light};
+
+  @include dark-mode-only {
+    --color-text-body-default-a7br70: #{$dark};
+    --color-text-heading-default-5p4ugs: #{$dark};
+    --color-text-body-secondary-6zl7e0: #{$dark};
+    --color-text-heading-secondary-c1zwy4: #{$dark};
+    --color-text-icon-subtle-xnb03v: #{$dark};
+    --color-text-small-ldm4or: #{$dark};
+  }
+}
+
+// ─── Base ──────────────────────────────────────────────────────────────────────
+
+:global([class*='awsui-accent-']) {
+  display: inline-flex;
+}
+
+// ─── Shape classes ─────────────────────────────────────────────────────────────
+// Spacing values match the SCSS token equivalents:
+//   awsui.$space-xxs = 4px  |  awsui.$space-xs = 8px
+//   awsui.$size-icon-medium = 20px  |  awsui.$space-scaled-xs = 8px comfortable
+
+:global(.awsui-accent-sharp) {
+  padding-block: 4px; /* spaceXxs */
+  padding-inline: 8px; /* spaceXs */
+  border-start-start-radius: 2px;
+  border-start-end-radius: 2px;
+  border-end-start-radius: 2px;
+  border-end-end-radius: 2px;
+}
+
+:global(.awsui-accent-circle) {
+  /* (spaceScaledXs * 2) + sizeIconMedium = 8*2 + 20 = 36px */
+  inline-size: 36px;
+  block-size: 36px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-start-start-radius: 50%;
+  border-start-end-radius: 50%;
+  border-end-start-radius: 50%;
+  border-end-end-radius: 50%;
+}
+
+// ─── Color classes ─────────────────────────────────────────────────────────────
+// Background: 50-level (light) / 950-level @ 80% opacity (dark)
+// Content:    600-level (light) / 400-level (dark)
+// Source: style-dictionary/core/color-palette.ts
+
+:global(.awsui-accent-red) {
+  background-color: #fff5f5;
+  @include accent-content(#db0000, #ff7a7a);
+  @include dark-mode-only {
+    background-color: rgba(82, 0, 0, 0.8);
+  }
+}
+
+:global(.awsui-accent-yellow) {
+  background-color: #fffef0;
+  @include accent-content(#f2b100, #ffe347);
+  @include dark-mode-only {
+    background-color: rgba(87, 58, 0, 0.8);
+  }
+}
+
+:global(.awsui-accent-indigo) {
+  background-color: #f5f7ff;
+  @include accent-content(#295eff, #7598ff);
+  @include dark-mode-only {
+    background-color: rgba(0, 20, 117, 0.8);
+  }
+}
+
+:global(.awsui-accent-green) {
+  background-color: #effff1;
+  @include accent-content(#00802f, #00e500);
+  @include dark-mode-only {
+    background-color: rgba(0, 51, 17, 0.8);
+  }
+}
+
+:global(.awsui-accent-orange) {
+  background-color: #fff7f5;
+  @include accent-content(#db3300, #ff6a3d);
+  @include dark-mode-only {
+    background-color: rgba(71, 17, 0, 0.8);
+  }
+}
+
+:global(.awsui-accent-purple) {
+  background-color: #faf5ff;
+  @include accent-content(#962eff, #bf80ff);
+  @include dark-mode-only {
+    background-color: rgba(48, 0, 97, 0.8);
+  }
+}
+
+:global(.awsui-accent-mint) {
+  background-color: #ebfff6;
+  @include accent-content(#008559, #00e582);
+  @include dark-mode-only {
+    background-color: rgba(0, 51, 34, 0.8);
+  }
+}
+
+:global(.awsui-accent-lime) {
+  background-color: #f7ffeb;
+  @include accent-content(#008a00, #7ae500);
+  @include dark-mode-only {
+    background-color: rgba(0, 46, 0, 0.8);
+  }
+}
+
+:global(.awsui-accent-grey) {
+  background-color: #fcfcfc;
+  @include accent-content(#6b6b6b, #b7b7b7);
+  @include dark-mode-only {
+    background-color: rgba(21, 21, 21, 0.8);
+  }
+}
