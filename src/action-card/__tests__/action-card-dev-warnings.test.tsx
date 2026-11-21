@@ -36,6 +36,16 @@ describe('ActionCard dev warnings', () => {
     expect(warnOnce).not.toHaveBeenCalled();
   });
 
+  test('does not warn when description is provided', () => {
+    render(<ActionCard description="My card description" />);
+    expect(warnOnce).not.toHaveBeenCalled();
+  });
+
+  test('does not warn when children are provided', () => {
+    render(<ActionCard>My card content</ActionCard>);
+    expect(warnOnce).not.toHaveBeenCalled();
+  });
+
   test('does not warn when both header and ariaLabel are provided', () => {
     render(<ActionCard header="My card" ariaLabel="My card label" />);
     expect(warnOnce).not.toHaveBeenCalled();

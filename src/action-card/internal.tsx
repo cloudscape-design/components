@@ -70,7 +70,8 @@ const InternalActionCard = React.forwardRef(
     checkSafeUrl('ActionCard', href);
     const isAnchor = Boolean(href);
 
-    if (!header && !ariaLabel) {
+    // Without a header or ariaLabel, the card is still named after its description or children.
+    if (!header && !ariaLabel && !description && !children) {
       warnOnce(
         'ActionCard',
         'An accessible name is required. Provide either a `header` or an `ariaLabel` prop so the action card has a meaningful label for screen reader users.'
