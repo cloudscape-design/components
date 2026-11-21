@@ -19,6 +19,7 @@ interface SplitPanelContentSideProps extends SplitPanelContentProps {
   closeBehavior: SplitPanelProps['closeBehavior'];
   openButtonAriaLabel?: string;
   toggleRef: React.RefObject<ButtonProps.Ref>;
+  toggleIconClosed?: React.ReactNode;
 }
 
 export function SplitPanelContentSide({
@@ -36,6 +37,7 @@ export function SplitPanelContentSide({
   ariaLabel,
   onToggle,
   closeBehavior,
+  toggleIconClosed,
 }: SplitPanelContentSideProps) {
   const { topOffset, bottomOffset, animationDisabled } = useSplitPanelContext();
   const isRefresh = useVisualRefresh();
@@ -74,7 +76,8 @@ export function SplitPanelContentSide({
         ) : closeBehavior === 'hide' ? null : (
           <InternalButton
             className={clsx(testUtilStyles['open-button'], styles['open-button-side'])}
-            iconName="angle-left"
+            iconName={toggleIconClosed ? undefined : 'angle-left'}
+            iconSvg={toggleIconClosed ?? undefined}
             variant="icon"
             formAction="none"
             ariaLabel={openButtonAriaLabel}
