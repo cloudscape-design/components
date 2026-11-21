@@ -33,11 +33,7 @@ const AIDrawer = () => {
           updateDrawer({ type: 'expandDrawer', payload: { id: 'ai-panel' } });
           updateDrawer({
             type: 'updateDrawerConfig',
-            payload: {
-              id: 'ai-panel',
-              defaultSize: DEFAULT_SIZE + CHAT_SIZE,
-              minSize: DEFAULT_SIZE + CHAT_SIZE,
-            } as any,
+            payload: { id: 'ai-panel', defaultSize: DEFAULT_SIZE + CHAT_SIZE },
           });
         }}
       >
@@ -74,7 +70,7 @@ const AIDrawer = () => {
           updateDrawer({ type: 'exitExpandedMode' });
           updateDrawer({
             type: 'updateDrawerConfig',
-            payload: { id: 'ai-panel', defaultSize: DEFAULT_SIZE, minSize: DEFAULT_SIZE } as any,
+            payload: { id: 'ai-panel', defaultSize: DEFAULT_SIZE },
           });
         }}
       >

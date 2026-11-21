@@ -39,7 +39,7 @@ export const drawerItems: Array<AppLayoutProps.Drawer> = [
     content: <Security />,
     id: drawerIds.security,
     resizable: true,
-    onResize: (event: any) => {
+    onResize: event => {
       // A drawer implementer may choose to listen to THEIR drawer's
       // resize event,should they want to persist, or otherwise respond
       // to their drawer being resized.
