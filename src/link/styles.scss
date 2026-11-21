@@ -119,4 +119,10 @@ $tokens: style-api.resolve(style-api.$focus-ring, public);
 
 .icon {
   display: inline-block;
+
+  /* Add non-breaking space for consistent spacing */
+  &::before {
+    content: '\a0';
+    display: inline-block;
+  }
 }
