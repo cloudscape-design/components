@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useImperativeHandle, useRef, useState } from 'react';
+import React, { useImperativeHandle, useMemo, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs, useUniqueId, warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -55,7 +55,6 @@ const InternalAttributeEditor = React.forwardRef(
     const removeButtonRefs = useRef<Array<ButtonProps.Ref | undefined>>([]);
     const addButtonRef = useRef<ButtonProps.Ref>(null);
     const wasNonEmpty = useRef<boolean>(false);
-    const [removalAnnouncement, setRemovalAnnouncement] = useState<string>('');
 
     const baseProps = getBaseProps(props);
     const isEmpty = items && items.length === 0;
@@ -77,20 +76,19 @@ const InternalAttributeEditor = React.forwardRef(
     const prevItemsLength = usePrevious(items.length);
     const i18n = useInternalI18n('attribute-editor');
 
-    React.useEffect(() => {
-      if (prevItemsLength && prevItemsLength > items.length) {
-        const announcement = i18n('i18nStrings.itemRemovedAriaLive', i18nStrings?.itemRemovedAriaLive);
-        if (announcement) {
-          setRemovalAnnouncement(announcement);
-        } else {
-          setRemovalAnnouncement('');
-        }
-      } else {
-        setRemovalAnnouncement('');
-      }
+    // The message is derived during render and handed to the live region, which owns announcement timing and
+    // deduplication. Deriving it in an effect with setState scheduled an update after every commit whenever the
+    // consumer passed a new `items` array, which could exceed React's nested update limit during fast typing
+    // elsewhere on the page and drop a keystroke (AWSUI-62553).
+    const removalAnnouncement = useMemo(
+      () =>
+        prevItemsLength && prevItemsLength > items.length
+          ? i18n('i18nStrings.itemRemovedAriaLive', i18nStrings?.itemRemovedAriaLive) || ''
+          : '',
       // we only want to announce when the number of items decreases (i.e. when an item is removed)
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [items, i18nStrings?.itemRemovedAriaLive]);
+      [items, i18nStrings?.itemRemovedAriaLive]
+    );
 
     for (const def of definition) {
       if (def && !def.label) {

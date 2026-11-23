@@ -741,3 +741,183 @@ describe('Attribute Editor', () => {
     });
   });
 });
+
+describe('removal announcement updates', () => {
+  const definition = [{ label: 'Value', control: (item: { value: string }) => item.value }];
+
+  function FreshItems({ values, unrelated }: { values: string[]; unrelated: string }) {
+    return (
+      <>
+        <span data-testid="unrelated">{unrelated}</span>
+        <AttributeEditor
+          addButtonText="Add"
+          removeButtonText="Remove"
+          definition={definition}
+          items={values.map(value => ({ value }))}
+        />
+      </>
+    );
+  }
+
+  test('does not re-render when the parent re-renders with a new items array of the same length', () => {
+    let commits = 0;
+    const tree = (unrelated: string) => (
+      <React.Profiler id="ae" onRender={() => commits++}>
+        <FreshItems values={['a', 'b']} unrelated={unrelated} />
+      </React.Profiler>
+    );
+    const { rerender } = render(tree('0'));
+    for (let i = 1; i <= 20; i++) {
+      commits = 0;
+      rerender(tree(String(i)));
+      expect(commits).toBe(1);
+    }
+  });
+
+  test('clears the removal announcement when an item is added after a removal', async () => {
+    const props = {
+      addButtonText: 'Add',
+      removeButtonText: 'Remove',
+      definition,
+      i18nStrings: { itemRemovedAriaLive: 'An item was removed.' },
+    };
+    const { container, rerender } = render(<AttributeEditor {...props} items={[{ value: 'a' }, { value: 'b' }]} />);
+    const announcement = () =>
+      createWrapper(container).findAttributeEditor()!.find('[data-testid="removal-announcement"]')!.getElement();
+
+    rerender(<AttributeEditor {...props} items={[{ value: 'a' }]} />);
+    await waitFor(() => expect(announcement()).toHaveTextContent('An item was removed.'));
+
+    rerender(<AttributeEditor {...props} items={[{ value: 'a' }, { value: 'c' }]} />);
+    await waitFor(() => expect(announcement()).toHaveTextContent(''));
+    expect(announcement().textContent).toBe('');
+  });
+});
+
+describe('removal announcement through the live region', () => {
+  const definition = [{ label: 'Value', control: (item: { value: string }) => item.value }];
+  const message = 'An item was removed.';
+  const liveRegionDelayMs = 5000;
+
+  function Editor({
+    values,
+    itemRemovedAriaLive = message,
+  }: {
+    values: string[];
+    itemRemovedAriaLive?: string | null;
+  }) {
+    return (
+      <AttributeEditor
+        addButtonText="Add"
+        removeButtonText="Remove"
+        definition={definition}
+        items={values.map(value => ({ value }))}
+        i18nStrings={itemRemovedAriaLive === null ? undefined : { itemRemovedAriaLive }}
+      />
+    );
+  }
+
+  const source = (container: HTMLElement) =>
+    createWrapper(container).findAttributeEditor()!.find('[data-testid="removal-announcement"]')!.getElement();
+  const announcers = () => Array.from(document.querySelectorAll(`.${liveRegionStyles.announcer}`));
+  const announcedTexts = () => announcers().map(element => element.textContent);
+
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.clearAllTimers();
+    jest.useRealTimers();
+  });
+
+  test('announces a removal politely once the live region delay has passed', () => {
+    const { container, rerender } = render(<Editor values={['a', 'b']} />);
+    rerender(<Editor values={['a']} />);
+
+    expect(source(container).textContent).toBe(message);
+    expect(source(container)).toHaveAttribute('hidden');
+    expect(announcers()).toHaveLength(1);
+    expect(announcers()[0]).toHaveAttribute('aria-live', 'polite');
+    expect(announcers()[0]).toHaveAttribute('aria-atomic', 'true');
+
+    jest.advanceTimersByTime(liveRegionDelayMs - 1);
+    expect(announcedTexts()).toEqual(['']);
+    jest.advanceTimersByTime(1);
+    expect(announcedTexts()).toEqual([message]);
+  });
+
+  test('announces every one of several consecutive removals', () => {
+    const { rerender } = render(<Editor values={['a', 'b', 'c']} />);
+
+    rerender(<Editor values={['a', 'b']} />);
+    jest.advanceTimersByTime(liveRegionDelayMs);
+    const firstAnnouncer = announcers()[0];
+    expect(announcedTexts()).toEqual([message]);
+
+    rerender(<Editor values={['a']} />);
+    expect(firstAnnouncer.isConnected).toBe(false);
+    expect(announcedTexts()).toEqual(['']);
+    jest.advanceTimersByTime(liveRegionDelayMs);
+    expect(announcedTexts()).toEqual([message]);
+  });
+
+  test('does not announce when an item is added', () => {
+    const { container, rerender } = render(<Editor values={['a']} />);
+    rerender(<Editor values={['a', 'b']} />);
+    jest.advanceTimersByTime(liveRegionDelayMs);
+
+    expect(source(container).textContent).toBe('');
+    expect(announcedTexts()).toEqual(['']);
+  });
+
+  test('does not announce an add that follows a removal', () => {
+    const { container, rerender } = render(<Editor values={['a', 'b']} />);
+    rerender(<Editor values={['a']} />);
+    jest.advanceTimersByTime(liveRegionDelayMs);
+    expect(announcedTexts()).toEqual([message]);
+
+    rerender(<Editor values={['a', 'c']} />);
+    jest.advanceTimersByTime(liveRegionDelayMs);
+    expect(source(container).textContent).toBe('');
+    expect(announcedTexts()).toEqual(['']);
+  });
+
+  test.each([
+    ['no i18nStrings', null],
+    ['an empty itemRemovedAriaLive', ''],
+  ])('does not announce a removal when there is %s', (_, itemRemovedAriaLive) => {
+    const { container, rerender } = render(<Editor values={['a', 'b']} itemRemovedAriaLive={itemRemovedAriaLive} />);
+    rerender(<Editor values={['a']} itemRemovedAriaLive={itemRemovedAriaLive} />);
+    jest.advanceTimersByTime(liveRegionDelayMs);
+
+    expect(source(container).textContent).toBe('');
+    expect(announcedTexts()).toEqual(['']);
+  });
+
+  test('keeps the message while the editor re-renders with the same items', () => {
+    const items = [{ value: 'a' }];
+    const props = {
+      addButtonText: 'Add',
+      removeButtonText: 'Remove',
+      definition,
+      i18nStrings: { itemRemovedAriaLive: message },
+    };
+    const { container, rerender } = render(<AttributeEditor {...props} items={[{ value: 'a' }, { value: 'b' }]} />);
+    rerender(<AttributeEditor {...props} items={items} />);
+    rerender(<AttributeEditor {...props} items={items} addButtonText="Add item" />);
+
+    expect(source(container).textContent).toBe(message);
+    jest.advanceTimersByTime(liveRegionDelayMs);
+    expect(announcedTexts()).toEqual([message]);
+  });
+
+  test('clears the message when the parent passes a new items array of the same length, as before', () => {
+    const { container, rerender } = render(<Editor values={['a', 'b']} />);
+    rerender(<Editor values={['a']} />);
+    expect(source(container).textContent).toBe(message);
+
+    rerender(<Editor values={['a']} />);
+    expect(source(container).textContent).toBe('');
+  });
+});
