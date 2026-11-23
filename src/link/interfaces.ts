@@ -114,7 +114,8 @@ export interface LinkProps extends BaseComponentProps {
   /**
    * An object containing CSS properties to customize the link's visual appearance.
    * Refer to the [style docs](/components/link/?tabId=style) for more details.
-   * @deprecated Replaced by `styleClassNames`.
+   *
+   * **Deprecated** Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: LinkProps.Style;

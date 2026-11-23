@@ -127,7 +127,8 @@ export interface ButtonGroupProps extends BaseComponentProps {
   /**
    * An object containing CSS properties to customize the button group's visual appearance.
    * Refer to the [style docs](/components/button-group/?tabId=style) for more details.
-   * @deprecated Replaced by `styleClassNames`.
+   *
+   * **Deprecated** Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: ButtonGroupProps.Style;

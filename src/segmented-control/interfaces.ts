@@ -50,7 +50,8 @@ export interface SegmentedControlProps extends BaseComponentProps {
   /**
    * An object containing CSS properties to customize the segmented control's visual appearance.
    * Refer to the [style docs](/components/segmented-control/?tabId=style) for more details.
-   * @deprecated Replaced by `styleClassNames`.
+   *
+   * **Deprecated** Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: SegmentedControlProps.Style;

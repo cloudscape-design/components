@@ -163,7 +163,8 @@ export interface AutosuggestProps
   /**
    * An object containing CSS properties to customize the autosuggest's visual appearance.
    * Refer to the [style docs](/components/autosuggest/?tabId=style) for more details.
-   * @deprecated Replaced by `styleClassNames`.
+   *
+   * **Deprecated** Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: AutosuggestProps.Style;

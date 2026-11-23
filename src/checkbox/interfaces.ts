@@ -36,7 +36,8 @@ export interface CheckboxProps extends BaseCheckboxProps {
   /**
    * An object containing CSS properties to customize the checkbox's visual appearance.
    * Refer to the [style docs](/components/checkbox/?tabId=style) for more details.
-   * @deprecated Replaced by `styleClassNames`.
+   *
+   * **Deprecated** Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: CheckboxProps.Style;

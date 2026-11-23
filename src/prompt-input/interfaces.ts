@@ -312,7 +312,7 @@ export interface PromptInputProps
   nativeTextareaAttributes?: NativeAttributes<React.TextareaHTMLAttributes<HTMLTextAreaElement>>;
 
   /**
-   * @deprecated Replaced by `styleClassNames`.
+   * **Deprecated** Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: PromptInputProps.Style;

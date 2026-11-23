@@ -107,7 +107,8 @@ export interface TabsProps extends BaseComponentProps {
   /**
    * An object containing CSS properties to customize the tabs' visual appearance.
    * Refer to the [style docs](/components/tabs/?tabId=style) for more details.
-   * @deprecated Replaced by `styleClassNames`.
+   *
+   * **Deprecated** Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: TabsProps.Style;

@@ -25,7 +25,8 @@ export interface ToggleProps extends BaseCheckboxProps {
   /**
    * An object containing CSS properties to customize the toggle's visual appearance.
    * Refer to the [style docs](/components/toggle/?tabId=style) for more details.
-   * @deprecated Replaced by `styleClassNames`.
+   *
+   * **Deprecated** Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: ToggleProps.Style;

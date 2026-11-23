@@ -191,7 +191,8 @@ export interface InputProps
   /**
    * An object containing CSS properties to customize the input's visual appearance.
    * Refer to the [style docs](/components/input/?tabId=style) for more details.
-   * @deprecated Replaced by `styleClassNames`.
+   *
+   * **Deprecated** Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: InputProps.Style;

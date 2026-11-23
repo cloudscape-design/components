@@ -64,7 +64,8 @@ export interface TextFilterProps extends BaseComponentProps, FormFieldControlPro
   /**
    * An object containing CSS properties to customize the text filter's visual appearance.
    * Refer to the [style docs](/components/text-filter/?tabId=style) for more details.
-   * @deprecated Replaced by `styleClassNames`.
+   *
+   * **Deprecated** Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: TextFilterProps.Style;

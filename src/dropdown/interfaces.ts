@@ -172,7 +172,8 @@ export interface DropdownProps extends ExpandToViewport {
 
   /**
    * An object containing CSS properties to customize the dropdown's visual appearance.
-   * @deprecated Replaced by `styleClassNames`.
+   *
+   * **Deprecated** Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: DropdownProps.Style;
