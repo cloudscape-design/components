@@ -3,12 +3,14 @@
 import React from 'react';
 import { cleanup, render, waitFor } from '@testing-library/react';
 
+import { setGlobalFlag } from '@cloudscape-design/component-toolkit/internal/testing';
+
 import AppLayout from '../../../lib/components/app-layout';
 import { isAppLayoutHideToolbar } from '../../../lib/components/app-layout/utils/feature-flags';
 import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
 import { clearInitialMessages } from '../../../lib/components/internal/plugins/widget/core';
 import * as widgetPlugins from '../../../lib/components/plugins';
-import { describeEachAppLayout, renderComponent, setPendingGlobalFlag } from './utils';
+import { describeEachAppLayout, renderComponent } from './utils';
 
 import skeletonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.css.js';
 import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.css.js';
@@ -22,7 +24,7 @@ function isToolbarHidden(toolbar: HTMLElement) {
   return toolbar.classList.contains(toolbarStyles['toolbar-hidden']);
 }
 
-afterEach(() => setPendingGlobalFlag('appLayoutHideToolbar', undefined));
+afterEach(() => setGlobalFlag('appLayoutHideToolbar', undefined));
 
 describe('isAppLayoutHideToolbar', () => {
   test('returns false when the flag is not set', () => {
@@ -30,12 +32,12 @@ describe('isAppLayoutHideToolbar', () => {
   });
 
   test('returns false when the flag is false', () => {
-    setPendingGlobalFlag('appLayoutHideToolbar', false);
+    setGlobalFlag('appLayoutHideToolbar', false);
     expect(isAppLayoutHideToolbar()).toBe(false);
   });
 
   test('returns true when the flag is true', () => {
-    setPendingGlobalFlag('appLayoutHideToolbar', true);
+    setGlobalFlag('appLayoutHideToolbar', true);
     expect(isAppLayoutHideToolbar()).toBe(true);
   });
 });
@@ -48,7 +50,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
   });
 
   test('keeps the toolbar mounted but hidden when the flag is set', () => {
-    setPendingGlobalFlag('appLayoutHideToolbar', true);
+    setGlobalFlag('appLayoutHideToolbar', true);
     const { wrapper } = renderComponent(<AppLayout navigation="nav" tools="tools" />);
     expect(wrapper.findToolbar()).toBeTruthy();
     expect(isToolbarHidden(wrapper.findToolbar()!.getElement())).toBe(true);
@@ -58,7 +60,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
   });
 
   test('renders a top border for the content area in place of the hidden toolbar', () => {
-    setPendingGlobalFlag('appLayoutHideToolbar', true);
+    setGlobalFlag('appLayoutHideToolbar', true);
     const { wrapper } = renderComponent(<AppLayout navigation="nav" />);
     const toolbar = wrapper.findToolbar()!.getElement();
     const border = toolbar.nextElementSibling;
@@ -72,7 +74,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
   });
 
   test('keeps rendering breadcrumbs inside the hidden toolbar', () => {
-    setPendingGlobalFlag('appLayoutHideToolbar', true);
+    setGlobalFlag('appLayoutHideToolbar', true);
     const { wrapper } = renderComponent(<AppLayout breadcrumbs={<BreadcrumbGroup items={breadcrumbItems} />} />);
     const breadcrumbs = wrapper.findBreadcrumbs()!.findBreadcrumbGroup()!;
     expect(breadcrumbs.findBreadcrumbLinks().map(link => link.getElement().textContent)).toEqual(['Home', 'Resource']);
@@ -80,7 +82,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
   });
 
   test('keeps rendering the content and open navigation when the flag is set', () => {
-    setPendingGlobalFlag('appLayoutHideToolbar', true);
+    setGlobalFlag('appLayoutHideToolbar', true);
     const { wrapper } = renderComponent(
       <AppLayout navigation="nav" navigationOpen={true} onNavigationChange={() => {}} content="main content" />
     );
@@ -90,7 +92,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
   });
 
   test('keeps rendering an open tools drawer when the flag is set', () => {
-    setPendingGlobalFlag('appLayoutHideToolbar', true);
+    setGlobalFlag('appLayoutHideToolbar', true);
     const { wrapper } = renderComponent(<AppLayout tools="tools content" toolsOpen={true} onToolsChange={() => {}} />);
     expect(isToolbarHidden(wrapper.findToolbar()!.getElement())).toBe(true);
     expect(wrapper.findTools().getElement()).toHaveTextContent('tools content');
@@ -105,7 +107,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
   });
 
   test('reports breadcrumbs to registerBreadcrumbsConsumer when the flag is set', async () => {
-    setPendingGlobalFlag('appLayoutHideToolbar', true);
+    setGlobalFlag('appLayoutHideToolbar', true);
     const onBreadcrumbsChange = jest.fn();
     const registration = widgetPlugins.registerBreadcrumbsConsumer({ onBreadcrumbsChange });
     const onFollow = jest.fn();
@@ -121,7 +123,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
   });
 
   test('reports breadcrumb updates to registerBreadcrumbsConsumer when the flag is set', async () => {
-    setPendingGlobalFlag('appLayoutHideToolbar', true);
+    setGlobalFlag('appLayoutHideToolbar', true);
     const onBreadcrumbsChange = jest.fn();
     const registration = widgetPlugins.registerBreadcrumbsConsumer({ onBreadcrumbsChange });
 
@@ -141,7 +143,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
 
 describeEachAppLayout({ themes: ['classic', 'refresh'] }, () => {
   test('does not affect non-toolbar designs', () => {
-    setPendingGlobalFlag('appLayoutHideToolbar', true);
+    setGlobalFlag('appLayoutHideToolbar', true);
     const { wrapper } = renderComponent(<AppLayout navigation="nav" content="main content" />);
     expect(wrapper.findNavigation().getElement()).toHaveTextContent('nav');
     expect(wrapper.findContentRegion().getElement()).toHaveTextContent('main content');
