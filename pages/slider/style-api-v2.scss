@@ -25,14 +25,6 @@
   &:is(:focus, :active) {
     @include slider.handle($awsui-fill-color: palette.$accent-active);
   }
-
-  &:disabled,
-  &[aria-disabled='true'] {
-    @include slider.handle(
-      $awsui-fill-color: palette.$control-bg-disabled,
-      $awsui-halo-color: palette.$control-bg-disabled
-    );
-  }
 }
 
 // The value fill follows the handle state through :has() on the root slot.
@@ -40,7 +32,14 @@
   @include slider.root($awsui-value-color: palette.$accent-active);
 }
 
-// After the focus rule: a read-only slider stays focusable, and both rules have the same specificity.
-.slider:has(.handle:disabled, .handle[aria-disabled='true']) {
-  @include slider.root($awsui-value-color: palette.$control-bg-disabled);
+.slider-disabled {
+  @include slider.root($awsui-track-color: palette.$surface-alt, $awsui-value-color: palette.$control-bg-disabled);
+}
+
+.handle-disabled {
+  @include slider.handle(
+    $awsui-fill-color: palette.$control-bg-disabled,
+    $awsui-halo-color: palette.$control-bg-disabled,
+    $awsui-border-radius: 4px
+  );
 }

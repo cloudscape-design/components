@@ -4,8 +4,7 @@ import { ButtonProps } from '../button/interfaces';
 import { ContainerProps } from '../container/interfaces';
 import { BaseComponentProps } from '../types/base-component';
 import { NonCancelableEventHandler } from '../types/events';
-import { StyleSlot } from '../types/utils';
-import { FocusRingStyle } from '../types/utils';
+import { FocusRingStyle, StyleSlot } from '../types/utils';
 
 export interface TabsProps extends BaseComponentProps {
   /**

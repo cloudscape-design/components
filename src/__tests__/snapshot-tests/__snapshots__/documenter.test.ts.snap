@@ -31773,16 +31773,16 @@ Refer to the [style docs](/components/table/?tabId=style) for more details.",
         "properties": [
           {
             "inlineType": {
-              "name": "StyleSlot<{ type: "data"; item: T; column: TableProps.ColumnDefinition<T>; } | { type: "selection"; item: T; }>",
+              "name": "StyleSlot<TableProps.CellStyleArgs<T>>",
               "type": "union",
               "values": [
                 "string",
-                "(args: { type: "data"; item: T; column: TableProps.ColumnDefinition<T>; } | { type: "selection"; item: T; }) => string",
+                "(args: TableProps.CellStyleArgs<T>) => string",
               ],
             },
             "name": "cell",
             "optional": true,
-            "type": "StyleSlot<{ type: "data"; item: T; column: TableProps.ColumnDefinition<T>; } | { type: "selection"; item: T; }>",
+            "type": "StyleSlot<TableProps.CellStyleArgs<T>>",
           },
           {
             "name": "clearSortButton",
@@ -31791,16 +31791,16 @@ Refer to the [style docs](/components/table/?tabId=style) for more details.",
           },
           {
             "inlineType": {
-              "name": "StyleSlot<{ type: "column"; column: TableProps.ColumnDefinition<T>; sortable: boolean; sorted: boolean; sortingDescending: boolean; } | { type: "group"; group: TableProps.GroupDefinition<T>; } | { ...; }>",
+              "name": "StyleSlot<TableProps.HeaderCellStyleArgs<T>>",
               "type": "union",
               "values": [
                 "string",
-                "(args: { type: "column"; column: TableProps.ColumnDefinition<T>; sortable: boolean; sorted: boolean; sortingDescending: boolean; } | { type: "group"; group: TableProps.GroupDefinition<T>; } | { ...; }) => string",
+                "(args: TableProps.HeaderCellStyleArgs<T>) => string",
               ],
             },
             "name": "headerCell",
             "optional": true,
-            "type": "StyleSlot<{ type: "column"; column: TableProps.ColumnDefinition<T>; sortable: boolean; sorted: boolean; sortingDescending: boolean; } | { type: "group"; group: TableProps.GroupDefinition<T>; } | { ...; }>",
+            "type": "StyleSlot<TableProps.HeaderCellStyleArgs<T>>",
           },
           {
             "name": "root",
@@ -31809,16 +31809,16 @@ Refer to the [style docs](/components/table/?tabId=style) for more details.",
           },
           {
             "inlineType": {
-              "name": "StyleSlot<{ item: T; index: number; selected: boolean; }>",
+              "name": "StyleSlot<TableProps.RowStyleArgs<T>>",
               "type": "union",
               "values": [
                 "string",
-                "(args: { item: T; index: number; selected: boolean; }) => string",
+                "(args: TableProps.RowStyleArgs<T>) => string",
               ],
             },
             "name": "row",
             "optional": true,
-            "type": "StyleSlot<{ item: T; index: number; selected: boolean; }>",
+            "type": "StyleSlot<TableProps.RowStyleArgs<T>>",
           },
           {
             "inlineType": {
