@@ -13,6 +13,7 @@ import { DrawerPayload as RuntimeAiDrawerConfig } from '../../internal/plugins/w
 import { NonCancelableEventHandler } from '../../types/events';
 import { AppLayoutProps } from '../interfaces';
 import { ActiveDrawersContext } from '../utils/visibility-context';
+import { convertRuntimeTriggerToReactNode, RuntimeTriggerIconMarkup } from './trigger-icon';
 
 import styles from './styles.css.js';
 
@@ -102,17 +103,10 @@ function mapRuntimeHeaderActionsToHeaderActions(
   });
 }
 
-const convertRuntimeTriggerToReactNode = (runtimeTrigger?: string) => {
-  if (!runtimeTrigger) {
-    return undefined;
-  }
-  // eslint-disable-next-line react/no-danger
-  return <span style={{ lineHeight: 0 }} dangerouslySetInnerHTML={{ __html: runtimeTrigger }} />;
-};
-
 export const mapRuntimeConfigToDrawer = (
   runtimeConfig: RuntimeDrawerConfig
 ): AppLayoutProps.Drawer & {
+  trigger?: RuntimeTriggerIconMarkup;
   orderPriority?: number;
   onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
   headerActions?: ReadonlyArray<ButtonGroupProps.Item>;
@@ -126,6 +120,7 @@ export const mapRuntimeConfigToDrawer = (
       ? {
           ...(trigger.iconSvg && {
             iconSvg: convertRuntimeTriggerToReactNode(trigger.iconSvg),
+            iconSvgMarkup: trigger.iconSvg,
           }),
         }
       : undefined,
@@ -149,6 +144,7 @@ export const mapRuntimeConfigToDrawer = (
 export const mapRuntimeConfigToAiDrawer = (
   runtimeConfig: RuntimeAiDrawerConfig
 ): AppLayoutProps.Drawer & {
+  trigger?: RuntimeTriggerIconMarkup;
   orderPriority?: number;
   onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
   headerActions?: ReadonlyArray<ButtonGroupProps.Item>;
@@ -164,6 +160,7 @@ export const mapRuntimeConfigToAiDrawer = (
       trigger: {
         customIcon: convertRuntimeTriggerToReactNode(trigger?.customIcon),
         iconSvg: convertRuntimeTriggerToReactNode(trigger?.iconSvg),
+        iconSvgMarkup: trigger?.iconSvg,
       },
     }),
     exitExpandedModeTrigger: exitExpandedModeTrigger
