@@ -53,6 +53,11 @@ const suite: TestSuite = {
       path: 'expandable-section/stacked-variant.permutations',
       screenshotType: 'permutations',
     },
+    {
+      description: 'header secondary content',
+      path: 'expandable-section/header-secondary-content',
+      screenshotType: 'screenshotArea',
+    },
   ],
 };
 
