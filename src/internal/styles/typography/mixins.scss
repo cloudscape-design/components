@@ -28,7 +28,6 @@
 @mixin font-body-m {
   font-size: awsui.$font-size-body-m;
   line-height: awsui.$line-height-body-m;
-  letter-spacing: awsui.$letter-spacing-body-m;
 }
 
 @mixin font-heading-xs($weight: true, $family: true) {
