@@ -27,6 +27,17 @@ const suite: TestSuite = {
       screenshotType: 'screenshotArea',
     },
     {
+      description: 'fit height',
+      path: 'item-card/fit-height',
+      screenshotType: 'screenshotArea',
+    },
+    {
+      description: 'fit height with footers',
+      path: 'item-card/fit-height',
+      screenshotType: 'screenshotArea',
+      queryParams: { showFooters: 'true' },
+    },
+    {
       description: 'Style API v2',
       path: 'item-card/style-api-v2',
       screenshotType: 'screenshotArea',
