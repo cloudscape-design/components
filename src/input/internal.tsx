@@ -174,26 +174,24 @@ function InternalInput(
     readOnly,
   });
 
-  useFieldRegistration(
-    type === 'password'
-      ? null
-      : {
-          register: __registerField,
-          name: controlId ?? name,
-          type: 'input',
-          value: value ?? '',
-          disabled,
-          readOnly,
-          invalid,
-          labels: [inlineLabelText, ariaLabel],
-          setValue: next => {
-            handleChange(String(next ?? ''));
-            return true;
-          },
-          blur: () => fireNonCancelableEvent(onBlur),
-          scrollTarget: () => inputRef.current,
-        }
-  );
+  useFieldRegistration(!!__registerField && type !== 'password', {
+    name: controlId ?? name,
+    type: 'input',
+    value: value ?? '',
+    disabled,
+    readOnly,
+    invalid,
+    labels: [inlineLabelText, ariaLabel],
+    setValue: next => {
+      const text = String(next ?? '');
+      if (text === (value ?? '')) {
+        return 'unchanged';
+      }
+      handleChange(text);
+      return 'changed';
+    },
+    blur: () => fireNonCancelableEvent(onBlur),
+  });
 
   const hasPrefix = !!prefix;
   const hasSuffix = !!suffix;

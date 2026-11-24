@@ -75,8 +75,7 @@ const Textarea = React.forwardRef(
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     useForwardFocus(ref, textareaRef);
 
-    useFieldRegistration({
-      register: true,
+    useFieldRegistration(true, {
       name: controlId,
       type: 'textarea',
       value: value ?? '',
@@ -85,11 +84,14 @@ const Textarea = React.forwardRef(
       invalid,
       labels: [ariaLabel],
       setValue: next => {
-        fireNonCancelableEvent(onChange, { value: String(next ?? '') });
-        return true;
+        const text = String(next ?? '');
+        if (text === (value ?? '')) {
+          return 'unchanged';
+        }
+        fireNonCancelableEvent(onChange, { value: text });
+        return 'changed';
       },
       blur: () => fireNonCancelableEvent(onBlur),
-      scrollTarget: () => textareaRef.current,
     });
 
     const attributes: React.TextareaHTMLAttributes<HTMLTextAreaElement> = {

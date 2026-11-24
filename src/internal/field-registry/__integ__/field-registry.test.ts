@@ -45,7 +45,7 @@ class FieldRegistryDemoPage extends BasePageObject {
     await this.waitForVisible(allowForChat);
     await this.click(allowForChat);
     await this.waitForAssertion(async () => {
-      await expect(this.getElementsCount(writeResult)).resolves.toBe(EXPECTED_RESULTS.length);
+      await expect(this.getElementsText(writeResult)).resolves.toEqual(EXPECTED_RESULTS);
     });
     return this.getElementsText(writeResult);
   }

@@ -11,14 +11,16 @@ type Decision = 'approve' | 'allow' | 'skip';
 
 interface WriteResult {
   label: string;
-  type: 'success' | 'warning' | 'error';
-  message: string;
+  id?: string;
+  problem?: string;
+  skipped?: boolean;
 }
 
 interface Message {
   role: 'user' | 'assistant';
   text: string;
   results?: ReadonlyArray<WriteResult>;
+  summary?: ReadonlyArray<WriteResult>;
 }
 
 const EXAMPLE_VALUES: ReadonlyArray<Write> = [
@@ -81,6 +83,13 @@ export default function AssistantChat() {
   );
 
   const say = (message: Message) => setMessages(current => [...current, message]);
+  const errorOf = (result: WriteResult) =>
+    result.problem ?? fields.find(candidate => candidate.id === result.id)?.errorText;
+  const summarize = (results: ReadonlyArray<WriteResult>) => {
+    const attention = results.filter(errorOf).length;
+    const total = results.length === 1 ? '1 field' : `${results.length} fields`;
+    return attention ? `Done. ${attention} of ${total} need your attention.` : `Done. Set ${total}.`;
+  };
   const replaceLast = (message: Message) => setMessages(current => [...current.slice(0, -1), message]);
 
   const confirm = (write: Write) =>
@@ -106,29 +115,22 @@ export default function AssistantChat() {
       }
       let result: WriteResult;
       if (!field) {
-        result = { label, type: 'error', message: 'Not on this page' };
+        result = { label, problem: 'Not on this page' };
       } else if (decision === 'skip') {
-        result = { label: field.label, type: 'warning', message: 'Skipped' };
+        result = { label: field.label, problem: 'Skipped', skipped: true };
       } else {
         try {
-          const written = await awsuiPlugins.fieldRegistry.setValue(field.id, value);
-          result = written.errorText
-            ? { label: field.label, type: 'warning', message: written.errorText }
-            : { label: field.label, type: 'success', message: 'Set' };
+          await awsuiPlugins.fieldRegistry.setValue(field.id, value);
+          result = { label: field.label, id: field.id };
         } catch (error) {
-          const message = field.statusType === 'loading' ? 'Its options are still loading' : (error as Error).message;
-          result = { label: field.label, type: 'error', message };
+          const problem = field.statusType === 'loading' ? 'Its options are still loading' : (error as Error).message;
+          result = { label: field.label, problem };
         }
       }
       results.push(result);
       replaceLast({ role: 'assistant', text: intro, results: [...results] });
     }
-    const attention = results.filter(result => result.type !== 'success').length;
-    const total = results.length === 1 ? '1 field' : `${results.length} fields`;
-    say({
-      role: 'assistant',
-      text: attention ? `Done. ${attention} of ${total} need your attention.` : `Done. Set ${total}.`,
-    });
+    say({ role: 'assistant', text: '', summary: results });
   };
 
   const send = async (text: string) => {
@@ -163,14 +165,21 @@ export default function AssistantChat() {
         {messages.map((message, index) => (
           <div key={index} data-testid={`${message.role}-message`}>
             <Box variant="awsui-key-label">{message.role === 'user' ? 'You' : 'Assistant'}</Box>
-            <Box>{message.text}</Box>
+            <Box>{message.summary ? summarize(message.summary) : message.text}</Box>
             {message.results && (
               <SpaceBetween size="xxs">
-                {message.results.map(result => (
-                  <StatusIndicator key={result.label} data-testid="write-result" type={result.type}>
-                    {result.label}: {result.message}
-                  </StatusIndicator>
-                ))}
+                {message.results.map(result => {
+                  const error = errorOf(result);
+                  return (
+                    <StatusIndicator
+                      key={result.label}
+                      data-testid="write-result"
+                      type={result.problem && !result.skipped ? 'error' : error ? 'warning' : 'success'}
+                    >
+                      {result.label}: {error ?? 'Set'}
+                    </StatusIndicator>
+                  );
+                })}
               </SpaceBetween>
             )}
           </div>

@@ -31,7 +31,6 @@ const SUBNETS = [
   { label: 'subnet-c (us-east-1c)', value: 'subnet-c' },
 ];
 
-const scrollIntoView = jest.fn();
 let stopListening: (() => void) | null = null;
 let fields: ReadonlyArray<FieldDescriptor> = [];
 
@@ -46,7 +45,7 @@ const field = (label: string) => fields.find(descriptor => descriptor.label === 
 const labels = () => fields.map(descriptor => descriptor.label);
 
 async function setValue(label: string, value: unknown) {
-  let written: Promise<FieldDescriptor> | undefined;
+  let written: Promise<void> | undefined;
   act(() => {
     written = awsuiPlugins.fieldRegistry.setValue(field(label).id, value);
     written.catch(() => {});
@@ -61,12 +60,7 @@ const write = (label: string, value: unknown) =>
     () => false
   );
 
-beforeAll(() => {
-  Element.prototype.scrollIntoView = scrollIntoView;
-});
-
 beforeEach(() => {
-  scrollIntoView.mockClear();
   fields = [];
   listen();
 });
@@ -282,10 +276,52 @@ describe('updates', () => {
     expect(calls).toEqual(['change:web-1', 'blur:web-1']);
   });
 
-  test('fields are plain data', async () => {
+  test('fields carry data only, no functions', async () => {
     render(<Form />);
     await flush();
-    expect(JSON.parse(JSON.stringify(fields))).toEqual(fields);
+    expect(fields.flatMap(descriptor => Object.values(descriptor)).some(value => typeof value === 'function')).toBe(
+      false
+    );
+  });
+
+  test('setValue resolves once the field has re-rendered, so fields it reveals are already listed', async () => {
+    function Logging() {
+      const [enabled, setEnabled] = useState(false);
+      return (
+        <>
+          <Toggle checked={enabled} onChange={e => setEnabled(e.detail.checked)}>
+            Enable logging
+          </Toggle>
+          {enabled && (
+            <FormField label="Log level">
+              <Input value="" onChange={() => {}} />
+            </FormField>
+          )}
+        </>
+      );
+    }
+    render(<Logging />);
+    await flush();
+    let listedAfterWrite: string[] = [];
+    await act(async () => {
+      await awsuiPlugins.fieldRegistry.setValue(field('Enable logging').id, true);
+      listedAfterWrite = labels();
+    });
+    expect(listedAfterWrite).toEqual(['Enable logging', 'Log level']);
+  });
+
+  test('writing the value a field already has changes nothing', async () => {
+    const onChange = jest.fn();
+    const onBlur = jest.fn();
+    render(
+      <FormField label="Name">
+        <Input value="web-1" onChange={onChange} onBlur={onBlur} />
+      </FormField>
+    );
+    await flush();
+    expect(await write('Name', 'web-1')).toBe(true);
+    expect(onChange).not.toHaveBeenCalled();
+    expect(onBlur).not.toHaveBeenCalled();
   });
 
   test('fields leave the registry when the page is hidden, and return when it is restored from the back/forward cache', async () => {
@@ -343,21 +379,6 @@ describe('writes', () => {
     await expect(awsuiPlugins.fieldRegistry.setValue('missing', 'web-1')).rejects.toThrow(
       'No field has the id "missing".'
     );
-  });
-
-  test('setValue rejects when the field unmounts before it re-renders', async () => {
-    function Acknowledgement() {
-      const [shown, setShown] = useState(true);
-      return shown ? (
-        <Checkbox checked={false} onChange={() => setShown(false)}>
-          I acknowledge the terms
-        </Checkbox>
-      ) : null;
-    }
-    render(<Acknowledgement />);
-    await flush();
-    await expect(setValue('I acknowledge the terms', true)).rejects.toThrow('The field was removed.');
-    expect(fields).toHaveLength(0);
   });
 
   test('disabled and read-only fields refuse writes', async () => {
@@ -469,23 +490,20 @@ describe('validation and state', () => {
     );
   }
 
-  test('a write runs blur validation and resolves with the error', async () => {
+  test('a write runs blur validation, and listeners receive the error', async () => {
     const { container } = render(<BlurValidatedForm />);
     await flush();
-    await expect(setValue('Name', 'ab')).resolves.toMatchObject({
-      value: 'ab',
-      invalid: true,
-      errorText: 'Name is too short',
-    });
+    expect(await write('Name', 'ab')).toBe(true);
     expect(createWrapper(container).findFormField()!.findError()!.getElement()).toHaveTextContent('Name is too short');
-    expect(field('Name')).toMatchObject({ invalid: true, errorText: 'Name is too short' });
+    expect(field('Name')).toMatchObject({ value: 'ab', invalid: true, errorText: 'Name is too short' });
   });
 
-  test('a write that passes validation resolves without an error', async () => {
+  test('a write that passes validation leaves no error', async () => {
     const { container } = render(<BlurValidatedForm />);
     await flush();
-    await expect(setValue('Name', 'web-1')).resolves.toMatchObject({ value: 'web-1', invalid: false });
+    expect(await write('Name', 'web-1')).toBe(true);
     expect(createWrapper(container).findFormField()!.findError()).toBeNull();
+    expect(field('Name')).toMatchObject({ value: 'web-1', invalid: false });
   });
 
   test('the descriptor reports the FormField warning', async () => {
@@ -509,22 +527,7 @@ describe('validation and state', () => {
   });
 });
 
-describe('showing the change', () => {
-  test('a write scrolls the control into view', async () => {
-    const { container } = render(<Form />);
-    await flush();
-    await write('Name', 'my-instance');
-    expect(scrollIntoView).toHaveBeenCalledTimes(1);
-    expect(scrollIntoView.mock.contexts[0]).toBe(createWrapper(container).findInput()!.findNativeInput().getElement());
-  });
-
-  test('a refused write does not scroll', async () => {
-    render(<Form />);
-    await flush();
-    await write('Feature', 'maybe');
-    expect(scrollIntoView).not.toHaveBeenCalled();
-  });
-
+describe('collapsed sections', () => {
   test('a write opens the collapsed ExpandableSection around the field', async () => {
     const { container } = render(
       <ExpandableSection headerText="Advanced settings">

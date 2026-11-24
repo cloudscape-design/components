@@ -4,7 +4,7 @@ import type { FieldDescriptor } from '../../field-registry';
 
 export type FieldsListener = (fields: ReadonlyArray<FieldDescriptor>) => void;
 
-export type FieldWriter = (value: unknown) => Promise<FieldDescriptor>;
+export type FieldWriter = (value: unknown) => Promise<void>;
 
 export interface FieldRegistration {
   update(field: FieldDescriptor): void;
@@ -13,7 +13,7 @@ export interface FieldRegistration {
 
 export interface FieldRegistryApiPublic {
   registerListener(listener: FieldsListener): () => void;
-  setValue(id: string, value: unknown): Promise<FieldDescriptor>;
+  setValue(id: string, value: unknown): Promise<void>;
 }
 
 export interface FieldRegistryApiInternal {

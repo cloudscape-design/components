@@ -153,8 +153,7 @@ const InternalMultiselect = React.forwardRef(
     const triggerRef = useRef<HTMLButtonElement>(null);
 
     const selectedValues = useMemo(() => selectedOptions.map(option => option.value), [selectedOptions]);
-    useFieldRegistration({
-      register: __registerField,
+    useFieldRegistration(!!__registerField, {
       name: controlId,
       type: 'multiselect',
       value: selectedValues,
@@ -172,11 +171,13 @@ const InternalMultiselect = React.forwardRef(
           }
           matches.push(match);
         }
+        if (matches.length === selectedOptions.length && matches.every(match => selectedValues.includes(match.value))) {
+          return 'unchanged';
+        }
         fireNonCancelableEvent(restProps.onChange, { selectedOptions: matches });
-        return true;
+        return 'changed';
       },
       blur: () => fireNonCancelableEvent(restProps.onBlur, {}),
-      scrollTarget: () => triggerRef.current,
     });
     const [triggerWidth, setTriggerWidth] = useState<number | null>(null);
     useResizeObserver(

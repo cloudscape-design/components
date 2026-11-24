@@ -143,8 +143,7 @@ const InternalSelect = React.forwardRef(
     const selfControlId = useUniqueId('trigger');
     const controlId = formFieldContext.controlId ?? selfControlId;
 
-    useFieldRegistration({
-      register: __registerField,
+    useFieldRegistration(!!__registerField, {
       name: controlId,
       type: 'select',
       value: selectedOption?.value,
@@ -158,11 +157,13 @@ const InternalSelect = React.forwardRef(
         if (!match) {
           return false;
         }
+        if (selectedOption && match.value === selectedOption.value) {
+          return 'unchanged';
+        }
         fireNonCancelableEvent(onChange, { selectedOption: match });
-        return true;
+        return 'changed';
       },
       blur: () => fireNonCancelableEvent(onBlur, {}),
-      scrollTarget: () => rootRef.current,
     });
 
     const scrollToIndex = useRef<SelectListProps.SelectListRef>(null);

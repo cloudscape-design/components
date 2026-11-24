@@ -5,7 +5,7 @@ import { FieldRegistryController } from '../../../../../lib/components/internal/
 
 const field = (id: string, value: unknown = ''): FieldDescriptor => ({ id, label: id, type: 'input', value });
 
-const writer = () => jest.fn((value: unknown) => Promise.resolve(field('written', value)));
+const writer = () => jest.fn<Promise<void>, [unknown]>(() => Promise.resolve());
 
 test('a listener receives the current fields when it registers', () => {
   const controller = new FieldRegistryController();
@@ -44,14 +44,14 @@ test('an unregistered listener is not called', () => {
   expect(listener).not.toHaveBeenCalled();
 });
 
-test('setValue passes the value to the field with that id and returns its promise', async () => {
+test('setValue passes the value to the writer of the field with that id', async () => {
   const controller = new FieldRegistryController();
   const first = writer();
   const second = writer();
   controller.registerField(field('first'), first);
   controller.registerField(field('second'), second);
 
-  await expect(controller.setValue('second', 'web-1')).resolves.toEqual(field('written', 'web-1'));
+  await expect(controller.setValue('second', 'web-1')).resolves.toBeUndefined();
   expect(first).not.toHaveBeenCalled();
   expect(second).toHaveBeenCalledWith('web-1');
 });

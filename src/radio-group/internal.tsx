@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 
-import { useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { getBaseProps } from '../internal/base-component';
@@ -48,11 +48,7 @@ const InternalRadioGroup = React.forwardRef(
     const generatedName = useUniqueId('awsui-radio-');
 
     const [radioButtonRef, radioButtonRefIndex] = useRadioGroupForwardFocus(ref, items, value);
-    const rootRef = useRef<HTMLDivElement>(null);
-    const mergedRootRef = useMergeRefs(rootRef, __internalRootRef);
-
-    useFieldRegistration({
-      register: __registerField,
+    useFieldRegistration(!!__registerField, {
       name,
       type: 'radio',
       value: value ?? null,
@@ -64,10 +60,12 @@ const InternalRadioGroup = React.forwardRef(
         if (!match) {
           return false;
         }
+        if (match.value === value) {
+          return 'unchanged';
+        }
         fireNonCancelableEvent(onChange, { value: match.value });
-        return true;
+        return 'changed';
       },
-      scrollTarget: () => rootRef.current,
     });
 
     return (
@@ -86,7 +84,7 @@ const InternalRadioGroup = React.forwardRef(
           styles['radio-group'],
           direction === 'horizontal' && styles['horizontal-group']
         )}
-        ref={mergedRootRef}
+        ref={__internalRootRef}
       >
         {items &&
           items.map((item, index) => (

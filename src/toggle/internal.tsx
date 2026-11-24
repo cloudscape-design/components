@@ -64,8 +64,7 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
     const baseProps = getBaseProps(rest);
     const checkboxRef = useRef<HTMLInputElement>(null);
 
-    useFieldRegistration({
-      register: __registerField,
+    useFieldRegistration(!!__registerField, {
       name: controlId ?? name,
       type: 'toggle',
       value: !!checked,
@@ -77,11 +76,13 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
         if (nextChecked === null) {
           return false;
         }
+        if (nextChecked === !!checked) {
+          return 'unchanged';
+        }
         fireNonCancelableEvent(onChange, { checked: nextChecked });
-        return true;
+        return 'changed';
       },
       blur: () => fireNonCancelableEvent(onBlur),
-      scrollTarget: () => checkboxRef.current,
     });
 
     // The handle's follow-through animation only plays once the state has changed since mount.

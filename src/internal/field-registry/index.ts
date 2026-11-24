@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { createContext, ReactNode, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { createContext, ReactNode, useContext, useEffect, useRef } from 'react';
 
-import { isMotionDisabled, useStableCallback, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import { useStableCallback, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
 import { awsuiPluginsInternal } from '../plugins/api';
 import type { FieldRegistration, FieldWriter } from '../plugins/controllers/field-registry';
@@ -10,7 +10,7 @@ import type { FieldRegistration, FieldWriter } from '../plugins/controllers/fiel
 export type FieldType = 'input' | 'textarea' | 'select' | 'multiselect' | 'radio' | 'checkbox' | 'toggle';
 
 export interface FieldOption {
-  label?: string;
+  label?: ReactNode;
   value?: string;
   disabled?: boolean;
   options?: ReadonlyArray<FieldOption>;
@@ -41,27 +41,20 @@ export const FieldStateContext = createContext<FieldState | null>(null);
 
 export const FieldRevealContext = createContext<(() => void) | null>(null);
 
-export interface OptionInput {
-  label?: ReactNode;
-  value?: string;
-  disabled?: boolean;
-  options?: ReadonlyArray<OptionInput>;
-}
+export type FieldWriteResult = 'changed' | 'unchanged' | false;
 
 export interface FieldRegistrationInput {
-  register?: boolean;
   name?: string;
   type: FieldType;
   value: unknown;
-  options?: ReadonlyArray<OptionInput>;
+  options?: ReadonlyArray<FieldOption>;
   disabled?: boolean;
   readOnly?: boolean;
   invalid?: boolean;
   statusType?: string;
   labels?: ReadonlyArray<ReactNode>;
-  setValue: (next: unknown) => boolean;
+  setValue: (next: unknown) => FieldWriteResult;
   blur?: () => void;
-  scrollTarget?: () => HTMLElement | null;
 }
 
 interface RegisteredField {
@@ -70,29 +63,7 @@ interface RegisteredField {
   registration: FieldRegistration | null;
 }
 
-interface PendingWrite {
-  validated: boolean;
-  resolve: (field: FieldDescriptor) => void;
-  reject: (error: Error) => void;
-}
-
 const plainText = (node: ReactNode) => (typeof node === 'string' && node.trim() ? node : undefined);
-
-function plainOptions(options: ReadonlyArray<OptionInput>): FieldOption[] {
-  return options.map(option => {
-    const label = plainText(option.label);
-    return {
-      ...(label !== undefined && { label }),
-      ...(option.value !== undefined && { value: option.value }),
-      ...(option.disabled && { disabled: true }),
-      ...(option.options && { options: plainOptions(option.options) }),
-    };
-  });
-}
-
-function scrollIntoView(element: HTMLElement | null | undefined) {
-  element?.scrollIntoView({ block: 'center', behavior: isMotionDisabled(element) ? 'auto' : 'smooth' });
-}
 
 // A frame's React tree doesn't unmount when the frame reloads or is removed, so its fields would stay
 // in a registry owned by the parent window. They are removed when the page is hidden instead.
@@ -130,60 +101,50 @@ function untrack(entry: RegisteredField) {
   }
 }
 
-export function useFieldRegistration(input: FieldRegistrationInput | null): void {
+function resolveAll(waiting: { current: Array<() => void> }) {
+  const resolvers = waiting.current;
+  waiting.current = [];
+  resolvers.forEach(resolve => resolve());
+}
+
+export function useFieldRegistration(enabled: boolean, input: FieldRegistrationInput): void {
   const fieldState = useContext(FieldStateContext);
   const reveal = useContext(FieldRevealContext);
   const id = useUniqueId('awsui-field-');
   const entry = useRef<RegisteredField | null>(null);
-  const pending = useRef<PendingWrite | null>(null);
-  const [writes, setWrites] = useState(0);
+  const waitingForRender = useRef<Array<() => void>>([]);
 
-  const label = [fieldState?.label, ...(input?.labels ?? [])].map(plainText).find(Boolean);
-  const registered = !!input?.register && !!label;
-  const { name, type = 'input', value, disabled, readOnly, statusType } = input ?? {};
-  const inputOptions = input?.options;
-  const options = useMemo(() => inputOptions && plainOptions(inputOptions), [inputOptions]);
-  const invalid = !!input?.invalid || !!fieldState?.errorText;
+  const label = [fieldState?.label, ...(input.labels ?? [])].map(plainText).find(Boolean);
+  const registered = enabled && !!label;
+  const { name, type, value, options, disabled, readOnly, statusType } = input;
+  const invalid = !!input.invalid || !!fieldState?.errorText;
   const errorText = plainText(fieldState?.errorText);
   const warningText = plainText(fieldState?.warningText);
 
   const write = useStableCallback(
     (next: unknown) =>
-      new Promise<FieldDescriptor>((resolve, reject) => {
-        if (!input || input.disabled || input.readOnly) {
-          reject(new Error(input?.readOnly ? 'The field is read-only.' : 'The field is disabled.'));
+      new Promise<void>((resolve, reject) => {
+        if (input.disabled || input.readOnly) {
+          reject(new Error(input.disabled ? 'The field is disabled.' : 'The field is read-only.'));
           return;
         }
-        if (!input.setValue(next)) {
+        // React 16 can run the re-render's effects before setValue returns, so the write waits from the start.
+        waitingForRender.current.push(resolve);
+        const result = input.setValue(next);
+        if (result === 'changed') {
+          reveal?.();
+          return;
+        }
+        waitingForRender.current = waitingForRender.current.filter(waiting => waiting !== resolve);
+        if (result) {
+          resolve();
+        } else {
           reject(new Error('The field does not accept this value.'));
-          return;
         }
-        reveal?.();
-        pending.current?.reject(new Error('A later write replaced this one.'));
-        pending.current = { validated: false, resolve, reject };
-        setWrites(count => count + 1);
       })
   );
 
-  const settle = useStableCallback(() => {
-    const current = pending.current;
-    if (!current) {
-      return;
-    }
-    if (!current.validated) {
-      scrollIntoView(input?.scrollTarget?.());
-      input?.blur?.();
-      current.validated = true;
-      setWrites(count => count + 1);
-      return;
-    }
-    pending.current = null;
-    if (entry.current) {
-      current.resolve(entry.current.field);
-    } else {
-      current.reject(new Error('The field was removed.'));
-    }
-  });
+  const blur = useStableCallback(() => input.blur?.());
 
   useEffect(() => {
     if (!registered) {
@@ -194,8 +155,7 @@ export function useFieldRegistration(input: FieldRegistrationInput | null): void
         untrack(entry.current);
         entry.current = null;
       }
-      pending.current?.reject(new Error('The field was removed.'));
-      pending.current = null;
+      resolveAll(waitingForRender);
     };
   }, [registered]);
 
@@ -224,6 +184,10 @@ export function useFieldRegistration(input: FieldRegistrationInput | null): void
       entry.current = { field, write, registration: awsuiPluginsInternal.fieldRegistry.registerField(field, write) };
       track(entry.current);
     }
+    if (waitingForRender.current.length > 0) {
+      blur();
+      resolveAll(waitingForRender);
+    }
   }, [
     registered,
     id,
@@ -239,9 +203,6 @@ export function useFieldRegistration(input: FieldRegistrationInput | null): void
     warningText,
     statusType,
     write,
+    blur,
   ]);
-
-  useEffect(() => {
-    settle();
-  }, [writes, settle]);
 }

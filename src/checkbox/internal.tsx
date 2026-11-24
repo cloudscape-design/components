@@ -72,8 +72,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
     const baseProps = getBaseProps(rest);
     const checkboxRef = useRef<HTMLInputElement>(null);
 
-    useFieldRegistration({
-      register: __registerField,
+    useFieldRegistration(!!__registerField, {
       name: controlId ?? name,
       type: 'checkbox',
       value: !!checked,
@@ -85,11 +84,13 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
         if (nextChecked === null) {
           return false;
         }
+        if (nextChecked === !!checked && !indeterminate) {
+          return 'unchanged';
+        }
         fireNonCancelableEvent(onChange, { checked: nextChecked, indeterminate: false });
-        return true;
+        return 'changed';
       },
       blur: () => fireNonCancelableEvent(onBlur),
-      scrollTarget: () => checkboxRef.current,
     });
     useForwardFocus(ref, checkboxRef);
     useEffect(() => {
