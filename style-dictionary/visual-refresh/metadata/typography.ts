@@ -164,11 +164,6 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
-  letterSpacingBodyM: {
-    description: 'The default letter spacing for regular body text.',
-    themeable: true,
-    public: true,
-  },
   letterSpacingBodyS: {
     description: 'The default letter spacing for small body text.',
   },
