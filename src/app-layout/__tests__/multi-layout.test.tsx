@@ -178,6 +178,41 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(firstLayout.findSplitPanel()!.findOpenPanelBottom()).toBeTruthy();
   });
 
+  test('builds drawer trigger icons from markup', async () => {
+    // Shaped like an element created by a different React version, which this React cannot render
+    const foreignReactElement = {
+      $$typeof: Symbol.for('react.transitional.element'),
+      type: 'span',
+      key: null,
+      ref: null,
+      props: {},
+    };
+
+    const drawerWithForeignIcon = {
+      ...testDrawer,
+      trigger: { iconSvg: foreignReactElement, iconSvgMarkup: '<rect data-testid="icon-from-markup" />' },
+    } as unknown as AppLayoutProps.Drawer;
+
+    const { firstLayout } = await renderAsync(
+      <AppLayout
+        {...defaultAppLayoutProps}
+        data-testid="first"
+        toolsHide={true}
+        content={
+          <AppLayout
+            {...defaultAppLayoutProps}
+            data-testid="second"
+            navigationHide={true}
+            drawers={[drawerWithForeignIcon]}
+          />
+        }
+      />
+    );
+
+    const trigger = firstLayout.findDrawerTriggerById('security')!;
+    expect(trigger.find('[data-testid="icon-from-markup"]')).toBeTruthy();
+  });
+
   test('merges props across multiple react roots', async () => {
     render(<AppLayout {...defaultAppLayoutProps} data-testid="first" navigation="testing nav" toolsHide={true} />);
     render(<AppLayout {...defaultAppLayoutProps} data-testid="second" navigationHide={true} />);

@@ -9,6 +9,7 @@ import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-co
 import { SomeOptional } from '../../internal/types';
 import { NonCancelableEventHandler } from '../../types/events';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
+import { RuntimeTriggerIconMarkup } from '../runtime-drawer/trigger-icon';
 import { SplitPanelProviderProps } from '../split-panel';
 import { OnChangeParams } from '../utils/use-drawers';
 import { FocusControlMultipleStates, FocusControlState } from '../utils/use-focus-control';
@@ -22,6 +23,7 @@ export interface AppLayoutInternalProps extends AppLayoutPropsWithDefaults {
 }
 
 export type InternalDrawer = AppLayoutProps.Drawer & {
+  trigger?: RuntimeTriggerIconMarkup;
   defaultActive?: boolean;
   isExpandable?: boolean;
   ariaLabels: AppLayoutProps.Drawer['ariaLabels'] & { expandedModeButton?: string; exitExpandedModeButton?: string };
