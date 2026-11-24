@@ -12,6 +12,11 @@ const isLocal = !process.env.CI;
 
 const noop = () => ({ apply: () => {} });
 
+// Dev pages that need a second React version in the same page (e.g. a React 19 child frame inside a page that runs
+// React 16 or 18) load this entry in an iframe. It sits in its own layer so the `react19` aliases below apply to it and
+// to everything it imports without affecting the main page bundle.
+const react19ChildEntry = 'react19-child';
+const react19Layer = 'react19';
 const replaceModule = (from, to) =>
   new NormalModuleReplacementPlugin(from, resource => (resource.request = resource.request.replace(from, to)));
 
@@ -26,10 +31,16 @@ module.exports = ({
   contentHash = isProd,
 } = {}) => {
   const mode = process.env.NODE_ENV;
+  // The React 19 child entry stays self-contained: sharing vendor chunks with the main entry would mix both React versions.
+  const isMainChunk = chunk => chunk.name !== react19ChildEntry;
   return {
     stats: isProd ? 'none' : 'minimal',
     context: path.resolve(__dirname),
-    entry: './app/index.tsx',
+    entry: {
+      main: './app/index.tsx',
+      [react19ChildEntry]: { import: './app/react19-child/index.tsx', layer: react19Layer },
+    },
+    experiments: { layers: true },
     mode,
     output: {
       path: path.resolve(outputPath),
@@ -89,6 +100,10 @@ module.exports = ({
             },
           },
         },
+        {
+          issuerLayer: react19Layer,
+          resolve: { alias: { react: 'react19', 'react-dom': 'react-dom19' } },
+        },
         { test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader'] },
         {
           test: /\.scss$/,
@@ -126,12 +141,12 @@ module.exports = ({
               (module.resource.includes(componentsPath) || module.resource.includes(designTokensPath)) &&
               !module.resource.includes(path.resolve(componentsPath, 'i18n/messages')),
             name: 'awsui',
-            chunks: 'all',
+            chunks: isMainChunk,
           },
           defaultVendors: {
             test: /\/node_modules\/(?!ace-builds)/,
             name: 'vendor',
-            chunks: 'all',
+            chunks: isMainChunk,
           },
         },
       },
@@ -153,6 +168,12 @@ module.exports = ({
       }),
       new HtmlWebpackPlugin({
         template: path.join(__dirname, './app/index.html'),
+        chunks: ['main'],
+      }),
+      new HtmlWebpackPlugin({
+        template: path.join(__dirname, './app/react19-child/index.html'),
+        filename: 'react19-child.html',
+        chunks: [react19ChildEntry],
       }),
       replaceModule(/~components/, componentsPath),
       replaceModule(/~design-tokens/, designTokensPath),
