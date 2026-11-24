@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useContext, useMemo } from 'react';
+import React, { useContext } from 'react';
 
 import generatedIcons from '../icon/generated/icons';
 import { awsuiPluginsInternal } from '../internal/plugins/api';
@@ -31,5 +31,5 @@ export const InternalComponentIconsContext =
 
 export function useIcons(): IconProviderProps.Icons {
   const overrides = useContext(InternalIconContext);
-  return useMemo(() => (overrides ? { ...generatedIcons, ...overrides } : generatedIcons), [overrides]);
+  return overrides ? { ...generatedIcons, ...overrides } : generatedIcons;
 }
