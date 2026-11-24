@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 @use '../tokens' as awsui;
+@use '../utils/theming' as theming;
 @use './constants' as constants;
 
 // To reduce bluriness of heavy font weight on MacOS
@@ -25,10 +26,17 @@
   letter-spacing: awsui.$letter-spacing-body-s;
 }
 
+%font-body-m-letter-spacing {
+  @include theming.one-theme-only {
+    letter-spacing: awsui.$letter-spacing-body-m;
+  }
+}
+
 @mixin font-body-m {
   font-size: awsui.$font-size-body-m;
   line-height: awsui.$line-height-body-m;
-  letter-spacing: awsui.$letter-spacing-body-m;
+
+  @extend %font-body-m-letter-spacing;
 }
 
 @mixin font-heading-xs($weight: true, $family: true) {
