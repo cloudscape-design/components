@@ -159,7 +159,7 @@ $calendar-header-color: awsui.$color-text-body-default;
 }
 
 .dropdown-content {
-  background-color: awsui.$color-background-container-content;
+  background-color: awsui.$color-background-dropdown-item-default;
   inline-size: calc(2 * #{$calendar-grid-width} + #{awsui.$space-xs} + 2 * #{awsui.$space-l});
 
   &.one-grid {

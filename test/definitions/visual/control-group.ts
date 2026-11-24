@@ -68,7 +68,7 @@ const suite: TestSuite = {
               ...(actionButton ? { actionButton: 'true' } : {}),
             };
             return {
-              description: `Validation - ${groupValidationState}, ${direction}, ${actionButton ? 'with' : 'without'} action button`,
+              description: `Validation - ${groupValidationState}, ${direction}, ${actionButton ? 'with' : 'without'} action button, ${disabledControls ? 'with' : 'without'} disabled controls`,
               tests: [
                 {
                   description: 'focus on input',
