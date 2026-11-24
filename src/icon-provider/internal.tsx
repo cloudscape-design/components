@@ -8,8 +8,8 @@ import { InternalComponentIconsContext, InternalIconContext } from './context';
 import { IconProviderProps } from './interfaces';
 
 function InternalIconProvider({ children, icons, componentIcons }: IconProviderProps) {
-  const contextIcons = useContext(InternalIconContext);
-  const contextComponentIcons = useContext(InternalComponentIconsContext);
+  const contextIcons = useContext(InternalIconContext) ?? {};
+  const contextComponentIcons = useContext(InternalComponentIconsContext) ?? {};
 
   let iconsToProvide: IconProviderProps.Icons = generatedIcons;
 
