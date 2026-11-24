@@ -14,7 +14,7 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { joinStrings } from '../internal/utils/strings';
 import InternalLiveRegion from '../live-region/internal';
 import { ProgressBarProps } from './interfaces';
-import { Progress, ResultState, SmallText, StyleClassNames } from './internal';
+import { Progress, ResultState, SmallText } from './internal';
 
 import styles from './styles.css.js';
 
@@ -41,7 +41,7 @@ export default function ProgressBar({
   const { __internalRootRef } = useBaseComponent('ProgressBar', {
     props: { variant },
   });
-  const { styleClassNames, ...restProps } = rest as typeof rest & { styleClassNames?: StyleClassNames };
+  const { styleClassNames, ...restProps } = rest;
   const baseProps = getBaseProps(restProps);
   const generatedName = useUniqueId('awsui-progress-bar-');
 

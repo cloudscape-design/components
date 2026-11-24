@@ -8,8 +8,8 @@ import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { getStyleClassName } from '../../internal/utils/style-slot';
 import { TableTdElement, TableTdElementProps } from '../body-cell/td-element';
 import { TableThElement, TableThElementProps } from '../header-cell/th-element';
+import { TableProps } from '../interfaces';
 import { Divider } from '../resizer';
-import { StyleClassNames } from '../style-api';
 import { ItemSelectionProps } from './interfaces';
 import { SelectionControl, SelectionControlProps } from './selection-control';
 
@@ -21,13 +21,13 @@ interface TableHeaderSelectionCellProps extends Omit<TableThElementProps, 'child
   getSelectAllProps?: () => ItemSelectionProps;
   onFocusMove: ((sourceElement: HTMLElement, fromIndex: number, direction: -1 | 1) => void) | undefined;
   isGrouped?: boolean;
-  styleClassNames?: StyleClassNames;
+  styleClassNames?: TableProps.StyleClassNames;
 }
 
 interface TableBodySelectionCellProps
   extends Omit<TableTdElementProps, 'children' | 'colIndex' | 'wrapLines' | 'isEditable' | 'isEditing'> {
   selectionControlProps?: SelectionControlProps;
-  styleClassNames?: StyleClassNames;
+  styleClassNames?: TableProps.StyleClassNames;
 }
 
 export function TableHeaderSelectionCell({

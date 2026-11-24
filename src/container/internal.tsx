@@ -54,20 +54,11 @@ export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>,
    */
   __contentKey?: string;
 
-  styleClassNames?: StyleClassNames;
-
   /**
    * Native attributes spread onto the container root, for ARIA that `getBaseProps` does not forward
    * (it forwards only id/className/data-*).
    */
   __nativeAttributes?: React.HTMLAttributes<HTMLDivElement>;
-}
-
-// Style API v2
-export interface StyleClassNames {
-  root?: string;
-  header?: string;
-  footer?: string;
 }
 
 export const InternalContainerAsSubstep = React.forwardRef(

@@ -62,16 +62,6 @@ export interface InternalInputProps
   __injectAnalyticsComponentMetadata?: boolean;
   __skipNativeAttributesWarnings?: SkipWarnings;
   __fullWidth?: boolean;
-  styleClassNames?: StyleClassNames;
-}
-
-// Style API v2
-export interface StyleClassNames {
-  root?: string;
-  input?: string;
-  inlineLabel?: string;
-  searchIcon?: string;
-  clearButton?: string;
 }
 
 function InternalInput(

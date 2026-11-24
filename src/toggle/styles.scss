@@ -20,7 +20,11 @@ $shadow-color: awsui.$color-shadow-toggle-handle;
 $control-props: style-api.combine((fill-color, handle-color), style-api.$focus-ring);
 $control-tokens: style-api.resolve($control-props, carrier);
 @include style-api.register($control-tokens);
-@include style-api.docs('control', $control-tokens);
+@include style-api.docs(
+  'control',
+  $control-tokens,
+  $descriptions: (slot: 'The track drawn around the semantic checkbox input.')
+);
 
 .root {
   @include styles.styles-reset;

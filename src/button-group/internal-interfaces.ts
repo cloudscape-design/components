@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { SomeRequired } from '../internal/types';
-import { Slot } from '../internal/utils/style-slot';
 import { ButtonGroupProps } from './interfaces';
 
 export interface InternalIconButton extends ButtonGroupProps.IconButton {
@@ -20,17 +19,10 @@ export type InternalItem =
   | ButtonGroupProps.MenuDropdown
   | ButtonGroupProps.IconCopyToClipboard;
 
-// Style API v2
-export interface StyleClassNames {
-  divider?: string;
-  item?: Slot<{ item: ButtonGroupProps.Item }>;
-  dropdown?: string;
-}
-
 export interface InternalButtonGroupProps
   extends SomeRequired<ButtonGroupProps, 'dropdownExpandToViewport'>,
     InternalBaseComponentProps {
-  styleClassNames?: StyleClassNames;
+  styleClassNames?: ButtonGroupProps.StyleClassNames;
   style?: ButtonGroupProps.Style;
   items: ReadonlyArray<InternalItemOrGroup>;
 }

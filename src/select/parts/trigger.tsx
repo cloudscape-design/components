@@ -11,7 +11,8 @@ import { GroupedControlContextProps } from '../../internal/context/control-group
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { joinStrings } from '../../internal/utils/strings';
 import { MultiselectProps } from '../../multiselect/interfaces';
-import InternalToken, { StyleClassNames as TokenStyleClassNames } from '../../token/internal';
+import { TokenProps } from '../../token/interfaces';
+import InternalToken from '../../token/internal';
 import { FormFieldValidationControlProps } from '../../types/form-field';
 import { OptionDefinition } from '../../types/option';
 import { SelectProps } from '../interfaces';
@@ -32,7 +33,7 @@ export interface TriggerProps extends FormFieldValidationControlProps {
   selectedOptions?: ReadonlyArray<OptionDefinition>;
   renderOption?: SelectProps.SelectOptionItemRenderer;
   groupedControlProps?: GroupedControlContextProps;
-  styleClassNames?: { trigger?: string; inlineLabel?: string; token?: TokenStyleClassNames };
+  styleClassNames?: { trigger?: string; inlineLabel?: string; token?: TokenProps.StyleClassNames };
 }
 
 const Trigger = React.forwardRef(

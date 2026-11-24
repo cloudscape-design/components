@@ -10,12 +10,7 @@ import { DividerProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-// Style API v2
-export interface StyleClassNames {
-  root?: string;
-}
-
-type InternalDividerProps = DividerProps & InternalBaseComponentProps & { styleClassNames?: StyleClassNames };
+type InternalDividerProps = DividerProps & InternalBaseComponentProps;
 
 export default function InternalDivider({
   orientation,

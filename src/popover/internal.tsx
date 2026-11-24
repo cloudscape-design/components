@@ -33,14 +33,6 @@ export interface InternalPopoverProps extends Omit<PopoverProps, 'triggerType' |
   isInline?: boolean;
   __visible?: boolean;
   __onVisibleChange?: NonCancelableEventHandler<{ visible: boolean }>;
-  styleClassNames?: StyleClassNames;
-}
-
-// Style API v2
-export interface StyleClassNames {
-  container?: string;
-  arrow?: string;
-  dismissButton?: string;
 }
 
 export default React.forwardRef(InternalPopover);

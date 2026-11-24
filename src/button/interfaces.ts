@@ -224,13 +224,27 @@ export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
 
   /**
    * An object containing CSS properties to customize the button's visual appearance.
-   * Refer to the [style](/components/button/?tabId=style) tab for more details.
+   * Refer to the [style docs](/components/button/?tabId=style) for more details.
+   *
+   * **Deprecated** Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: ButtonProps.Style;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: root.
+   * Refer to the [style docs](/components/button/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: ButtonProps.StyleClassNames;
 }
 
 export namespace ButtonProps {
+  export interface StyleClassNames {
+    root?: string;
+  }
+
   export type Variant = 'normal' | 'primary' | 'link' | 'icon' | 'inline-icon' | 'inline-link';
   export type ClickDetail = _ClickDetail;
   export type FollowDetail = BaseNavigationDetail;

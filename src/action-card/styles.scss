@@ -21,13 +21,17 @@ $tokens: mixins.$tokens;
   $tokens,
   $properties: (background),
   $descriptions: (
-    slot: 'Not a button element: use `:has(:hover)` and `:has(:active)` for interaction states.',
+    slot: 'The card. Its semantic button is an overlay inside the card, so use `:has(:active)` for the pressed state.',
     tokens: (
       border-width: 'Drawn over the card edges; takes no space.',
     )
   )
 );
-@include style-api.docs('header', $properties: (background, border));
+@include style-api.docs(
+  'header',
+  $properties: (background, border),
+  $descriptions: (slot: 'Rendered when `header` or `description` is set.')
+);
 .header {
   border-block-end: 0 solid transparent;
   &-inner {

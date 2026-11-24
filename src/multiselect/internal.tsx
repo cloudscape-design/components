@@ -7,7 +7,6 @@ import { useResizeObserver, useUniqueId } from '@cloudscape-design/component-too
 
 import Dropdown from '../dropdown/internal';
 import { useInternalI18n } from '../i18n/context';
-import { StyleClassNames as InputStyleClassNames } from '../input/internal';
 import { getBaseProps } from '../internal/base-component';
 import { getBreakpointValue } from '../internal/breakpoints';
 import DropdownFooter from '../internal/components/dropdown-footer/index.js';
@@ -24,7 +23,6 @@ import Filter from '../select/parts/filter';
 import Trigger from '../select/parts/trigger';
 import VirtualList from '../select/parts/virtual-list';
 import { composeDropdownContent } from '../select/utils/dropdown-customization';
-import { StyleClassNames as TokenStyleClassNames } from '../token/internal';
 import { TokenGroupProps } from '../token-group/interfaces';
 import InternalTokenGroup from '../token-group/internal';
 import { MultiselectProps } from './interfaces';
@@ -36,18 +34,7 @@ type InternalMultiselectProps = SomeRequired<
   MultiselectProps,
   'options' | 'selectedOptions' | 'filteringType' | 'statusType' | 'keepOpen' | 'hideTokens'
 > &
-  InternalBaseComponentProps & {
-    styleClassNames?: StyleClassNames;
-  };
-
-// Style API v2
-export interface StyleClassNames {
-  trigger?: string;
-  inlineLabel?: string;
-  filter?: InputStyleClassNames;
-  dropdown?: string;
-  token?: TokenStyleClassNames;
-}
+  InternalBaseComponentProps;
 
 type ExtendedToken = TokenGroupProps.Item & { _readOnly: boolean };
 

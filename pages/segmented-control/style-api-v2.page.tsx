@@ -38,7 +38,13 @@ function StyledSegmentedControl({ options, label, square }: StyledSegmentedContr
       {...{
         styleClassNames: {
           root: styles.root,
-          segment: clsx(styles.segment, square && styles['segment-square']),
+          segment: ({ option, selected }: { option: SegmentedControlProps.Option; selected: boolean }) =>
+            clsx(
+              styles.segment,
+              selected && styles['segment-selected'],
+              option.disabled && styles['segment-disabled'],
+              square && styles['segment-square']
+            ),
           divider: styles.divider,
           select: { trigger: styles['select-trigger'], dropdown: styles['select-dropdown'] },
         },

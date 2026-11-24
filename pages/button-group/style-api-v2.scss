@@ -15,7 +15,7 @@
     @include button.root($background: palette.$subtle, $color: palette.$accent-hover);
   }
 
-  &[aria-pressed='true'] {
+  &.item-pressed {
     @include button.root($background: palette.$accent, $color: palette.$text-on-accent);
   }
 }
@@ -25,10 +25,6 @@
 
   &:hover {
     @include button.root($background: palette.$subtle, $color: palette.$info);
-  }
-
-  &[aria-pressed='true'] {
-    @include button.root($background: palette.$info, $color: palette.$text-on-accent);
   }
 }
 
