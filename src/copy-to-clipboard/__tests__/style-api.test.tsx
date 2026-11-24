@@ -26,12 +26,11 @@ describe('CopyToClipboard Style API v2', () => {
   test.each<CopyToClipboardProps.Variant>(['button', 'icon', 'inline'])(
     'applies the copyButton slot (variant=%s)',
     variant => {
-      const { container, wrapper } = renderCopyToClipboard({
+      const { wrapper } = renderCopyToClipboard({
         variant,
-        styleClassNames: { copyButton: 'a', unknown: 'b' },
+        styleClassNames: { copyButton: 'a' },
       });
       expect(wrapper.findCopyButton().getElement()).toHaveClass('a');
-      expect(container.querySelector('.b')).toBeNull();
     }
   );
 

@@ -8,7 +8,11 @@
 @use '../internal/styles/style-api' as style-api;
 
 @include style-api.docs-forward('input', 'input');
-@include style-api.docs('countText', $properties: (color, font-family, font-size, font-weight));
+@include style-api.docs(
+  'countText',
+  $properties: (color, font-family, font-size, font-weight),
+  $descriptions: (slot: 'Rendered while `filteringText` and `countText` are set.')
+);
 
 .root {
   @include styles.styles-reset;

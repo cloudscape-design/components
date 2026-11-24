@@ -9,7 +9,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import InternalCheckbox from '../../checkbox/internal';
 import RadioButton from '../../internal/components/radio-button';
 import { KeyCode } from '../../internal/keycode';
-import { StyleClassNames } from '../style-api';
+import { TableProps } from '../interfaces';
 import { ItemSelectionProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -24,7 +24,7 @@ export interface SelectionControlProps extends ItemSelectionProps {
   rowIndex?: number;
   itemKey?: string;
   verticalAlign?: 'middle' | 'top';
-  styleClassNames?: Pick<StyleClassNames, 'selectionCheckbox' | 'selectionRadio'>;
+  styleClassNames?: Pick<TableProps.StyleClassNames, 'selectionCheckbox' | 'selectionRadio'>;
 }
 
 export function SelectionControl({

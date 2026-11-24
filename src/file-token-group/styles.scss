@@ -137,7 +137,7 @@
 
   &.read-only {
     border-color: awsui.$color-border-input-disabled;
-    background-color: awsui.$color-background-container-content;
+    background-color: transparent;
 
     > .dismiss-button {
       pointer-events: none;
@@ -153,6 +153,6 @@
 
   &.loading {
     border-color: awsui.$color-border-control-disabled;
-    background-color: awsui.$color-background-container-content;
+    background-color: transparent;
   }
 }

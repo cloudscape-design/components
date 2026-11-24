@@ -41,15 +41,7 @@ type InternalAlertProps = SomeRequired<AlertProps, 'type'> &
   InternalBaseComponentProps & {
     messageSlotId?: string;
     style?: AlertProps['style'];
-    styleClassNames?: StyleClassNames;
   };
-
-// Style API v2
-interface StyleClassNames {
-  root?: string;
-  icon?: string;
-  dismissButton?: string;
-}
 
 const useDiscoveredAction = createUseDiscoveredAction(awsuiPluginsInternal.alert.onActionRegistered);
 const useDiscoveredContent = createUseDiscoveredContent('alert', awsuiPluginsInternal.alertContent);

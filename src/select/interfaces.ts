@@ -3,6 +3,7 @@
 import React, { ReactNode } from 'react';
 
 import { BaseDropdownHostProps, OptionsFilteringType, OptionsLoadItemsDetail } from '../dropdown/interfaces';
+import { InputProps } from '../input/interfaces';
 import { BaseComponentProps } from '../types/base-component';
 import { DropdownStatusProps } from '../types/dropdown-status';
 import { NonCancelableEventHandler } from '../types/events';
@@ -235,9 +236,24 @@ export interface SelectProps extends BaseSelectProps {
    * Specifies a render function to render custom options in the dropdown menu or trigger.
    */
   renderOption?: SelectProps.SelectOptionItemRenderer;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: trigger, inlineLabel, filter, dropdown.
+   * Refer to the [style docs](/components/select/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: SelectProps.StyleClassNames;
 }
 
 export namespace SelectProps {
+  export interface StyleClassNames {
+    trigger?: string;
+    inlineLabel?: string;
+    filter?: InputProps.StyleClassNames;
+    dropdown?: string;
+  }
+
   export type FilteringType = OptionsFilteringType;
   export type TriggerVariant = 'label' | 'option';
 

@@ -15,17 +15,6 @@ import { getContentStyles, getFooterStyles, getHeaderStyles, getRootStyles } fro
 import styles from './styles.css.js';
 import testStyles from './test-classes/styles.css.js';
 
-// Style API v2
-export interface StyleClassNames {
-  root?: string;
-  header?: string;
-  footer?: string;
-}
-
-interface InternalItemCardWithStyleProps extends InternalItemCardProps {
-  styleClassNames?: StyleClassNames;
-}
-
 export default function InternalItemCard({
   actions,
   highlighted,
@@ -47,7 +36,7 @@ export default function InternalItemCard({
   __internalRootRef,
   styleClassNames,
   ...restProps
-}: InternalItemCardWithStyleProps) {
+}: InternalItemCardProps) {
   const baseProps = getBaseProps(restProps);
   const isRefresh = useVisualRefresh();
   const rootRef = useMergeRefs(__internalRootRef, nativeAttributes?.ref);

@@ -340,9 +340,23 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
     button?: NativeAttributes<React.ButtonHTMLAttributes<HTMLButtonElement>>;
     anchor?: NativeAttributes<React.AnchorHTMLAttributes<HTMLAnchorElement>>;
   };
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: trigger, mainAction, dropdown.
+   * Refer to the [style docs](/components/button-dropdown/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: ButtonDropdownProps.StyleClassNames;
 }
 
 export namespace ButtonDropdownProps {
+  export interface StyleClassNames {
+    trigger?: string;
+    mainAction?: string;
+    dropdown?: string;
+  }
+
   export type Variant = 'normal' | 'primary' | 'icon' | 'inline-icon';
   export type ItemType = 'action' | 'group';
   export type FilteringType = 'none' | 'auto' | 'manual';

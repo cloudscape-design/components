@@ -26,13 +26,7 @@ import styles from './styles.css.js';
 interface InternalProps extends CheckboxProps, InternalBaseComponentProps {
   tabIndex?: -1;
   showOutline?: boolean;
-  styleClassNames?: StyleClassNames;
   __injectAnalyticsComponentMetadata?: boolean;
-}
-
-// Style API v2
-export interface StyleClassNames {
-  control?: string;
 }
 
 const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(

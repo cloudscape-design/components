@@ -69,13 +69,27 @@ export interface TextareaProps
 
   /**
    * An object containing CSS properties to customize the textarea's visual appearance.
-   * Refer to the [style](/components/textarea/?tabId=style) tab for more details.
+   * Refer to the [style docs](/components/textarea/?tabId=style) for more details.
+   *
+   * **Deprecated** Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: TextareaProps.Style;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: textarea.
+   * Refer to the [style docs](/components/textarea/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: TextareaProps.StyleClassNames;
 }
 
 export namespace TextareaProps {
+  export interface StyleClassNames {
+    textarea?: string;
+  }
+
   export type KeyDetail = BaseKeyDetail;
 
   export type Resize = 'both' | 'horizontal' | 'vertical' | 'none';

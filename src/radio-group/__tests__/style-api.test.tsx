@@ -28,6 +28,18 @@ describe('RadioGroup Style API v2', () => {
     expect(container.querySelector('.b, .c')).toBeNull();
   });
 
+  test('resolves the item callback per radio with its definition and checked state', () => {
+    const { wrapper } = renderRadioGroup({
+      item: ({ item, checked }: { item: RadioGroupProps.RadioButtonDefinition; checked: boolean }) => ({
+        control: checked ? 'checked' : item.disabled ? 'disabled' : 'plain',
+      }),
+    });
+    const controls = wrapper.findButtons().map(button => button.findNativeInput().getElement().parentElement);
+    expect(controls[0]).toHaveClass('plain');
+    expect(controls[1]).toHaveClass('checked');
+    expect(controls[2]).toHaveClass('disabled');
+  });
+
   test('does not leak the styleClassNames prop to the DOM', () => {
     const { container } = renderRadioGroup({ item: { control: 'a' } });
     expect(container.querySelector('[styleClassNames]')).toBeNull();

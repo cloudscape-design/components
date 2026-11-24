@@ -10,7 +10,7 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { getExternalProps } from '../internal/utils/external-props';
 import { GeneratedAnalyticsMetadataSelectComponent } from './analytics-metadata/interfaces';
 import { SelectProps } from './interfaces';
-import InternalSelect, { StyleClassNames } from './internal';
+import InternalSelect from './internal';
 
 export { SelectProps };
 
@@ -68,7 +68,7 @@ const Select = React.forwardRef(
         triggerVariant={triggerVariant}
         {...externalProps}
         {...baseComponentProps}
-        styleClassNames={(restProps as { styleClassNames?: StyleClassNames }).styleClassNames}
+        styleClassNames={restProps.styleClassNames}
         ref={ref}
         {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
       />

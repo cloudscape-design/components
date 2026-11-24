@@ -14,7 +14,8 @@ import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useListFocusController } from '../internal/hooks/use-list-focus-controller';
 import { SomeRequired } from '../internal/types';
-import InternalToken, { StyleClassNames as TokenStyleClassNames } from '../token/internal';
+import { TokenProps } from '../token/interfaces';
+import InternalToken from '../token/internal';
 import { TokenGroupProps } from './interfaces';
 
 import tokenListStyles from '../internal/components/token-list/styles.css.js';
@@ -24,7 +25,7 @@ type InternalTokenGroupProps = SomeRequired<TokenGroupProps, 'items' | 'alignmen
   InternalBaseComponentProps & {
     isItemReadOnly?: (item: TokenGroupProps.Item) => boolean;
     // Style API v2: the Token classes applied to every token
-    styleClassNames?: { token?: TokenStyleClassNames };
+    styleClassNames?: { token?: TokenProps.StyleClassNames };
   };
 
 export default function InternalTokenGroup({

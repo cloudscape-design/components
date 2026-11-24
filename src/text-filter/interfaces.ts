@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { InputAutoCorrect } from '../input/interfaces';
+import { InputProps } from '../input/interfaces';
 import { BaseComponentProps } from '../types/base-component';
 import { NonCancelableEventHandler } from '../types/events';
 import { FormFieldControlProps } from '../types/form-field';
@@ -62,13 +63,28 @@ export interface TextFilterProps extends BaseComponentProps, FormFieldControlPro
 
   /**
    * An object containing CSS properties to customize the text filter's visual appearance.
-   * Refer to the [style](/components/text-filter/?tabId=style) tab for more details.
+   * Refer to the [style docs](/components/text-filter/?tabId=style) for more details.
+   *
+   * **Deprecated** Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: TextFilterProps.Style;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: input, countText.
+   * Refer to the [style docs](/components/text-filter/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: TextFilterProps.StyleClassNames;
 }
 
 export namespace TextFilterProps {
+  export interface StyleClassNames {
+    input?: InputProps.StyleClassNames;
+    countText?: string;
+  }
+
   export interface ChangeDetail {
     filteringText: string;
   }

@@ -11,9 +11,9 @@ applyTo: "pages/**"
 - Keep pages minimal: render the components under test directly (a single `SpaceBetween` is enough);
   no decorative containers/subtitles, no hand-maintained prose list of components. WHY: test pages
   should isolate behavior; decorative structure and lists drift.
-- Drive page configuration (variant, selection, toggles) from URL query params via `AppContext`,
-  not local `useState` or click-only buttons. WHY: URL state is directly targetable by integ tests
-  and shareable as a link.
+- Drive page configuration (variant, layout, feature toggles) from URL query params via `AppContext`,
+  not local `useState` or click-only buttons. Local `useState` is fine for interaction state that only
+  keeps a fixed demo controlled. WHY: URL state is targetable by integ tests and shareable as a link.
 - Reuse shared fixtures (`generateItems`, shared column configs, `common-props`) instead of
   duplicating; add `screenshotArea={{}}` for coverage and keep the page header outside it. WHY:
   deduplicates fixtures, keeps screenshots isolated.

@@ -3,7 +3,6 @@
 import React, { Ref, useRef } from 'react';
 import clsx from 'clsx';
 
-import { StyleClassNames as InputStyleClassNames } from '../input/internal';
 import MaskedInput from '../internal/components/masked-input';
 import { MaskArgs } from '../internal/components/masked-input/utils/mask-format';
 import useForwardFocus from '../internal/hooks/forward-focus';
@@ -25,12 +24,8 @@ const getMaskArgs = (format: string, use24Hour: boolean): MaskArgs => {
   };
 };
 
-type InternalTimeInputProps = TimeInputProps & InternalBaseComponentProps & { styleClassNames?: StyleClassNames };
-
-// Style API v2
-interface StyleClassNames {
-  input?: InputStyleClassNames;
-}
+type InternalTimeInputProps = TimeInputProps &
+  InternalBaseComponentProps & { styleClassNames?: TimeInputProps.StyleClassNames };
 
 const InternalTimeInput = React.forwardRef(
   (

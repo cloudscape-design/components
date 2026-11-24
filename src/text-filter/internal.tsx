@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { useUniqueId } from '@cloudscape-design/component-toolkit/internal';
 
-import InternalInput, { StyleClassNames as InputStyleClassNames } from '../input/internal';
+import InternalInput from '../input/internal';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
@@ -19,13 +19,7 @@ import useDebounceSearchResultCallback from './use-debounce-search-result-callba
 
 import styles from './styles.css.js';
 
-type InternalTextFilterProps = TextFilterProps & InternalBaseComponentProps & { styleClassNames?: StyleClassNames };
-
-// Style API v2
-interface StyleClassNames {
-  input?: InputStyleClassNames;
-  countText?: string;
-}
+type InternalTextFilterProps = TextFilterProps & InternalBaseComponentProps;
 
 const InternalTextFilter = React.forwardRef(
   (

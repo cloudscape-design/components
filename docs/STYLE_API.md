@@ -98,8 +98,8 @@ Put each slot class on the element that paints the slot. For a forward, pass the
 `styleClassNames`.
 
 When consumers need per-item or per-state classes they can't get from CSS (for example, a table row's `selected`
-state), type the slot with `Slot<Args>` from `src/internal/utils/style-slot.ts` and resolve it with
-`getStyleClassName`. Don't add callback arguments that consumers can derive from a parent slot or from their own state.
+state), type the slot with `StyleSlot<Args>` from `src/types/utils.ts` and resolve it with `getStyleClassName`
+from `src/internal/utils/style-slot.ts`. Don't add callback arguments that consumers can derive from a parent slot or from their own state.
 
 ### 3. Add a dev page
 

@@ -10,7 +10,6 @@ import { useFormFieldContext } from '../contexts/form-field';
 import { OptionsLoadItemsDetail } from '../dropdown/interfaces';
 import { useInternalI18n } from '../i18n/context';
 import { BaseChangeDetail } from '../input/interfaces';
-import { StyleClassNames as InputStyleClassNames } from '../input/internal';
 import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import DropdownFooter from '../internal/components/dropdown-footer';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
@@ -29,15 +28,7 @@ import AutosuggestOptionsList from './options-list';
 
 import styles from './styles.css.js';
 
-interface InternalAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {
-  styleClassNames?: StyleClassNames;
-}
-
-// Style API v2
-export interface StyleClassNames {
-  input?: InputStyleClassNames;
-  dropdown?: string;
-}
+interface InternalAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {}
 
 const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, ref: Ref<AutosuggestProps.Ref>) => {
   const {

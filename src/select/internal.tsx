@@ -7,7 +7,6 @@ import { useMergeRefs, useResizeObserver, useUniqueId, warnOnce } from '@cloudsc
 
 import Dropdown from '../dropdown/internal';
 import { useInternalI18n } from '../i18n/context.js';
-import { StyleClassNames as InputStyleClassNames } from '../input/internal';
 import { getBaseProps } from '../internal/base-component';
 import { getBreakpointValue } from '../internal/breakpoints';
 import DropdownFooter from '../internal/components/dropdown-footer';
@@ -39,15 +38,6 @@ import styles from './styles.css.js';
 
 export interface InternalSelectProps extends SomeRequired<SelectProps, 'options'>, InternalBaseComponentProps {
   __inFilteringToken?: 'root' | 'nested';
-  styleClassNames?: StyleClassNames;
-}
-
-// Style API v2
-export interface StyleClassNames {
-  trigger?: string;
-  inlineLabel?: string;
-  filter?: InputStyleClassNames;
-  dropdown?: string;
 }
 
 const InternalSelect = React.forwardRef(

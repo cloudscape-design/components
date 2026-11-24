@@ -15,7 +15,12 @@
 
 $tokens: style-api.resolve(style-api.$focus-ring, public);
 @include style-api.register($tokens);
-@include style-api.docs('root', $tokens, $properties: (color, text-decoration, font-family, font-size, font-weight));
+@include style-api.docs(
+  'root',
+  $tokens,
+  $properties: (color, text-decoration, font-family, font-size, font-weight),
+  $descriptions: (slot: 'A semantic anchor.')
+);
 
 @mixin focus-ring-box-shadow($color) {
   #{custom-props.$styleFocusRingBoxShadow}: 0 0 0
