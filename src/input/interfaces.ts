@@ -190,7 +190,9 @@ export interface InputProps
 
   /**
    * An object containing CSS properties to customize the input's visual appearance.
-   * Refer to the [style](/components/input/?tabId=style) tab for more details.
+   * Refer to the [style docs](/components/input/?tabId=style) for more details.
+   *
+   * **Deprecated** Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: InputProps.Style;
@@ -211,9 +213,25 @@ export interface InputProps
    * Use for content rendered after the editable value.
    */
   suffix?: ReactNode;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: root, input, inlineLabel, searchIcon, clearButton.
+   * Refer to the [style docs](/components/input/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: InputProps.StyleClassNames;
 }
 
 export namespace InputProps {
+  export interface StyleClassNames {
+    root?: string;
+    input?: string;
+    inlineLabel?: string;
+    searchIcon?: string;
+    clearButton?: string;
+  }
+
   export type Type = 'text' | 'password' | 'search' | 'number' | 'email' | 'url';
   export type InputMode = 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url';
   export type Step = number | 'any';

@@ -15,8 +15,16 @@
 $tokens: style-api.resolve((border-radius), carrier);
 @include style-api.register($tokens);
 @include style-api.docs('root', $tokens, $properties: (background, border, box-shadow));
-@include style-api.docs('header', $properties: (background, border));
-@include style-api.docs('footer', $properties: (background, border));
+@include style-api.docs(
+  'header',
+  $properties: (background, border),
+  $descriptions: (slot: 'Rendered when `header` is set.')
+);
+@include style-api.docs(
+  'footer',
+  $properties: (background, border),
+  $descriptions: (slot: 'Rendered when `footer` is set.')
+);
 
 // Style API token, then the `style.root.borderRadius` custom property, then the design token.
 $border-radius: style-api.value(

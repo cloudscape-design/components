@@ -116,3 +116,180 @@ describe('getScrollableParents', () => {
     expect(getScrollableParents(target)).toEqual([]);
   });
 });
+
+describe('getFirstScrollableParent with requireOverflow: false', () => {
+  const originalGetComputedStyle = window.getComputedStyle;
+
+  afterEach(() => {
+    window.getComputedStyle = originalGetComputedStyle;
+  });
+
+  function mockOverflow(overflowByTestId: Record<string, { overflowX?: string; overflowY?: string }>) {
+    window.getComputedStyle = ((element: Element, pseudoElt?: string | null) => {
+      const result = originalGetComputedStyle(element as Element, pseudoElt);
+      const testId = (element as HTMLElement).dataset?.testid;
+      const overflow = testId ? overflowByTestId[testId] : undefined;
+      if (overflow?.overflowX) {
+        result.overflowX = overflow.overflowX;
+      }
+      if (overflow?.overflowY) {
+        result.overflowY = overflow.overflowY;
+      }
+      return result;
+    }) as Window['getComputedStyle'];
+  }
+
+  function renderTree() {
+    const { container } = render(
+      <div data-testid="outer">
+        <div data-testid="middle">
+          <div data-testid="parent">
+            <div data-testid="target" />
+          </div>
+        </div>
+      </div>
+    );
+    const get = (testId: string) => container.querySelector<HTMLElement>(`[data-testid="${testId}"]`)!;
+    return { outer: get('outer'), middle: get('middle'), parent: get('parent'), target: get('target') };
+  }
+
+  test.each(['auto', 'scroll', 'overlay'])('returns the nearest ancestor with overflow-y: %s', overflowY => {
+    const { outer, parent, target } = renderTree();
+    mockOverflow({ outer: { overflowY: 'auto' }, parent: { overflowY } });
+    expect(getFirstScrollableParent(target, { requireOverflow: false })).toBe(parent);
+    expect(getFirstScrollableParent(parent, { requireOverflow: false })).toBe(outer);
+  });
+
+  test('returns the scroll container even when its content does not overflow', () => {
+    const { outer, middle, target } = renderTree();
+    mockOverflow({ outer: { overflowY: 'auto' }, middle: { overflowY: 'auto' } });
+    Object.defineProperty(outer, 'scrollHeight', { configurable: true, value: 1000 });
+    Object.defineProperty(outer, 'clientHeight', { configurable: true, value: 100 });
+    Object.defineProperty(middle, 'scrollHeight', { configurable: true, value: 100 });
+    Object.defineProperty(middle, 'clientHeight', { configurable: true, value: 100 });
+
+    expect(getFirstScrollableParent(target, { requireOverflow: false })).toBe(middle);
+    expect(getFirstScrollableParent(target)).toBe(outer);
+  });
+
+  test('ignores the element itself and ancestors that only scroll horizontally or clip', () => {
+    const { outer, target } = renderTree();
+    mockOverflow({
+      target: { overflowY: 'auto' },
+      parent: { overflowX: 'auto', overflowY: 'hidden' },
+      middle: { overflowY: 'clip' },
+      outer: { overflowY: 'scroll' },
+    });
+    expect(getFirstScrollableParent(target, { requireOverflow: false })).toBe(outer);
+  });
+
+  test('returns undefined when no ancestor scrolls vertically', () => {
+    const { target } = renderTree();
+    mockOverflow({ outer: { overflowY: 'visible' }, parent: { overflowY: 'hidden' } });
+    expect(getFirstScrollableParent(target, { requireOverflow: false })).toBeUndefined();
+  });
+
+  describe('when the nearest scroll container is the body', () => {
+    let target: HTMLElement;
+
+    // jsdom does not resolve the initial `visible` value for the root element, so it is set explicitly.
+    function mockRootOverflow(overflowX: string, overflowY: string) {
+      window.getComputedStyle = ((element: Element, pseudoElt?: string | null) => {
+        const result = originalGetComputedStyle(element as Element, pseudoElt);
+        if (element === document.documentElement) {
+          result.overflowX = overflowX;
+          result.overflowY = overflowY;
+        }
+        return result;
+      }) as Window['getComputedStyle'];
+    }
+
+    beforeEach(() => {
+      target = document.createElement('div');
+      document.body.appendChild(target);
+      document.body.style.overflowY = 'auto';
+    });
+
+    afterEach(() => {
+      target.remove();
+      document.body.removeAttribute('style');
+      document.documentElement.removeAttribute('style');
+    });
+
+    function mockDocument(property: 'scrollingElement' | 'compatMode', value: unknown) {
+      Object.defineProperty(document, property, { configurable: true, get: () => value });
+    }
+
+    afterEach(() => {
+      delete (document as unknown as Record<string, unknown>).scrollingElement;
+      delete (document as unknown as Record<string, unknown>).compatMode;
+    });
+
+    test('returns document.scrollingElement when the body overflow propagates to the viewport', () => {
+      mockRootOverflow('visible', 'visible');
+      mockDocument('scrollingElement', document.documentElement);
+      expect(getFirstScrollableParent(target, { requireOverflow: false })).toBe(document.documentElement);
+    });
+
+    test('returns the body as document.scrollingElement in quirks mode', () => {
+      mockRootOverflow('visible', 'visible');
+      mockDocument('compatMode', 'BackCompat');
+      mockDocument('scrollingElement', document.body);
+      expect(getFirstScrollableParent(target, { requireOverflow: false })).toBe(document.body);
+    });
+
+    test('falls back to the root element in standards mode when scrollingElement is unavailable', () => {
+      mockRootOverflow('visible', 'visible');
+      mockDocument('scrollingElement', null);
+      expect(getFirstScrollableParent(target, { requireOverflow: false })).toBe(document.documentElement);
+    });
+
+    test('falls back to the body in quirks mode when scrollingElement is unavailable', () => {
+      mockRootOverflow('visible', 'visible');
+      mockDocument('compatMode', 'BackCompat');
+      mockDocument('scrollingElement', null);
+      expect(getFirstScrollableParent(target, { requireOverflow: false })).toBe(document.body);
+    });
+
+    test.each([
+      ['hidden', 'hidden'],
+      ['auto', 'auto'],
+      ['clip', 'clip'],
+      ['hidden', 'visible'],
+      ['visible', 'hidden'],
+    ])('keeps the body as an independent scroller when the root overflow is %s / %s', (overflowX, overflowY) => {
+      mockRootOverflow(overflowX, overflowY);
+      expect(getFirstScrollableParent(target, { requireOverflow: false })).toBe(document.body);
+    });
+
+    test.each(['documentElement', 'body'] as const)(
+      'keeps the body as an independent scroller when %s has CSS containment',
+      element => {
+        mockRootOverflow('visible', 'visible');
+        mockDocument('scrollingElement', document.documentElement);
+        document[element].style.contain = 'layout';
+        expect(getFirstScrollableParent(target, { requireOverflow: false })).toBe(document.body);
+      }
+    );
+
+    test('treats contain: none as no containment', () => {
+      mockRootOverflow('visible', 'visible');
+      mockDocument('scrollingElement', document.documentElement);
+      document.body.style.contain = 'none';
+      expect(getFirstScrollableParent(target, { requireOverflow: false })).toBe(document.documentElement);
+    });
+
+    test('keeps a non-body nearest scroll container unchanged', () => {
+      mockRootOverflow('visible', 'visible');
+      const scroller = document.createElement('div');
+      scroller.style.overflowY = 'auto';
+      document.body.appendChild(scroller);
+      scroller.appendChild(target);
+      try {
+        expect(getFirstScrollableParent(target, { requireOverflow: false })).toBe(scroller);
+      } finally {
+        scroller.remove();
+      }
+    });
+  });
+});

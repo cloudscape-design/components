@@ -5,8 +5,16 @@ import React from 'react';
 import { ButtonProps } from '../button/interfaces';
 import { ErrorContext } from '../types/analytics';
 import { BaseComponentProps } from '../types/base-component';
+import { StyleSlot } from '../types/utils';
 
 export namespace FlashbarProps {
+  export interface StyleClassNames {
+    item?: StyleSlot<{ item: FlashbarProps.MessageDefinition }>;
+    icon?: string;
+    dismissButton?: string;
+    notificationBar?: string;
+  }
+
   export interface MessageDefinition {
     header?: React.ReactNode;
     content?: React.ReactNode;
@@ -217,8 +225,18 @@ export interface FlashbarProps extends BaseComponentProps {
 
   /**
    * An object containing CSS properties to customize the flashbar's visual appearance.
-   * Refer to the [style](/components/flashbar/?tabId=style) tab for more details.
+   * Refer to the [style docs](/components/flashbar/?tabId=style) for more details.
+   *
+   * **Deprecated** Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: FlashbarProps.Style;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: item, icon, dismissButton, notificationBar.
+   * Refer to the [style docs](/components/flashbar/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: FlashbarProps.StyleClassNames;
 }

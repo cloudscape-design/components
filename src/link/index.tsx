@@ -9,7 +9,7 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { GeneratedAnalyticsMetadataLinkFragment } from './analytics-metadata/interfaces';
 import { LinkProps } from './interfaces';
-import InternalLink, { StyleClassNames } from './internal';
+import InternalLink from './internal';
 
 export { LinkProps };
 
@@ -49,7 +49,7 @@ const Link = React.forwardRef(
         ref={ref}
         {...getAnalyticsMetadataAttribute(analyticsMetadata)}
         style={style}
-        styleClassNames={(props as { styleClassNames?: StyleClassNames }).styleClassNames}
+        styleClassNames={props.styleClassNames}
       />
     );
   }

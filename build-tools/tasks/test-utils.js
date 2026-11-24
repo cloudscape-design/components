@@ -26,6 +26,7 @@ function compileTypescript(theme) {
         '--tsBuildInfoFile',
         `./lib/${theme.name}-test-utils.tsbuildinfo`,
         '--sourceMap',
+        '--inlineSources',
       ],
       { stdio: 'inherit' }
     );

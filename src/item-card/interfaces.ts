@@ -78,7 +78,9 @@ export interface ItemCardProps extends BaseComponentProps {
 
   /**
    * An object containing CSS properties to customize the item card's visual appearance.
-   * Refer to the [style](/components/item-card/?tabId=style) tab for more details.
+   * Refer to the [style docs](/components/item-card/?tabId=style) for more details.
+   *
+   * **Deprecated** Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: ItemCardProps.Style;
@@ -96,9 +98,23 @@ export interface ItemCardProps extends BaseComponentProps {
    * @awsuiSystem core
    */
   nativeAttributes?: NativeAttributes<React.HTMLAttributes<HTMLDivElement>>;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: root, header, footer.
+   * Refer to the [style docs](/components/item-card/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: ItemCardProps.StyleClassNames;
 }
 
 export namespace ItemCardProps {
+  export interface StyleClassNames {
+    root?: string;
+    header?: string;
+    footer?: string;
+  }
+
   export type Variant = 'embedded' | 'default';
 
   export interface Style {

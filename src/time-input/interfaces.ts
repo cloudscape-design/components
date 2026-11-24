@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { BaseChangeDetail, BaseInputProps, InputAutoCorrect } from '../input/interfaces';
+import { InputProps } from '../input/interfaces';
 import { BaseComponentProps } from '../types/base-component';
 import { FormFieldValidationControlProps } from '../types/form-field';
 
@@ -28,9 +29,21 @@ export interface TimeInputProps
    * example, for security-sensitive fields). To use it correctly, set the `name` property.
    */
   autoComplete?: boolean;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: input.
+   * Refer to the [style docs](/components/time-input/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: TimeInputProps.StyleClassNames;
 }
 
 export namespace TimeInputProps {
+  export interface StyleClassNames {
+    input?: InputProps.StyleClassNames;
+  }
+
   export type Format = 'hh' | 'hh:mm' | 'hh:mm:ss';
   export type ChangeDetail = BaseChangeDetail;
 

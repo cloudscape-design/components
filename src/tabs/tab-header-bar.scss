@@ -31,8 +31,18 @@ $content-tokens: style-api.resolve(style-api.$focus-ring, carrier);
     )
   )
 );
-@include style-api.docs('tab', $tab-tokens, $properties: (background, border, border-radius));
-@include style-api.docs('tabLink', $link-tokens, $properties: (color, padding, font-family, font-size, font-weight));
+@include style-api.docs(
+  'tab',
+  $tab-tokens,
+  $properties: (background, border, border-radius),
+  $descriptions: (slot: 'The container of the `tabLink` slot.')
+);
+@include style-api.docs(
+  'tabLink',
+  $link-tokens,
+  $properties: (color, padding, font-family, font-size, font-weight),
+  $descriptions: (slot: 'The semantic button of a tab, or a semantic anchor when the tab has `href`.')
+);
 @include style-api.docs('content', $content-tokens);
 @include style-api.docs-forward('dismissButton', 'button', 'root');
 

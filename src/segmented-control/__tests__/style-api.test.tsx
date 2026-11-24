@@ -42,6 +42,16 @@ describe('SegmentedControl Style API v2', () => {
     expect(createWrapper(container).findSelect()!.findTrigger().getElement()).toHaveClass('t');
   });
 
+  test('resolves the segment callback per segment with its option and selected state', () => {
+    const { wrapper } = renderSegmentedControl({
+      segment: ({ option, selected }: { option: SegmentedControlProps.Option; selected: boolean }) =>
+        selected ? 'selected' : option.disabled ? 'disabled' : 'plain',
+    });
+    expect(wrapper.findSegmentById('list')!.getElement()).toHaveClass('selected');
+    expect(wrapper.findSegmentById('cards')!.getElement()).toHaveClass('disabled');
+    expect(wrapper.findSegmentById('table')!.getElement()).toHaveClass('plain');
+  });
+
   test('ignores unknown slots', () => {
     const { container } = renderSegmentedControl({ unknown: 'x' });
     expect(container.querySelector('.x')).toBeNull();

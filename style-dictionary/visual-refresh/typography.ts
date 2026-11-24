@@ -60,6 +60,7 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   fontWeightNormal: '400',
   fontWeightTabs: '700',
   fontWeightTabsDisabled: '{fontWayfindingLinkActiveWeight}',
+  letterSpacingBodyM: 'normal',
   letterSpacingBodyS: '0.005em',
   letterSpacingDisplayL: '-0.03em',
   letterSpacingDisplayXl: '-0.03em',

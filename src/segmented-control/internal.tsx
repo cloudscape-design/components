@@ -9,24 +9,13 @@ import { useGroupedControlContext } from '../internal/context/control-group-cont
 import { fireNonCancelableEvent } from '../internal/events';
 import { getGroupedControlClassNames } from '../internal/grouped-control/grouped-control-styles';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import InternalSelect, { InternalSelectProps, StyleClassNames as SelectStyleClassNames } from '../select/internal';
+import InternalSelect, { InternalSelectProps } from '../select/internal';
 import { SegmentedControlProps } from './interfaces';
 import InternalSegmentedControlComponent from './internal-segmented-control';
 
 import styles from './styles.css.js';
 
-type InternalSegmentedControlProps = SegmentedControlProps &
-  InternalBaseComponentProps & {
-    styleClassNames?: StyleClassNames;
-  };
-
-// Style API v2
-export interface StyleClassNames {
-  root?: string;
-  segment?: string;
-  divider?: string;
-  select?: SelectStyleClassNames;
-}
+type InternalSegmentedControlProps = SegmentedControlProps & InternalBaseComponentProps;
 
 export default function InternalSegmentedControl({
   selectedId,

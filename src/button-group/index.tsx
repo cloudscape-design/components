@@ -12,7 +12,6 @@ import { getExternalProps } from '../internal/utils/external-props';
 import { GeneratedAnalyticsMetadataButtonGroupComponent } from './analytics-metadata/interfaces';
 import { ButtonGroupProps } from './interfaces';
 import InternalButtonGroup from './internal';
-import { StyleClassNames } from './internal-interfaces';
 
 export { ButtonGroupProps };
 
@@ -48,7 +47,7 @@ const ButtonGroup = React.forwardRef(
     return (
       <InternalButtonGroup
         {...baseProps}
-        styleClassNames={(rest as { styleClassNames?: StyleClassNames }).styleClassNames}
+        styleClassNames={rest.styleClassNames}
         {...baseComponentProps}
         {...externalProps}
         ref={ref}

@@ -9,6 +9,7 @@ import { SimplePage } from '../app/templates';
 import styles from './style-api-v2.scss';
 
 const styleClassNames = { root: styles.slider, handle: styles.handle };
+const disabledStyleClassNames = { root: styles['slider-disabled'], handle: styles['handle-disabled'] };
 
 export default function () {
   const [value, setValue] = useState(40);
@@ -43,7 +44,7 @@ export default function () {
                 max={100}
                 disabled={true}
                 ariaLabel="Disabled"
-                {...{ styleClassNames }}
+                {...{ styleClassNames: disabledStyleClassNames }}
               />
             ),
           },

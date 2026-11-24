@@ -4,9 +4,13 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import { isThemeActive } from '@cloudscape-design/component-toolkit/internal';
+import { setGlobalFlag } from '@cloudscape-design/component-toolkit/internal/testing';
 
 import AppLayout from '../../../lib/components/app-layout';
-import { BeforeMainSlotSkeleton } from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/skeleton-parts';
+import {
+  BeforeMainSlotSkeleton,
+  ToolbarSkeleton,
+} from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/skeleton-parts';
 import AppLayoutToolbar from '../../../lib/components/app-layout-toolbar';
 import BreadcrumbGroup from '../../../lib/components/breadcrumb-group';
 import { getFunnelKeySelector } from '../../../lib/components/internal/analytics/selectors';
@@ -181,6 +185,55 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
       expect(toolbarContainer!.getElement()).toHaveClass(toolbarStyles['universal-toolbar']);
       expect(toolbarContainer!.getElement()).toHaveClass(testutilStyles.toolbar);
     });
+
+    describe('with appLayoutHideToolbar flag', () => {
+      afterEach(() => setGlobalFlag('appLayoutHideToolbar', undefined));
+
+      it('renders a visible skeleton toolbar when the flag is not set', () => {
+        const { wrapper } = renderComponent(<AppLayout navigation="test nav" breadcrumbs="test breadcrumbs" />);
+        const toolbar = wrapper.findByClassName(skeletonStyles['toolbar-container'])!.getElement();
+        expect(toolbar).not.toHaveClass(toolbarStyles['toolbar-hidden']);
+        expect(wrapper.findByClassName(skeletonStyles['hidden-toolbar-border'])).toBeNull();
+      });
+
+      it('keeps the skeleton toolbar mounted but hidden when the flag is set', () => {
+        setGlobalFlag('appLayoutHideToolbar', true);
+        const { wrapper } = renderComponent(
+          <AppLayout navigation="test nav" breadcrumbs={<BreadcrumbGroup items={[{ text: 'Home', href: '' }]} />} />
+        );
+        const toolbar = wrapper.findByClassName(skeletonStyles['toolbar-container'])!.getElement();
+        expect(toolbar).toHaveClass(toolbarStyles['toolbar-hidden']);
+        // breadcrumbs and toggles still render inside, needed for SSR and breadcrumbs reporting
+        expect(toolbar).toContainElement(wrapper.findBreadcrumbs()!.getElement());
+        expect(toolbar).toContainElement(wrapper.findNavigationToggle()!.getElement());
+        // the content area keeps a top border in place of the hidden toolbar
+        expect(toolbar.nextElementSibling).toHaveClass(skeletonStyles['hidden-toolbar-border']);
+      });
+    });
+  });
+});
+
+describe('ToolbarSkeleton', () => {
+  const appLayoutInternals = { breadcrumbs: <div>test breadcrumbs</div> } as any;
+
+  afterEach(() => setGlobalFlag('appLayoutHideToolbar', undefined));
+
+  function findToolbar(container: HTMLElement) {
+    return container.querySelector(`.${skeletonStyles['toolbar-container']}`)!;
+  }
+
+  it('is visible by default', () => {
+    const { container } = render(<ToolbarSkeleton appLayoutInternals={appLayoutInternals} toolbarProps={{}} />);
+    expect(findToolbar(container)).not.toHaveClass(toolbarStyles['toolbar-hidden']);
+    expect(container.querySelector(`.${skeletonStyles['hidden-toolbar-border']}`)).toBeNull();
+  });
+
+  it('is hidden but keeps its content when the appLayoutHideToolbar flag is set', () => {
+    setGlobalFlag('appLayoutHideToolbar', true);
+    const { container } = render(<ToolbarSkeleton appLayoutInternals={appLayoutInternals} toolbarProps={{}} />);
+    expect(findToolbar(container)).toHaveClass(toolbarStyles['toolbar-hidden']);
+    expect(findToolbar(container)).toHaveTextContent('test breadcrumbs');
+    expect(findToolbar(container).nextElementSibling).toHaveClass(skeletonStyles['hidden-toolbar-border']);
   });
 });
 

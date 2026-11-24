@@ -78,6 +78,14 @@ export interface PopoverProps extends BaseComponentProps {
    * Note: Using popover rendered with portal within a Modal is not supported.
    */
   renderWithPortal?: boolean;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: container, arrow, dismissButton.
+   * Refer to the [style docs](/components/popover/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: PopoverProps.StyleClassNames;
 }
 
 export interface Offset {
@@ -98,6 +106,12 @@ export type Rect = BoundingBox & {
 };
 
 export namespace PopoverProps {
+  export interface StyleClassNames {
+    container?: string;
+    arrow?: string;
+    dismissButton?: string;
+  }
+
   export type Position = 'top' | 'right' | 'bottom' | 'left';
   export type Size = 'small' | 'medium' | 'large';
   export type TriggerType = 'text' | 'text-inline' | 'custom';

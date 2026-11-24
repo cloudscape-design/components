@@ -37,20 +37,9 @@ import { insertTextIntoContentEditable } from './utils/insert-text-content-edita
 import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';
 
-// Style API v2
-export interface StyleClassNames {
-  root?: string;
-  textarea?: string;
-  actionButton?: string;
-  token?: string;
-  menu?: string;
-}
-
 interface InternalPromptInputProps
   extends SomeRequired<PromptInputProps, 'maxRows' | 'minRows'>,
-    InternalBaseComponentProps {
-  styleClassNames?: StyleClassNames;
-}
+    InternalBaseComponentProps {}
 
 const InternalPromptInput = React.forwardRef(
   (

@@ -4,7 +4,7 @@ exports[`Style API docs definition for action-card matches the snapshot: action-
 {
   "slots": [
     {
-      "description": "Not a button element: use \`:has(:hover)\` and \`:has(:active)\` for interaction states.",
+      "description": "The card. Its semantic button is an overlay inside the card, so use \`:has(:active)\` for the pressed state.",
       "name": "root",
       "properties": [
         "background",
@@ -23,6 +23,7 @@ exports[`Style API docs definition for action-card matches the snapshot: action-
       ],
     },
     {
+      "description": "Rendered when \`header\` or \`description\` is set.",
       "name": "header",
       "properties": [
         "background",
@@ -157,6 +158,7 @@ exports[`Style API docs definition for button matches the snapshot: button 1`] =
 {
   "slots": [
     {
+      "description": "A semantic button, or a semantic anchor when \`href\` is set.",
       "name": "root",
       "properties": [
         "color",
@@ -257,6 +259,7 @@ exports[`Style API docs definition for checkbox matches the snapshot: checkbox 1
 {
   "slots": [
     {
+      "description": "The box drawn around the semantic checkbox input.",
       "name": "control",
       "properties": [],
       "propertyDescriptions": {},
@@ -299,6 +302,7 @@ exports[`Style API docs definition for container matches the snapshot: container
       ],
     },
     {
+      "description": "Rendered when \`header\` is set.",
       "name": "header",
       "properties": [
         "background",
@@ -317,6 +321,7 @@ exports[`Style API docs definition for container matches the snapshot: container
       "tokens": [],
     },
     {
+      "description": "Rendered when \`footer\` is set.",
       "name": "footer",
       "properties": [
         "background",
@@ -417,6 +422,7 @@ exports[`Style API docs definition for flashbar matches the snapshot: flashbar 1
 {
   "slots": [
     {
+      "description": "The bar around the semantic button that expands and collapses the stack.",
       "name": "notificationBar",
       "properties": [
         "color",
@@ -502,6 +508,7 @@ exports[`Style API docs definition for input matches the snapshot: input 1`] = `
 {
   "slots": [
     {
+      "description": "The field box around the \`input\` slot.",
       "name": "root",
       "properties": [
         "background",
@@ -528,6 +535,7 @@ exports[`Style API docs definition for input matches the snapshot: input 1`] = `
       "tokens": [],
     },
     {
+      "description": "The semantic text input.",
       "name": "input",
       "properties": [
         "color",
@@ -549,6 +557,7 @@ exports[`Style API docs definition for input matches the snapshot: input 1`] = `
       ],
     },
     {
+      "description": "Rendered when \`inlineLabelText\` is set.",
       "name": "inlineLabel",
       "properties": [
         "color",
@@ -562,6 +571,7 @@ exports[`Style API docs definition for input matches the snapshot: input 1`] = `
       "tokens": [],
     },
     {
+      "description": "Rendered when \`type\` is \`search\`.",
       "name": "searchIcon",
       "properties": [
         "color",
@@ -601,6 +611,7 @@ exports[`Style API docs definition for item-card matches the snapshot: item-card
       ],
     },
     {
+      "description": "Rendered when \`header\`, \`description\`, \`icon\` or \`actions\` is set.",
       "name": "header",
       "properties": [
         "background",
@@ -619,6 +630,7 @@ exports[`Style API docs definition for item-card matches the snapshot: item-card
       "tokens": [],
     },
     {
+      "description": "Rendered when \`footer\` is set.",
       "name": "footer",
       "properties": [
         "background",
@@ -644,6 +656,7 @@ exports[`Style API docs definition for link matches the snapshot: link 1`] = `
 {
   "slots": [
     {
+      "description": "A semantic anchor.",
       "name": "root",
       "properties": [
         "color",
@@ -668,6 +681,7 @@ exports[`Style API docs definition for multiselect matches the snapshot: multise
 {
   "slots": [
     {
+      "description": "The semantic button that opens the dropdown.",
       "name": "trigger",
       "properties": [
         "color",
@@ -702,6 +716,7 @@ exports[`Style API docs definition for multiselect matches the snapshot: multise
       ],
     },
     {
+      "description": "Rendered when \`inlineLabelText\` is set.",
       "name": "inlineLabel",
       "properties": [
         "color",
@@ -821,6 +836,7 @@ exports[`Style API docs definition for prompt-input matches the snapshot: prompt
 {
   "slots": [
     {
+      "description": "The field box around the \`textarea\` slot.",
       "name": "root",
       "properties": [
         "background",
@@ -847,6 +863,7 @@ exports[`Style API docs definition for prompt-input matches the snapshot: prompt
       "tokens": [],
     },
     {
+      "description": "The semantic text area, or a content-editable element when \`tokens\` is set.",
       "name": "textarea",
       "properties": [
         "color",
@@ -894,6 +911,7 @@ exports[`Style API docs definition for radio-button matches the snapshot: radio-
 {
   "slots": [
     {
+      "description": "The circle drawn around the semantic radio input.",
       "name": "control",
       "properties": [],
       "propertyDescriptions": {},
@@ -952,6 +970,7 @@ exports[`Style API docs definition for segmented-control matches the snapshot: s
       ],
     },
     {
+      "description": "The semantic button of each option.",
       "name": "segment",
       "properties": [
         "color",
@@ -986,6 +1005,7 @@ exports[`Style API docs definition for segmented-control matches the snapshot: s
       ],
     },
     {
+      "description": "The line between two segments.",
       "name": "divider",
       "properties": [],
       "propertyDescriptions": {},
@@ -1009,6 +1029,7 @@ exports[`Style API docs definition for select matches the snapshot: select 1`] =
 {
   "slots": [
     {
+      "description": "The semantic button that opens the dropdown.",
       "name": "trigger",
       "properties": [
         "color",
@@ -1043,6 +1064,7 @@ exports[`Style API docs definition for select matches the snapshot: select 1`] =
       ],
     },
     {
+      "description": "Rendered when \`inlineLabelText\` is set.",
       "name": "inlineLabel",
       "properties": [
         "color",
@@ -1076,6 +1098,7 @@ exports[`Style API docs definition for slider matches the snapshot: slider 1`] =
 {
   "slots": [
     {
+      "description": "The container of the \`handle\` slot.",
       "name": "root",
       "properties": [],
       "propertyDescriptions": {},
@@ -1086,6 +1109,7 @@ exports[`Style API docs definition for slider matches the snapshot: slider 1`] =
       ],
     },
     {
+      "description": "The semantic range input.",
       "name": "handle",
       "properties": [],
       "propertyDescriptions": {},
@@ -1141,6 +1165,7 @@ exports[`Style API docs definition for table matches the snapshot: table 1`] = `
       ],
     },
     {
+      "description": "The semantic button that sorts the column, in sortable header cells.",
       "name": "sortingButton",
       "properties": [
         "color",
@@ -1235,6 +1260,7 @@ exports[`Style API docs definition for tabs matches the snapshot: tabs 1`] = `
       ],
     },
     {
+      "description": "The container of the \`tabLink\` slot.",
       "name": "tab",
       "properties": [
         "background",
@@ -1262,6 +1288,7 @@ exports[`Style API docs definition for tabs matches the snapshot: tabs 1`] = `
       ],
     },
     {
+      "description": "The semantic button of a tab, or a semantic anchor when the tab has \`href\`.",
       "name": "tabLink",
       "properties": [
         "color",
@@ -1311,6 +1338,7 @@ exports[`Style API docs definition for text-filter matches the snapshot: text-fi
       "name": "input",
     },
     {
+      "description": "Rendered while \`filteringText\` and \`countText\` are set.",
       "name": "countText",
       "properties": [
         "color",
@@ -1330,6 +1358,7 @@ exports[`Style API docs definition for textarea matches the snapshot: textarea 1
 {
   "slots": [
     {
+      "description": "The semantic text area. It also draws the field.",
       "name": "textarea",
       "properties": [
         "color",
@@ -1387,6 +1416,7 @@ exports[`Style API docs definition for toggle matches the snapshot: toggle 1`] =
 {
   "slots": [
     {
+      "description": "The track drawn around the semantic checkbox input.",
       "name": "control",
       "properties": [],
       "propertyDescriptions": {},

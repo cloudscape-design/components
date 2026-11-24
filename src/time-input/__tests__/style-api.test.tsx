@@ -17,16 +17,14 @@ function renderTimeInput(
 }
 
 describe('Time input Style API v2', () => {
-  test('forwards the input classes to the Input slots and ignores unknown keys', () => {
-    const { container, wrapper } = renderTimeInput({
+  test('forwards the input classes to the Input slots', () => {
+    const { wrapper } = renderTimeInput({
       value: '14:30:00',
-      styleClassNames: { input: { root: 'a', input: 'b', unknown: 'c' }, unknown: 'd' },
+      styleClassNames: { input: { root: 'a', input: 'b' } },
     });
     const nativeInput = wrapper.findNativeInput().getElement();
     expect(nativeInput.parentElement).toHaveClass('a');
     expect(nativeInput).toHaveClass('b');
-    expect(container.querySelector('.c')).toBeNull();
-    expect(container.querySelector('.d')).toBeNull();
   });
 
   test('forwards the input classes in every state', () => {

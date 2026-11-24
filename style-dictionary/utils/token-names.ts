@@ -1018,6 +1018,7 @@ export type TypographyTokenName =
   | 'fontWeightNormal'
   | 'fontWeightTabs'
   | 'fontWeightTabsDisabled'
+  | 'letterSpacingBodyM'
   | 'letterSpacingBodyS'
   | 'letterSpacingDisplayL'
   | 'letterSpacingDisplayXl'
