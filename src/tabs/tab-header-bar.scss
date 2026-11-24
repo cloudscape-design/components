@@ -8,6 +8,7 @@
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../internal/styles/style-api' as style-api;
+@use '../internal/styles/utils/theming' as theming;
 
 $separator-color: awsui.$color-border-tabs-divider;
 $label-horizontal-spacing: awsui.$space-xs;
@@ -161,6 +162,39 @@ $content-tokens: style-api.resolve(style-api.$focus-ring, carrier);
   }
 }
 
+@mixin active-indicator-surface {
+  block-size: style-api.value(
+    $tab-tokens,
+    active-indicator-width,
+    var(#{custom-props.$styleTabsActiveIndicatorWidth}, awsui.$border-active-width)
+  );
+  border-start-start-radius: style-api.value(
+    $tab-tokens,
+    active-indicator-border-radius,
+    var(#{custom-props.$styleTabsActiveIndicatorBorderRadius}, awsui.$border-radius-tabs-focus-ring)
+  );
+  border-start-end-radius: style-api.value(
+    $tab-tokens,
+    active-indicator-border-radius,
+    var(#{custom-props.$styleTabsActiveIndicatorBorderRadius}, awsui.$border-radius-tabs-focus-ring)
+  );
+  border-end-start-radius: style-api.value(
+    $tab-tokens,
+    active-indicator-border-radius,
+    var(#{custom-props.$styleTabsActiveIndicatorBorderRadius}, awsui.$border-radius-tabs-focus-ring)
+  );
+  border-end-end-radius: style-api.value(
+    $tab-tokens,
+    active-indicator-border-radius,
+    var(#{custom-props.$styleTabsActiveIndicatorBorderRadius}, awsui.$border-radius-tabs-focus-ring)
+  );
+  background: style-api.value(
+    $tab-tokens,
+    active-indicator-color,
+    var(#{custom-props.$styleTabsActiveIndicatorColor}, awsui.$color-border-tabs-underline)
+  );
+}
+
 .tabs-tab-header-container:not(.tabs-tab-disabled) {
   // This is the underline for the currently selected tab.
   &:after {
@@ -169,40 +203,11 @@ $content-tokens: style-api.resolve(style-api.$focus-ring, carrier);
     inset-inline-start: 0;
     inline-size: calc(100% - 1px);
     inset-block-end: calc(-1 * #{awsui.$border-divider-section-width});
-    block-size: style-api.value(
-      $tab-tokens,
-      active-indicator-width,
-      var(#{custom-props.$styleTabsActiveIndicatorWidth}, awsui.$border-active-width)
-    );
     --awsui-style-active-indicator-color: inherit;
     --awsui-style-active-indicator-width: inherit;
     --awsui-style-active-indicator-border-radius: inherit;
-    border-start-start-radius: style-api.value(
-      $tab-tokens,
-      active-indicator-border-radius,
-      var(#{custom-props.$styleTabsActiveIndicatorBorderRadius}, awsui.$border-radius-tabs-focus-ring)
-    );
-    border-start-end-radius: style-api.value(
-      $tab-tokens,
-      active-indicator-border-radius,
-      var(#{custom-props.$styleTabsActiveIndicatorBorderRadius}, awsui.$border-radius-tabs-focus-ring)
-    );
-    border-end-start-radius: style-api.value(
-      $tab-tokens,
-      active-indicator-border-radius,
-      var(#{custom-props.$styleTabsActiveIndicatorBorderRadius}, awsui.$border-radius-tabs-focus-ring)
-    );
-    border-end-end-radius: style-api.value(
-      $tab-tokens,
-      active-indicator-border-radius,
-      var(#{custom-props.$styleTabsActiveIndicatorBorderRadius}, awsui.$border-radius-tabs-focus-ring)
-    );
-    background: style-api.value(
-      $tab-tokens,
-      active-indicator-color,
-      var(#{custom-props.$styleTabsActiveIndicatorColor}, awsui.$color-border-tabs-underline)
-    );
     opacity: 0;
+    @include active-indicator-surface;
   }
 
   &.refresh {
@@ -212,9 +217,26 @@ $content-tokens: style-api.resolve(style-api.$focus-ring, carrier);
       }
     }
   }
+
+  @include theming.one-theme-only {
+    &:after {
+      content: none;
+    }
+  }
 }
 
-.tabs-tab:not(:last-child) {
+.tabs-active-indicator {
+  list-style: none;
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-start: 0;
+  inline-size: 0;
+  opacity: 0;
+  pointer-events: none;
+  @include active-indicator-surface;
+}
+
+.tabs-tab:has(+ .tabs-tab) {
   & > .tabs-tab-header-container {
     margin-inline-end: calc(-1 * #{awsui.$border-divider-section-width});
     // This is the divider for the tab
@@ -324,7 +346,7 @@ $content-tokens: style-api.resolve(style-api.$focus-ring, carrier);
 }
 
 // Remediate focus shadow
-.tabs-tab:last-child {
+.tabs-tab:not(:has(+ .tabs-tab)) {
   margin-inline-end: 1px;
   scroll-margin-inline-end: 1px;
   & > .tabs-tab-header-container {

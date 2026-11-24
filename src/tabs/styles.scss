@@ -9,6 +9,7 @@
 @use '../internal/styles/style-api' as style-api;
 
 @use './tab-header-bar';
+@use './motion';
 
 .root {
   /* used in test-utils or tests */
