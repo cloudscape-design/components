@@ -44,7 +44,7 @@ export default function TableLoadingEmptyPage() {
           ]}
         />
       }
-      screenshotArea={{}}
+      screenshotArea={{ disableAnimations: true }}
     >
       <SpaceBetween size="s">
         <Header counter={`(${items.length})`}>Resources</Header>
