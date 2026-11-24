@@ -7,10 +7,11 @@ import InternalButtonDropdown from '../../button-dropdown/internal';
 import { InternalButtonDropdownProps, InternalItemOrGroup } from '../../button-dropdown/internal-interfaces';
 import { CancelableEventHandler } from '../../types/events';
 import { AppLayoutProps } from '../interfaces';
+import { resolveTriggerIconSvg, RuntimeTriggerIconMarkup } from '../runtime-drawer/trigger-icon';
 
 import testutilStyles from '../test-classes/styles.css.js';
 
-type Drawer = AppLayoutProps.Drawer & { active?: boolean };
+type Drawer = AppLayoutProps.Drawer & { trigger?: RuntimeTriggerIconMarkup; active?: boolean };
 
 interface OverflowMenuProps {
   items: Array<Drawer>;
@@ -24,7 +25,7 @@ const mapDrawerToItem = (drawer: Drawer, isTypeCheckbox: boolean) => ({
   id: drawer.id,
   text: drawer.ariaLabels.drawerName,
   iconName: drawer.trigger!.iconName,
-  iconSvg: drawer.trigger!.iconSvg,
+  iconSvg: resolveTriggerIconSvg(drawer.trigger),
   badge: drawer.badge,
   itemType: isTypeCheckbox ? ('checkbox' as ButtonDropdownProps.ItemType) : undefined,
   checked: drawer.active,
