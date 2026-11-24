@@ -6,7 +6,12 @@ import { Ace } from 'ace-builds';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
-import { useCurrentMode, useMergeRefs, useUniqueId } from '@cloudscape-design/component-toolkit/internal';
+import {
+  useCurrentMode,
+  useMergeRefs,
+  useStableCallback,
+  useUniqueId,
+} from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
@@ -120,16 +125,19 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
   // Change listeners
   useChangeEffect(editor, props.onChange, props.onDelayedChange);
 
+  // Declared before the effect below so that the latest handler is already stored when it runs on mount.
+  const fireValidate = useStableCallback((nextAnnotations: Ace.Annotation[]) =>
+    fireNonCancelableEvent(props.onValidate, { annotations: nextAnnotations })
+  );
+
   // Hide error panel when there are no errors to show.
   useEffect(() => {
     if (annotations.length === 0) {
       setPaneStatus('hidden');
     }
 
-    if (props.onValidate) {
-      fireNonCancelableEvent(props.onValidate, { annotations });
-    }
-  }, [annotations, props.onValidate]);
+    fireValidate(annotations);
+  }, [annotations, fireValidate]);
 
   const languageLabel = customLanguageLabel ?? getLanguageLabel(language);
 

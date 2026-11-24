@@ -314,6 +314,40 @@ describe('Code editor component', () => {
     expect((defaultProps.onValidate as any).mock.calls[0][0].detail.annotations).toEqual([]);
   });
 
+  it('fires onValidate once on mount', () => {
+    const onValidate = jest.fn();
+    renderCodeEditor({ onValidate });
+    expect(onValidate).toHaveBeenCalledTimes(1);
+    expect(onValidate.mock.calls[0][0].detail.annotations).toEqual([]);
+  });
+
+  it('does not fire onValidate on re-render when the handler identity changes', () => {
+    const onValidate = jest.fn();
+    const { rerender } = renderCodeEditor({ onValidate: event => onValidate(event) });
+    onValidate.mockClear();
+
+    rerender(<CodeEditor {...defaultProps} onValidate={event => onValidate(event)} />);
+    rerender(<CodeEditor {...defaultProps} onValidate={event => onValidate(event)} />);
+
+    expect(onValidate).not.toHaveBeenCalled();
+  });
+
+  it('fires the latest onValidate handler when annotations change', () => {
+    const firstHandler = jest.fn();
+    const secondHandler = jest.fn();
+    const { rerender } = renderCodeEditor({ onValidate: firstHandler });
+    rerender(<CodeEditor {...defaultProps} onValidate={secondHandler} />);
+    firstHandler.mockClear();
+
+    const annotation = {};
+    editorMock.session.getAnnotations.mockReturnValue([annotation]);
+    act(() => emulateAceAnnotationEvent!());
+
+    expect(firstHandler).not.toHaveBeenCalled();
+    expect(secondHandler).toHaveBeenCalledTimes(1);
+    expect(secondHandler.mock.calls[0][0].detail.annotations).toEqual([annotation]);
+  });
+
   it('clears annotations on change when value is empty', () => {
     const changeCallbacks: (() => void)[] = [];
     editorMock.on = jest.fn((name: string, _callback: () => void) => {

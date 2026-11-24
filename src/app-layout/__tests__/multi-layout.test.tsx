@@ -6,7 +6,9 @@ import { act, cleanup, render, waitFor } from '@testing-library/react';
 import { clearMessageCache } from '@cloudscape-design/component-toolkit/internal';
 
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
+import { SharedProps } from '../../../lib/components/app-layout/visual-refresh-toolbar/state/interfaces';
 import { metrics } from '../../../lib/components/internal/metrics';
+import awsuiPlugins from '../../../lib/components/internal/plugins';
 import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import SplitPanel from '../../../lib/components/split-panel';
 import createWrapper, { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
@@ -49,6 +51,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
   afterEach(() => {
     // force unmount for all rendered component to run clean state assertions
     cleanup();
+    awsuiPlugins.appLayout.clearRegisteredDrawersForTesting();
     const state = awsuiPluginsInternal.appLayoutWidget.getStateForTesting();
     expect(state).toEqual({
       registrations: [],
@@ -176,6 +179,80 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
 
     firstLayout.findSplitPanelOpenButton()!.click();
     expect(firstLayout.findSplitPanel()!.findOpenPanelBottom()).toBeTruthy();
+  });
+
+  test('builds drawer trigger icons from markup', async () => {
+    // Shaped like an element created by a different React version, which this React cannot render
+    const foreignReactElement = {
+      $$typeof: Symbol.for('react.transitional.element'),
+      type: 'span',
+      key: null,
+      ref: null,
+      props: {},
+    };
+
+    const drawerWithForeignIcon = {
+      ...testDrawer,
+      trigger: { iconSvg: foreignReactElement, iconSvgMarkup: '<rect data-testid="icon-from-markup" />' },
+    } as unknown as AppLayoutProps.Drawer;
+
+    const { firstLayout } = await renderAsync(
+      <AppLayout
+        {...defaultAppLayoutProps}
+        data-testid="first"
+        toolsHide={true}
+        content={
+          <AppLayout
+            {...defaultAppLayoutProps}
+            data-testid="second"
+            navigationHide={true}
+            drawers={[drawerWithForeignIcon]}
+          />
+        }
+      />
+    );
+
+    const trigger = firstLayout.findDrawerTriggerById('security')!;
+    expect(trigger.find('[data-testid="icon-from-markup"]')).toBeTruthy();
+  });
+
+  test('builds runtime drawer trigger icons from markup', async () => {
+    const iconSvg = '<rect data-testid="runtime-icon" />';
+    awsuiPlugins.appLayout.registerDrawer({
+      id: 'runtime-drawer',
+      ariaLabels: {},
+      trigger: { iconSvg },
+      mountContent: container => (container.textContent = 'runtime drawer content'),
+      unmountContent: () => {},
+    });
+
+    const { firstLayout } = await renderAsync(
+      <AppLayout
+        {...defaultAppLayoutProps}
+        data-testid="first"
+        toolsHide={true}
+        content={
+          <AppLayout
+            {...defaultAppLayoutProps}
+            // Only the secondary layout subscribes to runtime drawers and hands them to the primary one
+            {...{ __disableRuntimeDrawers: false }}
+            data-testid="second"
+            navigationHide={true}
+            toolsHide={true}
+          />
+        }
+      />
+    );
+
+    // Runtime drawers are delivered to the secondary layout and then handed over to the primary one asynchronously
+    await waitFor(() => expect(firstLayout.findDrawerTriggerById('runtime-drawer')).toBeTruthy());
+    expect(firstLayout.findDrawerTriggerById('runtime-drawer')!.find('[data-testid="runtime-icon"]')).toBeTruthy();
+
+    const { registrations } = awsuiPluginsInternal.appLayoutWidget.getStateForTesting();
+    const handedOverDrawers = registrations
+      .map(registration => (registration.props as SharedProps).drawers)
+      .find(Boolean);
+    expect(handedOverDrawers![0].trigger).toEqual({ iconSvg: expect.anything(), iconSvgMarkup: iconSvg });
   });
 
   test('merges props across multiple react roots', async () => {
