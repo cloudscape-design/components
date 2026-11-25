@@ -81,6 +81,21 @@ describe('position=absolute', () => {
     );
     expect(el).toHaveStyle({ insetBlockEnd: '10px', insetInlineStart: '20px', insetInlineEnd: '30px' });
   });
+
+  test.each(['top', 'bottom'] as const)(
+    'placement=%s: caps block size by the available height minus offsets',
+    placement => {
+      const el = getDrawerElement(
+        <Drawer position="absolute" placement={placement} offset={{ top: 10, bottom: 30 }} />
+      );
+      expect(el).toHaveStyle({ maxBlockSize: 'calc(100% - 40px)' });
+    }
+  );
+
+  test.each(['start', 'end'] as const)('placement=%s: does not cap block size', placement => {
+    const el = getDrawerElement(<Drawer position="absolute" placement={placement} />);
+    expect(el.style.maxBlockSize).toBe('');
+  });
 });
 
 describe('position=fixed', () => {
