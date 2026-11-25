@@ -15,6 +15,8 @@ type PageContext = React.Context<
   AppContextType<{
     offsets?: boolean;
     backdrop?: boolean;
+    tallContent?: boolean;
+    footer?: boolean;
     placement?: DrawerProps.Placement;
   }>
 >;
@@ -23,7 +25,7 @@ const placementOptions = [{ value: 'top' }, { value: 'bottom' }, { value: 'start
 
 export default function () {
   const {
-    urlParams: { offsets = false, backdrop = false, placement = 'bottom' },
+    urlParams: { offsets = false, backdrop = false, tallContent = false, footer = false, placement = 'bottom' },
     setUrlParams,
   } = useContext(AppContext as PageContext);
   const [open, setOpen] = useState(true);
@@ -47,15 +49,23 @@ export default function () {
         open={open}
         onClose={() => setOpen(false)}
         placement={placement}
-        disableContentPaddings={true}
         offset={offset}
         backdrop={backdrop}
+        tallContent={tallContent}
+        header="Header"
+        footer={footer ? <Button>Footer action</Button> : undefined}
       >
         <Checkbox checked={offsets} onChange={({ detail }) => setUrlParams({ offsets: detail.checked })}>
           Use offsets
         </Checkbox>
         <Checkbox checked={backdrop} onChange={({ detail }) => setUrlParams({ backdrop: detail.checked })}>
           Show backdrop
+        </Checkbox>
+        <Checkbox checked={tallContent} onChange={({ detail }) => setUrlParams({ tallContent: detail.checked })}>
+          Tall content
+        </Checkbox>
+        <Checkbox checked={footer} onChange={({ detail }) => setUrlParams({ footer: detail.checked })}>
+          Show footer
         </Checkbox>
         <Select
           inlineLabelText="Placement"
@@ -68,18 +78,26 @@ export default function () {
   );
 }
 
-function FixedDrawer({ placement, offset, children, ...rest }: DrawerProps) {
+function FixedDrawer({ placement, offset, tallContent, children, ...rest }: DrawerProps & { tallContent: boolean }) {
   const formatOffset = (offset?: DrawerProps.Offset) => JSON.stringify(offset, null, 2).replace(/"/g, '');
   return (
     <Drawer position="fixed" placement={placement} offset={offset} disableContentPaddings={true} {...rest}>
       <div
-        style={{ boxSizing: 'border-box', padding: 16, width: 300, height: 300, background: contentBackgroundColor }}
+        style={{
+          boxSizing: 'border-box',
+          padding: 16,
+          width: 300,
+          height: placement === 'top' || placement === 'bottom' ? 300 : undefined,
+          background: contentBackgroundColor,
+        }}
       >
         <SpaceBetween size="xs">
           <Box>
-            {capitalize(placement)} drawer with 300px/300px content and {`offset=${formatOffset(offset)}`}
+            {capitalize(placement)} drawer with {tallContent ? 'tall' : '300px/300px'} content and{' '}
+            {`offset=${formatOffset(offset)}`}
           </Box>
           {children}
+          {tallContent && range(0, 60).map(i => <Box key={i}>Content line {i + 1}</Box>)}
         </SpaceBetween>
       </div>
     </Drawer>

@@ -28,6 +28,22 @@
   }
 
   &.position-absolute,
+  &.position-fixed {
+    // Only the content area scrolls, so the header and footer stay in place and content taller than the
+    // drawer stays reachable regardless of how consumers size it.
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+
+    > .content {
+      flex: 1;
+      min-block-size: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+  }
+
+  &.position-absolute,
   &.position-sticky,
   &.position-fixed {
     &.placement-end {
