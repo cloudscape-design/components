@@ -183,3 +183,14 @@ export function tokenGroupToTokens<T extends AbstractToken>(tokenGroups: readonl
   }
   return tokens;
 }
+
+const ENUM_VIRTUAL_SCROLL_MIN_OPTIONS = 500;
+
+/**
+ * Enum value lists apply virtual scroll only when the property has more than 500 values, because shorter lists
+ * suffer from the virtual scroll lag without any performance benefit. The count must not depend on the filtering
+ * text so that the list mode does not change while typing.
+ */
+export function shouldUseEnumVirtualScroll(virtualScroll: boolean | undefined, propertyOptionsCount: number) {
+  return !!virtualScroll && propertyOptionsCount > ENUM_VIRTUAL_SCROLL_MIN_OPTIONS;
+}

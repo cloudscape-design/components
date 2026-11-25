@@ -623,25 +623,37 @@ describe('virtual scroll', () => {
     return getEditorOptionsContent().length;
   };
 
-  describe.each([thresholdOptionsCount, manyOptionsCount])('with %i enum options', optionsCount => {
-    test('renders a subset of enum options in the filtering input when virtualScroll=true', () => {
-      const count = getFilteringInputOptionsCount(true, optionsCount);
-      expect(count).toBeGreaterThan(0);
-      expect(count).toBeLessThan(optionsCount);
-    });
+  test.each([
+    [thresholdOptionsCount, true],
+    [manyOptionsCount, true],
+    [thresholdOptionsCount, false],
+    [manyOptionsCount, false],
+  ])('with %i enum options and virtualScroll=%s', (optionsCount, virtualScroll) => {
+    const expectVirtual = virtualScroll && optionsCount > thresholdOptionsCount;
+    for (const count of [
+      getFilteringInputOptionsCount(virtualScroll, optionsCount),
+      getTokenEditorOptionsCount(virtualScroll, optionsCount),
+    ]) {
+      if (expectVirtual) {
+        expect(count).toBeGreaterThan(0);
+        expect(count).toBeLessThan(optionsCount);
+      } else {
+        expect(count).toBe(optionsCount);
+      }
+    }
+  });
 
-    test('renders all enum options in the filtering input when virtualScroll=false', () => {
-      expect(getFilteringInputOptionsCount(false, optionsCount)).toBe(optionsCount);
+  test('uses virtual scroll in the main list when a short enum property is present', () => {
+    const { wrapper, getOptionsContent } = renderComponent({
+      filteringOptions: [...filteringOptions, ...createOptions(manyOptionsCount)],
+      virtualScroll: true,
     });
+    wrapper.focus();
+    const mainListCount = getOptionsContent().length;
+    expect(mainListCount).toBeGreaterThan(0);
+    expect(mainListCount).toBeLessThan(manyOptionsCount);
 
-    test('renders a subset of enum options in the token editor when virtualScroll=true', () => {
-      const count = getTokenEditorOptionsCount(true, optionsCount);
-      expect(count).toBeGreaterThan(0);
-      expect(count).toBeLessThan(optionsCount);
-    });
-
-    test('renders all enum options in the token editor when virtualScroll=false', () => {
-      expect(getTokenEditorOptionsCount(false, optionsCount)).toBe(optionsCount);
-    });
+    wrapper.setInputValue('State = ');
+    expect(getOptionsContent()).toHaveLength(filteringOptions.length);
   });
 });
