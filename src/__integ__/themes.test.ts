@@ -53,4 +53,11 @@ describe('CSS Custom Properties', () => {
   ])('match previous snapshot for mode %p', (_, url, selector = 'body') =>
     setupPage(url, page => expect(page.getCustomPropertyMap(selector)).resolves.toMatchSnapshot())()
   );
+
+  // With any custom property on <html>, Chromium before 136 copies all design tokens into every element that declares
+  // its own custom property, such as Style API carriers on table rows and cells.
+  test(
+    'are not declared on the root element',
+    setupPage('#/light/button/permutations', page => expect(page.getCustomPropertyMap()).resolves.toEqual({}))
+  );
 });
