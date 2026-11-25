@@ -10,6 +10,7 @@ import { useMobile } from '../../../internal/hooks/use-mobile';
 import { splitItems } from '../../drawer/drawers-helpers';
 import OverflowMenu from '../../drawer/overflow-menu';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../../interfaces';
+import { resolveTriggerIconSvg } from '../../runtime-drawer/trigger-icon';
 import { OnChangeParams, TOOLS_DRAWER_ID } from '../../utils/use-drawers';
 import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
 import { InternalDrawer } from '../interfaces';
@@ -200,7 +201,7 @@ export function DrawerTriggers({
                   item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
                 )}
                 iconName={item.trigger!.iconName}
-                iconSvg={item.trigger!.iconSvg}
+                iconSvg={resolveTriggerIconSvg(item.trigger)}
                 key={item.id}
                 onClick={() => {
                   exitExpandedMode();
@@ -254,7 +255,7 @@ export function DrawerTriggers({
                   testutilStyles['drawers-trigger-global']
                 )}
                 iconName={item.trigger!.iconName}
-                iconSvg={item.trigger!.iconSvg}
+                iconSvg={resolveTriggerIconSvg(item.trigger)}
                 key={item.id}
                 onClick={() => {
                   exitExpandedMode();

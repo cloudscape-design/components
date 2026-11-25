@@ -25,6 +25,7 @@ interface InternalTreeItemProps<T>
     | 'renderItemToggleIcon'
     | 'i18nStrings'
     | 'connectorLines'
+    | 'ariaRole'
   > {
   item: T;
   index: number;
@@ -42,6 +43,7 @@ const InternalTreeItem = <T,>({
   i18nStrings,
   expandedItems = [],
   connectorLines,
+  ariaRole,
   renderItemToggleIcon,
   renderItem,
   getItemId,
@@ -58,6 +60,10 @@ const InternalTreeItem = <T,>({
   const isExpandable = children.length > 0;
   const isExpanded = isExpandable && expandedItems.includes(id);
   const nextLevel = level + 1;
+  // In list mode the nested lists convey the hierarchy, so tree roles and states (`aria-expanded`, `aria-level`) are omitted.
+  // The `listitem` role on `li` and the `list` role on nested `ul` are set explicitly, even though the elements already
+  // imply them, because Safari (WebKit/VoiceOver) removes list semantics from lists styled with `list-style: none`.
+  const isTree = ariaRole !== 'list';
 
   const showVerticalConnectorLines = connectorLines === 'vertical' && isExpanded;
 
@@ -74,7 +80,7 @@ const InternalTreeItem = <T,>({
 
   return (
     <li
-      role="treeitem"
+      role={isTree ? 'treeitem' : 'listitem'}
       id={id}
       className={clsx(
         styles.treeitem,
@@ -83,8 +89,8 @@ const InternalTreeItem = <T,>({
         isExpandable && [testUtilStyles.expandable],
         isExpanded && [testUtilStyles.expanded]
       )}
-      aria-expanded={isExpandable ? isExpanded : undefined}
-      aria-level={level}
+      aria-expanded={isTree && isExpandable ? isExpanded : undefined}
+      aria-level={isTree ? level : undefined}
       data-testid={`awsui-treeitem-${id}`}
       data-awsui-tree-item-index={allVisibleItemsIndices[id]}
     >
@@ -108,9 +114,9 @@ const InternalTreeItem = <T,>({
                 className={styles['tree-item-focus-target']}
                 disableFocusHighlight={true}
               />
-            ) : (
+            ) : isTree ? (
               <FocusTarget ariaLabel={itemLabelToAnnounce} />
-            )}
+            ) : null}
           </div>
         </div>
 
@@ -129,7 +135,7 @@ const InternalTreeItem = <T,>({
       </div>
 
       {isExpanded && children.length && (
-        <ul role="group" className={styles['treeitem-group']}>
+        <ul role={isTree ? 'group' : 'list'} className={styles['treeitem-group']}>
           {children.map((child, index) => {
             const itemId = getItemId(child, index);
             return (
@@ -147,6 +153,7 @@ const InternalTreeItem = <T,>({
                 renderItemToggleIcon={renderItemToggleIcon}
                 allVisibleItemsIndices={allVisibleItemsIndices}
                 connectorLines={connectorLines}
+                ariaRole={ariaRole}
               />
             );
           })}

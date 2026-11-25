@@ -5,6 +5,10 @@
 @use '../styles/global';
 @use '../generated/custom-css-properties' as custom-styles;
 
-:root {
+// On <body> rather than <html>, next to the design tokens: a custom property declared on <html> makes Chromium before
+// version 136 copy all design tokens into every element that declares a custom property of its own, such as the
+// Style API carriers on table rows and cells. The styles check reads it from <body>.
+/* stylelint-disable-next-line selector-max-type */
+body {
   --awsui-version-info-#{custom-styles.$awsui-commit-hash}: true;
 }
