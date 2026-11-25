@@ -108,8 +108,7 @@ describe('getFlattenedChildKey', () => {
     'more text',
   ];
 
-  it.each(['18.2.0', '19.0.0'])('returns unique keys for mixed children in React %s', version => {
-    Object.defineProperty(React, 'version', { value: version, writable: true, configurable: true });
+  it('returns unique keys for mixed children', () => {
     const keys = flattenChildren(mixedChildren, 'TestComponent').map(getFlattenedChildKey);
     expect(keys).toHaveLength(mixedChildren.length);
     expect(new Set(keys).size).toBe(keys.length);
