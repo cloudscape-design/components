@@ -29,6 +29,7 @@ const InternalTreeView = <T,>({
   ariaLabelledby,
   ariaDescribedby,
   connectorLines,
+  ariaRole,
   i18nStrings,
   __internalRootRef,
   ...rest
@@ -42,6 +43,12 @@ const InternalTreeView = <T,>({
   });
   const treeViewRefObject = useRef(null);
 
+  // When `ariaRole` is "list", the tree view renders nested lists instead of a tree widget.
+  // The `list` and `listitem` roles are set explicitly, even though `ul` and `li` already imply them,
+  // because Safari (WebKit/VoiceOver) removes list semantics from lists styled with `list-style: none`,
+  // which the tree view uses. Without the explicit roles, VoiceOver would not announce the lists or their items.
+  const isTree = ariaRole !== 'list';
+
   const allVisibleItemsIndices = getAllVisibleItemsIndices({ items, expandedItems, getItemId, getItemChildren });
 
   const onToggle = ({ id, item, expanded }: TreeViewProps.ItemToggleDetail<T>) => {
@@ -53,39 +60,46 @@ const InternalTreeView = <T,>({
     fireNonCancelableEvent(onItemToggle, { id, item, expanded });
   };
 
+  const list = (
+    <ul
+      role={isTree ? 'tree' : 'list'}
+      ref={treeViewRefObject}
+      className={clsx(styles.tree, testUtilStyles.tree)}
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledby}
+      aria-describedby={ariaDescribedby}
+    >
+      {items.map((item, index) => {
+        const itemId = getItemId(item, index);
+        return (
+          <InternalTreeItem<T>
+            key={itemId}
+            item={item}
+            level={1}
+            index={index}
+            expandedItems={expandedItems}
+            i18nStrings={i18nStrings}
+            onItemToggle={onToggle}
+            renderItem={renderItem}
+            getItemId={getItemId}
+            getItemChildren={getItemChildren}
+            renderItemToggleIcon={renderItemToggleIcon}
+            allVisibleItemsIndices={allVisibleItemsIndices}
+            connectorLines={connectorLines}
+            ariaRole={ariaRole}
+          />
+        );
+      })}
+    </ul>
+  );
+
   return (
     <div {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root, testUtilStyles.root)}>
-      <KeyboardNavigationProvider getTreeView={() => treeViewRefObject.current}>
-        <ul
-          role="tree"
-          ref={treeViewRefObject}
-          className={clsx(styles.tree, testUtilStyles.tree)}
-          aria-label={ariaLabel}
-          aria-labelledby={ariaLabelledby}
-          aria-describedby={ariaDescribedby}
-        >
-          {items.map((item, index) => {
-            const itemId = getItemId(item, index);
-            return (
-              <InternalTreeItem<T>
-                key={itemId}
-                item={item}
-                level={1}
-                index={index}
-                expandedItems={expandedItems}
-                i18nStrings={i18nStrings}
-                onItemToggle={onToggle}
-                renderItem={renderItem}
-                getItemId={getItemId}
-                getItemChildren={getItemChildren}
-                renderItemToggleIcon={renderItemToggleIcon}
-                allVisibleItemsIndices={allVisibleItemsIndices}
-                connectorLines={connectorLines}
-              />
-            );
-          })}
-        </ul>
-      </KeyboardNavigationProvider>
+      {isTree ? (
+        <KeyboardNavigationProvider getTreeView={() => treeViewRefObject.current}>{list}</KeyboardNavigationProvider>
+      ) : (
+        list
+      )}
     </div>
   );
 };
