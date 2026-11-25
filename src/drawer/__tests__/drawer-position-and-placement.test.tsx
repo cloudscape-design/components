@@ -82,13 +82,18 @@ describe('position=absolute', () => {
     expect(el).toHaveStyle({ insetBlockEnd: '10px', insetInlineStart: '20px', insetInlineEnd: '30px' });
   });
 
-  test.each(['top', 'bottom'] as const)(
-    'placement=%s: caps block size by the available height minus offsets',
-    placement => {
+  test.each([
+    ['absolute', 'top', 'calc(100% - 10px)'],
+    ['absolute', 'bottom', 'calc(100% - 30px)'],
+    ['fixed', 'top', 'calc(100% - 10px)'],
+    ['fixed', 'bottom', 'calc(100% - 30px)'],
+  ] as const)(
+    'position=%s placement=%s: caps block size by the available height minus its own offset',
+    (position, placement, expected) => {
       const el = getDrawerElement(
-        <Drawer position="absolute" placement={placement} offset={{ top: 10, bottom: 30 }} />
+        <Drawer position={position} placement={placement} offset={{ top: 10, bottom: 30 }} />
       );
-      expect(el).toHaveStyle({ maxBlockSize: 'calc(100% - 40px)' });
+      expect(el).toHaveStyle({ maxBlockSize: expected });
     }
   );
 
