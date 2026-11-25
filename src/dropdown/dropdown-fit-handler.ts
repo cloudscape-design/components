@@ -394,7 +394,7 @@ export const calculatePosition = (
   maxWidth?: DropdownWidthConstraint,
   maxHeight?: number,
   attachmentSides?: DropdownAttachmentSides
-): [DropdownPosition, LogicalDOMRect] => {
+): [DropdownPosition, LogicalDOMRect, number] => {
   // cleaning previously assigned values,
   // so that they are not reused in case of screen resize and similar events
   verticalContainerElement.style.maxBlockSize = '';
@@ -430,5 +430,21 @@ export const calculatePosition = (
       });
 
   const triggerBox = getLogicalBoundingClientRect(triggerElement);
-  return [position, triggerBox];
+  const sideSpaceInfo = interior
+    ? getInteriorAvailableSpace({ trigger: triggerElement, overflowParents, isMobile })
+    : getAvailableSpace({
+        trigger: triggerElement,
+        overflowParents,
+        stretchWidth: matchTriggerWidth,
+        stretchHeight,
+        isMobile,
+      });
+  const sideSpace = position.dropInlineStart ? sideSpaceInfo.inlineStart : sideSpaceInfo.inlineEnd;
+  const inlineSizeLimit = interior
+    ? sideSpace
+    : Math.max(
+        Math.min(resolveWidthConstraint(maxWidth, triggerBox.inlineSize, Number.MAX_VALUE), sideSpace),
+        resolveWidthConstraint(minWidth, triggerBox.inlineSize, 0)
+      );
+  return [position, triggerBox, inlineSizeLimit];
 };

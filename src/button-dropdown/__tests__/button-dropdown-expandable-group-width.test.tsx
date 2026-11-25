@@ -40,8 +40,17 @@ async function flushContentChanges() {
 }
 
 describe('ButtonDropdown expandable group dropdown width', () => {
+  const originalCalculatePosition = jest.requireActual(
+    '../../../lib/components/dropdown/dropdown-fit-handler'
+  ).calculatePosition;
+
   beforeEach(() => {
     jest.useFakeTimers();
+    // jsdom has no layout, so the real calculation reports no space on any side.
+    (calculatePosition as jest.Mock).mockImplementation((...args: unknown[]) => {
+      const [position, triggerBox] = originalCalculatePosition(...args);
+      return [position, triggerBox, Number.MAX_VALUE];
+    });
   });
   afterEach(() => {
     jest.useRealTimers();
@@ -56,9 +65,6 @@ describe('ButtonDropdown expandable group dropdown width', () => {
 
     const flyout = () => Array.from(container.querySelectorAll<HTMLElement>('[data-open="true"]')).pop()!;
     const widthBefore = parseFloat(flyout().style.inlineSize) || 0;
-    const originalCalculatePosition = jest.requireActual(
-      '../../../lib/components/dropdown/dropdown-fit-handler'
-    ).calculatePosition;
     (calculatePosition as jest.Mock).mockClear();
     (calculatePosition as jest.Mock).mockImplementation((...args: unknown[]) => {
       const [position, triggerBox] = originalCalculatePosition(...args);

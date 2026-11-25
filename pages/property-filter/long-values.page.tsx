@@ -5,6 +5,7 @@ import React, { useContext, useState } from 'react';
 import PropertyFilter, { PropertyFilterProps } from '~components/property-filter';
 
 import AppContext, { AppContextType } from '../app/app-context';
+import { SimplePage } from '../app/templates';
 import { i18nStrings } from './common-props';
 
 const filteringProperties: PropertyFilterProps['filteringProperties'] = [
@@ -29,18 +30,19 @@ export default function PropertyFilterLongValuesPage() {
   const expandToViewport = String(urlParams.expandToViewport) === 'true';
   const [query, setQuery] = useState<PropertyFilterProps.Query>({ tokens: [], operation: 'and' });
   return (
-    <div style={{ padding: 10, maxInlineSize: 600 }}>
-      <h1>Property filter with long values</h1>
-      <PropertyFilter
-        query={query}
-        onChange={event => setQuery(event.detail)}
-        filteringProperties={filteringProperties}
-        filteringOptions={filteringOptions}
-        i18nStrings={i18nStrings}
-        filteringAriaLabel="Find resources"
-        filteringPlaceholder="Find resources"
-        expandToViewport={expandToViewport}
-      />
-    </div>
+    <SimplePage title="Property filter with long values">
+      <div style={{ maxInlineSize: 600 }}>
+        <PropertyFilter
+          query={query}
+          onChange={event => setQuery(event.detail)}
+          filteringProperties={filteringProperties}
+          filteringOptions={filteringOptions}
+          i18nStrings={i18nStrings}
+          filteringAriaLabel="Find resources"
+          filteringPlaceholder="Find resources"
+          expandToViewport={expandToViewport}
+        />
+      </div>
+    </SimplePage>
   );
 }
