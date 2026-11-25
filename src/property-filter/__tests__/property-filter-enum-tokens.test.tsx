@@ -623,31 +623,25 @@ describe('virtual scroll', () => {
     return getEditorOptionsContent().length;
   };
 
-  test('renders a subset of enum options in the filtering input when virtualScroll=true', () => {
-    const count = getFilteringInputOptionsCount(true);
-    expect(count).toBeGreaterThan(0);
-    expect(count).toBeLessThan(manyOptionsCount);
-  });
+  describe.each([thresholdOptionsCount, manyOptionsCount])('with %i enum options', optionsCount => {
+    test('renders a subset of enum options in the filtering input when virtualScroll=true', () => {
+      const count = getFilteringInputOptionsCount(true, optionsCount);
+      expect(count).toBeGreaterThan(0);
+      expect(count).toBeLessThan(optionsCount);
+    });
 
-  test('renders all enum options in the filtering input when virtualScroll=false', () => {
-    expect(getFilteringInputOptionsCount(false)).toBe(manyOptionsCount);
-  });
+    test('renders all enum options in the filtering input when virtualScroll=false', () => {
+      expect(getFilteringInputOptionsCount(false, optionsCount)).toBe(optionsCount);
+    });
 
-  test('renders a subset of enum options in the token editor when virtualScroll=true', () => {
-    const count = getTokenEditorOptionsCount(true);
-    expect(count).toBeGreaterThan(0);
-    expect(count).toBeLessThan(manyOptionsCount);
-  });
+    test('renders a subset of enum options in the token editor when virtualScroll=true', () => {
+      const count = getTokenEditorOptionsCount(true, optionsCount);
+      expect(count).toBeGreaterThan(0);
+      expect(count).toBeLessThan(optionsCount);
+    });
 
-  test('renders all enum options in the token editor when virtualScroll=false', () => {
-    expect(getTokenEditorOptionsCount(false)).toBe(manyOptionsCount);
-  });
-
-  test('renders all enum options in the filtering input when virtualScroll=true and there are 500 options or fewer', () => {
-    expect(getFilteringInputOptionsCount(true, thresholdOptionsCount)).toBe(thresholdOptionsCount);
-  });
-
-  test('renders all enum options in the token editor when virtualScroll=true and there are 500 options or fewer', () => {
-    expect(getTokenEditorOptionsCount(true, thresholdOptionsCount)).toBe(thresholdOptionsCount);
+    test('renders all enum options in the token editor when virtualScroll=false', () => {
+      expect(getTokenEditorOptionsCount(false, optionsCount)).toBe(optionsCount);
+    });
   });
 });
