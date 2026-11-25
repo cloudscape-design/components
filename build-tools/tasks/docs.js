@@ -21,11 +21,11 @@ module.exports = function docs() {
     includeCoreMethods: false,
     domUtils: {
       root: 'src/test-utils/dom/index.ts',
-      extraExports: ['default', 'ElementWrapper'],
+      extraExports: ['default', 'ElementWrapper', 'createWrapper'],
     },
     selectorsUtils: {
       root: 'src/test-utils/selectors/index.ts',
-      extraExports: ['default', 'ElementWrapper'],
+      extraExports: ['default', 'ElementWrapper', 'createWrapper'],
     },
   });
   return Promise.resolve();
