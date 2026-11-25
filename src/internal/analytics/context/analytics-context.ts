@@ -98,7 +98,7 @@ export const FunnelStepContext = createContext<FunnelStepContextValue>({
   subStepConfiguration: { current: new Map() },
 });
 
-export const FunnelSubStepContext = createContext<FunnelSubStepContextValue>({
+export const defaultFunnelSubStepContextValue: FunnelSubStepContextValue = {
   subStepId: '',
   subStepSelector: '',
   subStepNameSelector: '',
@@ -107,6 +107,8 @@ export const FunnelSubStepContext = createContext<FunnelSubStepContextValue>({
   mousePressed: { current: false },
   isFocusedSubStep: { current: false },
   focusCleanupFunction: { current: undefined },
-});
+};
+
+export const FunnelSubStepContext = createContext<FunnelSubStepContextValue>(defaultFunnelSubStepContextValue);
 
 export const FunnelNameSelectorContext = createContext<string | undefined>(undefined);

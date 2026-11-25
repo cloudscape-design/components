@@ -697,6 +697,48 @@ describe('AnalyticsFunnelSubStep', () => {
       subStepNameSelector: expect.any(String),
     });
   });
+
+  test('calls funnelSubStepStart for a Modal that starts its own funnel from inside a Table', async () => {
+    const { getByTestId } = render(
+      <Table
+        items={[]}
+        columnDefinitions={[]}
+        header={
+          <Modal visible={true}>
+            <input data-testid="input" />
+          </Modal>
+        }
+      />
+    );
+    act(() => void jest.runAllTimers());
+
+    getByTestId('input').focus();
+
+    await runPendingPromises();
+
+    expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalled();
+  });
+
+  test('still treats a genuinely nested substep within the same funnel as nested', async () => {
+    const { getByTestId } = render(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
+        <AnalyticsFunnelStep stepNumber={1} stepNameSelector={''}>
+          <Container>
+            <Container>
+              <input data-testid="input" />
+            </Container>
+          </Container>
+        </AnalyticsFunnelStep>
+      </AnalyticsFunnel>
+    );
+    act(() => void jest.runAllTimers());
+
+    getByTestId('input').focus();
+
+    await runPendingPromises();
+
+    expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalledTimes(1);
+  });
 });
 
 describe('emit awsui-creation-flow-done event', () => {
