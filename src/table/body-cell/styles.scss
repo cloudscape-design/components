@@ -70,7 +70,6 @@ $editing-cell-padding-block: awsui.$space-scaled-xxxs;
 }
 
 .body-cell {
-  @include style-api.carriers(table-style-api.$cell-focus-ring-tokens);
   box-sizing: border-box;
   border-block-start: awsui.$border-divider-list-width solid transparent;
   border-block-end: awsui.$border-divider-list-width solid $row-divider-color;
@@ -518,6 +517,11 @@ $editing-cell-padding-block: awsui.$space-scaled-xxxs;
         @include focused-editor-styles;
       }
     }
+  }
+
+  &:focus-within {
+    // Only on focus: Chromium before 136 copies all inherited custom properties into every cell that declares one.
+    @include style-api.carriers(table-style-api.$cell-focus-ring-tokens);
   }
 
   @include focus-visible.when-visible {
