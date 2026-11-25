@@ -1,6 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import VisualTestPageObject from '../page-object';
 import { TestDefinition, TestSuite } from '../types';
+
+// For 500ms after opening, the dropdown recalculates its size on window scroll.
+// Wait it out, so that scrolling for the screenshot doesn't change the dropdown height.
+async function openDropdown(page: VisualTestPageObject, triggerSelector: string): Promise<void> {
+  await page.click(triggerSelector);
+  await page.waitForJsTimers(500);
+}
 
 const suite: TestSuite = {
   description: 'Multiselect',
@@ -53,7 +61,7 @@ const suite: TestSuite = {
               filteringType,
             },
             setup: async ({ page, wrapper }) => {
-              await page.click(wrapper.findMultiselect().findTrigger().toSelector());
+              await openDropdown(page, wrapper.findMultiselect().findTrigger().toSelector());
             },
           }))
         )
@@ -67,7 +75,7 @@ const suite: TestSuite = {
           screenshotType: 'screenshotArea',
           queryParams: { statusType: 'error' },
           setup: async ({ page, wrapper }) => {
-            await page.click(wrapper.findMultiselect().findTrigger().toSelector());
+            await openDropdown(page, wrapper.findMultiselect().findTrigger().toSelector());
           },
         },
         {
@@ -76,7 +84,7 @@ const suite: TestSuite = {
           screenshotType: 'screenshotArea',
           queryParams: { virtualScroll: virtualScroll.toString() },
           setup: async ({ page, wrapper }) => {
-            await page.click(wrapper.findMultiselect().findTrigger().toSelector());
+            await openDropdown(page, wrapper.findMultiselect().findTrigger().toSelector());
             await page.click('[data-test-index="4"]');
           },
         },
@@ -86,7 +94,7 @@ const suite: TestSuite = {
           screenshotType: 'screenshotArea',
           queryParams: { virtualScroll: virtualScroll.toString() },
           setup: async ({ page, wrapper }) => {
-            await page.click(wrapper.findMultiselect().findTrigger().toSelector());
+            await openDropdown(page, wrapper.findMultiselect().findTrigger().toSelector());
           },
         },
         {
@@ -106,7 +114,7 @@ const suite: TestSuite = {
                   screenshotType: 'screenshotArea',
                   queryParams,
                   setup: async ({ page, wrapper }) => {
-                    await page.click(wrapper.findMultiselect().findTrigger().toSelector());
+                    await openDropdown(page, wrapper.findMultiselect().findTrigger().toSelector());
                   },
                 },
                 {
@@ -116,7 +124,7 @@ const suite: TestSuite = {
                   queryParams,
                   setup: async ({ page, wrapper }) => {
                     const multiselect = wrapper.findMultiselect();
-                    await page.click(multiselect.findTrigger().toSelector());
+                    await openDropdown(page, multiselect.findTrigger().toSelector());
                     await page.hoverElement(multiselect.findDropdown().findSelectAll().toSelector());
                   },
                 },
@@ -126,7 +134,7 @@ const suite: TestSuite = {
                   screenshotType: 'screenshotArea',
                   queryParams,
                   setup: async ({ page, wrapper }) => {
-                    await page.click(wrapper.findMultiselect().findTrigger().toSelector());
+                    await openDropdown(page, wrapper.findMultiselect().findTrigger().toSelector());
                     // If filtering is enabled, the filter input will be focused and we need to navigate down once.
                     // Otherwise, the first selected option will be focused and we need to go up
                     // until until the first position to find the "Select all" control.
@@ -140,7 +148,7 @@ const suite: TestSuite = {
                   queryParams,
                   setup: async ({ page, wrapper }) => {
                     const multiselect = wrapper.findMultiselect();
-                    await page.click(multiselect.findTrigger().toSelector());
+                    await openDropdown(page, multiselect.findTrigger().toSelector());
                     await page.click(multiselect.findDropdown().findSelectAll().toSelector());
                   },
                 },
@@ -152,7 +160,7 @@ const suite: TestSuite = {
                   setup: async ({ page, wrapper }) => {
                     const multiselect = wrapper.findMultiselect();
                     const dropdown = multiselect.findDropdown();
-                    await page.click(multiselect.findTrigger().toSelector());
+                    await openDropdown(page, multiselect.findTrigger().toSelector());
                     await page.elementScrollTo(dropdown.findOptionsContainer().toSelector(), {
                       left: 0,
                       top: 10,
@@ -184,7 +192,7 @@ const suite: TestSuite = {
           queryParams: { type: 'multiselect' },
           setup: async ({ page, wrapper }) => {
             const multiselect = wrapper.findMultiselect();
-            await page.click(multiselect.findTrigger().toSelector());
+            await openDropdown(page, multiselect.findTrigger().toSelector());
             await page.elementScrollTo(multiselect.findDropdown().findOptionsContainer().toSelector(), {
               top: 99999, // We're using elementScrollTo so we see the 'End of all results' bottom list element
             });
@@ -198,7 +206,7 @@ const suite: TestSuite = {
           queryParams: { type: 'multiselect-select-all' },
           setup: async ({ page, wrapper }) => {
             const multiselect = wrapper.findMultiselect();
-            await page.click(multiselect.findTrigger().toSelector());
+            await openDropdown(page, multiselect.findTrigger().toSelector());
             await page.elementScrollTo(multiselect.findDropdown().findOptionsContainer().toSelector(), {
               top: 99999, // We're using elementScrollTo so we see the 'End of all results' bottom list element
             });
