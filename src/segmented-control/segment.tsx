@@ -8,9 +8,9 @@ import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 import InternalIcon from '../icon/internal';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { getStyleClassName } from '../internal/utils/style-slot';
 import Tooltip from '../tooltip/internal.js';
 import { SegmentedControlProps } from './interfaces';
-import { StyleClassNames } from './internal';
 import { getSegmentedControlSegmentStyles } from './style';
 
 import styles from './styles.css.js';
@@ -22,7 +22,8 @@ interface SegmentProps extends SegmentedControlProps.Option {
   tabIndex: number;
   style: SegmentedControlProps['style'];
   fullWidth?: boolean;
-  styleClassNames?: StyleClassNames;
+  styleClassNames?: SegmentedControlProps.StyleClassNames;
+  option: SegmentedControlProps.Option;
 }
 
 export const Segment = React.forwardRef(
@@ -43,6 +44,7 @@ export const Segment = React.forwardRef(
       style,
       fullWidth,
       styleClassNames,
+      option,
     }: SegmentProps,
     ref: React.Ref<HTMLButtonElement>
   ) => {
@@ -57,7 +59,7 @@ export const Segment = React.forwardRef(
       <button
         className={clsx(
           // Style API v2: the divider is the ::after of the segment, so both slots land on the button
-          styleClassNames?.segment,
+          getStyleClassName(styleClassNames?.segment, { option, selected: isActive }),
           styleClassNames?.divider,
           styles.segment,
           { [styles.disabled]: !!disabled },

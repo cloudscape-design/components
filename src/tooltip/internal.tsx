@@ -22,14 +22,7 @@ type InternalTooltipComponentProps = InternalTooltipProps &
     // ID of the associated trigger. When the trigger and the tooltip are connected via referrer ID, the
     // nodeBelongs(triggerNode, tooltipNode) returns true.
     referrerId?: string;
-    styleClassNames?: StyleClassNames;
   };
-
-// Style API v2
-interface StyleClassNames {
-  container?: string;
-  arrow?: string;
-}
 
 export default function InternalTooltip({
   content,

@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import { BreadcrumbGroupImplementation } from '../../../breadcrumb-group/implementation';
 import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
+import { isAppLayoutHideToolbar, isAppLayoutSimplifiedView } from '../../utils/feature-flags';
 import { BreadcrumbsSlotContext, BreadcrumbsSlotContextType } from '../contexts';
 
 import testutilStyles from '../../test-classes/styles.css.js';
@@ -17,18 +18,30 @@ interface ToolbarSlotProps {
   children?: React.ReactNode;
 }
 
-export const ToolbarSlot = React.forwardRef<HTMLElement, ToolbarSlotProps>(({ className, style, children }, ref) => (
-  <section
-    ref={ref as React.Ref<any>}
-    className={clsx(styles['toolbar-container'], toolbarStyles['universal-toolbar'], testutilStyles.toolbar, className)}
-    style={{
-      insetBlockStart: style?.insetBlockStart ?? 0,
-      ...style,
-    }}
-  >
-    {children}
-  </section>
-));
+export const ToolbarSlot = React.forwardRef<HTMLElement, ToolbarSlotProps>(({ className, style, children }, ref) => {
+  const hidden = isAppLayoutHideToolbar();
+  const insetBlockStart = style?.insetBlockStart ?? 0;
+  return (
+    <>
+      <section
+        ref={ref as React.Ref<any>}
+        className={clsx(
+          styles['toolbar-container'],
+          toolbarStyles['universal-toolbar'],
+          testutilStyles.toolbar,
+          hidden && toolbarStyles['toolbar-hidden'],
+          isAppLayoutSimplifiedView() && toolbarStyles['simplified-view'],
+          className
+        )}
+        style={{ insetBlockStart, ...style }}
+      >
+        {children}
+      </section>
+      {/* the content area keeps a top border in the toolbar border color, where the hidden toolbar would be */}
+      {hidden && <div className={styles['hidden-toolbar-border']} style={{ insetBlockStart }} />}
+    </>
+  );
+});
 
 interface NotificationsSlotProps {
   className?: string;

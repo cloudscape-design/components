@@ -7,6 +7,10 @@ import { NonCancelableEventHandler } from '../types/events';
 export type OptionsFilteringType = 'none' | 'auto' | 'manual';
 
 export namespace DropdownProps {
+  export interface StyleClassNames {
+    root?: string;
+  }
+
   export interface Style {
     dropdown?: {
       /**
@@ -168,9 +172,19 @@ export interface DropdownProps extends ExpandToViewport {
 
   /**
    * An object containing CSS properties to customize the dropdown's visual appearance.
+   *
+   * **Deprecated** Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: DropdownProps.Style;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: root.
+   * Refer to the [style docs](/components/dropdown/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: DropdownProps.StyleClassNames;
 }
 
 export interface ExpandToViewport {

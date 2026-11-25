@@ -17,7 +17,8 @@ $_bar-tokens: style-api.resolve(style-api.$focus-ring, carrier);
 @include style-api.docs(
   'notificationBar',
   $_bar-tokens,
-  $properties: (color, background, border, border-radius, box-shadow, padding)
+  $properties: (color, background, border, border-radius, box-shadow, padding),
+  $descriptions: (slot: 'The bar around the semantic button that expands and collapses the stack.')
 );
 
 $notification-bar-top-overlap: (

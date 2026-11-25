@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+import clsx from 'clsx';
 
 import { ButtonGroup, ButtonGroupProps } from '~components';
 
@@ -10,7 +11,10 @@ import styles from './style-api-v2.scss';
 
 const styleClassNames = {
   item: ({ item }: { item: ButtonGroupProps.Item }) =>
-    item.type === 'menu-dropdown' ? styles['item-info'] : styles.item,
+    clsx(
+      item.type === 'menu-dropdown' ? styles['item-info'] : styles.item,
+      item.type === 'icon-toggle-button' && item.pressed && styles['item-pressed']
+    ),
   divider: styles.divider,
   dropdown: styles['menu-info'],
 };

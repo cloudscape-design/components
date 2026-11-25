@@ -24,9 +24,8 @@ describe('Text filter Style API v2', () => {
       filteringText: 'query',
       countText: '18 matches',
       styleClassNames: {
-        input: { root: 'a', input: 'b', searchIcon: 'c', clearButton: 'd', unknown: 'e' },
+        input: { root: 'a', input: 'b', searchIcon: 'c', clearButton: 'd' },
         countText: 'f',
-        unknown: 'g',
       },
     });
     const nativeInput = wrapper.findInput().findNativeInput().getElement();
@@ -34,9 +33,7 @@ describe('Text filter Style API v2', () => {
     expect(nativeInput).toHaveClass('b');
     expect(container.querySelector('.c')).toBe(nativeInput.parentElement!.previousElementSibling);
     expect(wrapper.findInput().findClearButton()!.getElement()).toHaveClass('d');
-    expect(container.querySelector('.e')).toBeNull();
     expect(wrapper.findResultsCount().getElement()).toHaveClass('f');
-    expect(container.querySelector('.g')).toBeNull();
   });
 
   test('applies the input classes when disabled and renders no countText element', () => {

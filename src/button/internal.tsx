@@ -60,13 +60,7 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   __emitPerformanceMarks?: boolean;
   __skipNativeAttributesWarnings?: boolean;
   __compact?: boolean;
-  styleClassNames?: StyleClassNames;
 } & InternalBaseComponentProps;
-
-// Style API v2
-export interface StyleClassNames {
-  root?: string;
-}
 
 export const InternalButton = React.forwardRef(
   (

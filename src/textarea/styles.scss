@@ -21,6 +21,7 @@ $tokens: style-api.resolve(
   $tokens,
   $properties: (color, background, border, border-radius, box-shadow, padding, font-family, font-size, font-weight),
   $descriptions: (
+    slot: 'The semantic text area. It also draws the field.',
     properties: (
       box-shadow: 'Also draws the focus ring.',
     )

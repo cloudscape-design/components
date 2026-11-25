@@ -46,3 +46,9 @@ export interface FocusRingStyle {
   borderRadius?: string;
   borderWidth?: string;
 }
+
+/**
+ * A Style API slot: a class name (or, for a forwarded component, its class names), or a function of the slot
+ * arguments that returns one.
+ */
+export type StyleSlot<Args, Value = string> = Value | ((args: Args) => Value | undefined);

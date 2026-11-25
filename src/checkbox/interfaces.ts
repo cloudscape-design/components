@@ -35,7 +35,9 @@ export interface CheckboxProps extends BaseCheckboxProps {
 
   /**
    * An object containing CSS properties to customize the checkbox's visual appearance.
-   * Refer to the [style](/components/checkbox/?tabId=style) tab for more details.
+   * Refer to the [style docs](/components/checkbox/?tabId=style) for more details.
+   *
+   * **Deprecated** Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: CheckboxProps.Style;
@@ -55,9 +57,21 @@ export interface CheckboxProps extends BaseCheckboxProps {
    * @awsuiSystem core
    */
   nativeInputAttributes?: NativeAttributes<React.InputHTMLAttributes<HTMLInputElement>>;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: control.
+   * Refer to the [style docs](/components/checkbox/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: CheckboxProps.StyleClassNames;
 }
 
 export namespace CheckboxProps {
+  export interface StyleClassNames {
+    control?: string;
+  }
+
   export interface Ref {
     /**
      * Sets input focus onto the UI control.

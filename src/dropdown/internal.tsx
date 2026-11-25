@@ -53,12 +53,7 @@ export interface InternalDropdownProps
   onBlur?: NonCancelableEventHandler<Pick<React.FocusEvent, 'target' | 'relatedTarget'>>;
   triggerRef?: React.RefObject<HTMLElement>;
   triggerId?: string;
-  styleClassNames?: StyleClassNames;
-}
-
-// Style API v2
-export interface StyleClassNames {
-  root?: string;
+  styleClassNames?: DropdownProps.StyleClassNames;
 }
 
 import styles from './styles.css.js';
@@ -123,7 +118,7 @@ interface TransitionContentProps {
   ariaLabelledby?: string;
   ariaDescribedby?: string;
   dropdownStyle?: React.CSSProperties;
-  styleClassNames?: StyleClassNames;
+  styleClassNames?: DropdownProps.StyleClassNames;
 }
 
 const TransitionContent = ({

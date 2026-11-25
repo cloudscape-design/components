@@ -13,6 +13,7 @@ $control-tokens: style-api.resolve($control-props, carrier);
   'control',
   $control-tokens,
   $descriptions: (
+    slot: 'The circle drawn around the semantic radio input.',
     tokens: (
       fill-color: 'The inside of the circle; the ring when checked.',
     )

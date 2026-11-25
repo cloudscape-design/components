@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { act, render } from '@testing-library/react';
 
 import PromptInput, { PromptInputProps } from '../../../lib/components/prompt-input';
-import { StyleClassNames } from '../../../lib/components/prompt-input/internal';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import buttonStyles from '../../../lib/components/button/styles.css.js';
@@ -19,7 +18,7 @@ const menus: PromptInputProps.MenuDefinition[] = [
   { id: 'mentions', trigger: '@', options: [{ value: 'user-1', label: 'Alice' }], filteringType: 'auto' },
 ];
 
-function renderPromptInput(props: Partial<PromptInputProps> & { styleClassNames?: StyleClassNames } = {}) {
+function renderPromptInput(props: Partial<PromptInputProps> = {}) {
   const { container } = render(<PromptInput ariaLabel="Prompt" value="" actionButtonIconName="send" {...props} />);
   return { container, wrapper: createWrapper(container).findPromptInput()! };
 }
@@ -27,7 +26,7 @@ function renderPromptInput(props: Partial<PromptInputProps> & { styleClassNames?
 function StatefulTokenMode({
   innerRef,
   ...props
-}: Partial<PromptInputProps> & { styleClassNames?: StyleClassNames; innerRef: React.Ref<PromptInputProps.Ref> }) {
+}: Partial<PromptInputProps> & { innerRef: React.Ref<PromptInputProps.Ref> }) {
   const [tokens, setTokens] = useState<readonly PromptInputProps.InputToken[]>([]);
   return (
     <PromptInput

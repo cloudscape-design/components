@@ -25,3 +25,5 @@ export const useAppLayoutToolbarDesignEnabled = () => {
 };
 
 export const isAppLayoutHideToolbarBreadcrumbsEnabled = () => !!getGlobalFlag('appLayoutHideToolbarBreadcrumbs');
+export const isAppLayoutHideToolbar = () => !!getGlobalFlag('appLayoutHideToolbar');
+export const isAppLayoutSimplifiedView = () => !!getGlobalFlag('appLayoutSimplifiedView');

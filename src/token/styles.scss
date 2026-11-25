@@ -127,12 +127,12 @@
 
 .token-box-readonly {
   border-color: var(#{custom-props.$tokenStyleBorderColorReadOnly}, awsui.$color-border-input-disabled);
-  background: var(#{custom-props.$tokenStyleBackgroundReadOnly}, awsui.$color-background-container-content);
+  background: var(#{custom-props.$tokenStyleBackgroundReadOnly}, transparent);
 }
 
 .token-box-disabled {
   pointer-events: none;
   border-color: var(#{custom-props.$tokenStyleBorderColorDisabled}, awsui.$color-border-control-disabled);
-  background: var(#{custom-props.$tokenStyleBackgroundDisabled}, awsui.$color-background-container-content);
+  background: var(#{custom-props.$tokenStyleBackgroundDisabled}, awsui.$color-background-input-default);
   color: awsui.$color-text-disabled;
 }

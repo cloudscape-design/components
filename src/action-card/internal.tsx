@@ -17,16 +17,7 @@ import { ActionCardProps } from './interfaces';
 import styles from './styles.css.js';
 import testStyles from './test-classes/styles.css.js';
 
-export type InternalActionCardProps = ActionCardProps &
-  InternalBaseComponentProps & {
-    styleClassNames?: StyleClassNames;
-  };
-
-// Style API v2
-export interface StyleClassNames {
-  root?: string;
-  header?: string;
-}
+export type InternalActionCardProps = ActionCardProps & InternalBaseComponentProps;
 
 const InternalActionCard = React.forwardRef(
   (

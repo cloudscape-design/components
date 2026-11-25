@@ -137,6 +137,12 @@
   @include desktop-only {
     grid-area: ai-drawer;
     position: sticky;
+
+    // Without the toolbar, the AI drawer draws the separator to the main content right outside its edge
+    // (drawer/styles.scss). The navigation next to it would cover it otherwise.
+    &.with-hidden-toolbar {
+      z-index: constants.$drawer-z-index + 1;
+    }
   }
 }
 
@@ -221,6 +227,26 @@
 }
 
 /**
+ * A zero-height sticky element placed in the toolbar grid area when the toolbar is hidden by a feature flag.
+ * Draws a top border for the content area in the toolbar border color, without taking any space.
+ */
+.hidden-toolbar-border {
+  grid-area: toolbar;
+  position: sticky;
+  z-index: constants.$toolbar-z-index;
+
+  &:before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: 0;
+    block-size: awsui.$border-divider-section-width;
+    background-color: awsui.$color-border-layout;
+    pointer-events: none;
+  }
+}
+
+/**
  * A zero-height sticky element placed in the toolbar grid area when the toolbar is absent
  * and the left panel (AI drawer) is open. It reuses the toolbar's pseudo-element technique
  * to render the border-radius corner between the AI drawer and the content area.
@@ -274,6 +300,17 @@
       background-color: transparent;
       border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
       border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+    }
+  }
+
+  // square corner next to the AI drawer, same as the toolbar in simplified view
+  &.pseudo-toolbar-simplified-view {
+    @include theming.dark-mode-only {
+      border-start-start-radius: 0;
+    }
+
+    &::after {
+      border-start-start-radius: 0;
     }
   }
 }

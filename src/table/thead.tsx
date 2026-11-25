@@ -16,7 +16,6 @@ import { InternalSelectionType } from './internal-interfaces';
 import { focusMarkers, ItemSelectionProps } from './selection';
 import { TableHeaderSelectionCell } from './selection/selection-cell';
 import { StickyColumnsModel } from './sticky-columns';
-import { StyleClassNames } from './style-api';
 import { getTableHeaderRowRoleProps, TableRole } from './table-role';
 import { DEFAULT_COLUMN_WIDTH, useColumnWidths } from './use-column-widths';
 import { getColumnKey } from './utils';
@@ -58,7 +57,7 @@ export interface TheadProps {
   tableRole: TableRole;
   isExpandable?: boolean;
   setLastUserAction: (name: string) => void;
-  styleClassNames?: StyleClassNames;
+  styleClassNames?: TableProps.StyleClassNames;
 }
 
 const Thead = React.forwardRef(

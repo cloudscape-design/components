@@ -23,8 +23,21 @@ export interface TooltipProps {
    * Callback fired when the user presses the Escape key while the tooltip is visible.
    */
   onEscape?: NonCancelableEventHandler;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: container, arrow.
+   * Refer to the [style docs](/components/tooltip/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: TooltipProps.StyleClassNames;
 }
 export namespace TooltipProps {
+  export interface StyleClassNames {
+    container?: string;
+    arrow?: string;
+  }
+
   /**
    * Position of the tooltip relative to the tracked element.
    */
