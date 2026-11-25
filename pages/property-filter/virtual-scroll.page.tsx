@@ -36,8 +36,17 @@ export default function () {
               propertyLabel: 'Property',
               groupValuesLabel: 'Property values',
             },
+            {
+              key: 'enumProperty',
+              operators: [{ operator: '=', tokenType: 'enum' }],
+              propertyLabel: 'Enum property',
+              groupValuesLabel: 'Enum property values',
+            },
           ]}
-          filteringOptions={options.map(opt => ({ propertyKey: 'property', value: opt.value! }))}
+          filteringOptions={[
+            ...options.map(opt => ({ propertyKey: 'property', value: opt.value! })),
+            ...options.map(opt => ({ propertyKey: 'enumProperty', value: opt.value! })),
+          ]}
           virtualScroll={true}
           expandToViewport={false}
           data-testid="property-filter-demo"

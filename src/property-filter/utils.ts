@@ -183,3 +183,13 @@ export function tokenGroupToTokens<T extends AbstractToken>(tokenGroups: readonl
   }
   return tokens;
 }
+
+const VIRTUAL_SCROLL_MIN_OPTIONS = 500;
+
+/**
+ * Virtual scrolling only pays off for long lists, so enum value lists apply it only above the threshold
+ * recommended in the `virtualScroll` documentation.
+ */
+export function shouldUseVirtualScroll(virtualScroll: boolean | undefined, optionsCount: number) {
+  return !!virtualScroll && optionsCount > VIRTUAL_SCROLL_MIN_OPTIONS;
+}

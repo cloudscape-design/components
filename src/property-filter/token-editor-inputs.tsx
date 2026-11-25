@@ -18,6 +18,7 @@ import {
   InternalFreeTextFiltering,
 } from './internal-interfaces.js';
 import { useLoadItems } from './use-load-items.js';
+import { shouldUseVirtualScroll } from './utils.js';
 
 import styles from './styles.css.js';
 
@@ -231,7 +232,7 @@ function ValueInputEnum({
           inlineTokens={true}
           hideTokens={true}
           keepOpen={true}
-          virtualScroll={virtualScroll}
+          virtualScroll={shouldUseVirtualScroll(virtualScroll, valueOptions.length)}
         />
       </div>
     </div>

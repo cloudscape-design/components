@@ -593,26 +593,28 @@ describe('async token editing', () => {
 });
 
 describe('virtual scroll', () => {
-  const manyOptionsCount = 500;
-  const manyFilteringOptions: readonly FilteringOption[] = Array.from({ length: manyOptionsCount }, (_, index) => ({
-    propertyKey: 'tags',
-    value: `tag-${index}`,
-  }));
+  const manyOptionsCount = 501;
+  const thresholdOptionsCount = 500;
+  const createOptions = (count: number): readonly FilteringOption[] =>
+    Array.from({ length: count }, (_, index) => ({ propertyKey: 'tags', value: `tag-${index}` }));
   const enumTokenQuery: PropertyFilterProps.Query = {
     operation: 'and',
     tokens: [{ propertyKey: 'tags', operator: '=', value: ['tag-0'] }],
   };
 
-  const getFilteringInputOptionsCount = (virtualScroll: boolean) => {
-    const { wrapper, getOptionsContent } = renderComponent({ filteringOptions: manyFilteringOptions, virtualScroll });
+  const getFilteringInputOptionsCount = (virtualScroll: boolean, optionsCount = manyOptionsCount) => {
+    const { wrapper, getOptionsContent } = renderComponent({
+      filteringOptions: createOptions(optionsCount),
+      virtualScroll,
+    });
     wrapper.focus();
     wrapper.setInputValue('tags = ');
     return getOptionsContent().length;
   };
 
-  const getTokenEditorOptionsCount = (virtualScroll: boolean) => {
+  const getTokenEditorOptionsCount = (virtualScroll: boolean, optionsCount = manyOptionsCount) => {
     const { openEditor, findEditorMultiselect, getEditorOptionsContent } = renderComponent({
-      filteringOptions: manyFilteringOptions,
+      filteringOptions: createOptions(optionsCount),
       query: enumTokenQuery,
       virtualScroll,
     });
@@ -639,5 +641,13 @@ describe('virtual scroll', () => {
 
   test('renders all enum options in the token editor when virtualScroll=false', () => {
     expect(getTokenEditorOptionsCount(false)).toBe(manyOptionsCount);
+  });
+
+  test('renders all enum options in the filtering input when virtualScroll=true and there are 500 options or fewer', () => {
+    expect(getFilteringInputOptionsCount(true, thresholdOptionsCount)).toBe(thresholdOptionsCount);
+  });
+
+  test('renders all enum options in the token editor when virtualScroll=true and there are 500 options or fewer', () => {
+    expect(getTokenEditorOptionsCount(true, thresholdOptionsCount)).toBe(thresholdOptionsCount);
   });
 });
