@@ -9,7 +9,7 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { GeneratedAnalyticsMetadataMultiselectComponent } from './analytics-metadata/interfaces';
 import { MultiselectProps } from './interfaces';
-import InternalMultiselect, { StyleClassNames } from './internal';
+import InternalMultiselect from './internal';
 
 import buttonTriggerAnalyticsSelectors from '../internal/components/button-trigger/analytics-metadata/styles.css.js';
 
@@ -80,7 +80,7 @@ const Multiselect = React.forwardRef(
         hideTokens={hideTokens}
         {...restProps}
         {...baseComponentProps}
-        styleClassNames={(restProps as { styleClassNames?: StyleClassNames }).styleClassNames}
+        styleClassNames={restProps.styleClassNames}
         ref={ref}
         {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
       />

@@ -16,7 +16,6 @@ import FileInputItem from './file-input-item';
 import IconButtonItem from './icon-button-item';
 import IconToggleButtonItem from './icon-toggle-button-item.js';
 import { ButtonGroupProps } from './interfaces';
-import { StyleClassNames } from './internal-interfaces';
 import MenuDropdownItem from './menu-dropdown-item';
 import { getButtonGroupItemStyles } from './style';
 
@@ -33,7 +32,7 @@ interface ItemElementProps {
   onCopyFailure?: NonCancelableEventHandler<ButtonGroupProps.CopyFailureDetail> | undefined;
   position: string;
   style?: ButtonGroupProps.Style;
-  styleClassNames?: StyleClassNames;
+  styleClassNames?: ButtonGroupProps.StyleClassNames;
 }
 
 const ItemElement = forwardRef(

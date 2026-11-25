@@ -4,7 +4,6 @@ import React, { useContext, useState } from 'react';
 import clsx from 'clsx';
 
 import { Checkbox, FormField, Header, Select, SpaceBetween, Table, TableProps } from '~components';
-import { StyleClassNames } from '~components/table/style-api';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import { SimplePage } from '../app/templates';
@@ -135,7 +134,7 @@ export default function () {
     selectionType !== 'none' && (selectionType === 'single' ? selectedItems[0] === item : selectedItems.includes(item));
 
   // Selected rows keep the selection color: status and nested highlights skip them.
-  const styleClassNames: StyleClassNames<Instance> = {
+  const styleClassNames: TableProps.StyleClassNames<Instance> = {
     root: styles.table,
     headerCell: args => {
       if (args.type === 'selection') {

@@ -40,9 +40,21 @@ export interface DateInputProps extends BaseInputProps, FormFieldValidationContr
    * * `slashed`: similar to ISO 8601 but with '/' in place of '-'. e.g.: 2024/01/30 (or 2024/01).
    */
   inputFormat?: DateInputProps.InputFormat;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: input.
+   * Refer to the [style docs](/components/date-input/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: DateInputProps.StyleClassNames;
 }
 
 export namespace DateInputProps {
+  export interface StyleClassNames {
+    input?: InputProps.StyleClassNames;
+  }
+
   export type Ref = InputProps.Ref;
 
   export type Format = DateFormat;

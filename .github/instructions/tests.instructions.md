@@ -1,5 +1,5 @@
 ---
-applyTo: "**/{__tests__,__integ__,__a11y__,__motion__}/**"
+applyTo: "**/{__tests__,__integ__,__a11y__,__motion__}/**,test/definitions/**"
 ---
 # Testing conventions
 - Assert the observable EFFECT (focus lands on the specific element, value/count/position is
@@ -21,3 +21,7 @@ applyTo: "**/{__tests__,__integ__,__a11y__,__motion__}/**"
   and asserting `(componentName, message)`. WHY: the established deterministic pattern.
 - Name tests by user-observable behavior, not internal util names. WHY: internal names in titles
   rot and don't communicate intent.
+- Give every generated test a unique full name (suite path plus test name). When tests come from loops,
+  `test.each` or nested suite arrays, put every parameter that varies between cases into the name.
+  WHY: Jest and the Allure report identify tests by full name, so two cases with the same name
+  overwrite each other's results and a failure can be reported as passed.

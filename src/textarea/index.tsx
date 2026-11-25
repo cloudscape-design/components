@@ -22,11 +22,6 @@ import styles from './styles.css.js';
 
 export { TextareaProps };
 
-// Style API v2
-interface StyleClassNames {
-  textarea?: string;
-}
-
 const Textarea = React.forwardRef(
   (
     {
@@ -69,7 +64,7 @@ const Textarea = React.forwardRef(
     const { ariaLabelledby, ariaDescribedby, controlId, invalid, warning } = useFormFieldContext(rest);
 
     const baseProps = getBaseProps(rest);
-    const { styleClassNames } = rest as { styleClassNames?: StyleClassNames };
+    const { styleClassNames } = rest;
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     useForwardFocus(ref, textareaRef);

@@ -22,13 +22,7 @@ import { getAbstractSwitchStyles, getStyledControlStyle } from './style';
 import styles from './styles.css.js';
 
 interface InternalToggleProps extends ToggleProps, InternalBaseComponentProps {
-  styleClassNames?: StyleClassNames;
   __injectAnalyticsComponentMetadata?: boolean;
-}
-
-// Style API v2
-interface StyleClassNames {
-  control?: string;
 }
 
 const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(

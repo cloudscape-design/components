@@ -162,7 +162,9 @@ export interface AutosuggestProps
 
   /**
    * An object containing CSS properties to customize the autosuggest's visual appearance.
-   * Refer to the [style](/components/autosuggest/?tabId=style) tab for more details.
+   * Refer to the [style docs](/components/autosuggest/?tabId=style) for more details.
+   *
+   * **Deprecated** Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: AutosuggestProps.Style;
@@ -197,9 +199,22 @@ export interface AutosuggestProps
    * @i18n
    */
   i18nStrings?: AutosuggestProps.I18nStrings;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: input, dropdown.
+   * Refer to the [style docs](/components/autosuggest/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: AutosuggestProps.StyleClassNames;
 }
 
 export namespace AutosuggestProps {
+  export interface StyleClassNames {
+    input?: InputProps.StyleClassNames;
+    dropdown?: string;
+  }
+
   export interface ChangeDetail {
     value: string;
     /**

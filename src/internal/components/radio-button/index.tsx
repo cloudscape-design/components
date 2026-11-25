@@ -19,13 +19,8 @@ import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
 export interface InternalRadioButtonProps extends RadioButtonProps, InternalBaseComponentProps {
-  styleClassNames?: StyleClassNames;
+  styleClassNames?: RadioButtonProps.StyleClassNames;
   __skipNativeAttributesWarnings?: SkipWarnings;
-}
-
-// Style API v2
-export interface StyleClassNames {
-  control?: string;
 }
 
 export default React.forwardRef(function RadioButton(

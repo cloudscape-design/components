@@ -4,6 +4,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import { isThemeActive } from '@cloudscape-design/component-toolkit/internal';
+import { setGlobalFlag } from '@cloudscape-design/component-toolkit/internal/testing';
 
 import AppLayout from '../../../lib/components/app-layout';
 import {
@@ -14,7 +15,7 @@ import AppLayoutToolbar from '../../../lib/components/app-layout-toolbar';
 import BreadcrumbGroup from '../../../lib/components/breadcrumb-group';
 import { getFunnelKeySelector } from '../../../lib/components/internal/analytics/selectors';
 import { getIconHTML } from '../../icon/__tests__/utils';
-import { describeEachAppLayout, renderComponent, setPendingGlobalFlag } from './utils';
+import { describeEachAppLayout, renderComponent } from './utils';
 
 import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.selectors.js';
 import navStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/navigation/styles.selectors.js';
@@ -186,7 +187,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
     });
 
     describe('with appLayoutHideToolbar flag', () => {
-      afterEach(() => setPendingGlobalFlag('appLayoutHideToolbar', undefined));
+      afterEach(() => setGlobalFlag('appLayoutHideToolbar', undefined));
 
       it('renders a visible skeleton toolbar when the flag is not set', () => {
         const { wrapper } = renderComponent(<AppLayout navigation="test nav" breadcrumbs="test breadcrumbs" />);
@@ -196,7 +197,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
       });
 
       it('keeps the skeleton toolbar mounted but hidden when the flag is set', () => {
-        setPendingGlobalFlag('appLayoutHideToolbar', true);
+        setGlobalFlag('appLayoutHideToolbar', true);
         const { wrapper } = renderComponent(
           <AppLayout navigation="test nav" breadcrumbs={<BreadcrumbGroup items={[{ text: 'Home', href: '' }]} />} />
         );
@@ -215,7 +216,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'] }, () => {
 describe('ToolbarSkeleton', () => {
   const appLayoutInternals = { breadcrumbs: <div>test breadcrumbs</div> } as any;
 
-  afterEach(() => setPendingGlobalFlag('appLayoutHideToolbar', undefined));
+  afterEach(() => setGlobalFlag('appLayoutHideToolbar', undefined));
 
   function findToolbar(container: HTMLElement) {
     return container.querySelector(`.${skeletonStyles['toolbar-container']}`)!;
@@ -228,7 +229,7 @@ describe('ToolbarSkeleton', () => {
   });
 
   it('is hidden but keeps its content when the appLayoutHideToolbar flag is set', () => {
-    setPendingGlobalFlag('appLayoutHideToolbar', true);
+    setGlobalFlag('appLayoutHideToolbar', true);
     const { container } = render(<ToolbarSkeleton appLayoutInternals={appLayoutInternals} toolbarProps={{}} />);
     expect(findToolbar(container)).toHaveClass(toolbarStyles['toolbar-hidden']);
     expect(findToolbar(container)).toHaveTextContent('test breadcrumbs');

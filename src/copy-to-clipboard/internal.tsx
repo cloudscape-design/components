@@ -8,22 +8,14 @@ import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useOneTheme } from '../internal/hooks/use-visual-mode';
-import InternalPopover, { StyleClassNames as PopoverStyleClassNames } from '../popover/internal';
+import InternalPopover from '../popover/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
 import { CopyToClipboardProps } from './interfaces';
 
 import styles from './styles.css.js';
 import testStyles from './test-classes/styles.css.js';
 
-interface InternalCopyToClipboardProps extends CopyToClipboardProps, InternalBaseComponentProps {
-  styleClassNames?: StyleClassNames;
-}
-
-// Style API v2
-export interface StyleClassNames {
-  copyButton?: string;
-  statusPopover?: PopoverStyleClassNames;
-}
+interface InternalCopyToClipboardProps extends CopyToClipboardProps, InternalBaseComponentProps {}
 
 export default function InternalCopyToClipboard({
   variant = 'button',

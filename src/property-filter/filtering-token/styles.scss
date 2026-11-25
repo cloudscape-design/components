@@ -140,7 +140,7 @@ $border-radius-inner-token: calc(#{awsui.$border-radius-token} / 2);
 
 .token-disabled {
   border-color: awsui.$color-border-control-disabled;
-  background-color: awsui.$color-background-container-content;
+  background-color: awsui.$color-background-input-default;
   color: awsui.$color-text-disabled;
   pointer-events: none;
 }

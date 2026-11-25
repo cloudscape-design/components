@@ -90,7 +90,7 @@ export default function TableColSpanPage() {
           </Toggle>
         </SpaceBetween>
       }
-      screenshotArea={{}}
+      screenshotArea={{ disableAnimations: true }}
     >
       <SpaceBetween size="s">
         <Header counter={selectable ? `(${selectedIds.size}/${selectableIds.length})` : `(${items.length})`}>

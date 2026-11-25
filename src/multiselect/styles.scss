@@ -15,12 +15,17 @@ $trigger-tokens: style-api.resolve((placeholder-color), carrier);
   $trigger-tokens,
   $properties: (color, background, border, border-radius, box-shadow, padding, font-family, font-size, font-weight),
   $descriptions: (
+    slot: 'The semantic button that opens the dropdown.',
     properties: (
       box-shadow: 'Also draws the focus ring.',
     )
   )
 );
-@include style-api.docs('inlineLabel', $properties: (color, background, font-family, font-size, font-weight));
+@include style-api.docs(
+  'inlineLabel',
+  $properties: (color, background, font-family, font-size, font-weight),
+  $descriptions: (slot: 'Rendered when `inlineLabelText` is set.')
+);
 @include style-api.docs-forward('filter', 'input');
 @include style-api.docs-forward('dropdown', 'dropdown', 'root');
 @include style-api.docs-forward('token', 'token');

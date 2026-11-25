@@ -13,13 +13,12 @@ function renderToggle(element: React.ReactElement) {
 
 describe('Toggle Style API v2', () => {
   test('applies styleClassNames to the control slot', () => {
-    const { container, wrapper } = renderToggle(
-      <Toggle checked={false} description="Description" {...{ styleClassNames: { control: 'a', unknown: 'b' } }}>
+    const { wrapper } = renderToggle(
+      <Toggle checked={false} description="Description" styleClassNames={{ control: 'a' }}>
         Label
       </Toggle>
     );
     expect(wrapper.findNativeInput().getElement().parentElement).toHaveClass('a');
-    expect(container.querySelector('.b')).toBeNull();
   });
 
   test('does not leak the styleClassNames prop to the DOM', () => {

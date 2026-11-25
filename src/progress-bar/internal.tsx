@@ -26,13 +26,7 @@ interface ProgressProps {
   ariaLabelledby?: string;
   ariaDescribedby?: string;
   style?: ProgressBarProps.Style;
-  styleClassNames?: StyleClassNames;
-}
-
-// Style API v2
-export interface StyleClassNames {
-  root?: string;
-  valueLabel?: string;
+  styleClassNames?: ProgressBarProps.StyleClassNames;
 }
 
 export const Progress = ({

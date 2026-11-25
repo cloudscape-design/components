@@ -83,13 +83,29 @@ export interface ContainerProps extends BaseComponentProps {
 
   /**
    * An object containing CSS properties to customize the container's visual appearance.
-   * Refer to the [style](/components/container/?tabId=style) tab for more details.
+   * Refer to the [style docs](/components/container/?tabId=style) for more details.
+   *
+   * **Deprecated** Replaced by `styleClassNames`.
    * @awsuiSystem core
    */
   style?: ContainerProps.Style;
+
+  /**
+   * CSS class names for the slots of the component that can be styled with the Style API.
+   * Available slots: root, header, footer.
+   * Refer to the [style docs](/components/container/?tabId=style) for more details.
+   * @awsuiSystem core
+   */
+  styleClassNames?: ContainerProps.StyleClassNames;
 }
 
 export namespace ContainerProps {
+  export interface StyleClassNames {
+    root?: string;
+    header?: string;
+    footer?: string;
+  }
+
   export interface Ref {
     /**
      * Sets focus on the container and scrolls it into view. Use this to move the user's focus to a

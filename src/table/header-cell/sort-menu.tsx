@@ -4,7 +4,6 @@ import React from 'react';
 
 import { ButtonDropdownProps } from '../../button-dropdown/interfaces';
 import InternalButtonDropdown from '../../button-dropdown/internal';
-import { StyleClassNames as ButtonDropdownStyleClassNames } from '../../button-dropdown/internal-interfaces';
 import { useInternalI18n } from '../../i18n/context';
 import { TableProps } from '../interfaces';
 
@@ -24,7 +23,7 @@ export interface SortMenuProps<T> {
   ariaLabel?: string;
   ariaDescribedby?: string;
   onAction: (action: SortMenuAction) => void;
-  styleClassNames?: ButtonDropdownStyleClassNames;
+  styleClassNames?: ButtonDropdownProps.StyleClassNames;
 }
 
 export function SortMenu<T>({

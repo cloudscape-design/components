@@ -17,15 +17,13 @@ describe('ProgressBar Style API v2', () => {
     variant => {
       const { wrapper } = renderProgressBar({
         variant,
-        styleClassNames: { root: 'a', valueLabel: 'b', unknown: 'c' },
+        styleClassNames: { root: 'a', valueLabel: 'b' },
       });
       expect(wrapper.getElement()).toHaveClass('a');
-      expect(wrapper.getElement()).not.toHaveClass('c');
 
       const percentage = wrapper.findPercentageText()!.getElement();
       expect(percentage).not.toHaveClass('a');
       expect(percentage).toHaveClass('b');
-      expect(percentage).not.toHaveClass('c');
     }
   );
 

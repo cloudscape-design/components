@@ -15,14 +15,14 @@
     $awsui-focus-ring-radius: 50%
   );
 
-  &:has(:checked) {
+  &.radio-control-checked {
     @include radio-button.control(
       $awsui-fill-color: palette.$control-bg-checked,
       $awsui-indicator-color: palette.$control-fg
     );
   }
 
-  &:has(:disabled) {
+  &.radio-control-disabled {
     @include radio-button.control(
       $awsui-fill-color: palette.$control-bg-disabled,
       $awsui-border-color: palette.$border-disabled,
