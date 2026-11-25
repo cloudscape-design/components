@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import clsx from 'clsx';
 
 import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
@@ -31,10 +31,15 @@ function StickyScrollbar(
   const mergedRef = useMergeRefs(ref, scrollbarRef);
 
   /**
-   * If the height of the scrollbar is 0, we're likely on a platform that uses
-   * overlay scrollbars (e.g. Mac).
+   * Scrollbar height is 0 if the platform uses overlay (floating) scrollbars (e.g. Mac).
+   * Scrollbar size is always 0 during SSR and potentially non-zero on the first render,
+   * so for SSR-stability, we need to determine and set this in a client-side effect.
    */
-  const offsetScrollbar = hasStickyColumns || browserScrollbarSize().height === 0;
+  const [scrollbarOccupiesSpace, setScrollbarOccupiesSpace] = useState(false);
+  useEffect(() => {
+    setScrollbarOccupiesSpace(browserScrollbarSize().height > 0);
+  }, []);
+  const offsetScrollbar = hasStickyColumns || !scrollbarOccupiesSpace;
 
   useStickyScrollbar(scrollbarRef, scrollbarContentRef, tableRef, wrapperRef, offsetScrollbar, {
     getContentInlineSize,
