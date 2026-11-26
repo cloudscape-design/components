@@ -14,6 +14,14 @@ describe('Components', () => {
     const definition = requireComponentDefinition(componentName);
     expect(definition).toMatchSnapshot(componentName);
   });
+
+  test('Box visualAccent is available to all systems', () => {
+    const definition = requireComponentDefinition('box');
+    const visualAccent = definition.properties.find(property => property.name === 'visualAccent');
+
+    expect(visualAccent).toEqual(expect.objectContaining({ name: 'visualAccent' }));
+    expect(visualAccent).not.toHaveProperty('systemTags');
+  });
 });
 
 describe('Test-utils', () => {

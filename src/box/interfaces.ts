@@ -45,8 +45,7 @@ export interface BoxProps extends BaseComponentProps {
    *
    * Composes with existing Box props such as `padding` and `margin`.
    *
-   * This is a One Theme only feature and must not be used in VR.
-   * @awsuiSystem one-theme
+   * This property has no effect when Visual Refresh is active.
    */
   visualAccent?: BoxProps.VisualAccent;
   /**
