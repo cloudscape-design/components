@@ -85,6 +85,8 @@ export interface DrawerProps extends BaseComponentProps {
    * * `absolute` - The drawer is positioned relative to its nearest positioned ancestor.
    * * `fixed` - The drawer is positioned relative to the viewport.
    *
+   * A drawer anchored to the top or bottom grows with its content up to the available height.
+   *
    * Do not use this property when using drawers inside app layout.
    */
   position?: DrawerProps.Position;

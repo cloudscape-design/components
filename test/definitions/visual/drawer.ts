@@ -109,6 +109,37 @@ const suite: TestSuite = {
           configuration: { width: 1200, height: 1000 },
           queryParams: { offsets: 'true', backdrop: 'true' },
         },
+        {
+          description: 'Drawer with fixed position and overflowing content',
+          path: 'drawer/drawer-position-fixed',
+          screenshotType: 'viewport',
+          configuration: { width: 1200, height: 600 },
+          queryParams: { tallContent: 'true', footer: 'true', placement: 'end' },
+        },
+        {
+          description: 'Drawer with fixed position and overflowing content, scrolled to the end',
+          path: 'drawer/drawer-position-fixed',
+          screenshotType: 'viewport',
+          configuration: { width: 1200, height: 600 },
+          queryParams: { tallContent: 'true', footer: 'true', placement: 'end' },
+          setup: async ({ page, wrapper }) => {
+            await page.elementScrollTo(wrapper.findDrawer().findContent().toSelector(), { top: 10000 });
+          },
+        },
+        {
+          description: 'Bottom drawer with fixed position and overflowing content',
+          path: 'drawer/drawer-position-fixed',
+          screenshotType: 'viewport',
+          configuration: { width: 1200, height: 600 },
+          queryParams: { tallContent: 'true', placement: 'bottom', offsets: 'true' },
+        },
+        {
+          description: 'Drawer with absolute position and overflowing content',
+          path: 'drawer/drawer-position-absolute',
+          screenshotType: 'viewport',
+          configuration: { width: 1200, height: 1000 },
+          queryParams: { tallContent: 'true' },
+        },
       ],
     },
   ],

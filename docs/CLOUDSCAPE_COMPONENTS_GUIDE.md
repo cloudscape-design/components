@@ -8,6 +8,7 @@ Reference docs for contributing to [cloudscape-design/components](https://github
 - [Style API](https://github.com/cloudscape-design/components/blob/main/docs/STYLE_API.md) — adding consumer styling slots (`styleClassNames`) to a component
 - [Writing Tests](https://github.com/cloudscape-design/components/blob/main/docs/WRITING_TESTS.md) — test utils, unit and integration tests
 - [Running Tests](https://github.com/cloudscape-design/components/blob/main/docs/RUNNING_TESTS.md) — test configs and commands
+- [GitHub Actions](https://github.com/cloudscape-design/components/blob/main/docs/GITHUB_ACTIONS.md) — overriding a required check
 - [Code Style](https://github.com/cloudscape-design/components/blob/main/docs/CODE_STYLE.md) — prettier, stylelint, eslint
 - [TEST Pages](https://github.com/cloudscape-design/components/blob/main/docs/TEST_PAGES.md) — dev/test pages and running in the browser
 - [API Docs](https://github.com/cloudscape-design/components/blob/main/docs/API_DOCS.md)  — API documentation comments

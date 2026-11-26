@@ -92,14 +92,6 @@ When the CI job fails, check the deployed Allure report (linked from the GitHub 
 
 Because baselines are rebuilt from `origin/main` at run time (there are no committed
 screenshots to update), an intentional visual change is approved by overriding the
-check rather than by updating snapshots.
-
-The override is **scoped to a single commit**. It approves the exact SHA you reviewed;
-pushing a new commit produces a new SHA with no override, so the comparison runs again.
-
-To override, first confirm the diffs in the Allure report are intentional, then use either method:
-
-- **From the PR page (recommended):** comment `/override-visual-regression <Reason to override>` on the pull request.
-- **From the Actions tab:** run the **Override visual regression** workflow (`.github/workflows/visual-regression-override.yml`) manually, passing the commit SHA to approve.
-
-Either way the workflow posts a `visual-regression-override` success commit status on that SHA and re-runs the deploy workflow. On the re-run, the screenshot comparison is skipped and the `Visual regression result` check passes.
+check rather than by updating snapshots. After confirming the diffs in the Allure report
+are intentional, comment `/override-check visual-regression <reason>` on the pull request.
+See [GITHUB_ACTIONS.md](./GITHUB_ACTIONS.md#overriding-a-required-check) for details.
