@@ -542,6 +542,56 @@ describe('Button Component', () => {
     });
   });
 
+  describe('iconEnd property', () => {
+    test('renders the slot after the text', () => {
+      const wrapper = renderButton({ children: 'Name', iconEnd: <span data-testid="end">1</span> });
+      expect(wrapper.findIconEnd()!.find('[data-testid="end"]')).not.toBeNull();
+      expect(wrapper.findTextRegion()!.getElement().nextElementSibling).toBe(wrapper.findIconEnd()!.getElement());
+    });
+
+    test('renders no slot by default', () => {
+      expect(renderButton({ children: 'Name' }).findIconEnd()).toBeNull();
+    });
+
+    test.each([null, false, ''])('renders no slot for %p', iconEnd => {
+      expect(renderButton({ children: 'Name', iconEnd }).findIconEnd()).toBeNull();
+    });
+
+    test('renders the slot for 0', () => {
+      expect(renderButton({ children: 'Name', iconEnd: 0 }).findIconEnd()!.getElement()).toHaveTextContent('0');
+    });
+
+    test('warns when combined with a right-aligned icon', () => {
+      const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+      renderButton({ children: 'Name', iconName: 'add-plus', iconAlign: 'right', iconEnd: <span /> });
+      expect(warnSpy).toHaveBeenCalledWith(
+        '[AwsUi] [Button] A right-aligned icon should not be combined with `iconEnd`.'
+      );
+      warnSpy.mockRestore();
+    });
+
+    test.each([null, undefined, false, ''])('does not warn for a right-aligned icon with iconEnd %p', iconEnd => {
+      const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+      renderButton({ children: 'Name', iconName: 'add-plus', iconAlign: 'right', iconEnd });
+      expect(warnSpy).not.toHaveBeenCalledWith(expect.stringContaining('iconEnd'));
+      warnSpy.mockRestore();
+    });
+  });
+
+  describe('table-header variant', () => {
+    test('is styled as a table header button', () => {
+      expect(renderButton({ children: 'Name', variant: 'table-header' }).getElement()).toHaveClass(
+        styles['variant-table-header']
+      );
+    });
+
+    test('is not applied by other variants', () => {
+      expect(renderButton({ children: 'Name', variant: 'normal' }).getElement()).not.toHaveClass(
+        styles['variant-table-header']
+      );
+    });
+  });
+
   describe('Loading property', () => {
     test("should disable the button with aria-disabled when in 'loading' status", () => {
       const onClickSpy = jest.fn();

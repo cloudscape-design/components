@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useMemo } from 'react';
 
+import Button from '~components/button';
 import Header from '~components/header';
+import Icon from '~components/icon';
 import SegmentedControl from '~components/segmented-control';
 import SpaceBetween from '~components/space-between';
 import TableBody from '~components/table-body';
@@ -14,8 +16,6 @@ import TableRow from '~components/table-row';
 
 import { useAppContext } from '../app/app-context';
 import { SimplePage } from '../app/templates';
-
-import styles from './styles.scss';
 
 // Wide enough to scroll sideways, and long enough to scroll the page, so the pinned header can be checked
 // against both. The Name header's sort button exercises pointer interaction with the pinned copy.
@@ -85,14 +85,16 @@ export default function TableStickyHeaderPage() {
           stickyHeader={
             <TableHead>
               <TableRow>
-                <TableHeaderCell ariaSort={descending ? 'descending' : 'ascending'}>
-                  <button
-                    type="button"
-                    className={styles['sort-button']}
+                <TableHeaderCell disablePaddings="headerButton" ariaSort={descending ? 'descending' : 'ascending'}>
+                  <Button
+                    variant="table-header"
+                    formAction="none"
+                    wrapText={false}
+                    iconEnd={<Icon name={descending ? 'caret-down-filled' : 'caret-up-filled'} />}
                     onClick={() => setUrlParams({ sortDescending: !descending })}
                   >
-                    Name {descending ? '▼' : '▲'}
-                  </button>
+                    Name
+                  </Button>
                 </TableHeaderCell>
                 <TableHeaderCell>Type</TableHeaderCell>
                 <TableHeaderCell>Size</TableHeaderCell>
