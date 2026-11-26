@@ -54,7 +54,7 @@ export default function SortableArea<Item>({
         container: portalContainer ?? undefined,
       }}
       onDragStart={({ active, activatorEvent }) => {
-        setAutoScrollBoundary(activatorEvent.target);
+        setAutoScrollBoundary(activatorEvent?.target ?? null);
         setActiveItemId(active.id);
       }}
       onDragEnd={event => {
