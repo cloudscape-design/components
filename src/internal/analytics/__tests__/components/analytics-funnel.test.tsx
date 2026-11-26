@@ -20,6 +20,7 @@ import { useFunnel, useFunnelSubStep } from '../../../../../lib/components/inter
 import { DATA_ATTR_FUNNEL_INTERACTION_ID } from '../../../../../lib/components/internal/analytics/selectors';
 import Modal from '../../../../../lib/components/modal';
 import Table from '../../../../../lib/components/table';
+import Wizard from '../../../../../lib/components/wizard';
 import { mockedFunnelInteractionId, mockFunnelMetrics, mockInnerText, mockPerformanceMetrics } from '../mocks';
 
 jest.mock('../../../../../lib/components/internal/environment', () => ({
@@ -696,6 +697,83 @@ describe('AnalyticsFunnelSubStep', () => {
       subStepSelector: expect.any(String),
       subStepNameSelector: expect.any(String),
     });
+  });
+
+  test('calls funnelSubStepStart for a Modal that starts its own funnel from inside a Table', async () => {
+    const { getByTestId } = render(
+      <Table
+        items={[]}
+        columnDefinitions={[]}
+        header={
+          <Modal visible={true}>
+            <input data-testid="input" />
+          </Modal>
+        }
+      />
+    );
+    act(() => void jest.runAllTimers());
+
+    getByTestId('input').focus();
+
+    await runPendingPromises();
+
+    expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalled();
+  });
+
+  test('still treats a genuinely nested substep within the same funnel as nested', async () => {
+    const { getByTestId } = render(
+      <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
+        <AnalyticsFunnelStep stepNumber={1} stepNameSelector={''}>
+          <Container>
+            <Container>
+              <input data-testid="input" />
+            </Container>
+          </Container>
+        </AnalyticsFunnelStep>
+      </AnalyticsFunnel>
+    );
+    act(() => void jest.runAllTimers());
+
+    getByTestId('input').focus();
+
+    await runPendingPromises();
+
+    expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalledTimes(1);
+  });
+
+  test('calls funnelSubStepStart for a Wizard that starts its own funnel from inside a Container', async () => {
+    const { getByTestId } = render(
+      <Container>
+        <Wizard
+          i18nStrings={{
+            stepNumberLabel: stepNumber => `Step ${stepNumber}`,
+            collapsedStepsLabel: (stepNumber, stepsCount) => `Step ${stepNumber} of ${stepsCount}`,
+            cancelButton: 'Cancel',
+            previousButton: 'Previous',
+            nextButton: 'Next',
+            submitButton: 'Submit',
+            optional: 'optional',
+          }}
+          steps={[
+            {
+              title: 'Step 1',
+              content: (
+                <Container header={<Header>Substep</Header>}>
+                  <input data-testid="input" />
+                </Container>
+              ),
+            },
+          ]}
+        />
+      </Container>
+    );
+    act(() => void jest.runAllTimers());
+
+    getByTestId('input').focus();
+
+    await runPendingPromises();
+
+    expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalled();
   });
 });
 
