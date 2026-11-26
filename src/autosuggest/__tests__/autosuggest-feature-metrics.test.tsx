@@ -25,7 +25,7 @@ test.each([
 
   expect(useBaseComponentSpy).toHaveBeenCalledWith('Autosuggest', {
     props: expect.anything(),
-    metadata: { hasTokens: true },
+    metadata: { hasTokens: true, hasAsyncLoading: false },
   });
 });
 
@@ -34,6 +34,18 @@ test('reports no token mode usage by default', () => {
 
   expect(useBaseComponentSpy).toHaveBeenCalledWith('Autosuggest', {
     props: expect.anything(),
-    metadata: { hasTokens: false },
+    metadata: { hasTokens: false, hasAsyncLoading: false },
+  });
+});
+
+test.each([
+  [true, () => {}],
+  [false, undefined],
+])('reports async loading usage as %s in metadata', (expected, onLoadItems) => {
+  render(<Autosuggest {...defaultProps} onLoadItems={onLoadItems} />);
+
+  expect(useBaseComponentSpy).toHaveBeenCalledWith('Autosuggest', {
+    props: expect.anything(),
+    metadata: expect.objectContaining({ hasAsyncLoading: expected }),
   });
 });

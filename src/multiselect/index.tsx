@@ -49,6 +49,7 @@ const Multiselect = React.forwardRef(
         hasDropdownHeader: Boolean(restProps.renderDropdownHeader),
         hasDropdownFooter: Boolean(restProps.renderDropdownFooter),
         hasDropdownAriaDescribedby: Boolean(restProps.dropdownAriaDescribedby),
+        hasAsyncLoading: Boolean(restProps.onLoadItems),
       },
     });
 
