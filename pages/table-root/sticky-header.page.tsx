@@ -85,12 +85,13 @@ export default function TableStickyHeaderPage() {
           stickyHeader={
             <TableHead>
               <TableRow>
-                <TableHeaderCell disablePaddings="headerButton" ariaSort={descending ? 'descending' : 'ascending'}>
+                <TableHeaderCell disablePaddings={true} ariaSort={descending ? 'descending' : 'ascending'}>
                   <Button
-                    variant="table-header"
+                    variant="table-header-cell"
                     formAction="none"
                     wrapText={false}
-                    iconEnd={<Icon name={descending ? 'caret-down-filled' : 'caret-up-filled'} />}
+                    iconAlign="right"
+                    customIcon={<Icon name={descending ? 'caret-down-filled' : 'caret-up-filled'} />}
                     onClick={() => setUrlParams({ sortDescending: !descending })}
                   >
                     Name

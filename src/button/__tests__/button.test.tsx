@@ -542,52 +542,57 @@ describe('Button Component', () => {
     });
   });
 
-  describe('iconEnd property', () => {
-    test('renders the slot after the text', () => {
-      const wrapper = renderButton({ children: 'Name', iconEnd: <span data-testid="end">1</span> });
-      expect(wrapper.findIconEnd()!.find('[data-testid="end"]')).not.toBeNull();
-      expect(wrapper.findTextRegion()!.getElement().nextElementSibling).toBe(wrapper.findIconEnd()!.getElement());
+  describe('customIcon property', () => {
+    test.each(['left', 'right'] as const)('renders the slot on the %s of the text', iconAlign => {
+      const wrapper = renderButton({ children: 'Name', iconAlign, customIcon: <span data-testid="custom">1</span> });
+      const icon = wrapper.findCustomIcon()!;
+      expect(icon.find('[data-testid="custom"]')).not.toBeNull();
+      expect(icon.getElement()).toHaveClass(styles[`icon-${iconAlign}`]);
+      const text = wrapper.findTextRegion()!.getElement();
+      expect(iconAlign === 'right' ? text.nextElementSibling : text.previousElementSibling).toBe(icon.getElement());
     });
 
     test('renders no slot by default', () => {
-      expect(renderButton({ children: 'Name' }).findIconEnd()).toBeNull();
+      expect(renderButton({ children: 'Name' }).findCustomIcon()).toBeNull();
     });
 
-    test.each([null, false, ''])('renders no slot for %p', iconEnd => {
-      expect(renderButton({ children: 'Name', iconEnd }).findIconEnd()).toBeNull();
+    test.each([null, false, ''])('renders no slot for %p', customIcon => {
+      expect(renderButton({ children: 'Name', customIcon }).findCustomIcon()).toBeNull();
     });
 
     test('renders the slot for 0', () => {
-      expect(renderButton({ children: 'Name', iconEnd: 0 }).findIconEnd()!.getElement()).toHaveTextContent('0');
+      expect(renderButton({ children: 'Name', customIcon: 0 }).findCustomIcon()!.getElement()).toHaveTextContent('0');
     });
 
-    test('warns when combined with a right-aligned icon', () => {
-      const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-      renderButton({ children: 'Name', iconName: 'add-plus', iconAlign: 'right', iconEnd: <span /> });
-      expect(warnSpy).toHaveBeenCalledWith(
-        '[AwsUi] [Button] A right-aligned icon should not be combined with `iconEnd`.'
-      );
-      warnSpy.mockRestore();
+    test('takes precedence over the other icon properties', () => {
+      const wrapper = renderButton({
+        children: 'Name',
+        iconName: 'add-plus',
+        iconSvg: <svg />,
+        iconUrl: 'icon.png',
+        customIcon: <span />,
+      });
+      expect(wrapper.findCustomIcon()).not.toBeNull();
+      expect(wrapper.findAll('svg, img')).toHaveLength(0);
     });
 
-    test.each([null, undefined, false, ''])('does not warn for a right-aligned icon with iconEnd %p', iconEnd => {
-      const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-      renderButton({ children: 'Name', iconName: 'add-plus', iconAlign: 'right', iconEnd });
-      expect(warnSpy).not.toHaveBeenCalledWith(expect.stringContaining('iconEnd'));
-      warnSpy.mockRestore();
+    test('is not shown while loading, in favour of the spinner', () => {
+      const wrapper = renderButton({ children: 'Name', loading: true, customIcon: <span />, iconAlign: 'left' });
+      expect(wrapper.findLoadingIndicator()).not.toBeNull();
+      expect(wrapper.findCustomIcon()).toBeNull();
     });
   });
 
-  describe('table-header variant', () => {
-    test('is styled as a table header button', () => {
-      expect(renderButton({ children: 'Name', variant: 'table-header' }).getElement()).toHaveClass(
-        styles['variant-table-header']
+  describe('table-header-cell variant', () => {
+    test('is styled as a table header cell button', () => {
+      expect(renderButton({ children: 'Name', variant: 'table-header-cell' }).getElement()).toHaveClass(
+        styles['variant-table-header-cell']
       );
     });
 
     test('is not applied by other variants', () => {
       expect(renderButton({ children: 'Name', variant: 'normal' }).getElement()).not.toHaveClass(
-        styles['variant-table-header']
+        styles['variant-table-header-cell']
       );
     });
   });

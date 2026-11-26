@@ -18,10 +18,10 @@ export default class ButtonWrapper extends ComponentWrapper<HTMLButtonElement> {
   }
 
   /**
-   * Returns the content of the `iconEnd` slot, or `null` if there isn't any.
+   * Returns the content of the `customIcon` slot, or `null` if there isn't any.
    */
-  findIconEnd(): ElementWrapper | null {
-    return this.findByClassName(styles['icon-end']);
+  findCustomIcon(): ElementWrapper | null {
+    return this.findByClassName(styles['custom-icon']);
   }
 
   @usesDom

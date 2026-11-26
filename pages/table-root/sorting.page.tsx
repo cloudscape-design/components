@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
+
+import { useCollection } from '@cloudscape-design/collection-hooks';
 
 import Button from '~components/button';
 import Header from '~components/header';
@@ -13,17 +15,10 @@ import TableHeaderCell from '~components/table-header-cell';
 import TableRoot from '~components/table-root';
 import TableRow from '~components/table-row';
 
-import { useAppContext } from '../app/app-context';
 import { SimplePage } from '../app/templates';
-import { Item, makeItems } from './common';
+import { compareItems, Item, makeItems, SortEntry, sortItems, SortKey } from './common';
 
-type SortKey = 'name' | 'type' | 'size' | 'status';
 type SortDirection = 'ascending' | 'descending';
-
-interface SortEntry {
-  key: SortKey;
-  descending: boolean;
-}
 
 // Status can't be sorted, to show the disabled state.
 const COLUMNS: ReadonlyArray<{ key: SortKey; label: string; disabled?: boolean }> = [
@@ -33,13 +28,17 @@ const COLUMNS: ReadonlyArray<{ key: SortKey; label: string; disabled?: boolean }
   { key: 'status', label: 'Status', disabled: true },
 ];
 
-export default function TableSortingPage() {
-  const { urlParams, setUrlParams } = useAppContext<'sortKey' | 'sortDescending'>();
-  const sortKey = (urlParams.sortKey as SortKey | undefined) ?? 'name';
-  const descending = !!urlParams.sortDescending;
+const items = makeItems(12);
 
-  const items = useMemo(() => makeItems(12), []);
-  const rows = useMemo(() => sortItems(items, [{ key: sortKey, descending }]), [items, sortKey, descending]);
+export default function TableSortingPage() {
+  const {
+    items: rows,
+    collectionProps,
+    actions,
+  } = useCollection(items, {
+    sorting: { defaultState: { sortingColumn: sortingColumn('name') } },
+  });
+  const sortedKey = collectionProps.sortingColumn?.sortingField;
 
   return (
     <SimplePage title="Table atomics — sorting (auto layout)" screenshotArea={{}}>
@@ -49,16 +48,22 @@ export default function TableSortingPage() {
           <TableHead>
             <TableRow>
               {COLUMNS.map(({ key, label, disabled }) => {
-                const direction = key === sortKey ? toDirection(descending) : undefined;
+                const direction = key === sortedKey ? toDirection(!!collectionProps.sortingDescending) : undefined;
                 return (
-                  <TableHeaderCell key={key} disablePaddings="headerButton" ariaSort={direction}>
+                  <TableHeaderCell key={key} disablePaddings={true} ariaSort={direction}>
                     <Button
-                      variant="table-header"
+                      variant="table-header-cell"
                       formAction="none"
                       wrapText={false}
                       disabled={disabled}
-                      iconEnd={sortIcon(direction, disabled)}
-                      onClick={() => setUrlParams({ sortKey: key, sortDescending: direction === 'ascending' })}
+                      iconAlign="right"
+                      customIcon={sortIcon(direction, disabled)}
+                      onClick={() =>
+                        actions.setSorting({
+                          sortingColumn: sortingColumn(key),
+                          isDescending: direction === 'ascending',
+                        })
+                      }
                     >
                       {label}
                     </Button>
@@ -70,18 +75,18 @@ export default function TableSortingPage() {
           <ResourceRows rows={rows} />
         </TableRoot>
         <Header description="Shift+click or Shift+Enter adds a column to the sort.">Multi-column sort</Header>
-        <MultiSortTable items={items} />
+        <MultiSortTable />
       </SpaceBetween>
     </SimplePage>
   );
 }
 
-function MultiSortTable({ items }: { items: Item[] }) {
+function MultiSortTable() {
   const [sorting, setSorting] = useState<SortEntry[]>([
     { key: 'type', descending: false },
     { key: 'size', descending: true },
   ]);
-  const rows = useMemo(() => sortItems(items, sorting), [items, sorting]);
+  const rows = sortItems(items, sorting);
 
   return (
     <TableRoot ariaLabel="Resources, sorted by multiple columns">
@@ -96,13 +101,14 @@ function MultiSortTable({ items }: { items: Item[] }) {
             // in their name, through the icon's aria label, and their priority is the visible number.
             const isPrimary = index === 0;
             return (
-              <TableHeaderCell key={key} disablePaddings="headerButton" ariaSort={isPrimary ? direction : undefined}>
+              <TableHeaderCell key={key} disablePaddings={true} ariaSort={isPrimary ? direction : undefined}>
                 <Button
-                  variant="table-header"
+                  variant="table-header-cell"
                   formAction="none"
                   wrapText={false}
                   disabled={disabled}
-                  iconEnd={
+                  iconAlign="right"
+                  customIcon={
                     priority ? (
                       <SpaceBetween direction="horizontal" size="xxs" alignItems="center">
                         <span>{priority}</span>
@@ -135,6 +141,10 @@ function MultiSortTable({ items }: { items: Item[] }) {
   );
 }
 
+function sortingColumn(key: SortKey) {
+  return { sortingField: key, sortingComparator: (a: Item, b: Item) => compareItems(key, a, b) };
+}
+
 // A disabled column that isn't sorted has nothing to indicate, as in the existing Table.
 function sortIcon(direction: SortDirection | undefined, disabled = false, announceDirection = false) {
   if (!direction) {
@@ -148,7 +158,7 @@ function sortIcon(direction: SortDirection | undefined, disabled = false, announ
   );
 }
 
-function ResourceRows({ rows }: { rows: Item[] }) {
+function ResourceRows({ rows }: { rows: ReadonlyArray<Item> }) {
   return (
     <TableBody>
       {rows.map(item => (
@@ -165,23 +175,4 @@ function ResourceRows({ rows }: { rows: Item[] }) {
 
 function toDirection(descending: boolean): SortDirection {
   return descending ? 'descending' : 'ascending';
-}
-
-function sortItems(items: Item[], sorting: SortEntry[]): Item[] {
-  return [...items].sort((a, b) => {
-    for (const { key, descending } of sorting) {
-      const result = compare(key, a, b);
-      if (result !== 0) {
-        return descending ? -result : result;
-      }
-    }
-    return 0;
-  });
-}
-
-function compare(key: SortKey, a: Item, b: Item): number {
-  if (key === 'size') {
-    return parseInt(a.size, 10) - parseInt(b.size, 10);
-  }
-  return a[key].localeCompare(b[key]);
 }

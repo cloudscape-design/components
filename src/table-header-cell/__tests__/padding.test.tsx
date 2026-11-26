@@ -14,39 +14,26 @@ import tableHeaderCellStyles from '../../../lib/components/table/header-cell/sty
 import styles from '../../../lib/components/table-header-cell/styles.css.js';
 
 describe('TableHeaderCell disablePaddings', () => {
-  test.each<[TableHeaderCellProps['disablePaddings'], string | null]>([
-    [undefined, null],
-    [false, null],
-    [true, 'disable-paddings'],
-    ['headerButton', 'header-button'],
-  ])('disablePaddings=%p applies the %s padding mode', (disablePaddings, mode) => {
-    const cell = renderHeaderCell(disablePaddings);
-    ['disable-paddings', 'header-button'].forEach(other =>
-      expect(cell.classList.contains(styles[other])).toBe(other === mode)
-    );
-  });
-
   test.each<[TableHeaderCellProps['disablePaddings'], boolean]>([
-    [undefined, true],
-    [false, true],
-    [true, false],
-    ['headerButton', false],
-  ])("disablePaddings=%p gives the cell the existing Table's cell padding: %p", (disablePaddings, hasPadding) => {
+    [undefined, false],
+    [false, false],
+    [true, true],
+  ])('disablePaddings=%p removes the cell paddings: %p', (disablePaddings, removed) => {
     const cell = renderHeaderCell(disablePaddings);
-    expect(cell.classList.contains(tableHeaderCellStyles['with-paddings'])).toBe(hasPadding);
+    expect(cell.classList.contains(styles['disable-paddings'])).toBe(removed);
+    expect(cell.classList.contains(tableHeaderCellStyles['with-paddings'])).toBe(!removed);
   });
 
-  test('keeps the content wrapper for a header button, which inherits its padding', () => {
-    const cell = renderHeaderCell('headerButton', <button type="button">Name</button>);
+  test('keeps the content wrapper around a header button', () => {
+    const cell = renderHeaderCell(true, <button type="button">Name</button>);
     expect(cell.firstElementChild).toHaveClass(styles['header-cell-content']);
     expect(cell.firstElementChild!.firstElementChild!.tagName).toBe('BUTTON');
   });
 });
 
-// The existing Table renders its headers through the same cell, without the content wrapper. Its header classes are
-// what they were before header buttons existed: the cell padding and none of the new padding modes.
+// The existing Table renders its headers through the same cell, without the content wrapper, and keeps its padding.
 describe('existing Table header cell', () => {
-  test('keeps the cell padding and has none of the padding modes of the public header cell', () => {
+  test('keeps the cell padding and does not remove it', () => {
     const { container } = render(
       <Table
         items={[{ id: 1 }]}
@@ -62,7 +49,7 @@ describe('existing Table header cell', () => {
     headers.forEach(header => {
       const element = header.getElement();
       expect(element).toHaveClass(tableHeaderCellStyles['with-paddings']);
-      ['disable-paddings', 'header-button'].forEach(mode => expect(element).not.toHaveClass(styles[mode]));
+      expect(element).not.toHaveClass(styles['disable-paddings']);
       expect(element.querySelector(`.${styles['header-cell-content']}`)).toBeNull();
     });
   });

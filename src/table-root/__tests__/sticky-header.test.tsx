@@ -138,8 +138,8 @@ describe('TableRoot sticky header', () => {
         stickyHeader={
           <TableHead>
             <TableRow>
-              <TableHeaderCell disablePaddings="headerButton">
-                <Button variant="table-header">Name</Button>
+              <TableHeaderCell disablePaddings={true}>
+                <Button variant="table-header-cell">Name</Button>
               </TableHeaderCell>
               <TableHeaderCell>Status</TableHeaderCell>
             </TableRow>

@@ -63,6 +63,16 @@ export interface BaseButtonProps {
    * In most cases, they aren't needed, as the `svg` element inherits styles from the icon component.
    */
   iconSvg?: React.ReactNode;
+  /**
+   * Displays custom content in place of the icon, for example an `Icon` with a sort priority. Use `iconAlign` to
+   * position it. Use `Icon` components inside it, which inherit the button's color.
+   *
+   * It takes precedence over `iconName`, `iconUrl` and `iconSvg`. Nothing is displayed for `null`, `undefined`,
+   * `false` or an empty string.
+   *
+   * Its text is part of the button's accessible name, unless you hide it from assistive technologies.
+   */
+  customIcon?: React.ReactNode;
 
   /**
    * Adds `aria-label` to the button element. Use this to provide an accessible name for buttons
@@ -146,16 +156,6 @@ export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
   iconAlign?: ButtonProps.IconAlign;
 
   /**
-   * Displays content after the text, for example a sort indicator with its sort priority.
-   * Use `Icon` components, which inherit the button's color. Nothing is displayed for `null`, `undefined`, `false`
-   * or an empty string.
-   *
-   * Its text is part of the button's accessible name, unless you hide it from assistive technologies.
-   * Don't combine it with a right-aligned icon (`iconAlign="right"`).
-   */
-  iconEnd?: React.ReactNode;
-
-  /**
    * The form action that is performed by a button click.
    */
   formAction?: ButtonProps.FormAction;
@@ -223,7 +223,7 @@ export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
    * * `icon` to display an icon only (no text).
    * * `inline-icon` to display an icon-only (no text) button within a text context.
    * * `inline-link` to display a tertiary button with no outer padding.
-   * * `table-header` to fill a table column header, for example to sort it. Use it in a `TableHeaderCell` with `disablePaddings="headerButton"`, show a sort indicator in `iconEnd`, and set `formAction="none"` inside forms.
+   * * `table-header-cell` to fill a table column header, for example to sort it. Use it in a `TableHeaderCell` with `disablePaddings`, show a sort indicator in `customIcon` with `iconAlign="right"`, and set `formAction="none"` inside forms.
    */
   variant?: ButtonProps.Variant;
 
@@ -256,7 +256,7 @@ export namespace ButtonProps {
     root?: string;
   }
 
-  export type Variant = 'normal' | 'primary' | 'link' | 'icon' | 'inline-icon' | 'inline-link' | 'table-header';
+  export type Variant = 'normal' | 'primary' | 'link' | 'icon' | 'inline-icon' | 'inline-link' | 'table-header-cell';
   export type ClickDetail = _ClickDetail;
   export type FollowDetail = BaseNavigationDetail;
 

@@ -16,6 +16,7 @@ export interface ButtonIconProps {
   iconAlign?: ButtonProps['iconAlign'];
   iconUrl?: string;
   iconSvg?: React.ReactNode;
+  customIcon?: React.ReactNode;
   iconAlt?: string;
   iconSize?: IconProps.Size;
   variant?: string;
@@ -29,7 +30,21 @@ function getIconAlign(props: ButtonIconProps) {
   return standalone ? 'left' : props.iconAlign;
 }
 
+// React renders nothing for these, but it does render `0`.
+function hasCustomIcon({ customIcon }: ButtonIconProps) {
+  return customIcon !== undefined && customIcon !== null && customIcon !== false && customIcon !== '';
+}
+
 function IconWrapper({ iconName, iconUrl, iconAlt, iconSvg, iconSize, badge, ...props }: ButtonIconProps) {
+  if (hasCustomIcon(props)) {
+    return (
+      <span
+        className={clsx(styles.icon, styles[`icon-${getIconAlign(props)}`], styles['custom-icon'], props.iconClass)}
+      >
+        {props.customIcon}
+      </span>
+    );
+  }
   if (!iconName && !iconUrl && !iconSvg) {
     return null;
   }
