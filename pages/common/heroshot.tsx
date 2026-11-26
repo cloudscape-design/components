@@ -1,7 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { Mode } from '@cloudscape-design/global-styles';
+
+import { FormField, Select } from '~components';
 import {
   colorBackgroundLayoutMain,
   colorBorderDividerDefault,
@@ -9,9 +12,76 @@ import {
   fontSizeBodyS,
 } from '~design-tokens';
 
+import { useAppContext } from '../app/app-context';
+
 // Thumbnail size used by the components overview pages of the documentation website.
 export const HEROSHOT_WIDTH = 346;
 export const HEROSHOT_HEIGHT = 170;
+
+/**
+ * The backgrounds a gallery can be captured on. `default` is the one the documentation website uses
+ * today; the others are candidates being explored, and carry their own value per colour mode because
+ * they are not design tokens yet.
+ */
+const BACKGROUNDS = {
+  default: { label: 'Default (layout main)', light: colorBackgroundLayoutMain, dark: colorBackgroundLayoutMain },
+  warm: { label: 'Warm (#f5f3ef / #080808)', light: '#f5f3ef', dark: '#080808' },
+};
+
+type HeroshotBackground = keyof typeof BACKGROUNDS;
+
+/*
+ * The choice lives in a module-level store rather than in a React context, so that the control can sit
+ * beside a gallery instead of wrapping it: wrapping the 70+ frames of the component gallery would
+ * re-indent the whole page for a dev-only control.
+ */
+let selectedBackground: HeroshotBackground = 'default';
+const backgroundListeners = new Set<() => void>();
+
+function useSelectedBackground() {
+  const [background, setBackground] = useState(selectedBackground);
+  useEffect(() => {
+    const listener = () => setBackground(selectedBackground);
+    backgroundListeners.add(listener);
+    // The store is read on mount as well, so a frame added later starts on the current choice.
+    listener();
+    return () => {
+      backgroundListeners.delete(listener);
+    };
+  }, []);
+  return background;
+}
+
+/**
+ * The control that switches the background of every frame on the page. Render it once, above a gallery.
+ */
+export function HeroshotBackgroundSelect() {
+  const background = useSelectedBackground();
+  return (
+    <div style={{ maxInlineSize: 320, marginBlockEnd: 24 }}>
+      <FormField label="Heroshot background">
+        <Select
+          selectedOption={{ value: background, label: BACKGROUNDS[background].label }}
+          options={Object.entries(BACKGROUNDS).map(([value, { label }]) => ({ value, label }))}
+          onChange={event => {
+            selectedBackground = event.detail.selectedOption.value as HeroshotBackground;
+            backgroundListeners.forEach(listener => listener());
+          }}
+        />
+      </FormField>
+    </div>
+  );
+}
+
+/**
+ * The background of the frames in the current colour mode. The two candidate colours are not design
+ * tokens yet, so each carries its own value per mode.
+ */
+function useHeroshotBackground() {
+  const background = BACKGROUNDS[useSelectedBackground()];
+  const { mode } = useAppContext();
+  return mode === Mode.Dark ? background.dark : background.light;
+}
 
 interface HeroshotProps {
   /**
@@ -22,18 +92,24 @@ interface HeroshotProps {
   /** Caption rendered above the frame, outside of the captured area. */
   label?: string;
   /**
-   * Vertical placement of the content inside the frame. Content is centered by default; use `start`
-   * only when it is taller than the frame, so the crop keeps the top instead of cutting both ends.
+   * Vertical placement of the content inside the frame. Content is centered by default, and content
+   * taller than the frame is already top-aligned automatically, so `start` is only needed to anchor
+   * content that fits — for example a trigger whose dropdown hangs below it and needs the room.
    */
   align?: 'center' | 'start';
   /** Inset between the frame edges and the content. Set to 0 for compositions that bleed to the edges. */
   padding?: number;
+  /**
+   * Drops the inset on the bottom edge, so the content runs to it. Use for content that needs every
+   * pixel of height it can get and is cropped at the bottom anyway — a chart filling a dashboard item.
+   */
+  bleedBlockEnd?: boolean;
   /** Stretches the content to the full frame width. Use for block components such as alert or container. */
   stretch?: boolean;
   /**
    * Lays the content out at this pixel size and scales it down to fit the frame. Use for page-level
    * layouts (app layout, wizard) that only read as themselves at a full viewport width. Pick a size
-   * with the same 346:170 aspect ratio to avoid letterboxing.
+   * with the same aspect ratio as the padded content box to avoid letterboxing.
    */
   contentSize?: { width: number; height: number };
   children: React.ReactNode;
@@ -52,27 +128,24 @@ export function Heroshot({
   label,
   align = 'center',
   padding = 16,
+  bleedBlockEnd = false,
   stretch = false,
   contentSize,
   children,
 }: HeroshotProps) {
+  const background = useHeroshotBackground();
+  const paddingBlockEnd = bleedBlockEnd ? 0 : padding;
+  const contentInlineSize = HEROSHOT_WIDTH - 2 * padding;
+  const contentBlockSize = HEROSHOT_HEIGHT - padding - paddingBlockEnd;
+
   // Scaled content is laid out at its own size and shrunk to fit, so it ignores the flex alignment below.
   const scaled = contentSize ? (
-    <div
-      style={{
-        inlineSize: HEROSHOT_WIDTH - 2 * padding,
-        blockSize: HEROSHOT_HEIGHT - 2 * padding,
-        overflow: 'hidden',
-      }}
-    >
+    <div style={{ inlineSize: contentInlineSize, blockSize: contentBlockSize, overflow: 'hidden' }}>
       <div
         style={{
           inlineSize: contentSize.width,
           blockSize: contentSize.height,
-          transform: `scale(${Math.min(
-            (HEROSHOT_WIDTH - 2 * padding) / contentSize.width,
-            (HEROSHOT_HEIGHT - 2 * padding) / contentSize.height
-          )})`,
+          transform: `scale(${Math.min(contentInlineSize / contentSize.width, contentBlockSize / contentSize.height)})`,
           transformOrigin: 'top left',
         }}
       >
@@ -94,13 +167,17 @@ export function Heroshot({
           inlineSize: HEROSHOT_WIDTH,
           blockSize: HEROSHOT_HEIGHT,
           boxSizing: 'border-box',
-          padding,
+          paddingBlock: `${padding}px ${paddingBlockEnd}px`,
+          paddingInline: padding,
           overflow: 'hidden',
-          background: colorBackgroundLayoutMain,
+          background,
           outline: `1px dashed ${colorBorderDividerDefault}`,
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: align === 'center' ? 'center' : 'flex-start',
+          // `safe` makes the centering degrade to `start` as soon as the content is taller than the
+          // frame, so an overflowing preview keeps its top (and the frame's top padding) and is
+          // cropped at the bottom only, instead of being clipped at both ends.
+          justifyContent: align === 'center' ? 'safe center' : 'flex-start',
           alignItems: stretch ? 'stretch' : 'center',
         }}
       >
