@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React from 'react';
 
 import { useCollection } from '@cloudscape-design/collection-hooks';
 
@@ -16,7 +16,7 @@ import TableRoot from '~components/table-root';
 import TableRow from '~components/table-row';
 
 import { SimplePage } from '../app/templates';
-import { compareItems, Item, makeItems, SortEntry, sortItems, SortKey } from './common';
+import { compareItems, Item, makeItems, SortKey } from './common';
 
 type SortDirection = 'ascending' | 'descending';
 
@@ -82,20 +82,29 @@ export default function TableSortingPage() {
 }
 
 function MultiSortTable() {
-  const [sorting, setSorting] = useState<SortEntry[]>([
-    { key: 'type', descending: false },
-    { key: 'size', descending: true },
-  ]);
-  const rows = sortItems(items, sorting);
+  const {
+    items: rows,
+    collectionProps,
+    actions,
+  } = useCollection(items, {
+    sorting: {
+      multiColumn: true,
+      defaultSortingColumns: [
+        { sortingColumn: sortingColumn('type') },
+        { sortingColumn: sortingColumn('size'), isDescending: true },
+      ],
+    },
+  });
+  const sorting = collectionProps.multiColumnSort!.sortingColumns;
 
   return (
     <TableRoot ariaLabel="Resources, sorted by multiple columns">
       <TableHead>
         <TableRow>
           {COLUMNS.map(({ key, label, disabled }) => {
-            const index = sorting.findIndex(entry => entry.key === key);
+            const index = sorting.findIndex(entry => entry.sortingColumn.sortingField === key);
             const entry = sorting[index];
-            const direction = entry ? toDirection(entry.descending) : undefined;
+            const direction = entry ? toDirection(!!entry.isDescending) : undefined;
             const priority = sorting.length > 1 && entry ? index + 1 : undefined;
             // Only the first sorted column is the sort order, so only it has aria-sort. The others say their direction
             // in their name, through the icon's aria label, and their priority is the visible number.
@@ -119,13 +128,13 @@ function MultiSortTable() {
                     )
                   }
                   onClick={({ detail }) => {
-                    const next = { key, descending: direction === 'ascending' };
-                    setSorting(current =>
+                    const next = { sortingColumn: sortingColumn(key), isDescending: direction === 'ascending' };
+                    actions.setMultiSorting(
                       !detail.shiftKey
                         ? [next]
                         : entry
-                          ? current.map(e => (e.key === key ? next : e))
-                          : [...current, next]
+                          ? sorting.map(e => (e === entry ? next : e))
+                          : [...sorting, next]
                     );
                   }}
                 >
