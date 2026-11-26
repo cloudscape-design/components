@@ -14,7 +14,7 @@ class StickyHeaderCardsPage extends BasePageObject {
   }
 
   async navigateToPage(compact?: boolean) {
-    let url = '/#/light/cards/sticky-header';
+    let url = '/#/cards/sticky-header';
     if (compact) {
       url += '?density=compact';
     }

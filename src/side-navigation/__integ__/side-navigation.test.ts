@@ -12,7 +12,7 @@ describe('SideNavigation', () => {
     it(
       'stays expanded after opening with enter key',
       useBrowser(async browser => {
-        await browser.url('#/light/side-navigation/integration');
+        await browser.url('#/side-navigation/integration');
         const page = new BasePageObject(browser);
 
         const expandableLinkGroupWrapper = wrapper.findItemByIndex(2);

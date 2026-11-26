@@ -20,7 +20,7 @@ function setup(testFn: (page: BasePageObject) => Promise<void>) {
     const page = new BasePageObject(browser);
     await page.setWindowSize({ width: 950, height: 300 });
     const params = new URLSearchParams({ enableSelectAll: 'true' }).toString();
-    await browser.url(`/#/light/multiselect/screenshot?${params}`);
+    await browser.url(`/#/multiselect/screenshot?${params}`);
     await page.click(multiselect.findTrigger().toSelector());
     await testFn(page);
   });

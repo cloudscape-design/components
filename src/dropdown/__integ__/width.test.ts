@@ -55,7 +55,7 @@ function setupTest(
 ) {
   return useBrowser({ width: pageWidth, height: 1000 }, async browser => {
     await browser.url(
-      `#/light/dropdown/width?component=${componentId}&expandToViewport=${expandToViewport}&triggerWidth=${triggerWidth}px&asyncLoading=${asyncLoading}&manualServerMock=${asyncLoading}`
+      `#/dropdown/width?component=${componentId}&expandToViewport=${expandToViewport}&triggerWidth=${triggerWidth}px&asyncLoading=${asyncLoading}&manualServerMock=${asyncLoading}`
     );
     const page = new DropdownPageObject(browser);
     await page.waitForVisible(page.getWrapperAndTrigger(componentId).wrapper.toSelector());

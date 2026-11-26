@@ -6,7 +6,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import scrollbarStyles from '../../../lib/components/internal/components/sticky-scrollbar/styles.selectors.js';
 import styles from '../../../lib/components/table-root/styles.selectors.js';
 
-const pageUrl = '#/light/table-root/sticky-scrollbar';
+const pageUrl = '#/table-root/sticky-scrollbar';
 const scrollbar = (testId: string) => `[data-testid="${testId}"] .${scrollbarStyles['sticky-scrollbar-visible']}`;
 const scroller = (testId: string) => `[data-testid="${testId}"] .${styles['body-scroller']}`;
 

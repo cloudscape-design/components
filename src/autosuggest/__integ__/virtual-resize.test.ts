@@ -23,7 +23,7 @@ class ResizeAutosuggestPage extends AutosuggestPage {
 function setupTest(testFn: (page: ResizeAutosuggestPage) => Promise<void>) {
   return useBrowser(async browser => {
     const page = new ResizeAutosuggestPage(browser);
-    await browser.url('/#/light/autosuggest/virtual-resize');
+    await browser.url('/#/autosuggest/virtual-resize');
     await testFn(page);
   });
 }

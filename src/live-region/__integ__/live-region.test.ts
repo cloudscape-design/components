@@ -13,7 +13,7 @@ class LiveRegionPageObject extends BasePageObject {
 
 function setupTest(testFn: (pageObject: LiveRegionPageObject) => Promise<void>) {
   return useBrowser(async browser => {
-    await browser.url('#/light/live-region');
+    await browser.url('#/live-region');
     const pageObject = new LiveRegionPageObject(browser);
     await pageObject.waitForVisible('h1');
     return testFn(pageObject);

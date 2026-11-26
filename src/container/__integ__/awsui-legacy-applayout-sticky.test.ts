@@ -24,7 +24,7 @@ function setupTest({ viewport = viewports.desktop }, testFn: (page: AppLayoutLeg
   return useBrowser(async browser => {
     const page = new AppLayoutLegacyStickyPage(browser);
     await page.setWindowSize(viewport);
-    await browser.url(`#/light/app-layout/legacy-table-sticky-notifications/`);
+    await browser.url(`#/app-layout/legacy-table-sticky-notifications/`);
     await page.waitForVisible(appLayoutWrapper.findContentRegion().toSelector());
     await testFn(page);
   });

@@ -44,7 +44,7 @@ describe('Dropdown fitHandler', () => {
   const setupTest = (testFn: (page: DatePickerDropdownTestPage) => Promise<void>) => {
     return useBrowser(async browser => {
       const page = new DatePickerDropdownTestPage(createWrapper().findDatePicker().getElement(), browser);
-      await browser.url('#/light/date-picker/positioning');
+      await browser.url('#/date-picker/positioning');
       await page.waitForLoad();
       await testFn(page);
     });

@@ -43,15 +43,12 @@ interface AppUrlParams {
 }
 
 export interface AppContextType<T = unknown> {
-  mode: Mode;
   pageId?: string;
   urlParams: AppUrlParams & T;
   setUrlParams: (newParams: Partial<AppUrlParams & T>) => void;
-  setMode: (newMode: Mode) => void;
 }
 
 const appContextDefaults: AppContextType = {
-  mode: Mode.Light,
   pageId: undefined,
   urlParams: {
     density: Density.Comfortable,
@@ -61,7 +58,6 @@ const appContextDefaults: AppContextType = {
     motionDisabled: false,
     appLayoutWidget: false,
   },
-  setMode: () => {},
   setUrlParams: () => {},
 };
 
@@ -105,35 +101,15 @@ function formatQuery(params: AppUrlParams) {
 export function AppContextProvider({ children }: { children: React.ReactNode }) {
   const history = useHistory();
   const location = useLocation();
-  const matchWithVisualMode = useRouteMatch<{ mode: Mode; pageId: string }>('/:mode(light|dark)/:pageId*');
-  const matchWithoutVisualMode = useRouteMatch<{ pageId: string }>('/:pageId*');
-  const pageId = (matchWithVisualMode ?? matchWithoutVisualMode)?.params.pageId ?? undefined;
+  const match = useRouteMatch<{ pageId: string }>('/:pageId*');
+  const pageId = match?.params.pageId ?? undefined;
   const urlParams = parseQuery(location.search) as AppUrlParams;
-  const mode = matchWithVisualMode?.params.mode ?? urlParams.mode ?? Mode.Light;
 
   function setUrlParams(newParams: Partial<AppUrlParams>) {
     const formattedQuery = formatQuery({ ...urlParams, ...newParams });
-    if (matchWithVisualMode) {
-      const pathname = [matchWithVisualMode.params.mode, pageId].filter(segment => !!segment).join('/') + '/';
-      history.replace(`/${pathname}${formatQuery({ ...urlParams, ...newParams })}`);
-    } else {
-      const newUrl = pageId ? `/${pageId}${formattedQuery}` : formattedQuery;
-      history.replace(newUrl);
-    }
+    const newUrl = pageId ? `/${pageId}${formattedQuery}` : formattedQuery;
+    history.replace(newUrl);
   }
 
-  function updateMode(newMode: Mode) {
-    if (matchWithVisualMode) {
-      const pathname = [newMode, pageId].filter(segment => !!segment).join('/') + '/';
-      history.replace('/' + pathname + location.search + location.hash);
-    } else {
-      setUrlParams({ mode: newMode });
-    }
-  }
-
-  return (
-    <AppContext.Provider value={{ mode, pageId, urlParams, setUrlParams: setUrlParams, setMode: updateMode }}>
-      {children}
-    </AppContext.Provider>
-  );
+  return <AppContext.Provider value={{ pageId, urlParams, setUrlParams }}>{children}</AppContext.Provider>;
 }

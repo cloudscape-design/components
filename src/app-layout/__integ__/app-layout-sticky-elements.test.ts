@@ -57,7 +57,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
 
   test(
     'correctly stacks table header below notifications in visual refresh',
-    setupTest({ url: `#/light/app-layout/with-sticky-notifications-and-header?${getUrlParams(theme)}` }, async page => {
+    setupTest({ url: `#/app-layout/with-sticky-notifications-and-header?${getUrlParams(theme)}` }, async page => {
       await page.windowScrollTo({ top: viewports.desktop.height });
 
       const { bottom: secondNotificationBottom } = await page.getBoundingBox(
@@ -70,7 +70,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
 
   test(
     'correctly offsets the table header after dismissing the sticky notifications',
-    setupTest({ url: `#/light/app-layout/with-sticky-notifications-and-header?${getUrlParams(theme)}` }, async page => {
+    setupTest({ url: `#/app-layout/with-sticky-notifications-and-header?${getUrlParams(theme)}` }, async page => {
       await page.dismissAllNotifications();
       await page.windowScrollTo({ top: viewports.desktop.height });
 
@@ -87,7 +87,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
 
   test(
     'properly restores vertical offset for sticky headers when resizing to mobile and back to desktop',
-    setupTest({ url: `#/light/app-layout/with-sticky-notifications-and-header?${getUrlParams(theme)}` }, async page => {
+    setupTest({ url: `#/app-layout/with-sticky-notifications-and-header?${getUrlParams(theme)}` }, async page => {
       await page.windowScrollTo({ top: viewports.desktop.height });
       const stickyHeaderSelector = wrapper.findContentRegion().findTable().findHeaderSlot().toSelector();
       const { top: oldTop } = await page.getBoundingBox(stickyHeaderSelector);
@@ -106,7 +106,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
     'should render popover from split panel above sticky header',
     setupTest(
       {
-        url: `#/light/app-layout/with-full-page-table-and-split-panel?${getUrlParams(theme)}&splitPanelPosition=side`,
+        url: `#/app-layout/with-full-page-table-and-split-panel?${getUrlParams(theme)}&splitPanelPosition=side`,
       },
       async page => {
         const popover = createWrapper().findPopover('[data-testid="split-panel"]');
@@ -121,7 +121,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
     'should render popover from help panel above sticky header',
     setupTest(
       {
-        url: `#/light/app-layout/with-full-page-table-and-split-panel?${getUrlParams(theme)}&splitPanelPosition=side`,
+        url: `#/app-layout/with-full-page-table-and-split-panel?${getUrlParams(theme)}&splitPanelPosition=side`,
       },
       async page => {
         // close split panel which is open by default
@@ -141,7 +141,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
     'should not leave any space between page header and sticky header in content layout',
     setupTest(
       {
-        url: `#/light/app-layout/with-sticky-header-table-in-content-layout?${getUrlParams(theme)}`,
+        url: `#/app-layout/with-sticky-header-table-in-content-layout?${getUrlParams(theme)}`,
       },
       async page => {
         const pageHeaderSelector = '#h';

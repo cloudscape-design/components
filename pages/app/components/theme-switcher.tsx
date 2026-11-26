@@ -10,7 +10,7 @@ import SpaceBetween from '~components/space-between';
 import AppContext, { Theme } from '../app-context';
 
 export default function ThemeSwitcher() {
-  const { mode, urlParams, setUrlParams, setMode } = useContext(AppContext);
+  const { urlParams, setUrlParams } = useContext(AppContext);
 
   function activateTheme(theme: 'visualRefresh' | 'oneTheme' | 'classic') {
     setUrlParams({
@@ -54,8 +54,8 @@ export default function ThemeSwitcher() {
         <input
           id="mode-toggle"
           type="checkbox"
-          checked={mode === 'dark'}
-          onChange={event => setMode(event.target.checked ? Mode.Dark : Mode.Light)}
+          checked={urlParams.mode === Mode.Dark}
+          onChange={event => setUrlParams({ mode: event.target.checked ? Mode.Dark : Mode.Light })}
         />
         Dark mode
       </label>

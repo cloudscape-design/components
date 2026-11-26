@@ -59,7 +59,7 @@ class MultiColumnSortPage extends BasePageObject {
 const setupTest = (testFn: (page: MultiColumnSortPage) => Promise<void>) =>
   useBrowser({ width: 1200, height: 800 }, async browser => {
     const page = new MultiColumnSortPage(browser);
-    await browser.url('#/light/table/multi-column-sort?keyboardNav=true');
+    await browser.url('#/table/multi-column-sort?keyboardNav=true');
     await page.waitForVisible(tableWrapper.toSelector());
     await testFn(page);
   });

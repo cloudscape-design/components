@@ -8,7 +8,7 @@ test(
   'undefined texts finder works',
   useBrowser(async browser => {
     const page = new A11yPageObject(browser);
-    await browser.url('#/dark/undefined-texts');
+    await browser.url('#/undefined-texts?mode=dark');
     await page.waitForVisible('main');
     await expect(page.getUndefinedTexts()).resolves.toEqual([
       'This page contains undefined strings',

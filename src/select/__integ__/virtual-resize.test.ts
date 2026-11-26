@@ -25,7 +25,7 @@ function setupTest(testFn: (page: ResizeSelectPage) => Promise<void>) {
   return useBrowser(async browser => {
     const wrapper = createWrapper().findSelect();
     const page = new ResizeSelectPage(browser, wrapper);
-    await browser.url('/#/light/select/virtual-resize');
+    await browser.url('/#/select/virtual-resize');
     await testFn(page);
   });
 }

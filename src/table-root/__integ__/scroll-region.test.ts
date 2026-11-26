@@ -5,7 +5,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import styles from '../../../lib/components/table-root/styles.selectors.js';
 
-const pageUrl = '#/light/table-root/scroll-region';
+const pageUrl = '#/table-root/scroll-region';
 const scroller = (testid: string) => `[data-testid="${testid}"] .${styles['body-scroller']}`;
 const scrollTable = scroller('scroll-table');
 const growTable = scroller('grow-table');

@@ -102,7 +102,7 @@ describe('OptionList keyboard scrolling', () => {
 
     test(
       'keeps the highlighted option visible',
-      setupTest(`#/light/option-list/scroll?container=${container}`, async page => {
+      setupTest(`#/option-list/scroll?container=${container}`, async page => {
         await focusList(page);
         await page.assertKeyboardScrolling();
       })
@@ -110,7 +110,7 @@ describe('OptionList keyboard scrolling', () => {
 
     test(
       'focus entry highlights the selected option near the end and scrolls it into view',
-      setupTest(`#/light/option-list/scroll?container=${container}&preselected=near-end`, async page => {
+      setupTest(`#/option-list/scroll?container=${container}&preselected=near-end`, async page => {
         await focusList(page);
         await expect(page.getHighlightedText()).resolves.toBe('Option 81');
         await page.waitForHighlightVisible();
@@ -121,7 +121,7 @@ describe('OptionList keyboard scrolling', () => {
   describe.each([false, true])('in a Dropdown, expandToViewport=%s', expandToViewport => {
     test(
       'keeps the highlighted option visible without scrolling the page on open',
-      setupTest(`#/light/option-list/scroll?container=dropdown&expandToViewport=${expandToViewport}`, async page => {
+      setupTest(`#/option-list/scroll?container=dropdown&expandToViewport=${expandToViewport}`, async page => {
         const scrollBefore = await page.getWindowScroll();
         await page.click('#dropdown-trigger');
         await page.waitForVisible(listbox);

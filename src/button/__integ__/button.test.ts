@@ -17,7 +17,7 @@ describe('Button', () => {
   test(
     'enter key in form triggers button click',
     useBrowser(async browser => {
-      await browser.url('#/light/button/form-submit');
+      await browser.url('#/button/form-submit');
       const page = new ButtonPageObject(browser);
       await page.waitForVisible('#keyInput');
       await expect(page.getClickMessage()).resolves.toBe('');
@@ -30,7 +30,7 @@ describe('Button', () => {
   test(
     'switches to next button by tab skipping the disabled ones',
     useBrowser(async browser => {
-      await browser.url('#/light/button/tab-navigation');
+      await browser.url('#/button/tab-navigation');
       const page = new ButtonPageObject(browser);
       await page.waitForVisible(wrapper.findButton('#focusButton').toSelector());
       await page.click(wrapper.findButton('#focusButton').toSelector());
@@ -50,7 +50,7 @@ describe('Button Style API', () => {
   test(
     'active, hover and focus states',
     useBrowser(async browser => {
-      await browser.url('#/light/button/style-custom-types');
+      await browser.url('#/button/style-custom-types');
       const page = new ButtonPageObject(browser);
       const buttonSelector = '[data-testid=default]';
 

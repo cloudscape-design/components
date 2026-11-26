@@ -49,7 +49,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
       const page = new AppLayoutRefreshNotoficationsPage(browser);
       await page.setWindowSize(viewport);
       await browser.url(
-        `#/light/app-layout/notifications-refresh/?${getUrlParams(theme)}${removeNotifications ? `&removeNotifications` : ''}`
+        `#/app-layout/notifications-refresh/?${getUrlParams(theme)}${removeNotifications ? `&removeNotifications` : ''}`
       );
       await page.waitForVisible(wrapper.findContentRegion().toSelector());
       await testFn(page);
