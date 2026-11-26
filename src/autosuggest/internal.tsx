@@ -23,7 +23,7 @@ import { BaseKeyDetail, NonCancelableCustomEvent } from '../types/events';
 import { useAutosuggestTokenI18n } from './i18n-utils';
 import { AutosuggestItem, AutosuggestProps } from './interfaces';
 import { useAutosuggestLoadMore } from './load-more-controller';
-import { useAutosuggestItems } from './options-controller';
+import { getTotalOptionsCount, useAutosuggestItems } from './options-controller';
 import AutosuggestOptionsList from './options-list';
 
 import styles from './styles.css.js';
@@ -211,7 +211,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const isFiltered = !!value && value.length !== 0 && !(filteringType === 'auto' && autosuggestItemsState.showAll);
   const filteredText =
     isFiltered && !isTokenMode
-      ? filteringResultsText?.(autosuggestItemsState.items.length, options?.length ?? 0)
+      ? filteringResultsText?.(autosuggestItemsState.items.length, getTotalOptionsCount(options ?? []))
       : undefined;
   const dropdownStatus = useDropdownStatus({
     ...props,

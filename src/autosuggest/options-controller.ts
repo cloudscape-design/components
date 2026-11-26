@@ -175,6 +175,14 @@ function createItems(options: Options) {
   return { items, getItemGroup, getItemParent };
 }
 
+/**
+ * Counts options the same way as the flattened list of items: each group counts as one item
+ * together with its child options.
+ */
+export function getTotalOptionsCount(options: Options) {
+  return options.reduce((count, option) => count + (isGroup(option) ? option.options.length + 1 : 1), 0);
+}
+
 function isGroup(optionOrGroup: AutosuggestProps.Option): optionOrGroup is AutosuggestProps.OptionGroup {
   const key: keyof AutosuggestProps.OptionGroup = 'options';
   return key in optionOrGroup;
