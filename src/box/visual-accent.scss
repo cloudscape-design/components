@@ -3,6 +3,7 @@
 
 @use 'sass:map';
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/utils/theming';
 
 // T-shirt size keywords mirror the Box spacing scale (see spacing.scss).
 // `full` renders fully rounded corners (a circle when combined with `aspectRatio: 'equal'`).
@@ -31,19 +32,23 @@ $accent-radii: (
 // square by default; the `.visual-accent-radius-*` classes below apply corner rounding for the
 // curated `borderRadius` keywords.
 .visual-accent {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding-block: awsui.$space-xxs;
-  padding-inline: awsui.$space-xs;
-  box-sizing: border-box;
+  @include theming.one-theme-only {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding-block: awsui.$space-xxs;
+    padding-inline: awsui.$space-xs;
+    box-sizing: border-box;
+  }
 }
 
 // ─── Accent border radius (t-shirt size keywords) ─────────────────────────────
 // Mirror the Box spacing scale so `borderRadius` keywords align with `padding` / `margin`.
 @each $name, $value in $accent-radii {
   .visual-accent-radius-#{$name} {
-    @include accent-radius($value);
+    @include theming.one-theme-only {
+      @include accent-radius($value);
+    }
   }
 }
 
@@ -53,22 +58,26 @@ $accent-radii: (
 //           `borderRadius: 'full'` to render a circle.
 
 .visual-accent-aspect-auto {
-  // Reset any square constraints so content can size the container naturally.
-  aspect-ratio: auto;
-  inline-size: auto;
+  @include theming.one-theme-only {
+    // Reset any square constraints so content can size the container naturally.
+    aspect-ratio: auto;
+    inline-size: auto;
+  }
 }
 
 .visual-accent-aspect-equal {
-  // Equal padding on all sides.
-  padding-block: awsui.$space-xs;
-  padding-inline: awsui.$space-xs;
-  // Force the element to be a square regardless of content dimensions.
-  // The width is constrained to match the height (content + padding).
-  aspect-ratio: 1 / 1;
-  // Prevent content from stretching the box wider than tall.
-  overflow: hidden;
-  // Let the box shrink-wrap to its height, width follows via aspect-ratio.
-  inline-size: fit-content;
+  @include theming.one-theme-only {
+    // Equal padding on all sides.
+    padding-block: awsui.$space-xs;
+    padding-inline: awsui.$space-xs;
+    // Force the element to be a square regardless of content dimensions.
+    // The width is constrained to match the height (content + padding).
+    aspect-ratio: 1 / 1;
+    // Prevent content from stretching the box wider than tall.
+    overflow: hidden;
+    // Let the box shrink-wrap to its height, width follows via aspect-ratio.
+    inline-size: fit-content;
+  }
 }
 
 // ─── Accent colors ──────────────────────────────────────────────────────────────
@@ -121,7 +130,9 @@ $accent-colors: (
 
 @each $accent, $colors in $accent-colors {
   .box.visual-accent.visual-accent-#{$accent} {
-    background-color: map.get($colors, 'background');
-    color: map.get($colors, 'foreground');
+    @include theming.one-theme-only {
+      background-color: map.get($colors, 'background');
+      color: map.get($colors, 'foreground');
+    }
   }
 }

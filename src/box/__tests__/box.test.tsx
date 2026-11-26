@@ -176,6 +176,14 @@ describe('Box', () => {
   });
 
   describe('visualAccent property', () => {
+    beforeEach(() => {
+      document.body.classList.add('awsui-one-theme');
+    });
+
+    afterEach(() => {
+      document.body.classList.remove('awsui-one-theme');
+    });
+
     test('renders the default div tag when no variant is set', () => {
       const boxWrapper = renderBox({ visualAccent: { color: 'indigo' } });
       expect(boxWrapper.getElement().tagName).toBe('DIV');

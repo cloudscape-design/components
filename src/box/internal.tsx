@@ -3,8 +3,11 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useOneTheme } from '../internal/hooks/use-visual-mode';
 import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import { BoxProps } from './interfaces';
 
@@ -29,9 +32,14 @@ export default function InternalBox({
   __internalRootRef,
   ...props
 }: InternalBoxProps) {
+  const isOneTheme = useOneTheme();
   const baseProps = getBaseProps(props);
   const marginsClassNamesSuffices = getClassNamesSuffixes(margin);
   const paddingsClassNamesSuffices = getClassNamesSuffixes(padding);
+
+  if (visualAccent && !isOneTheme) {
+    warnOnce('Box', '`visualAccent` is supported only in One Theme and has no effect under Visual Refresh.');
+  }
 
   const accentAspectRatio = visualAccent?.aspectRatio ?? 'auto';
 
