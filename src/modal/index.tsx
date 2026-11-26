@@ -10,10 +10,6 @@ import {
   AnalyticsFunnelStep,
   AnalyticsFunnelSubStep,
 } from '../internal/analytics/components/analytics-funnel';
-import {
-  defaultFunnelSubStepContextValue,
-  FunnelSubStepContext,
-} from '../internal/analytics/context/analytics-context';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel';
 import { DATA_ATTR_MODAL_ID } from '../internal/analytics/selectors';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
@@ -39,42 +35,40 @@ function ModalWithAnalyticsFunnel({
   };
 
   return (
-    <FunnelSubStepContext.Provider value={defaultFunnelSubStepContextValue}>
-      <AnalyticsFunnel
+    <AnalyticsFunnel
+      mounted={props.visible}
+      funnelIdentifier={analyticsMetadata?.instanceIdentifier}
+      funnelFlowType={analyticsMetadata?.flowType}
+      funnelErrorContext={analyticsMetadata?.errorContext}
+      funnelResourceType={analyticsMetadata?.resourceType}
+      funnelType="modal"
+      optionalStepNumbers={[]}
+      totalFunnelSteps={1}
+      funnelNameSelectors={() => [
+        `[${DATA_ATTR_MODAL_ID}="${window?.CSS?.escape(modalId)}"] .${styles['header--text']}`,
+      ]}
+    >
+      <AnalyticsFunnelStep
         mounted={props.visible}
-        funnelIdentifier={analyticsMetadata?.instanceIdentifier}
-        funnelFlowType={analyticsMetadata?.flowType}
-        funnelErrorContext={analyticsMetadata?.errorContext}
-        funnelResourceType={analyticsMetadata?.resourceType}
-        funnelType="modal"
-        optionalStepNumbers={[]}
-        totalFunnelSteps={1}
-        funnelNameSelectors={() => [
-          `[${DATA_ATTR_MODAL_ID}="${window?.CSS?.escape(modalId)}"] .${styles['header--text']}`,
-        ]}
+        stepIdentifier={analyticsMetadata?.instanceIdentifier}
+        stepErrorContext={analyticsMetadata?.errorContext}
+        stepNumber={1}
       >
-        <AnalyticsFunnelStep
-          mounted={props.visible}
-          stepIdentifier={analyticsMetadata?.instanceIdentifier}
-          stepErrorContext={analyticsMetadata?.errorContext}
-          stepNumber={1}
+        <AnalyticsFunnelSubStep
+          subStepIdentifier={analyticsMetadata?.instanceIdentifier}
+          subStepErrorContext={analyticsMetadata?.errorContext}
         >
-          <AnalyticsFunnelSubStep
-            subStepIdentifier={analyticsMetadata?.instanceIdentifier}
-            subStepErrorContext={analyticsMetadata?.errorContext}
-          >
-            <InternalModalAsFunnel
-              size={size}
-              hideDismissButton={hideDismissButton}
-              {...props}
-              {...baseComponentProps}
-              {...dataAttributes}
-              __injectAnalyticsComponentMetadata={true}
-            />
-          </AnalyticsFunnelSubStep>
-        </AnalyticsFunnelStep>
-      </AnalyticsFunnel>
-    </FunnelSubStepContext.Provider>
+          <InternalModalAsFunnel
+            size={size}
+            hideDismissButton={hideDismissButton}
+            {...props}
+            {...baseComponentProps}
+            {...dataAttributes}
+            __injectAnalyticsComponentMetadata={true}
+          />
+        </AnalyticsFunnelSubStep>
+      </AnalyticsFunnelStep>
+    </AnalyticsFunnel>
   );
 }
 

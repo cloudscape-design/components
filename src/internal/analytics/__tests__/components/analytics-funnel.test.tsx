@@ -20,6 +20,7 @@ import { useFunnel, useFunnelSubStep } from '../../../../../lib/components/inter
 import { DATA_ATTR_FUNNEL_INTERACTION_ID } from '../../../../../lib/components/internal/analytics/selectors';
 import Modal from '../../../../../lib/components/modal';
 import Table from '../../../../../lib/components/table';
+import Wizard from '../../../../../lib/components/wizard';
 import { mockedFunnelInteractionId, mockFunnelMetrics, mockInnerText, mockPerformanceMetrics } from '../mocks';
 
 jest.mock('../../../../../lib/components/internal/environment', () => ({
@@ -738,6 +739,41 @@ describe('AnalyticsFunnelSubStep', () => {
     await runPendingPromises();
 
     expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalledTimes(1);
+  });
+
+  test('calls funnelSubStepStart for a Wizard that starts its own funnel from inside a Container', async () => {
+    const { getByTestId } = render(
+      <Container>
+        <Wizard
+          i18nStrings={{
+            stepNumberLabel: stepNumber => `Step ${stepNumber}`,
+            collapsedStepsLabel: (stepNumber, stepsCount) => `Step ${stepNumber} of ${stepsCount}`,
+            cancelButton: 'Cancel',
+            previousButton: 'Previous',
+            nextButton: 'Next',
+            submitButton: 'Submit',
+            optional: 'optional',
+          }}
+          steps={[
+            {
+              title: 'Step 1',
+              content: (
+                <Container header={<Header>Substep</Header>}>
+                  <input data-testid="input" />
+                </Container>
+              ),
+            },
+          ]}
+        />
+      </Container>
+    );
+    act(() => void jest.runAllTimers());
+
+    getByTestId('input').focus();
+
+    await runPendingPromises();
+
+    expect(FunnelMetrics.funnelSubStepStart).toHaveBeenCalled();
   });
 });
 

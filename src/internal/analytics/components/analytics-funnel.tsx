@@ -10,6 +10,7 @@ import { useDebounceCallback } from '../../hooks/use-debounce-callback';
 import { useVisualRefresh } from '../../hooks/use-visual-mode';
 import { nodeBelongs } from '../../utils/node-belongs';
 import {
+  defaultFunnelSubStepContextValue,
   FunnelContext,
   FunnelContextValue,
   FunnelState,
@@ -302,7 +303,17 @@ const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...
     wizardCount,
   };
 
-  return <FunnelContext.Provider value={funnelContextValue}>{children}</FunnelContext.Provider>;
+  // A funnel is a new analytics boundary. A sub-step context inherited from outside this funnel
+  // (e.g. a Modal or Wizard rendered inside a Container/Table, whose context leaks in through the
+  // React tree even across a portal) must not make this funnel's own sub-steps look nested —
+  // otherwise they never attach their handlers and never emit `funnelSubStepStart`. Resetting the
+  // sub-step context here, at the funnel boundary, scopes nesting to within a single funnel for
+  // every funnel starter uniformly. See AWSUI-62446.
+  return (
+    <FunnelContext.Provider value={funnelContextValue}>
+      <FunnelSubStepContext.Provider value={defaultFunnelSubStepContextValue}>{children}</FunnelSubStepContext.Provider>
+    </FunnelContext.Provider>
+  );
 };
 
 interface AnalyticsFunnelStepProps {
