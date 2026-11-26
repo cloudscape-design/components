@@ -5,7 +5,6 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
-@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../internal/styles/utils/theming';
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
@@ -150,13 +149,7 @@ $content-exit-clip-delay: $content-exit-duration;
   }
 
   &--collapsed {
-    padding-inline: calc(
-      (
-          var(#{custom-props.$navigationCollapsedWidth}, awsui.$size-side-navigation-collapsed-width) -
-            #{awsui.$size-side-navigation-item-collapsed}
-        ) /
-        2
-    );
+    padding-inline: 0;
   }
 
   &.list--with-icons:not(.list-variant-root--collapsed) {
@@ -288,7 +281,9 @@ $content-exit-clip-delay: $content-exit-duration;
 
   &--collapsed {
     inline-size: fit-content;
+    max-inline-size: awsui.$size-side-navigation-item-collapsed;
     margin-block: awsui.$space-side-navigation-item-icon-gap;
+    margin-inline: auto;
     padding-block: 0;
     padding-inline: 0;
   }
@@ -753,7 +748,9 @@ $content-exit-clip-delay: $content-exit-duration;
     margin-block: calc(#{awsui.$space-scaled-2x-xl} - #{$item-padding-block});
     border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     &.divider--collapsed {
+      inline-size: awsui.$size-side-navigation-item-collapsed;
       margin-block: awsui.$space-scaled-2x-m;
+      margin-inline: auto;
     }
   }
   &-header {

@@ -55,11 +55,13 @@ function computeAbsoluteOffsets({
       style.insetBlockStart = offset.top;
       style.insetInlineStart = offset.start;
       style.insetInlineEnd = offset.end;
+      style.maxBlockSize = `calc(100% - ${offset.top}px)`;
       break;
     case 'bottom':
       style.insetBlockEnd = offset.bottom;
       style.insetInlineStart = offset.start;
       style.insetInlineEnd = offset.end;
+      style.maxBlockSize = `calc(100% - ${offset.bottom}px)`;
       break;
     case 'start':
       style.insetInlineStart = offset.start;
