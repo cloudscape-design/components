@@ -163,6 +163,9 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    * the filtering experience smoother. We don't recommend enabling the feature if you have less than 500 options,
    * because the improvements to performance are offset by a visible scrolling lag. When you set this flag to true,
    * it removes options that are not currently in view from the DOM.
+   *
+   * When the flag is set, enum value lists of a property use virtual scrolling only if that property has more than
+   * 500 values. Shorter enum value lists render all options, to avoid the scrolling lag.
    */
   virtualScroll?: boolean;
   /**

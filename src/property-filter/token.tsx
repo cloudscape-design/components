@@ -44,6 +44,7 @@ interface TokenProps {
   i18nStrings: I18nStringsInternal;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
   enableTokenGroups: boolean;
+  virtualScroll?: boolean;
 }
 
 export const TokenButton = ({
@@ -65,6 +66,7 @@ export const TokenButton = ({
   freeTextFiltering,
   expandToViewport,
   enableTokenGroups,
+  virtualScroll,
 }: TokenProps) => {
   const tokenRef = useRef<FilteringTokenRef>(null);
 
@@ -144,6 +146,7 @@ export const TokenButton = ({
           asyncProperties={asyncProperties}
           customGroupsText={customGroupsText}
           freeTextFiltering={freeTextFiltering}
+          virtualScroll={virtualScroll}
           onDismiss={() => {
             tokenRef.current?.closeEditor();
           }}

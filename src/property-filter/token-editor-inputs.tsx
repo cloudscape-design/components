@@ -18,6 +18,7 @@ import {
   InternalFreeTextFiltering,
 } from './internal-interfaces.js';
 import { useLoadItems } from './use-load-items.js';
+import { shouldUseEnumVirtualScroll } from './utils.js';
 
 import styles from './styles.css.js';
 
@@ -142,6 +143,7 @@ interface ValueInputProps {
   operator: undefined | ComparisonOperator;
   property: null | InternalFilteringProperty;
   value: unknown;
+  virtualScroll?: boolean;
 }
 
 export function ValueInput(props: ValueInputProps) {
@@ -208,6 +210,7 @@ function ValueInputEnum({
   filteringOptions,
   onLoadItems,
   i18nStrings,
+  virtualScroll,
 }: ValueInputPropsEnum) {
   const valueOptions = filteringOptions
     .filter(option => option.property?.propertyKey === property.propertyKey)
@@ -229,6 +232,7 @@ function ValueInputEnum({
           inlineTokens={true}
           hideTokens={true}
           keepOpen={true}
+          virtualScroll={shouldUseEnumVirtualScroll(virtualScroll, valueOptions.length)}
         />
       </div>
     </div>

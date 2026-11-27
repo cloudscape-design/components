@@ -591,3 +591,69 @@ describe('async token editing', () => {
     );
   });
 });
+
+describe('virtual scroll', () => {
+  const manyOptionsCount = 501;
+  const thresholdOptionsCount = 500;
+  const createOptions = (count: number): readonly FilteringOption[] =>
+    Array.from({ length: count }, (_, index) => ({ propertyKey: 'tags', value: `tag-${index}` }));
+  const enumTokenQuery: PropertyFilterProps.Query = {
+    operation: 'and',
+    tokens: [{ propertyKey: 'tags', operator: '=', value: ['tag-0'] }],
+  };
+
+  const getFilteringInputOptionsCount = (virtualScroll: boolean, optionsCount = manyOptionsCount) => {
+    const { wrapper, getOptionsContent } = renderComponent({
+      filteringOptions: createOptions(optionsCount),
+      virtualScroll,
+    });
+    wrapper.focus();
+    wrapper.setInputValue('tags = ');
+    return getOptionsContent().length;
+  };
+
+  const getTokenEditorOptionsCount = (virtualScroll: boolean, optionsCount = manyOptionsCount) => {
+    const { openEditor, findEditorMultiselect, getEditorOptionsContent } = renderComponent({
+      filteringOptions: createOptions(optionsCount),
+      query: enumTokenQuery,
+      virtualScroll,
+    });
+    openEditor();
+    findEditorMultiselect().openDropdown();
+    return getEditorOptionsContent().length;
+  };
+
+  test.each([
+    [thresholdOptionsCount, true],
+    [manyOptionsCount, true],
+    [thresholdOptionsCount, false],
+    [manyOptionsCount, false],
+  ])('with %i enum options and virtualScroll=%s', (optionsCount, virtualScroll) => {
+    const expectVirtual = virtualScroll && optionsCount > thresholdOptionsCount;
+    for (const count of [
+      getFilteringInputOptionsCount(virtualScroll, optionsCount),
+      getTokenEditorOptionsCount(virtualScroll, optionsCount),
+    ]) {
+      if (expectVirtual) {
+        expect(count).toBeGreaterThan(0);
+        expect(count).toBeLessThan(optionsCount);
+      } else {
+        expect(count).toBe(optionsCount);
+      }
+    }
+  });
+
+  test('uses virtual scroll in the main list when a short enum property is present', () => {
+    const { wrapper, getOptionsContent } = renderComponent({
+      filteringOptions: [...filteringOptions, ...createOptions(manyOptionsCount)],
+      virtualScroll: true,
+    });
+    wrapper.focus();
+    const mainListCount = getOptionsContent().length;
+    expect(mainListCount).toBeGreaterThan(0);
+    expect(mainListCount).toBeLessThan(manyOptionsCount);
+
+    wrapper.setInputValue('State = ');
+    expect(getOptionsContent()).toHaveLength(filteringOptions.length);
+  });
+});

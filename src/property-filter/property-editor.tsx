@@ -17,6 +17,7 @@ import { I18nStringsInternal } from './i18n-utils';
 import { ComparisonOperator, ExtendedOperatorForm, LoadItemsDetail } from './interfaces';
 import { InternalFilteringOption, InternalFilteringProperty, InternalToken } from './internal-interfaces';
 import { useLoadItems } from './use-load-items';
+import { shouldUseEnumVirtualScroll } from './utils';
 
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
@@ -60,6 +61,7 @@ export function PropertyEditorContentEnum({
   asyncProps,
   filteringOptions,
   onLoadItems,
+  virtualScroll,
 }: {
   property: InternalFilteringProperty;
   filter: string;
@@ -68,6 +70,7 @@ export function PropertyEditorContentEnum({
   asyncProps: DropdownStatusProps;
   filteringOptions: readonly InternalFilteringOption[];
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
+  virtualScroll?: boolean;
 }) {
   const valueOptions: readonly {
     value: string;
@@ -99,6 +102,7 @@ export function PropertyEditorContentEnum({
         ariaLabel={property.groupValuesLabel}
         statusType="finished"
         noMatch={asyncProps.empty}
+        virtualScroll={shouldUseEnumVirtualScroll(virtualScroll, valueOptions.length)}
         {...valueHandlers}
         {...asyncProps}
       />

@@ -51,6 +51,7 @@ export interface TokenEditorProps {
   onTokenRelease: (token: InternalToken) => void;
   tempGroup: InternalToken[];
   onChangeTempGroup: (token: InternalToken[]) => void;
+  virtualScroll?: boolean;
 }
 
 export function TokenEditor({
@@ -70,6 +71,7 @@ export function TokenEditor({
   onTokenRelease,
   tempGroup,
   onChangeTempGroup,
+  virtualScroll,
 }: TokenEditorProps) {
   const [nextFocusIndex, setNextFocusIndex] = useState<null | number>(null);
   const tokenListRef = useListFocusController({
@@ -178,6 +180,7 @@ export function TokenEditor({
             filteringOptions={filteringOptions}
             onLoadItems={onLoadItems}
             i18nStrings={i18nStrings}
+            virtualScroll={virtualScroll}
           />
         )}
         i18nStrings={i18nStrings}
