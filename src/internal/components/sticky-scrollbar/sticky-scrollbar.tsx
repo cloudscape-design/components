@@ -22,7 +22,15 @@ interface StickyScrollbarProps extends StickyScrollbarContentOptions {
 export default forwardRef(StickyScrollbar);
 
 function StickyScrollbar(
-  { wrapperRef, tableRef, onScroll, hasStickyColumns, getContentInlineSize, contentKey }: StickyScrollbarProps,
+  {
+    wrapperRef,
+    tableRef,
+    onScroll,
+    hasStickyColumns,
+    getContentInlineSize,
+    getWrapperInlineSize,
+    contentKey,
+  }: StickyScrollbarProps,
   ref: React.Ref<HTMLDivElement>
 ) {
   const isVisualRefresh = useVisualRefresh();
@@ -38,6 +46,7 @@ function StickyScrollbar(
 
   useStickyScrollbar(scrollbarRef, scrollbarContentRef, tableRef, wrapperRef, offsetScrollbar, {
     getContentInlineSize,
+    getWrapperInlineSize,
     contentKey,
   });
 

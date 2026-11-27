@@ -17,7 +17,8 @@ export interface TableHeaderCellProps extends BaseComponentProps {
    */
   ariaSort?: React.AriaAttributes['aria-sort'];
   /**
-   * Removes the cell's built-in padding so you can compose your own spacing. Defaults to `false`.
+   * Removes the cell's built-in padding so you can compose your own spacing, for example when the cell's content is a
+   * `Button` with `variant="table-header-cell"`, which spaces itself. Defaults to `false`.
    */
   disablePaddings?: boolean;
   /** The header content, such as a column label or a sort control. */

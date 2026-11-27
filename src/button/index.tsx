@@ -17,6 +17,7 @@ const Button = React.forwardRef(
       children,
       iconName,
       iconAlign = 'left',
+      customIcon,
       iconUrl,
       iconSvg,
       iconAlt,
@@ -61,6 +62,7 @@ const Button = React.forwardRef(
         ref={ref}
         iconName={iconName}
         iconAlign={iconAlign}
+        customIcon={customIcon}
         iconUrl={iconUrl}
         iconSvg={iconSvg}
         iconAlt={iconAlt}

@@ -542,6 +542,65 @@ describe('Button Component', () => {
     });
   });
 
+  describe('customIcon property', () => {
+    test.each(['left', 'right'] as const)('renders the slot on the %s of the text', iconAlign => {
+      const wrapper = renderButton({ children: 'Name', iconAlign, customIcon: <span data-testid="custom">1</span> });
+      const icon = wrapper.findCustomIcon()!;
+      expect(icon.find('[data-testid="custom"]')).not.toBeNull();
+      expect(icon.getElement()).toHaveClass(styles[`icon-${iconAlign}`]);
+      const text = wrapper.findTextRegion()!.getElement();
+      expect(iconAlign === 'right' ? text.nextElementSibling : text.previousElementSibling).toBe(icon.getElement());
+    });
+
+    test('renders no slot by default', () => {
+      expect(renderButton({ children: 'Name' }).findCustomIcon()).toBeNull();
+    });
+
+    test.each([null, false, ''])('renders no slot for %p', customIcon => {
+      expect(renderButton({ children: 'Name', customIcon }).findCustomIcon()).toBeNull();
+    });
+
+    test('renders the slot for 0', () => {
+      expect(renderButton({ children: 'Name', customIcon: 0 }).findCustomIcon()!.getElement()).toHaveTextContent('0');
+    });
+
+    test('takes precedence over the other icon properties', () => {
+      const wrapper = renderButton({
+        children: 'Name',
+        iconName: 'add-plus',
+        iconSvg: <svg />,
+        iconUrl: 'icon.png',
+        customIcon: <span />,
+      });
+      expect(wrapper.findCustomIcon()).not.toBeNull();
+      expect(wrapper.findAll('svg, img')).toHaveLength(0);
+    });
+
+    test('is not shown while loading, in favour of the spinner', () => {
+      const wrapper = renderButton({ children: 'Name', loading: true, customIcon: <span />, iconAlign: 'left' });
+      expect(wrapper.findLoadingIndicator()).not.toBeNull();
+      expect(wrapper.findCustomIcon()).toBeNull();
+    });
+  });
+
+  describe('table header cell variants', () => {
+    test.each(['table-header-cell', 'table-header-cell-first'] as const)('%s is styled as its own variant', variant => {
+      const element = renderButton({ children: 'Name', variant }).getElement();
+      expect(element).toHaveClass(styles[`variant-${variant}`]);
+    });
+
+    test('the first-column variant is not the default one', () => {
+      const element = renderButton({ children: 'Name', variant: 'table-header-cell-first' }).getElement();
+      expect(element).not.toHaveClass(styles['variant-table-header-cell']);
+    });
+
+    test('are not applied by other variants', () => {
+      const element = renderButton({ children: 'Name', variant: 'normal' }).getElement();
+      expect(element).not.toHaveClass(styles['variant-table-header-cell']);
+      expect(element).not.toHaveClass(styles['variant-table-header-cell-first']);
+    });
+  });
+
   describe('Loading property', () => {
     test("should disable the button with aria-disabled when in 'loading' status", () => {
       const onClickSpy = jest.fn();

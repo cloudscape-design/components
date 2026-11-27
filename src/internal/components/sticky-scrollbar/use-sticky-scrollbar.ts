@@ -12,6 +12,7 @@ import { getOverflowParents } from '../../utils/scrollable-containers';
 import styles from './styles.css.js';
 
 type ContentInlineSizeGetter = (tableEl: HTMLElement, wrapperEl: HTMLElement) => number;
+type WrapperInlineSizeGetter = (wrapperEl: HTMLElement) => number;
 
 export const updatePosition = (
   tableEl: HTMLElement | null,
@@ -19,14 +20,15 @@ export const updatePosition = (
   scrollbarEl: HTMLElement | null,
   scrollbarContentEl: HTMLElement | null,
   inScrollableContainer: boolean,
-  getContentInlineSize: ContentInlineSizeGetter = tableEl => getLogicalBoundingClientRect(tableEl).inlineSize
+  getContentInlineSize: ContentInlineSizeGetter = tableEl => getLogicalBoundingClientRect(tableEl).inlineSize,
+  getWrapperInlineSize: WrapperInlineSizeGetter = wrapperEl => getLogicalBoundingClientRect(wrapperEl).inlineSize
 ) => {
   if (!tableEl || !scrollbarEl || !wrapperEl) {
     return;
   }
 
   const tableInlineSize = getContentInlineSize(tableEl, wrapperEl);
-  const { inlineSize: wrapperInlineSize } = getLogicalBoundingClientRect(wrapperEl);
+  const wrapperInlineSize = getWrapperInlineSize(wrapperEl);
 
   // using 15 px as a height of transparent scrollbar on mac
   const scrollbarHeight = browserScrollbarSize().height;
@@ -70,6 +72,8 @@ export const updatePosition = (
 export interface StickyScrollbarContentOptions {
   // Measures the scrollable content's width; defaults to the table's width.
   getContentInlineSize?: ContentInlineSizeGetter;
+  // Measures the visible width of the wrapper, which is the scrollbar's track; defaults to the wrapper's width.
+  getWrapperInlineSize?: WrapperInlineSizeGetter;
   // Re-measures when this changes, for content that changes width without resizing the table or wrapper.
   contentKey?: unknown;
 }
@@ -80,11 +84,13 @@ export function useStickyScrollbar(
   tableRef: RefObject<HTMLTableElement>,
   wrapperRef: RefObject<HTMLDivElement>,
   offsetScrollbar: boolean,
-  { getContentInlineSize, contentKey }: StickyScrollbarContentOptions
+  { getContentInlineSize, getWrapperInlineSize, contentKey }: StickyScrollbarContentOptions
 ) {
   const [inScrollableContainer, setInScrollableContainer] = useState(false);
   const getContentInlineSizeRef = useRef(getContentInlineSize);
   getContentInlineSizeRef.current = getContentInlineSize;
+  const getWrapperInlineSizeRef = useRef(getWrapperInlineSize);
+  getWrapperInlineSizeRef.current = getWrapperInlineSize;
 
   const wrapperEl = wrapperRef.current;
   useEffect(() => {
@@ -104,7 +110,8 @@ export function useStickyScrollbar(
             scrollbarRef.current,
             scrollbarContentRef.current,
             inScrollableContainer,
-            getContentInlineSizeRef.current
+            getContentInlineSizeRef.current,
+            getWrapperInlineSizeRef.current
           );
         }
       });
@@ -128,7 +135,8 @@ export function useStickyScrollbar(
         scrollbarRef.current,
         scrollbarContentRef.current,
         inScrollableContainer,
-        getContentInlineSizeRef.current
+        getContentInlineSizeRef.current,
+        getWrapperInlineSizeRef.current
       );
     };
     resizeHandler();

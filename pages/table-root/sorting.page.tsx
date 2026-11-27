@@ -1,7 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useMemo, useState } from 'react';
+import React from 'react';
 
+import { useCollection } from '@cloudscape-design/collection-hooks';
+
+import Button from '~components/button';
 import Header from '~components/header';
 import Icon from '~components/icon';
 import SpaceBetween from '~components/space-between';
@@ -13,45 +16,28 @@ import TableRoot from '~components/table-root';
 import TableRow from '~components/table-row';
 
 import { SimplePage } from '../app/templates';
-import { Item, makeItems } from './common';
+import { compareItems, Item, makeItems, SortKey } from './common';
 
-import styles from './styles.scss';
-
-type SortKey = 'name' | 'type' | 'size' | 'status';
 type SortDirection = 'ascending' | 'descending';
 
-const COLUMNS: ReadonlyArray<{ key: SortKey; label: string }> = [
+const COLUMNS: ReadonlyArray<{ key: SortKey; label: string; disabled?: boolean }> = [
   { key: 'name', label: 'Name' },
   { key: 'type', label: 'Type' },
   { key: 'size', label: 'Size' },
   { key: 'status', label: 'Status' },
 ];
 
-function compare(key: SortKey, a: Item, b: Item): number {
-  if (key === 'size') {
-    return parseInt(a.size, 10) - parseInt(b.size, 10);
-  }
-  return a[key].localeCompare(b[key]);
-}
+const items = makeItems(12);
 
 export default function TableSortingPage() {
-  const items = makeItems(12);
-  const [sortKey, setSortKey] = useState<SortKey>('name');
-  const [direction, setDirection] = useState<SortDirection>('ascending');
-
-  const rows = useMemo(() => {
-    const sorted = [...items].sort((a, b) => compare(sortKey, a, b));
-    return direction === 'ascending' ? sorted : sorted.reverse();
-  }, [items, sortKey, direction]);
-
-  const handleSort = (key: SortKey) => {
-    if (key === sortKey) {
-      setDirection(prev => (prev === 'ascending' ? 'descending' : 'ascending'));
-    } else {
-      setSortKey(key);
-      setDirection('ascending');
-    }
-  };
+  const {
+    items: rows,
+    collectionProps,
+    actions,
+  } = useCollection(items, {
+    sorting: { defaultState: { sortingColumn: sortingColumn('name') } },
+  });
+  const sortedKey = collectionProps.sortingColumn?.sortingField;
 
   return (
     <SimplePage title="Table atomics — sorting (auto layout)" screenshotArea={{}}>
@@ -60,41 +46,146 @@ export default function TableSortingPage() {
         <TableRoot ariaLabel="Resources">
           <TableHead>
             <TableRow>
-              {COLUMNS.map(({ key, label }) => {
-                const active = key === sortKey;
+              {COLUMNS.map(({ key, label, disabled }, columnIndex) => {
+                const direction = key === sortedKey ? toDirection(!!collectionProps.sortingDescending) : undefined;
                 return (
-                  <TableHeaderCell key={key} ariaSort={active ? direction : 'none'}>
-                    <button type="button" className={styles['sort-button']} onClick={() => handleSort(key)}>
-                      <span>{label}</span>
-                      <span className={styles['sort-indicator']}>
-                        <Icon
-                          name={
-                            active
-                              ? direction === 'ascending'
-                                ? 'caret-up-filled'
-                                : 'caret-down-filled'
-                              : 'caret-down'
-                          }
-                        />
-                      </span>
-                    </button>
+                  <TableHeaderCell key={key} disablePaddings={true} ariaSort={direction}>
+                    <Button
+                      variant={headerVariant(columnIndex)}
+                      formAction="none"
+                      wrapText={false}
+                      disabled={disabled}
+                      iconAlign="right"
+                      customIcon={sortIcon(direction, disabled)}
+                      onClick={() =>
+                        actions.setSorting({
+                          sortingColumn: sortingColumn(key),
+                          isDescending: direction === 'ascending',
+                        })
+                      }
+                    >
+                      {label}
+                    </Button>
                   </TableHeaderCell>
                 );
               })}
             </TableRow>
           </TableHead>
-          <TableBody>
-            {rows.map(item => (
-              <TableRow key={item.id}>
-                <TableBodyCell>{item.name}</TableBodyCell>
-                <TableBodyCell>{item.type}</TableBodyCell>
-                <TableBodyCell>{item.size}</TableBodyCell>
-                <TableBodyCell>{item.status}</TableBodyCell>
-              </TableRow>
-            ))}
-          </TableBody>
+          <ResourceRows rows={rows} />
         </TableRoot>
+        <Header description="Shift+click or Shift+Enter adds a column to the sort.">Multi-column sort</Header>
+        <MultiSortTable />
       </SpaceBetween>
     </SimplePage>
   );
+}
+
+function MultiSortTable() {
+  const {
+    items: rows,
+    collectionProps,
+    actions,
+  } = useCollection(items, {
+    sorting: {
+      multiColumn: true,
+      defaultSortingColumns: [
+        { sortingColumn: sortingColumn('type') },
+        { sortingColumn: sortingColumn('size'), isDescending: true },
+      ],
+    },
+  });
+  const sorting = collectionProps.multiColumnSort!.sortingColumns;
+
+  return (
+    <TableRoot ariaLabel="Resources, sorted by multiple columns">
+      <TableHead>
+        <TableRow>
+          {COLUMNS.map(({ key, label, disabled }, columnIndex) => {
+            const index = sorting.findIndex(entry => entry.sortingColumn.sortingField === key);
+            const entry = sorting[index];
+            const direction = entry ? toDirection(!!entry.isDescending) : undefined;
+            const priority = sorting.length > 1 && entry ? index + 1 : undefined;
+            // Only the first sorted column is the sort order, so only it has aria-sort. The others say their direction
+            // in their name, through the icon's aria label, and their priority is the visible number.
+            const isPrimary = index === 0;
+            return (
+              <TableHeaderCell key={key} disablePaddings={true} ariaSort={isPrimary ? direction : undefined}>
+                <Button
+                  variant={headerVariant(columnIndex)}
+                  formAction="none"
+                  wrapText={false}
+                  disabled={disabled}
+                  iconAlign="right"
+                  customIcon={
+                    priority ? (
+                      <SpaceBetween direction="horizontal" size="xxs" alignItems="center">
+                        <span>{priority}</span>
+                        {sortIcon(direction, disabled, !isPrimary)}
+                      </SpaceBetween>
+                    ) : (
+                      sortIcon(direction, disabled)
+                    )
+                  }
+                  onClick={({ detail }) => {
+                    const next = { sortingColumn: sortingColumn(key), isDescending: direction === 'ascending' };
+                    actions.setMultiSorting(
+                      !detail.shiftKey
+                        ? [next]
+                        : entry
+                          ? sorting.map(e => (e === entry ? next : e))
+                          : [...sorting, next]
+                    );
+                  }}
+                >
+                  {label}
+                </Button>
+              </TableHeaderCell>
+            );
+          })}
+        </TableRow>
+      </TableHead>
+      <ResourceRows rows={rows} />
+    </TableRoot>
+  );
+}
+
+// The first column lines up with the table's edge.
+function headerVariant(columnIndex: number) {
+  return columnIndex === 0 ? 'table-header-cell-first' : 'table-header-cell';
+}
+
+function sortingColumn(key: SortKey) {
+  return { sortingField: key, sortingComparator: (a: Item, b: Item) => compareItems(key, a, b) };
+}
+
+// A disabled column that isn't sorted has nothing to indicate, as in the existing Table.
+function sortIcon(direction: SortDirection | undefined, disabled = false, announceDirection = false) {
+  if (!direction) {
+    return disabled ? null : <Icon name="caret-down" />;
+  }
+  return (
+    <Icon
+      name={direction === 'ascending' ? 'caret-up-filled' : 'caret-down-filled'}
+      ariaLabel={announceDirection ? direction : undefined}
+    />
+  );
+}
+
+function ResourceRows({ rows }: { rows: ReadonlyArray<Item> }) {
+  return (
+    <TableBody>
+      {rows.map(item => (
+        <TableRow key={item.id}>
+          <TableBodyCell>{item.name}</TableBodyCell>
+          <TableBodyCell>{item.type}</TableBodyCell>
+          <TableBodyCell>{item.size}</TableBodyCell>
+          <TableBodyCell>{item.status}</TableBodyCell>
+        </TableRow>
+      ))}
+    </TableBody>
+  );
+}
+
+function toDirection(descending: boolean): SortDirection {
+  return descending ? 'descending' : 'ascending';
 }

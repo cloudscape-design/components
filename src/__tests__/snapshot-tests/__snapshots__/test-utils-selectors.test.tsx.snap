@@ -93,6 +93,7 @@ exports[`test-utils selectors 1`] = `
   "button": [
     "awsui_button_vjswe",
     "awsui_content_vjswe",
+    "awsui_custom-icon_vjswe",
     "awsui_disabled-reason-tooltip_1ueyk",
     "awsui_icon-left_vjswe",
   ],

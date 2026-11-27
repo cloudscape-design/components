@@ -21,6 +21,15 @@ export const makeItems = (n: number): Item[] =>
     status: index % 2 === 0 ? 'Available' : 'Pending',
   }));
 
+export type SortKey = 'name' | 'type' | 'size' | 'status';
+
+export function compareItems(key: SortKey, a: Item, b: Item): number {
+  if (key === 'size') {
+    return parseInt(a.size, 10) - parseInt(b.size, 10);
+  }
+  return a[key].localeCompare(b[key]);
+}
+
 // A 4-column grid layout (no control column): Name fixed, Type/Size flexible-with-min, Status flexible.
 export const DATA_COLUMNS: ReadonlyArray<TableRootProps.ColumnDefinition> = [
   { size: 220 },

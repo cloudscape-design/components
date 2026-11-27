@@ -37,4 +37,11 @@ describe('updatePosition', () => {
     expect(scrollbar.style.inlineSize).toBe('600px');
     expect(scrollbarContent.style.inlineSize).toBe('1200px');
   });
+
+  test("sizes the scrollbar from a custom measurement of the wrapper's visible width when one is given", () => {
+    const { scrollbar, scrollbarContent, table, wrapper } = setupElements();
+    updatePosition(table, wrapper, scrollbar, scrollbarContent, true, undefined, () => 594);
+    expect(scrollbar.style.inlineSize).toBe('594px');
+    expect(scrollbarContent.style.inlineSize).toBe('800px');
+  });
 });

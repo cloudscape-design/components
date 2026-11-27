@@ -17,6 +17,13 @@ export default class ButtonWrapper extends ComponentWrapper<HTMLButtonElement> {
     return this.find(`.${styles.content}`);
   }
 
+  /**
+   * Returns the content of the `customIcon` slot, or `null` if there isn't any.
+   */
+  findCustomIcon(): ElementWrapper | null {
+    return this.findByClassName(styles['custom-icon']);
+  }
+
   @usesDom
   isDisabled(): boolean {
     return this.element.disabled || this.element.getAttribute('aria-disabled') === 'true';

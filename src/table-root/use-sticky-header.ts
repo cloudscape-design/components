@@ -9,6 +9,7 @@ import { useUntabbableDescendants } from '../internal/components/sticky-header/u
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { setElementWidths } from '../table/column-widths-utils';
 
+import buttonStyles from '../button/styles.css.js';
 import abstractSwitchStyles from '../internal/components/abstract-switch/styles.css.js';
 import styles from './styles.css.js';
 
@@ -119,6 +120,7 @@ export function useTableRootStickyHeader({
 
   // The real header is covered by the copy, so the copy shows its focus ring. A checkbox or radio draws its
   // ring on the outline next to its hidden input, which is shown only for keyboard focus, like other rings.
+  // A table header button draws its own ring, which sits outside it inline.
   const [focusedHeaderPath, setFocusedHeaderPath] = useState<number[] | null>(null);
   useLayoutEffect(() => {
     const copyElement =
@@ -128,10 +130,15 @@ export function useTableRootStickyHeader({
       isKeyboardFocus && copyElement?.nextElementSibling?.classList.contains(abstractSwitchStyles.outline)
         ? copyElement.nextElementSibling
         : null;
-    copyElement?.classList.add(styles['sticky-copy-focus']);
+    const focusClass =
+      copyElement?.classList.contains(buttonStyles['variant-table-header-cell']) ||
+      copyElement?.classList.contains(buttonStyles['variant-table-header-cell-first'])
+        ? buttonStyles['fake-focus']
+        : styles['sticky-copy-focus'];
+    copyElement?.classList.add(focusClass);
     switchOutline?.classList.add(abstractSwitchStyles['show-outline']);
     return () => {
-      copyElement?.classList.remove(styles['sticky-copy-focus']);
+      copyElement?.classList.remove(focusClass);
       switchOutline?.classList.remove(abstractSwitchStyles['show-outline']);
     };
   });
