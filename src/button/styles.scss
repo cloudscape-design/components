@@ -98,8 +98,15 @@ $header-margin-end: calc(#{awsui.$space-xs} + #{$header-ring-room});
   position: relative;
 
   @each $variant in map.keys(constants.$variants) {
-    &.variant-#{$variant} {
-      @include adjust-for-variant(map.get(constants.$variants, $variant));
+    @if $variant == 'table-header-cell' {
+      // The first-column header variant shares the variant's styles, so they aren't generated twice.
+      &:is(.variant-table-header-cell, .variant-table-header-cell-first) {
+        @include adjust-for-variant(map.get(constants.$variants, $variant));
+      }
+    } @else {
+      &.variant-#{$variant} {
+        @include adjust-for-variant(map.get(constants.$variants, $variant));
+      }
     }
   }
 
@@ -247,8 +254,7 @@ $header-margin-end: calc(#{awsui.$space-xs} + #{$header-ring-room});
   // refresh a header cell's content starts `$header-gap-inline` + `$header-content-inline` from the cell's edge, or `$header-gap-inline-first`
   // from the table's edge in the first column. The start side is narrower by the divider's width, so the ring is the
   // same distance from the dividers on both sides.
-  &.variant-table-header-cell,
-  &.variant-table-header-cell-first {
+  &:is(.variant-table-header-cell, .variant-table-header-cell-first) {
     display: flex;
     align-items: center;
     box-sizing: border-box;
