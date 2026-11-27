@@ -20,12 +20,11 @@ import { compareItems, Item, makeItems, SortKey } from './common';
 
 type SortDirection = 'ascending' | 'descending';
 
-// Status can't be sorted, to show the disabled state.
 const COLUMNS: ReadonlyArray<{ key: SortKey; label: string; disabled?: boolean }> = [
   { key: 'name', label: 'Name' },
   { key: 'type', label: 'Type' },
   { key: 'size', label: 'Size' },
-  { key: 'status', label: 'Status', disabled: true },
+  { key: 'status', label: 'Status' },
 ];
 
 const items = makeItems(12);
