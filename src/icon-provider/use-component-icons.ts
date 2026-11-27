@@ -10,5 +10,5 @@ import { IconProviderProps } from './interfaces';
 export function useInternalComponentIcons<K extends keyof IconProviderProps.ComponentIcons>(
   component: K
 ): IconProviderProps.ComponentIcons[K] {
-  return useContext(InternalComponentIconsContext)[component];
+  return useContext(InternalComponentIconsContext)?.[component];
 }
