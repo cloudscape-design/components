@@ -3,7 +3,7 @@
 
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import { findAllPages, isReact18OrNewer } from '../__integ__/utils';
+import { findAllPages, reactVersion } from '../__integ__/utils';
 import A11yPageObject from './a11y-page-object';
 
 type Theme = 'visual-refresh';
@@ -22,23 +22,30 @@ function urlFormatter(inputUrl: string, mode: Mode) {
   return `#/${mode}/${inputUrl}`;
 }
 
-/**
- * Pages skipped on React 18 and newer because of known issues in components that render differently there.
- * Prompt input token mode (React 18+) sets aria-expanded on its role="textbox" element, which is not allowed.
- */
-const react18OrNewerSkipPages = [
+const promptInputTokenModePages = [
   'prompt-input/menu-style',
   'prompt-input/permutations',
   'prompt-input/shortcuts',
   'prompt-input/style-api-v2',
 ];
 
+/**
+ * Pages skipped for a React version because of known component issues with that version:
+ * - Prompt input token mode (React 18+) sets aria-expanded on its role="textbox" element, which is not allowed.
+ * - File token thumbnails render an image with an empty src before the preview URL is created,
+ *   which React 19 reports as a console error.
+ */
+const reactVersionSkipPages: Partial<Record<string, string[]>> = {
+  '18': promptInputTokenModePages,
+  '19': [...promptInputTokenModePages, 'file-upload/permutations'],
+};
+
 export default function runA11yTests(theme: Theme, mode: Mode, skip: string[] = []) {
   describe(`A11y checks for ${mode} ${theme}`, () => {
     findAllPages().forEach(inputUrl => {
       const skipPages = [
         ...skip,
-        ...(isReact18OrNewer ? react18OrNewerSkipPages : []),
+        ...(reactVersionSkipPages[reactVersion] ?? []),
         'theming/tokens',
         'theming/themed-components',
         // this page intentionally has issues to test the helper
