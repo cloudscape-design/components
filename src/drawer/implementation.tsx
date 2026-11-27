@@ -135,6 +135,7 @@ export function DrawerImplementation({
     rootRef: __internalRootRef as RefObject<HTMLElement>,
     drawerRef: containerRef,
     footerRef,
+    isPositioned: position === 'absolute' || position === 'fixed',
   });
 
   const showBackdrop = backdrop && (position === 'fixed' || position === 'absolute');

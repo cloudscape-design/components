@@ -123,7 +123,7 @@ const suite: TestSuite = {
           configuration: { width: 1200, height: 600 },
           queryParams: { tallContent: 'true', footer: 'true', placement: 'end' },
           setup: async ({ page, wrapper }) => {
-            await page.elementScrollTo(wrapper.findDrawer().findContent().toSelector(), { top: 10000 });
+            await page.elementScrollTo(`${wrapper.findDrawer().toSelector()} [role="region"]`, { top: 10000 });
           },
         },
         {
