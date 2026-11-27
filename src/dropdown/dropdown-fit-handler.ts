@@ -25,6 +25,14 @@ export interface DropdownPosition {
   dropInlineStart: boolean;
   insetInlineStart: string;
 }
+/**
+ * The sides a dropdown is attached to. When provided, the position is recalculated on these sides
+ * (clamping the size to the space available there) instead of choosing the sides again.
+ */
+export interface DropdownAttachmentSides {
+  dropBlockStart: boolean;
+  dropInlineStart: boolean;
+}
 export interface InteriorDropdownPosition extends DropdownPosition {
   insetBlockEnd: string;
   insetBlockStart: string;
@@ -239,6 +247,7 @@ export const getDropdownPosition = ({
   stretchHeight = false,
   isMobile = false,
   maxHeight,
+  attachmentSides,
 }: {
   triggerElement: HTMLElement;
   dropdownElement: HTMLElement;
@@ -250,6 +259,7 @@ export const getDropdownPosition = ({
   stretchHeight?: boolean;
   isMobile?: boolean;
   maxHeight?: number;
+  attachmentSides?: DropdownAttachmentSides;
 }): DropdownPosition => {
   // Determine the space available around the dropdown that it can grow in
   const availableSpace = getAvailableSpace({
@@ -270,8 +280,12 @@ export const getDropdownPosition = ({
   let insetInlineStart: number | null = null;
   let inlineSize = idealWidth;
 
-  //1. Can it be positioned with ideal width to the right?
-  if (idealWidth <= availableSpace.inlineEnd) {
+  if (attachmentSides) {
+    dropInlineStart = attachmentSides.dropInlineStart;
+    const sideSpace = dropInlineStart ? availableSpace.inlineStart : availableSpace.inlineEnd;
+    inlineSize = Math.max(Math.min(idealWidth, sideSpace), minWidth);
+    //1. Can it be positioned with ideal width to the right?
+  } else if (idealWidth <= availableSpace.inlineEnd) {
     dropInlineStart = false;
     //2. Can it be positioned with ideal width to the left?
   } else if (idealWidth <= availableSpace.inlineStart) {
@@ -295,8 +309,9 @@ export const getDropdownPosition = ({
     }
   }
 
-  const dropBlockStart =
-    availableSpace.blockEnd < dropdownElement.offsetHeight && availableSpace.blockStart > availableSpace.blockEnd;
+  const dropBlockStart = attachmentSides
+    ? attachmentSides.dropBlockStart
+    : availableSpace.blockEnd < dropdownElement.offsetHeight && availableSpace.blockStart > availableSpace.blockEnd;
   const availableHeight = dropBlockStart ? availableSpace.blockStart : availableSpace.blockEnd;
   // Try and crop the bottom item when all options can't be displayed, affordance for "there's more"
   const croppedHeight = Math.max(stretchHeight ? availableHeight : Math.floor(availableHeight / 31) * 31 + 16, 15);
@@ -316,7 +331,8 @@ const getInteriorDropdownPosition = (
   trigger: HTMLElement,
   dropdown: HTMLElement,
   overflowParents: ReadonlyArray<BoundingBox>,
-  isMobile?: boolean
+  isMobile?: boolean,
+  attachmentSides?: DropdownAttachmentSides
 ): InteriorDropdownPosition => {
   const availableSpace = getInteriorAvailableSpace({ trigger, overflowParents, isMobile });
   const {
@@ -331,7 +347,10 @@ const getInteriorDropdownPosition = (
 
   let { inlineSize } = getLogicalBoundingClientRect(dropdown);
   const insetBlockStart = triggerBlockStart - parentDropdownBlockStart;
-  if (inlineSize <= availableSpace.inlineEnd) {
+  if (attachmentSides) {
+    dropInlineStart = attachmentSides.dropInlineStart;
+    inlineSize = Math.min(inlineSize, dropInlineStart ? availableSpace.inlineStart : availableSpace.inlineEnd);
+  } else if (inlineSize <= availableSpace.inlineEnd) {
     dropInlineStart = false;
   } else if (inlineSize <= availableSpace.inlineStart) {
     dropInlineStart = true;
@@ -342,8 +361,9 @@ const getInteriorDropdownPosition = (
 
   const insetInlineStart = dropInlineStart ? 0 - inlineSize : triggerInlineSize;
 
-  const dropBlockStart =
-    availableSpace.blockEnd < dropdown.offsetHeight && availableSpace.blockStart > availableSpace.blockEnd;
+  const dropBlockStart = attachmentSides
+    ? attachmentSides.dropBlockStart
+    : availableSpace.blockEnd < dropdown.offsetHeight && availableSpace.blockStart > availableSpace.blockEnd;
   const insetBlockEnd = dropBlockStart ? parentDropdownBlockStart + parentDropdownHeight - triggerBlockEnd : 0;
   const availableHeight = dropBlockStart ? availableSpace.blockStart : availableSpace.blockEnd;
   // Try and crop the bottom item when all options can't be displayed, affordance for "there's more"
@@ -372,8 +392,9 @@ export const calculatePosition = (
   isMobile: boolean,
   minWidth?: DropdownWidthConstraint,
   maxWidth?: DropdownWidthConstraint,
-  maxHeight?: number
-): [DropdownPosition, LogicalDOMRect] => {
+  maxHeight?: number,
+  attachmentSides?: DropdownAttachmentSides
+): [DropdownPosition, LogicalDOMRect, number] => {
   // cleaning previously assigned values,
   // so that they are not reused in case of screen resize and similar events
   verticalContainerElement.style.maxBlockSize = '';
@@ -393,7 +414,7 @@ export const calculatePosition = (
     canExpandOutsideViewport: stretchHeight,
   });
   const position: DropdownPosition | InteriorDropdownPosition = interior
-    ? getInteriorDropdownPosition(triggerElement, dropdownElement, overflowParents, isMobile)
+    ? getInteriorDropdownPosition(triggerElement, dropdownElement, overflowParents, isMobile, attachmentSides)
     : getDropdownPosition({
         triggerElement,
         dropdownElement,
@@ -405,8 +426,25 @@ export const calculatePosition = (
         stretchHeight,
         isMobile,
         maxHeight,
+        attachmentSides,
       });
 
   const triggerBox = getLogicalBoundingClientRect(triggerElement);
-  return [position, triggerBox];
+  const sideSpaceInfo = interior
+    ? getInteriorAvailableSpace({ trigger: triggerElement, overflowParents, isMobile })
+    : getAvailableSpace({
+        trigger: triggerElement,
+        overflowParents,
+        stretchWidth: matchTriggerWidth,
+        stretchHeight,
+        isMobile,
+      });
+  const sideSpace = position.dropInlineStart ? sideSpaceInfo.inlineStart : sideSpaceInfo.inlineEnd;
+  const inlineSizeLimit = interior
+    ? sideSpace
+    : Math.max(
+        Math.min(resolveWidthConstraint(maxWidth, triggerBox.inlineSize, Number.MAX_VALUE), sideSpace),
+        resolveWidthConstraint(minWidth, triggerBox.inlineSize, 0)
+      );
+  return [position, triggerBox, inlineSizeLimit];
 };

@@ -183,6 +183,58 @@ describe('getDropdownPosition', () => {
     });
   });
 
+  describe('with attachmentSides', () => {
+    test('keeps the inline end side and clamps the width when the content needs more room than fits there', () => {
+      const trigger = getSizedElement(100, 50, 300, 500);
+      const dropdown = getSizedElement(600, 400);
+      expect(
+        getDropdownPosition({
+          triggerElement: trigger,
+          dropdownElement: dropdown,
+          overflowParents: [windowSize],
+          attachmentSides: { dropInlineStart: false, dropBlockStart: false },
+        })
+      ).toEqual({ ...defaults, inlineSize: '450px' });
+    });
+
+    test('keeps the inline start side even when the content would fit on the inline end side', () => {
+      const trigger = getSizedElement(100, 50, 300, 100);
+      const dropdown = getSizedElement(300, 400);
+      expect(
+        getDropdownPosition({
+          triggerElement: trigger,
+          dropdownElement: dropdown,
+          overflowParents: [windowSize],
+          attachmentSides: { dropInlineStart: true, dropBlockStart: false },
+        })
+      ).toEqual({ ...defaults, dropInlineStart: true, inlineSize: '150px' });
+    });
+
+    test('keeps dropping down when grown content would otherwise flip it up', () => {
+      const trigger = getSizedElement(100, 50, 900, 100);
+      const dropdown = getSizedElement(100, 300);
+      const position = getDropdownPosition({
+        triggerElement: trigger,
+        dropdownElement: dropdown,
+        overflowParents: [windowSize],
+        attachmentSides: { dropInlineStart: false, dropBlockStart: false },
+      });
+      expect(position.dropBlockStart).toBe(false);
+    });
+
+    test('keeps dropping up when grown content would fit below', () => {
+      const trigger = getSizedElement(100, 50, 300, 100);
+      const dropdown = getSizedElement(100, 300);
+      const position = getDropdownPosition({
+        triggerElement: trigger,
+        dropdownElement: dropdown,
+        overflowParents: [windowSize],
+        attachmentSides: { dropInlineStart: false, dropBlockStart: true },
+      });
+      expect(position.dropBlockStart).toBe(true);
+    });
+  });
+
   describe('with maxWidth undefined (no max constraint)', () => {
     test('can expand beyond trigger width', () => {
       const triggerElement = getSizedElement(100, 50, 300, 15);

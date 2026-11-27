@@ -24,6 +24,7 @@ import { NonCancelableEventHandler } from '../types/events';
 import { DropdownContextProvider, DropdownContextProviderProps } from './context';
 import {
   calculatePosition,
+  DropdownAttachmentSides,
   DropdownPosition,
   hasEnoughSpaceForFlexibleWidth,
   InteriorDropdownPosition,
@@ -251,6 +252,9 @@ const InternalDropdown = ({
   const verticalContainerRef = useRef<HTMLDivElement>(null);
   // To keep track of the initial position (drop up/down) which is kept the same during fixed repositioning
   const fixedPosition = useRef<DropdownPosition | null>(null);
+  const attachmentSides = useRef<DropdownAttachmentSides | null>(null);
+  const growthLimit = useRef<number | null>(null);
+  const lastOpenState = useRef<{ open: boolean; contentKey: string | undefined }>({ open: false, contentKey });
 
   // Use external trigger ref if provided, otherwise use internal ref
   const triggerRef = externalTriggerRef || internalTriggerRef;
@@ -281,6 +285,7 @@ const InternalDropdown = ({
     verticalContainer: HTMLDivElement
   ) => {
     verticalContainer.style.maxBlockSize = position.blockSize;
+    attachmentSides.current = { dropBlockStart: position.dropBlockStart, dropInlineStart: position.dropInlineStart };
 
     // Only apply occupy-entire-width when matching trigger width exactly and not in portal mode
     if (!interior && matchTriggerWidth && !expandToViewport) {
@@ -397,37 +402,114 @@ const InternalDropdown = ({
 
   useResizeObserver(() => dropdownRef.current, fixStretching);
 
-  useLayoutEffect(() => {
-    const onDropdownOpen = () => {
-      if (open && dropdownRef.current && triggerRef.current && verticalContainerRef.current) {
-        if (scrollable) {
-          dropdownRef.current.classList.add(styles.nowrap);
-        }
+  const updateDropdownPosition = ({ growOnly }: { growOnly: boolean }) => {
+    if (!open || !dropdownRef.current || !triggerRef.current || !verticalContainerRef.current) {
+      return;
+    }
+    const dropdown = dropdownRef.current;
+    const verticalContainer = verticalContainerRef.current;
+    const previousInlineSize = parseFloat(dropdown.style.inlineSize);
+    if (growOnly && growthLimit.current !== null && previousInlineSize >= growthLimit.current - 0.5) {
+      return;
+    }
+    // Measuring clears the applied sizes, which resets the scroll position of the content.
+    const snapshot = growOnly ? takeLayoutSnapshot(dropdown, verticalContainer) : null;
+    if (scrollable) {
+      dropdown.classList.add(styles.nowrap);
+    }
+    const [position, triggerBox, inlineSizeLimit] = calculatePosition(
+      dropdown,
+      triggerRef.current,
+      verticalContainer,
+      interior,
+      expandToViewport,
+      preferCenter,
+      matchTriggerWidth,
+      stretchHeight,
+      isMobile,
+      minWidth,
+      maxWidth,
+      maxHeight,
+      (growOnly && attachmentSides.current) || undefined
+    );
+    if (scrollable) {
+      dropdown.classList.remove(styles.nowrap);
+    }
+    growthLimit.current = Number.isFinite(inlineSizeLimit) ? inlineSizeLimit : null;
+    // A content change only ever widens an open dropdown. It stays attached to the sides it opened on, and the new
+    // width is clamped to the space available there, so the dropdown never shrinks, flips or jumps while open.
+    if (snapshot && !(parseFloat(position.inlineSize) > previousInlineSize)) {
+      snapshot.restore({ scrollOnly: false });
+      return;
+    }
+    setDropdownPosition(position, triggerBox, dropdown, verticalContainer);
+    snapshot?.restore({ scrollOnly: true });
+  };
 
-        setDropdownPosition(
-          ...calculatePosition(
-            dropdownRef.current,
-            triggerRef.current,
-            verticalContainerRef.current,
-            interior,
-            expandToViewport,
-            preferCenter,
-            matchTriggerWidth,
-            stretchHeight,
-            isMobile,
-            minWidth,
-            maxWidth,
-            maxHeight
-          ),
-          dropdownRef.current,
-          verticalContainerRef.current
-        );
-
-        if (scrollable) {
-          dropdownRef.current.classList.remove(styles.nowrap);
-        }
-      }
+  useEffect(() => {
+    const content = verticalContainerRef.current;
+    if (!open || !content || matchTriggerWidth || preferCenter || typeof MutationObserver === 'undefined') {
+      return;
+    }
+    // A ResizeObserver can't detect this: the dropdown has an explicit inline size, so content that needs more room
+    // wraps instead of changing the observed width. Observing the content subtree (not attributes) also guarantees
+    // that applying the new position, which only touches styles and classes, does not trigger the observer again.
+    // Deliberate limits: attribute-only changes and intrinsic size changes (images or fonts loading) are not observed,
+    // and centered (preferCenter) dropdowns are not resized while open, because growing them would move both edges.
+    let frame = 0;
+    const observer = new MutationObserver(() => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => updateDropdownPosition({ growOnly: true }));
+    });
+    observer.observe(content, { childList: true, subtree: true, characterData: true });
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    open,
+    interior,
+    matchTriggerWidth,
+    preferCenter,
+    expandToViewport,
+    isMobile,
+    minWidth,
+    maxWidth,
+    maxHeight,
+    scrollable,
+    stretchHeight,
+  ]);
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+    // The space on the attachment side changes with the viewport and scroll position, so the cached limit is dropped.
+    const resetGrowthLimit = (event: Event) => {
+      if (event.target instanceof Node && dropdownRef.current?.contains(event.target)) {
+        return;
+      }
+      growthLimit.current = null;
+    };
+    const controller = new AbortController();
+    window.addEventListener('resize', resetGrowthLimit, { signal: controller.signal });
+    window.addEventListener('scroll', resetGrowthLimit, { capture: true, passive: true, signal: controller.signal });
+    return () => controller.abort();
+  }, [open]);
+
+  useLayoutEffect(() => {
+    // A new contentKey while the dropdown stays open (for example the first async options arriving) is a content
+    // update, not an opening, so it follows the same growth-only rules as observed content changes.
+    const contentChangedWhileOpen =
+      open && lastOpenState.current.open && lastOpenState.current.contentKey !== contentKey;
+    lastOpenState.current = { open: !!open, contentKey };
+    if (contentChangedWhileOpen) {
+      updateDropdownPosition({ growOnly: true });
+      return;
+    }
+
+    const onDropdownOpen = () => updateDropdownPosition({ growOnly: false });
     onDropdownOpen();
 
     if (open) {
@@ -639,6 +721,28 @@ const InternalDropdown = ({
     </div>
   );
 };
+
+function takeLayoutSnapshot(dropdown: HTMLElement, verticalContainer: HTMLElement) {
+  const dropdownStyle = dropdown.style.cssText;
+  const dropdownClassName = dropdown.className;
+  const verticalContainerStyle = verticalContainer.style.cssText;
+  const scrolled = [dropdown, ...Array.from(dropdown.querySelectorAll<HTMLElement>('*'))]
+    .filter(element => element.scrollTop !== 0 || element.scrollLeft !== 0)
+    .map(element => ({ element, top: element.scrollTop, left: element.scrollLeft }));
+  return {
+    restore({ scrollOnly }: { scrollOnly: boolean }) {
+      if (!scrollOnly) {
+        dropdown.style.cssText = dropdownStyle;
+        dropdown.className = dropdownClassName;
+        verticalContainer.style.cssText = verticalContainerStyle;
+      }
+      for (const { element, top, left } of scrolled) {
+        element.scrollTop = top;
+        element.scrollLeft = left;
+      }
+    },
+  };
+}
 
 const isInteriorPosition = (
   position: DropdownPosition | InteriorDropdownPosition
