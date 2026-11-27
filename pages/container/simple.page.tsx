@@ -2,11 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import Button from '~components/button';
 import Container from '~components/container';
 import ExpandableSection from '~components/expandable-section';
 import Header from '~components/header';
+import Input from '~components/input';
+import ItemCard from '~components/item-card';
 import Link from '~components/link';
+import SegmentedControl from '~components/segmented-control';
 import SpaceBetween from '~components/space-between';
+import Table from '~components/table';
 
 import ScreenshotArea from '../utils/screenshot-area';
 
@@ -112,6 +117,67 @@ export default function SimpleContainers() {
             disableContentPaddings={true}
             header={<Header variant="h2">Container Without Content</Header>}
           ></Container>
+          <Container
+            visualVariant="accentuated"
+            header={
+              <Header
+                variant="h2"
+                description="Header description"
+                actions={
+                  <SpaceBetween direction="horizontal" size="xs">
+                    <SegmentedControl
+                      label="Header segmented control"
+                      selectedId="one"
+                      options={[
+                        { id: 'one', text: 'One' },
+                        { id: 'two', text: 'Two' },
+                      ]}
+                    />
+                    <Button>Action</Button>
+                  </SpaceBetween>
+                }
+              >
+                Accentuated container
+              </Header>
+            }
+            footer="Some footer text"
+          >
+            <SpaceBetween size="m">
+              <SegmentedControl
+                label="Content segmented control"
+                selectedId="one"
+                options={[
+                  { id: 'one', text: 'One' },
+                  { id: 'two', text: 'Two' },
+                ]}
+              />
+              <Input inlineLabelText="Inline label" value="Value" onChange={() => {}} />
+              <ItemCard header="Item card">Item card content</ItemCard>
+              <Table
+                variant="embedded"
+                header={<Header counter="(2)">Embedded table with a sticky column</Header>}
+                stickyColumns={{ first: 1 }}
+                resizableColumns={true}
+                columnDefinitions={[
+                  { id: 'name', header: 'Name', cell: item => item.name, width: 500 },
+                  { id: 'status', header: 'Status', cell: item => item.status, width: 900 },
+                ]}
+                items={[
+                  { name: 'Item one', status: 'Active' },
+                  { name: 'Item two', status: 'Inactive' },
+                ]}
+              />
+            </SpaceBetween>
+          </Container>
+          <Container visualVariant="accentuated">Accentuated container without header</Container>
+          <div>
+            <Container variant="stacked" visualVariant="accentuated" header="Stacked accentuated container">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+            </Container>
+            <Container variant="stacked" header="Stacked default container">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+            </Container>
+          </div>
         </SpaceBetween>
       </ScreenshotArea>
     </article>

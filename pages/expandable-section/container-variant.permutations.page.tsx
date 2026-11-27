@@ -3,11 +3,23 @@
 import React from 'react';
 
 import ExpandableSection, { ExpandableSectionProps } from '~components/expandable-section';
+import SegmentedControl from '~components/segmented-control';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 import { headerActions, headerInfo, headerTextActions } from './common';
+
+const segmentedControl = (
+  <SegmentedControl
+    label="Segmented control"
+    selectedId="one"
+    options={[
+      { id: 'one', text: 'One' },
+      { id: 'two', text: 'Two' },
+    ]}
+  />
+);
 
 const permutations = createPermutations<ExpandableSectionProps>([
   {
@@ -24,6 +36,12 @@ const permutations = createPermutations<ExpandableSectionProps>([
     headerCounter: ['(5)'],
     headerActions: [headerTextActions],
   },
+  {
+    containerVisualVariant: ['accentuated'],
+    defaultExpanded: [true, false],
+    headerDescription: [undefined, 'Expandable section header description'],
+    headerActions: [undefined, headerActions],
+  },
 ]);
 export default function ExpandableSectionContainerVariantPermutations({
   variant = 'container',
@@ -39,12 +57,12 @@ export default function ExpandableSectionContainerVariantPermutations({
           permutations={permutations}
           render={permutation => (
             <ExpandableSection
+              defaultExpanded={true}
               {...permutation}
               headerText={'Expandable section heading'}
-              defaultExpanded={true}
               variant={variant}
             >
-              Expandable section content
+              {permutation.containerVisualVariant === 'accentuated' ? segmentedControl : 'Expandable section content'}
             </ExpandableSection>
           )}
         />

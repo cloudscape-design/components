@@ -11217,6 +11217,24 @@ Refer to the [style docs](/components/container/?tabId=style) for more details."
       "type": "string",
       "visualRefreshTag": "\`stacked\` variant",
     },
+    {
+      "defaultValue": "'default'",
+      "description": "Specifies the visual treatment of the container:
+* \`default\` - The header and content share the container background.
+* \`accentuated\` - The header and content have a subtle visual distinction, with a divider between them.",
+      "inlineType": {
+        "name": "ContainerProps.VisualVariant",
+        "type": "union",
+        "values": [
+          "default",
+          "accentuated",
+        ],
+      },
+      "name": "visualVariant",
+      "optional": true,
+      "type": "string",
+      "visualRefreshTag": "",
+    },
   ],
   "regions": [
     {
@@ -14664,6 +14682,24 @@ The event \`detail\` contains the current value of the \`expanded\` property.",
       "name": "className",
       "optional": true,
       "type": "string",
+    },
+    {
+      "defaultValue": "'default'",
+      "description": "Specifies the visual treatment of the container. Use with the container or stacked variants.
+* \`default\` - The header and content share the container background.
+* \`accentuated\` - The header and content have a subtle visual distinction, with a divider between them when expanded.",
+      "inlineType": {
+        "name": "ExpandableSectionProps.ContainerVisualVariant",
+        "type": "union",
+        "values": [
+          "default",
+          "accentuated",
+        ],
+      },
+      "name": "containerVisualVariant",
+      "optional": true,
+      "type": "string",
+      "visualRefreshTag": "",
     },
     {
       "description": "Determines whether the component initially displays in expanded state (that is, with content visible). The component operates in an uncontrolled

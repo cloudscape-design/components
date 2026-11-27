@@ -11,6 +11,7 @@ import InternalBox from '../box/internal';
 import { BuiltInErrorBoundary } from '../error-boundary/internal';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { getBaseProps } from '../internal/base-component';
+import { getVisualContextClassname } from '../internal/components/visual-context';
 import { ContainerHeaderContextProvider } from '../internal/context/container-header';
 import { useModalContext } from '../internal/context/modal-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -83,6 +84,7 @@ const InternalContainer = React.forwardRef(function InternalContainer(
     footer,
     children,
     variant = 'default',
+    visualVariant = 'default',
     disableHeaderPaddings = false,
     disableContentPaddings = false,
     disableFooterPaddings = false,
@@ -162,6 +164,7 @@ const InternalContainer = React.forwardRef(function InternalContainer(
 
   const hasMedia = !!media?.content;
   const mediaPosition = media?.position ?? 'top';
+  const isAccentuated = isRefresh && visualVariant === 'accentuated';
 
   return (
     <div
@@ -178,7 +181,8 @@ const InternalContainer = React.forwardRef(function InternalContainer(
         shouldHaveStickyStyles && [styles['sticky-enabled']],
         shouldHaveStickyStyles && isStuck && isStuckAtBottom && [styles['with-stuck-sticky-header-at-bottom']],
         showFocusRing && styles['focus-ring'],
-        isRefresh && styles.refresh
+        isRefresh && styles.refresh,
+        isAccentuated && getVisualContextClassname('container-accentuated')
       )}
       ref={mergedRef}
       onBlur={onRootBlur}
@@ -227,6 +231,7 @@ const InternalContainer = React.forwardRef(function InternalContainer(
                       [styles['with-hidden-content']]: !children || __hiddenContent,
                       [styles['header-with-media']]: hasMedia,
                       [styles['header-full-page']]: __fullPage && isRefresh,
+                      [styles['header-accentuated']]: isAccentuated,
                     }
                   )}
                   ref={headerMergedRef}
@@ -246,6 +251,7 @@ const InternalContainer = React.forwardRef(function InternalContainer(
               className={clsx(styles['content-inner'], testStyles['content-inner'], {
                 [styles['with-paddings']]: !disableContentPaddings,
                 [styles['with-header']]: !!header,
+                [styles['content-inner-accentuated']]: isAccentuated,
               })}
               style={getContentStyles(style)}
             >
