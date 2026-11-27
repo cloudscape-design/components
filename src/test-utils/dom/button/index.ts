@@ -25,4 +25,8 @@ export default class ButtonWrapper extends ComponentWrapper<HTMLButtonElement> {
   findDisabledReason(): ElementWrapper | null {
     return createWrapper().find(`.${buttonTestUtilsStyles['disabled-reason-tooltip']}`);
   }
+
+  findTooltip(): ElementWrapper | null {
+    return createWrapper().findByClassName(buttonTestUtilsStyles.tooltip);
+  }
 }
