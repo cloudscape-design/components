@@ -27,6 +27,7 @@
   border-width: awsui.$border-width-badge;
   padding-block: 0;
   padding-inline: awsui.$space-xs;
+  outline: 2px solid red;
   color: awsui.$color-text-notification-default;
 
   &.badge-color-grey {
