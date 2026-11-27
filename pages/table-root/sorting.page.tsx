@@ -47,12 +47,12 @@ export default function TableSortingPage() {
         <TableRoot ariaLabel="Resources">
           <TableHead>
             <TableRow>
-              {COLUMNS.map(({ key, label, disabled }) => {
+              {COLUMNS.map(({ key, label, disabled }, columnIndex) => {
                 const direction = key === sortedKey ? toDirection(!!collectionProps.sortingDescending) : undefined;
                 return (
                   <TableHeaderCell key={key} disablePaddings={true} ariaSort={direction}>
                     <Button
-                      variant="table-header-cell"
+                      variant={headerVariant(columnIndex)}
                       formAction="none"
                       wrapText={false}
                       disabled={disabled}
@@ -101,7 +101,7 @@ function MultiSortTable() {
     <TableRoot ariaLabel="Resources, sorted by multiple columns">
       <TableHead>
         <TableRow>
-          {COLUMNS.map(({ key, label, disabled }) => {
+          {COLUMNS.map(({ key, label, disabled }, columnIndex) => {
             const index = sorting.findIndex(entry => entry.sortingColumn.sortingField === key);
             const entry = sorting[index];
             const direction = entry ? toDirection(!!entry.isDescending) : undefined;
@@ -112,7 +112,7 @@ function MultiSortTable() {
             return (
               <TableHeaderCell key={key} disablePaddings={true} ariaSort={isPrimary ? direction : undefined}>
                 <Button
-                  variant="table-header-cell"
+                  variant={headerVariant(columnIndex)}
                   formAction="none"
                   wrapText={false}
                   disabled={disabled}
@@ -148,6 +148,11 @@ function MultiSortTable() {
       <ResourceRows rows={rows} />
     </TableRoot>
   );
+}
+
+// The first column lines up with the table's edge.
+function headerVariant(columnIndex: number) {
+  return columnIndex === 0 ? 'table-header-cell-first' : 'table-header-cell';
 }
 
 function sortingColumn(key: SortKey) {

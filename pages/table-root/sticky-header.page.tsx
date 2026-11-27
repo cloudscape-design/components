@@ -87,7 +87,7 @@ export default function TableStickyHeaderPage() {
               <TableRow>
                 <TableHeaderCell disablePaddings={true} ariaSort={descending ? 'descending' : 'ascending'}>
                   <Button
-                    variant="table-header-cell"
+                    variant="table-header-cell-first"
                     formAction="none"
                     wrapText={false}
                     iconAlign="right"

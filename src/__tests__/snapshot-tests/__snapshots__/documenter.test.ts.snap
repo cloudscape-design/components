@@ -6451,7 +6451,8 @@ This property only applies when an \`href\` is provided.",
 * \`icon\` to display an icon only (no text).
 * \`inline-icon\` to display an icon-only (no text) button within a text context.
 * \`inline-link\` to display a tertiary button with no outer padding.
-* \`table-header-cell\` to fill a table column header, for example to sort it. Use it in a \`TableHeaderCell\` with \`disablePaddings\`, show a sort indicator in \`customIcon\` with \`iconAlign="right"\`, and set \`formAction="none"\` inside forms.",
+* \`table-header-cell\` to fill a table column header, for example to sort it. Use it in a \`TableHeaderCell\` with \`disablePaddings\`, show a sort indicator in \`customIcon\` with \`iconAlign="right"\`, and set \`formAction="none"\` inside forms.
+* \`table-header-cell-first\` for the header of the first column, which lines up with the table's edge. Otherwise it's the same as \`table-header-cell\`.",
       "inlineType": {
         "name": "ButtonProps.Variant",
         "type": "union",
@@ -6463,6 +6464,7 @@ This property only applies when an \`href\` is provided.",
           "inline-icon",
           "inline-link",
           "table-header-cell",
+          "table-header-cell-first",
         ],
       },
       "name": "variant",

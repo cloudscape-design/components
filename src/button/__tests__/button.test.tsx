@@ -583,17 +583,21 @@ describe('Button Component', () => {
     });
   });
 
-  describe('table-header-cell variant', () => {
-    test('is styled as a table header cell button', () => {
-      expect(renderButton({ children: 'Name', variant: 'table-header-cell' }).getElement()).toHaveClass(
-        styles['variant-table-header-cell']
-      );
+  describe('table header cell variants', () => {
+    test.each(['table-header-cell', 'table-header-cell-first'] as const)('%s is styled as its own variant', variant => {
+      const element = renderButton({ children: 'Name', variant }).getElement();
+      expect(element).toHaveClass(styles[`variant-${variant}`]);
     });
 
-    test('is not applied by other variants', () => {
-      expect(renderButton({ children: 'Name', variant: 'normal' }).getElement()).not.toHaveClass(
-        styles['variant-table-header-cell']
-      );
+    test('the first-column variant is not the default one', () => {
+      const element = renderButton({ children: 'Name', variant: 'table-header-cell-first' }).getElement();
+      expect(element).not.toHaveClass(styles['variant-table-header-cell']);
+    });
+
+    test('are not applied by other variants', () => {
+      const element = renderButton({ children: 'Name', variant: 'normal' }).getElement();
+      expect(element).not.toHaveClass(styles['variant-table-header-cell']);
+      expect(element).not.toHaveClass(styles['variant-table-header-cell-first']);
     });
   });
 

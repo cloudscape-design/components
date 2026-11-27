@@ -130,9 +130,11 @@ export function useTableRootStickyHeader({
       isKeyboardFocus && copyElement?.nextElementSibling?.classList.contains(abstractSwitchStyles.outline)
         ? copyElement.nextElementSibling
         : null;
-    const focusClass = copyElement?.classList.contains(buttonStyles['variant-table-header-cell'])
-      ? buttonStyles['fake-focus']
-      : styles['sticky-copy-focus'];
+    const focusClass =
+      copyElement?.classList.contains(buttonStyles['variant-table-header-cell']) ||
+      copyElement?.classList.contains(buttonStyles['variant-table-header-cell-first'])
+        ? buttonStyles['fake-focus']
+        : styles['sticky-copy-focus'];
     copyElement?.classList.add(focusClass);
     switchOutline?.classList.add(abstractSwitchStyles['show-outline']);
     return () => {

@@ -224,6 +224,7 @@ export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
    * * `inline-icon` to display an icon-only (no text) button within a text context.
    * * `inline-link` to display a tertiary button with no outer padding.
    * * `table-header-cell` to fill a table column header, for example to sort it. Use it in a `TableHeaderCell` with `disablePaddings`, show a sort indicator in `customIcon` with `iconAlign="right"`, and set `formAction="none"` inside forms.
+   * * `table-header-cell-first` for the header of the first column, which lines up with the table's edge. Otherwise it's the same as `table-header-cell`.
    */
   variant?: ButtonProps.Variant;
 
@@ -256,7 +257,15 @@ export namespace ButtonProps {
     root?: string;
   }
 
-  export type Variant = 'normal' | 'primary' | 'link' | 'icon' | 'inline-icon' | 'inline-link' | 'table-header-cell';
+  export type Variant =
+    | 'normal'
+    | 'primary'
+    | 'link'
+    | 'icon'
+    | 'inline-icon'
+    | 'inline-link'
+    | 'table-header-cell'
+    | 'table-header-cell-first';
   export type ClickDetail = _ClickDetail;
   export type FollowDetail = BaseNavigationDetail;
 

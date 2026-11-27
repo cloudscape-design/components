@@ -14,6 +14,17 @@
 @use '../internal/styles/style-api' as style-api;
 
 $tokens: style-api.resolve(style-api.$focus-ring, carrier);
+
+// Spacing of the `table-header-cell` variants. The ring's room is the button's own focus ring outset plus the gap the
+// existing Table leaves around its header's ring.
+$header-gap-inline: awsui.$space-scaled-xs;
+$header-gap-inline-first: awsui.$space-xxxs;
+$header-content-inline: awsui.$space-s;
+$header-ring-room: calc(
+  #{awsui.$space-button-focus-outline-gutter} + #{awsui.$space-table-header-focus-outline-gutter}
+);
+$header-margin-start: calc(#{awsui.$space-xs} - #{awsui.$border-divider-list-width} + #{$header-ring-room});
+$header-margin-end: calc(#{awsui.$space-xs} + #{$header-ring-room});
 @include style-api.register($tokens);
 @include style-api.docs(
   'root',
@@ -230,19 +241,21 @@ $tokens: style-api.resolve(style-api.$focus-ring, carrier);
     }
   }
 
-  // Fills a table header cell that has no paddings. A button can't tell which column it is in, so the cell sets its
-  // spacing through custom properties (see the table header cell's styles): the margin leaves room for the focus ring,
-  // and the padding puts the text where the cell's own content would be.
-  &.variant-table-header-cell {
-    $margin-start: var(--awsui-internal-style-table-header-cell-margin-inline-start, 0px);
-    $margin-end: var(--awsui-internal-style-table-header-cell-margin-inline-end, 0px);
+  // Fills a table header cell that has no paddings. A button can't tell which column it is in, so the first column has
+  // its own variant. The text lines up with the cell content of other headers, as in the existing Table, and the
+  // button's margin leaves room for its focus ring, which sits outside it inline like on other buttons. In visual
+  // refresh a header cell's content starts `$header-gap-inline` + `$header-content-inline` from the cell's edge, or `$header-gap-inline-first`
+  // from the table's edge in the first column. The start side is narrower by the divider's width, so the ring is the
+  // same distance from the dividers on both sides.
+  &.variant-table-header-cell,
+  &.variant-table-header-cell-first {
     display: flex;
     align-items: center;
     box-sizing: border-box;
-    inline-size: calc(100% - #{$margin-start} - #{$margin-end});
+    inline-size: calc(100% - #{$header-margin-start} - #{$header-margin-end});
     min-inline-size: 0;
-    margin-inline-start: $margin-start;
-    margin-inline-end: $margin-end;
+    margin-inline-start: $header-margin-start;
+    margin-inline-end: $header-margin-end;
     text-align: start;
     font-size: inherit;
     letter-spacing: normal;
@@ -253,8 +266,8 @@ $tokens: style-api.resolve(style-api.$focus-ring, carrier);
     border-end-start-radius: 0;
     border-end-end-radius: 0;
     padding-block: calc(#{awsui.$space-scaled-xxs} * 2);
-    padding-inline-start: var(--awsui-internal-style-table-header-cell-padding-inline-start, #{awsui.$space-s});
-    padding-inline-end: var(--awsui-internal-style-table-header-cell-padding-inline-end, #{awsui.$space-s});
+    padding-inline-start: calc(#{$header-gap-inline} + #{$header-content-inline} - #{$header-margin-start});
+    padding-inline-end: calc(#{$header-content-inline} - #{$header-ring-room});
 
     > .content {
       flex: 1;
@@ -317,6 +330,13 @@ $tokens: style-api.resolve(style-api.$focus-ring, carrier);
         @include table-header-focus-ring;
       }
     }
+  }
+
+  // The first column lines up with the table's edge, and its ring has no column before it to overlap.
+  &.variant-table-header-cell-first {
+    inline-size: calc(100% - #{$header-gap-inline-first} - #{$header-margin-end});
+    margin-inline-start: $header-gap-inline-first;
+    padding-inline-start: 0;
   }
 
   &.button-no-text > .icon {

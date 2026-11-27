@@ -130,35 +130,38 @@ describe('TableRoot sticky header', () => {
     expect(copyButton).not.toHaveClass(styles['sticky-copy-focus']);
   });
 
-  test('shows a table header button its own focus ring in the copy', () => {
-    const { container } = render(
-      <TableRoot
-        ariaLabel="Resources"
-        columnLayout={GRID}
-        stickyHeader={
-          <TableHead>
-            <TableRow>
-              <TableHeaderCell disablePaddings={true}>
-                <Button variant="table-header-cell">Name</Button>
-              </TableHeaderCell>
-              <TableHeaderCell>Status</TableHeaderCell>
-            </TableRow>
-          </TableHead>
-        }
-      >
-        <Body />
-      </TableRoot>
-    );
-    const realButton = findRealTable(container).querySelector('button')!;
-    const copyButton = findSlot(container)!.querySelector('button')!;
+  test.each(['table-header-cell', 'table-header-cell-first'] as const)(
+    'shows a %s button its own focus ring in the copy',
+    variant => {
+      const { container } = render(
+        <TableRoot
+          ariaLabel="Resources"
+          columnLayout={GRID}
+          stickyHeader={
+            <TableHead>
+              <TableRow>
+                <TableHeaderCell disablePaddings={true}>
+                  <Button variant={variant}>Name</Button>
+                </TableHeaderCell>
+                <TableHeaderCell>Status</TableHeaderCell>
+              </TableRow>
+            </TableHead>
+          }
+        >
+          <Body />
+        </TableRoot>
+      );
+      const realButton = findRealTable(container).querySelector('button')!;
+      const copyButton = findSlot(container)!.querySelector('button')!;
 
-    fireEvent.focus(realButton);
-    expect(copyButton).toHaveClass(buttonStyles['fake-focus']);
-    expect(copyButton).not.toHaveClass(styles['sticky-copy-focus']);
+      fireEvent.focus(realButton);
+      expect(copyButton).toHaveClass(buttonStyles['fake-focus']);
+      expect(copyButton).not.toHaveClass(styles['sticky-copy-focus']);
 
-    fireEvent.blur(realButton);
-    expect(copyButton).not.toHaveClass(buttonStyles['fake-focus']);
-  });
+      fireEvent.blur(realButton);
+      expect(copyButton).not.toHaveClass(buttonStyles['fake-focus']);
+    }
+  );
 
   test('hides the real header under the copy and restores it when sticky is turned off', () => {
     const restore = mockRects(element => (element.tagName === 'THEAD' ? { height: 40 } : undefined));

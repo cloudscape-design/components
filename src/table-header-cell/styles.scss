@@ -6,30 +6,8 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../table/cell-base/cell-box' as cell-base;
 
-// The gap to the cell edge, and the padding around the content, as in the existing Table.
-$gap-inline: awsui.$space-scaled-xs;
-// In visual refresh the first column lines up with the table edge.
-$gap-inline-start-first: awsui.$space-xxxs;
-$content-inline: awsui.$space-s;
-
-// A `Button` with `variant="table-header-cell"` fills a cell that has no paddings and has the same inline space as the
-// existing Table's sortable headers. The button can't tell which column it is in, so the cell tells it through these
-// custom properties: the margin leaves room for the button's focus ring, which sits outside it inline like on other
-// buttons, and the padding puts the text where the cell's own content would be. The start side is narrower by the
-// divider's width, so the ring is the same distance from the dividers on both sides.
-$button-ring-room: calc(
-  #{awsui.$space-button-focus-outline-gutter} + #{awsui.$space-table-header-focus-outline-gutter}
-);
-$button-margin-inline-start: calc(#{awsui.$space-xs} - #{awsui.$border-divider-list-width} + #{$button-ring-room});
-$button-margin-inline-end: calc(#{awsui.$space-xs} + #{$button-ring-room});
-$button-padding-inline-start: calc(#{$gap-inline} + #{$content-inline} - #{$button-margin-inline-start});
-
 .header-cell {
   box-sizing: border-box;
-  --awsui-internal-style-table-header-cell-margin-inline-start: #{$button-margin-inline-start};
-  --awsui-internal-style-table-header-cell-margin-inline-end: #{$button-margin-inline-end};
-  --awsui-internal-style-table-header-cell-padding-inline-start: #{$button-padding-inline-start};
-  --awsui-internal-style-table-header-cell-padding-inline-end: calc(#{$content-inline} - #{$button-ring-room});
 }
 
 // Presentation-only divider `::after` (the substrate has no Resizer child); geometry mirrors the existing
@@ -68,30 +46,6 @@ $button-padding-inline-start: calc(#{$gap-inline} + #{$content-inline} - #{$butt
 // VR-gated: the substrate is shared with the existing Table, which still supports non-VR mode.
 .header-cell.is-visual-refresh:first-child > .header-cell-content {
   padding-inline-start: 0;
-}
-
-// In visual refresh a last column without a resizer ends closer to the table edge. Its ring has no neighbouring
-// column to overlap, so the room is the ring's full extent whatever the density.
-.header-cell.is-visual-refresh:last-child {
-  --awsui-internal-style-table-header-cell-margin-inline-end: calc(
-    #{awsui.$space-xxxs} + #{awsui.$space-button-focus-outline-gutter}
-  );
-}
-
-.header-cell.is-visual-refresh:first-child {
-  --awsui-internal-style-table-header-cell-margin-inline-start: #{$gap-inline-start-first};
-  --awsui-internal-style-table-header-cell-padding-inline-start: 0px;
-}
-
-// In classic mode the existing Table's first header cell keeps a start offset of `space-xs` even without paddings, and
-// it doesn't shrink in compact density, so the button's margin and padding make up the rest.
-.header-cell:not(.is-visual-refresh):first-child {
-  --awsui-internal-style-table-header-cell-margin-inline-start: calc(
-    #{$button-ring-room} - #{awsui.$border-divider-list-width}
-  );
-  --awsui-internal-style-table-header-cell-padding-inline-start: calc(
-    #{$content-inline} - #{$button-ring-room} + #{awsui.$border-divider-list-width}
-  );
 }
 
 // Stretch to the row track, else an empty control header collapses to ~1px, leaving a stray divider stub.
