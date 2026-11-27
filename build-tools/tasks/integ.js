@@ -5,13 +5,15 @@ const glob = require('glob');
 const waitOn = require('wait-on');
 const { task } = require('../utils/gulp-utils.js');
 const { parseArgs } = require('node:util');
+const { getReactVersion } = require('../../pages/webpack.react-versions.cjs');
 
 module.exports = task('test:integ', async () => {
   const options = {
     shard: { type: 'string' },
     reactVersion: { type: 'string' },
   };
-  const { shard, reactVersion = '16' } = parseArgs({ options, strict: false }).values;
+  const { shard, reactVersion: reactVersionArg } = parseArgs({ options, strict: false }).values;
+  const reactVersion = getReactVersion(reactVersionArg).version;
   const devServer = execa('webpack', ['serve', '--config', 'pages/webpack.config.integ.cjs'], {
     env: {
       NODE_ENV: 'development',

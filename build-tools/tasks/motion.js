@@ -5,12 +5,14 @@ const glob = require('glob');
 const waitOn = require('wait-on');
 const { task } = require('../utils/gulp-utils.js');
 const { parseArgs } = require('node:util');
+const { getReactVersion } = require('../../pages/webpack.react-versions.cjs');
 
 module.exports = task('test:motion', async () => {
   const options = {
     reactVersion: { type: 'string' },
   };
-  const { reactVersion = '16' } = parseArgs({ options, strict: false }).values;
+  const { reactVersion: reactVersionArg } = parseArgs({ options, strict: false }).values;
+  const reactVersion = getReactVersion(reactVersionArg).version;
   const devServer = execa('webpack', ['serve', '--config', 'pages/webpack.config.integ.cjs'], {
     env: {
       NODE_ENV: 'development',
@@ -22,7 +24,7 @@ module.exports = task('test:motion', async () => {
   const files = glob.sync('src/**/__motion__/**/*.test.ts');
   await execa('jest', ['-c', 'jest.motion.config.js', ...files], {
     stdio: 'inherit',
-    env: { ...process.env, NODE_OPTIONS: '--experimental-vm-modules' },
+    env: { ...process.env, NODE_OPTIONS: '--experimental-vm-modules', REACT_VERSION: reactVersion },
   });
 
   devServer.cancel();

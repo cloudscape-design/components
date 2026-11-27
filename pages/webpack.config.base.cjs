@@ -6,6 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const { getReactVersion } = require('./webpack.react-versions.cjs');
 
 const isProd = process.env.NODE_ENV === 'production';
 const isLocal = !process.env.CI;
@@ -23,9 +24,12 @@ module.exports = ({
   globalStylesIndex = 'index',
   moduleReplacements,
   react18,
+  reactVersion = react18 ? '18' : undefined,
   contentHash = isProd,
 } = {}) => {
   const mode = process.env.NODE_ENV;
+  const react = getReactVersion(reactVersion);
+  const mountPath = `./app/mount/${react.mount}`;
   return {
     stats: isProd ? 'none' : 'minimal',
     context: path.resolve(__dirname),
@@ -45,20 +49,18 @@ module.exports = ({
         // https://github.com/webpack-contrib/sass-loader/issues/489
         '~components': componentsPath,
         '~design-tokens': designTokensPath,
-        ...(react18
+        '~mount': path.resolve(__dirname, mountPath),
+        ...(react.packages
           ? {
-              '~mount': path.resolve(__dirname, './app/mount/react18.ts'),
-              react: 'react18',
-              'react-dom': 'react-dom18',
-              'react-dom/client': 'react-dom18/client',
+              react: react.packages.react,
+              'react-dom': react.packages.reactDom,
+              'react-dom/client': `${react.packages.reactDom}/client`,
             }
-          : {
-              '~mount': path.resolve(__dirname, './app/mount/react16.ts'),
-            }),
+          : {}),
       },
     },
     devtool: 'source-map',
-    cache: isLocal ? { type: 'filesystem', name: react18 ? `${mode}:react18` : `${mode}:react16` } : false,
+    cache: isLocal ? { type: 'filesystem', name: `${mode}:react${react.version}` } : false,
     module: {
       rules: [
         {
@@ -74,17 +76,15 @@ module.exports = ({
                 '~components/*': [`${componentsPath}/*`],
                 '~design-tokens': [designTokensPath],
                 ...(globalStylesPath ? { '@cloudscape-design/global-styles': [globalStylesPath] } : {}),
-                ...(react18
+                '~mount': [mountPath],
+                ...(react.types
                   ? {
-                      '~mount': ['./app/mount/react18.ts'],
-                      react: ['node_modules/types-react18'],
-                      'react-dom': ['node_modules/types-react-dom18'],
-                      'react/jsx-runtime': ['node_modules/types-react18/jsx-runtime'],
-                      'react/jsx-dev-runtime': ['node_modules/types-react18/jsx-dev-runtime'],
+                      react: [`node_modules/${react.types.react}`],
+                      'react-dom': [`node_modules/${react.types.reactDom}`],
+                      'react/jsx-runtime': [`node_modules/${react.types.react}/jsx-runtime`],
+                      'react/jsx-dev-runtime': [`node_modules/${react.types.react}/jsx-dev-runtime`],
                     }
-                  : {
-                      '~mount': ['./app/mount/react16.ts'],
-                    }),
+                  : {}),
               },
             },
           },
