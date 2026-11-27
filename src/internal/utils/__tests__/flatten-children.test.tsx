@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { Fragment } from 'react';
+import { createPortal } from 'react-dom';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
@@ -113,5 +114,15 @@ describe('getFlattenedChildKey', () => {
     expect(keys).toHaveLength(mixedChildren.length);
     expect(new Set(keys).size).toBe(keys.length);
     expect(keys.filter(key => key.startsWith('primitive-'))).toEqual(['primitive-1', 'primitive-2', 'primitive-5']);
+  });
+
+  it('keeps keyed portals stable across positions', () => {
+    const portal = createPortal(<span>Portal</span>, document.body, 'p1');
+    expect(getFlattenedChildKey(portal, 0)).toBe('portal-p1');
+    expect(getFlattenedChildKey(portal, 3)).toBe('portal-p1');
+  });
+
+  it('keys unkeyed portals by position', () => {
+    expect(getFlattenedChildKey(createPortal(<span>Portal</span>, document.body), 2)).toBe('primitive-2');
   });
 });

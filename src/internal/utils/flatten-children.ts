@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { isValidElement, ReactNode } from 'react';
+import { isPortal } from 'react-is';
 
 import flattenChildrenLegacy from '../vendor/react-keyed-flatten-children';
 import { getReactMajorVersion } from './react-version';
@@ -29,9 +30,16 @@ export function flattenChildren(children: ReactNode, componentName: string): Rea
 
 /**
  * Returns a key for a wrapper element rendered around a flattened child. Elements keep the key that
- * flattening assigned them, which always contains a "." (such as ".0" or ".$custom"). Strings and
- * numbers have no key, so they're keyed by position with a prefix that can't collide with those keys.
+ * flattening assigned them, which always contains a "." (such as ".0" or ".$custom"). Portals keep
+ * their own key, which flattening leaves as-is, so it gets a prefix. Strings, numbers, and unkeyed
+ * portals are keyed by position. The prefixes keep the three kinds of keys from colliding.
  */
 export function getFlattenedChildKey(child: ReactNode, index: number): string {
-  return isValidElement(child) && child.key !== null ? String(child.key) : `primitive-${index}`;
+  if (isValidElement(child) && child.key !== null) {
+    return String(child.key);
+  }
+  if (isPortal(child) && child.key !== null) {
+    return `portal-${child.key}`;
+  }
+  return `primitive-${index}`;
 }
