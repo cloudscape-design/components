@@ -87,6 +87,22 @@ describe('SpaceBetween', () => {
   });
 });
 
+describe('mixed children', () => {
+  it('does not log a key warning when text children are mixed with elements', () => {
+    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const { container } = render(
+      <SpaceBetween size="s">
+        <span>Element</span>
+        Text
+        {42}
+      </SpaceBetween>
+    );
+    expect(consoleError).not.toHaveBeenCalled();
+    expect(container.firstElementChild!.children).toHaveLength(3);
+    consoleError.mockRestore();
+  });
+});
+
 describe('native attributes', () => {
   it('adds native attributes', () => {
     const { container } = render(

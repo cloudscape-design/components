@@ -10,7 +10,7 @@ import { matchBreakpointMapping } from '../internal/breakpoints';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { isDevelopment } from '../internal/is-development';
-import { flattenChildren } from '../internal/utils/flatten-children';
+import { flattenChildren, getFlattenedChildKey } from '../internal/utils/flatten-children';
 import { Breakpoint } from '../types/breakpoint';
 import { GridProps } from './interfaces';
 
@@ -82,12 +82,9 @@ const InternalGrid = React.forwardRef(
         ref={mergedRef}
       >
         {flattenedChildren.map((child, i) => {
-          // If this react child is a primitive value, the key will be undefined
-          const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
-
           return (
             <div
-              key={key ? String(key) : undefined}
+              key={getFlattenedChildKey(child, i)}
               className={clsx(
                 styles['grid-column'],
                 getColumnClassNames('colspan', gridDefinition[i]?.colspan, defaultBreakpoint),

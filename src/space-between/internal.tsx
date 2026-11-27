@@ -7,7 +7,7 @@ import { useMergeRefs } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { flattenChildren } from '../internal/utils/flatten-children';
+import { flattenChildren, getFlattenedChildKey } from '../internal/utils/flatten-children';
 import WithNativeAttributes from '../internal/utils/with-native-attributes';
 import { SpaceBetweenProps } from './interfaces';
 
@@ -53,13 +53,10 @@ const InternalSpaceBetween = forwardRef(
         )}
         ref={mergedRef}
       >
-        {flattenedChildren.map(child => {
-          // If this react child is a primitive value, the key will be undefined
-          const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
-
+        {flattenedChildren.map((child, index) => {
           return (
             <div
-              key={key ? String(key) : undefined}
+              key={getFlattenedChildKey(child, index)}
               className={clsx(styles.child, propagateAlignment && styles['child-aligned'])}
             >
               {child}

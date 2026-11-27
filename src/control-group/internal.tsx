@@ -15,7 +15,7 @@ import {
 import { FormFieldContext, useFormFieldContext } from '../internal/context/form-field-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useFitsInline } from '../internal/hooks/use-fits-inline';
-import { flattenChildren } from '../internal/utils/flatten-children';
+import { flattenChildren, getFlattenedChildKey } from '../internal/utils/flatten-children';
 import { joinStrings } from '../internal/utils/strings/join-strings';
 import { ControlGroupProps } from './interfaces';
 
@@ -64,13 +64,12 @@ export default function InternalControlGroup({
       ? 'horizontal' // The ghost always uses horizontal mode for measuring
       : resolvedDirection;
     return flattenedChildren.map((child, index) => {
-      const key = child && typeof child === 'object' ? (child as Record<'key', unknown>).key : undefined;
       const position: GroupedControlPosition =
         controlCount === 1 ? 'only' : index === 0 ? 'first' : index === controlCount - 1 ? 'last' : 'middle';
       const isLeading = slotDirection === 'vertical' || position === 'first' || position === 'only';
       return (
         <div
-          key={key !== null && key !== undefined ? String(key) : index}
+          key={getFlattenedChildKey(child, index)}
           className={clsx(
             // Make sure that test utils exclude the ghost
             !isGhost && testUtilStyles.control,
