@@ -3,6 +3,7 @@
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import { isReact18OrNewer } from '../../__integ__/utils';
 import SelectPage from './page-objects/select-page';
 
 interface ExtendedWindow extends Window {
@@ -31,7 +32,7 @@ function setupTest(testFn: (page: ResizeSelectPage) => Promise<void>) {
 }
 
 describe(`Resizing virtual select`, () => {
-  (process.env.REACT_VERSION !== '18' ? test : test.skip)(
+  (isReact18OrNewer ? test.skip : test)(
     'Should place second option lower, when the select becomes narrower',
     setupTest(async page => {
       await page.clickSelect();
@@ -42,7 +43,7 @@ describe(`Resizing virtual select`, () => {
       expect(topBefore).toBeLessThan(topAfter);
     })
   );
-  (process.env.REACT_VERSION !== '18' ? test : test.skip)(
+  (isReact18OrNewer ? test.skip : test)(
     'Should place second option higher, when the select becomes wider',
     setupTest(async page => {
       await page.shrinkSelect(true);

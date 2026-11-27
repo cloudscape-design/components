@@ -4,6 +4,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../../lib/components/test-utils/selectors';
 import InternalDragHandleWrapper from '../../../../lib/components/test-utils/selectors/internal/drag-handle';
+import { isReact18OrNewer } from '../../../__integ__/utils';
 import ContentDisplayPageObject from './pages/content-display-page';
 
 const windowDimensions = {
@@ -143,7 +144,7 @@ describe('Collection preferences - Content Display preference', () => {
   });
 
   describe('reorders content with keyboard', () => {
-    (process.env.REACT_VERSION !== '18' ? test : test.skip)(
+    (isReact18OrNewer ? test.skip : test)(
       'cancels reordering when pressing Escape',
       setupTest(async page => {
         page.wrapper = createWrapper().findCollectionPreferences('.cp-1');

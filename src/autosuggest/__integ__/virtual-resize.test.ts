@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
+import { isReact18OrNewer } from '../../__integ__/utils';
 import AutosuggestPage from './page-objects/autosuggest-page';
 
 interface ExtendedWindow extends Window {
@@ -29,7 +30,7 @@ function setupTest(testFn: (page: ResizeAutosuggestPage) => Promise<void>) {
 }
 
 describe(`Resizing virtual autosuggest`, () => {
-  (process.env.REACT_VERSION !== '18' ? test : test.skip)(
+  (isReact18OrNewer ? test.skip : test)(
     'Should place second option lower, when the autosuggest becomes narrower',
     setupTest(async page => {
       await page.focusInput();
@@ -40,7 +41,7 @@ describe(`Resizing virtual autosuggest`, () => {
       expect(topBefore).toBeLessThan(topAfter);
     })
   );
-  (process.env.REACT_VERSION !== '18' ? test : test.skip)(
+  (isReact18OrNewer ? test.skip : test)(
     'Should place second option higher, when the autosuggest becomes wider',
     setupTest(async page => {
       await page.shrinkAutosuggest(true);

@@ -4,7 +4,7 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors/index';
-import { isReact18 } from './utils';
+import { isReact18OrNewer } from './utils';
 
 const promptInputWrapper = createWrapper().findPromptInput('[data-testid="prompt-input"]');
 const contentEditableSelector = promptInputWrapper.findContentEditableElement()!.toSelector();
@@ -114,7 +114,7 @@ const setupTest = (testFn: (page: PromptInputTokenModePage) => Promise<void>, ur
 };
 
 // React 16/17: token mode is disabled, component falls back to textarea.
-(isReact18 ? describe.skip : describe)('PromptInput - React 16/17 fallback', () => {
+(isReact18OrNewer ? describe.skip : describe)('PromptInput - React 16/17 fallback', () => {
   test(
     'renders as textarea when menus are provided',
     setupTest(async page => {
@@ -128,7 +128,7 @@ const setupTest = (testFn: (page: PromptInputTokenModePage) => Promise<void>, ur
 });
 
 // React 18+: full token mode with contentEditable, triggers, menus, and reference tokens.
-(isReact18 ? describe : describe.skip)('PromptInput token mode', () => {
+(isReact18OrNewer ? describe : describe.skip)('PromptInput token mode', () => {
   describe('typing and editing', () => {
     test(
       'typing text and creating a new line with shift+enter',

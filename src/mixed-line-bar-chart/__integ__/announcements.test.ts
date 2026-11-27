@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import { isReact18OrNewer } from '../../__integ__/utils';
 import { setupTest } from './common';
 
 describe('Popover content is announced as plain text on hover', () => {
@@ -34,7 +35,7 @@ describe('Popover content is announced as plain text on hover', () => {
       })
     );
 
-    (process.env.REACT_VERSION !== '18' ? test : test.skip)(
+    (isReact18OrNewer ? test.skip : test)(
       'with expandable sub-items',
       setupTest(`#/light/mixed-line-bar-chart/drilldown?useLinks=${useLinks}&expandableSubItems=true`, async page => {
         const wrapper = createWrapper().findMixedLineBarChart();

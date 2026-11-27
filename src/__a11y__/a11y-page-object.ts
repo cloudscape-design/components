@@ -12,6 +12,15 @@ import tableStyles from '../../lib/components/table/styles.selectors.js';
 declare const axe: typeof Axe;
 
 export default class A11yPageObject extends BasePageObject {
+  /**
+   * Waits for the page content to render. With a concurrent React root, `main` can become visible before the page
+   * content is committed. Pages without a level-one heading are reported by axe, so a timeout here is not an error.
+   */
+  async waitForPageContent() {
+    await this.waitForVisible('main');
+    await this.waitForExist('h1', true, 5000).catch(() => undefined);
+  }
+
   getUndefinedTexts() {
     return this.browser.execute(function findUndefinedNodes() {
       const result: string[] = [];

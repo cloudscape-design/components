@@ -35,7 +35,7 @@ describe('Visual refresh toolbar only', () => {
 
     async expectConsoleErrors() {
       const consoleErrors = await this.getConsoleErrorLogs();
-      const errorPattern = /The above error occurred in the .+ component:/;
+      const errorPattern = /The above error occurred in the .+ component[:.]/;
       const matchingErrors = consoleErrors.filter(error => errorPattern.test(error));
       expect(matchingErrors.length).toBeGreaterThan(0);
     }

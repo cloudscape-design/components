@@ -6,6 +6,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import { PropertyFilterProps } from '../../../lib/components/property-filter/interfaces';
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import { isReact18OrNewer } from '../../__integ__/utils';
 
 import styles from '../../../lib/components/property-filter/styles.selectors.js';
 
@@ -203,10 +204,10 @@ const testCases: TestCase[] = [
 
 test.each<TestCase>(testCases)('%p', (scenarioName, asyncProperties, token, scenario) =>
   setupTest(asyncProperties, token, async page => {
-    if (scenarioName.includes('React=16') && process.env.REACT_VERSION !== '16') {
+    if (scenarioName.includes('React=16') && isReact18OrNewer) {
       return;
     }
-    if (scenarioName.includes('React=18') && process.env.REACT_VERSION !== '18') {
+    if (scenarioName.includes('React=18') && !isReact18OrNewer) {
       return;
     }
     for (let i = 0; i < scenario.length; i++) {

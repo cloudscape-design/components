@@ -5,7 +5,7 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../../lib/components/test-utils/selectors';
-import { Theme } from '../../../__integ__/utils';
+import { isReact18OrNewer, Theme } from '../../../__integ__/utils';
 import { getUrlParams } from '../../../app-layout/__integ__/utils';
 
 interface ExtendedWindow extends Window {
@@ -44,7 +44,7 @@ class MultiPageCreate extends BasePageObject {
 describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
   function setupTest(testFn: (page: MultiPageCreate) => Promise<void>) {
     return useBrowser(async browser => {
-      if (process.env.REACT_VERSION === '18') {
+      if (isReact18OrNewer) {
         return;
       }
       const page = new MultiPageCreate(browser);

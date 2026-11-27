@@ -3,7 +3,7 @@
 
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import { findAllPages } from '../__integ__/utils';
+import { findAllPages, isReact18OrNewer } from '../__integ__/utils';
 import A11yPageObject from './a11y-page-object';
 
 type Theme = 'visual-refresh';
@@ -13,7 +13,7 @@ function setupTest(url: string, testFn: (page: A11yPageObject) => Promise<void>)
   return useBrowser(async browser => {
     const page = new A11yPageObject(browser);
     await browser.url(url);
-    await page.waitForVisible('main');
+    await page.waitForPageContent();
     await testFn(page);
   });
 }
@@ -22,11 +22,23 @@ function urlFormatter(inputUrl: string, mode: Mode) {
   return `#/${mode}/${inputUrl}`;
 }
 
+/**
+ * Pages skipped on React 18 and newer because of known issues in components that render differently there.
+ * Prompt input token mode (React 18+) sets aria-expanded on its role="textbox" element, which is not allowed.
+ */
+const react18OrNewerSkipPages = [
+  'prompt-input/menu-style',
+  'prompt-input/permutations',
+  'prompt-input/shortcuts',
+  'prompt-input/style-api-v2',
+];
+
 export default function runA11yTests(theme: Theme, mode: Mode, skip: string[] = []) {
   describe(`A11y checks for ${mode} ${theme}`, () => {
     findAllPages().forEach(inputUrl => {
       const skipPages = [
         ...skip,
+        ...(isReact18OrNewer ? react18OrNewerSkipPages : []),
         'theming/tokens',
         'theming/themed-components',
         // this page intentionally has issues to test the helper

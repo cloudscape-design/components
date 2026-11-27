@@ -5,6 +5,7 @@ import { BasePageObject, ElementRect } from '@cloudscape-design/browser-test-too
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import { isReact18OrNewer } from '../../__integ__/utils';
 
 import styles from '../../../lib/components/popover/styles.selectors.js';
 
@@ -124,7 +125,7 @@ describe('Default placement', () => {
   ];
 
   for (const [props, expectation] of scenarios) {
-    (process.env.REACT_VERSION !== '18' ? test : test.skip)(
+    (isReact18OrNewer ? test.skip : test)(
       `Scenario: ${props.position}, ${props.placement}, ${props.viewport}`,
       setupTest(props, async page => {
         await page.click('#popover-trigger');

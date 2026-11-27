@@ -5,7 +5,7 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../../lib/components/test-utils/selectors';
-import { Theme } from '../../../__integ__/utils';
+import { isReact18OrNewer, Theme } from '../../../__integ__/utils';
 import { getUrlParams } from '../../../app-layout/__integ__/utils';
 
 interface ExtendedWindow extends Window {
@@ -101,7 +101,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
     })
   );
 
-  (process.env.REACT_VERSION !== '18' ? test : test.skip)(
+  (isReact18OrNewer ? test.skip : test)(
     'Starts and ends substep when navigating between containers',
     setupTest(async page => {
       await page.click('[data-testid=field1]');

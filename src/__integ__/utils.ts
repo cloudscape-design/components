@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as glob from 'glob';
 
+/** True when the dev pages under test are rendered with React 18 or newer (concurrent root). */
+export const isReact18OrNewer = Number(process.env.REACT_VERSION ?? '16') >= 18;
+
 export type Theme = 'refresh' | 'refresh-toolbar';
 export type Size = 'desktop' | 'mobile';
 
