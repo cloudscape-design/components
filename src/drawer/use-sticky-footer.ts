@@ -16,10 +16,13 @@ export function useStickyFooter({
   rootRef,
   drawerRef,
   footerRef,
+  isPositioned = false,
 }: {
   rootRef: RefObject<HTMLElement>;
   drawerRef: RefObject<HTMLElement>;
   footerRef: RefObject<HTMLElement>;
+  // Positioned drawers are their own scroll container, so the drawer is measured instead of its parent.
+  isPositioned?: boolean;
 }) {
   const [isSticky, setIsSticky] = useState(true);
 
@@ -29,7 +32,7 @@ export function useStickyFooter({
         return;
       }
 
-      const parentElement = rootRef?.current?.parentElement;
+      const parentElement = isPositioned ? null : rootRef?.current?.parentElement;
       const parentElementHeight = parentElement?.getBoundingClientRect().height;
       const drawerHeight = drawerRef.current.getBoundingClientRect().height;
       const effectiveHeight = Math.min(parentElementHeight ?? drawerHeight, drawerHeight);
@@ -41,11 +44,14 @@ export function useStickyFooter({
       const hasEnoughSpace = scrollableHeight >= MINIMUM_SCROLLABLE_SPACE;
 
       setIsSticky(hasEnoughSpace);
-    }, [rootRef, footerRef, drawerRef]),
+    }, [rootRef, footerRef, drawerRef, isPositioned]),
     STICKY_STATE_CHECK_THROTTLE_DELAY
   );
 
-  useResizeObserver(() => rootRef?.current?.parentElement ?? null, checkStickyState);
+  useResizeObserver(
+    () => (isPositioned ? drawerRef?.current : rootRef?.current?.parentElement) ?? null,
+    checkStickyState
+  );
 
   return { isSticky };
 }

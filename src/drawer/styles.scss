@@ -28,22 +28,6 @@
   }
 
   &.position-absolute,
-  &.position-fixed {
-    // Only the content area scrolls, so the header and footer stay in place and content taller than the
-    // drawer stays reachable regardless of how consumers size it.
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-
-    > .content {
-      flex: 1;
-      min-block-size: 0;
-      overflow-y: auto;
-      overscroll-behavior: contain;
-    }
-  }
-
-  &.position-absolute,
   &.position-sticky,
   &.position-fixed {
     &.placement-end {
@@ -77,7 +61,17 @@
   }
 
   @include focus-visible.when-visible {
-    @include styles.focus-highlight($gutter: -2px);
+    @include styles.focus-highlight($gutter: -2px, $z-index: 811); // z-index is one above sticky footer's z-index
+  }
+
+  // A positioned drawer is its own scroll container, like app layout's drawer container is for static
+  // drawers: the header scrolls with the content and the footer sticks to the bottom edge. The drawer is
+  // also the region and the element focused on open, so keyboard users can scroll it right away.
+  &.position-absolute,
+  &.position-fixed {
+    box-sizing: border-box;
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 }
 

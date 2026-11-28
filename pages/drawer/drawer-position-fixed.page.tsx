@@ -86,8 +86,9 @@ function FixedDrawer({ placement, offset, tallContent, children, ...rest }: Draw
         style={{
           boxSizing: 'border-box',
           padding: 16,
-          width: 300,
+          width: placement === 'start' || placement === 'end' ? 300 : undefined,
           height: placement === 'top' || placement === 'bottom' ? 300 : undefined,
+          overflowY: tallContent ? 'auto' : undefined,
           background: contentBackgroundColor,
         }}
       >

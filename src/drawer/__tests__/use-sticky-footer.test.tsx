@@ -208,4 +208,34 @@ describe('useStickyFooter', () => {
     // Drawer: 400px, Footer: 100px → Scrollable: 300px (> 148px)
     expect(result.current.isSticky).toBe(true);
   });
+
+  test('measures the drawer instead of its parent when the drawer is positioned', () => {
+    const callbacks: ((entry: ContainerQueryEntry) => void)[] = [];
+    jest.mocked(useResizeObserver).mockImplementation((_target, cb) => {
+      callbacks.push(cb);
+    });
+
+    // A fixed drawer is rendered into a portal container that has no height of its own.
+    const portalContainer = createElementWithHeight('div', 0);
+    const rootElement = createElementWithHeight('div', 0);
+    portalContainer.appendChild(rootElement);
+
+    const rootRef = { current: rootElement };
+    const drawerRef = { current: drawerElement };
+    const footerRef = { current: footerElement };
+
+    const { result: positioned } = renderHook(() =>
+      useStickyFooter({ rootRef, drawerRef, footerRef, isPositioned: true })
+    );
+    const { result: inFlow } = renderHook(() => useStickyFooter({ rootRef, drawerRef, footerRef }));
+
+    act(() => {
+      callbacks.forEach(cb => cb({} as ContainerQueryEntry));
+    });
+
+    // Drawer: 400px, Footer: 100px → Scrollable: 300px, regardless of the parent's height
+    expect(positioned.current.isSticky).toBe(true);
+    // Parent: 0px → Scrollable: -100px
+    expect(inFlow.current.isSticky).toBe(false);
+  });
 });
